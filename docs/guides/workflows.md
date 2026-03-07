@@ -29,31 +29,30 @@ Three interlocking patterns govern how agents hand off to each other. Together t
 because they share a single rule, but because each layer encodes the same context and passes
 it forward in denser form.
 
-### 1. Self-Loop Phase Gates
+### 1. Evaluator-Optimizer Loop
 
 Executive agents have handoff buttons that target **themselves** — one per phase boundary.
-After a sub-agent completes its task and returns control, the executive clicks the self-loop
-button to enter a deliberate review step before deciding the next delegation.
+After a sub-agent completes its task and returns control, the executive triggers the evaluator-optimizer loop handoff to enter a deliberate review step before deciding the next delegation.
 
 ```
 Human → Executive
            ↓ (delegate)
         Sub-agent A
            ↓ (takeback)
-        Executive  ← self-loop button fires here: "✓ A done — review & decide"
+        Executive  ← evaluator-optimizer loop fires here: "✓ A done — review & decide"
            ↓ (delegate)
         Sub-agent B
            ↓ (takeback)
-        Executive  ← self-loop button fires here: "✓ B done — review & decide"
+        Executive  ← evaluator-optimizer loop fires here: "✓ B done — review & decide"
            ↓
         Review → GitHub
 ```
 
-**Why this matters**: the self-loop button pre-fills a prompt that orients the executive to
+**Why this matters**: the evaluator-optimizer loop pre-fills a prompt that orients the executive to
 the just-completed output and the decision to be made. It enforces a review pause that prevents
 sub-agent output from propagating unchecked into the next phase.
 
-**Authoring rule**: every executive agent should have one self-loop handoff per phase boundary,
+**Authoring rule**: every executive agent should have one evaluator-optimizer loop handoff per phase boundary,
 labeled `✓ <Phase> done — review & decide`. The prompt should name where to find the output
 and what the gate criteria are.
 
@@ -195,15 +194,52 @@ Write a concise research frame:
 ### Phase 4 — Synthesize (Contraction)
 
 **Agent**: Research Synthesizer  
-**Invocation prompt**: *"Raw sources have been catalogued in the session scratchpad under '## Scout Output'. Please synthesize into a structured research draft in docs/research/<slug>.md following the expansion→contraction pattern. Topic: [topic]. Gate deliverables: [D1, D2, D3]."*
+**Invocation prompt**: *"Raw sources have been catalogued in the session scratchpad under '## Scout Output'. Please synthesize using the three-pass approach: (Pass 1) write a deep per-source stub for each source, processing one source at a time in isolation; (Pass 2) run `scripts/link_source_stubs.py` to populate Referenced By links; (Pass 3) write the issue synthesis at docs/research/<topic-slug>.md referencing those stubs. Topic: [topic]. Gate deliverables: [D1, D2, D3]."*
 
-**What Synthesizer does**:
-1. Reads Scout output from scratchpad.
-2. Drafts `docs/research/<slug>.md` following the standard structure (see `docs/AGENTS.md`).
-3. Sets `Status: Draft — pending review`.
-4. Returns control to Executive Researcher via takeback handoff.
+**What Synthesizer does — three passes**:
 
-**Gate before advancing**: draft exists at `docs/research/<slug>.md`; all gate deliverables from `OPEN_RESEARCH.md` are addressed or explicitly deferred to open questions; no raw Scout notes present in the draft.
+#### Pass 1 — Per-Source Stubs (isolated, parallelisable)
+
+Each source is processed independently. The Synthesizer reads the **full** `.cache/sources/<slug>.md` for one source, writes a deep stub, then moves to the next. This isolation prevents context from one source bleeding into the summary of another.
+
+Stubs are substantive documents, not placeholders:
+- `## Summary`: 4–6 sentences (what, who, structure/scope, primary contribution, standout finding)
+- `## Key Claims`: 8–15 bullets with direct quotes where available
+- `## Relevance to EndogenAI`: 5–8 sentences as editorial opinion — what to adopt/adapt/reject and why
+- `## Referenced By`: left empty — populated by the linking script
+
+Because each stub is independent, multiple Synthesizer invocations can run in parallel (one per source) to reduce context rot when the source list is large.
+
+#### Pass 2 — Link Graph (scripted)
+
+After all stubs are written, run:
+
+```bash
+uv run python scripts/link_source_stubs.py
+```
+
+This scans issue synthesis files for links to stubs and writes bidirectional `## Referenced By` entries. Never populate `## Referenced By` manually.
+
+#### Pass 3 — Issue Synthesis
+1. Reads all per-source stubs (not the raw Scout notes — stubs are the input).
+2. Drafts `docs/research/<topic-slug>.md` using cross-source conclusions only.
+3. **References per-source stubs with relative links** — never re-summarises source content inline.
+4. Sets `Status: Draft — pending review`.
+5. Returns control to Executive Researcher via takeback handoff.
+
+**Research Output Structure**:
+```
+docs/research/
+  sources/
+    <slug>.md          ← per-source stub (deep, isolated, committed)
+  <topic-slug>.md      ← issue synthesis (cross-source conclusions only, committed)
+  OPEN_RESEARCH.md     ← research queue
+.cache/sources/
+  manifest.json        ← fetch manifest (committed)
+  <slug>.md            ← raw HTML→Markdown distillation (gitignored, regenerable)
+```
+
+**Gate before advancing**: all per-source stubs exist and meet depth requirements (≥60 lines, ≥4-sentence summary, ≥6 key claims with quotes, ≥3-sentence relevance); linking script has run; issue synthesis draft exists; all gate deliverables addressed or explicitly deferred; no raw Scout notes in draft; issue synthesis references stubs via relative links.
 
 ---
 
@@ -379,9 +415,11 @@ gather only. Seed references: [URLs].
 
 **Delegate to Synthesizer:**
 ```
-Raw sources have been catalogued in the session scratchpad under '## Scout Output'. 
-Please synthesize into a structured research draft in docs/research/<slug>.md 
-following the expansion→contraction pattern. Gate deliverables: [D1, D2, D3].
+Raw sources have been catalogued in the session scratchpad under '## Scout Output'.
+Please synthesize using the two-pass approach:
+1. For each source in the Scout table, write a per-source stub at docs/research/sources/<slug>.md.
+2. Then write the issue synthesis at docs/research/<topic-slug>.md referencing those stubs.
+Gate deliverables: [D1, D2, D3]. Topic: [topic].
 ```
 
 **Delegate to Reviewer:**

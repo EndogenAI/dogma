@@ -41,6 +41,19 @@ Also start the scratchpad watcher so H2 headings stay annotated automatically:
 uv run python scripts/watch_scratchpad.py
 ```
 
+If this is a research session, pre-warm the source cache before delegating to any scout:
+
+```bash
+# Preview what will be fetched (safe dry run)
+uv run python scripts/fetch_all_sources.py --dry-run
+
+# Fetch all uncached sources (idempotent — skips already-cached URLs)
+uv run python scripts/fetch_all_sources.py
+```
+
+This implements the **fetch-before-act** posture: scouts read cached `.md` files with `read_file`
+rather than re-fetching pages through the context window, saving tokens every session.
+
 ---
 
 ## During a Session
@@ -96,8 +109,8 @@ When a sub-agent cannot complete a task, it writes an escalation note and return
 
 | Situation | Action |
 |-----------|--------|
-| Session file < 200 lines | No action needed |
-| Session file ≥ 200 lines | Run `uv run python scripts/prune_scratchpad.py` |
+| Session file < 2000 lines | No action needed |
+| Session file ≥ 2000 lines | Run `uv run python scripts/prune_scratchpad.py` |
 | Session end | Write `## Session Summary`, then run `uv run python scripts/prune_scratchpad.py --force` |
 | New session day | Run `uv run python scripts/prune_scratchpad.py --init` |
 
@@ -156,7 +169,7 @@ uv run python scripts/watch_scratchpad.py
 # Dry-run prune (check what will be compressed)
 uv run python scripts/prune_scratchpad.py --dry-run
 
-# Prune in-place (when file exceeds 200 lines)
+# Prune in-place (when file exceeds 2000 lines)
 uv run python scripts/prune_scratchpad.py
 
 # Force prune + archive session (at session end)

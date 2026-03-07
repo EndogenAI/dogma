@@ -37,6 +37,8 @@ This is a constraint on the entire agent fleet, not an optional preference. More
 ### What This Means for Agents
 
 - **Check `scripts/` first** before performing a multi-step task interactively.
+- **At the start of any research session, pre-warm the source cache** — run `uv run python scripts/fetch_all_sources.py` to batch-fetch all URLs from `OPEN_RESEARCH.md` and existing research doc frontmatter. This is the **fetch-before-act** posture: populate locally, then research.
+- **Check `.cache/sources/` before fetching any individual URL** — use `uv run python scripts/fetch_source.py <url> --check` to see if a page is already cached as distilled Markdown. Re-fetching a cached source wastes tokens.
 - **Extend, don't duplicate** — if a script partially covers your need, extend it.
 - **Propose new scripts proactively** — if you perform an investigation or transformation that required significant context to execute, encapsulate it as a script and commit it so future sessions start with that knowledge encoded.
 - **Automation ≠ agent** — file watchers, pre-commit hooks, and CI tasks are preferred over agent-initiated repetition. The `Executive Automator` agent is the first escalation point for automation design. The `Executive Scripter` agent is the first escalation point for scripting gaps.
@@ -121,8 +123,8 @@ Rules:
 
 | Situation | Action |
 |-----------|--------|
-| Session file < 200 lines | No action needed |
-| Session file ≥ 200 lines | Run `uv run python scripts/prune_scratchpad.py` |
+| Session file < 2000 lines | No action needed |
+| Session file ≥ 2000 lines | Run `uv run python scripts/prune_scratchpad.py` |
 | Session end | Write `## Session Summary`, then run `uv run python scripts/prune_scratchpad.py --force` |
 | New session day | Run `uv run python scripts/prune_scratchpad.py --init` |
 
