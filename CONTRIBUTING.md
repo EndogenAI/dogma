@@ -63,8 +63,9 @@ gh auth status  # verify "project" appears in scopes
 ```
 
 This is required once per machine. The `project` scope is needed for:
-- Reading and writing Projects v2 boards
-- Running `uv run python scripts/seed_labels.py` (if creating/updating labels)
+- Reading and writing Projects v2 boards (`gh project` commands)
+
+> **Note**: `uv run python scripts/seed_labels.py` uses `gh label create/delete` and does **not** require the `project` scope — only standard repo permissions.
 
 ---
 
