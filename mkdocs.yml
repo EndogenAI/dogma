@@ -1,0 +1,73 @@
+site_name: EndogenAI Workflows
+site_description: Endogenic / agentic product design and development workflows, best practices, agent files, and automation scripts.
+site_url: https://endogenai.github.io/Workflows/
+repo_url: https://github.com/EndogenAI/Workflows
+repo_name: EndogenAI/Workflows
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - content.action.edit
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Home: ../README.md
+  - Guides:
+    - Agent Workflows: guides/workflows.md
+    - Using the Agent Fleet: guides/agents.md
+    - Session Management: guides/session-management.md
+    - Testing: guides/testing.md
+    - Programmatic-First: guides/programmatic-first.md
+    - Local Compute: guides/local-compute.md
+    - Mental Models: guides/mental-models.md
+  - Research:
+    - Open Research Tasks: research/OPEN_RESEARCH.md
+    - Agent Fleet Design Patterns: research/agent-fleet-design-patterns.md
+    - Agentic Research Flows: research/agentic-research-flows.md
+    - Testing Tools & Frameworks: research/testing-tools-and-frameworks.md
+    - Dev Workflow Automations: research/dev-workflow-automations.md
+    - OSS Documentation Best Practices: research/oss-documentation-best-practices.md
+    - PM & Team Structures: research/pm-and-team-structures.md
+    - Product Research & Design: research/product-research-and-design.md
+    - Comms, Marketing & BizDev: research/comms-marketing-bizdev.md
+    - XML Agent Instruction Format: research/xml-agent-instruction-format.md
+    - GitHub Project Management: research/github-project-management.md
+  - Decisions:
+    - ADR Index: decisions/README.md
+    - ADR-001 — uv Package Manager: decisions/ADR-001-uv-package-manager.md
+    - ADR-002 — Kanban Not Scrum: decisions/ADR-002-kanban-not-scrum.md
+    - ADR-003 — XML Hybrid Agent Format: decisions/ADR-003-xml-hybrid-agent-format.md
+  - Contributing: ../CONTRIBUTING.md
+  - Changelog: ../CHANGELOG.md
