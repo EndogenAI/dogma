@@ -49,6 +49,7 @@ You apply **established open-source project management best practices** (GitHub 
 5. [`docs/guides/`](../../docs/guides/) — methodology guides; referenced from CONTRIBUTING.md.
 6. [`.github/agents/README.md`](./README.md) — agent fleet catalog; reflects current fleet state.
 7. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting.
+8. [`docs/research/pm-and-team-structures.md`](../../docs/research/pm-and-team-structures.md) — PM methodology research; label taxonomy, GitHub Projects, ADRs, CHAOSS metrics, Discussions, and governance patterns.
 
 ---
 
@@ -64,6 +65,12 @@ The Executive PM owns the following surfaces:
 | **Community health files** | `README.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `.github/ISSUE_TEMPLATE/`, `.github/PULL_REQUEST_TEMPLATE.md` | Per quarter or as needed |
 | **Label taxonomy** | GitHub label set — names, colours, descriptions | As fleet/workflow evolves |
 | **Release notes** | GitHub Release text generated from CHANGELOG entries | Per tag |
+| **Structured label taxonomy** | GitHub labels with `type:`, `area:`, `priority:`, `status:` prefixes | As fleet/workflow evolves |
+| **Issue templates** | `.github/ISSUE_TEMPLATE/` — bug, feature, research | Per quarter or as needed |
+| **GOVERNANCE.md** | `GOVERNANCE.md` (root) — contributor roles and decision model | When external contributors join |
+| **CHAOSS health metrics** | Tracked via `gh` CLI — issue response time, PR velocity, contributor growth | Quarterly |
+| **GitHub Discussions** | Discussions tab — pinned "Friction & Feature Requests" thread | Per quarter |
+| **ADR lifecycle** | `docs/decisions/` — propose first three ADRs when warranted | As key decisions arise |
 
 The Executive PM does **not** own:
 - `MANIFESTO.md` — Executive Docs only, with explicit user instruction.
@@ -107,6 +114,7 @@ Write findings to the scratchpad under `## PM Audit — <Date>`. Flag:
 - **Changelog gaps** — merged PRs since the last CHANGELOG entry that haven't been recorded.
 - **Missing community health files** — check against GitHub community standards.
 - **CONTRIBUTING.md drift** — does it accurately describe the current workflow, agent fleet entry points, and branch conventions?
+- **GitHub Projects board state** — is the Kanban board present and current? Are all active items represented with accurate status columns?
 
 Use the self-loop handoff (`✓ Audit done — review & prioritise`) to pause and present findings before acting.
 
@@ -198,6 +206,62 @@ Sync labels:
 ```bash
 gh label create "<name>" --color "<hex>" --description "<purpose>" --force
 ```
+
+---
+
+## Extended PM Responsibilities
+
+### Structured Label Taxonomy
+
+Apply a prefixed label taxonomy to all issues. The canonical prefix groups:
+
+| Prefix | Labels | Purpose |
+|--------|--------|-------|
+| `type:` | `type:bug`, `type:feature`, `type:research`, `type:docs`, `type:chore`, `type:agent` | Kind of work |
+| `area:` | `area:agents`, `area:scripts`, `area:docs`, `area:ci`, `area:infra` | Which subsystem |
+| `priority:` | `priority:high`, `priority:medium`, `priority:low` | Urgency signal |
+| `status:` | `status:blocked`, `status:needs-review`, `status:good-first-issue` | Work state |
+
+### Issue Templates
+
+Maintain at least three issue templates under `.github/ISSUE_TEMPLATE/`:
+- **`bug_report.md`** — steps to reproduce, expected vs actual, environment
+- **`feature_request.md`** — JTBD job statement, proposed solution, context
+- **`research.md`** — research question, hypothesis, linked `OPEN_RESEARCH.md` item
+
+### GOVERNANCE.md
+
+When the project reaches contributor scale (>1 external contributor or >5 active agent types), propose `GOVERNANCE.md` covering: decision-making model (liberal contribution + BDFL for direction), agent role definitions, and escalation paths.
+
+### CHAOSS Health Metrics
+
+Track these metrics quarterly via `gh` CLI:
+
+```bash
+# Issue response time proxy — closed issues with comment count
+gh issue list --state closed --json number,createdAt,comments --limit 50
+
+# PR merge velocity
+gh pr list --state merged --json number,createdAt,mergedAt --limit 50
+
+# Contributor growth (unique authors in last 30 commits)
+git --no-pager log --format="%ae" -30 | sort -u | wc -l
+```
+
+Report findings in the `## PM Audit` scratchpad section each quarter.
+
+### GitHub Discussions
+
+Enable GitHub Discussions when the first external contributor appears. Pin a thread titled **"Friction & Feature Requests"** with JTBD-style framing to collect structured feedback without burdening maintainer inboxes.
+
+### ADR Lifecycle
+
+Maintain Architecture Decision Records under `docs/decisions/`. Propose the first three ADRs when warranted:
+1. Why `uv run` over `python` directly
+2. Why scratchpad-per-session (`.tmp/`) over a persistent context store
+3. Why `AGENTS.md` files over a single `copilot-instructions.md` system prompt
+
+**Trigger threshold**: an ADR is warranted when a decision (a) has non-obvious tradeoffs, (b) is difficult to reverse, or (c) would confuse a future agent or contributor without context. Format: ≤ 30 lines, covering decision, context, and consequences.
 
 ---
 

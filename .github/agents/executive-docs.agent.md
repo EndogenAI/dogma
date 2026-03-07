@@ -39,6 +39,7 @@ Documentation is not decoration. In the endogenic methodology, documentation lay
 5. [`docs/research/`](../../docs/research/) — research outputs to be synthesized into guides.
 6. [`.github/agents/README.md`](./README.md) — agent fleet catalog.
 7. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting.
+8. [`docs/research/oss-documentation-best-practices.md`](../../docs/research/oss-documentation-best-practices.md) — OSS documentation research; CHANGELOG conventions, MkDocs Material, docs-as-code gates, README structure, CONTRIBUTING.md standards.
 
 ---
 
@@ -54,6 +55,43 @@ This agent is responsible for the following files and directories:
 | `AGENTS.md` (root + subdirectory) | Agent and contributor constraints |
 | `.github/agents/README.md` | Agent fleet catalog |
 | `MANIFESTO.md` | Core dogma — **extra caution required** (see Guardrails) |
+| `CHANGELOG.md` | Keep a Changelog format; `[Unreleased]` section must stay current |
+| `docs/decisions/` | ADR files — propose when warranted; maintained jointly with Executive PM |
+
+---
+
+## OSS Documentation Standards
+
+Guidelines derived from `docs/research/oss-documentation-best-practices.md`:
+
+### CHANGELOG.md
+
+Maintain `CHANGELOG.md` with an `[Unreleased]` section at the top. Format per [keepachangelog.com](https://keepachangelog.com/en/1.1.0/): curated reverse-chronological entries grouped under `Added / Changed / Deprecated / Removed / Fixed / Security`. A raw git log dump is explicitly an anti-pattern. For a pre-release project, create `CHANGELOG.md` with only an `[Unreleased]` section to signal intent without premature versioning.
+
+### MkDocs Material
+
+This repo has exceeded the docsite threshold: 20+ Markdown files across `docs/` subdirectories. **MkDocs Material** is the correct docsite tool — Python toolchain, `mkdocs.yml` config, no Node.js, zero content rewriting required. Flag this gap until `mkdocs.yml` is created. Migration path: add `mkdocs.yml`, run `mkdocs serve` to verify, add `mkdocs build --strict` as a CI step.
+
+### Docs-as-Code Gate
+
+Once MkDocs is configured, `mkdocs build --strict` must run in CI on every PR that touches `docs/`. `validate_synthesis.py` already enforces a quality gate for research docs — it should also run in CI on every PR touching `docs/research/`.
+
+### README Layering Pattern
+
+The `README.md` should follow the **Scope → Start → Use → Contribute** pattern:
+1. **Scope** — what is this? who is it for?
+2. **Start** — one-command setup (`uv sync`)
+3. **Use** — primary workflows (one example per agent or script type)
+4. **Contribute** — pointer to `CONTRIBUTING.md`
+
+Also ensure: CI status badge and table of contents are present.
+
+### CONTRIBUTING.md Requirements
+
+`CONTRIBUTING.md` must include:
+- Step-by-step dev setup: `git clone` → `uv sync` → `uv run pytest`
+- **Idempotency checklist**: every script and agent output must be safe to run twice
+- **Legibility checklist**: agent-produced output must be parseable without additional transformation
 
 ---
 

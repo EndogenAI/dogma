@@ -75,6 +75,16 @@ Maintain the health of the repository as an open-source resource.
 
 ---
 
+## Product Research Agents
+
+Conduct lightweight, asynchronous user research using GitHub-native data sources.
+
+| Agent | File | Posture | Trigger | Handoffs |
+|-------|------|---------|---------|----------|
+| **User Researcher** | `user-researcher.agent.md` | read + create | Synthesize closed issues, PRs, and Discussions into JTBD summaries and friction reports — invoked quarterly or after >20 closed issues | Review, GitHub, Executive PM |
+
+---
+
 ## Workflow Agents
 
 Cross-cutting agents used at the end of every workflow for quality gating and committing.

@@ -37,6 +37,7 @@ You enforce the **programmatic-first** constraint from [`AGENTS.md`](../../AGENT
 1. [`AGENTS.md`](../../AGENTS.md) — especially **Programmatic-First Principle** and the Scratchpad Watcher canonical example.
 2. [`scripts/watch_scratchpad.py`](../../scripts/watch_scratchpad.py) — the canonical file-watcher pattern for this codebase.
 3. [`scripts/README.md`](../../scripts/README.md) — script catalog.
+4. [`docs/research/dev-workflow-automations.md`](../../docs/research/dev-workflow-automations.md) — dev workflow automation research; pre-commit stack, Taskfile.dev, CI anti-patterns, environment reproducibility.
 
 ---
 
@@ -50,6 +51,63 @@ You enforce the **programmatic-first** constraint from [`AGENTS.md`](../../AGENT
 | CI job | GitHub Actions | Per-PR or per-push quality gates |
 
 **Prefer `watchdog`** for file-watching (OS-agnostic). Do not use `fswatch` (macOS-only).
+
+---
+
+## Known Repository Automation Gaps
+
+Findings from `docs/research/dev-workflow-automations.md` — gaps current as of 2026-03-07.
+
+### Pre-Commit Hook Stack
+
+This repo has no `.pre-commit-config.yaml`. The canonical uv/ruff pre-commit stack:
+
+```yaml
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-merge-conflict
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.0
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+```
+
+**Rule**: slow checks (`mypy`, full pytest) belong at `pre-push` or CI only — `pre-commit` must complete in under 2 seconds to avoid `--no-verify` abuse.
+
+### Taskfile.dev
+
+For uv repos, `Taskfile.yml` is the idiomatic task runner (over Makefile — cross-platform, YAML-based, single binary). Minimum targets:
+
+| Task | Command |
+|------|---------|
+| `task lint` | `uv run ruff check scripts/ tests/ && uv run ruff format --check scripts/ tests/` |
+| `task test` | `uv run pytest tests/ --cov=scripts --cov-fail-under=80 -v` |
+| `task test-fast` | `uv run pytest tests/ -m "not slow and not integration" -v` |
+| `task watch` | `uv run python scripts/watch_scratchpad.py` |
+| `task pre-commit` | `pre-commit run --all-files` |
+
+### CI Double-Run Anti-Pattern
+
+The current CI may run pytest twice: once for tests, once for coverage. **Fix**: add `--cov-fail-under=80` to `addopts` in `pyproject.toml` so a single `uv run pytest` invocation captures and enforces coverage. Remove the separate coverage-check step from `tests.yml`.
+
+### Python Version Pinning
+
+`.python-version` file is missing. Fix: `uv python pin 3.11` — creates `.python-version`, ensures all contributors use the same Python minor version. Commit it.
+
+### Branch Protection on `main`
+
+Must be configured after CI is stable. Required settings:
+- Require pull request before merging
+- Require status checks: `All tests passed` (the `required` job)
+- Enable linear history (squash-merge only)
+- Dismiss stale reviews on new commits
 
 ---
 

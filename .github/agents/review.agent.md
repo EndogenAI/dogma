@@ -30,6 +30,7 @@ You are **read-only**. You do not edit files. You flag issues and hand off to ei
 2. [`MANIFESTO.md`](../../MANIFESTO.md) — core values; any change that dilutes a stated value is a blocker.
 3. [`.github/agents/AGENTS.md`](.github/agents/AGENTS.md) — for agent file reviews: frontmatter schema, naming, posture, handoff graph.
 4. [`scripts/README.md`](../../scripts/README.md) — for script reviews: catalog coverage, conventions.
+5. [`docs/research/testing-tools-and-frameworks.md`](../../docs/research/testing-tools-and-frameworks.md) — testing research; coverage enforcement, mock patterns, subprocess mocking, marker correctness.
 
 ---
 
@@ -64,6 +65,10 @@ You are **read-only**. You do not edit files. You flag issues and hand off to ei
 - [ ] `--dry-run` flag present for any script that writes or deletes files.
 - [ ] `uv run` invocation confirmed in docstring.
 - [ ] Entry in `scripts/README.md` updated.
+- [ ] **Coverage enforcement**: new scripts have corresponding tests; coverage gate (`--cov-fail-under=80`) enforced in CI — flag any PR that adds a script without tests.
+- [ ] **Mock pattern consistency**: `mocker.patch` (from `pytest-mock`) used consistently — flag any new test that uses `@patch` decorator or `unittest.mock.patch` directly when `mocker` is available.
+- [ ] **Subprocess mocking**: tests that invoke subprocesses use `pytest-subprocess` or mock `subprocess.run`/`subprocess.check_call` directly — no real subprocess calls in unit tests.
+- [ ] **Marker correctness**: every test that does file I/O has `@pytest.mark.io`; every test with network calls has `@pytest.mark.integration`.
 
 ---
 
