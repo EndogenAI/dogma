@@ -20,6 +20,7 @@ scripts/
   link_source_stubs.py         # Populate ## Referenced By sections in per-source stubs (bidirectional link graph)
   validate_synthesis.py        # Quality gate for D3/D4 synthesis documents — run before any Archivist commit (exit 0 = pass, 1 = fail)
   migrate_agent_xml.py         # Bulk-migrate .agent.md body sections to hybrid Markdown + XML format (--dry-run safe)
+  pr_review_reply.py           # Post replies to PR inline review comments and resolve threads (--reply-to, --resolve, --batch)
 ```
 
 ---
@@ -475,6 +476,81 @@ uv run python scripts/migrate_agent_xml.py --all --min-lines 30
 **Exit codes**: `0` = success; `1` = parse error or well-formedness failure.
 
 **Dependencies**: stdlib only.
+
+---
+
+## scripts/pr_review_reply.py
+
+**Purpose**: Post replies to GitHub PR inline review comments and resolve review threads.
+Automates the post-review response loop — after fixing issues, post a reply on each inline
+comment (referencing the fix commit) and mark the thread as resolved, without the manual
+click-through on GitHub's UI.
+
+Three modes:
+- **Single reply**: `--reply-to <comment-id> --body <text>`
+- **Single resolve**: `--resolve <thread-node-id>`
+- **Batch**: `--batch <json-file>` — reply + resolve in one pass from a JSON array
+
+**Usage**:
+
+```bash
+# Reply to a single comment
+uv run python scripts/pr_review_reply.py --reply-to 2899252947 --body "Fixed in abc1234."
+
+# Resolve a single thread
+uv run python scripts/pr_review_reply.py --resolve PRRT_kwDORfkAR85yvrwz
+
+# Batch from a JSON file (reply + resolve in one pass)
+uv run python scripts/pr_review_reply.py --batch .tmp/review-replies.json
+
+# Explicit repo and PR number (defaults auto-detect from gh CLI)
+uv run python scripts/pr_review_reply.py --pr 15 --repo EndogenAI/Workflows --batch .tmp/review-replies.json
+```
+
+**Batch JSON format**:
+
+```json
+[
+  {"reply_to": 2899252947, "body": "Fixed in abc1234.", "resolve": "PRRT_kwDORfkAR85yvrwz"},
+  {"resolve": "PRRT_kwDORfkAR85yvrw6"},
+  {"reply_to": 2899252960, "body": "Removed dead variable."}
+]
+```
+
+Each entry may have any combination of `reply_to`+`body` (post a reply) and `resolve` (resolve the thread).
+
+**Getting comment IDs and thread node IDs**:
+
+```bash
+# Comment database IDs
+gh api repos/<owner>/<repo>/pulls/<num>/comments --jq '.[] | {id: .id, path: .path, line: .line}'
+
+# Thread node IDs
+gh api graphql -f query='{
+  repository(owner:"<owner>",name:"<repo>") {
+    pullRequest(number:<num>) {
+      reviewThreads(first:20) {
+        nodes { id isResolved comments(first:1) { nodes { databaseId } } }
+      }
+    }
+  }
+}'
+```
+
+**Flags**:
+
+| Flag | Description |
+|------|-------------|
+| `--pr <num>` | PR number (default: auto-detect from `gh pr view`) |
+| `--repo <owner/repo>` | Repository (default: auto-detect from `gh repo view`) |
+| `--reply-to <id>` | Comment database ID to reply to |
+| `--body <text>` | Reply body text (required with `--reply-to`) |
+| `--resolve <id>` | GraphQL node ID of the thread to resolve |
+| `--batch <file>` | JSON file with array of reply/resolve operations |
+
+**Exit codes**: `0` = all operations succeeded; `1` = one or more failures.
+
+**Dependencies**: stdlib only; requires `gh` CLI authenticated.
 
 ---
 
