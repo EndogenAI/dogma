@@ -248,3 +248,18 @@ Recorded 2026-03-06. Group remaining open issues for efficiency — each pairing
 | Memory (deferred) | #9 + #13 + #14 | Methodology lit review, episodic memory, and AIGNE AFS all have prerequisite on #5 (local compute resolved first) |
 
 Issue #10 (agent fleet design patterns) is executed standalone — sources are mostly already cached and the deliverables include guide + README updates.
+
+---
+
+## Issue #10 Follow-Up Open Questions (Agent Fleet Design Patterns)
+
+Resolved: 2026-03-06. The following questions remain open after the primary research deliverable was completed.
+
+**OQ-10-1 — Compression ratio by task type**
+What task-type-specific compression ratios should be used at handoff boundaries? The 1,000–2,000 token figure is Anthropic's guideline stated without benchmark. At what compression level does precision-critical context (exact syntax in code synthesis) begin to degrade downstream output quality?
+
+**OQ-10-2 — Minimal viable `.tmp/` scratchpad isolation without new infrastructure**
+Section-scoped writes are proposed as the isolation mechanism, enforced through instruction conventions only. What is the minimum viable enforcement mechanism that prevents lateral context bleed without requiring new script infrastructure? Has agent-instruction-only enforcement been validated against multi-agent parallel runs?
+
+**OQ-10-3 — Evaluator-optimizer convergence criteria for synthesis tasks**
+The evaluator-optimizer loop specifies mandatory stopping conditions but does not define them for synthesis (as opposed to code). How reliable is LLM-as-judge evaluation for research synthesis documents, and what constitutes a well-formed stopping condition for the Reviewer agent?

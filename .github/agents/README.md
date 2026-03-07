@@ -86,6 +86,47 @@ Cross-cutting agents used at the end of every workflow for quality gating and co
 
 ---
 
+## Fleet Architecture
+
+### Fleet Topology Quick-Reference
+
+| Topology | Use Case | Isolation | Notes |
+|----------|----------|-----------|-------|
+| **Flat peer-to-peer** | Simple single-pass queries | Single window; no isolation | Lowest cost; no parallelism |
+| **Hierarchical (orchestrator-workers)** | Complex research; parallel sub-question execution | Per-worker isolated windows; lead integrates | ~15× chat token cost; lead is sole integration point |
+| **Evaluator-optimizer loop** | Iterative refinement; synthesis validation | Same or split windows; evaluation objective decoupled | Requires hard iteration ceiling; convergence not guaranteed |
+| **Parallel research fleet** | Breadth-first research; independent sub-questions | Full per-agent isolation; no lateral communication | Token cost scales with N agents; 3–20 agents typical |
+| **Hybrid (orchestrator + specialist sub-fleet)** | Production pipelines; multi-phase long-horizon tasks | Per-specialist isolation; shared external memory for plan state | Highest cost; justified by quality requirements |
+
+Full topology comparison with context handoff mechanisms and source evidence: [`docs/research/agent-fleet-design-patterns.md §4`](../../docs/research/agent-fleet-design-patterns.md).
+
+---
+
+### Named Patterns
+
+Eight patterns derived from production multi-agent systems research. Full treatment (Context / Forces / Solution / Consequences) in [`docs/research/agent-fleet-design-patterns.md §3`](../../docs/research/agent-fleet-design-patterns.md).
+
+- **Pattern 1 — Orchestrator-Workers**: lead decomposes task; workers execute in isolation; lead synthesises
+- **Pattern 2 — Evaluator-Optimizer Loop**: generator + evaluator in a bounded feedback cycle with explicit stopping conditions
+- **Pattern 3 — Parallel Research Fleet**: N independent subagents on distinct sub-questions; condensed summaries returned to lead
+- **Pattern 4 — Focus-Dispatch / Compression-Return**: outbound brief is minimal and scoped; inbound result targets 1,000–2,000 tokens regardless of exploration depth
+- **Pattern 5 — Context-Isolated Sub-Fleet**: each subagent in its own context; no lateral communication; lead is sole integration point
+- **Pattern 6 — Agent Card Discovery**: structured capability manifests enable dynamic fleet composition without hardcoded registries
+- **Pattern 7 — Memory-Write-Before-Truncation**: agent writes plan state to external memory before context limit; restores coherence on reset
+- **Pattern 8 — Specialist-by-Separation (Citation Gate)**: synthesis and attribution separated into sequential single-responsibility agents
+
+---
+
+### Specialist-vs-Extend Decision Tree
+
+If **any** of the following apply, **CREATE** a new specialist agent: (1) different objective function from the existing agent, (2) context budget pressure (new capability consumes >20% of existing agent’s budget), (3) error isolation needed (failure must not contaminate existing output), (4) tool set incompatibility (new capability needs tools the existing agent must never hold).
+
+If **all** of the following apply, **EXTEND** an existing agent: (1) same objective function, (2) >70% shared task logic, (3) always invoked together in fixed sequence, (4) combined agent stays within context budget.
+
+When in doubt, prefer CREATE — isolation is easier to undo than entanglement. Full 9-criterion table: [`docs/guides/agents.md §Specialist-vs-Extend Heuristics`](../../docs/guides/agents.md).
+
+---
+
 ## Adding a New Agent
 
 1. Read [`.github/agents/AGENTS.md`](./AGENTS.md) for the frontmatter schema and naming conventions.
