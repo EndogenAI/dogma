@@ -1,0 +1,19 @@
+area:scripts:
+  - changed-files:
+    - any-glob-to-any-file: scripts/**
+
+area:agents:
+  - changed-files:
+    - any-glob-to-any-file: .github/agents/**
+
+area:docs:
+  - changed-files:
+    - any-glob-to-any-file: docs/**
+    - any-glob-to-any-file: "*.md"
+
+area:ci:
+  - changed-files:
+    - any-glob-to-any-file: .github/workflows/**
+    - any-glob-to-any-file: .github/ISSUE_TEMPLATE/**
+    - any-glob-to-any-file: pyproject.toml
+    - any-glob-to-any-file: .pre-commit-config.yaml

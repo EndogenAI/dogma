@@ -1,0 +1,44 @@
+name: New Agent
+description: Propose a new VS Code Copilot agent for the fleet
+title: "feat(agents): "
+labels: ["type:feature", "area:agents"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template for new agent proposals. Follow the authoring guide in docs/guides/agents.md.
+  - type: input
+    id: agent-name
+    attributes:
+      label: Agent Name
+      placeholder: e.g. executive-researcher, review, github
+    validations:
+      required: true
+  - type: textarea
+    id: agent-purpose
+    attributes:
+      label: Agent Purpose / Mandate
+      description: What task or domain does this agent handle? What problem does it solve?
+    validations:
+      required: true
+  - type: textarea
+    id: toolset
+    attributes:
+      label: Toolset
+      description: What tools should this agent have access to?
+    validations:
+      required: false
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: How will we know this agent is complete and correct?
+    validations:
+      required: true
+  - type: textarea
+    id: related-issues
+    attributes:
+      label: Related Issues
+      description: Links to related issues, if any.
+    validations:
+      required: false

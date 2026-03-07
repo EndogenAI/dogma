@@ -1,0 +1,37 @@
+name: Research Task
+description: Track a research topic to synthesize into the endogenic workflow methodology
+title: "Research: "
+labels: ["type:research"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template for research questions and synthesis tasks. All findings must be committed to docs/research/.
+  - type: input
+    id: research-question
+    attributes:
+      label: Research Question
+      placeholder: What is the question this research must answer?
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: What sources, domains, or frameworks should be surveyed?
+    validations:
+      required: true
+  - type: textarea
+    id: gate-deliverables
+    attributes:
+      label: Gate Deliverables
+      description: What must be true for this issue to close?
+    validations:
+      required: true
+  - type: textarea
+    id: related-issues
+    attributes:
+      label: Related Issues
+      description: Links to related issues or prior research, if any.
+    validations:
+      required: false

@@ -53,6 +53,19 @@ uv run pytest tests/ -m "not slow and not integration"
 
 **Always use `uv run`** — never invoke `python` or executables directly.
 
+### GitHub Projects Access
+
+If you'll be working with GitHub Projects v2:
+
+```bash
+gh auth refresh -s project
+gh auth status  # verify "project" appears in scopes
+```
+
+This is required once per machine. The `project` scope is needed for:
+- Reading and writing Projects v2 boards
+- Running `scripts/seed_labels.py` (if creating/updating labels)
+
 ---
 
 ## Workflow

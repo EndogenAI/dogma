@@ -1,0 +1,44 @@
+name: Workflow Improvement
+description: Propose an improvement to the endogenic development workflow, methodology, or best practices
+title: "feat(workflows): "
+labels: ["type:feature", "area:docs"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template for proposing improvements to documented workflows in docs/guides/workflows.md.
+  - type: input
+    id: workflow-name
+    attributes:
+      label: Workflow Name
+      placeholder: e.g. Session Management, Research Flow, Commit Discipline
+    validations:
+      required: true
+  - type: textarea
+    id: problem-statement
+    attributes:
+      label: Problem Statement
+      description: What friction, inefficiency, or gap does this address?
+    validations:
+      required: true
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution
+      description: What change to the workflow, documentation, scripts, or agents would address this?
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: How will we know this improvement is complete?
+    validations:
+      required: true
+  - type: textarea
+    id: related-issues
+    attributes:
+      label: Related Issues
+      description: Links to related issues, if any.
+    validations:
+      required: false
