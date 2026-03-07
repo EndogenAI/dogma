@@ -29,6 +29,7 @@ documentation update. The sequence is:
 | Path | Purpose |
 |------|---------|
 | `docs/guides/` | Step-by-step guides for working with agents, scripts, and workflows |
+| `docs/guides/github-workflow.md` | Actionable `gh` CLI reference, label taxonomy, issue conventions, milestone patterns — distilled from `docs/research/github-project-management.md` |
 | `docs/plans/` | Committed workplan files for multi-phase sessions — one per session, tracked in git history |
 | `docs/research/` | Issue-specific synthesis documents; each closes a GitHub research issue |
 | `docs/research/sources/` | Per-source synthesis reports — one per surveyed source; committed to git |
@@ -51,6 +52,18 @@ documentation update. The sequence is:
 Heredocs (`cat >> file << 'EOF'`, Python inline `<< 'PYEOF'`) silently corrupt or truncate content that contains backticks, triple-backtick fences, or special characters when executed through the VS Code terminal tool. This has caused silent data loss in sessions.
 
 **Rule**: All documentation writes must use `replace_string_in_file` (for edits to existing files) or `create_file` (for new files). These are the built-in VS Code tools and are safe for all Markdown content.
+
+---
+
+## Compaction-Aware Writing
+
+VS Code Copilot Chat can compact the conversation history at any time. Documentation agents must write as if the next message will trigger compaction:
+
+- Every finding goes into a committed file — never rely on the conversation history as a record
+- Update `OPEN_RESEARCH.md`, synthesis docs, and guides **before** moving to the next task
+- If a doc update is in-progress, note the state in the scratchpad (`## In Progress` section) so it survives compaction
+
+See [`docs/guides/session-management.md#context-compaction`](guides/session-management.md) for the full compaction protocol.
 
 ---
 

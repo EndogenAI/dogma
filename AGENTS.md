@@ -188,8 +188,30 @@ Any command that creates or modifies a remote side effect must be immediately fo
 | `git push` | `git log --oneline -1` |
 | `gh pr create` | `gh pr view` |
 | `gh issue close` | `gh issue view <number>` |
+| `gh issue edit <num>` | `gh issue view <num> --json labels,milestone` |
+| milestone create via API | `gh api repos/:owner/:repo/milestones` |
 
 **Zero error output is not confirmation of success.** Output truncation, network timeouts, and silent API failures all produce clean exits. Always verify.
+
+### GitHub Label and Issue Conventions
+
+All issues must use the colon-prefixed label namespace from `docs/guides/github-workflow.md`:
+- `type:` — work category (bug, feature, docs, research, chore)
+- `area:` — codebase domain (scripts, agents, docs, ci)
+- `priority:` — urgency (critical, high, medium, low)
+- `status:` — workflow state (blocked, needs-review, stale)
+
+Every issue must have at minimum one `type:` and one `priority:` label.
+
+**Copilot reads issue title, body, and labels — it does NOT read Projects v2 field values.** Encode priority as a label (not only in project fields). Put key facts in the issue body directly; do not rely on cross-reference links.
+
+**Projects v2 CLI prerequisite** (run once per machine, not per session):
+```bash
+gh auth refresh -s project
+gh auth status  # verify "project" appears in scopes
+```
+
+See [`docs/guides/github-workflow.md`](docs/guides/github-workflow.md) for the full `gh` CLI quick-reference and [`docs/research/github-project-management.md`](docs/research/github-project-management.md) for the full synthesis.
 
 ### Convention Propagation Rule
 
@@ -209,6 +231,18 @@ find . -name 'AGENTS.md' | grep -v node_modules
 ## When to Ask vs. Proceed
 
 **Default posture: stop and ask before any ambiguous or irreversible action.**
+
+### Compaction-Aware Writing
+
+VS Code Copilot Chat can compact the conversation history at any time — either automatically when the context window is full, or manually via the `/compact` command or "Compact Conversation" button. **Write as if the next message will trigger compaction.**
+
+- Every important finding goes to the **scratchpad** (`.tmp/<branch>/<date>.md`) — not just the chat
+- Every decision goes to the relevant `AGENTS.md`, guide, or research doc
+- Every in-progress plan goes to `docs/plans/`
+- Uncommitted changes are the most vulnerable: commit early, commit often
+- Before delegating to a subagent, write a `## Handoff to <Agent>` section in the scratchpad
+
+See [`docs/guides/session-management.md#context-compaction`](docs/guides/session-management.md) for the full compaction protocol.
 
 Ask when:
 - Requirements or acceptance criteria are unclear
@@ -250,6 +284,7 @@ Key agents for this repo:
 - `git push --force` to `main`
 - Delete or rename committed script or agent files without a migration plan
 - Use heredocs (`cat >> file << 'EOF'` or Python inline `<< 'PYEOF'`) to write Markdown content — backticks, triple-backtick fences, and special characters silently corrupt or truncate output through the terminal tool. **Always use `replace_string_in_file` or `create_file` (the built-in VS Code tools) for any file write that contains Markdown, code blocks, or backtick-containing content.**
+- Pass multi-line `gh issue` bodies via `--body "..."` on the command line — shell quoting and backtick interpolation cause `gh` to hang or silently corrupt content. **Always write the body to a temp file and use `--body-file <path>`, or use Python `subprocess` with a list of args.**
 
 **Prefer caution over assumption for:**
 

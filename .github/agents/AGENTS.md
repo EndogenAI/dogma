@@ -237,6 +237,38 @@ Heredocs (`cat >> file << 'EOF'`, Python inline `<< 'PYEOF'`) silently corrupt o
 | Editing an existing agent file | `replace_string_in_file` or `multi_replace_string_in_file` tool |
 | Appending to any Markdown file | `replace_string_in_file` with anchor text |
 | Writing large content blocks | Never heredoc — always use file tools |
+| Writing multi-line `gh issue` body | Write to temp file; use `--body-file <path>` or Python `subprocess` list-args |
+
+**`--body-file` pattern** (avoids shell-quoting hangs with `gh issue create/edit`):
+```python
+import subprocess, pathlib
+body = pathlib.Path('/tmp/issue_body.md')
+body.write_text('## Section\n\nContent here...')
+subprocess.run(['gh','issue','create','--title','My Issue','--body-file',str(body)])
+body.unlink()
+```
+
+---
+
+## GitHub Issue Conventions for Agent-Created Issues
+
+When an agent creates or edits a GitHub issue, the following rules apply:
+
+- **Label every issue**: minimum one `type:` label and one `priority:` label.
+  Full taxonomy: `type:`, `area:`, `priority:`, `status:` — see `docs/guides/github-workflow.md`.
+- **Encode priority as a label**: Copilot reads labels; it does NOT read Projects v2 field values.
+  Always set `priority:` label regardless of whether a project field is also set.
+- **Self-contained body**: Put key facts in the issue body directly.
+  Copilot does not traverse cross-reference links to other issues.
+- **Verify after creating**: `gh issue list --state open --limit 3` immediately after `gh issue create`.
+- **Projects v2 scope** (once per machine before any `gh project` commands):
+  ```bash
+  gh auth refresh -s project
+  gh auth status  # verify "project" appears in scopes
+  ```
+
+See [`docs/guides/github-workflow.md`](../../docs/guides/github-workflow.md) for the full `gh` CLI quick-reference.
+See [`docs/research/github-project-management.md`](../../docs/research/github-project-management.md) for the full synthesis.
 
 ---
 
