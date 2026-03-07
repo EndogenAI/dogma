@@ -46,6 +46,8 @@ Exit codes:
     1  Agents directory not found, or one or more files failed to parse
 """
 
+from __future__ import annotations
+
 import argparse
 import json
 import re

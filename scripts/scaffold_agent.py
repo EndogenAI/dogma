@@ -36,6 +36,8 @@ Exit codes:
     1  Validation error (name conflict, description too long, missing required arg)
 """
 
+from __future__ import annotations
+
 import argparse
 import re
 import sys
@@ -66,9 +68,13 @@ handoffs:
     send: false
 ---
 
+## Persona
+
+<persona>
 You are the **{name}** for the EndogenAI Workflows project.
 
 <!-- TODO: Write a one-sentence mandate for this agent. -->
+</persona>
 
 ---
 
@@ -106,6 +112,17 @@ You are the **{name}** for the EndogenAI Workflows project.
 - Do not modify files outside the scope of this agent's stated role.
 - Do not install packages or modify lockfiles without explicit instruction.
 </constraints>
+
+---
+
+## Completion Criteria
+
+<output>
+<!-- TODO: Define the deliverables and success conditions for this agent. -->
+
+- [ ] All required files created or updated.
+- [ ] Changes reviewed (handed off to Review) before committing.
+</output>
 """
 
 
