@@ -160,9 +160,7 @@ def validate(file_path: Path, min_lines: int) -> tuple[bool, list[str]]:
     # --- Check 2: minimum non-blank line count ---
     actual_lines = non_blank_line_count(text)
     if actual_lines < min_lines:
-        failures.append(
-            f"Line count too low: {actual_lines} non-blank lines (minimum: {min_lines})"
-        )
+        failures.append(f"Line count too low: {actual_lines} non-blank lines (minimum: {min_lines})")
 
     # --- Check 3: required section headings ---
     present_headings = extract_headings(text)
@@ -174,8 +172,7 @@ def validate(file_path: Path, min_lines: int) -> tuple[bool, list[str]]:
             matched = any(kw in h for kw in keywords for h in heading_text_lower)
             if not matched:
                 failures.append(
-                    f"Missing required D3 section '{section_name}' "
-                    f"(expected a heading matching one of: {keywords})"
+                    f"Missing required D3 section '{section_name}' (expected a heading matching one of: {keywords})"
                 )
     else:
         # D4: check the first required headings and enforce a minimum count
@@ -188,8 +185,7 @@ def validate(file_path: Path, min_lines: int) -> tuple[bool, list[str]]:
                     failures.append(f"Missing required section heading: '{heading}'")
         if len(present_headings) < D4_MIN_HEADING_COUNT:
             failures.append(
-                f"D4 synthesis must have ≥ {D4_MIN_HEADING_COUNT} ## headings; "
-                f"found {len(present_headings)}"
+                f"D4 synthesis must have ≥ {D4_MIN_HEADING_COUNT} ## headings; found {len(present_headings)}"
             )
 
     # --- Check 4: required frontmatter fields ---
@@ -203,9 +199,7 @@ def validate(file_path: Path, min_lines: int) -> tuple[bool, list[str]]:
                     failures.append(f"Missing or empty frontmatter field: '{key}'")
             # Accept either 'url' or 'source_url'
             if not any(fm.get(k) for k in D3_URL_KEYS):
-                failures.append(
-                    f"Missing frontmatter URL field: one of {D3_URL_KEYS} must be present and non-empty"
-                )
+                failures.append(f"Missing frontmatter URL field: one of {D3_URL_KEYS} must be present and non-empty")
         else:
             for key in D4_REQUIRED_FRONTMATTER:
                 if not fm.get(key):

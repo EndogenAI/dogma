@@ -172,9 +172,7 @@ def infer_executive(name: str, area: str | None) -> str:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="Scaffold a new .agent.md file in .github/agents/."
-    )
+    parser = argparse.ArgumentParser(description="Scaffold a new .agent.md file in .github/agents/.")
     parser.add_argument("--name", required=True, help="Display name for the agent")
     parser.add_argument("--description", required=True, help="One-line summary ≤ 200 chars")
     parser.add_argument(
@@ -226,9 +224,7 @@ def main() -> None:
     print("Next steps:")
     print("  1. Fill in the TODO sections in the generated file.")
     print("  2. Update .github/agents/README.md with the new agent entry.")
-    print(
-        "  3. Verify handoff targets: grep -h '^name:' .github/agents/*.agent.md | sort | uniq -d"
-    )
+    print("  3. Verify handoff targets: grep -h '^name:' .github/agents/*.agent.md | sort | uniq -d")
     print("  4. Commit: feat(agents): add <name> agent")
 
 

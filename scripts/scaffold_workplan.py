@@ -124,8 +124,7 @@ def main() -> int:
 
     if target.exists():
         print(
-            f"WARNING: {target.relative_to(root)} already exists. "
-            "Remove it manually if you want to regenerate.",
+            f"WARNING: {target.relative_to(root)} already exists. Remove it manually if you want to regenerate.",
             file=sys.stderr,
         )
         return 1

@@ -1,0 +1,23 @@
+# .lycheeignore — External URLs excluded from lychee link checking
+#
+# Entries here are URLs that are known-dead, rate-limited, or
+# legitimately inaccessible. Each entry is documented with a reason.
+#
+# Format: one URL/pattern per line. Lychee supports glob-style patterns.
+
+# Anthropic article URL — moved/redirected after site restructure.
+# Content archived in docs/research/sources/ via fetch_source.py.
+https://www.anthropic.com/engineering/claude-research-system
+
+# Heavybit DevRel article — 404; content not cached locally.
+# Noted in docs/research/comms-marketing-bizdev.md as "not cached".
+https://www.heavybit.com/library/article/dev-rel-vs-developer-marketing
+
+# Steve McConnell — team topologies article; 404.
+# Noted in docs/research/pm-and-team-structures.md as "HTTP 404".
+https://stevemcconnell.com/articles/software-development-team-topologies/
+
+# Martinfowler ADR article — HTTP 404 at time of research (2026-03-06).
+# Noted in docs/research/pm-and-team-structures.md as "HTTP 404;
+# supplemented by domain expertise".
+https://www.martinfowler.com/articles/adr.html

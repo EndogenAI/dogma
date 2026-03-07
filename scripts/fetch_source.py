@@ -428,11 +428,9 @@ def cmd_list() -> None:
     print(sep)
     for slug, meta in sorted(sources.items()):
         size_str = f"{meta.get('size_bytes', 0)}B"
-        url_str = meta['url']
-        date_str = meta.get('fetched_at', '')
-        print(
-            f"{slug:<{col_slug}}  {url_str:<{col_url}}  {date_str:<{col_date}}  {size_str:>{col_size}}"
-        )
+        url_str = meta["url"]
+        date_str = meta.get("fetched_at", "")
+        print(f"{slug:<{col_slug}}  {url_str:<{col_url}}  {date_str:<{col_date}}  {size_str:>{col_size}}")
 
 
 def cmd_check(url: str, slug: str) -> None:
@@ -474,15 +472,11 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Human-readable filename slug (auto-generated if not provided).",
     )
-    parser.add_argument(
-        "--check", action="store_true", help="Exit 0 if cached, 2 if not. No fetch."
-    )
+    parser.add_argument("--check", action="store_true", help="Exit 0 if cached, 2 if not. No fetch.")
     parser.add_argument("--path", action="store_true", help="Print local path without re-fetching.")
     parser.add_argument("--force", action="store_true", help="Re-fetch even if already cached.")
     parser.add_argument("--list", action="store_true", help="List all cached sources.")
-    parser.add_argument(
-        "--dry-run", action="store_true", help="Show what would happen without fetching or writing."
-    )
+    parser.add_argument("--dry-run", action="store_true", help="Show what would happen without fetching or writing.")
     return parser
 
 

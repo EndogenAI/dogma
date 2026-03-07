@@ -336,11 +336,7 @@ def prune(text: str, today: str) -> tuple[str, list[str], list[str]]:
     first_section_lines = sections[0]["lines"] if sections else []
     pre_content = "".join(first_section_lines)
 
-    pruned = (
-        pre_content
-        + "".join(active_header_lines)
-        + "".join(p for p in output_parts[len(first_section_lines) :])
-    )
+    pruned = pre_content + "".join(active_header_lines) + "".join(p for p in output_parts[len(first_section_lines) :])
     return pruned, archived, kept
 
 
@@ -377,9 +373,7 @@ def append_summary(path: Path, summary: str, today: str) -> int:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Scratchpad size management for .tmp/<branch>/<date>.md"
-    )
+    parser = argparse.ArgumentParser(description="Scratchpad size management for .tmp/<branch>/<date>.md")
     parser.add_argument(
         "--file",
         default=None,

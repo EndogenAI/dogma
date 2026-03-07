@@ -278,9 +278,7 @@ def main() -> None:
 
     print()
     if args.dry_run:
-        print(
-            f"=== Dry run complete: {cached} already cached, {len(unique_urls) - cached} would be fetched ==="
-        )
+        print(f"=== Dry run complete: {cached} already cached, {len(unique_urls) - cached} would be fetched ===")
     else:
         print(f"=== Done: {cached} already cached, {fetched} newly fetched, {failed} failed ===")
 

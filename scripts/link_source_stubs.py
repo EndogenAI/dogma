@@ -71,11 +71,7 @@ def find_stub_links(content: str, from_path: Path) -> list[Path]:
             target = (from_path.parent / raw_path).resolve()
         except Exception:
             continue
-        if (
-            target.is_relative_to(SOURCES_DIR)
-            and target.suffix == ".md"
-            and target.name != "README.md"
-        ):
+        if target.is_relative_to(SOURCES_DIR) and target.suffix == ".md" and target.name != "README.md":
             stubs.append(target)
     return stubs
 
@@ -171,9 +167,7 @@ def collect_references() -> dict[Path, list[str]]:
     refs: dict[Path, list[str]] = {}
 
     # Scan issue syntheses: docs/research/*.md (exclude OPEN_RESEARCH.md and README.md)
-    issue_syntheses = [
-        p for p in RESEARCH_DIR.glob("*.md") if p.name not in ("OPEN_RESEARCH.md", "README.md")
-    ]
+    issue_syntheses = [p for p in RESEARCH_DIR.glob("*.md") if p.name not in ("OPEN_RESEARCH.md", "README.md")]
 
     # Also scan stubs for cross-references between each other
     all_stubs = [p for p in SOURCES_DIR.glob("*.md") if p.name != "README.md"]
@@ -197,9 +191,7 @@ def collect_references() -> dict[Path, list[str]]:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Populate ## Referenced By sections in per-source stubs."
-    )
+    parser = argparse.ArgumentParser(description="Populate ## Referenced By sections in per-source stubs.")
     parser.add_argument(
         "--dry-run",
         action="store_true",
@@ -225,9 +217,7 @@ def main() -> int:
 
     changed = 0
     for stub_path, links in sorted(refs.items()):
-        did_change = write_referenced_by(
-            stub_path, links, dry_run=args.dry_run, verbose=args.verbose or args.dry_run
-        )
+        did_change = write_referenced_by(stub_path, links, dry_run=args.dry_run, verbose=args.verbose or args.dry_run)
         if did_change:
             changed += 1
 

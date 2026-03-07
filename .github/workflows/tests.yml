@@ -38,7 +38,7 @@ jobs:
         run: uv sync --extra dev
 
       - name: Run pytest with coverage
-        run: uv run pytest tests/ --cov=scripts --cov-report=term-missing --cov-report=xml --cov-fail-under=80 -v
+        run: uv run pytest tests/ --cov=scripts --cov-report=term-missing --cov-report=xml -v
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3

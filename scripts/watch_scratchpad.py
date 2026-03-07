@@ -45,8 +45,7 @@ try:
     from watchdog.observers import Observer
 except ImportError:
     print(
-        "ERROR: watchdog is not installed.\n"
-        "Install it with: uv sync  (or: uv add --group dev watchdog)",
+        "ERROR: watchdog is not installed.\nInstall it with: uv sync  (or: uv add --group dev watchdog)",
         file=sys.stderr,
     )
     sys.exit(1)
@@ -144,9 +143,7 @@ class ScratchpadHandler(FileSystemEventHandler):
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Watch .tmp/ and auto-annotate scratchpad session files on change."
-    )
+    parser = argparse.ArgumentParser(description="Watch .tmp/ and auto-annotate scratchpad session files on change.")
     parser.add_argument(
         "--tmp-dir",
         default=str(REPO_ROOT / ".tmp"),

@@ -114,11 +114,7 @@ def resolve_thread(thread_node_id: str) -> bool:
     mutation = json.dumps(
         {
             "query": (
-                "mutation($id: ID!) {"
-                "  resolveReviewThread(input: {threadId: $id}) {"
-                "    thread { isResolved }"
-                "  }"
-                "}"
+                "mutation($id: ID!) {  resolveReviewThread(input: {threadId: $id}) {    thread { isResolved }  }}"
             ),
             "variables": {"id": thread_node_id},
         }

@@ -448,10 +448,7 @@ def main() -> int:
         "--agents-dir",
         default=None,
         metavar="DIR",
-        help=(
-            "Path to directory containing .agent.md files. "
-            "Default: .github/agents/ relative to the repo root."
-        ),
+        help=("Path to directory containing .agent.md files. Default: .github/agents/ relative to the repo root."),
     )
     parser.add_argument(
         "--output",

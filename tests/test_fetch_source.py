@@ -77,9 +77,7 @@ class TestFetchSourceIdempotency:
 
         # Create minimal manifest
         manifest = cache_dir / "manifest.json"
-        manifest.write_text(
-            '{"https://example.com/test": {"slug": "example-test", "timestamp": "2026-03-07"}}'
-        )
+        manifest.write_text('{"https://example.com/test": {"slug": "example-test", "timestamp": "2026-03-07"}}')
 
         # Real test: manifest lookup prevents second fetch
         assert manifest.exists()

@@ -143,9 +143,7 @@ class TestCreateOrUpdateLabel:
     ) -> None:
         """dry_run=True prints the planned action without calling subprocess."""
         mock_sp = mocker.patch("seed_labels.subprocess")
-        seed_labels.create_or_update_label(
-            "effort:xs", "c2e0c6", "< 30 min", repo=None, dry_run=True
-        )
+        seed_labels.create_or_update_label("effort:xs", "c2e0c6", "< 30 min", repo=None, dry_run=True)
         mock_sp.run.assert_not_called()
 
         out = capsys.readouterr().out
@@ -158,9 +156,7 @@ class TestCreateOrUpdateLabel:
         mock_run = mocker.patch("seed_labels.subprocess.run")
         mock_run.return_value = MagicMock(returncode=0, stderr="")
 
-        seed_labels.create_or_update_label(
-            "effort:xs", "c2e0c6", "< 30 min", repo=None, dry_run=False
-        )
+        seed_labels.create_or_update_label("effort:xs", "c2e0c6", "< 30 min", repo=None, dry_run=False)
 
         mock_run.assert_called_once()
         cmd = mock_run.call_args[0][0]
@@ -178,9 +174,7 @@ class TestCreateOrUpdateLabel:
         mock_run = mocker.patch("seed_labels.subprocess.run")
         mock_run.return_value = MagicMock(returncode=0, stderr="")
 
-        seed_labels.create_or_update_label(
-            "effort:xs", "c2e0c6", "< 30 min", repo="myorg/myrepo", dry_run=False
-        )
+        seed_labels.create_or_update_label("effort:xs", "c2e0c6", "< 30 min", repo="myorg/myrepo", dry_run=False)
 
         cmd = mock_run.call_args[0][0]
         assert "-R" in cmd
@@ -192,9 +186,7 @@ class TestCreateOrUpdateLabel:
         mock_run.return_value = MagicMock(returncode=1, stderr="label error")
 
         with pytest.raises(SystemExit) as exc_info:
-            seed_labels.create_or_update_label(
-                "effort:xs", "c2e0c6", "< 30 min", repo=None, dry_run=False
-            )
+            seed_labels.create_or_update_label("effort:xs", "c2e0c6", "< 30 min", repo=None, dry_run=False)
         assert exc_info.value.code == 1
 
 
@@ -232,9 +224,7 @@ class TestDeleteLabel:
         assert "bug" in cmd
         assert "--yes" in cmd
 
-    def test_not_found_is_non_fatal(
-        self, mocker: "MockerFixture", capsys: pytest.CaptureFixture
-    ) -> None:
+    def test_not_found_is_non_fatal(self, mocker: "MockerFixture", capsys: pytest.CaptureFixture) -> None:
         """delete_label prints a skip warning (not raises) when label not found."""
         mock_run = mocker.patch("seed_labels.subprocess.run")
         mock_run.return_value = MagicMock(returncode=1, stderr="could not find label 'bug'")
