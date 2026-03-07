@@ -25,3 +25,8 @@ https://www.martinfowler.com/articles/adr.html
 # Atlassian kanban-vs-scrum — returns HTTP 202 Accepted instead of 200.
 # Lychee treats non-200 responses (e.g., 202 Accepted) as failures; content is valid and accessible.
 https://www.atlassian.com/agile/kanban/kanban-vs-scrum
+
+# conventionalcommits.org — intermittent network errors from GitHub Actions
+# runners (connection refused / DNS failure). Site is live; referenced in
+# CONTRIBUTING.md and docs/research/dev-workflow-automations.md.
+https://www.conventionalcommits.org/en/v1.0.0/
