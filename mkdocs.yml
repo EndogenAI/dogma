@@ -47,6 +47,7 @@ nav:
   - Guides:
     - Agent Workflows: guides/workflows.md
     - Using the Agent Fleet: guides/agents.md
+    - GitHub Workflow: guides/github-workflow.md
     - Session Management: guides/session-management.md
     - Testing: guides/testing.md
     - Programmatic-First: guides/programmatic-first.md
