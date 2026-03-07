@@ -21,6 +21,7 @@ scripts/
   validate_synthesis.py        # Quality gate for D3/D4 synthesis documents — run before any Archivist commit (exit 0 = pass, 1 = fail)
   migrate_agent_xml.py         # Bulk-migrate .agent.md body sections to hybrid Markdown + XML format (--dry-run safe)
   pr_review_reply.py           # Post replies to PR inline review comments and resolve threads (--reply-to, --resolve, --batch)
+  seed_labels.py               # Idempotent GitHub label seeder — reads data/labels.yml and syncs via gh label create --force (--dry-run, --delete-legacy)
 ```
 
 ---
@@ -595,6 +596,66 @@ gh api graphql -f query='{
 **Exit codes**: `0` = all operations succeeded; `1` = one or more failures.
 
 **Dependencies**: stdlib only; requires `gh` CLI authenticated.
+
+---
+
+## scripts/seed_labels.py
+
+**Purpose**: Idempotent GitHub label seeder. Reads `data/labels.yml` (or a custom path) and
+creates or updates every label via `gh label create --force`. Optionally deletes the legacy
+GitHub default labels (`bug`, `documentation`, etc.) listed in the `legacy_labels` section.
+Designed to bootstrap a fresh fork or keep namespace labels in sync whenever the manifest
+changes.
+
+**Tests**: [`tests/test_seed_labels.py`](../tests/test_seed_labels.py)
+
+**Usage**:
+
+```bash
+# Preview all actions without making API calls
+uv run python scripts/seed_labels.py --dry-run
+
+# Create/update all namespace labels in the current repo
+uv run python scripts/seed_labels.py
+
+# Create/update labels AND delete legacy GitHub defaults
+uv run python scripts/seed_labels.py --delete-legacy
+
+# Dry-run including legacy deletion
+uv run python scripts/seed_labels.py --dry-run --delete-legacy
+
+# Target a specific repo
+uv run python scripts/seed_labels.py --repo myorg/myrepo
+
+# Use a custom manifest path
+uv run python scripts/seed_labels.py --labels-file path/to/labels.yml
+```
+
+**Flags**:
+
+| Flag | Required | Default | Description |
+|------|----------|---------|-------------|
+| `--labels-file PATH` | no | `data/labels.yml` | Path to the labels YAML manifest |
+| `--delete-legacy` | no | `False` | Delete labels listed in `legacy_labels` section |
+| `--dry-run` | no | `False` | Print planned actions without making gh API calls |
+| `--repo OWNER/REPO` | no | current repo | Target repository |
+
+**YAML manifest format** (`data/labels.yml`):
+
+```yaml
+labels:
+  - name: "effort:xs"
+    color: "c2e0c6"          # 6-digit hex without leading #
+    description: "< 30 min"
+
+legacy_labels:
+  - "bug"
+  - "documentation"
+```
+
+**Exit codes**: `0` success; `1` validation/auth error; `2` labels file not found.
+
+**Dependencies**: stdlib + `pyyaml`; requires `gh` CLI authenticated (`gh auth login`).
 
 ---
 

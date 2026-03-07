@@ -1,0 +1,96 @@
+# Labels used by the EndogenAI/Workflows repository
+# Managed by scripts/seed_labels.py
+#
+# Usage:
+#   uv run python scripts/seed_labels.py               # create/update all labels
+#   uv run python scripts/seed_labels.py --dry-run     # preview without API calls
+#   uv run python scripts/seed_labels.py --delete-legacy  # also remove legacy labels
+
+labels:
+
+  # effort: — estimated time to complete
+  - name: "effort:xs"
+    color: "c2e0c6"
+    description: "< 30 min"
+  - name: "effort:s"
+    color: "9dc3e6"
+    description: "30 min - 2 h"
+  - name: "effort:m"
+    color: "8bbee8"
+    description: "2 h - 1 day"
+  - name: "effort:l"
+    color: "5796d8"
+    description: "1 - 3 days"
+  - name: "effort:xl"
+    color: "0075ca"
+    description: "> 3 days"
+
+  # priority: — urgency and impact
+  - name: "priority:critical"
+    color: "b60205"
+    description: "Drop everything"
+  - name: "priority:high"
+    color: "e4e669"
+    description: "This sprint"
+  - name: "priority:medium"
+    color: "f9d0c4"
+    description: "Next sprint"
+  - name: "priority:low"
+    color: "cfd3d7"
+    description: "Backlog"
+
+  # type: — work category
+  - name: "type:feature"
+    color: "0075ca"
+    description: "New capability"
+  - name: "type:research"
+    color: "d876e3"
+    description: "Investigation or synthesis"
+  - name: "type:chore"
+    color: "e4e669"
+    description: "Maintenance, refactor, housekeeping"
+  - name: "type:docs"
+    color: "0075ca"
+    description: "Documentation change"
+  - name: "type:bug"
+    color: "d73a4a"
+    description: "Something is broken"
+
+  # area: — codebase domain
+  - name: "area:scripts"
+    color: "ededed"
+    description: "scripts/ directory"
+  - name: "area:agents"
+    color: "ededed"
+    description: ".github/agents/ directory"
+  - name: "area:docs"
+    color: "ededed"
+    description: "docs/ directory"
+  - name: "area:ci"
+    color: "dde8f0"
+    description: "CI/CD configuration"
+
+  # status: — workflow state
+  - name: "status:blocked"
+    color: "b60205"
+    description: "Cannot progress — dependency or decision needed"
+  - name: "status:needs-review"
+    color: "e4e669"
+    description: "Awaiting review or approval"
+  - name: "status:stale"
+    color: "ededed"
+    description: "Inactive for 60+ days"
+
+# Legacy GitHub default labels to remove when --delete-legacy is passed.
+# These are replaced by the namespace labels above.
+legacy_labels:
+  - "bug"
+  - "documentation"
+  - "duplicate"
+  - "enhancement"
+  - "good first issue"
+  - "help wanted"
+  - "invalid"
+  - "question"
+  - "wontfix"
+  - "research"
