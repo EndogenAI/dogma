@@ -95,12 +95,21 @@ A test is flaky if the same SHA produced different results on different runs.
 ```bash
 # View timing for a recent successful run
 gh run view <run-id> --json jobs | python3 -c "
+from datetime import datetime
 import json, sys
 data = json.load(sys.stdin)
 for job in data.get('jobs', []):
     for step in job.get('steps', []):
-        if step.get('completedAt') and step.get('startedAt'):
-            print(f\"{step['name']}: {step['completedAt']} - {step['startedAt']}\")
+        start = step.get('startedAt')
+        end = step.get('completedAt')
+        if start and end:
+            try:
+                start_dt = datetime.fromisoformat(start.replace('Z', '+00:00'))
+                end_dt = datetime.fromisoformat(end.replace('Z', '+00:00'))
+                duration = (end_dt - start_dt).total_seconds()
+                print(f\"{step['name']}: {duration:.1f} seconds\")
+            except Exception:
+                print(f\"{step['name']}: {end} - {start}\")
 "
 ```
 

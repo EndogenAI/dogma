@@ -67,8 +67,8 @@ Check:
 ls -la uv.lock
 
 # Check if lock is consistent with pyproject.toml
-# (uv sync will exit non-zero if inconsistent)
-uv sync --dry-run --extra dev 2>&1 | head -20
+# (exits non-zero if lock is out of date)
+uv lock --frozen 2>&1 | head -20
 ```
 
 Check:
