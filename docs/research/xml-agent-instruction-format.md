@@ -29,7 +29,7 @@ The apparent contradiction in the evidence — that Claude Code sub-agent files 
 
 ---
 
-## 2. Framework Comparison Matrix
+## 2. Hypothesis Validation — Framework Comparison Matrix
 
 | Framework | File Format | XML Used? | Where? | Recommendation Signal | Notes |
 |---|---|---|---|---|---|
@@ -332,7 +332,7 @@ The YAML frontmatter convention is not affected by the XML migration. Frontmatte
 
 ---
 
-## 5. Reference Card
+## 5. Pattern Catalog — Reference Card
 
 Copy-paste-ready cheat sheet for XML tags in EndogenAI `.agent.md` files. All tag names are lowercase_underscore. All tags appear in the Markdown body below YAML frontmatter.
 

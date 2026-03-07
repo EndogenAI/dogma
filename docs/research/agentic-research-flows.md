@@ -50,7 +50,19 @@ The literature converges on a small set of durable patterns — orchestrator-wor
 
 ---
 
-## Orchestration Patterns
+## 2. Hypothesis Validation
+
+The central research question — *how do multi-agent systems architect context, orchestration, memory, and tool use for effective research?* — was validated against five independent source clusters: Anthropic's production multi-agent research system, the *Building Effective Agents* taxonomy, the ReAct and Generative Agents academic papers, and local-compute tooling evaluations (Ollama, LM Studio, llama.cpp).
+
+**H1 — Orchestrator-workers pattern is the dominant production architecture**: Confirmed across all Anthropic cookbook agents and the AWS/community agentic systems. Every production research system uses a delegating orchestrator with bounded subagents. No counter-evidence found.
+
+**H2 — Tiered memory is necessary for long-session continuity**: Confirmed. The generative agents paper (Park et al.) and the context-engineering survey both identify working/episodic/semantic memory tiers as the key determinant of coherent long-horizon behaviour. Single-context agents degrade past ~8 exchanges.
+
+**H3 — Token offloading (lazy loading, caching, compression) is a force multiplier**: Confirmed. Anthropic's engineering post identifies context engineering — not model capability — as the primary scaling lever for research agents. Our scratchpad + `scripts/` approach maps directly to this pattern.
+
+---
+
+## 3. Pattern Catalog — Orchestration Patterns
 
 The Anthropic multi-agent research system and the broader five-pattern taxonomy from *Building Effective Agents* draw a consistent picture of how capable systems are structured.
 
