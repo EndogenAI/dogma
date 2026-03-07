@@ -193,45 +193,65 @@ Write a concise research frame:
 
 ### Phase 4 — Synthesize (Contraction)
 
-**Agent**: Research Synthesizer  
-**Invocation prompt**: *"Raw sources have been catalogued in the session scratchpad under '## Scout Output'. Please synthesize using the three-pass approach: (Pass 1) write a deep per-source stub for each source, processing one source at a time in isolation; (Pass 2) run `scripts/link_source_stubs.py` to populate Referenced By links; (Pass 3) write the issue synthesis at docs/research/<topic-slug>.md referencing those stubs. Topic: [topic]. Gate deliverables: [D1, D2, D3]."*
+**Three-pass model**:
 
-**What Synthesizer does — three passes**:
+```
+Pass 1 — Per-source synthesis  (one Synthesizer invocation per source, parallelisable)
+    ↓
+Pass 2 — Link graph             (scripted: uv run python scripts/link_source_stubs.py)
+    ↓
+Pass 3 — Issue synthesis        (one Synthesizer invocation, cross-source conclusions only)
+```
 
-#### Pass 1 — Per-Source Stubs (isolated, parallelisable)
+#### Pass 1 — Per-Source Synthesis
 
-Each source is processed independently. The Synthesizer reads the **full** `.cache/sources/<slug>.md` for one source, writes a deep stub, then moves to the next. This isolation prevents context from one source bleeding into the summary of another.
+**One Synthesizer invocation per source.** Each invocation:
+1. Receives a brief naming one source slug and the research question.
+2. Reads the **entire** `.cache/sources/<slug>.md` (the full cached distillation — not a sample).
+3. Writes a complete synthesis report to `docs/research/sources/<slug>.md`.
 
-Stubs are substantive documents, not placeholders:
-- `## Summary`: 4–6 sentences (what, who, structure/scope, primary contribution, standout finding)
-- `## Key Claims`: 8–15 bullets with direct quotes where available
-- `## Relevance to EndogenAI`: 5–8 sentences as editorial opinion — what to adopt/adapt/reject and why
-- `## Referenced By`: left empty — populated by the linking script
+The output is a research-quality academic synthesis report, not a summary or an index card:
+- `## Citation` — full bibliographic reference (APA or equivalent)
+- `## Research Question Addressed` — how this source maps to EndogenAI's research questions
+- `## Theoretical / Conceptual Framework` — paradigm or model the source uses (N/A if not applicable)
+- `## Methodology and Evidence` — how evidence is structured (methodology, datasets, design, code); direct quotes
+- `## Key Claims` — 10–20 bullets each grounded in a direct quote; dense sources warrant 20
+- `## Critical Assessment` — evidence quality rating (`strong | moderate | weak | opinion | documentation`), limitations, adoption risks
+- `## Connection to Other Sources` — relative links to other `docs/research/sources/` files with relationship notes
+- `## Relevance to EndogenAI` — editorial Adopt / Adapt / Reject recommendation naming specific files
 
-Because each stub is independent, multiple Synthesizer invocations can run in parallel (one per source) to reduce context rot when the source list is large.
+Because each invocation is isolated to one source, multiple Synthesizers can run in parallel — one per source — to eliminate context rot across a large source list.
+
+**Pass 1 invocation prompt**:
+*"You are doing a Pass 1 single-source synthesis. Source: [slug]. Cache path: .cache/sources/[slug].md. Research question: [question]. Read the full cache file and write a complete academic synthesis report to docs/research/sources/[slug].md following the 8-section format in docs/research/sources/README.md. Include an evidence quality rating in the frontmatter (evidence_quality field) and in ## Critical Assessment. Minimum 100 lines."*
 
 #### Pass 2 — Link Graph (scripted)
 
-After all stubs are written, run:
+After all Pass 1 invocations are complete, the Executive Researcher runs:
 
 ```bash
 uv run python scripts/link_source_stubs.py
 ```
 
-This scans issue synthesis files for links to stubs and writes bidirectional `## Referenced By` entries. Never populate `## Referenced By` manually.
+This scans issue synthesis files for relative links to source synthesis files and writes bidirectional `## Referenced By` entries. Never populate `## Referenced By` manually.
 
 #### Pass 3 — Issue Synthesis
-1. Reads all per-source stubs (not the raw Scout notes — stubs are the input).
-2. Drafts `docs/research/<topic-slug>.md` using cross-source conclusions only.
-3. **References per-source stubs with relative links** — never re-summarises source content inline.
-4. Sets `Status: Draft — pending review`.
-5. Returns control to Executive Researcher via takeback handoff.
+
+**One Synthesizer invocation.** It:
+1. Reads all per-source synthesis documents (not the raw Scout notes — the source syntheses are the input).
+2. Writes a contraction outline in the scratchpad (core finding, 2–3 cross-source takeaways, recommended path forward) before drafting.
+3. Drafts `docs/research/<topic-slug>.md` with cross-source conclusions only — **no source content re-summarised inline**.
+4. References source synthesis documents via relative links.
+5. Sets `Status: Draft — pending review`.
+
+**Pass 3 invocation prompt**:
+*"You are doing a Pass 3 issue synthesis. Topic: [topic]. Source synthesis docs: [list of docs/research/sources/<slug>.md paths]. Gate deliverables: [D1, D2, D3]. Read all source synthesis documents, write a contraction outline in the scratchpad, then draft docs/research/[topic-slug].md."*
 
 **Research Output Structure**:
 ```
 docs/research/
   sources/
-    <slug>.md          ← per-source stub (deep, isolated, committed)
+    <slug>.md          ← per-source synthesis (full analysis, isolated, committed)
   <topic-slug>.md      ← issue synthesis (cross-source conclusions only, committed)
   OPEN_RESEARCH.md     ← research queue
 .cache/sources/
@@ -239,7 +259,7 @@ docs/research/
   <slug>.md            ← raw HTML→Markdown distillation (gitignored, regenerable)
 ```
 
-**Gate before advancing**: all per-source stubs exist and meet depth requirements (≥60 lines, ≥4-sentence summary, ≥6 key claims with quotes, ≥3-sentence relevance); linking script has run; issue synthesis draft exists; all gate deliverables addressed or explicitly deferred; no raw Scout notes in draft; issue synthesis references stubs via relative links.
+**Gate before advancing**: all per-source synthesis docs exist and are complete (≥100 lines, all 8 sections present, evidence quality rating set, ≥10 key claims with quotes, relevance names specific EndogenAI files); linking script has run; issue synthesis draft exists; all gate deliverables addressed or explicitly deferred; no raw Scout notes in draft; issue synthesis references source synthesis docs via relative links.
 
 ---
 

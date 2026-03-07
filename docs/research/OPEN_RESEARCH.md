@@ -141,7 +141,9 @@ The current agent fleet emerged organically from the EndogenAI project. As this 
 ### Areas to Research
 - [ ] Hierarchical multi-agent patterns (executive → sub-agent → specialist)
 - [ ] Context window management strategies for long agent sessions
-- [ ] A2A (Agent-to-Agent) protocol patterns
+- [ ] A2A (Agent-to-Agent) protocol patterns — message envelope, task lifecycle, routing
+- [ ] A2A Agent Card schema — capability advertisement and discovery mechanism (gap flagged by Scout C, 2026-03-06)
+- [ ] ReAct trajectory paper — interleaved reasoning and acting as the foundation for action-oriented agents (Yao et al.; not yet fetched)
 - [ ] https://arxiv.org/html/2512.05470v1 (referenced in AccessiTech/EndogenAI#32)
 - [ ] https://towardsdatascience.com/claude-skills-and-subagents-escaping-the-prompt-engineering-hamster-wheel/
 
