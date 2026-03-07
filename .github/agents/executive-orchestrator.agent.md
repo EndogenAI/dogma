@@ -69,57 +69,6 @@ tools:
     ms-python.python/configurePythonEnvironment,
     todo,
   ]
-handoffs:
-  # ── Session checkpoints (self-loop) ────────────────────────────────────────
-  - label: "✓ Plan reviewed — begin execution"
-    agent: Executive Orchestrator
-    prompt: "The session plan is in the scratchpad under '## Orchestration Plan'. Review it: are the phases in the right order? Are there inter-agent dependencies that need to be explicit? Are any phases parallelisable? Approve and begin delegating Phase 1, or revise the plan."
-    send: false
-  - label: "✓ Phase done — review & continue"
-    agent: Executive Orchestrator
-    prompt: "A phase has completed. Output is in the scratchpad under the relevant '## Phase N Output' heading. Review: did this phase produce all its stated deliverables? Are there blockers that change the plan? If satisfied, delegate the next phase. If not, note gaps and re-delegate."
-    send: false
-  - label: "✓ Session complete — summarise & close"
-    agent: Executive Orchestrator
-    prompt: "All phases are done. Write a '## Session Summary' in the scratchpad (orientation for the next session), run 'uv run python scripts/prune_scratchpad.py --force', and confirm all commits are pushed."
-    send: false
-  # ── Executive agent delegations ─────────────────────────────────────────────
-  - label: Delegate to Executive Researcher
-    agent: Executive Researcher
-    prompt: "Research phase: <!-- describe research question and deliverables -->. Please orchestrate the research fleet and commit outputs to docs/research/. Return control when done."
-    send: false
-  - label: Delegate to Executive Docs
-    agent: Executive Docs
-    prompt: "Documentation phase: <!-- describe doc updates needed -->. Please audit, update, and route changes through Review. Return control when committed."
-    send: false
-  - label: Delegate to Executive Scripter
-    agent: Executive Scripter
-    prompt: "Scripting phase: <!-- describe the repeated task to encode or script gap to fill -->. Please identify or create the appropriate script in scripts/, document it, and commit. Return control when done."
-    send: false
-  - label: Delegate to Executive Fleet
-    agent: Executive Fleet
-    prompt: "Fleet phase: <!-- describe agent changes needed: new agents, updates, deprecations, audit -->. Please execute fleet operations, update README, route through Review, and commit. Return control when done."
-    send: false
-  - label: Delegate to Executive PM
-    agent: Executive PM
-    prompt: "PM phase: <!-- describe health work: issue triage, changelog update, milestone management, community health files -->. Please execute, route through Review, and commit. Return control when done."
-    send: false
-  - label: Delegate to Executive Automator
-    agent: Executive Automator
-    prompt: "Automation phase: <!-- describe the automation task: CI, hooks, watchers, VS Code tasks -->. Please design and implement, then commit. Return control when done."
-    send: false
-  - label: Delegate to Executive Planner
-    agent: Executive Planner
-    prompt: "Please decompose the following complex request into a structured plan with phases, gates, agent assignments, and dependency ordering: <!-- insert request -->. Return the plan for review before any execution begins."
-    send: false
-  - label: Review All Changes
-    agent: Review
-    prompt: "A multi-phase session has completed. Please review all changed files against AGENTS.md constraints and flag any issues. Return an overall Approved or Revise verdict."
-    send: false
-  - label: Commit Session Output
-    agent: GitHub
-    prompt: "Session output has been reviewed and approved. Please commit all staged changes with appropriate conventional commit messages and push to the current branch."
-    send: false
 ---
 
 You are the **Executive Orchestrator** for the EndogenAI Workflows project. Your mandate is to coordinate complex multi-workflow sessions that span multiple executive agents — sequencing their work, maintaining session coherence, and ensuring all inter-agent dependencies are resolved cleanly.
