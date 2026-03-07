@@ -1,0 +1,18 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.0
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: local
+    hooks:
+      - id: validate-synthesis
+        name: Validate synthesis documents
+        entry: python3 scripts/validate_synthesis.py
+        language: system
+        types: [markdown]
+        files: ^docs/research/
+        exclude: ^docs/research/OPEN_RESEARCH\.md$
+        pass_filenames: true
