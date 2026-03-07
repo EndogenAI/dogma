@@ -28,5 +28,7 @@ https://www.atlassian.com/agile/kanban/kanban-vs-scrum
 
 # conventionalcommits.org — intermittent network errors from GitHub Actions
 # runners (connection refused / DNS failure). Site is live; referenced in
-# CONTRIBUTING.md and docs/research/dev-workflow-automations.md.
+# CONTRIBUTING.md (bare domain) and docs/research/dev-workflow-automations.md
+# (/en/v1.0.0/ path). Both variants excluded.
+https://www.conventionalcommits.org/
 https://www.conventionalcommits.org/en/v1.0.0/
