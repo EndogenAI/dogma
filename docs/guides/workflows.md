@@ -317,6 +317,31 @@ Close the issue or move to the next phase if follow-on work is needed.
 
 Every `docs/research/*.md` (except `OPEN_RESEARCH.md`) is validated in CI by the `lint:` job. Two failure modes to know before committing research docs:
 
+#### 0. Post-Push CI Verification (all workflows)
+
+**After every `git push` to a PR branch, CI status must be verified before requesting review.**
+
+```bash
+# Monitor CI for the current branch
+gh run list --limit 3
+```
+
+CI jobs on this repo (`Tests` workflow):
+
+| Job | What it checks |
+|-----|----------------|
+| `test` | pytest + coverage (fails if tests fail) |
+| `lint` | ruff check, ruff format --check, validate_synthesis.py |
+| `links` | lychee dead-link check (fails on non-200 responses) |
+| `All tests passed` | Aggregate gate — blocks merge if any above fails |
+
+**Do not re-request Copilot review if CI is red.** Fix CI first. See common failure modes below.
+
+> **Common failure modes and fixes**:
+> - Lychee non-200 response (e.g. HTTP 202 redirect): add URL to `.lycheeignore` with reason
+> - `ruff format` failure: `uv run ruff format scripts/ tests/` then re-commit
+> - `validate_synthesis.py` failure: add `## 2. Hypothesis Validation` and `## 3. Pattern Catalog` headings to the failing research doc
+
 #### 1. `validate_synthesis.py` — D4 required headings
 
 The `validate_synthesis.py` script enforces that D4 issue synthesis documents contain these exact headings (or headings whose text contains these keywords):

@@ -232,6 +232,28 @@ Research and document best practices for VS Code Copilot Chat's `/compact` slash
 
 ---
 
+## Research Sprint — Copilot PR Review Automation
+
+**Added**: 2026-03-07 | **Status**: ✅ Complete 2026-03-07 | **Priority**: High | **Closes**: [#29](https://github.com/EndogenAI/Workflows/issues/29)
+
+Research whether requests for GitHub Copilot PR reviews can be triggered programmatically (REST API, `gh` CLI, GraphQL, GitHub Actions, CODEOWNERS). Primary finding: no public API exists for per-PR bot reviewer requests. The only supported automation path is a repository ruleset gated on GitHub Pro or a public repo. Manual re-request via UI is the correct baseline until then.
+
+**Target deliverable**: [`docs/research/copilot-pr-review-automation.md`](copilot-pr-review-automation.md)
+**GitHub issue**: [#29](https://github.com/EndogenAI/Workflows/issues/29)
+
+---
+
+## Research Sprint — GitHub as Episodic & Long-term Memory Substrate
+
+**Added**: 2026-03-07 | **Status**: ✅ Complete 2026-03-07 | **Priority**: High | **Closes**: [#30](https://github.com/EndogenAI/Workflows/issues/30)
+
+Research whether GitHub Issues, PRs, commits, and Projects can serve as a structured episodic memory layer for the agent fleet. Finding: GitHub is a viable episodic tier — issues and commit log are queryable via `gh` CLI and GraphQL at practical rate limits. Not a semantic or working memory replacement. Four-tier memory architecture defined with GitHub occupying the episodic slot. Complements (but does not replace) the external memory research in Issue #7/#13.
+
+**Target deliverable**: [`docs/research/github-as-memory-substrate.md`](github-as-memory-substrate.md)
+**GitHub issue**: [#30](https://github.com/EndogenAI/Workflows/issues/30)
+
+---
+
 ## Completed Research
 
 _Items below are resolved. Open follow-up questions are still tracked in the main body (OQ-10, OQ-12 sections)._
