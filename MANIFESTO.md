@@ -2,7 +2,7 @@
 
 > We are not vibe coding. We are pioneering **endogenic / agentic product design and development**.
 
-> *"Learning never exhausts the mind."* — Leonardo da Vinci
+> *"If I have seen further, it is by standing on the shoulders of giants."* — Attributed to Isaac Newton (and before him, many others)
 
 ---
 
@@ -12,13 +12,14 @@ Endogenic development is the practice of building AI-assisted systems from the i
 
 Rather than prompting an agent from zero context and hoping for the best — the "vibe coding" anti-pattern — endogenic development:
 
-- **Encodes knowledge as artifacts**: scripts, agent files, schemas, and seed documents that persist across sessions
-- **Grows from a seed**: every new capability scaffolds from what the system already knows about itself *and* from the best of existing external practices
-- **Makes agents smarter over time**: each session adds to a corpus of encoded operational knowledge
-- **Reduces token burn**: context that is already encoded does not need to be re-discovered interactively
-- **Integrates external wisdom**: open-source tools, established frameworks, research literature, and prior art are all first-class inputs to the endogenous scaffold
+- **Encodes knowledge as DNA** 🧬: scripts, agent files, schemas, and seed documents that persist across sessions. Like DNA, this is both blueprint and inheritance — what the system reads to inform every action, and what it passes forward to future sessions.
+- **Grows from a seed** 🌱: every new capability scaffolds from what the system already knows about itself *and* from the best of existing external practices. A seed contains everything needed to grow; it just needs the right environment.
+- **Adds tree rings of knowledge** 🌳: each session accumulates in the substrate. The tree grows stronger with each year, each ring is visible in git history, and we can see by the density of the rings how much the system was tested.
+- **Makes agents smarter over time**: each session adds to a corpus of encoded operational knowledge.
+- **Reduces token burn**: context that is already encoded does not need to be re-discovered interactively.
+- **Integrates external wisdom**: open-source tools, established frameworks, research literature, and prior art are all first-class inputs to the endogenous scaffold. We are not inventing in a vacuum — we are synthesizing.
 
-The name comes from biology: an endogenous process is one that originates from within the organism. Endogenic development means the system grows its own intelligence from its own substrate — but it does not grow in a vacuum. Like da Vinci synthesizing anatomy, engineering, art, and natural philosophy into a unified practice, endogenic development absorbs the best of what exists and integrates it into a coherent, self-extending system.
+The name comes from biology: an endogenous process is one that originates from within the organism. Like all living systems, our endogenic substrate is built from inherited knowledge (standing on giants' shoulders) and continuous synthesis of external wisdom (tools, frameworks, best practices). We grow from within, but we do not grow alone.
 
 ### The Balance: Inside Out, Not Inside Only
 
@@ -55,17 +56,19 @@ This partnership is why we encode knowledge, minimize token burn, and enforce go
 
 > Scaffold from existing system knowledge. Absorb and encode the best of what exists externally.
 
+Endogenous-First is not isolationism. It is the principle that your system **grows from within by absorbing external knowledge into its DNA**.
+
 Before writing any new agent, script, or document:
-1. Read what the system already knows about itself (`AGENTS.md`, existing scripts, existing docs)
-2. Research relevant external tools, frameworks, and prior art
+1. Read what the system already knows about itself (`AGENTS.md`, existing scripts, existing docs) — know your genetic makeup
+2. Research relevant external tools, frameworks, and prior art — identify the giants to stand on
 3. Extend or adapt rather than create from zero — prefer existing well-maintained libraries over bespoke implementations
-4. Encode the synthesized knowledge back into the project so the next session starts richer
+4. Encode the synthesized knowledge back into the project so the next session starts richer — update your DNA with what you've learned
 
-**The da Vinci principle**: Leonardo did not invent anatomy, optics, or engineering — he synthesized them into a unified practice more powerful than any single discipline. Endogenic development does the same: it absorbs external knowledge and integrates it into a self-consistent, growing system.
+**The inheritance principle**: Just as DNA carries billions of years of evolutionary wisdom, your project carries the accumulated knowledge of its external sources. Every adopted tool, every synthesized best practice, every documented convention is genetic material that makes the system stronger. You stand on the shoulders of giants by encoding what they've built into your own substrate.
 
-**Anti-pattern (isolationism)**: Refusing to adopt an existing open-source tool because "we should build it ourselves." If a well-maintained external tool solves a problem correctly, adopt it, document it, and encode its usage patterns into the project's scripts and agents.
+**Anti-pattern (isolationism)**: Refusing to adopt an existing open-source tool because "we should build it ourselves." If a well-maintained external tool solves a problem correctly, the DNA principle says: absorb it, document it, and encode its usage patterns into the project's scripts and agents.
 
-**Anti-pattern (vibe coding)**: Dropping into Copilot Chat without reading `AGENTS.md` and asking the agent to "write a script to do X" — the agent will re-invent the wheel, miss project conventions, and burn tokens discovering what is already documented.
+**Anti-pattern (vibe coding)**: Dropping into Copilot Chat without reading `AGENTS.md` and asking the agent to "write a script to do X" — the agent will re-invent the wheel, miss project conventions, and burn tokens discovering what is already documented. You've forgotten your own genetic code.
 
 ### 2. Algorithms Before Tokens
 
@@ -261,7 +264,7 @@ Agents in the endogenic model are:
 
 ---
 
-## The Growth Model
+## The Growth Model: Tree Rings of Knowledge
 
 A healthy endogenic project grows like this:
 
@@ -272,9 +275,17 @@ Session 3: Agent scripts X before doing it a third time (programmatic-first)
 Session N: Future agents start sessions with X already encoded as a script
 ```
 
-Over time, the system accumulates a library of scripts, agents, and guides that represent the project's operational intelligence. New sessions start richer. Token burn decreases. Determinism increases.
+Over time, the system accumulates a library of scripts, agents, and guides that represent the project's operational intelligence. Each session adds a tree ring — visible in git history, dense with the conditions that shaped it, and contributing to the overall strength of the system.
 
-This is the endogenic flywheel.
+**Tree ring properties**:
+- Each ring is a complete, datable layer (one session = one ring)
+- The outer rings are always the newest, the core is the original seed
+- Surface area increases with each ring (more capability, more agents, more capacity)
+- You can read the tree's biography in the rings — which years were productive, which were challenging, which brought new growth
+- The tree is only strong because of all its rings accumulated over time
+- If you cut the tree now, the rings don't disappear — they're part of the structure forever
+
+New sessions start richer. Token burn decreases. Determinism increases. This is the endogenic flywheel.
 
 ---
 
