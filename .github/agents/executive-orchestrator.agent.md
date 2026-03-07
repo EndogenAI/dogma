@@ -102,6 +102,7 @@ Multi-agent sessions fail not because agents are wrong, but because handoffs los
 2. **Nothing proceeds until its predecessor's deliverables are confirmed.**
 3. **Every phase output is logged to the scratchpad before the next phase starts.**
 4. **Session state is always explicit** — never implied by terminal history.
+5. **Delegation is the default** — the Orchestrator acts directly only for coordination, verification, and state management. All substantive domain work is delegated to a specialist. Doing domain work directly burns the main session context window; delegated work executes in an isolated context and returns only a compressed result (≤ 2,000 tokens). A larger fleet means more delegation paths, not more direct work.
 
 ---
 
@@ -118,6 +119,14 @@ At the start of every session:
 uv run python scripts/prune_scratchpad.py --init
 cat .tmp/<branch>/$(date +%Y-%m-%d).md
 ```
+
+**If returning after a compaction event** (a `<conversation-summary>` block is present in context):
+
+- Do **not** rely on the compact summary as your source of truth — it is a lossy digest.
+- Re-read the scratchpad from disk: `cat .tmp/<branch>/$(date +%Y-%m-%d).md`
+- Re-read the active workplan: `cat docs/plans/<current-plan>.md`
+- Run `git status` to confirm committed vs. in-flight state.
+- Complete the above reads before writing `## Session Start`.
 
 Identify: what branch, what PR, what open issues, what prior unfinished phases. Write `## Session Start` with a one-paragraph orientation.
 
@@ -158,9 +167,44 @@ Use the `✓ Plan reviewed — begin execution` self-loop handoff to review the 
 
 ### 3. Execute Phase by Phase
 
+**Before delegating any phase**, consult the Delegation Decision Gate:
+
+| Task domain | Delegate to |
+|-------------|-------------|
+| Research, source gathering | Executive Researcher → Research Scout fleet |
+| Documentation writing / editing | Executive Docs |
+| Scripting, automation design | Executive Scripter, Executive Automator |
+| Fleet agent authoring / audit | Executive Fleet |
+| Release coordination, versioning | Release Manager |
+| Issue triage, labels, milestones | Issue Triage, Executive PM |
+| CI health, test coverage gaps | CI Monitor, Test Coordinator |
+| Environment / dependency audit | Env Validator |
+| Security threat modelling | Security Researcher |
+| Docs compliance audit | Docs Linter |
+| Model / cost optimisation | LLM Cost Optimizer |
+| Community health, DevRel | Community Pulse, DevRel Strategist |
+
+**Act directly only for:**
+- Reading files to confirm a deliverable exists
+- Running `git status`, `git log --oneline`, `gh pr view`, `gh issue view`
+- Writing scratchpad entries and workplan status updates
+- Running `git add/commit/push` after a subagent returns
+- Running `prune_scratchpad.py` or the pre-compact sequence
+
+**If the work does not appear in the "Act directly" list, delegate it.**
+
 Delegate to the appropriate executive agent. Wait for control to return. Write the output summary to the scratchpad under `## Phase N Output`. Use `✓ Phase done — review & continue` to confirm deliverables before proceeding.
 
 Do not batch delegations. One phase at a time.
+
+**Per-phase compaction checkpoint** — run this sequence after every `## Phase N Output` write, before delegating the next phase:
+
+1. Prune the scratchpad if it exceeds 200 lines: `uv run python scripts/prune_scratchpad.py`
+2. Write a `## Pre-Compact Checkpoint` to the scratchpad capturing: what is complete, what is next, any open questions.
+3. Commit all in-progress changes: `git add -A && git commit -m "chore: pre-compact checkpoint — Phase N complete"`
+4. If the completed phase was a long research, synthesis, or multi-file editing delegation — recommend running `/compact` before delegating the next phase.
+
+After any `/compact` event: always re-read the scratchpad and workplan from disk before continuing (see Step 1).
 
 ### 4. Inter-Agent Dependency Handling
 
@@ -240,6 +284,9 @@ A correct output from this agent looks like:
 - Do not modify `MANIFESTO.md` — that is Executive Docs territory.
 - Do not proceed past a phase gate if the prior deliverables are not committed and confirmed.
 - Do not close the session without writing a `## Session Summary` and running `prune_scratchpad.py --force`.
+- **Delegation-first** — never perform substantive domain work directly. If a specialist agent exists for the task (see the Delegation Decision Gate in the Workflow), delegate to it. Direct action is reserved for coordination, verification reads, and state management (git, scratchpad writes). Doing domain work directly burns the main context window; delegation isolates it.
+- **Compact-before-reorient** — when returning after a compaction event, always re-read the scratchpad and workplan from disk before acting. The compact summary is a lossy digest; on-disk files are the authoritative state record.
+- **Per-phase compaction checkpoints are mandatory** — after every phase gate, write `## Pre-Compact Checkpoint` to the scratchpad, prune if > 200 lines, and commit in-progress work. Recommend `/compact` before any long research or synthesis delegation.
 - **Verify every remote write** — after any `gh issue create`, `git push`, `gh pr create`, or similar, immediately run a verification read (`gh issue list`, `git log --oneline -1`, `gh pr view`). Zero error output is not confirmation of success.
 - **Never use heredocs or terminal commands to write file content** — `cat >> file << 'EOF'` and inline Python writes silently corrupt content containing backticks or triple-backtick fences. Always use built-in file tools: `create_file` for new files, `replace_string_in_file` for edits. For `gh issue`/`gh pr` multi-line bodies: always `--body-file <path>`, never `--body "..."` with multi-line text.
 - **Subagents do not commit** — assume all subagents (including Executive Docs) lack terminal access and will return file edits only. The orchestrator is always responsible for running `git add`, `git commit`, and `git push` after a subagent delegation completes. The GitHub agent is the sole exception, and only because `execute` was added to its toolset explicitly.

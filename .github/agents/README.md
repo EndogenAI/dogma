@@ -96,6 +96,55 @@ Cross-cutting agents used at the end of every workflow for quality gating and co
 
 ---
 
+## Specialist Research Agents
+
+Domain-specific research agents that extend the core research fleet with focused expertise areas.
+
+| Agent | File | Posture | Trigger | Handoffs |
+|-------|------|---------|---------|----------|
+| **Security Researcher** | `security-researcher.agent.md` | read + create | Threat-model agentic workflows; identify OWASP attack surfaces; evaluate CIA-triad exposure in agent designs; produce security synthesis docs | Research Synthesizer, Research Reviewer, Executive Researcher, Executive Docs, Review |
+| **Local Compute Scout** | `local-compute-scout.agent.md` | read + create | Survey Ollama / LM Studio / llama.cpp stacks; benchmark local models; document hardware prereqs; maintain a local model registry | Research Synthesizer, Executive Researcher, Executive Scripter, Review |
+| **MCP Architect** | `mcp-architect.agent.md` | read + create | Design locally-distributed MCP topologies (stdio, HTTP/SSE); evaluate server composition patterns; define project MCP deployment conventions | Research Synthesizer, Executive Scripter, Local Compute Scout, Review, Executive Researcher |
+| **Values Researcher** | `values-researcher.agent.md` | read + create | Research value encoding via speech act theory, deontic logic, and constitutional AI; evaluate MANIFESTO.md against encoding principles | Research Synthesizer, Executive Docs, Review, Executive Researcher |
+
+---
+
+## Engineering & DevOps Agents
+
+Operational agents for release coordination, environment validation, test coverage, and CI health.
+
+| Agent | File | Posture | Trigger | Handoffs |
+|-------|------|---------|---------|----------|
+| **Release Manager** | `release-manager.agent.md` | full (no agent) | Orchestrate SemVer versioning, CHANGELOG entries, git tags, and GitHub Releases; milestone wrap-up | Review, GitHub, Executive PM, Executive Orchestrator |
+| **Env Validator** | `env-validator.agent.md` | read-only | Read-only audit of `.python-version`, `uv.lock`, `pyproject.toml`, and CI matrix for consistency — advisory only | Executive Scripter, Executive Orchestrator |
+| **Test Coordinator** | `test-coordinator.agent.md` | read-only | Map pytest markers to CI phases; identify untested scripts; flag test anti-patterns — advisory only | Executive Scripter, Executive Orchestrator |
+| **CI Monitor** | `ci-monitor.agent.md` | read + execute | Watch `gh run` history for failure patterns, flaky tests, and slow steps; categorise failures across CI failure modes; produce health report | Executive Scripter, Executive Automator, Executive Orchestrator |
+
+---
+
+## Community & Comms Agents
+
+Agents that manage contributor relationships, developer relations, and community health signals.
+
+| Agent | File | Posture | Trigger | Handoffs |
+|-------|------|---------|---------|----------|
+| **Issue Triage** | `issue-triage.agent.md` | read + execute | First-pass triage — suggest labels, priority, effort; flag duplicates; draft clarifying comments — advisory only, no close/merge authority | Executive PM, Executive Orchestrator |
+| **DevRel Strategist** | `devrel-strategist.agent.md` | read + create | Plan blog cadence, tutorial pipeline, GitHub Discussions announcements, and DevEx narrative; 3-month content calendar; first-mile contributor experience audit | Executive Docs, Executive PM, Executive Orchestrator |
+| **Community Pulse** | `community-pulse.agent.md` | read + execute | Aggregate GitHub health signals (stars, issue response time, PR velocity, contributor retention) via `gh api`; produce periodic health reports | Executive PM, DevRel Strategist, Executive Orchestrator |
+
+---
+
+## Knowledge & Governance Agents
+
+Agents focused on cost governance and documentation quality enforcement.
+
+| Agent | File | Posture | Trigger | Handoffs |
+|-------|------|---------|---------|----------|
+| **LLM Cost Optimizer** | `llm-cost-optimizer.agent.md` | read + web | Build and maintain a model selection decision table (capability × cost × latency) per task type; track free/local tier options; recommend model tiers to reduce token spend | Executive Docs, Executive Orchestrator |
+| **Docs Linter** | `docs-linter.agent.md` | read-only | Audit `docs/research/` for D4 heading gaps, dead source stubs, missing frontmatter, and `validate_synthesis.py` compliance — advisory only, never edits docs | Executive Docs, Review |
+
+---
+
 ## Fleet Architecture
 
 ### Fleet Topology Quick-Reference
