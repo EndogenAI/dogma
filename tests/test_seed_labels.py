@@ -25,7 +25,7 @@ from __future__ import annotations
 
 import subprocess
 from pathlib import Path
-from unittest.mock import MagicMock, call, patch
+from unittest.mock import MagicMock
 
 import pytest
 import yaml
@@ -136,14 +136,14 @@ class TestCreateOrUpdateLabel:
     """Tests for seed_labels.create_or_update_label()."""
 
     def test_dry_run_prints_and_does_not_call_subprocess(
-        self, capsys: pytest.CaptureFixture
+        self, mocker: "MockerFixture", capsys: pytest.CaptureFixture
     ) -> None:
         """dry_run=True prints the planned action without calling subprocess."""
-        with patch("seed_labels.subprocess") as mock_sp:
-            seed_labels.create_or_update_label(
-                "effort:xs", "c2e0c6", "< 30 min", repo=None, dry_run=True
-            )
-            mock_sp.run.assert_not_called()
+        mock_sp = mocker.patch("seed_labels.subprocess")
+        seed_labels.create_or_update_label(
+            "effort:xs", "c2e0c6", "< 30 min", repo=None, dry_run=True
+        )
+        mock_sp.run.assert_not_called()
 
         out = capsys.readouterr().out
         assert "[DRY RUN]" in out
@@ -203,12 +203,12 @@ class TestDeleteLabel:
     """Tests for seed_labels.delete_label()."""
 
     def test_dry_run_prints_and_does_not_call_subprocess(
-        self, capsys: pytest.CaptureFixture
+        self, mocker: "MockerFixture", capsys: pytest.CaptureFixture
     ) -> None:
         """dry_run=True prints the planned deletion without calling subprocess."""
-        with patch("seed_labels.subprocess") as mock_sp:
-            seed_labels.delete_label("bug", repo=None, dry_run=True)
-            mock_sp.run.assert_not_called()
+        mock_sp = mocker.patch("seed_labels.subprocess")
+        seed_labels.delete_label("bug", repo=None, dry_run=True)
+        mock_sp.run.assert_not_called()
 
         out = capsys.readouterr().out
         assert "[DRY RUN]" in out
@@ -262,12 +262,12 @@ class TestMainDryRun:
 
     @pytest.mark.io
     def test_dry_run_prints_all_labels(
-        self, labels_file: Path, capsys: pytest.CaptureFixture
+        self, mocker: "MockerFixture", labels_file: Path, capsys: pytest.CaptureFixture
     ) -> None:
         """--dry-run prints one line per namespace label, no subprocess calls."""
-        with patch("seed_labels.subprocess") as mock_sp:
-            seed_labels.main(["--labels-file", str(labels_file), "--dry-run"])
-            mock_sp.run.assert_not_called()
+        mock_sp = mocker.patch("seed_labels.subprocess")
+        seed_labels.main(["--labels-file", str(labels_file), "--dry-run"])
+        mock_sp.run.assert_not_called()
 
         out = capsys.readouterr().out
         assert "effort:xs" in out
@@ -276,14 +276,14 @@ class TestMainDryRun:
 
     @pytest.mark.io
     def test_dry_run_delete_legacy_shows_deletions(
-        self, labels_file: Path, capsys: pytest.CaptureFixture
+        self, mocker: "MockerFixture", labels_file: Path, capsys: pytest.CaptureFixture
     ) -> None:
         """--dry-run --delete-legacy includes deletion lines for legacy labels."""
-        with patch("seed_labels.subprocess") as mock_sp:
-            seed_labels.main(
-                ["--labels-file", str(labels_file), "--dry-run", "--delete-legacy"]
-            )
-            mock_sp.run.assert_not_called()
+        mock_sp = mocker.patch("seed_labels.subprocess")
+        seed_labels.main(
+            ["--labels-file", str(labels_file), "--dry-run", "--delete-legacy"]
+        )
+        mock_sp.run.assert_not_called()
 
         out = capsys.readouterr().out
         assert "bug" in out
@@ -294,11 +294,11 @@ class TestMainDryRun:
 
     @pytest.mark.io
     def test_dry_run_does_not_delete_legacy_by_default(
-        self, labels_file: Path, capsys: pytest.CaptureFixture
+        self, mocker: "MockerFixture", labels_file: Path, capsys: pytest.CaptureFixture
     ) -> None:
         """Without --delete-legacy, legacy labels are not mentioned."""
-        with patch("seed_labels.subprocess") as mock_sp:
-            seed_labels.main(["--labels-file", str(labels_file), "--dry-run"])
+        mocker.patch("seed_labels.subprocess")
+        seed_labels.main(["--labels-file", str(labels_file), "--dry-run"])
 
         out = capsys.readouterr().out
         delete_lines = [l for l in out.splitlines() if "WOULD DELETE" in l]
@@ -314,11 +314,11 @@ class TestMainDryRun:
 
     @pytest.mark.io
     def test_real_labels_file_loads_without_error(
-        self, full_labels_file: Path, capsys: pytest.CaptureFixture
+        self, mocker: "MockerFixture", full_labels_file: Path, capsys: pytest.CaptureFixture
     ) -> None:
         """The actual data/labels.yml loads cleanly in dry-run mode."""
-        with patch("seed_labels.subprocess"):
-            seed_labels.main(["--labels-file", str(full_labels_file), "--dry-run"])
+        mocker.patch("seed_labels.subprocess")
+        seed_labels.main(["--labels-file", str(full_labels_file), "--dry-run"])
 
         out = capsys.readouterr().out
         # All namespaces must appear
