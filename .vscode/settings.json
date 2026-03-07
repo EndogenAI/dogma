@@ -12,6 +12,7 @@
         "source .venv/bin/activate": true,
         "diff": true,
         "wait": true,
-        "git stash": true
+        "git stash": true,
+        "git pull": true
     }
 }
