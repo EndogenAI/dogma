@@ -11,6 +11,7 @@
         "python scripts/validate_synthesis.py": true,
         "source .venv/bin/activate": true,
         "diff": true,
-        "wait": true
+        "wait": true,
+        "git stash": true
     }
 }

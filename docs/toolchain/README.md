@@ -19,7 +19,11 @@ Goals:
 
 | Tool | Reference | Scope |
 |------|-----------|-------|
-| `gh` | [`docs/toolchain/gh.md`](gh.md) | Issues, PRs, labels, milestones, Projects v2, API |
+| `gh` | [`docs/toolchain/gh.md`](gh.md) | Issues, PRs, labels, milestones, Projects v2, REST/GraphQL API |
+| `uv` | [`docs/toolchain/uv.md`](uv.md) | Run, sync, add, lock, pip, python, cache |
+| `ruff` | [`docs/toolchain/ruff.md`](ruff.md) | Check (lint), format, rule lookup, CI patterns |
+| `git` | [`docs/toolchain/git.md`](git.md) | Status, branch, commit, push, undo, Conventional Commits |
+| `pytest` | [`docs/toolchain/pytest.md`](pytest.md) | Running tests, markers, coverage, test patterns |
 
 ---
 
@@ -66,6 +70,13 @@ The `.cache/toolchain/` layer is regenerable and disposable. The `docs/toolchain
 ### Refreshing the cache layer
 
 ```bash
-uv run python scripts/fetch_toolchain_docs.py --check   # check what is cached
-uv run python scripts/fetch_toolchain_docs.py gh        # refresh gh cache
+# Check freshness for all tools (single invocation)
+uv run python scripts/fetch_toolchain_docs.py --tool all --check
+
+# Refresh specific tool caches
+uv run python scripts/fetch_toolchain_docs.py --tool gh --force
+uv run python scripts/fetch_toolchain_docs.py --tool uv --force
+uv run python scripts/fetch_toolchain_docs.py --tool ruff --force
+uv run python scripts/fetch_toolchain_docs.py --tool git --force
+uv run python scripts/fetch_toolchain_docs.py --tool pytest --force
 ```
