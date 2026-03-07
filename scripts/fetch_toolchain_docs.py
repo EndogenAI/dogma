@@ -75,6 +75,37 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUTPUT_DIR = REPO_ROOT / ".cache" / "toolchain"
 CACHE_MAX_AGE_HOURS = 24
 
+# Subcommand list per tool.
+# - None  → auto-discover by parsing `<tool> --help`
+# - list  → use this fixed list (tools with too many subcommands, e.g. git)
+# - []    → single-command tool; capture `<tool> --help` output directly
+TOOL_SUBCOMMANDS: dict[str, list[str] | None] = {
+    "gh": None,  # handled by fetch_gh_docs — uses colon-separated help format
+    "uv": None,  # auto-discover from `uv --help`
+    "ruff": ["check", "format", "rule", "linter", "clean", "config"],
+    "git": [
+        "add",
+        "branch",
+        "checkout",
+        "commit",
+        "diff",
+        "fetch",
+        "log",
+        "merge",
+        "pull",
+        "push",
+        "rebase",
+        "remote",
+        "reset",
+        "restore",
+        "stash",
+        "status",
+        "switch",
+        "tag",
+    ],
+    "pytest": [],  # single-command tool; no subcommand dispatch
+}
+
 # ---------------------------------------------------------------------------
 # Help-output parser
 # ---------------------------------------------------------------------------
@@ -104,6 +135,32 @@ def parse_top_level_subcommands(help_text: str) -> list[tuple[str, str]]:
     import re
 
     pattern = re.compile(r"^\s{2,}([\w][\w-]*):\s{1,}(.+)$")
+    seen: set[str] = set()
+    results: list[tuple[str, str]] = []
+    for line in help_text.splitlines():
+        m = pattern.match(line)
+        if m:
+            name, desc = m.group(1).strip(), m.group(2).strip()
+            if name not in seen:
+                seen.add(name)
+                results.append((name, desc))
+    return results
+
+
+def parse_commands_section(help_text: str) -> list[tuple[str, str]]:
+    """Extract (subcommand, description) pairs from 'Commands:'-style help text.
+
+    Handles tools that use the format::
+
+        Commands:
+          run      Run a command or script
+          add      Add dependencies
+
+    Returns pairs in the order they appear, deduplicated.
+    """
+    import re
+
+    pattern = re.compile(r"^\s{2,}([\w][\w-]*)\s{2,}(.+)$")
     seen: set[str] = set()
     results: list[tuple[str, str]] = []
     for line in help_text.splitlines():
@@ -206,7 +263,10 @@ def _extract_examples(sections: dict[str, list[str]]) -> str:
 
 
 def build_subcommand_markdown(subcommand: str, help_text: str, fallback_desc: str) -> str:
-    """Convert raw ``gh <subcommand> --help`` output to structured Markdown."""
+    """Convert raw ``<tool> <subcommand> --help`` output to structured Markdown.
+
+    *subcommand* should be the full command string, e.g. ``gh issue`` or ``uv run``.
+    """
     sections = _split_sections(help_text)
     description = _extract_description(sections, fallback_desc)
     usage_block = _extract_usage(sections)
@@ -214,7 +274,7 @@ def build_subcommand_markdown(subcommand: str, help_text: str, fallback_desc: st
     examples_block = _extract_examples(sections)
 
     parts: list[str] = [
-        f"# gh {subcommand}",
+        f"# {subcommand}",
         f"> {description}",
         "",
     ]
@@ -223,7 +283,7 @@ def build_subcommand_markdown(subcommand: str, help_text: str, fallback_desc: st
     if usage_block:
         parts.append(usage_block)
     else:
-        parts.append(f"```\ngh {subcommand} [flags]\n```")
+        parts.append(f"```\n{subcommand} [flags]\n```")
     parts.append("")
 
     parts.append("## Flags")
@@ -319,7 +379,7 @@ def fetch_gh_docs(
             print(f"[fetch_toolchain_docs] Warning: 'gh {name} --help' failed — skipping.", file=sys.stderr)
             continue
 
-        md = build_subcommand_markdown(name, sub_help, desc)
+        md = build_subcommand_markdown(f"gh {name}", sub_help, desc)
         out_path = subcommand_dir / f"{name}.md"
         out_path.write_text(md, encoding="utf-8")
         per_subcommand_docs.append((name, desc, md))
@@ -378,6 +438,170 @@ def fetch_gh_docs(
     return 0
 
 
+def fetch_generic_tool_docs(
+    tool: str,
+    output_dir: Path,
+    *,
+    check: bool = False,
+    force: bool = False,
+    dry_run: bool = False,
+) -> int:
+    """Fetch help output for *tool* and write structured Markdown to *output_dir*.
+
+    Dispatches based on TOOL_SUBCOMMANDS[tool]:
+    - ``None`` → auto-discover subcommands from ``<tool> --help``
+    - ``[list]`` → use fixed subcommand list
+    - ``[]`` → single-command tool; write one aggregate file only
+
+    Returns the process exit code (0 = success, 1 = error).
+    """
+    if not shutil.which(tool):
+        print(f"[fetch_toolchain_docs] Error: '{tool}' not found on PATH.", file=sys.stderr)
+        return 1
+
+    fixed_subcommands = TOOL_SUBCOMMANDS.get(tool)
+    is_single_command = fixed_subcommands is not None and len(fixed_subcommands) == 0
+
+    # For single-command tools the aggregate file IS the main artifact.
+    subcommand_dir = output_dir / tool
+    index_path = subcommand_dir / "index.md"
+    aggregate_path = output_dir / f"{tool}.md"
+    freshness_path = aggregate_path if is_single_command else index_path
+
+    if check and not force and _cache_is_fresh(freshness_path):
+        print(f"[fetch_toolchain_docs] Cache is fresh (< {CACHE_MAX_AGE_HOURS}h old). Skipping.")
+        return 0
+
+    if is_single_command:
+        # --- Single-command tool (e.g. pytest) ---
+        help_text, rc = _run([tool, "--help"])
+        if rc != 0 and not help_text.strip():
+            print(
+                f"[fetch_toolchain_docs] Error: '{tool} --help' failed (exit {rc}).",
+                file=sys.stderr,
+            )
+            return 1
+
+        md = build_subcommand_markdown(tool, help_text, f"{tool} — {help_text.splitlines()[0].strip()}")
+        if dry_run:
+            print(f"[dry-run] Would write: {aggregate_path}")
+            return 0
+        output_dir.mkdir(parents=True, exist_ok=True)
+        aggregate_path.write_text(md, encoding="utf-8")
+        try:
+            display = aggregate_path.relative_to(REPO_ROOT)
+        except ValueError:
+            display = aggregate_path
+        print(f"  wrote {display}")
+        print(f"[fetch_toolchain_docs] Done — {tool} cached.")
+        return 0
+
+    # --- Subcommand-based tools ---
+    top_help, rc = _run([tool, "--help"])
+    if rc != 0 and not top_help.strip():
+        print(
+            f"[fetch_toolchain_docs] Error: '{tool} --help' failed (exit {rc}).",
+            file=sys.stderr,
+        )
+        return 1
+
+    if fixed_subcommands is None:
+        # Auto-discover
+        subcommand_list = parse_commands_section(top_help)
+    else:
+        # Fixed list — look up descriptions from auto-parsed top-level help
+        desc_map = dict(parse_commands_section(top_help))
+        subcommand_list = [(s, desc_map.get(s, s)) for s in fixed_subcommands]
+
+    if not subcommand_list:
+        print(
+            f"[fetch_toolchain_docs] Error: no subcommands found for '{tool}'.",
+            file=sys.stderr,
+        )
+        return 1
+
+    print(f"[fetch_toolchain_docs] Found {len(subcommand_list)} subcommands for {tool}.")
+
+    if dry_run:
+        print(f"[dry-run] Would create directory: {subcommand_dir}")
+        for name, desc in subcommand_list:
+            print(f"[dry-run] Would write: {subcommand_dir / name}.md  ({desc[:60]})")
+        print(f"[dry-run] Would write: {index_path}")
+        print(f"[dry-run] Would write: {aggregate_path}")
+        return 0
+
+    subcommand_dir.mkdir(parents=True, exist_ok=True)
+
+    per_subcommand_docs: list[tuple[str, str, str]] = []
+    for name, desc in subcommand_list:
+        sub_help, sub_rc = _run([tool, name, "--help"])
+        if sub_rc != 0 and not sub_help.strip():
+            print(
+                f"[fetch_toolchain_docs] Warning: '{tool} {name} --help' failed — skipping.",
+                file=sys.stderr,
+            )
+            continue
+        md = build_subcommand_markdown(f"{tool} {name}", sub_help, desc)
+        out_path = subcommand_dir / f"{name}.md"
+        out_path.write_text(md, encoding="utf-8")
+        per_subcommand_docs.append((name, desc, md))
+        try:
+            display = out_path.relative_to(REPO_ROOT)
+        except ValueError:
+            display = out_path
+        print(f"  wrote {display}")
+
+    if not per_subcommand_docs:
+        print(
+            f"[fetch_toolchain_docs] Error: no subcommand docs written for '{tool}'.",
+            file=sys.stderr,
+        )
+        return 1
+
+    now_str = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    # Build index.md
+    index_lines: list[str] = [
+        f"# {tool} — Command Index",
+        "",
+        f"_Generated {now_str} by `fetch_toolchain_docs.py`._",
+        "",
+        "| Subcommand | Description |",
+        "|------------|-------------|",
+    ]
+    for name, desc, _ in per_subcommand_docs:
+        index_lines.append(f"| [`{tool} {name}`]({name}.md) | {desc} |")
+    index_lines.append("")
+    index_path.write_text("\n".join(index_lines), encoding="utf-8")
+    try:
+        display_index = index_path.relative_to(REPO_ROOT)
+    except ValueError:
+        display_index = index_path
+    print(f"  wrote {display_index}")
+
+    # Build aggregate <tool>.md
+    agg_parts: list[str] = [
+        f"# {tool} CLI Reference",
+        "",
+        f"_Generated {now_str} by `fetch_toolchain_docs.py`._",
+        "",
+        "---",
+        "",
+    ]
+    for _, _, md in per_subcommand_docs:
+        agg_parts.append(md)
+        agg_parts.append("\n---\n")
+    aggregate_path.write_text("\n".join(agg_parts), encoding="utf-8")
+    try:
+        display_agg = aggregate_path.relative_to(REPO_ROOT)
+    except ValueError:
+        display_agg = aggregate_path
+    print(f"  wrote {display_agg}")
+
+    print(f"[fetch_toolchain_docs] Done — {len(per_subcommand_docs)} subcommands cached for {tool}.")
+    return 0
+
+
 # ---------------------------------------------------------------------------
 # Argument parser
 # ---------------------------------------------------------------------------
@@ -394,8 +618,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--tool",
         default="gh",
-        choices=["gh"],
-        help="CLI tool to document.  Currently only 'gh' is supported.  Default: gh.",
+        choices=list(TOOL_SUBCOMMANDS.keys()),
+        help="CLI tool to document.  Default: gh.",
     )
     parser.add_argument(
         "--output-dir",
@@ -432,17 +656,21 @@ def main() -> None:
 
     output_dir = Path(args.output_dir).expanduser().resolve()
 
-    # Currently only gh is supported; the --tool switch is reserved for future tools.
-    if args.tool != "gh":
-        print(f"[fetch_toolchain_docs] Unsupported tool: {args.tool!r}", file=sys.stderr)
-        sys.exit(1)
-
-    rc = fetch_gh_docs(
-        output_dir,
-        check=args.check,
-        force=args.force,
-        dry_run=args.dry_run,
-    )
+    if args.tool == "gh":
+        rc = fetch_gh_docs(
+            output_dir,
+            check=args.check,
+            force=args.force,
+            dry_run=args.dry_run,
+        )
+    else:
+        rc = fetch_generic_tool_docs(
+            args.tool,
+            output_dir,
+            check=args.check,
+            force=args.force,
+            dry_run=args.dry_run,
+        )
     sys.exit(rc)
 
 

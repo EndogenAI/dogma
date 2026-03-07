@@ -108,7 +108,7 @@ def test_parse_top_level_subcommands_returns_descriptions():
 
 
 def test_build_subcommand_markdown_structure():
-    md = ftd.build_subcommand_markdown("issue", SAMPLE_ISSUE_HELP, "Manage issues")
+    md = ftd.build_subcommand_markdown("gh issue", SAMPLE_ISSUE_HELP, "Manage issues")
     assert md.startswith("# gh issue")
     assert "## Usage" in md
     assert "## Flags" in md

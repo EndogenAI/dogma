@@ -70,6 +70,10 @@ Re-deriving command syntax or re-encountering known failure modes each session w
 | Tool | Reference |
 |------|-----------|
 | `gh` (GitHub CLI) | [`docs/toolchain/gh.md`](docs/toolchain/gh.md) |
+| `uv` (Python toolchain) | [`docs/toolchain/uv.md`](docs/toolchain/uv.md) |
+| `ruff` (lint/format) | [`docs/toolchain/ruff.md`](docs/toolchain/ruff.md) |
+| `git` | [`docs/toolchain/git.md`](docs/toolchain/git.md) |
+| `pytest` | [`docs/toolchain/pytest.md`](docs/toolchain/pytest.md) |
 
 To refresh the auto-generated raw reference cache: `uv run python scripts/fetch_toolchain_docs.py --check`
 
