@@ -21,6 +21,7 @@ directly to design thinking methodology and is the endogenic approach to all kno
 - [Multi-Workflow Orchestration](#multi-workflow-orchestration)
 - [Fleet Management Workflow](#fleet-management-workflow)
 - [Project Management Workflow](#project-management-workflow)
+- [PR Review Response Workflow](#pr-review-response-workflow)
 - [Gates Reference](#gates-reference)
 - [GitHub Issue Conventions](#github-issue-conventions)
 - [Human Review Checkpoints](#human-review-checkpoints)
@@ -657,6 +658,43 @@ Use the Nygard format (Title, Status, Context, Decision, Consequences), targetin
 | Before acting | Audit written to scratchpad; self-loop review done |
 | Before committing | All community health files present; changelog covers all merged PRs; issues labelled |
 | Commit | Routed through Review agent; commit type `chore(repo):` |
+
+---
+
+## PR Review Response Workflow
+
+Triggered when a PR receives a review with requested changes or inline comments. Tool: `scripts/pr_review_reply.py`.
+
+```
+Triage → Fix → Reply → Resolve → Commit → Re-request review
+```
+
+### Steps
+
+| Step | Action | Tool |
+|------|--------|------|
+| **Triage** | Read all review comments; classify as: Fix Now / Defer / Decline | `gh pr view --comments` |
+| **Fix** | Address each "Fix Now" item; route changes through **Review** agent | File tools |
+| **Reply** | Post a reply on each inline thread noting the fix commit SHA | `scripts/pr_review_reply.py` |
+| **Resolve** | Mark each addressed thread as resolved | `scripts/pr_review_reply.py --resolve` |
+| **Commit** | Route all fixes through **Review** then **GitHub** agents | Standard commit flow |
+| **Re-request review** | Re-request from the original reviewer once CI is green | `gh pr review --request <reviewer>` |
+
+### Rules
+
+- **Fix before replying** — do not reply until the fix is committed.
+- **One reply per thread** — reference the fix commit SHA.
+- **Defer/Decline requires a comment** — record reasoning before resolving.
+- **SHA pinning and non-blocking items** — resolve with "Deferred to issue #N"; open the tracking issue first.
+- **CI must be green before re-requesting review.**
+
+### Checkpoints
+
+| Gate | Condition |
+|------|-----------|
+| Before replying | Fix is committed and pushed |
+| Before resolving | Reply references commit SHA |
+| Before re-requesting review | CI is green |
 
 ---
 

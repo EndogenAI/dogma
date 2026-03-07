@@ -68,8 +68,8 @@ import argparse
 import json
 import re
 import sys
-import urllib.request
 import urllib.error
+import urllib.request
 from datetime import datetime, timezone
 from html.parser import HTMLParser
 from pathlib import Path
@@ -89,6 +89,7 @@ REQUEST_TIMEOUT = 15  # seconds
 # Slug generation
 # ---------------------------------------------------------------------------
 
+
 def make_slug(url: str) -> str:
     """Derive a filesystem-safe slug from a URL.
 
@@ -107,7 +108,18 @@ def make_slug(url: str) -> str:
 # HTML → Markdown distiller
 # ---------------------------------------------------------------------------
 
-_SKIP_TAGS = {"script", "style", "nav", "footer", "head", "noscript", "header", "aside", "form", "button"}
+_SKIP_TAGS = {
+    "script",
+    "style",
+    "nav",
+    "footer",
+    "head",
+    "noscript",
+    "header",
+    "aside",
+    "form",
+    "button",
+}
 _HEADING_MAP = {"h1": "#", "h2": "##", "h3": "###", "h4": "####", "h5": "#####", "h6": "######"}
 
 
@@ -297,6 +309,7 @@ def extract_markdown_and_title(html_bytes: bytes, encoding: str = "utf-8") -> tu
 # Manifest helpers
 # ---------------------------------------------------------------------------
 
+
 def load_manifest() -> dict:
     if MANIFEST_PATH.exists():
         try:
@@ -313,6 +326,7 @@ def save_manifest(manifest: dict) -> None:
 # ---------------------------------------------------------------------------
 # Core fetch logic
 # ---------------------------------------------------------------------------
+
 
 def fetch_url(url: str) -> tuple[bytes, str]:
     """Fetch *url* and return (body_bytes, content_type).
@@ -356,7 +370,8 @@ def cache_source(url: str, slug: str, dry_run: bool = False, force: bool = False
 
     # Warn on PDF
     if content_type == "application/pdf" or url.lower().endswith(".pdf"):
-        print(f"[fetch_source] Warning: {url} appears to be a PDF — binary content saved as-is, may not be readable text.", file=sys.stderr)
+        msg = f"[fetch_source] Warning: {url} appears to be a PDF — binary content saved as-is."
+        print(msg, file=sys.stderr)
 
     # Extract / distil content
     if "html" in content_type:
@@ -392,6 +407,7 @@ def cache_source(url: str, slug: str, dry_run: bool = False, force: bool = False
 # CLI handlers
 # ---------------------------------------------------------------------------
 
+
 def cmd_list() -> None:
     """Print a table of all cached sources."""
     manifest = load_manifest()
@@ -406,16 +422,16 @@ def cmd_list() -> None:
     col_date = 19  # YYYY-MM-DDTHH:MM:SS
     col_size = max(len("SIZE"), max(len(str(v.get("size_bytes", 0))) + 1 for v in sources.values()))
 
-    header = (
-        f"{'SLUG':<{col_slug}}  {'URL':<{col_url}}  {'FETCHED_AT':<{col_date}}  {'SIZE':>{col_size}}"
-    )
+    header = f"{'SLUG':<{col_slug}}  {'URL':<{col_url}}  {'FETCHED_AT':<{col_date}}  {'SIZE':>{col_size}}"
     sep = "-" * len(header)
     print(header)
     print(sep)
     for slug, meta in sorted(sources.items()):
         size_str = f"{meta.get('size_bytes', 0)}B"
+        url_str = meta['url']
+        date_str = meta.get('fetched_at', '')
         print(
-            f"{slug:<{col_slug}}  {meta['url']:<{col_url}}  {meta.get('fetched_at', ''):<{col_date}}  {size_str:>{col_size}}"
+            f"{slug:<{col_slug}}  {url_str:<{col_url}}  {date_str:<{col_date}}  {size_str:>{col_size}}"
         )
 
 
@@ -446,24 +462,34 @@ def cmd_path(url: str, slug: str) -> None:
 # Argument parser
 # ---------------------------------------------------------------------------
 
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="fetch_source.py",
         description="Fetch a URL into the local .cache/sources/ cache and maintain a manifest.",
     )
     parser.add_argument("url", nargs="?", help="URL to fetch and cache.")
-    parser.add_argument("--slug", default=None, help="Human-readable filename slug (auto-generated if not provided).")
-    parser.add_argument("--check", action="store_true", help="Exit 0 if cached, 2 if not. No fetch.")
+    parser.add_argument(
+        "--slug",
+        default=None,
+        help="Human-readable filename slug (auto-generated if not provided).",
+    )
+    parser.add_argument(
+        "--check", action="store_true", help="Exit 0 if cached, 2 if not. No fetch."
+    )
     parser.add_argument("--path", action="store_true", help="Print local path without re-fetching.")
     parser.add_argument("--force", action="store_true", help="Re-fetch even if already cached.")
     parser.add_argument("--list", action="store_true", help="List all cached sources.")
-    parser.add_argument("--dry-run", action="store_true", help="Show what would happen without fetching or writing.")
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Show what would happen without fetching or writing."
+    )
     return parser
 
 
 # ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
+
 
 def main() -> None:
     parser = build_parser()

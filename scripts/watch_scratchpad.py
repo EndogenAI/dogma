@@ -41,8 +41,8 @@ import time
 from pathlib import Path
 
 try:
-    from watchdog.observers import Observer
     from watchdog.events import FileSystemEventHandler
+    from watchdog.observers import Observer
 except ImportError:
     print(
         "ERROR: watchdog is not installed.\n"

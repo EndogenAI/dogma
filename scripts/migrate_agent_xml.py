@@ -96,30 +96,30 @@ MIN_BODY_LINES: int = 3
 
 DEFAULT_TAG_MAP: dict[str, str] = {
     # Persona / identity
-    "persona":             "persona",
-    "role":                "persona",
+    "persona": "persona",
+    "role": "persona",
     # Primary instructions
-    "instructions":        "instructions",
-    "behavior":            "instructions",
-    "behaviour":           "instructions",
-    "workflow":            "instructions",
+    "instructions": "instructions",
+    "behavior": "instructions",
+    "behaviour": "instructions",
+    "workflow": "instructions",
     # Context / environment
-    "context":             "context",
-    "environment":         "context",
-    "endogenous sources":  "context",
+    "context": "context",
+    "environment": "context",
+    "endogenous sources": "context",
     # Examples
-    "examples":            "examples",
+    "examples": "examples",
     # Tool guidance
-    "tool guidance":       "tools",
-    "tools":               "tools",
+    "tool guidance": "tools",
+    "tools": "tools",
     # Constraints / guardrails
-    "constraints":         "constraints",
-    "guardrails":          "constraints",
-    "scope":               "constraints",
+    "constraints": "constraints",
+    "guardrails": "constraints",
+    "scope": "constraints",
     # Output format / deliverables
-    "output format":       "output",
-    "response format":     "output",
-    "deliverables":        "output",
+    "output format": "output",
+    "response format": "output",
+    "deliverables": "output",
     "completion criteria": "output",
 }
 
@@ -138,7 +138,7 @@ def split_frontmatter(text: str) -> tuple[str, str]:
     """
     match = _FM_PATTERN.match(text)
     if match:
-        return match.group(0), text[match.end():]
+        return match.group(0), text[match.end() :]
     return "", text
 
 
@@ -151,6 +151,7 @@ def get_frontmatter_field(fm_text: str, key: str) -> str:
 # ---------------------------------------------------------------------------
 # Body section parsing
 # ---------------------------------------------------------------------------
+
 
 def split_into_sections(body: str) -> list[tuple[str, str]]:
     """Split body text into a list of (heading_line, content) pairs.
@@ -195,6 +196,7 @@ def non_empty_line_count(text: str) -> int:
 # Tag lookup
 # ---------------------------------------------------------------------------
 
+
 def lookup_tag(heading: str, tag_map: dict[str, str]) -> str | None:
     """Return the XML tag name for *heading*, or None if not in map."""
     heading_lower = heading.lstrip("#").strip().lower()
@@ -207,6 +209,7 @@ def lookup_tag(heading: str, tag_map: dict[str, str]) -> str | None:
 # ---------------------------------------------------------------------------
 # XML wrapping
 # ---------------------------------------------------------------------------
+
 
 def wrap_in_tag(tag: str, content: str) -> str:
     """Wrap *content* in <tag>...</tag>, preserving leading/trailing blank lines.
@@ -237,15 +240,14 @@ def validate_xml_wellformed(body: str, known_tags: set[str]) -> list[str]:
         open_count = body.count(f"<{tag}>")
         close_count = body.count(f"</{tag}>")
         if open_count != close_count:
-            errors.append(
-                f"Mismatched tag <{tag}>: {open_count} opening, {close_count} closing"
-            )
+            errors.append(f"Mismatched tag <{tag}>: {open_count} opening, {close_count} closing")
     return errors
 
 
 # ---------------------------------------------------------------------------
 # Migration logic
 # ---------------------------------------------------------------------------
+
 
 def migrate_text(original: str, tag_map: dict[str, str], min_body_lines: int) -> str:
     """Return the migrated text, or the original if no changes were needed."""
@@ -282,6 +284,7 @@ def migrate_text(original: str, tag_map: dict[str, str], min_body_lines: int) ->
 # ---------------------------------------------------------------------------
 # File-level processing
 # ---------------------------------------------------------------------------
+
 
 def process_file(
     path: Path,
@@ -329,8 +332,7 @@ def process_file(
     errors = validate_xml_wellformed(migrated_body, known_tags)
     if errors:
         print(
-            f"ERROR: well-formedness failure in {path}:\n"
-            + "\n".join(f"  {e}" for e in errors),
+            f"ERROR: well-formedness failure in {path}:\n" + "\n".join(f"  {e}" for e in errors),
             file=sys.stderr,
         )
         return None
@@ -355,6 +357,7 @@ def process_file(
 # ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
+
 
 def main() -> None:
     parser = argparse.ArgumentParser(

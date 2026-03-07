@@ -47,8 +47,18 @@ AGENTS_DIR = Path(__file__).parent.parent / ".github" / "agents"
 
 POSTURE_TOOLS: dict[str, list[str]] = {
     "readonly": ["search", "read", "changes", "usages"],
-    "creator":  ["search", "read", "edit", "web", "changes", "usages"],
-    "full":     ["search", "read", "edit", "write", "execute", "terminal", "usages", "changes", "agent"],
+    "creator": ["search", "read", "edit", "web", "changes", "usages"],
+    "full": [
+        "search",
+        "read",
+        "edit",
+        "write",
+        "execute",
+        "terminal",
+        "usages",
+        "changes",
+        "agent",
+    ],
 }
 
 TEMPLATE = """\
@@ -145,7 +155,10 @@ def validate_name_unique(name: str) -> None:
 def build_tools_yaml(posture: str) -> str:
     tools = POSTURE_TOOLS.get(posture)
     if tools is None:
-        print(f"ERROR: Unknown posture '{posture}'. Choose one of: readonly, creator, full", file=sys.stderr)
+        print(
+            f"ERROR: Unknown posture '{posture}'. Choose one of: readonly, creator, full",
+            file=sys.stderr,
+        )
         sys.exit(1)
     return "\n".join(f"  - {t}" for t in tools)
 
@@ -213,7 +226,9 @@ def main() -> None:
     print("Next steps:")
     print("  1. Fill in the TODO sections in the generated file.")
     print("  2. Update .github/agents/README.md with the new agent entry.")
-    print(f"  3. Verify handoff targets: grep -h '^name:' .github/agents/*.agent.md | sort | uniq -d")
+    print(
+        "  3. Verify handoff targets: grep -h '^name:' .github/agents/*.agent.md | sort | uniq -d"
+    )
     print("  4. Commit: feat(agents): add <name> agent")
 
 

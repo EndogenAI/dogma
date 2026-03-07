@@ -55,10 +55,10 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-
 # ---------------------------------------------------------------------------
 # Utilities
 # ---------------------------------------------------------------------------
+
 
 def find_repo_root() -> Path:
     """
@@ -160,16 +160,86 @@ def derive_posture(tools: list[str]) -> str:
 
 
 # Words to filter when extracting capability tags
-_CAP_SKIP = frozenset({
-    "a", "an", "the", "and", "or", "but", "in", "on", "at", "to", "for", "of",
-    "with", "by", "from", "as", "is", "are", "be", "was", "were", "been", "being",
-    "have", "has", "had", "do", "does", "did", "will", "would", "could", "should",
-    "may", "might", "must", "can", "all", "any", "each", "every", "both", "either",
-    "before", "after", "between", "into", "through", "during", "per", "via", "this",
-    "that", "these", "those", "it", "its", "they", "their", "them", "not", "no",
-    "if", "when", "while", "about", "vs", "end", "non", "also", "only", "just",
-    "use", "used", "always", "never",
-})
+_CAP_SKIP = frozenset(
+    {
+        "a",
+        "an",
+        "the",
+        "and",
+        "or",
+        "but",
+        "in",
+        "on",
+        "at",
+        "to",
+        "for",
+        "of",
+        "with",
+        "by",
+        "from",
+        "as",
+        "is",
+        "are",
+        "be",
+        "was",
+        "were",
+        "been",
+        "being",
+        "have",
+        "has",
+        "had",
+        "do",
+        "does",
+        "did",
+        "will",
+        "would",
+        "could",
+        "should",
+        "may",
+        "might",
+        "must",
+        "can",
+        "all",
+        "any",
+        "each",
+        "every",
+        "both",
+        "either",
+        "before",
+        "after",
+        "between",
+        "into",
+        "through",
+        "during",
+        "per",
+        "via",
+        "this",
+        "that",
+        "these",
+        "those",
+        "it",
+        "its",
+        "they",
+        "their",
+        "them",
+        "not",
+        "no",
+        "if",
+        "when",
+        "while",
+        "about",
+        "vs",
+        "end",
+        "non",
+        "also",
+        "only",
+        "just",
+        "use",
+        "used",
+        "always",
+        "never",
+    }
+)
 
 
 def derive_capabilities(description: str, max_tags: int = 5) -> list[str]:
@@ -259,6 +329,7 @@ def extract_handoff_agents(yaml_text: str) -> list[str]:
 # ---------------------------------------------------------------------------
 # Core processing
 # ---------------------------------------------------------------------------
+
 
 def process_agent_file(path: Path) -> dict | None:
     """
@@ -364,6 +435,7 @@ def format_markdown(manifest: dict) -> str:
 # ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
+
 
 def main() -> int:
     parser = argparse.ArgumentParser(

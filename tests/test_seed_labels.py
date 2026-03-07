@@ -23,12 +23,10 @@ Markers
 
 from __future__ import annotations
 
-import subprocess
-from pathlib import Path
-from unittest.mock import MagicMock
+from typing import TYPE_CHECKING
 
-import pytest
-import yaml
+if TYPE_CHECKING:
+    from pytest_mock import MockerFixture
 
 # ---------------------------------------------------------------------------
 # Import the module under test
@@ -36,12 +34,15 @@ import yaml
 # We import individual functions rather than running via __main__ so that we
 # can test each unit in isolation.
 import sys
-import os
+from pathlib import Path
+from unittest.mock import MagicMock
+
+import pytest
+import yaml
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 import seed_labels  # noqa: E402 — after sys.path manipulation
-
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -77,6 +78,7 @@ def full_labels_file(tmp_path: Path) -> Path:
 # ---------------------------------------------------------------------------
 # load_manifest tests
 # ---------------------------------------------------------------------------
+
 
 class TestLoadManifest:
     """Tests for seed_labels.load_manifest()."""
@@ -131,6 +133,7 @@ class TestLoadManifest:
 # ---------------------------------------------------------------------------
 # create_or_update_label tests
 # ---------------------------------------------------------------------------
+
 
 class TestCreateOrUpdateLabel:
     """Tests for seed_labels.create_or_update_label()."""
@@ -199,6 +202,7 @@ class TestCreateOrUpdateLabel:
 # delete_label tests
 # ---------------------------------------------------------------------------
 
+
 class TestDeleteLabel:
     """Tests for seed_labels.delete_label()."""
 
@@ -233,9 +237,7 @@ class TestDeleteLabel:
     ) -> None:
         """delete_label prints a skip warning (not raises) when label not found."""
         mock_run = mocker.patch("seed_labels.subprocess.run")
-        mock_run.return_value = MagicMock(
-            returncode=1, stderr="could not find label 'bug'"
-        )
+        mock_run.return_value = MagicMock(returncode=1, stderr="could not find label 'bug'")
 
         # Should NOT raise SystemExit
         seed_labels.delete_label("bug", repo=None, dry_run=False)
@@ -256,6 +258,7 @@ class TestDeleteLabel:
 # ---------------------------------------------------------------------------
 # main() integration tests (dry-run only — no real gh calls)
 # ---------------------------------------------------------------------------
+
 
 class TestMainDryRun:
     """Integration tests for seed_labels.main() in dry-run mode."""
@@ -280,16 +283,14 @@ class TestMainDryRun:
     ) -> None:
         """--dry-run --delete-legacy includes deletion lines for legacy labels."""
         mock_sp = mocker.patch("seed_labels.subprocess")
-        seed_labels.main(
-            ["--labels-file", str(labels_file), "--dry-run", "--delete-legacy"]
-        )
+        seed_labels.main(["--labels-file", str(labels_file), "--dry-run", "--delete-legacy"])
         mock_sp.run.assert_not_called()
 
         out = capsys.readouterr().out
         assert "bug" in out
         assert "documentation" in out
         # One DRY RUN line per legacy label
-        delete_lines = [l for l in out.splitlines() if "WOULD DELETE" in l]
+        delete_lines = [line for line in out.splitlines() if "WOULD DELETE" in line]
         assert len(delete_lines) == 2  # two legacy labels in MINIMAL_MANIFEST
 
     @pytest.mark.io
@@ -301,7 +302,7 @@ class TestMainDryRun:
         seed_labels.main(["--labels-file", str(labels_file), "--dry-run"])
 
         out = capsys.readouterr().out
-        delete_lines = [l for l in out.splitlines() if "WOULD DELETE" in l]
+        delete_lines = [line for line in out.splitlines() if "WOULD DELETE" in line]
         assert len(delete_lines) == 0
 
     @pytest.mark.io
@@ -329,6 +330,7 @@ class TestMainDryRun:
 # ---------------------------------------------------------------------------
 # gh auth verification tests
 # ---------------------------------------------------------------------------
+
 
 class TestVerifyGhAuth:
     """Tests for seed_labels._verify_gh_auth()."""

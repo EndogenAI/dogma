@@ -61,10 +61,10 @@ from typing import Any
 
 import yaml
 
-
 # ---------------------------------------------------------------------------
 # Argument parsing
 # ---------------------------------------------------------------------------
+
 
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
@@ -100,6 +100,7 @@ def _build_parser() -> argparse.ArgumentParser:
 # ---------------------------------------------------------------------------
 # YAML loading and validation
 # ---------------------------------------------------------------------------
+
 
 def load_manifest(path: Path) -> dict[str, Any]:
     """Load and minimally validate the labels YAML manifest.
@@ -140,6 +141,7 @@ def load_manifest(path: Path) -> dict[str, Any]:
 # gh CLI helpers
 # ---------------------------------------------------------------------------
 
+
 def _gh_repo_flag(repo: str | None) -> list[str]:
     """Return ['-R', 'owner/repo'] if repo is set, else []."""
     return ["-R", repo] if repo else []
@@ -156,8 +158,7 @@ def _verify_gh_auth(repo: str | None, dry_run: bool) -> None:
     )
     if result.returncode != 0:
         print(
-            "ERROR: gh auth check failed. Run `gh auth login` first.\n"
-            + result.stderr.strip(),
+            "ERROR: gh auth check failed. Run `gh auth login` first.\n" + result.stderr.strip(),
             file=sys.stderr,
         )
         sys.exit(1)
@@ -173,14 +174,19 @@ def create_or_update_label(
 ) -> None:
     """Create or update a single label via gh label create --force."""
     cmd = [
-        "gh", "label", "create", name,
-        "--color", color,
-        "--description", description,
+        "gh",
+        "label",
+        "create",
+        name,
+        "--color",
+        color,
+        "--description",
+        description,
         "--force",
     ] + _gh_repo_flag(repo)
 
     if dry_run:
-        print(f"[DRY RUN] WOULD CREATE/UPDATE  {name!r}  #{color}  \"{description}\"")
+        print(f'[DRY RUN] WOULD CREATE/UPDATE  {name!r}  #{color}  "{description}"')
         return
 
     result = subprocess.run(cmd, capture_output=True, text=True)
@@ -221,6 +227,7 @@ def delete_label(name: str, repo: str | None, *, dry_run: bool) -> None:
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+
 
 def main(argv: list[str] | None = None) -> None:
     parser = _build_parser()

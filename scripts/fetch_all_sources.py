@@ -75,6 +75,7 @@ _URL_RE = re.compile(r"https?://[^\s)\]>\"']+")
 # URL extraction
 # ---------------------------------------------------------------------------
 
+
 def extract_urls_from_open_research(path: Path) -> list[str]:
     """Extract https:// URLs from 'Resources to Survey' bullet lines in OPEN_RESEARCH.md."""
     if not path.exists():
@@ -144,6 +145,7 @@ def load_cached_urls() -> set[str]:
 # Slug generation (mirrors fetch_source.py — kept in sync manually)
 # ---------------------------------------------------------------------------
 
+
 def make_slug(url: str) -> str:
     slug = re.sub(r"^https?://", "", url)
     slug = re.sub(r"^www\.", "", slug)
@@ -156,6 +158,7 @@ def make_slug(url: str) -> str:
 # ---------------------------------------------------------------------------
 # Batch fetch
 # ---------------------------------------------------------------------------
+
 
 def fetch_all(urls: list[str], dry_run: bool = False, force: bool = False) -> tuple[int, int, int]:
     """Fetch all URLs. Returns (already_cached, newly_fetched, failed)."""
@@ -183,7 +186,6 @@ def fetch_all(urls: list[str], dry_run: bool = False, force: bool = False) -> tu
         )
         if result.returncode == 0:
             newly_fetched += 1
-            path = result.stdout.strip()
             print(f"  ✓  {slug}")
             if result.stderr.strip():
                 # Surface cache-hit notes but not errors
@@ -203,6 +205,7 @@ def fetch_all(urls: list[str], dry_run: bool = False, force: bool = False) -> tu
 # ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
+
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
@@ -275,7 +278,9 @@ def main() -> None:
 
     print()
     if args.dry_run:
-        print(f"=== Dry run complete: {cached} already cached, {len(unique_urls) - cached} would be fetched ===")
+        print(
+            f"=== Dry run complete: {cached} already cached, {len(unique_urls) - cached} would be fetched ==="
+        )
     else:
         print(f"=== Done: {cached} already cached, {fetched} newly fetched, {failed} failed ===")
 

@@ -20,9 +20,6 @@ jobs:
   test:
     name: Run pytest with coverage
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ['3.9', '3.10', '3.11', '3.12']
 
     steps:
       - uses: actions/checkout@v4
@@ -35,10 +32,10 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'
 
       - name: Install dependencies
-        run: uv pip install -e ".[dev]"
+        run: uv sync --extra dev
 
       - name: Run pytest with coverage
         run: uv run pytest tests/ --cov=scripts --cov-report=term-missing --cov-report=xml --cov-fail-under=80 -v
@@ -48,7 +45,7 @@ jobs:
         with:
           files: ./coverage.xml
           flags: unittests
-          name: codecov-${{ matrix.python-version }}
+          name: codecov-3.11
           fail_ci_if_error: false
 
   lint:
@@ -69,7 +66,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: uv pip install ".[dev]"
+        run: uv sync --extra dev
 
       - name: Run ruff
         run: uv run ruff check scripts/ tests/

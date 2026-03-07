@@ -81,8 +81,18 @@ LIVE_KEYWORDS = frozenset(["active", "escalation", "plan", "session"])
 
 # Headings whose content IS archived (compressed to one line)
 ARCHIVE_KEYWORDS = frozenset(
-    ["results", "complete", "completed", "summary", "archived",
-     "handoff", "done", "output", "sweep", "gaps"]
+    [
+        "results",
+        "complete",
+        "completed",
+        "summary",
+        "archived",
+        "handoff",
+        "done",
+        "output",
+        "sweep",
+        "gaps",
+    ]
 )
 
 # If line count is below this threshold, skip pruning unless --force
@@ -92,10 +102,13 @@ SIZE_GUARD = 2000
 def _git_branch() -> str:
     """Return current git branch slug (/ replaced with -), or 'default' on failure."""
     import subprocess
+
     try:
         result = subprocess.run(
             ["git", "rev-parse", "--abbrev-ref", "HEAD"],
-            capture_output=True, text=True, timeout=5,
+            capture_output=True,
+            text=True,
+            timeout=5,
         )
         if result.returncode == 0:
             return result.stdout.strip().replace("/", "-")
@@ -179,7 +192,7 @@ def detect_corruption(text: str) -> list[int]:
     """
     corrupted: list[int] = []
     for i, line in enumerate(text.splitlines(), start=1):
-        if re.search(r'(#{1,3} \S{3,})\1{2,}', line):
+        if re.search(r"(#{1,3} \S{3,})\1{2,}", line):
             corrupted.append(i)
     return corrupted
 
@@ -203,22 +216,26 @@ def parse_sections(text: str) -> list[dict]:
             level = len(h_match.group(1))
             heading = h_match.group(2).strip()
             if level == 2:
-                sections.append({
-                    "heading": current_heading,
-                    "level": current_level,
-                    "lines": current_lines,
-                })
+                sections.append(
+                    {
+                        "heading": current_heading,
+                        "level": current_level,
+                        "lines": current_lines,
+                    }
+                )
                 current_heading = heading
                 current_level = level
                 current_lines = []
                 continue
         current_lines.append(line)
 
-    sections.append({
-        "heading": current_heading,
-        "level": current_level,
-        "lines": current_lines,
-    })
+    sections.append(
+        {
+            "heading": current_heading,
+            "level": current_level,
+            "lines": current_lines,
+        }
+    )
     return sections
 
 
@@ -319,8 +336,10 @@ def prune(text: str, today: str) -> tuple[str, list[str], list[str]]:
     first_section_lines = sections[0]["lines"] if sections else []
     pre_content = "".join(first_section_lines)
 
-    pruned = pre_content + "".join(active_header_lines) + "".join(
-        p for p in output_parts[len(first_section_lines):]
+    pruned = (
+        pre_content
+        + "".join(active_header_lines)
+        + "".join(p for p in output_parts[len(first_section_lines) :])
     )
     return pruned, archived, kept
 

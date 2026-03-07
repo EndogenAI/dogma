@@ -68,14 +68,14 @@ from pathlib import Path
 # numbered ("## 1. Citation") and unnumbered ("## Citation") formats.
 # Format: (description, [accepted_keyword_variants...])
 D3_REQUIRED_SECTIONS: list[tuple[str, list[str]]] = [
-    ("Citation",                  ["citation"]),
-    ("Research Question",         ["research question"]),
-    ("Theoretical Framework",     ["theoretical"]),
-    ("Methodology",               ["methodology", "source type"]),
-    ("Key Claims",                ["key claims", "key findings"]),
-    ("Critical Assessment",       ["critical assessment"]),
-    ("Cross-Source Connections",  ["cross-source", "connection to other"]),
-    ("Project Relevance",         ["project relevance", "relevance to endogenai"]),
+    ("Citation", ["citation"]),
+    ("Research Question", ["research question"]),
+    ("Theoretical Framework", ["theoretical"]),
+    ("Methodology", ["methodology", "source type"]),
+    ("Key Claims", ["key claims", "key findings"]),
+    ("Critical Assessment", ["critical assessment"]),
+    ("Cross-Source Connections", ["cross-source", "connection to other"]),
+    ("Project Relevance", ["project relevance", "relevance to endogenai"]),
 ]
 
 D4_REQUIRED_HEADINGS: list[str] = [
@@ -89,7 +89,7 @@ D4_MIN_HEADING_COUNT = 4
 
 # Required frontmatter keys per document type.
 D3_REQUIRED_FRONTMATTER: list[str] = ["slug", "title", "cache_path"]
-D3_URL_KEYS: list[str] = ["url", "source_url"]   # accept either alias
+D3_URL_KEYS: list[str] = ["url", "source_url"]  # accept either alias
 
 D4_REQUIRED_FRONTMATTER: list[str] = ["title", "status"]
 
@@ -126,11 +126,7 @@ def extract_headings(text: str) -> list[str]:
     if fm_match:
         body_start = fm_match.end()
     body = text[body_start:]
-    return [
-        line.rstrip()
-        for line in body.splitlines()
-        if line.startswith("## ")
-    ]
+    return [line.rstrip() for line in body.splitlines() if line.startswith("## ")]
 
 
 def non_blank_line_count(text: str) -> int:
@@ -148,6 +144,7 @@ def is_d3(file_path: Path) -> bool:
 # Validation logic
 # ---------------------------------------------------------------------------
 
+
 def validate(file_path: Path, min_lines: int) -> tuple[bool, list[str]]:
     """Validate *file_path*. Returns (passed, list_of_failure_messages)."""
     failures: list[str] = []
@@ -164,8 +161,7 @@ def validate(file_path: Path, min_lines: int) -> tuple[bool, list[str]]:
     actual_lines = non_blank_line_count(text)
     if actual_lines < min_lines:
         failures.append(
-            f"Line count too low: {actual_lines} non-blank lines "
-            f"(minimum: {min_lines})"
+            f"Line count too low: {actual_lines} non-blank lines (minimum: {min_lines})"
         )
 
     # --- Check 3: required section headings ---
@@ -175,11 +171,7 @@ def validate(file_path: Path, min_lines: int) -> tuple[bool, list[str]]:
     if is_d3(file_path):
         heading_text_lower = [h.lower() for h in present_headings]
         for section_name, keywords in D3_REQUIRED_SECTIONS:
-            matched = any(
-                kw in h
-                for kw in keywords
-                for h in heading_text_lower
-            )
+            matched = any(kw in h for kw in keywords for h in heading_text_lower)
             if not matched:
                 failures.append(
                     f"Missing required D3 section '{section_name}' "
@@ -226,6 +218,7 @@ def validate(file_path: Path, min_lines: int) -> tuple[bool, list[str]]:
 # ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
+
 
 def main() -> None:
     parser = argparse.ArgumentParser(

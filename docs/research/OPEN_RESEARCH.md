@@ -4,7 +4,7 @@ This document tracks open research questions for the endogenic development metho
 Each section corresponds to a GitHub Issue that should be opened using the **Research** issue template.
 
 > **Action required**: Open each section below as a GitHub Issue in this repository using the
-> [Research template](../.github/ISSUE_TEMPLATE/research.md). Labels: `research`.
+> [Research template](../../.github/ISSUE_TEMPLATE/research.yml). Labels: `research`.
 
 ---
 

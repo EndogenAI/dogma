@@ -51,8 +51,10 @@ Usage examples:
     uv run python scripts/pr_review_reply.py --pr 15 --batch .tmp/review-replies.json
 
     # Get comment IDs and thread node IDs for a PR (useful for building the batch file)
-    gh api repos/<owner>/<repo>/pulls/<num>/comments --jq '.[] | {id: .id, path: .path, line: .line}'
-    gh api graphql -f query='{repository(owner:"<owner>",name:"<repo>"){pullRequest(number:<num>){reviewThreads(first:20){nodes{id isResolved comments(first:1){nodes{databaseId}}}}}}}'
+    # gh api repos/<owner>/<repo>/pulls/<num>/comments --jq '.[] | {id, path, line}'
+    # gh api graphql -f query='{repository(owner:"o",name:"r"){
+    #   pullRequest(number:N){reviewThreads(first:20){nodes{
+    #     id isResolved comments(first:1){nodes{databaseId}}}}}}}'
 """
 
 from __future__ import annotations
@@ -63,10 +65,10 @@ import subprocess
 import sys
 from pathlib import Path
 
-
 # ---------------------------------------------------------------------------
 # GitHub API helpers
 # ---------------------------------------------------------------------------
+
 
 def gh(*args: str, input: str | None = None) -> tuple[int, str, str]:
     """Run a `gh` CLI command. Returns (returncode, stdout, stderr)."""
@@ -92,9 +94,12 @@ def post_reply(repo: str, pr: int, comment_id: int, body: str) -> bool:
     """Post a reply to an inline review comment. Returns True on success."""
     payload = json.dumps({"in_reply_to": comment_id, "body": body})
     code, out, err = gh(
-        "api", f"repos/{repo}/pulls/{pr}/comments",
-        "--input", "-",
-        "--jq", ".id",
+        "api",
+        f"repos/{repo}/pulls/{pr}/comments",
+        "--input",
+        "-",
+        "--jq",
+        ".id",
         input=payload,
     )
     if code == 0:
@@ -106,20 +111,25 @@ def post_reply(repo: str, pr: int, comment_id: int, body: str) -> bool:
 
 def resolve_thread(thread_node_id: str) -> bool:
     """Resolve a PR review thread by its GraphQL node ID. Returns True on success."""
-    mutation = json.dumps({
-        "query": (
-            "mutation($id: ID!) {"
-            "  resolveReviewThread(input: {threadId: $id}) {"
-            "    thread { isResolved }"
-            "  }"
-            "}"
-        ),
-        "variables": {"id": thread_node_id},
-    })
+    mutation = json.dumps(
+        {
+            "query": (
+                "mutation($id: ID!) {"
+                "  resolveReviewThread(input: {threadId: $id}) {"
+                "    thread { isResolved }"
+                "  }"
+                "}"
+            ),
+            "variables": {"id": thread_node_id},
+        }
+    )
     code, out, err = gh(
-        "api", "graphql",
-        "--input", "-",
-        "--jq", ".data.resolveReviewThread.thread.isResolved",
+        "api",
+        "graphql",
+        "--input",
+        "-",
+        "--jq",
+        ".data.resolveReviewThread.thread.isResolved",
         input=mutation,
     )
     if code == 0 and out == "true":
@@ -135,6 +145,7 @@ def resolve_thread(thread_node_id: str) -> bool:
 # ---------------------------------------------------------------------------
 # Batch processing
 # ---------------------------------------------------------------------------
+
 
 def run_batch(ops: list[dict], repo: str, pr: int) -> int:
     """Execute a list of batch operations. Returns number of failures."""
@@ -171,6 +182,7 @@ def run_batch(ops: list[dict], repo: str, pr: int) -> int:
 # ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
+
 
 def main() -> None:
     parser = argparse.ArgumentParser(
