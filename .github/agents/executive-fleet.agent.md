@@ -178,19 +178,18 @@ A correct output from this agent looks like:
 ```markdown
 ## Fleet Compliance Audit — 2026-03-06
 
-| Agent File                        | Posture    | Missing Sections         | Status |
-|-----------------------------------|------------|--------------------------|--------|
-| executive-orchestrator.agent.md   | read+write | none                     | ✅ PASS |
-| executive-planner.agent.md        | read-only  | none                     | ✅ PASS |
-| executive-docs.agent.md           | read+write | ## Output Examples       | ❌ FAIL |
-| research-scout.agent.md           | read-only  | none                     | ✅ PASS |
-| github.agent.md                   | execute    | none                     | ✅ PASS |
+| Agent File                        | Posture    | Missing Sections | Status  |
+|-----------------------------------|------------|------------------|---------|
+| executive-orchestrator.agent.md   | read+write | none             | ✅ PASS |
+| executive-planner.agent.md        | read-only  | none             | ✅ PASS |
+| executive-docs.agent.md           | read+write | none             | ✅ PASS |
+| research-scout.agent.md           | read-only  | none             | ✅ PASS |
+| github.agent.md                   | execute    | none             | ✅ PASS |
 
-**Summary**: 1 of 5 agents audited have compliance failures.
-**Action taken**: Added ## Output Examples to executive-docs.agent.md.
+**Summary**: 0 of 5 agents audited have compliance failures. All pass.
 **README.md**: Verified — all 14 agent files listed, names match filesystem.
-**Review verdict**: Approved
-**Commit**: ghi9012 — fix(agents): add missing Output Examples section
+**Review verdict**: Approved — no action required
+**Commit**: (no commit needed — all agents compliant)
 ```
 
 ---

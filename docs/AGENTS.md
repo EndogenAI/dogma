@@ -29,6 +29,7 @@ documentation update. The sequence is:
 | Path | Purpose |
 |------|---------|
 | `docs/guides/` | Step-by-step guides for working with agents, scripts, and workflows |
+| `docs/plans/` | Committed workplan files for multi-phase sessions — one per session, tracked in git history |
 | `docs/research/` | Issue-specific synthesis documents; each closes a GitHub research issue |
 | `docs/research/sources/` | Per-source synthesis reports — one per surveyed source; committed to git |
 | `docs/research/OPEN_RESEARCH.md` | Open research queue, seed references, and gate deliverables |
