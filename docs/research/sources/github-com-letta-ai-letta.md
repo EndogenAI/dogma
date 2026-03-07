@@ -98,6 +98,11 @@ In summary: ADOPT the `memory_blocks` labeled-memory pattern as a conceptual mod
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
+- [Agentic Research Flows](../agentic-research-flows.md)
+- [Arxiv Context Engineering Survey](../sources/arxiv-context-engineering-survey.md)
+- [Arxiv Generative Agents](../sources/arxiv-generative-agents.md)
+- [Github Com Getzep Graphiti](../sources/github-com-getzep-graphiti.md)
 - [Github Com Mem0Ai Mem0](../sources/github-com-mem0ai-mem0.md)
 - [Github Com Topoteretes Cognee](../sources/github-com-topoteretes-cognee.md)
 - [Kdnuggets Com Docker Ai For Agent Builders Models Tools And ](../sources/kdnuggets-com-docker-ai-for-agent-builders-models-tools-and-.md)
+- [Tds Claude Skills Subagents](../sources/tds-claude-skills-subagents.md)

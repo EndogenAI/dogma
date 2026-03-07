@@ -102,7 +102,12 @@ The README is comprehensive but primarily promotional. Performance claims ("impr
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
+- [A2A Announcement](../sources/a2a-announcement.md)
+- [Agentic Research Flows](../agentic-research-flows.md)
+- [Arxiv Context Engineering Survey](../sources/arxiv-context-engineering-survey.md)
 - [Arxiv Org Html 2512 05470V1](../sources/arxiv-org-html-2512-05470v1.md)
 - [Freecodecamp Org News Build And Deploy Multi Agent Ai With P](../sources/freecodecamp-org-news-build-and-deploy-multi-agent-ai-with-p.md)
 - [Github Com Getzep Graphiti](../sources/github-com-getzep-graphiti.md)
+- [Github Com Letta Ai Letta](../sources/github-com-letta-ai-letta.md)
+- [Github Com Mem0Ai Mem0](../sources/github-com-mem0ai-mem0.md)
 - [Kdnuggets Com Docker Ai For Agent Builders Models Tools And ](../sources/kdnuggets-com-docker-ai-for-agent-builders-models-tools-and-.md)

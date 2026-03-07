@@ -219,3 +219,12 @@ EndogenAI's multi-agent handoff pattern (Executive → Scout → Synthesizer →
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
+- [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
+- [Code Visualstudio Com Api Extension Guides Chat](../sources/code-visualstudio-com-api-extension-guides-chat.md)
+- [Cookbook Research Lead Agent](../sources/cookbook-research-lead-agent.md)
+- [Cookbook Research Subagent](../sources/cookbook-research-subagent.md)
+- [Microsoft Github Io Autogen Stable User Guide Agentchat User](../sources/microsoft-github-io-autogen-stable-user-guide-agentchat-user.md)
+- [Platform Claude Com Docs En Build With Claude Prompt Enginee](../sources/platform-claude-com-docs-en-build-with-claude-prompt-enginee.md)
+- [Platform Openai Com Docs Api Reference Assistants](../sources/platform-openai-com-docs-api-reference-assistants.md)
+- [Python Langchain Com Docs Concepts Agents](../sources/python-langchain-com-docs-concepts-agents.md)
+- [Xml Agent Instruction Format](../xml-agent-instruction-format.md)

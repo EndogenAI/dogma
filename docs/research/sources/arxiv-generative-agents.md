@@ -102,7 +102,11 @@ The paper's ablation result — that observation, planning, and reflection are e
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
+- [Agent Fleet Design Patterns](../agent-fleet-design-patterns.md)
+- [Agentic Research Flows](../agentic-research-flows.md)
 - [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
+- [Arxiv Org Html 2512 05470V1](../sources/arxiv-org-html-2512-05470v1.md)
+- [Arxiv React](../sources/arxiv-react.md)
 - [Freecodecamp Org News Build And Deploy Multi Agent Ai With P](../sources/freecodecamp-org-news-build-and-deploy-multi-agent-ai-with-p.md)
 - [Github Com Getzep Graphiti](../sources/github-com-getzep-graphiti.md)
 - [Github Com Letta Ai Letta](../sources/github-com-letta-ai-letta.md)

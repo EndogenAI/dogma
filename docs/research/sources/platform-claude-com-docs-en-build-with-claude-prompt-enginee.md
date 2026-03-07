@@ -156,3 +156,14 @@ This preserves the documentation legibility mandated by the Documentation-First 
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
+- [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
+- [Claude Code Agent Teams](../sources/claude-code-agent-teams.md)
+- [Claude Sdk Subagents](../sources/claude-sdk-subagents.md)
+- [Code Visualstudio Com Api Extension Guides Chat](../sources/code-visualstudio-com-api-extension-guides-chat.md)
+- [Code Visualstudio Com Docs Copilot Customization Custom Agen](../sources/code-visualstudio-com-docs-copilot-customization-custom-agen.md)
+- [Cookbook Research Lead Agent](../sources/cookbook-research-lead-agent.md)
+- [Cookbook Research Subagent](../sources/cookbook-research-subagent.md)
+- [Microsoft Github Io Autogen Stable User Guide Agentchat User](../sources/microsoft-github-io-autogen-stable-user-guide-agentchat-user.md)
+- [Platform Claude Com Docs En Agents And Tools Agent Skills Ov](../sources/platform-claude-com-docs-en-agents-and-tools-agent-skills-ov.md)
+- [Platform Openai Com Docs Guides Prompt Engineering](../sources/platform-openai-com-docs-guides-prompt-engineering.md)
+- [Xml Agent Instruction Format](../xml-agent-instruction-format.md)

@@ -149,3 +149,7 @@ The source's warning about bloated tool sets with overlapping purposes is direct
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
+- [Agent Fleet Design Patterns](../agent-fleet-design-patterns.md)
+- [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
+- [Anthropic Com Engineering Multi Agent Research System](../sources/anthropic-com-engineering-multi-agent-research-system.md)
+- [Arxiv Context Engineering Survey](../sources/arxiv-context-engineering-survey.md)

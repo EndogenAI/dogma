@@ -190,7 +190,10 @@ steps.
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
+- [Agent Fleet Design Patterns](../agent-fleet-design-patterns.md)
 - [Agentic Research Flows](../agentic-research-flows.md)
+- [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
+- [Anthropic Com Engineering Effective Context Engineering For ](../sources/anthropic-com-engineering-effective-context-engineering-for-.md)
 - [Arxiv Org Html 2512 05470V1](../sources/arxiv-org-html-2512-05470v1.md)
 - [Arxiv React](../sources/arxiv-react.md)
 - [Claude Code Agent Teams](../sources/claude-code-agent-teams.md)
@@ -199,3 +202,5 @@ steps.
 - [Github Com Mem0Ai Mem0](../sources/github-com-mem0ai-mem0.md)
 - [Github Com Topoteretes Cognee](../sources/github-com-topoteretes-cognee.md)
 - [Kdnuggets Com Docker Ai For Agent Builders Models Tools And ](../sources/kdnuggets-com-docker-ai-for-agent-builders-models-tools-and-.md)
+- [Platform Openai Com Docs Guides Prompt Engineering](../sources/platform-openai-com-docs-guides-prompt-engineering.md)
+- [Python Langchain Com Docs Concepts Agents](../sources/python-langchain-com-docs-concepts-agents.md)

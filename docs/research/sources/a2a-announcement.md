@@ -98,7 +98,13 @@ This is a launch announcement, not a peer-reviewed paper or empirical study. All
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
+- [A2Aproject Github Io A2A Latest Specification](../sources/a2aproject-github-io-A2A-latest-specification.md)
+- [Agent Fleet Design Patterns](../agent-fleet-design-patterns.md)
 - [Agentic Research Flows](../agentic-research-flows.md)
+- [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
+- [Arxiv Org Html 2512 05470V1](../sources/arxiv-org-html-2512-05470v1.md)
+- [Arxiv React](../sources/arxiv-react.md)
+- [Claude Sdk Subagents](../sources/claude-sdk-subagents.md)
 - [Freecodecamp Org News Build And Deploy Multi Agent Ai With P](../sources/freecodecamp-org-news-build-and-deploy-multi-agent-ai-with-p.md)
 - [Github Com Getzep Graphiti](../sources/github-com-getzep-graphiti.md)
 - [Github Com Topoteretes Cognee](../sources/github-com-topoteretes-cognee.md)

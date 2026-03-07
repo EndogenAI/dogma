@@ -117,6 +117,7 @@ The homepage alone cannot close D1 (verified step-by-step setup guide), D2 (mode
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
+- [Agentic Research Flows](../agentic-research-flows.md)
 - [Kdnuggets Com Docker Ai For Agent Builders Models Tools And ](../sources/kdnuggets-com-docker-ai-for-agent-builders-models-tools-and-.md)
 - [Ollama Ai](../sources/ollama-ai.md)
 - [Xda Developers Com Youre Using Local Llm Wrong If Youre Prom](../sources/xda-developers-com-youre-using-local-llm-wrong-if-youre-prom.md)

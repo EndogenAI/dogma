@@ -99,5 +99,13 @@ The article's treatment of the feedback-loop upgrade path — adding a quality-e
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
 - [A2A Announcement](../sources/a2a-announcement.md)
+- [Agentic Research Flows](../agentic-research-flows.md)
+- [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
+- [Arxiv Generative Agents](../sources/arxiv-generative-agents.md)
+- [Arxiv React](../sources/arxiv-react.md)
+- [Cookbook Research Lead Agent](../sources/cookbook-research-lead-agent.md)
+- [Github Com Getzep Graphiti](../sources/github-com-getzep-graphiti.md)
+- [Github Com Topoteretes Cognee](../sources/github-com-topoteretes-cognee.md)
 - [Kdnuggets Com Docker Ai For Agent Builders Models Tools And ](../sources/kdnuggets-com-docker-ai-for-agent-builders-models-tools-and-.md)
 - [Opensourceprojects Dev Post E7415816 A348 4936 B8Bd 0C651C4A](../sources/opensourceprojects-dev-post-e7415816-a348-4936-b8bd-0c651c4a.md)
+- [Tds Claude Skills Subagents](../sources/tds-claude-skills-subagents.md)

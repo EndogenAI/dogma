@@ -132,3 +132,7 @@ One important gap this source exposes: the Language Model API (a separate layer 
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
+- [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
+- [Code Visualstudio Com Docs Copilot Customization Custom Agen](../sources/code-visualstudio-com-docs-copilot-customization-custom-agen.md)
+- [Platform Claude Com Docs En Build With Claude Prompt Enginee](../sources/platform-claude-com-docs-en-build-with-claude-prompt-enginee.md)
+- [Xml Agent Instruction Format](../xml-agent-instruction-format.md)

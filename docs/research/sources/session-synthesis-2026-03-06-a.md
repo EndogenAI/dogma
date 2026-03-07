@@ -39,3 +39,9 @@ The quasi-encapsulated sub-fleet model — sub-agents default to returning to th
 
 ### On token economics
 The fetch_before_act posture, scratchpad pre-warming, per-source synthesis isolation, and the agent manifest generator collectively point toward a clear principle: token cost scales with re-discovery. Every time an agent has to re-discover something that was already known — re-fetch a URL, re-read a source, re-frame a research question — tokens are wasted. The programmatic-first principle is ultimately a token economics principle.
+
+<!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
+- [Agentic Research Flows](../agentic-research-flows.md)
+
+<!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
+- [Agentic Research Flows](../agentic-research-flows.md)

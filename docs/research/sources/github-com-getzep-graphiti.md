@@ -103,7 +103,11 @@ The README is a well-structured, technically detailed repository landing page. I
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
 - [A2A Announcement](../sources/a2a-announcement.md)
+- [Agentic Research Flows](../agentic-research-flows.md)
+- [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
+- [Arxiv Generative Agents](../sources/arxiv-generative-agents.md)
 - [Arxiv Org Html 2512 05470V1](../sources/arxiv-org-html-2512-05470v1.md)
+- [Arxiv React](../sources/arxiv-react.md)
 - [Freecodecamp Org News Build And Deploy Multi Agent Ai With P](../sources/freecodecamp-org-news-build-and-deploy-multi-agent-ai-with-p.md)
 - [Github Com Letta Ai Letta](../sources/github-com-letta-ai-letta.md)
 - [Github Com Mem0Ai Mem0](../sources/github-com-mem0ai-mem0.md)

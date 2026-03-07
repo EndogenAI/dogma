@@ -99,7 +99,10 @@ The architectural design is coherent and principled, grounded in well-establishe
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
 - [A2A Announcement](../sources/a2a-announcement.md)
+- [Agent Fleet Design Patterns](../agent-fleet-design-patterns.md)
 - [Agentic Research Flows](../agentic-research-flows.md)
+- [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
+- [Arxiv Context Engineering Survey](../sources/arxiv-context-engineering-survey.md)
 - [Arxiv Generative Agents](../sources/arxiv-generative-agents.md)
 - [Github Com Getzep Graphiti](../sources/github-com-getzep-graphiti.md)
 - [Github Com Topoteretes Cognee](../sources/github-com-topoteretes-cognee.md)

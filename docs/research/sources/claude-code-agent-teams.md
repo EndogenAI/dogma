@@ -98,5 +98,11 @@ The `TeammateIdle` and `TaskCompleted` hooks — programmatic gates that can ret
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
+- [Agent Fleet Design Patterns](../agent-fleet-design-patterns.md)
+- [Agentic Research Flows](../agentic-research-flows.md)
+- [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
+- [Arxiv Context Engineering Survey](../sources/arxiv-context-engineering-survey.md)
 - [Claude Sdk Subagents](../sources/claude-sdk-subagents.md)
+- [Platform Claude Com Docs En Build With Claude Prompt Enginee](../sources/platform-claude-com-docs-en-build-with-claude-prompt-enginee.md)
 - [Tds Claude Skills Subagents](../sources/tds-claude-skills-subagents.md)
+- [Xml Agent Instruction Format](../xml-agent-instruction-format.md)

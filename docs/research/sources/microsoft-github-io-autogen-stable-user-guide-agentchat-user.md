@@ -113,3 +113,8 @@ The `reflect_on_tool_use=True` constructor flag (Claim 5) is also notable for [`
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
+- [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
+- [Code Visualstudio Com Docs Copilot Customization Custom Agen](../sources/code-visualstudio-com-docs-copilot-customization-custom-agen.md)
+- [Platform Claude Com Docs En Build With Claude Prompt Enginee](../sources/platform-claude-com-docs-en-build-with-claude-prompt-enginee.md)
+- [Python Langchain Com Docs Concepts Agents](../sources/python-langchain-com-docs-concepts-agents.md)
+- [Xml Agent Instruction Format](../xml-agent-instruction-format.md)

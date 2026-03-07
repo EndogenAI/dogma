@@ -107,7 +107,12 @@ The article is a practitioner's editorial, not a peer-reviewed study. Its token-
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
+- [A2A Announcement](../sources/a2a-announcement.md)
+- [Agent Fleet Design Patterns](../agent-fleet-design-patterns.md)
 - [Agentic Research Flows](../agentic-research-flows.md)
 - [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
+- [Claude Code Agent Teams](../sources/claude-code-agent-teams.md)
+- [Claude Sdk Subagents](../sources/claude-sdk-subagents.md)
 - [Freecodecamp Org News Build And Deploy Multi Agent Ai With P](../sources/freecodecamp-org-news-build-and-deploy-multi-agent-ai-with-p.md)
 - [Github Com Letta Ai Letta](../sources/github-com-letta-ai-letta.md)
+- [Xml Agent Instruction Format](../xml-agent-instruction-format.md)

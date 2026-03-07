@@ -124,3 +124,8 @@ The LangChain three-tier architecture (Claim 3) also has a structural parallel t
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
+- [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
+- [Arxiv Context Engineering Survey](../sources/arxiv-context-engineering-survey.md)
+- [Code Visualstudio Com Docs Copilot Customization Custom Agen](../sources/code-visualstudio-com-docs-copilot-customization-custom-agen.md)
+- [Microsoft Github Io Autogen Stable User Guide Agentchat User](../sources/microsoft-github-io-autogen-stable-user-guide-agentchat-user.md)
+- [Xml Agent Instruction Format](../xml-agent-instruction-format.md)

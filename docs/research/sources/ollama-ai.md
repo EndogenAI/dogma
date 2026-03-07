@@ -121,5 +121,7 @@ The `ollama serve` startup pattern (relevant to D1 of topic #3 — documenting t
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
+- [Agentic Research Flows](../agentic-research-flows.md)
 - [Kdnuggets Com Docker Ai For Agent Builders Models Tools And ](../sources/kdnuggets-com-docker-ai-for-agent-builders-models-tools-and-.md)
+- [Lmstudio Ai](../sources/lmstudio-ai.md)
 - [Xda Developers Com Youre Using Local Llm Wrong If Youre Prom](../sources/xda-developers-com-youre-using-local-llm-wrong-if-youre-prom.md)

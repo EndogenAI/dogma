@@ -99,8 +99,13 @@ Finally, the few-shot efficiency finding — ReAct achieves large margins over t
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
 - [A2A Announcement](../sources/a2a-announcement.md)
+- [Agent Fleet Design Patterns](../agent-fleet-design-patterns.md)
+- [Agentic Research Flows](../agentic-research-flows.md)
 - [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
+- [Arxiv Context Engineering Survey](../sources/arxiv-context-engineering-survey.md)
 - [Arxiv Generative Agents](../sources/arxiv-generative-agents.md)
+- [Claude Sdk Subagents](../sources/claude-sdk-subagents.md)
+- [Cookbook Research Lead Agent](../sources/cookbook-research-lead-agent.md)
 - [Freecodecamp Org News Build And Deploy Multi Agent Ai With P](../sources/freecodecamp-org-news-build-and-deploy-multi-agent-ai-with-p.md)
 - [Github Com Getzep Graphiti](../sources/github-com-getzep-graphiti.md)
 - [Xda Developers Com Youre Using Local Llm Wrong If Youre Prom](../sources/xda-developers-com-youre-using-local-llm-wrong-if-youre-prom.md)

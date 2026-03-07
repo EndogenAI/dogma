@@ -105,3 +105,9 @@ This source is a single practitioner-authored prompt artefact, not a peer-review
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
+- [Agent Fleet Design Patterns](../agent-fleet-design-patterns.md)
+- [Agentic Research Flows](../agentic-research-flows.md)
+- [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
+- [Cookbook Research Lead Agent](../sources/cookbook-research-lead-agent.md)
+- [Cookbook Research Subagent](../sources/cookbook-research-subagent.md)
+- [Xml Agent Instruction Format](../xml-agent-instruction-format.md)

@@ -174,3 +174,9 @@ For EndogenAI: the current multi-agent pattern in `.github/agents/` allows agent
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
+- [A2Aproject Github Io A2A Latest Specification](../sources/a2aproject-github-io-A2A-latest-specification.md)
+- [Agent Fleet Design Patterns](../agent-fleet-design-patterns.md)
+- [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
+- [Anthropic Com Engineering Effective Context Engineering For ](../sources/anthropic-com-engineering-effective-context-engineering-for-.md)
+- [Cookbook Research Lead Agent](../sources/cookbook-research-lead-agent.md)
+- [Cookbook Research Subagent](../sources/cookbook-research-subagent.md)

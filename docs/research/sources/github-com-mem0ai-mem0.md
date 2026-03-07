@@ -105,5 +105,9 @@ The cached source is the GitHub repository landing page and README — it is not
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
+- [Agentic Research Flows](../agentic-research-flows.md)
+- [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
+- [Arxiv Context Engineering Survey](../sources/arxiv-context-engineering-survey.md)
 - [Github Com Getzep Graphiti](../sources/github-com-getzep-graphiti.md)
+- [Github Com Letta Ai Letta](../sources/github-com-letta-ai-letta.md)
 - [Github Com Topoteretes Cognee](../sources/github-com-topoteretes-cognee.md)

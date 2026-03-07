@@ -175,3 +175,7 @@ For `.github/agents/AGENTS.md` and the `scaffold_agent.py` script, the `tools` f
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
+- [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
+- [Claude Sdk Subagents](../sources/claude-sdk-subagents.md)
+- [Platform Claude Com Docs En Agents And Tools Agent Skills Ov](../sources/platform-claude-com-docs-en-agents-and-tools-agent-skills-ov.md)
+- [Xml Agent Instruction Format](../xml-agent-instruction-format.md)
