@@ -204,17 +204,38 @@ Minimal posture extends beyond agents to all design decisions:
 - Context: load only what the task requires
 - Handoff information: include enough for the next agent to succeed, nothing more
 
+### Testing-First
+
+**Reinforces**: Algorithms Before Tokens + Self-Governance & Guardrails
+
+> Every script, agent, and automation must have automated tests before it ships. Tests prevent re-discovery of bugs; tests encode known-good behavior.
+
+Automated testing is not optional — it is a constraint on the entire system:
+- **Tests encode known-good behavior**: A test suite is a living specification of what a script does. Future developers (human or agent) read tests before modifying code.
+- **Tests prevent regression**: When a script is modified, tests catch breakage immediately. This is cheaper than catching bugs in production.
+- **Tests reduce review burden**: Code review moves from "does this look right?" (slow, error-prone) to "do tests pass?" (deterministic).
+- **Tests are executable documentation**: A test shows exactly how a script is invoked, what inputs are valid, what outputs are expected.
+- **Tests reduce token burn in sessions**: If a script is broken, an agent discovers it via test failure, not by re-discovering the bug interactively.
+
+Every script in `scripts/` must have:
+- Unit tests covering happy paths and error cases
+- Integration tests (marked `@pytest.mark.integration`) for network/file I/O operations
+- At least 80% code coverage (measured by `pytest-cov`)
+- Exit code validation (every code path has a documented exit code)
+
+See [`docs/guides/testing.md`](docs/guides/testing.md) for testing practices and procedures.
+
 ---
 
 ## Ethical Values
 
 These values underpin all decisions and encode our commitment to responsible AI development. They are not aspirational — they are enforced through documentation, scripts, and governance.
 
-- **Transparency**: All decisions are documented and traceable to a principle or axiom. No hidden heuristics or unexplained choices.
-- **Human Oversight**: Agents operate under governance and gates. Humans make strategic decisions; the system executes and surfaces information for those decisions. No unconstrained autonomy.
-- **Reproducibility**: Outputs are deterministic, reviewable, and auditable. A decision made on day one can be reproduced on day 100 with the same inputs.
-- **Sustainability**: Minimize computational cost, environmental impact, and token burn. The finite cost of local inference is a feature, not a bug — it incentivizes efficient design.
-- **Determinism**: Reduce randomness through encoding, scripts, and established practices. Vagueness is expensive; clarity is cheap.
+- **Transparency**: All decisions are documented and traceable to a principle or axiom. No hidden heuristics or unexplained choices. Tests serve as transparent specification of behavior.
+- **Human Oversight**: Agents operate under governance and gates. Humans make strategic decisions; the system executes and surfaces information for those decisions. No unconstrained autonomy. Tests validate that governance is enforced.
+- **Reproducibility**: Outputs are deterministic, reviewable, and auditable. A decision made on day one can be reproduced on day 100 with the same inputs. Tests ensure reproducibility across sessions.
+- **Sustainability**: Minimize computational cost, environmental impact, and token burn. The finite cost of local inference is a feature, not a bug — it incentivizes efficient design. Tests reduce debugging costs by catching errors early.
+- **Determinism**: Reduce randomness through encoding, scripts, and established practices. Vagueness is expensive; clarity is cheap. Tests enforce clarity at the API level.
 
 ---
 

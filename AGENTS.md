@@ -61,6 +61,45 @@ The scratchpad auto-annotator (`scripts/watch_scratchpad.py`) exemplifies this p
 
 ---
 
+## Testing-First Requirement for Scripts
+
+**Every script committed to `scripts/` must have automated tests before it ships.**
+
+Tests are not optional. They are:
+- **Specification**: Tests define what the script does (inputs, outputs, error cases)
+- **Regression prevention**: If a script breaks, tests catch it immediately (not in production)
+- **Token-saving**: If a script is broken, agents discover it via test failure (fast) not re-discovery (expensive)
+
+### Agent Responsibility
+
+When creating or modifying a script:
+
+1. **Write the script** with a docstring (purpose, inputs, outputs, usage)
+2. **Write tests** covering:
+   - Happy path (normal operation)
+   - Error cases (invalid args, missing files, network failure)
+   - Exit codes (every `sys.exit(N)` is tested)
+   - Idempotency (where applicable)
+3. **Verify coverage**: `uv run pytest tests/test_<script_name>.py --cov=scripts`
+   - Minimum: 80% coverage
+   - Every code path should have a test
+4. **Document in tests**: Use test docstrings to specify behavior
+
+If a script is modified and tests fail, the script is not ready to commit. Fix the script or update tests (if the changed behavior is intentional).
+
+For detailed testing guidance, see [`docs/guides/testing.md`](docs/guides/testing.md).
+
+### Test Markers
+
+Scripts may take time to test. Mark tests by category:
+- `@pytest.mark.io` — Tests that perform file I/O
+- `@pytest.mark.integration` — Tests that hit network or subprocess calls
+- `@pytest.mark.slow` — Tests that take >1 second
+
+This allows fast local development: `uv run pytest tests/ -m "not slow and not integration"`
+
+---
+
 ## Python Tooling
 
 **Always use `uv run` — never invoke Python or package executables directly.**

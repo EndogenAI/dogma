@@ -25,11 +25,55 @@ scripts/
 
 ---
 
+## Testing Scripts
+
+Every script in this directory has automated tests in `tests/`. Tests are a first-class artifact, not an afterthought.
+
+**Run all tests**:
+```bash
+uv run pytest tests/ -v
+```
+
+**Run with coverage**:
+```bash
+uv run pytest tests/ --cov=scripts --cov-report=html
+open htmlcov/index.html
+```
+
+**Run only fast tests** (skip slow + integration):
+```bash
+uv run pytest tests/ -m "not slow and not integration" -v
+```
+
+**Run tests for a single script**:
+```bash
+uv run pytest tests/test_prune_scratchpad.py -v
+```
+
+**Run a specific test**:
+```bash
+uv run pytest tests/test_prune_scratchpad.py::TestPruneScrapbookAnnotation::test_annotate_is_idempotent -v
+```
+
+Tests enforce:
+- **Happy path**: Script works with valid inputs
+- **Error cases**: Invalid inputs produce clear errors (correct exit codes)
+- **Idempotency**: Running a script twice doesn't break things
+- **Exit codes**: Every code path has a documented exit code
+
+Before committing any script changes, verify: `uv run pytest tests/test_<script_name>.py --cov=scripts`
+
+For detailed testing guidance, see [`docs/guides/testing.md`](../docs/guides/testing.md).
+
+---
+
 ## scripts/prune_scratchpad.py
 
 **Purpose**: Manage cross-agent scratchpad session files in `.tmp/<branch>/<date>.md`.
 Initialises today's session file, annotates H2 headings with line ranges, and prunes
 completed sections to one-line archive stubs when needed.
+
+**Tests**: [`tests/test_prune_scratchpad.py`](../tests/test_prune_scratchpad.py)
 
 **Usage**:
 
