@@ -627,10 +627,11 @@ Orient → Audit (issues, changelog, community health) → Triage → Update →
 | Surface | Tool | Cadence |
 |---------|------|---------|
 | Issue triage | `gh issue` | Per session |
+| GitHub Project (Backlog) | `gh project` | Per session |
 | Milestone management | `gh milestone` | Per release |
 | Changelog | `CHANGELOG.md` | Per merge to `main` |
 | Community health files | `README.md`, `CONTRIBUTING.md`, etc. | Per quarter |
-| Label taxonomy | `gh label` | As fleet evolves |
+| Label taxonomy | `uv run python scripts/seed_labels.py` | As taxonomy evolves |
 | Release notes | `gh release` | Per tag |
 
 ### Key Rules

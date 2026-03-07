@@ -75,7 +75,7 @@ This repo uses colon-prefixed label namespaces. All four namespaces are used tog
 
 **Rule**: Every issue should have at minimum one `type:` label and one `priority:` label. `area:` labels are auto-applied via the labeler workflow. `status:` labels are applied manually as issues move through the workflow.
 
-To seed the full label taxonomy, run `scripts/seed_labels.py` (creates all labels idempotently from `data/labels.yml`).
+To seed the full label taxonomy, run `uv run python scripts/seed_labels.py` (creates all labels idempotently from `data/labels.yml`). Pass `--delete-legacy` to also remove GitHub's default flat labels.
 
 ---
 
@@ -119,10 +119,11 @@ Recommended workflows (see R4 and R5 in the synthesis):
 | Workflow | File | Trigger | Action |
 |---|---|---|---|
 | Auto-label by path | `.github/workflows/labeler.yml` | `pull_request` | Apply `area:` labels from `.github/labeler.yml` |
-| Stale bot | `.github/workflows/stale.yml` | `schedule` (daily) | Label stale after 30 days; close after 7-day warning |
-| PR size labeler | `.github/workflows/pr-size.yml` | `pull_request` | Apply `size:XS/S/M/L/XL` |
+| Stale bot | `.github/workflows/stale.yml` | `schedule` (weekly, Mondays) | Label stale after 60 days; close after 30-day warning |
 
 Exempt from stale bot: issues with `priority:critical`, `priority:high`, or `status:blocked`.
+
+> **Project auto-add**: All three YAML issue templates include `projects: ["EndogenAI/1"]`. Any new issue created from a template is automatically added to the **EndogenAI Backlog** (project #1). Issues created outside a template must be added manually via `gh project item-add 1 --owner EndogenAI --url <issue-url>`.
 
 ---
 
@@ -172,7 +173,7 @@ Zero error output is **not** confirmation of success. Always verify.
 - [ ] `gh auth login` — authenticate with GitHub
 - [ ] `gh auth refresh -s project` — add Projects v2 scope (required once per machine)
 - [ ] `gh auth status` — verify `project` scope is present
-- [ ] Run `python scripts/seed_labels.py` (once labels are seeded — idempotent)
+- [ ] Run `uv run python scripts/seed_labels.py` (idempotent — syncs labels from `data/labels.yml`)
 - [ ] Confirm milestone list: `gh api repos/:owner/:repo/milestones`
 
 ---
