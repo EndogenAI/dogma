@@ -164,7 +164,7 @@ def sample_d3_synthesis():
     """
     Generate a sample D3 per-source synthesis document
     for validate_synthesis.py testing.
-    Must have >= 100 non-blank lines to satisfy the D3 line-count gate.
+    Must have >= 80 non-blank lines to satisfy the D3 line-count gate.
     """
     return """---
 url: https://example.com/test-source
@@ -298,7 +298,7 @@ def sample_d4_synthesis():
     """
     Generate a sample D4 issue synthesis document
     for validate_synthesis.py testing.
-    Must have >= 100 non-blank lines to satisfy the D4 line-count gate.
+    Must have >= 80 non-blank lines to satisfy the D4 line-count gate.
     """
     return """---
 title: Agent Fleet Design Patterns

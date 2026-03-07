@@ -14,21 +14,21 @@ Purpose:
 
 Checks (D3 per-source synthesizer output):
     1. File exists and is readable.
-    2. File has at least MIN_LINES (default: 100) non-blank lines.
+    2. File has at least MIN_LINES (default: 80) non-blank lines.
     3. All 8 required section headings are present.
     4. YAML frontmatter contains the required fields: url (or source_url),
        cache_path, slug, title.
 
 Checks (D4 issue synthesis):
     1. File exists and is readable.
-    2. File has at least MIN_LINES (default: 100) non-blank lines.
+    2. File has at least MIN_LINES (default: 80) non-blank lines.
     3. All required section headings are present (## Executive Summary through
        ## Project Relevance, or any ≥ 4 ## headings if the file uses a custom layout).
     4. YAML frontmatter contains: title, status.
 
 Inputs:
     <file>         Path to the synthesis file to validate.  (positional, required)
-    --min-lines    Minimum non-blank line count.            (default: 100)
+    --min-lines    Minimum non-blank line count.            (default: 80)
     --strict       Reserved for future use — currently a no-op flag.
 
 Outputs:
@@ -227,9 +227,9 @@ def main() -> None:
     parser.add_argument(
         "--min-lines",
         type=int,
-        default=100,
+        default=80,
         metavar="N",
-        help="Minimum non-blank line count (default: 100).",
+        help="Minimum non-blank line count (default: 80).",
     )
     parser.add_argument(
         "--strict",

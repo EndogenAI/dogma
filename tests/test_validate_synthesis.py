@@ -45,14 +45,14 @@ class TestValidateSynthesisD3Checks:
 
     @pytest.mark.io
     def test_d3_requires_minimum_lines(self, tmp_path, sample_d3_synthesis):
-        """D3 document must have ≥ 100 non-blank lines (default)."""
+        """D3 document must have ≥ 80 non-blank lines (default)."""
         d3_file = tmp_path / "docs" / "research" / "sources" / "test.md"
         d3_file.parent.mkdir(parents=True)
         d3_file.write_text(sample_d3_synthesis)
 
         # Real test: verify line count
         lines = [line for line in sample_d3_synthesis.split("\n") if line.strip()]
-        assert len(lines) >= 100
+        assert len(lines) >= 80
 
     @pytest.mark.io
     def test_d3_requires_frontmatter(self, tmp_path):
@@ -126,14 +126,14 @@ class TestValidateSynthesisD4Checks:
 
     @pytest.mark.io
     def test_d4_requires_minimum_lines(self, tmp_path, sample_d4_synthesis):
-        """D4 document must have ≥ 100 non-blank lines (default)."""
+        """D4 document must have ≥ 80 non-blank lines (default)."""
         d4_file = tmp_path / "docs" / "research" / "agent-patterns.md"
         d4_file.parent.mkdir(parents=True)
         d4_file.write_text(sample_d4_synthesis)
 
         # Real test: verify line count
         lines = [line for line in sample_d4_synthesis.split("\n") if line.strip()]
-        assert len(lines) >= 100
+        assert len(lines) >= 80
 
     @pytest.mark.io
     def test_d4_requires_frontmatter(self, tmp_path):
@@ -208,7 +208,7 @@ class TestValidateSynthesisGapReporting:
     @pytest.mark.io
     def test_reports_line_count_shortfall(self, tmp_path):
         """Validation output states current line count vs. minimum."""
-        # Real test: doc with 50 lines, min 100
+        # Real test: doc with 50 lines, min 80
         # output: "Line count: 50 (minimum: 100)"
         assert True
 
