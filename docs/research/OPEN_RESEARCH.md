@@ -130,27 +130,10 @@ Endogenic development is inspired by biological endogenesis but should stand on 
 
 ## 6. Agent Fleet Design Patterns
 
-**Priority: Low** (improves long-term agent architecture)
+**Status**: ✅ Resolved 2026-03-06
+**Deliverable**: [`docs/research/agent-fleet-design-patterns.md`](agent-fleet-design-patterns.md)
 
-### Research Question
-What are the best design patterns for hierarchical agent fleets? How should executives, sub-agents, and specialist agents be structured for different project types?
-
-### Why This Matters
-The current agent fleet emerged organically from the EndogenAI project. As this repo becomes the authoritative source, we should synthesize and formalize the patterns.
-
-### Areas to Research
-- [ ] Hierarchical multi-agent patterns (executive → sub-agent → specialist)
-- [ ] Context window management strategies for long agent sessions
-- [ ] A2A (Agent-to-Agent) protocol patterns — message envelope, task lifecycle, routing
-- [ ] A2A Agent Card schema — capability advertisement and discovery mechanism (gap flagged by Scout C, 2026-03-06)
-- [ ] ReAct trajectory paper — interleaved reasoning and acting as the foundation for action-oriented agents (Yao et al.; not yet fetched)
-- [ ] https://arxiv.org/html/2512.05470v1 (referenced in AccessiTech/EndogenAI#32)
-- [ ] https://towardsdatascience.com/claude-skills-and-subagents-escaping-the-prompt-engineering-hamster-wheel/
-
-### Gate Deliverables
-- [ ] D1 — Agent fleet pattern catalog in `docs/guides/agents.md`
-- [ ] D2 — Recommendations for when to create new specialist agents vs. extend existing ones
-- [ ] D3 — Updated `.github/agents/README.md` with pattern documentation
+Open follow-up questions are tracked in the **Issue #10 Follow-Up Open Questions** section below.
 
 
 ---
@@ -184,38 +167,12 @@ Identified as a gap in `docs/research/agentic-research-flows.md` (Memory Archite
 
 ## 8. XML-Tagged Agent Instruction Format
 
-**Priority: Very High** (affects every agent file; do before next major fleet expansion)
+**Status**: ✅ Research resolved 2026-03-06 | **Implementation**: Partially complete
+**Deliverable**: [`docs/research/xml-agent-instruction-format.md`](xml-agent-instruction-format.md)
+**Script**: `scripts/migrate_agent_xml.py` (exists; fleet migration not yet run)
 
-### Research Question
-Should EndogenAI `.agent.md` files use XML-tagged section boundaries (`<section_name>...</section_name>`) instead of Markdown headings (`## Section Name`) for structuring agent instructions? What is the correct XML schema for agent instruction files, and what tools, scripts, or validators support it?
-
-### Why This Matters
-The Anthropic cookbook production agents use XML-tagged sections (`<research_process>`, `<delegation_instructions>`, `<subagent_count_guidelines>`) as section delimiters — not Markdown headings. XML tags are machine-unambiguous: they cannot be confused with prose, they parse without regex fallbacks, and they are the format the model has seen most in training for structured instruction following. Our current Markdown-heading format (`## Workflow`, `## Guardrails`) is less parsing-stable and may degrade instruction fidelity for long agent bodies.
-
-Migrating all 15+ agent files is a significant engineering change. It should be fully researched and a migration script written before any file is touched. This cannot be done piecemeal — inconsistency between XML and Markdown formats within the fleet would be worse than either uniform format.
-
-Flagged: 2026-03-06, from `docs/research/agentic-research-flows.md` addendum (Prompt Template and Handoff Format Findings section).
-
-### Resources to Survey
-- [ ] Anthropic cookbook agent source — `research_lead_prompt.py`, `research_subagent_prompt.py` — examine exact XML schema used; https://github.com/anthropics/anthropic-cookbook
-- [ ] Claude prompt engineering docs — XML section format and recommended schema
-- [ ] `.chatagent` format spec — does VS Code Copilot's `.chatagent` format support or prefer XML instruction bodies?
-- [ ] Existing EndogenAI agent files — inventory current Markdown-heading section names to determine XML tag candidates
-- [ ] Prior art: any XML-to-agent-md migration tooling in the wild
-
-### What to Produce (Programmatic-First)
-This research should produce, at minimum:
-- [ ] A documented XML schema for EndogenAI agent instruction files (section tags, nesting rules, required vs. optional sections)
-- [ ] A migration script: `scripts/migrate_agents_to_xml.py --dry-run` — converts Markdown headings to XML tags across all `.agent.md` files
-- [ ] A validation script: `scripts/validate_agent_format.py` — checks each file for required sections, correct tag nesting, no mixed formats
-- [ ] An updated `scaffold_agent.py` that emits XML-format stubs instead of Markdown-heading stubs
-
-### Gate Deliverables
-- [ ] D1 — Documented XML schema for agent instruction files with rationale
-- [ ] D2 — `scripts/migrate_agents_to_xml.py` and `scripts/validate_agent_format.py` written and tested
-- [ ] D3 — All 15+ agent files migrated (via script) and validated
-- [ ] D4 — `scaffold_agent.py` updated to emit XML format
-- [ ] D5 — `docs/guides/agents.md` and `.github/agents/AGENTS.md` updated with XML format documentation
+Open implementation questions tracked in **Issue #12 Follow-Up Open Questions** below.
+Remaining implementation gate deliverables: D3 (fleet migration), D4 (scaffold_agent.py XML output), D5 (guide + AGENTS.md updates).
 
 ---
 
@@ -237,20 +194,6 @@ Do YAML `handoffs: prompt:` field values benefit from or tolerate XML structurin
 
 ---
 
-## Recommended Issue Execution Pairings
-
-Recorded 2026-03-06. Group remaining open issues for efficiency — each pairing shares domain, sources, and guide deliverables.
-
-| Session | Issues | Rationale |
-|---|---|---|
-| Infrastructure | #5 + #6 | Local compute (Ollama/LM Studio) + locally distributed MCP share source domains and feed `docs/guides/local-compute.md` |
-| Cost/Reliability | #7 + #8 | Async process handling + LLM tier strategy are both reliability/cost concerns; small source sets benefit from batching |
-| Memory (deferred) | #9 + #13 + #14 | Methodology lit review, episodic memory, and AIGNE AFS all have prerequisite on #5 (local compute resolved first) |
-
-Issue #10 (agent fleet design patterns) is executed standalone — sources are mostly already cached and the deliverables include guide + README updates.
-
----
-
 ## Issue #10 Follow-Up Open Questions (Agent Fleet Design Patterns)
 
 Resolved: 2026-03-06. The following questions remain open after the primary research deliverable was completed.
@@ -268,64 +211,89 @@ The evaluator-optimizer loop specifies mandatory stopping conditions but does no
 
 ## Research Sprint — Testing Tools & Frameworks
 
-**Added**: 2026-03-07 | **Status**: Open | **Priority**: High
+**Added**: 2026-03-07 | **Status**: ✅ Complete 2026-03-07 | **Closes**: #16
 
-Automated testing tools, frameworks, and best practices relevant to a Python-heavy, script-centric agentic workflow repository. Focus: unit/integration test patterns, coverage tooling, pytest plugins, testability of LLM-adjacent code, mock/stub strategies for external APIs, and CI test-gate enforcement.
-
-**Target deliverable**: `docs/research/testing-tools-and-frameworks.md`
-**GitHub issue**: #16
+**Deliverable**: [`docs/research/testing-tools-and-frameworks.md`](testing-tools-and-frameworks.md)
 
 ---
 
 ## Research Sprint — Development Workflow Automations
 
-**Added**: 2026-03-07 | **Status**: Open | **Priority**: High
+**Added**: 2026-03-07 | **Status**: ✅ Complete 2026-03-07 | **Closes**: #17
 
-Dev workflow automation patterns: pre-commit hooks, CI/CD pipeline best practices, git workflow conventions, file-watcher patterns, task runners, and developer experience tooling. Focus on open-source/self-hosted options compatible with Local Compute-First axiom.
-
-**Target deliverable**: `docs/research/dev-workflow-automations.md`
-**GitHub issue**: #17
+**Deliverable**: [`docs/research/dev-workflow-automations.md`](dev-workflow-automations.md)
 
 ---
 
 ## Research Sprint — Open-Source Documentation Best Practices
 
-**Added**: 2026-03-07 | **Status**: Open | **Priority**: High
+**Added**: 2026-03-07 | **Status**: ✅ Complete 2026-03-07 | **Closes**: #18
 
-Best practices for open-source project documentation: README structure, changelog conventions, contributor guides, API/reference docs, versioning, docsite tooling (MkDocs, Sphinx, Docusaurus), and documentation-as-code patterns.
-
-**Target deliverable**: `docs/research/oss-documentation-best-practices.md`
-**GitHub issue**: #18
+**Deliverable**: [`docs/research/oss-documentation-best-practices.md`](oss-documentation-best-practices.md)
 
 ---
 
 ## Research Sprint — Project Management & Dev Team Structures
 
-**Added**: 2026-03-07 | **Status**: Open | **Priority**: Medium
+**Added**: 2026-03-07 | **Status**: ✅ Complete 2026-03-07 | **Closes**: #19
 
-PM methodologies, dev team topologies, and coordination structures relevant to small/agentic teams. Focus: issue tracking conventions, milestone planning, sprint structures, async-first collaboration, and how agent fleets map onto traditional team structures.
-
-**Target deliverable**: `docs/research/pm-and-team-structures.md`
-**GitHub issue**: #19
+**Deliverable**: [`docs/research/pm-and-team-structures.md`](pm-and-team-structures.md)
 
 ---
 
 ## Research Seed — Product Research & Design Methodologies
 
-**Added**: 2026-03-07 | **Status**: Open | **Priority**: Medium
+**Added**: 2026-03-07 | **Status**: ✅ Complete (seed) 2026-03-07 | **Closes**: #20
 
-Product research and design methodologies: user research methods, jobs-to-be-done, design thinking, prototyping patterns, and how these apply to agentic/AI product development. Seed pass only — full sprint contingent on scope validation.
-
-**Target deliverable**: `docs/research/product-research-and-design.md`
-**GitHub issue**: #20
+**Deliverable**: [`docs/research/product-research-and-design.md`](product-research-and-design.md)
+**Note**: Seed pass only. Full sprint open — see Open Questions in deliverable doc.
 
 ---
 
 ## Research Seed — Comms, Marketing & Business Development
 
-**Added**: 2026-03-07 | **Status**: Open | **Priority**: Low
+**Added**: 2026-03-07 | **Status**: ✅ Complete (seed) 2026-03-07 | **Closes**: #21
 
-Communications, OSS marketing, and business development patterns for open-source projects: community building, developer relations, content strategy, OSS monetization models, partnership patterns. Seed pass only — full sprint contingent on scope validation.
+**Deliverable**: [`docs/research/comms-marketing-bizdev.md`](comms-marketing-bizdev.md)
+**Note**: Seed pass only. Full sprint open — see Open Questions in deliverable doc.
 
-**Target deliverable**: `docs/research/comms-marketing-bizdev.md`
-**GitHub issue**: #21
+---
+
+## Research Sprint — GitHub Project Management & Automation
+
+**Added**: 2026-03-07 | **Status**: Complete | **Priority**: High
+
+GitHub as the primary coordination interface for humans, Copilot agents, and automation. Focus: GitHub Projects v2 (board setup, field types, automation rules), `gh` CLI patterns for issue/PR management, structured label taxonomy, issue template schema (YAML frontmatter), Discussions API, GitHub Actions for PM automation (auto-label, auto-assign, stale bot), Milestones API, and how Copilot reads issue/PR context in agent sessions.
+
+This research should be **fetched and cached locally** — the GitHub docs are a primary query source for agents and automation scripts.
+
+**Target deliverable**: `docs/research/github-project-management.md`
+**GitHub issue**: TBD
+
+### Resources to fetch and cache
+- https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects
+- https://docs.github.com/en/issues/planning-and-tracking-with-projects/automating-your-project/using-the-api-to-manage-projects
+- https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/managing-labels
+- https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms
+- https://docs.github.com/en/discussions
+- https://cli.github.com/manual/gh_project
+- https://cli.github.com/manual/gh_issue
+- https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows
+
+### Gate Deliverables
+- [x] D1 — All 8 sources fetched and cached in `.cache/sources/`
+- [x] D2 — `docs/research/github-project-management.md` (Status: Final)
+- [x] D3 — Actionable setup checklist for this repo (Projects board, label taxonomy, issue templates, Discussions)
+- [x] D4 — `gh` CLI quick-reference embedded in the synthesis doc
+
+---
+
+## Research Sprint — VS Code Agent Format & Toolset Best Practices
+
+**Added**: 2026-03-07 | **Status**: Open | **Priority**: Medium
+
+Deep dive on VS Code Copilot custom agent file format: toolset declarations (which tools map to which capabilities), `applyTo` glob patterns, the VS Code Language Model API layer, instruction-following fidelity between XML and Markdown bodies (OQ-12-2), and non-Claude model degradation (OQ-12-3). Closes remaining open questions from issue #12.
+
+**Target deliverable**: Append findings to [`docs/research/xml-agent-instruction-format.md`](xml-agent-instruction-format.md) or create `docs/research/vscode-agent-format.md`
+**GitHub issue**: TBD
+**Prerequisite**: Resolves OQ-12-1, OQ-12-2, OQ-12-3 from Issue #12 Follow-Up Open Questions above
