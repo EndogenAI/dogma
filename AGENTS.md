@@ -96,10 +96,15 @@ python scripts/prune_scratchpad.py
 **`<branch-slug>`** = branch name with `/` replaced by `-`
 
 Rules:
-- Each delegated agent **appends** findings under a named heading: `## <Phase> Results` or `## <Task> Output`. Never overwrite another agent's section.
+- Each delegated agent **appends** findings under its own named section heading — `## <AgentName> Output` or `## <Phase> Results` — and **reads only its own prior section**. Never read another agent's section; never overwrite another agent's section.
+- The **Executive is the sole integration point** — it alone reads the full scratchpad to synthesise findings across all agents. Subagents do not read laterally.
 - The executive **reads today's session file first** before delegating to avoid re-discovering context another agent already gathered.
 - At session end, the executive writes a `## Session Summary` section so the next session starts with an orientation point.
 - Use the active session file for inter-agent handoff notes, gap reports, and aggregated sub-agent results.
+
+### Focus-on-Descent / Compression-on-Ascent
+
+**Outbound delegation prompts should be narrow and task-scoped** — dispatch the minimum necessary context to complete the subagent's task. **Returned results should target ≤ 2,000 tokens** — subagents compress extensive exploration into a dense handoff; they do not return raw search histories or intermediate reasoning.
 
 ### Size Guard and Archive Convention
 

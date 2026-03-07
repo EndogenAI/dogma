@@ -92,13 +92,17 @@ rather than re-fetching pages through the context window, saving tokens every se
 
 ### Writing to the Scratchpad
 
-Each agent appends findings under a named heading:
+Each agent appends findings under its **own named section heading** and reads only its own prior section:
 
 ```markdown
-## <Task Name> Results
+## <AgentName> Output
 
 <findings here>
 ```
+
+Standard heading patterns: `## Scout Output`, `## Synthesizer Output`, `## Reviewer Output`, `## Archivist Output`.
+
+**Section-scope isolation rule**: each agent writes only to its own heading and reads only its own prior section. The **Executive is the sole integration point** — it alone reads the full scratchpad to coordinate across agents. Subagents do not read laterally across other agents' sections.
 
 **Never overwrite another agent's section.** Always append.
 
