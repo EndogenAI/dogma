@@ -249,6 +249,7 @@ Key agents for this repo:
 - Commit secrets, API keys, or credentials of any kind
 - `git push --force` to `main`
 - Delete or rename committed script or agent files without a migration plan
+- Use heredocs (`cat >> file << 'EOF'` or Python inline `<< 'PYEOF'`) to write Markdown content — backticks, triple-backtick fences, and special characters silently corrupt or truncate output through the terminal tool. **Always use `replace_string_in_file` or `create_file` (the built-in VS Code tools) for any file write that contains Markdown, code blocks, or backtick-containing content.**
 
 **Prefer caution over assumption for:**
 

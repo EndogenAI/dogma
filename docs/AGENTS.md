@@ -44,6 +44,14 @@ documentation update. The sequence is:
 - Link to related docs, agents, and scripts by relative path
 - Research docs should distinguish between "established fact", "working hypothesis", and "open question"
 
+## File Writing Guardrail
+
+**Never use heredocs to write documentation file content.**
+
+Heredocs (`cat >> file << 'EOF'`, Python inline `<< 'PYEOF'`) silently corrupt or truncate content that contains backticks, triple-backtick fences, or special characters when executed through the VS Code terminal tool. This has caused silent data loss in sessions.
+
+**Rule**: All documentation writes must use `replace_string_in_file` (for edits to existing files) or `create_file` (for new files). These are the built-in VS Code tools and are safe for all Markdown content.
+
 ---
 
 ## Research Output Structure

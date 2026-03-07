@@ -263,3 +263,69 @@ Section-scoped writes are proposed as the isolation mechanism, enforced through 
 
 **OQ-10-3 — Evaluator-optimizer convergence criteria for synthesis tasks**
 The evaluator-optimizer loop specifies mandatory stopping conditions but does not define them for synthesis (as opposed to code). How reliable is LLM-as-judge evaluation for research synthesis documents, and what constitutes a well-formed stopping condition for the Reviewer agent?
+
+---
+
+## Research Sprint — Testing Tools & Frameworks
+
+**Added**: 2026-03-07 | **Status**: Open | **Priority**: High
+
+Automated testing tools, frameworks, and best practices relevant to a Python-heavy, script-centric agentic workflow repository. Focus: unit/integration test patterns, coverage tooling, pytest plugins, testability of LLM-adjacent code, mock/stub strategies for external APIs, and CI test-gate enforcement.
+
+**Target deliverable**: `docs/research/testing-tools-and-frameworks.md`
+**GitHub issue**: #16
+
+---
+
+## Research Sprint — Development Workflow Automations
+
+**Added**: 2026-03-07 | **Status**: Open | **Priority**: High
+
+Dev workflow automation patterns: pre-commit hooks, CI/CD pipeline best practices, git workflow conventions, file-watcher patterns, task runners, and developer experience tooling. Focus on open-source/self-hosted options compatible with Local Compute-First axiom.
+
+**Target deliverable**: `docs/research/dev-workflow-automations.md`
+**GitHub issue**: #17
+
+---
+
+## Research Sprint — Open-Source Documentation Best Practices
+
+**Added**: 2026-03-07 | **Status**: Open | **Priority**: High
+
+Best practices for open-source project documentation: README structure, changelog conventions, contributor guides, API/reference docs, versioning, docsite tooling (MkDocs, Sphinx, Docusaurus), and documentation-as-code patterns.
+
+**Target deliverable**: `docs/research/oss-documentation-best-practices.md`
+**GitHub issue**: #18
+
+---
+
+## Research Sprint — Project Management & Dev Team Structures
+
+**Added**: 2026-03-07 | **Status**: Open | **Priority**: Medium
+
+PM methodologies, dev team topologies, and coordination structures relevant to small/agentic teams. Focus: issue tracking conventions, milestone planning, sprint structures, async-first collaboration, and how agent fleets map onto traditional team structures.
+
+**Target deliverable**: `docs/research/pm-and-team-structures.md`
+**GitHub issue**: #19
+
+---
+
+## Research Seed — Product Research & Design Methodologies
+
+**Added**: 2026-03-07 | **Status**: Open | **Priority**: Medium
+
+Product research and design methodologies: user research methods, jobs-to-be-done, design thinking, prototyping patterns, and how these apply to agentic/AI product development. Seed pass only — full sprint contingent on scope validation.
+
+**Target deliverable**: `docs/research/product-research-and-design.md`
+**GitHub issue**: #20
+
+---
+
+## Research Seed — Comms, Marketing & Business Development
+
+**Added**: 2026-03-07 | **Status**: Open | **Priority**: Low
+
+Communications, OSS marketing, and business development patterns for open-source projects: community building, developer relations, content strategy, OSS monetization models, partnership patterns. Seed pass only — full sprint contingent on scope validation.
+
+**Target deliverable**: `docs/research/comms-marketing-bizdev.md`
+**GitHub issue**: #21

@@ -225,6 +225,21 @@ Use lowercase kebab-case for filenames.
 
 ---
 
+## File Writing Guardrail
+
+**Never use heredocs to write agent or Markdown file content.**
+
+Heredocs (`cat >> file << 'EOF'`, Python inline `<< 'PYEOF'`) silently corrupt or truncate content containing backticks, triple-backtick fences, or special characters when executed through the VS Code terminal tool.
+
+| Situation | Correct approach |
+|-----------|------------------|
+| Creating a new agent file | `create_file` tool |
+| Editing an existing agent file | `replace_string_in_file` or `multi_replace_string_in_file` tool |
+| Appending to any Markdown file | `replace_string_in_file` with anchor text |
+| Writing large content blocks | Never heredoc — always use file tools |
+
+---
+
 ## Verification Gate
 
 Before committing a new or modified agent file:
