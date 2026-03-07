@@ -209,91 +209,43 @@ The evaluator-optimizer loop specifies mandatory stopping conditions but does no
 
 ---
 
-## Research Sprint — Testing Tools & Frameworks
-
-**Added**: 2026-03-07 | **Status**: ✅ Complete 2026-03-07 | **Closes**: #16
-
-**Deliverable**: [`docs/research/testing-tools-and-frameworks.md`](testing-tools-and-frameworks.md)
-
----
-
-## Research Sprint — Development Workflow Automations
-
-**Added**: 2026-03-07 | **Status**: ✅ Complete 2026-03-07 | **Closes**: #17
-
-**Deliverable**: [`docs/research/dev-workflow-automations.md`](dev-workflow-automations.md)
-
----
-
-## Research Sprint — Open-Source Documentation Best Practices
-
-**Added**: 2026-03-07 | **Status**: ✅ Complete 2026-03-07 | **Closes**: #18
-
-**Deliverable**: [`docs/research/oss-documentation-best-practices.md`](oss-documentation-best-practices.md)
-
----
-
-## Research Sprint — Project Management & Dev Team Structures
-
-**Added**: 2026-03-07 | **Status**: ✅ Complete 2026-03-07 | **Closes**: #19
-
-**Deliverable**: [`docs/research/pm-and-team-structures.md`](pm-and-team-structures.md)
-
----
-
-## Research Seed — Product Research & Design Methodologies
-
-**Added**: 2026-03-07 | **Status**: ✅ Complete (seed) 2026-03-07 | **Closes**: #20
-
-**Deliverable**: [`docs/research/product-research-and-design.md`](product-research-and-design.md)
-**Note**: Seed pass only. Full sprint open — see Open Questions in deliverable doc.
-
----
-
-## Research Seed — Comms, Marketing & Business Development
-
-**Added**: 2026-03-07 | **Status**: ✅ Complete (seed) 2026-03-07 | **Closes**: #21
-
-**Deliverable**: [`docs/research/comms-marketing-bizdev.md`](comms-marketing-bizdev.md)
-**Note**: Seed pass only. Full sprint open — see Open Questions in deliverable doc.
-
----
-
-## Research Sprint — GitHub Project Management & Automation
-
-**Added**: 2026-03-07 | **Status**: Complete | **Priority**: High
-
-GitHub as the primary coordination interface for humans, Copilot agents, and automation. Focus: GitHub Projects v2 (board setup, field types, automation rules), `gh` CLI patterns for issue/PR management, structured label taxonomy, issue template schema (YAML frontmatter), Discussions API, GitHub Actions for PM automation (auto-label, auto-assign, stale bot), Milestones API, and how Copilot reads issue/PR context in agent sessions.
-
-This research should be **fetched and cached locally** — the GitHub docs are a primary query source for agents and automation scripts.
-
-**Target deliverable**: `docs/research/github-project-management.md`
-**GitHub issue**: TBD
-
-### Resources to fetch and cache
-- https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects
-- https://docs.github.com/en/issues/planning-and-tracking-with-projects/automating-your-project/using-the-api-to-manage-projects
-- https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/managing-labels
-- https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms
-- https://docs.github.com/en/discussions
-- https://cli.github.com/manual/gh_project
-- https://cli.github.com/manual/gh_issue
-- https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows
-
-### Gate Deliverables
-- [x] D1 — All 8 sources fetched and cached in `.cache/sources/`
-- [x] D2 — `docs/research/github-project-management.md` (Status: Final)
-- [x] D3 — Actionable setup checklist for this repo (Projects board, label taxonomy, issue templates, Discussions)
-- [x] D4 — `gh` CLI quick-reference embedded in the synthesis doc
-
----
-
 ## Research Sprint — VS Code Agent Format & Toolset Best Practices
 
-**Added**: 2026-03-07 | **Status**: Open | **Priority**: Medium
+**Added**: 2026-03-07 | **Status**: Open | **Priority**: Medium | **Closes**: [#23](https://github.com/EndogenAI/Workflows/issues/23)
 
 Deep dive on VS Code Copilot custom agent file format: toolset declarations (which tools map to which capabilities), `applyTo` glob patterns, the VS Code Language Model API layer, instruction-following fidelity between XML and Markdown bodies (OQ-12-2), and non-Claude model degradation (OQ-12-3). Closes remaining open questions from issue #12.
 
 **Target deliverable**: Append findings to [`docs/research/xml-agent-instruction-format.md`](xml-agent-instruction-format.md) or create `docs/research/vscode-agent-format.md`
-**GitHub issue**: TBD
+**GitHub issue**: [#23](https://github.com/EndogenAI/Workflows/issues/23)
 **Prerequisite**: Resolves OQ-12-1, OQ-12-2, OQ-12-3 from Issue #12 Follow-Up Open Questions above
+
+---
+
+## Research Sprint — Context Compaction Best Practices (VS Code Copilot /compact)
+
+**Added**: 2026-03-07 | **Status**: ✅ Complete 2026-03-07 | **Priority**: High | **Closes**: [#24](https://github.com/EndogenAI/Workflows/issues/24)
+
+Research and document best practices for VS Code Copilot Chat's `/compact` slash command and "Compact Conversation" context window button.
+
+**Deliverable**: `docs/guides/session-management.md` — [Context Compaction section](../guides/session-management.md#context-compaction)
+**Encoded in**: All three `AGENTS.md` files (compaction-aware writing guardrail + `gh --body-file` guardrail)
+
+---
+
+## Completed Research
+
+_Items below are resolved. Open follow-up questions are still tracked in the main body (OQ-10, OQ-12 sections)._
+
+| Issue | Title | Deliverable | Closed |
+|---|---|---|---|
+| [#2](https://github.com/EndogenAI/Workflows/issues/2) | Research and document detailed agent workflows | [`agentic-research-flows.md`](agentic-research-flows.md) | 2026-03-07 |
+| [#10](https://github.com/EndogenAI/Workflows/issues/10) | Agent Fleet Design Patterns | [`agent-fleet-design-patterns.md`](agent-fleet-design-patterns.md) | 2026-03-06 |
+| [#12](https://github.com/EndogenAI/Workflows/issues/12) | XML-Tagged Agent Instruction Format _(implementation in progress)_ | [`xml-agent-instruction-format.md`](xml-agent-instruction-format.md) | 2026-03-06 |
+| [#16](https://github.com/EndogenAI/Workflows/issues/16) | Testing Tools & Frameworks | [`testing-tools-and-frameworks.md`](testing-tools-and-frameworks.md) | 2026-03-07 |
+| [#17](https://github.com/EndogenAI/Workflows/issues/17) | Development Workflow Automations | [`dev-workflow-automations.md`](dev-workflow-automations.md) | 2026-03-07 |
+| [#18](https://github.com/EndogenAI/Workflows/issues/18) | OSS Documentation Best Practices | [`oss-documentation-best-practices.md`](oss-documentation-best-practices.md) | 2026-03-07 |
+| [#19](https://github.com/EndogenAI/Workflows/issues/19) | PM & Dev Team Structures | [`pm-and-team-structures.md`](pm-and-team-structures.md) | 2026-03-07 |
+| [#20](https://github.com/EndogenAI/Workflows/issues/20) | Product Research & Design _(seed)_ | [`product-research-and-design.md`](product-research-and-design.md) | 2026-03-07 |
+| [#21](https://github.com/EndogenAI/Workflows/issues/21) | Comms, Marketing & Bizdev _(seed)_ | [`comms-marketing-bizdev.md`](comms-marketing-bizdev.md) | 2026-03-07 |
+| [#22](https://github.com/EndogenAI/Workflows/issues/22) | GitHub Project Management & Automation | [`github-project-management.md`](github-project-management.md) | 2026-03-07 |
+| [#24](https://github.com/EndogenAI/Workflows/issues/24) | Context Compaction Best Practices | [`session-management.md#context-compaction`](../guides/session-management.md) | 2026-03-07 |
