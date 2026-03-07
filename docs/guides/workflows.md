@@ -14,8 +14,10 @@ directly to design thinking methodology and is the endogenic approach to all kno
 
 - [Handoff Architecture](#handoff-architecture)
 - [Research Workflow](#research-workflow)
+- [Implementation Workflow](#implementation-workflow)
 - [Documentation Workflow](#documentation-workflow)
 - [Scripting Workflow](#scripting-workflow)
+- [Automation Workflow](#automation-workflow)
 - [Multi-Workflow Orchestration](#multi-workflow-orchestration)
 - [Fleet Management Workflow](#fleet-management-workflow)
 - [Project Management Workflow](#project-management-workflow)
@@ -309,6 +311,121 @@ Close the issue or move to the next phase if follow-on work is needed.
 
 ---
 
+## Implementation Workflow
+
+Triggered when a research synthesis document in `docs/research/` reaches **Status: Final**
+and contains actionable R-items (R1–R6). Converts research into committed code, docs, or
+configuration changes. Orchestrated by **Executive Orchestrator**.
+
+```
+Orient → Audit R-items → Create Issues → Sprint Plan → Execute by Domain → Review → Commit → Update Synthesis
+```
+
+### Trigger
+
+A synthesis document in `docs/research/` has `status: Final` in its frontmatter and contains
+at least one R-item (recommendation) not yet implemented. A GitHub issue or Executive Handoff
+note identifies the synthesis as ready for implementation.
+
+### Phase 1 — Orient
+
+**Agent**: Executive Orchestrator  
+**Action**: Read the synthesis document in full; extract all R-items; check for existing GitHub
+issues that already track any R-item.
+
+**Gate before advancing**: synthesis doc has `status: Final`; R-item list is written to
+the session scratchpad.
+
+### Phase 2 — Audit R-items
+
+**Agent**: Executive Orchestrator  
+**Action**: For each R-item:
+
+1. Confirm it is grounded in synthesis evidence (not a general best practice added ad hoc).
+2. Assign it to a domain executive: Docs, Scripter, Automator, Fleet, or PM.
+3. Estimate effort (`effort:xs/s/m/l/xl`).
+4. Identify blockers or dependencies on other R-items.
+
+R-items without direct synthesis evidence are **deferred** — they do not enter the sprint.
+
+**Gate before advancing**: every scoped R-item has a domain and effort label; deferred items
+are noted with a reason.
+
+### Phase 3 — Create GitHub Issues
+
+**Agent**: Executive Orchestrator (direct)  
+**Action**: Create one GitHub issue per scoped R-item (or per cluster of tightly related items):
+
+- Title: `[area/type] Short description`
+- Body: R-item description + synthesis doc path + evidence quote
+- Labels: `type:feature` or `type:chore`, `area:`, `priority:`, `effort:`
+- Milestone: assign to the relevant milestone
+
+**Gate before advancing**: all scoped R-item issues created and confirmed (`gh issue list`).
+
+### Phase 4 — Sprint Plan
+
+**Agent**: Executive Orchestrator  
+**Action**: Write `## Implementation Sprint Plan — <topic>` to the session scratchpad. Group
+R-items by domain executive; identify an execution sequence (dependencies first).
+
+**Gate before advancing**: sprint plan vetted; all domain executives identified; phases
+ordered.
+
+### Phase 5 — Execute by Domain
+
+**Agent**: Domain executives (Docs, Scripter, Automator, Fleet, PM) — one at a time  
+**Delegation prompt must include**: R-item list with numbers and descriptions; synthesis doc
+path; GitHub issue numbers; any predecessor outputs.
+
+Each domain phase runs sequentially unless the sprint plan explicitly marks phases as
+parallelisable.
+
+**Gate before advancing**: each domain phase's deliverables committed before the next domain
+phase begins.
+
+### Phase 6 — Review & Commit
+
+**Agent**: Review → GitHub  
+**Action**: Route all changed files through Review agent. Commit with
+`type(scope): description, Closes #N`.
+
+### Phase 7 — Update Synthesis Status
+
+**Agent**: Executive Docs (or Orchestrator direct)  
+**Action**: Update the synthesis document frontmatter:
+
+```yaml
+implementation_status: complete  # or: partial
+implemented_in: feat/<branch-slug>
+```
+
+Add a `## Implementation Notes` section below the synthesis body listing which R-items were
+implemented, which were deferred, and why.
+
+### Key Rules
+
+- Only R-items supported by synthesis evidence enter the sprint.
+- R-items that contradict `MANIFESTO.md` require explicit user instruction before being
+  implemented.
+- The synthesis doc is the source of truth — do not add scope not present in the R-items
+  without a new research cycle.
+- Every implementation sprint leaves the synthesis doc in a better state than it found it
+  (updated status, deferred items documented).
+
+### Gate Summary
+
+| Gate | Criteria |
+|------|----------|
+| Before auditing | Synthesis doc committed with `status: Final` |
+| Before sprint plan | All R-items assessed; deferred items documented with reason |
+| Before executing | Sprint plan in scratchpad; all GitHub issues created and labelled |
+| Between domain phases | Prior phase committed and confirmed |
+| Before updating synthesis | All R-items either implemented or explicitly deferred |
+| After committing | Synthesis `implementation_status` updated; PR comment or issue closed |
+
+---
+
 ## Documentation Workflow
 
 Triggered when guides, AGENTS.md files, top-level docs, or MANIFESTO.md need to be updated.
@@ -339,6 +456,57 @@ Audit scripts/ → Identify gap → Write or extend → Dry-run → Update scrip
 
 See [`docs/guides/programmatic-first.md`](programmatic-first.md) for the full decision criteria
 and [`scripts/README.md`](../../scripts/README.md) for script conventions.
+
+---
+
+## Automation Workflow
+
+Triggered when a file watcher, pre-commit hook, CI task, or GitHub Actions workflow needs to
+be created or updated. Orchestrated by **Executive Automator**.
+
+```
+Orient → Identify Trigger → Choose Surface → Design → Implement → Dry-run → Register → Review → Commit
+```
+
+### When to Invoke
+
+| Situation | Action |
+|-----------|--------|
+| A manual check is run before every commit | Add as pre-commit hook |
+| A validation could silently break without CI | Add as CI workflow |
+| A script is run manually more than twice | Encode as pre-commit or CI task |
+| An output needs to update whenever a file changes | Add as VS Code file-watcher task |
+| A GitHub event should trigger automated actions | Add as GitHub Actions workflow |
+
+### Surfaces Maintained
+
+| Surface | Location | When it runs |
+|---------|----------|--------------|
+| Pre-commit hooks | `.pre-commit-config.yaml` | Every `git commit` |
+| CI workflows | `.github/workflows/` | Push / PR events |
+| VS Code tasks | `.vscode/tasks.json` | On demand or file watch |
+| GitHub Actions | `.github/workflows/` | GitHub events |
+
+### Key Rules
+
+- **Dry-run before enabling**: scripts use `--dry-run`; pre-commit hooks test with
+  `pre-commit run --hook-stage manual <hook-id>` before adding to `default_install_hook_types`.
+- **No double-run anti-pattern**: CI must not repeat checks already enforced by pre-commit.
+  If a check runs in pre-commit, CI only needs to verify the hook ran, not re-execute it.
+- **Register new automation**: every new pre-commit hook or CI check must be documented in
+  `scripts/README.md` or the relevant `.github/workflows/` file header.
+- **VS Code tasks get tested**: new `.vscode/tasks.json` entries must be manually triggered
+  and verified before committing.
+- **Gate: local before CI**: all automation must pass locally before it is added to a CI
+  workflow.
+
+### Gate Summary
+
+| Gate | Criteria |
+|------|----------|
+| Before implementing | Trigger identified; surface (pre-commit / CI / VS Code task) decided |
+| Before enabling | Dry-run passed locally; no duplication with existing automation |
+| Before committing | Routed through Review agent; documentation updated |
 
 ---
 
@@ -619,6 +787,24 @@ Please finalise docs/research/<slug>.md (Status: Final), route through Review fo
 the commit gate, commit, and push. Closes #[issue-number].
 ```
 
+### Documentation Workflow Prompts
+
+**Update an existing guide:**
+```
+@Executive Docs Please update [guide name] at docs/guides/[slug].md.
+Changes needed: [describe changes].
+Read MANIFESTO.md and the existing guide before drafting.
+Route through Review before committing.
+```
+
+**Create a new guide from a synthesis doc:**
+```
+@Executive Docs Please create a new guide from the synthesis doc at docs/research/[slug].md.
+Target path: docs/guides/[slug].md.
+The guide should encode practical workflow steps, not research findings.
+Route through Review before committing.
+```
+
 ### Scripting Workflow Prompts
 
 **Spawn a new agent scaffold:**
@@ -630,6 +816,51 @@ uv run python scripts/scaffold_agent.py \
   --posture [readonly|creator|full] \
   --area [area] \
   --dry-run
+```
+
+**Identify scripting gaps:**
+```
+@Executive Scripter Please audit scripts/ against tasks done interactively this session.
+List any task that qualifies for scripting under the programmatic-first criteria.
+Propose a script outline for the top candidate; pause for review before implementing.
+```
+
+### Implementation Workflow Prompts
+
+**Start an implementation sprint:**
+```
+@Executive Orchestrator Please start an implementation sprint for [synthesis-topic].
+Synthesis doc: docs/research/[slug].md.
+R-items to implement: [R1, R2, R3 — or 'all scoped items'].
+Begin by auditing R-items against synthesis evidence,
+then write a Sprint Plan to the scratchpad before delegating to any domain executive.
+```
+
+**Delegate R-items to a domain executive:**
+```
+@[Executive Domain] Please implement the following R-items from docs/research/[slug].md:
+[R-item list with numbers and descriptions]
+GitHub issues: [#N, #M, ...]
+Route all changes through Review before committing.
+Closes: [issue numbers]
+```
+
+### Automation Workflow Prompts
+
+**Design new automation:**
+```
+@Executive Automator Please design automation for: [describe task].
+This task has been done [N] times interactively.
+Surface options to consider: pre-commit hook / CI workflow / VS Code task.
+Begin with dry-run only — do not enable until I approve the design.
+```
+
+**Add a CI check:**
+```
+@Executive Automator Please add a CI check for: [describe check].
+Relevant script or command: [command].
+It should run on: [push | PR | both].
+Do not duplicate any existing check that already runs in pre-commit.
 ```
 
 ### Orchestration & Planning Prompts
