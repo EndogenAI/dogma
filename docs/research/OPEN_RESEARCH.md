@@ -179,3 +179,40 @@ Identified as a gap in `docs/research/agentic-research-flows.md` (Memory Archite
 - [ ] D1 — Comparison of local-capable episodic/experiential memory options
 - [ ] D2 — Recommended approach given current session volume and local-compute constraints
 - [ ] D3 — Script candidate specification (e.g., scratchpad deduplication or semantic search wrapper)
+
+---
+
+## 8. XML-Tagged Agent Instruction Format
+
+**Priority: Very High** (affects every agent file; do before next major fleet expansion)
+
+### Research Question
+Should EndogenAI `.agent.md` files use XML-tagged section boundaries (`<section_name>...</section_name>`) instead of Markdown headings (`## Section Name`) for structuring agent instructions? What is the correct XML schema for agent instruction files, and what tools, scripts, or validators support it?
+
+### Why This Matters
+The Anthropic cookbook production agents use XML-tagged sections (`<research_process>`, `<delegation_instructions>`, `<subagent_count_guidelines>`) as section delimiters — not Markdown headings. XML tags are machine-unambiguous: they cannot be confused with prose, they parse without regex fallbacks, and they are the format the model has seen most in training for structured instruction following. Our current Markdown-heading format (`## Workflow`, `## Guardrails`) is less parsing-stable and may degrade instruction fidelity for long agent bodies.
+
+Migrating all 15+ agent files is a significant engineering change. It should be fully researched and a migration script written before any file is touched. This cannot be done piecemeal — inconsistency between XML and Markdown formats within the fleet would be worse than either uniform format.
+
+Flagged: 2026-03-06, from `docs/research/agentic-research-flows.md` addendum (Prompt Template and Handoff Format Findings section).
+
+### Resources to Survey
+- [ ] Anthropic cookbook agent source — `research_lead_prompt.py`, `research_subagent_prompt.py` — examine exact XML schema used; https://github.com/anthropics/anthropic-cookbook
+- [ ] Claude prompt engineering docs — XML section format and recommended schema
+- [ ] `.chatagent` format spec — does VS Code Copilot's `.chatagent` format support or prefer XML instruction bodies?
+- [ ] Existing EndogenAI agent files — inventory current Markdown-heading section names to determine XML tag candidates
+- [ ] Prior art: any XML-to-agent-md migration tooling in the wild
+
+### What to Produce (Programmatic-First)
+This research should produce, at minimum:
+- [ ] A documented XML schema for EndogenAI agent instruction files (section tags, nesting rules, required vs. optional sections)
+- [ ] A migration script: `scripts/migrate_agents_to_xml.py --dry-run` — converts Markdown headings to XML tags across all `.agent.md` files
+- [ ] A validation script: `scripts/validate_agent_format.py` — checks each file for required sections, correct tag nesting, no mixed formats
+- [ ] An updated `scaffold_agent.py` that emits XML-format stubs instead of Markdown-heading stubs
+
+### Gate Deliverables
+- [ ] D1 — Documented XML schema for agent instruction files with rationale
+- [ ] D2 — `scripts/migrate_agents_to_xml.py` and `scripts/validate_agent_format.py` written and tested
+- [ ] D3 — All 15+ agent files migrated (via script) and validated
+- [ ] D4 — `scaffold_agent.py` updated to emit XML format
+- [ ] D5 — `docs/guides/agents.md` and `.github/agents/AGENTS.md` updated with XML format documentation

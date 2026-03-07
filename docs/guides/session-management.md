@@ -10,6 +10,21 @@ When multiple agents collaborate across a session, they need a shared scratchpad
 
 ---
 
+## Design Rationale
+
+The scratchpad convention implements the **lightweight context handoff** pattern from the Anthropic multi-agent research system. When an agent completes a phase, it writes a summary to the scratchpad; the next agent (or the same agent in a new invocation) reads that summary as its starting context rather than re-deriving it from scratch. This prevents the token cost of re-discovery and maintains fidelity across context window boundaries.
+
+The `.tmp/<branch>/` structure implements two levels of this pattern:
+
+- **`<YYYY-MM-DD>.md`** — the active scratchpad; the only durable cross-agent memory that survives a context window boundary within a session. When agents skip writing to this file, the next agent starts blind. This is not a theoretical risk: live session experience confirmed that scout outputs not written to the scratchpad had to be reconstructed at full token cost when the context window turned over. Write discipline is the primary operational requirement — see [`docs/research/sources/session-synthesis-2026-03-06-a.md`](../research/sources/session-synthesis-2026-03-06-a.md).
+- **`_index.md`** — the reference layer; one-line stubs of all closed sessions. Implements the session-reference layer from the same pattern, enabling future sessions to orient in seconds without opening old files.
+
+**Write-back is not optional.** The scratchpad only works as a memory substrate if agents write to it consistently. Every agent file should encode this as a requirement — not just a recommendation.
+
+For the theoretical grounding of this convention in the context engineering literature, see [`docs/research/agentic-research-flows.md`](../research/agentic-research-flows.md) (Memory Architecture and Token Offloading sections).
+
+---
+
 ## Directory Structure
 
 ```
