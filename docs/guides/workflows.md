@@ -338,7 +338,7 @@ CI jobs on this repo (`Tests` workflow):
 **Do not re-request Copilot review if CI is red.** Fix CI first. See common failure modes below.
 
 > **Common failure modes and fixes**:
-> - Lychee non-200 response (e.g. HTTP 202 redirect): add URL to `.lycheeignore` with reason
+> - Lychee non-200 response (e.g. HTTP 202 Accepted): add URL to `.lycheeignore` with reason
 > - `ruff format` failure: `uv run ruff format scripts/ tests/` then re-commit
 > - `validate_synthesis.py` failure: add `## 2. Hypothesis Validation` and `## 3. Pattern Catalog` headings to the failing research doc
 
