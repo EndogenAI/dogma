@@ -29,6 +29,32 @@ See [`MANIFESTO.md#the-three-core-axioms`](MANIFESTO.md#the-three-core-axioms) f
 
 ---
 
+## Development Environment Setup
+
+> **Start here if you're setting up a local dev environment for script development or testing.**
+
+```bash
+# 1. Clone the repo
+git clone https://github.com/EndogenAI/Workflows.git
+cd Workflows
+
+# 2. Install dependencies (uv manages the virtual environment)
+uv sync
+
+# 3. Run the test suite
+uv run pytest tests/
+
+# 4. Run the full test suite with coverage
+uv run pytest tests/ --cov=scripts --cov-report=term-missing
+
+# 5. Run only fast tests (skip IO and integration)
+uv run pytest tests/ -m "not slow and not integration"
+```
+
+**Always use `uv run`** — never invoke `python` or executables directly.
+
+---
+
 ## Workflow
 
 ### For Documentation Changes
@@ -120,6 +146,9 @@ All PRs use the template in [`.github/pull_request_template.md`](.github/pull_re
 - [ ] New scripts have a docstring and are listed in [`scripts/README.md`](scripts/README.md)
 - [ ] New docs are linked from the relevant index or guide
 - [ ] No secrets, credentials, or personal data included
+- [ ] New scripts are **idempotent** — running twice produces the same result as running once
+- [ ] New scripts are **legible** — another agent can infer intent from the docstring and function names alone, without reading every line
+- [ ] Side-effectful scripts have a `--dry-run` flag
 
 ---
 

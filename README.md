@@ -1,8 +1,22 @@
 # EndogenAI Workflows
 
+[![Tests](https://github.com/EndogenAI/Workflows/actions/workflows/tests.yml/badge.svg)](https://github.com/EndogenAI/Workflows/actions/workflows/tests.yml)
+
 The authoritative source for **endogenic / agentic product design and development** workflows, best practices, agent files, and automation scripts.
 
 > **Endogenic development** is the practice of building AI-assisted systems from the inside out — scaffolding from existing knowledge, encoding operational wisdom as scripts and agents, and letting the system grow intelligently from a morphogenetic seed rather than through vibe-driven prompting.
+
+---
+
+## Contents
+
+- [What Is This Repo?](#what-is-this-repo)
+- [Core Principles](#core-principles)
+- [Quick Start](#quick-start)
+- [File Directory](#file-directory)
+- [Related](#related)
+- [License](#license)
+
 
 ---
 
