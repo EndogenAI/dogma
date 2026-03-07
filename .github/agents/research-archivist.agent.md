@@ -46,11 +46,23 @@ In the synthesis document (`docs/research/<slug>.md`):
 - Add or verify the `Date` field.
 - Fix any minor formatting issues flagged by the Reviewer (typos, broken links). Do not make substantive edits — those go back to the Synthesizer.
 
-### 3. Route Through Review
+### 3. Run Synthesis Quality Gate
+
+Before routing to Review, run the programmatic quality gate:
+
+```bash
+uv run python scripts/validate_synthesis.py docs/research/sources/<slug>.md
+# or for D4 issue synthesis:
+uv run python scripts/validate_synthesis.py docs/research/<slug>.md
+```
+
+Exit code 0 = gate passed. If exit code 1, do **not** proceed — enumerate the failures in the scratchpad and return control to the Synthesizer for correction. Do not attempt to fix substantive quality gaps yourself — only status and minor formatting are in scope for the Archivist.
+
+### 4. Route Through Review
 
 Hand off to **Review** before committing. Use the "Review Before Commit" handoff.
 
-### 4. Commit
+### 5. Commit
 
 After Review approval, commit with a conventional commit message:
 
@@ -67,7 +79,7 @@ git commit -m "docs(research): add final synthesis — <title>
 Closes #<issue-number>"
 ```
 
-### 5. Return to Executive Researcher
+### 6. Return to Executive Researcher
 
 Use the "Return to Executive Researcher" handoff so the executive can update guides, notify Executive Docs, or close the GitHub issue.
 
@@ -77,6 +89,7 @@ Use the "Return to Executive Researcher" handoff so the executive can update gui
 
 - Reviewer verdict has been confirmed as **Approved** in the session scratchpad before any edits were made to the document.
 - The synthesis document has `Status: Final` and a correct `Date` field; only minor formatting issues were changed — no substantive edits.
+- **`scripts/validate_synthesis.py` exited 0** on the synthesis file before routing to Review. If it exited 1, the Synthesizer fixed the gaps and the gate was re-run.
 - The document has been routed through **Review** and the Review verdict is **Approved**.
 - A conventional commit has been made and pushed; `git log` confirms the commit and `git push` returned exit code 0.
 - **Do not stop early** after committing — return to Executive Researcher so the GitHub issue can be updated and Executive Docs can be notified of any guide changes needed.

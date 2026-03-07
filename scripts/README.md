@@ -18,6 +18,8 @@ scripts/
   fetch_source.py              # Fetch a URL into .cache/sources/ and maintain a manifest (no re-fetching)
   fetch_all_sources.py         # Batch-fetch all URLs from OPEN_RESEARCH.md + research doc frontmatter
   link_source_stubs.py         # Populate ## Referenced By sections in per-source stubs (bidirectional link graph)
+  validate_synthesis.py        # Quality gate for D3/D4 synthesis documents — run before any Archivist commit (exit 0 = pass, 1 = fail)
+  migrate_agent_xml.py         # Bulk-migrate .agent.md body sections to hybrid Markdown + XML format (--dry-run safe)
 ```
 
 ---
@@ -385,6 +387,92 @@ uv run python scripts/link_source_stubs.py --verbose
 Also run after adding new links to any issue synthesis or stub.
 
 **Exit codes**: `0` completed (even if 0 stubs updated); `1` `docs/research/sources/` not found.
+
+**Dependencies**: stdlib only.
+
+---
+
+## scripts/validate_synthesis.py
+
+**Purpose**: Programmatic quality gate for D3 per-source synthesis reports and D4 issue
+synthesis documents. Run before any Research Archivist commit to enforce a minimum quality
+bar — equivalent to Claude Code's `TaskCompleted` hook.
+
+Auto-detects document type:
+- **D3** (file path contains `/sources/`): checks 8 required section headings, URL/cache_path frontmatter
+- **D4** (all other paths under `docs/research/`): checks executive summary, status frontmatter
+
+**Usage**:
+
+```bash
+# Validate a D3 per-source synthesis report
+uv run python scripts/validate_synthesis.py docs/research/sources/<slug>.md
+
+# Validate a D4 issue synthesis
+uv run python scripts/validate_synthesis.py docs/research/<slug>.md
+
+# Use a higher minimum line count
+uv run python scripts/validate_synthesis.py <file> --min-lines 150
+
+# In Archivist workflow — block commit on failure
+uv run python scripts/validate_synthesis.py "$FILE" || exit 1
+```
+
+**Checks (D3)**:
+1. File exists
+2. ≥ 100 non-blank lines (configurable with `--min-lines`)
+3. All 8 required section headings present (Citation, Research Question, Theoretical Framework, Methodology, Key Claims, Critical Assessment, Cross-Source Connections, Project Relevance) — accepts both numbered and unnumbered heading formats
+4. Frontmatter has `slug`, `title`, `url` (or `source_url`), `cache_path`
+
+**Checks (D4)**:
+1. File exists
+2. ≥ 100 non-blank lines
+3. ≥ 4 `##` headings, including Executive Summary and Hypothesis Validation sections
+4. Frontmatter has `title`, `status`
+
+**Exit codes**: `0` = all checks passed; `1` = one or more checks failed (specific gaps listed to stdout).
+
+**Dependencies**: stdlib only.
+
+---
+
+## scripts/migrate_agent_xml.py
+
+**Purpose**: Bulk-migrate `.github/agents/*.agent.md` body sections from plain Markdown prose
+to hybrid Markdown + XML format. Implements the migration spec from
+`docs/research/xml-agent-instruction-format.md` §8.
+
+Maps `## SectionName` headings to canonical XML tag wrappers per the §4 tag inventory:
+`<persona>`, `<instructions>`, `<context>`, `<examples>`, `<tools>`, `<constraints>`, `<output>`.
+YAML frontmatter is never touched.
+
+**Usage**:
+
+```bash
+# Dry-run a single file (prints diff to stdout, no writes)
+uv run python scripts/migrate_agent_xml.py --file .github/agents/executive-researcher.agent.md --dry-run
+
+# Migrate a single file in-place
+uv run python scripts/migrate_agent_xml.py --file .github/agents/executive-researcher.agent.md
+
+# Dry-run all files in .github/agents/
+uv run python scripts/migrate_agent_xml.py --all --dry-run
+
+# Migrate all files (with min-line threshold — skip short agents)
+uv run python scripts/migrate_agent_xml.py --all --min-lines 30
+```
+
+**Flags**:
+
+| Flag | Description |
+|------|-------------|
+| `--file <path>` | Single file to migrate |
+| `--all` | Migrate all `*.agent.md` files in `.github/agents/` |
+| `--dry-run` | Print diff without writing |
+| `--min-lines <int>` | Skip files with fewer instruction lines (default: 30) |
+| `--model-scope claude` | Only migrate files where `model` field begins with `Claude` (default: claude) |
+
+**Exit codes**: `0` = success; `1` = parse error or well-formedness failure.
 
 **Dependencies**: stdlib only.
 
