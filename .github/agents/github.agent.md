@@ -137,6 +137,7 @@ git log -1 --format="%H %s"
 
 <constraints>
 
+- **Never use heredocs or terminal commands to write file content** — `cat >> file << 'EOF'` and inline Python writes silently corrupt content containing backticks or triple-backtick fences. Always use built-in file tools: `create_file` for new files, `replace_string_in_file` for edits. For `gh issue`/`gh pr` multi-line bodies: always `--body-file <path>`, never `--body "..."` with multi-line text.
 - Do not commit without confirmed **Review** approval.
 - Do not `git add -A` — stage files explicitly to avoid committing unintended changes.
 - Do not `git push --force` to `main` under any circumstances.

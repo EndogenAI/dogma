@@ -325,6 +325,7 @@ model "knows" at inference time.
 
 <constraints>
 
+- **Never use heredocs or terminal commands to write file content** — `cat >> file << 'EOF'` and inline Python writes silently corrupt content containing backticks or triple-backtick fences. Always use built-in file tools: `create_file` for new files, `replace_string_in_file` for edits. For `gh issue`/`gh pr` multi-line bodies: always `--body-file <path>`, never `--body "..."` with multi-line text.
 - Do not write outside `docs/research/` and `docs/research/sources/` — guides and other docs are **Executive Docs**'s responsibility.
 - Do not include findings not grounded in the cached source or the Scout output — no independent research during synthesis.
 - **Pass 1 only**: do not read more than one cache file per invocation. Context from one source bleeds into analysis of another. If you were given one source, produce one synthesis document and return.

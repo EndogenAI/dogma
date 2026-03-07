@@ -185,13 +185,15 @@ Any command that creates or modifies a remote side effect must be immediately fo
 | Command | Verification |
 |---------|-------------|
 | `gh issue create` | `gh issue list --state open --limit 5` |
-| `git push` | `git log --oneline -1` |
+| `git push` | `git log --oneline -1` then `gh run list --limit 3` to monitor CI |
 | `gh pr create` | `gh pr view` |
 | `gh issue close` | `gh issue view <number>` |
 | `gh issue edit <num>` | `gh issue view <num> --json labels,milestone` |
 | milestone create via API | `gh api repos/:owner/:repo/milestones` |
 
 **Zero error output is not confirmation of success.** Output truncation, network timeouts, and silent API failures all produce clean exits. Always verify.
+
+**CI must pass before requesting review.** After every `git push` to a PR branch: check CI status with `gh run list --limit 3` before requesting or re-requesting Copilot review. A passing push with failing CI is a broken PR — fix CI before doing anything else. Common CI failure modes: lychee dead link (add to `.lycheeignore`), ruff format (run `uv run ruff format scripts/ tests/`), validate_synthesis missing headings.
 
 ### GitHub Label and Issue Conventions
 

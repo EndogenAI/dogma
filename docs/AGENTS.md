@@ -51,7 +51,9 @@ documentation update. The sequence is:
 
 Heredocs (`cat >> file << 'EOF'`, Python inline `<< 'PYEOF'`) silently corrupt or truncate content that contains backticks, triple-backtick fences, or special characters when executed through the VS Code terminal tool. This has caused silent data loss in sessions.
 
-**Rule**: All documentation writes must use `replace_string_in_file` (for edits to existing files) or `create_file` (for new files). These are the built-in VS Code tools and are safe for all Markdown content.
+> **This constraint is also encoded as the first item in every `.agent.md` file's `<constraints>` block** (`.github/agents/`). Observed failure pattern: agents attempt heredoc → silent corruption → retry → hang → eventually write a script. Correct action on the first attempt: use the built-in file tool.
+
+**Rule**: All documentation writes must use `replace_string_in_file` (for edits to existing files) or `create_file` (for new files). For `gh issue`/`gh pr` multi-line bodies: always `--body-file <path>`, never `--body "..."` with multi-line text.
 
 ---
 

@@ -163,6 +163,7 @@ Route the synthesis file through **Review** before any commit. Do not commit dir
 ## Guardrails
 
 <constraints>
+- **Never use heredocs or terminal commands to write file content** — `cat >> file << 'EOF'` and inline Python writes silently corrupt content containing backticks or triple-backtick fences. Always use built-in file tools: `create_file` for new files, `replace_string_in_file` for edits. For `gh issue`/`gh pr` multi-line bodies: always `--body-file <path>`, never `--body "..."` with multi-line text.
 - Do not read private or confidential issue content — synthesize only public GitHub data.
 - Do not commit directly — route through Review first, then GitHub agent.
 - Keep synthesis factual — no editorializing beyond the JTBD framework.

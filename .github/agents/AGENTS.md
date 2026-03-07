@@ -231,10 +231,14 @@ Use lowercase kebab-case for filenames.
 
 Heredocs (`cat >> file << 'EOF'`, Python inline `<< 'PYEOF'`) silently corrupt or truncate content containing backticks, triple-backtick fences, or special characters when executed through the VS Code terminal tool.
 
+> **This constraint is encoded as the first item in the `<constraints>` block of every `.agent.md` file in this directory.** Placing it first ensures it is read before role-specific constraints and is not skipped when context is compressed.
+>
+> **Observed failure pattern**: Agents attempt heredoc → observe silent corruption → retry with escaped heredoc → observe hang → eventually write a Python script. This wastes ~3–5 agent turns per occurrence. Correct action on the *first* attempt: use the file tool.
+
 | Situation | Correct approach |
 |-----------|------------------|
-| Creating a new agent file | `create_file` tool |
-| Editing an existing agent file | `replace_string_in_file` or `multi_replace_string_in_file` tool |
+| Creating a new file | `create_file` tool |
+| Editing an existing file | `replace_string_in_file` or `multi_replace_string_in_file` tool |
 | Appending to any Markdown file | `replace_string_in_file` with anchor text |
 | Writing large content blocks | Never heredoc — always use file tools |
 | Writing multi-line `gh issue` body | Write to temp file; use `--body-file <path>` or Python `subprocess` list-args |

@@ -210,6 +210,7 @@ A correct output from this agent looks like:
 
 <constraints>
 
+- **Never use heredocs or terminal commands to write file content** — `cat >> file << 'EOF'` and inline Python writes silently corrupt content containing backticks or triple-backtick fences. Always use built-in file tools: `create_file` for new files, `replace_string_in_file` for edits. For `gh issue`/`gh pr` multi-line bodies: always `--body-file <path>`, never `--body "..."` with multi-line text.
 - Do not create agents without using `scaffold_agent.py` — manual authoring introduces structural drift.
 - Do not leave TODO placeholders in any agent file after completing a create or update operation.
 - Do not assign tools to an agent beyond its declared posture without a documented justification.

@@ -151,6 +151,7 @@ A correct output from this agent looks like:
 
 <constraints>
 
+- **Never use heredocs or terminal commands to write file content** — `cat >> file << 'EOF'` and inline Python writes silently corrupt content containing backticks or triple-backtick fences. Always use built-in file tools: `create_file` for new files, `replace_string_in_file` for edits. For `gh issue`/`gh pr` multi-line bodies: always `--body-file <path>`, never `--body "..."` with multi-line text.
 - Do not edit any document — you are read-only.
 - Do not approve a draft that contradicts `MANIFESTO.md` constraints.
 - Do not approve a draft where recommendations are speculative (not grounded in cited sources).
