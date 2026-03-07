@@ -70,8 +70,8 @@ The `.cache/toolchain/` layer is regenerable and disposable. The `docs/toolchain
 ### Refreshing the cache layer
 
 ```bash
-# Check freshness for all tools
-uv run python scripts/fetch_toolchain_docs.py --check
+# Check freshness for all tools (single invocation)
+uv run python scripts/fetch_toolchain_docs.py --tool all --check
 
 # Refresh specific tool caches
 uv run python scripts/fetch_toolchain_docs.py --tool gh --force

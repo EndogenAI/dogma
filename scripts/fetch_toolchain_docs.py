@@ -44,7 +44,7 @@ uv run python scripts/fetch_toolchain_docs.py
 uv run python scripts/fetch_toolchain_docs.py --tool gh --output-dir .cache/toolchain/
 
 # Skip refresh if cached within last 24 hours
-uv run python scripts/fetch_toolchain_docs.py --check
+uv run python scripts/fetch_toolchain_docs.py --tool all --check
 
 # Force re-fetch even if recently cached
 uv run python scripts/fetch_toolchain_docs.py --force
@@ -104,6 +104,13 @@ TOOL_SUBCOMMANDS: dict[str, list[str] | None] = {
         "tag",
     ],
     "pytest": [],  # single-command tool; no subcommand dispatch
+}
+
+# Some tools open a manpage/pager when invoked with --help, which can hang or
+# produce no output in non-interactive subprocesses.  Map those tools to the
+# short -h flag instead.
+_HELP_FLAG: dict[str, str] = {
+    "git": "-h",
 }
 
 # ---------------------------------------------------------------------------
@@ -472,12 +479,14 @@ def fetch_generic_tool_docs(
         print(f"[fetch_toolchain_docs] Cache is fresh (< {CACHE_MAX_AGE_HOURS}h old). Skipping.")
         return 0
 
+    help_flag = _HELP_FLAG.get(tool, "--help")
+
     if is_single_command:
         # --- Single-command tool (e.g. pytest) ---
-        help_text, rc = _run([tool, "--help"])
+        help_text, rc = _run([tool, help_flag])
         if rc != 0 and not help_text.strip():
             print(
-                f"[fetch_toolchain_docs] Error: '{tool} --help' failed (exit {rc}).",
+                f"[fetch_toolchain_docs] Error: '{tool} {help_flag}' failed (exit {rc}).",
                 file=sys.stderr,
             )
             return 1
@@ -497,10 +506,10 @@ def fetch_generic_tool_docs(
         return 0
 
     # --- Subcommand-based tools ---
-    top_help, rc = _run([tool, "--help"])
+    top_help, rc = _run([tool, help_flag])
     if rc != 0 and not top_help.strip():
         print(
-            f"[fetch_toolchain_docs] Error: '{tool} --help' failed (exit {rc}).",
+            f"[fetch_toolchain_docs] Error: '{tool} {help_flag}' failed (exit {rc}).",
             file=sys.stderr,
         )
         return 1
@@ -534,10 +543,10 @@ def fetch_generic_tool_docs(
 
     per_subcommand_docs: list[tuple[str, str, str]] = []
     for name, desc in subcommand_list:
-        sub_help, sub_rc = _run([tool, name, "--help"])
+        sub_help, sub_rc = _run([tool, name, help_flag])
         if sub_rc != 0 and not sub_help.strip():
             print(
-                f"[fetch_toolchain_docs] Warning: '{tool} {name} --help' failed — skipping.",
+                f"[fetch_toolchain_docs] Warning: '{tool} {name} {help_flag}' failed — skipping.",
                 file=sys.stderr,
             )
             continue
@@ -618,8 +627,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--tool",
         default="gh",
-        choices=list(TOOL_SUBCOMMANDS.keys()),
-        help="CLI tool to document.  Default: gh.",
+        choices=[*TOOL_SUBCOMMANDS.keys(), "all"],
+        help="CLI tool to document.  Use 'all' to refresh every tool.  Default: gh.",
     )
     parser.add_argument(
         "--output-dir",
@@ -656,22 +665,27 @@ def main() -> None:
 
     output_dir = Path(args.output_dir).expanduser().resolve()
 
-    if args.tool == "gh":
-        rc = fetch_gh_docs(
-            output_dir,
-            check=args.check,
-            force=args.force,
-            dry_run=args.dry_run,
-        )
-    else:
-        rc = fetch_generic_tool_docs(
-            args.tool,
-            output_dir,
-            check=args.check,
-            force=args.force,
-            dry_run=args.dry_run,
-        )
-    sys.exit(rc)
+    tools_to_run = list(TOOL_SUBCOMMANDS.keys()) if args.tool == "all" else [args.tool]
+    overall_rc = 0
+    for tool in tools_to_run:
+        if tool == "gh":
+            rc = fetch_gh_docs(
+                output_dir,
+                check=args.check,
+                force=args.force,
+                dry_run=args.dry_run,
+            )
+        else:
+            rc = fetch_generic_tool_docs(
+                tool,
+                output_dir,
+                check=args.check,
+                force=args.force,
+                dry_run=args.dry_run,
+            )
+        if rc != 0:
+            overall_rc = rc
+    sys.exit(overall_rc)
 
 
 if __name__ == "__main__":

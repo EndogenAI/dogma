@@ -89,7 +89,7 @@ git fetch --prune                   # fetch all, prune deleted remotes
 ```bash
 git restore <file>                  # discard unstaged changes
 git restore --staged <file>         # unstage a file
-git reset HEAD~1                    # undo last commit, keep changes staged
+git reset --soft HEAD~1             # undo last commit, keep changes staged
 git reset --hard HEAD~1             # undo last commit, discard changes
 git stash                           # stash dirty state
 git stash pop                       # restore stash

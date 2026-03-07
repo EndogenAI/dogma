@@ -75,7 +75,7 @@ Re-deriving command syntax or re-encountering known failure modes each session w
 | `git` | [`docs/toolchain/git.md`](docs/toolchain/git.md) |
 | `pytest` | [`docs/toolchain/pytest.md`](docs/toolchain/pytest.md) |
 
-To refresh the auto-generated raw reference cache: `uv run python scripts/fetch_toolchain_docs.py --check`
+To refresh the auto-generated raw reference cache: `uv run python scripts/fetch_toolchain_docs.py --tool all --check`
 
 See [`docs/toolchain/README.md`](docs/toolchain/README.md) for the full update workflow and two-layer architecture (`.cache/toolchain/` vs `docs/toolchain/`).
 

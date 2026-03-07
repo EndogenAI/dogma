@@ -426,11 +426,17 @@ Per the programmatic-first principle: agents repeatedly look up `gh` CLI flags i
 # Fetch and cache all gh CLI docs (writes to .cache/toolchain/)
 uv run python scripts/fetch_toolchain_docs.py
 
-# Skip refresh if cache files are < 24 hours old
-uv run python scripts/fetch_toolchain_docs.py --check
+# Cache a specific tool
+uv run python scripts/fetch_toolchain_docs.py --tool uv
+
+# Refresh all tools  
+uv run python scripts/fetch_toolchain_docs.py --tool all
+
+# Check freshness for all tools (skip refresh if < 24 hours old)
+uv run python scripts/fetch_toolchain_docs.py --tool all --check
 
 # Force re-fetch even if recently cached
-uv run python scripts/fetch_toolchain_docs.py --force
+uv run python scripts/fetch_toolchain_docs.py --tool all --force
 
 # Dry run — print what would be written without touching the filesystem
 uv run python scripts/fetch_toolchain_docs.py --dry-run

@@ -62,7 +62,7 @@ uv run pytest tests/ --cov=scripts --cov-report=xml            # CI XML report
 | `@pytest.mark.integration` | Hits network or spawns subprocess | Web fetches, real `gh` CLI calls |
 | `@pytest.mark.slow` | Takes > 1 second | Long-running scripts, large fixture setup |
 
-Declare markers in `conftest.py`; all three are already registered via `conftest.py`.
+Declare markers in `pyproject.toml` under `[tool.pytest.ini_options].markers`; all three are already registered there.
 
 ---
 
