@@ -15,6 +15,7 @@
 | Branch naming | `feat/slug`, `fix/slug`, `chore/slug`, `docs/slug` |
 | Pre-commit hooks | `.pre-commit-config.yaml` — ruff check/format run on commit |
 | Commit scope | Small, incremental commits — one logical change per commit |
+| PR merge strategy | **Rebase and merge** — preserves full Conventional Commits history on `main`; squash merge is disabled |
 
 ---
 
@@ -106,6 +107,20 @@ git tag -a v1.2.3 -m "Release 1.2.3"  # annotated tag
 git push origin v1.2.3              # push a tag
 git push origin --tags              # push all tags
 ```
+
+---
+
+## PR Merge Strategy
+
+This repo uses **rebase and merge** for all PRs. Squash merge is disabled.
+
+| Strategy | Effect on `main` |
+|---|---|
+| **Rebase and merge** ✓ | All branch commits land linearly on `main`; full `git log` / `git bisect` / `git blame` granularity preserved |
+| Merge commit | Full history preserved but adds a merge commit to `main` |
+| Squash merge ✗ | Collapses N commits into one; destroys per-commit Conventional Commits encoding in the git DAG |
+
+Squash merge is specifically harmful here because this repo treats commit messages as a documentation encoding layer — each `fix(scope):` or `feat(scope):` commit is a discrete durable record of agent decisions.
 
 ---
 

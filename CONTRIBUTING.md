@@ -154,6 +154,8 @@ git commit -m "feat(agents): add executive-researcher agent"
 
 All PRs use the template in [`.github/pull_request_template.md`](.github/pull_request_template.md).
 
+**Merge strategy**: this repo uses **rebase and merge** only. Squash merge is disabled. Keep PR commits clean — each commit should be a valid Conventional Commit message, because all commits land on `main` individually. See [docs/guides/github-workflow.md](docs/guides/github-workflow.md#9-pr-merge-strategy) for the full rationale.
+
 **Before opening a PR, verify:**
 - [ ] Content aligns with [`MANIFESTO.md`](MANIFESTO.md) principles
 - [ ] Agent files follow the frontmatter schema in [`.github/agents/AGENTS.md`](.github/agents/AGENTS.md)
