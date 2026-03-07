@@ -79,6 +79,32 @@ When you **add a new script, new agent, or new guide**, you are adding a visible
 
 When you **run a research session and commit the results**, that session is a tree ring. Thick rings are productive sessions with many commits. Thin rings are focused sessions. The pattern of rings over time tells the story of the project's evolution.
 
+### GitHub's Layered Immutable Substrate
+
+Using GitHub creates immutable layers as a **passive side-effect** — not something you have to explicitly manage. This is one of the most underappreciated properties of the system: every action leaves a durable trace even when nothing is "saved" deliberately.
+
+```
+Layer 1 — git object store (most durable)
+  Content-addressed by SHA; cryptographically immutable.
+  Every file, tree, and commit object ever created persists here.
+  Objects only disappear via explicit garbage collection.
+
+Layer 2 — GitHub application layer (application-immutable)
+  PR pages, review comments, issue comments, activity feeds.
+  These survive branch deletion and merges.
+  A PR from two years ago still shows every inline review thread.
+
+Layer 3 — main commit log (traversable history)
+  The "readable tree rings" — what git log, git bisect, and git blame see.
+  Shaped by merge strategy: rebase preserves granularity; squash collapses it.
+```
+
+**Implication for tool choices**: any decision about how you interact with git (merge strategy, commit discipline, branch naming) is a **substrate design decision**, not just a workflow preference. Choosing squash-merge does not destroy Layer 1 or Layer 2 — but it degrades Layer 3, reducing `main`'s history from a dense readable record of agent decisions into a sparse sequence of aggregate PR blobs.
+
+**The tree rings connection**: each Conventional Commit that lands on `main` is a dated ring. Squash-merging is the equivalent of reporting a decade of growth as a single ring with no internal structure — the total mass is there, but the annual story is gone.
+
+This is why the rebase-and-merge policy exists: see [ADR-005](../decisions/ADR-005-rebase-merge-as-substrate-preservation.md).
+
 ---
 
 ## How the Three Metaphors Interlock

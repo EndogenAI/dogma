@@ -35,3 +35,4 @@ Write an ADR when:
 | [ADR-002](ADR-002-kanban-not-scrum.md) | Kanban over Scrum for project planning | Accepted | 2026-03-07 |
 | [ADR-003](ADR-003-xml-hybrid-agent-format.md) | XML-hybrid format for agent instruction files | Proposed | 2026-03-07 |
 | [ADR-004](ADR-004-no-coverage-threshold.md) | No CI coverage percentage threshold | Accepted | 2026-03-07 |
+| [ADR-005](ADR-005-rebase-merge-as-substrate-preservation.md) | Rebase-and-merge to preserve commit encoding substrate | Accepted | 2026-03-07 |

@@ -175,6 +175,68 @@ docs/research/ + docs/guides/
 
 ---
 
+## 4a. The Immutable Substrate Model
+
+GitHub creates **layered immutable substrate** as a passive side-effect of normal use. This distinction matters for substrate design decisions (e.g. merge strategy, branch discipline, commit message quality):
+
+```
+Layer 1 — git object store
+  Content-addressed by SHA (SHA-1 for legacy git, SHA-256 for git 2.29+).
+  Every blob, tree, commit, and tag object is cryptographically immutable.
+  Objects persist even when branches are deleted; only explicit GC removes them.
+  Durability: near-permanent (GitHub retains objects well past branch deletion)
+
+Layer 2 — GitHub application layer (PR + issue + review records)
+  PR pages, inline review threads, issue comments, activity timeline.
+  Immutable at the application level — these records survive merges and deletions.
+  A PR merged 2 years ago still shows every commit that was in it.
+  Durability: permanent while the repository exists
+
+Layer 3 — main commit log (the traversable tree rings)
+  What git log, git bisect, git blame, and agent context queries actually see.
+  This layer is SHAPED by merge strategy — it is not automatically immutable.
+  Rebase merge: all branch commits land on main linearly (dense rings)
+  Squash merge: N commits → 1 per PR (sparse rings; granularity lost from main)
+```
+
+### Why merge strategy is a substrate design decision
+
+A squash merge does not destroy Layer 1 or Layer 2. The original commits are still in the git object store, and the PR page still lists them. But they are **no longer reachable from any branch ref** — they cannot be traversed by `git log main`, cannot be isolated by `git bisect`, and cannot be attributed by `git blame` to their original author and message.
+
+For this repo, where Conventional Commit messages are a deliberate encoding of agent decisions (each `type(scope): message` is a dated record of *why* a change was made), squash-merging degrades Layer 3 from a dense, granular decision log to a sequence of PR-level summaries.
+
+**Decision**: rebase-and-merge is the canonical strategy. See [ADR-005](../decisions/ADR-005-rebase-merge-as-substrate-preservation.md).
+
+### Retrieval implications
+
+| What you want to find | Layer | Tool | Notes |
+|---|---|---|---|
+| "What was in PR #35?" | Layer 2 | `gh pr view 35 --json commits` | Always available; not affected by merge strategy |
+| "What commits touched scripts/ in last 30 days?" | Layer 3 | `git log --oneline -- scripts/` | Requires rebase merge for full granularity |
+| "When was this line last changed and why?" | Layer 3 | `git blame <file>` | Squash merge attributes all lines to the squash commit |
+| "Find the commit that introduced bug X" | Layer 3 | `git bisect` | Granularity of bisect search == granularity of Layer 3 |
+| "What's the original SHA of a pre-merge commit?" | Layer 1 | `gh pr view <n> --json commits` | Always recoverable from Layer 2 → Layer 1 |
+
+---
+
+```
+.tmp/<branch>/<date>.md
+  ↓ Working memory — ephemeral, local, fast write/read
+
+GitHub Issues + PR descriptions + git log (Conventional Commits)
+  ↓ Episodic memory — durable, searchable, queryable by label/number
+
+docs/research/ + docs/guides/
+  ↓ Semantic memory — distilled, validated patterns
+
+/memories/repo/ (Copilot memory tool)
+  ↓ Cross-session heuristics — Copilot-readable, persisted across workspaces
+```
+
+**GitHub Projects v2** remains a human coordination surface. Copilot cannot read field values. Do not design agent workflows that depend on project field state for retrieval — encode state in labels instead.
+
+---
+
 ## 5. Limitations and Trade-offs
 
 | Limitation | Detail |
