@@ -74,32 +74,38 @@ You are the **{name}** for the EndogenAI Workflows project.
 
 ## Endogenous Sources — Read Before Acting
 
+<context>
 1. [`AGENTS.md`](../../AGENTS.md) — guiding constraints.
 2. [`docs/guides/`](../../docs/guides/) — existing formalized guides.
 3. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting to avoid re-discovering context.
 
 <!-- TODO: Add any additional files this agent must read before acting. -->
+</context>
 
 ---
 
 ## Workflow
 
+<instructions>
 <!-- TODO: Enumerate the numbered steps or role-specific checklist for this agent. -->
 
 1. Read endogenous sources listed above.
 2. <!-- Step 2 -->
 3. <!-- Step 3 -->
 4. Hand off to **Review** when work is complete.
+</instructions>
 
 ---
 
 ## Guardrails
 
+<constraints>
 <!-- Explicit list of what this agent must NOT do. -->
 
 - Do not commit directly — always hand off to **Review** first.
 - Do not modify files outside the scope of this agent's stated role.
 - Do not install packages or modify lockfiles without explicit instruction.
+</constraints>
 """
 
 
