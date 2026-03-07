@@ -216,3 +216,21 @@ This research should produce, at minimum:
 - [ ] D3 — All 15+ agent files migrated (via script) and validated
 - [ ] D4 — `scaffold_agent.py` updated to emit XML format
 - [ ] D5 — `docs/guides/agents.md` and `.github/agents/AGENTS.md` updated with XML format documentation
+
+---
+
+## Issue #12 Follow-Up Open Questions (XML Agent Instruction Format)
+
+Resolved: 2026-03-06. The following questions remain open after the primary research deliverable was completed.
+
+**OQ-12-1 — Language Model API prompt pre-processing**
+Does the VS Code Language Model API (the layer below the Chat Participant API) perform any prompt normalisation, caching, or XML-aware pre-processing before forwarding to the Claude endpoint? Target source: `code.visualstudio.com/api/extension-guides/ai/language-model`. Until confirmed, the conduit finding for XML pass-through is conditional on this layer.
+
+**OQ-12-2 — Instruction-following fidelity: XML vs. plain Markdown (empirical)**
+Design and run an ablation test using the Research Synthesizer agent in XML-hybrid form vs. its current plain-Markdown form. Measure: completion criteria satisfaction rate, constraint-violation rate, and section-addressing accuracy. Encode the comparison as a script. Results to be committed to `docs/research/`.
+
+**OQ-12-3 — Non-Claude model XML degradation**
+How do XML-tagged instruction bodies behave when routed to Ollama-hosted local models or GPT-family cloud models? Is there graceful degradation, neutral pass-through, or active interference with instruction parsing? Must be resolved before the `--model-scope` gate in ADAPT item B2 can be relaxed.
+
+**OQ-12-4 — `handoffs: prompt:` field and XML**
+Do YAML `handoffs: prompt:` field values benefit from or tolerate XML structuring when those prompts are complex multi-step instructions? Currently plain prose strings. May be relevant once orchestrator-tier agents are migrated and handoff prompts grow in complexity.
