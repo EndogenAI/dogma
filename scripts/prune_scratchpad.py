@@ -15,7 +15,7 @@ Purpose:
     Sections whose heading contains "Active", "Escalation", "Session" (current), or
     "Plan" are treated as live and left intact.
 
-    The rule of thumb: prune when the active session file exceeds 200 lines.
+    The rule of thumb: prune when the active session file exceeds 2000 lines.
 
 Path resolution (when --file is not provided):
     1. Read current git branch: git rev-parse --abbrev-ref HEAD
@@ -80,7 +80,7 @@ ARCHIVE_KEYWORDS = frozenset(
 )
 
 # If line count is below this threshold, skip pruning unless --force
-SIZE_GUARD = 200
+SIZE_GUARD = 2000
 
 
 def _git_branch() -> str:
