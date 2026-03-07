@@ -34,12 +34,15 @@ You enforce the **programmatic-first** constraint from [`AGENTS.md`](../../AGENT
 
 ## Endogenous Sources — Read Before Acting
 
+<context>
+
 1. [`AGENTS.md`](../../AGENTS.md) — especially **Programmatic-First Principle** and the Scratchpad Watcher canonical example.
 2. [`scripts/watch_scratchpad.py`](../../scripts/watch_scratchpad.py) — the canonical file-watcher pattern for this codebase.
 3. [`scripts/README.md`](../../scripts/README.md) — script catalog.
 4. [`docs/research/dev-workflow-automations.md`](../../docs/research/dev-workflow-automations.md) — dev workflow automation research; pre-commit stack, Taskfile.dev, CI anti-patterns, environment reproducibility.
 
 ---
+</context>
 
 ## Automation Categories
 
@@ -113,6 +116,8 @@ Must be configured after CI is stable. Required settings:
 
 ## Workflow
 
+<instructions>
+
 ### 1. Scope the Automation
 
 Determine the category (see table above) and the trigger:
@@ -177,8 +182,11 @@ Route to **Review** → **GitHub** to commit.
 If the task is a one-shot script rather than event-driven, hand off to **Executive Scripter**.
 
 ---
+</instructions>
 
 ## Completion Criteria
+
+<output>
 
 - Automation category, trigger event, and loop-prevention strategy are documented in the session scratchpad before any code is written.
 - Existing automation has been audited; the new automation does not duplicate an existing watcher, hook, or CI task.
@@ -188,8 +196,11 @@ If the task is a one-shot script rather than event-driven, hand off to **Executi
 - **Do not stop early** once the watcher script is written — VS Code task registration, README update, and Review are required completion steps before returning.
 
 ---
+</output>
 
 ## Output Examples
+
+<examples>
 
 A correct output from this agent looks like:
 
@@ -209,11 +220,15 @@ A correct output from this agent looks like:
 ```
 
 ---
+</examples>
 
 ## Guardrails
+
+<constraints>
 
 - **Never use `fswatch`** — use Python `watchdog` for OS-agnostic watching.
 - **Never skip loop prevention** — every watcher needs a cooldown or sentinel.
 - **Never commit without Review**.
 - **Never omit the script docstring**.
 - **Escalate to Executive Scripter** for on-demand / one-shot scripts.
+</constraints>

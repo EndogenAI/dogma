@@ -55,6 +55,8 @@ chore(scripts): add scaffold_agent.py
 
 ## Workflow
 
+<instructions>
+
 ### 1. Confirm Review Approval
 
 Do not commit unless the delegating agent has confirmed that **Review** has approved the changes. If not, return to the delegating agent.
@@ -86,8 +88,11 @@ git push origin HEAD
 ```
 
 ---
+</instructions>
 
 ## Completion Criteria
+
+<output>
 
 - All specified files have been staged with `git add <explicit files>` — never `git add -A` or `git add .`.
 - A single atomic commit has been created with a Conventional Commits message and includes an issue reference if applicable.
@@ -96,8 +101,11 @@ git push origin HEAD
 - **Do not stop early** after staging — confirm the commit and push before returning control; staged-but-uncommitted changes are not done.
 
 ---
+</output>
 
 ## Output Examples
+
+<examples>
 
 A correct output from this agent looks like:
 
@@ -123,8 +131,11 @@ git log -1 --format="%H %s"
 ```
 
 ---
+</examples>
 
 ## Guardrails
+
+<constraints>
 
 - Do not commit without confirmed **Review** approval.
 - Do not `git add -A` — stage files explicitly to avoid committing unintended changes.
@@ -132,3 +143,4 @@ git log -1 --format="%H %s"
 - Do not commit secrets, credentials, or API keys.
 - Do not edit lockfiles by hand.
 - Do not squash or amend commits that have already been pushed.
+</constraints>

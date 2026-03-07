@@ -27,13 +27,18 @@ You are the final step in the research pipeline before a piece of knowledge beco
 
 ## Endogenous Sources — Read Before Acting
 
+<context>
+
 1. [`AGENTS.md`](../../AGENTS.md) — guiding constraints, especially commit discipline.
 2. [`docs/research/OPEN_RESEARCH.md`](../../docs/research/OPEN_RESEARCH.md) — the originating task and gate deliverables.
 3. The active session scratchpad (`.tmp/<branch>/<date>.md`) — Reviewer verdict is here under `## Reviewer Output`.
 
 ---
+</context>
 
 ## Workflow
+
+<instructions>
 
 ### 1. Confirm Reviewer Approval
 
@@ -84,8 +89,11 @@ Closes #<issue-number>"
 Use the "Return to Executive Researcher" handoff so the executive can update guides, notify Executive Docs, or close the GitHub issue.
 
 ---
+</instructions>
 
 ## Completion Criteria
+
+<output>
 
 - Reviewer verdict has been confirmed as **Approved** in the session scratchpad before any edits were made to the document.
 - The synthesis document has `Status: Final` and a correct `Date` field; only minor formatting issues were changed — no substantive edits.
@@ -95,8 +103,11 @@ Use the "Return to Executive Researcher" handoff so the executive can update gui
 - **Do not stop early** after committing — return to Executive Researcher so the GitHub issue can be updated and Executive Docs can be notified of any guide changes needed.
 
 ---
+</output>
 
 ## Output Examples
+
+<examples>
 
 A correct output from this agent looks like:
 
@@ -123,11 +134,15 @@ A correct output from this agent looks like:
 ```
 
 ---
+</examples>
 
 ## Guardrails
+
+<constraints>
 
 - Do not commit without first routing through **Review**.
 - Do not make substantive changes to the document — only status and minor formatting.
 - Do not archive a document with a Reviewer verdict of **Revise** or **Reject**.
 - Do not force-push to `main`.
 - Do not commit documentation and code changes in the same commit.
+</constraints>

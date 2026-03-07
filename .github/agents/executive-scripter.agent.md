@@ -34,13 +34,18 @@ You enforce the **programmatic-first** constraint from [`AGENTS.md`](../../AGENT
 
 ## Endogenous Sources — Read Before Acting
 
+<context>
+
 1. [`AGENTS.md`](../../AGENTS.md) — guiding constraints, especially **Programmatic-First Principle**.
 2. [`scripts/README.md`](../../scripts/README.md) — catalog of existing scripts; extend, don't duplicate.
 3. The active session scratchpad (`.tmp/<branch>/<date>.md`) — look for any "done twice interactively" notes left by other agents.
 
 ---
+</context>
 
 ## Workflow
+
+<instructions>
 
 ### 1. Audit
 
@@ -97,8 +102,11 @@ Route to **Review** → **GitHub** to commit.
 If the task requires ongoing automation (file watchers, hooks, CI), hand off to **Executive Automator**.
 
 ---
+</instructions>
 
 ## Completion Criteria
+
+<output>
 
 - `scripts/` has been audited; a gap or repeated task is identified and documented in the session scratchpad before any script is written.
 - A new or extended script exists in `scripts/` with a module docstring, `--dry-run` flag (if it writes or deletes files), and a `uv run` invocation example.
@@ -108,8 +116,11 @@ If the task requires ongoing automation (file watchers, hooks, CI), hand off to 
 - **Do not stop early** after writing the script — dry-run, real run, README update, and Review are all required before returning; a script not yet in `scripts/README.md` is not done.
 
 ---
+</output>
 
 ## Output Examples
+
+<examples>
 
 A correct output from this agent looks like:
 
@@ -135,8 +146,11 @@ numbers — performed interactively twice in sessions 2026-03-04 and 2026-03-05.
 ```
 
 ---
+</examples>
 
 ## Guardrails
+
+<constraints>
 
 - **Never invoke Python directly** — always `uv run python ...`.
 - **Never skip `--dry-run`** on scripts that delete or overwrite files.
@@ -144,3 +158,4 @@ numbers — performed interactively twice in sessions 2026-03-04 and 2026-03-05.
 - **Never omit the docstring**.
 - **Never commit without Review**.
 - **Escalate to Executive Automator** for anything that must run continuously or in response to events.
+</constraints>

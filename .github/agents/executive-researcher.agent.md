@@ -73,6 +73,8 @@ You enforce the **endogenous-first** and **programmatic-first** constraints from
 
 ## Endogenous Sources — Read Before Acting
 
+<context>
+
 1. [`AGENTS.md`](../../AGENTS.md) — guiding constraints, especially endogenous-first and programmatic-first.
 2. [`docs/research/OPEN_RESEARCH.md`](../../docs/research/OPEN_RESEARCH.md) — open research tasks; always check for existing or related work.
 3. [`docs/guides/`](../../docs/guides/) — existing formalized guides; research should feed or extend these.
@@ -80,6 +82,7 @@ You enforce the **endogenous-first** and **programmatic-first** constraints from
 5. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read first to avoid re-discovering context from prior sessions.
 
 ---
+</context>
 
 ## Research Philosophy — Expansion and Contraction
 
@@ -93,6 +96,8 @@ This pattern applies at the session level, at each sub-agent handoff, and within
 ---
 
 ## Workflow
+
+<instructions>
 
 ### 1. Orient
 
@@ -176,6 +181,7 @@ Before closing the session, write a brief `## Reflection` block in the scratchpa
 This reflection does not require a subagent — write it directly. If it produces a generalizable heuristic (a pattern that would change future Scout prompts or Frame framing), log it under `## Heuristic` and consider whether it should be encoded into the relevant agent file. This step implements the **reflection layer** from the Generative Agents architecture and closes the experiential memory gap without requiring any new tooling.
 
 ---
+</instructions>
 
 ## Spawning New Area Agents
 
@@ -199,6 +205,8 @@ Then:
 
 ## Completion Criteria
 
+<output>
+
 - Session scratchpad is initialized; `OPEN_RESEARCH.md` and any open `research` issues have been read; no duplicate work identified.
 - Research question is framed in the scratchpad with gate deliverables (D1–D3) explicitly listed.
 - All four sub-agent phases (Scout → Synthesize → Review → Archive) have completed and returned control; each phase's gate criteria are met before the next phase was started.
@@ -208,8 +216,11 @@ Then:
 - **Do not stop early** after the Archivist commits — the GitHub issue update, Executive Docs notification, and Reflection are required completion steps, not optional follow-ups.
 
 ---
+</output>
 
 ## Output Examples
+
+<examples>
 
 A correct output from this agent looks like:
 
@@ -244,11 +255,15 @@ Gate: ✅ Commit confirmed, issue #9 updated and closed
 ```
 
 ---
+</examples>
 
 ## Guardrails
+
+<constraints>
 
 - Do not implement code changes as part of a research session — `docs/research/` only during the research phase.
 - Do not commit directly — always route through **Review** first.
 - Do not start a research task without first reading the session scratchpad and `OPEN_RESEARCH.md`.
 - Do not duplicate a research task already covered by an open issue or existing doc.
 - When spawning a new agent, always run the scaffold script — do not author `.agent.md` files from scratch without it.
+</constraints>

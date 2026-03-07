@@ -25,12 +25,15 @@ You produce durable, committed knowledge, not notes. Every document you write mu
 
 ## Endogenous Sources — Read Before Acting
 
+<context>
+
 1. [`AGENTS.md`](../../AGENTS.md) — guiding constraints.
 2. [`docs/research/OPEN_RESEARCH.md`](../../docs/research/OPEN_RESEARCH.md) — gate deliverables for each topic.
 3. [`docs/guides/`](../../docs/guides/) — existing guides this synthesis may feed into.
 4. The active session scratchpad (`.tmp/<branch>/<date>.md`) — the Scout's raw findings are here under `## Scout Output`.
 
 ---
+</context>
 
 ## Synthesis Philosophy — Contraction
 
@@ -44,6 +47,8 @@ You are performing **contraction**: taking a broad set of raw findings and sharp
 ---
 
 ## Workflow
+
+<instructions>
 
 Synthesis proceeds in **three passes**. Do not begin Pass 3 until the linking script has run.
 
@@ -257,8 +262,11 @@ Cross-check the draft against the gate deliverables in `OPEN_RESEARCH.md` for th
 Use the "Return to Executive Researcher" handoff with the path to the completed document.
 
 ---
+</instructions>
 
 ## Completion Criteria
+
+<output>
 
 **For a Pass 1 invocation (single source)**:
 - `docs/research/sources/<slug>.md` exists and is ≥ 100 lines.
@@ -276,8 +284,11 @@ Use the "Return to Executive Researcher" handoff with the path to the completed 
 - No raw Scout notes, bullet dumps, or source tables from the scratchpad appear in the document.
 
 ---
+</output>
 
 ## Output Examples
+
+<examples>
 
 A correct output from this agent looks like:
 
@@ -308,8 +319,11 @@ model "knows" at inference time.
 ```
 
 ---
+</examples>
 
 ## Guardrails
+
+<constraints>
 
 - Do not write outside `docs/research/` and `docs/research/sources/` — guides and other docs are **Executive Docs**'s responsibility.
 - Do not include findings not grounded in the cached source or the Scout output — no independent research during synthesis.
@@ -319,3 +333,4 @@ model "knows" at inference time.
 - Do not leave issue synthesis documents ambiguous — mark them `Draft — pending review`.
 - Do not commit — that is the Archivist's job.
 - Do not proceed if your brief is missing the source slug (Pass 1) or the source synthesis list (Pass 3) — ask the Executive Researcher to re-issue the brief.
+</constraints>

@@ -22,13 +22,18 @@ You operate in the **expansion phase** of the research workflow.
 
 ## Endogenous Sources — Read Before Acting
 
+<context>
+
 1. [`AGENTS.md`](../../AGENTS.md) — guiding constraints, especially endogenous-first.
 2. [`docs/research/OPEN_RESEARCH.md`](../../docs/research/OPEN_RESEARCH.md) — seed references and resources for each topic.
 3. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read the research question and any prior Scout output before searching.
 
 ---
+</context>
 
 ## Workflow
+
+<instructions>
 
 ### 1. Read the Research Brief
 
@@ -112,8 +117,11 @@ Do **not** draw conclusions, recommend actions, or write prose interpretations. 
 Use the "Return to Executive Researcher" handoff.
 
 ---
+</instructions>
 
 ## Completion Criteria
+
+<output>
 
 - All seed URLs and references from the research brief have been fetched or explicitly noted as unreachable.
 - Raw findings for each dimension or sub-question scoped by the Executive Researcher are present in the session scratchpad under `## Scout Output`.
@@ -122,8 +130,11 @@ Use the "Return to Executive Researcher" handoff.
 - **Do not stop early** because a source is long or complex — record a partial finding with a note rather than skipping the source entirely.
 
 ---
+</output>
 
 ## Output Examples
+
+<examples>
 
 A correct output from this agent looks like:
 
@@ -146,11 +157,15 @@ A correct output from this agent looks like:
 ```
 
 ---
+</examples>
 
 ## Guardrails
+
+<constraints>
 
 - Do not synthesize, conclude, or make recommendations — catalogue only.
 - Do not write to `docs/` — write only to the session scratchpad (`.tmp/`).
 - Do not follow more than 2 levels of links per source.
 - Do not include sources that are behind hard paywalls with no accessible abstract or summary.
 - Do not proceed if the research question is unclear — return to Executive Researcher for clarification.
+</constraints>

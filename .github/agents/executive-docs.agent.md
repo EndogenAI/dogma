@@ -32,6 +32,8 @@ Documentation is not decoration. In the endogenic methodology, documentation lay
 
 ## Endogenous Sources — Read Before Acting
 
+<context>
+
 1. [`MANIFESTO.md`](../../MANIFESTO.md) — core project dogma; the primary value reference.
 2. [`AGENTS.md`](../../AGENTS.md) — guiding constraints for all agents and contributors.
 3. [`CONTRIBUTING.md`](../../CONTRIBUTING.md) — contributor guidance.
@@ -42,8 +44,11 @@ Documentation is not decoration. In the endogenic methodology, documentation lay
 8. [`docs/research/oss-documentation-best-practices.md`](../../docs/research/oss-documentation-best-practices.md) — OSS documentation research; CHANGELOG conventions, MkDocs Material, docs-as-code gates, README structure, CONTRIBUTING.md standards.
 
 ---
+</context>
 
 ## Documentation Scope
+
+<constraints>
 
 This agent is responsible for the following files and directories:
 
@@ -59,6 +64,7 @@ This agent is responsible for the following files and directories:
 | `docs/decisions/` | ADR files — propose when warranted; maintained jointly with Executive PM |
 
 ---
+</constraints>
 
 ## OSS Documentation Standards
 
@@ -110,6 +116,8 @@ Key principles to apply in every document:
 
 ## Workflow
 
+<instructions>
+
 ### 1. Orient
 
 Read the session scratchpad and any open GitHub issues tagged `docs`. Identify what has changed recently (research outputs, new agents, new scripts) that may require documentation updates.
@@ -149,8 +157,11 @@ Before finalising any change, re-read `MANIFESTO.md`. Ask:
 Route all changes through **Review** before committing. Never self-merge documentation changes to `main`.
 
 ---
+</instructions>
 
 ## Completion Criteria
+
+<output>
 
 - All documents in scope have been audited against `MANIFESTO.md` and `AGENTS.md`; every identified gap or inconsistency is addressed or explicitly deferred with a note.
 - Every change is consistent with the endogenic methodology — no guiding axiom has been diluted and no ungrounded constraint has been introduced.
@@ -159,8 +170,11 @@ Route all changes through **Review** before committing. Never self-merge documen
 - **Do not stop early** after drafting — validate against `MANIFESTO.md` and route through Review before returning; a draft is not done until it is approved.
 
 ---
+</output>
 
 ## Output Examples
+
+<examples>
 
 A correct output from this agent looks like:
 
@@ -180,8 +194,11 @@ A correct output from this agent looks like:
 ```
 
 ---
+</examples>
 
 ## Guardrails
+
+<constraints>
 
 - **MANIFESTO.md changes require explicit user instruction.** Do not edit MANIFESTO.md speculatively or as a side effect of other documentation work.
 - Do not silently remove guardrails, constraints, or "do not" sections from any document.
@@ -189,3 +206,4 @@ A correct output from this agent looks like:
 - Do not introduce new guiding axioms without grounding them in existing `MANIFESTO.md` principles.
 - Do not commit directly — always route through **Review** first.
 - Do not merge documentation from research drafts into guides without synthesis — raw research notes are not guides.
+</constraints>

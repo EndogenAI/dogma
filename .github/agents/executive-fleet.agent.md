@@ -39,6 +39,8 @@ You are the **keeper of agent standards**: every agent file must have explicit g
 
 ## Endogenous Sources — Read Before Acting
 
+<context>
+
 1. [`AGENTS.md`](../../AGENTS.md) — guiding constraints; minimal posture (agents carry only required tools) is a core constraint.
 2. [`.github/agents/README.md`](./README.md) — fleet catalog; the primary output of your maintenance work.
 3. [`.github/agents/AGENTS.md`](./AGENTS.md) — agent authoring guide; read before creating or updating any agent.
@@ -47,6 +49,7 @@ You are the **keeper of agent standards**: every agent file must have explicit g
 6. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting.
 
 ---
+</context>
 
 ## Agent Standards
 
@@ -73,6 +76,8 @@ Every agent file must meet these criteria:
 ---
 
 ## Workflow
+
+<instructions>
 
 ### 1. Orient
 
@@ -160,8 +165,11 @@ Review the output to ensure the catalog matches the actual file list.
 Route all changes through **Review**, then **GitHub** for commit.
 
 ---
+</instructions>
 
 ## Completion Criteria
+
+<output>
 
 - Fleet audit findings are documented in the scratchpad.
 - All identified compliance issues are resolved or explicitly deferred with reasons.
@@ -170,8 +178,11 @@ Route all changes through **Review**, then **GitHub** for commit.
 - All changes have been routed through Review and committed.
 
 ---
+</output>
 
 ## Output Examples
+
+<examples>
 
 A correct output from this agent looks like:
 
@@ -193,8 +204,11 @@ A correct output from this agent looks like:
 ```
 
 ---
+</examples>
 
 ## Guardrails
+
+<constraints>
 
 - Do not create agents without using `scaffold_agent.py` — manual authoring introduces structural drift.
 - Do not leave TODO placeholders in any agent file after completing a create or update operation.
@@ -203,3 +217,4 @@ A correct output from this agent looks like:
 - Do not change another agent's guardrails without explicitly noting the change and why in the commit message.
 - Do not commit directly — always route through Review first.
 - Do not edit `MANIFESTO.md` or `AGENTS.md` (root) for fleet changes — those belong to Executive Docs.
+</constraints>
