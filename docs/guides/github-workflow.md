@@ -168,7 +168,23 @@ Zero error output is **not** confirmation of success. Always verify.
 
 ---
 
-## 9. Setup Checklist (New Contributor / New Machine)
+## 9. PR Merge Strategy
+
+This repo enforces **rebase and merge** only. Squash merge is disabled in repository settings.
+
+**Why**: Conventional Commits on this repo are a deliberate encoding substrate — each commit message (`type(scope): message`) is a discrete record of agent decisions. Squash-merging collapses that encoding: the original commits become dangling git objects unreachable from `main`, breaking `git log`, `git bisect`, and `git blame` granularity. The GitHub PR page still shows original commits, but they are no longer traversable as first-class git history.
+
+**Implication for contributors**: Keep your PR commits clean and well-messaged. When a Copilot review requests changes, make a new conventional commit (e.g. `fix(toolchain): address review — ...`) rather than amending and force-pushing.
+
+| Merge mode | Setting | Why |
+|---|---|---|
+| Rebase and merge | ✅ Enabled | Preserves full linear commit history on `main` |
+| Merge commit | ❌ Disabled | Adds merge commit noise to `main` |
+| Squash merge | ❌ Disabled | Destroys per-commit encoding in the git DAG |
+
+---
+
+## 10. Setup Checklist (New Contributor / New Machine)
 
 - [ ] `gh auth login` — authenticate with GitHub
 - [ ] `gh auth refresh -s project` — add Projects v2 scope (required once per machine)
