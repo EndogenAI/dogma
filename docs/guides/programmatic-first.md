@@ -53,6 +53,7 @@ Run on demand. Called with `uv run python scripts/<name>.py`. Examples:
 - Validation scripts (`--dry-run` flag required for destructive operations)
 - Scaffolding generators
 - Context pre-computation scripts
+- Source caching — fetch once, read many times (`fetch_source.py`, `fetch_all_sources.py`)
 
 ### Event-Driven Automation (`Executive Automator`)
 
@@ -86,6 +87,33 @@ uv run python scripts/watch_scratchpad.py
 # Or as a VS Code task that auto-starts with the workspace
 # See .vscode/tasks.json — "Watch Scratchpad"
 ```
+
+---
+
+## The Second Canonical Example: Fetch-Before-Act Source Cache
+
+The `fetch_all_sources.py` + `fetch_source.py` pair is the canonical demonstration of **pre-computed context**:
+
+1. **The repeated task**: fetching the same research URLs in every new scout session to read their content
+2. **The interactive approach**: an agent fetches a URL, reads it in the context window, discards the content when the session ends
+3. **The programmatic solution**: fetch once, cache as distilled Markdown, read with `read_file` in every future session
+
+Result:
+- Scouts read local `.md` files instantly instead of burning tokens on network round-trips
+- Cached files persist across sessions — discovery is cumulative, not repeated
+- New sessions start with a fully populated cache: zero re-fetch cost
+
+```bash
+# At the start of any research session (fetch-before-act posture)
+uv run python scripts/fetch_all_sources.py --dry-run   # preview what will be fetched
+uv run python scripts/fetch_all_sources.py              # fetch all uncached sources
+
+# Before fetching any individual URL during a session
+uv run python scripts/fetch_source.py <url> --check    # exit 0 = cached, 2 = miss
+uv run python scripts/fetch_source.py <url> --path     # print local cached path
+```
+
+**Key principle**: context that was expensive to gather once should cost zero to reuse. Scripts convert one-time discovery into permanent project knowledge.
 
 ---
 

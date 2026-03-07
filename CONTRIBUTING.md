@@ -6,11 +6,13 @@ Thank you for contributing to this repo. This document covers the conventions an
 
 ## Core Principles
 
-Before contributing, read [`MANIFESTO.md`](MANIFESTO.md) and [`AGENTS.md`](AGENTS.md). All contributions must align with:
+Before contributing, read [`MANIFESTO.md`](MANIFESTO.md) and [`AGENTS.md`](AGENTS.md). All contributions must align with the three core axioms:
 
-- **Endogenous-first** — scaffold from existing content; adopt and encode external best practices
-- **Programmatic-first** — repeated tasks belong in scripts, not in interactive prompts
-- **Documentation-first** — every change to an agent or script must include documentation
+- **Endogenous-First** — scaffold from existing system knowledge; absorb and encode external best practices
+- **Algorithms Before Tokens** — prefer deterministic, encoded solutions over interactive token burn
+- **Local Compute-First** — minimize token burn; run locally whenever possible
+
+See [`MANIFESTO.md#the-three-core-axioms`](MANIFESTO.md#the-three-core-axioms) for full details, and [`MANIFESTO.md#guiding-principles-cross-cutting`](MANIFESTO.md#guiding-principles-cross-cutting) for the seven guiding principles that cross-cut all contributions.
 
 ---
 
@@ -71,6 +73,40 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/):
 | `docs` | `manifesto`, `readme`, `guides` | Documentation only |
 | `chore` | `scripts`, `templates` | Tooling, scripts, templates |
 | `refactor` | `agents`, `docs` | Restructuring without content change |
+
+---
+
+## Commit Discipline
+
+> Small, incremental commits. One logical change per commit.
+
+Do not create one giant commit at the end of a session. Instead, commit frequently as you complete each logical unit of work:
+
+- **Docs change** → commit immediately
+- **Script change** → commit immediately  
+- **Agent file change** → commit immediately
+- **Test or validation** → commit immediately
+
+Good commit cadence prevents merge conflicts, makes history readable, and allows fine-grained rollbacks if needed. It also enforces the endogenic principle: work that is worth doing is worth committing early.
+
+**Example workflow:**
+```bash
+# Update docs/guides/workflows.md
+git add docs/guides/workflows.md
+git commit -m "docs(guides): clarify evaluator-optimizer loop pattern"
+
+# Create a new script
+git add scripts/fetch_all_sources.py
+git add scripts/README.md
+git commit -m "chore(scripts): add fetch_all_sources.py for batch URL caching"
+
+# Create an agent file
+git add .github/agents/executive-researcher.agent.md
+git add .github/agents/README.md
+git commit -m "feat(agents): add executive-researcher agent"
+
+# Open PR with all three commits — history is clear and granular
+```
 
 ---
 

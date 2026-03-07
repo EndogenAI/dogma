@@ -6,13 +6,20 @@ Guidance for AI coding agents working in this repository.
 
 ## Guiding Constraints
 
-- **Endogenous-first**: scaffold from existing system knowledge *and* from external best practices — do not author from scratch in isolation, and do not ignore well-maintained external tools. Synthesize external wisdom into the encoded substrate.
-- **Programmatic-first**: prefer encoding repeated or automatable tasks as scripts over interactive agent steps.
-  If you have done a task twice interactively, the third time is a script. See [Programmatic-First Principle](#programmatic-first-principle).
-- **Documentation-first**: every change to a workflow, agent, or script must be accompanied by clear documentation.
-- **Local compute first**: minimize token usage; prefer local models and pre-encoded scripts over re-discovering context interactively.
-- **Minimal posture**: agents carry only the tools required for their stated role.
-- **Commit discipline**: small, incremental commits following [Conventional Commits](https://www.conventionalcommits.org/).
+These constraints govern all agent behavior. They derive from three core axioms in [`MANIFESTO.md`](MANIFESTO.md):
+
+1. **Endogenous-First** — scaffold from existing system knowledge and external best practices
+2. **Algorithms Before Tokens** — prefer deterministic, encoded solutions over interactive token burn
+3. **Local Compute-First** — minimize token usage; run locally whenever possible
+
+Additional operational constraints:
+
+- **Minimal Posture** — agents carry only the tools required for their stated role
+- **Programmatic-First** — if you have done a task twice interactively, the third time is a script. See [Programmatic-First Principle](#programmatic-first-principle).
+- **Documentation-First** — every change to a workflow, agent, or script must be accompanied by clear documentation
+- **Commit Discipline** — small, incremental commits following [Conventional Commits](https://www.conventionalcommits.org/) — see [`CONTRIBUTING.md#commit-discipline`](CONTRIBUTING.md#commit-discipline)
+
+For a complete treatment of guiding principles and ethical values, read [`MANIFESTO.md#guiding-principles-cross-cutting`](MANIFESTO.md#guiding-principles-cross-cutting) and [`MANIFESTO.md#ethical-values`](MANIFESTO.md#ethical-values).
 
 ---
 
@@ -37,6 +44,8 @@ This is a constraint on the entire agent fleet, not an optional preference. More
 ### What This Means for Agents
 
 - **Check `scripts/` first** before performing a multi-step task interactively.
+- **At the start of any research session, pre-warm the source cache** — run `uv run python scripts/fetch_all_sources.py` to batch-fetch all URLs from `OPEN_RESEARCH.md` and existing research doc frontmatter. This is the **fetch-before-act** posture: populate locally, then research.
+- **Check `.cache/sources/` before fetching any individual URL** — use `uv run python scripts/fetch_source.py <url> --check` to see if a page is already cached as distilled Markdown. Re-fetching a cached source wastes tokens.
 - **Extend, don't duplicate** — if a script partially covers your need, extend it.
 - **Propose new scripts proactively** — if you perform an investigation or transformation that required significant context to execute, encapsulate it as a script and commit it so future sessions start with that knowledge encoded.
 - **Automation ≠ agent** — file watchers, pre-commit hooks, and CI tasks are preferred over agent-initiated repetition. The `Executive Automator` agent is the first escalation point for automation design. The `Executive Scripter` agent is the first escalation point for scripting gaps.
@@ -70,31 +79,6 @@ python scripts/prune_scratchpad.py
 
 ---
 
-## Commit Discipline
-
-**Make small, incremental commits** — one logical change per commit, not one large commit at the end of a session.
-
-Follow [Conventional Commits](https://www.conventionalcommits.org/):
-
-```
-<type>(<scope>): <description>
-```
-
-| Type | When to use |
-|------|-------------|
-| `feat` | new functionality |
-| `fix` | bug or correction |
-| `docs` | documentation only |
-| `refactor` | restructuring without behaviour change |
-| `chore` | tooling, config, scripts |
-
-Good commit cadence:
-1. Docs change → commit
-2. Script change → commit
-3. Agent change → commit
-
----
-
 ## Agent Communication
 
 ### `.tmp/` — Per-Session Cross-Agent Scratchpad
@@ -121,10 +105,27 @@ Rules:
 
 | Situation | Action |
 |-----------|--------|
-| Session file < 200 lines | No action needed |
-| Session file ≥ 200 lines | Run `uv run python scripts/prune_scratchpad.py` |
+| Session file < 2000 lines | No action needed |
+| Session file ≥ 2000 lines | Run `uv run python scripts/prune_scratchpad.py` |
 | Session end | Write `## Session Summary`, then run `uv run python scripts/prune_scratchpad.py --force` |
 | New session day | Run `uv run python scripts/prune_scratchpad.py --init` |
+
+### `docs/plans/` — Tracked Workplans
+
+For any multi-phase session, create a **workplan** before execution begins and commit it to `docs/plans/`.
+
+**Naming**: `docs/plans/YYYY-MM-DD-<brief-slug>.md` (date-first for chronological sorting)
+
+**When to create**:
+- Any session with ≥ 3 phases or ≥ 2 agent delegations
+- Any session spanning more than one day
+
+**Contents** (use `docs/plans/2026-03-06-formalize-workflows.md` as the canonical template):
+- Objective
+- Phase plan: agent, deliverables, depends-on, status
+- Acceptance criteria checklist
+
+**Commit** the workplan at the start of the session (before Phase 1 executes), then update status markers as phases complete. This creates an auditable plan history in git, separate from the ephemeral `.tmp/` scratchpad.
 
 ### Scope-Narrowing in Delegations
 
@@ -132,6 +133,32 @@ When delegating with a restricted scope, **state exclusions explicitly** in the 
 
 Good example:
 > "Edit `.md` files only — do not modify scripts, config, or agent files."
+
+### Verify-After-Act for Remote Writes
+
+Any command that creates or modifies a remote side effect must be immediately followed by a verification read:
+
+| Command | Verification |
+|---------|-------------|
+| `gh issue create` | `gh issue list --state open --limit 5` |
+| `git push` | `git log --oneline -1` |
+| `gh pr create` | `gh pr view` |
+| `gh issue close` | `gh issue view <number>` |
+
+**Zero error output is not confirmation of success.** Output truncation, network timeouts, and silent API failures all produce clean exits. Always verify.
+
+### Convention Propagation Rule
+
+When a new convention is introduced, identify **every** `AGENTS.md` file it applies to and update them all in the same commit:
+
+- Root `AGENTS.md` — applies to all agents
+- `docs/AGENTS.md` — applies to any convention touching `docs/`
+- `.github/agents/AGENTS.md` — applies to agent file authoring conventions
+
+A convention documented only in the root file will be missed by agents operating under subdirectory scope. Check with:
+```bash
+find . -name 'AGENTS.md' | grep -v node_modules
+```
 
 ---
 
@@ -161,8 +188,12 @@ Key agents for this repo:
 
 | Agent | Trigger |
 |-------|---------|
+| **Executive Researcher** | Start a research session; orchestrate Scout→Synthesizer→Reviewer→Archivist; spawn new area agents |
+| **Executive Docs** | Update guides, top-level docs, AGENTS.md, MANIFESTO.md; codify values across documentation |
 | **Executive Scripter** | Identify tasks done >2 times interactively; audit `scripts/` for gaps |
 | **Executive Automator** | Design file watchers, pre-commit hooks, CI tasks |
+| **Review** | Validate any changed files against AGENTS.md constraints before committing |
+| **GitHub** | Commit approved changes following Conventional Commits |
 
 ---
 

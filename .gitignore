@@ -51,6 +51,12 @@ coverage.xml
 .pytest_cache/
 cover/
 
+# Local source cache (fetch_source.py)
+# Raw distillations are regenerable and excluded. Manifest is the surveyed-sources
+# index and IS tracked. Per-source synthesis stubs live in docs/research/sources/ (tracked).
+.cache/
+!.cache/sources/manifest.json
+
 # Translations
 *.mo
 *.pot

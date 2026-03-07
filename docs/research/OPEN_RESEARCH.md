@@ -141,7 +141,9 @@ The current agent fleet emerged organically from the EndogenAI project. As this 
 ### Areas to Research
 - [ ] Hierarchical multi-agent patterns (executive → sub-agent → specialist)
 - [ ] Context window management strategies for long agent sessions
-- [ ] A2A (Agent-to-Agent) protocol patterns
+- [ ] A2A (Agent-to-Agent) protocol patterns — message envelope, task lifecycle, routing
+- [ ] A2A Agent Card schema — capability advertisement and discovery mechanism (gap flagged by Scout C, 2026-03-06)
+- [ ] ReAct trajectory paper — interleaved reasoning and acting as the foundation for action-oriented agents (Yao et al.; not yet fetched)
 - [ ] https://arxiv.org/html/2512.05470v1 (referenced in AccessiTech/EndogenAI#32)
 - [ ] https://towardsdatascience.com/claude-skills-and-subagents-escaping-the-prompt-engineering-hamster-wheel/
 
@@ -149,3 +151,115 @@ The current agent fleet emerged organically from the EndogenAI project. As this 
 - [ ] D1 — Agent fleet pattern catalog in `docs/guides/agents.md`
 - [ ] D2 — Recommendations for when to create new specialist agents vs. extend existing ones
 - [ ] D3 — Updated `.github/agents/README.md` with pattern documentation
+
+
+---
+
+## 7. Episodic and Experiential Memory for Agent Sessions
+
+**Priority: Low** (deferred until scratchpad accumulation is confirmed as a bottleneck)
+
+### Research Question
+How should agents store and query *episodic* memory (past session events) and *experiential* memory (heuristics derived from outcomes) without cloud dependency?
+
+### Why This Matters
+Identified as a gap in `docs/research/agentic-research-flows.md` (Memory Architecture section). The project currently accumulates episodic records in scratchpad session files and git history, but there is no queryable layer — no "what did we learn about X in prior sessions?" lookup. Experiential memory is served only by the Copilot memory tool, which is external, ephemeral, and non-portable. This gap becomes acute once session history grows beyond what manual `_index.md` scanning can handle.
+
+**Prerequisite:** Resolve OPEN_RESEARCH.md #1 (local compute) before evaluating embedding-based options.
+
+### Resources to Survey
+- [ ] mem0 — embedding-based long-term memory; https://github.com/mem0ai/mem0
+- [ ] Letta (formerly MemGPT) — memory hierarchy for long-horizon agents; https://github.com/letta-ai/letta
+- [ ] Zep/Graphiti — knowledge-graph temporal memory; https://github.com/getzep/graphiti
+- [ ] Cognee — lighter knowledge-graph option; https://github.com/topoteretes/cognee
+- [ ] AIGNE AFS memory modules (AFSHistory, FSMemory) — SQLite-backed, local-first; https://arxiv.org/abs/2512.05470
+- [ ] `mei2025surveycontextengineeringlarge` — broader context engineering survey (not yet fetched)
+
+### Gate Deliverables
+- [ ] D1 — Comparison of local-capable episodic/experiential memory options
+- [ ] D2 — Recommended approach given current session volume and local-compute constraints
+- [ ] D3 — Script candidate specification (e.g., scratchpad deduplication or semantic search wrapper)
+
+---
+
+## 8. XML-Tagged Agent Instruction Format
+
+**Priority: Very High** (affects every agent file; do before next major fleet expansion)
+
+### Research Question
+Should EndogenAI `.agent.md` files use XML-tagged section boundaries (`<section_name>...</section_name>`) instead of Markdown headings (`## Section Name`) for structuring agent instructions? What is the correct XML schema for agent instruction files, and what tools, scripts, or validators support it?
+
+### Why This Matters
+The Anthropic cookbook production agents use XML-tagged sections (`<research_process>`, `<delegation_instructions>`, `<subagent_count_guidelines>`) as section delimiters — not Markdown headings. XML tags are machine-unambiguous: they cannot be confused with prose, they parse without regex fallbacks, and they are the format the model has seen most in training for structured instruction following. Our current Markdown-heading format (`## Workflow`, `## Guardrails`) is less parsing-stable and may degrade instruction fidelity for long agent bodies.
+
+Migrating all 15+ agent files is a significant engineering change. It should be fully researched and a migration script written before any file is touched. This cannot be done piecemeal — inconsistency between XML and Markdown formats within the fleet would be worse than either uniform format.
+
+Flagged: 2026-03-06, from `docs/research/agentic-research-flows.md` addendum (Prompt Template and Handoff Format Findings section).
+
+### Resources to Survey
+- [ ] Anthropic cookbook agent source — `research_lead_prompt.py`, `research_subagent_prompt.py` — examine exact XML schema used; https://github.com/anthropics/anthropic-cookbook
+- [ ] Claude prompt engineering docs — XML section format and recommended schema
+- [ ] `.chatagent` format spec — does VS Code Copilot's `.chatagent` format support or prefer XML instruction bodies?
+- [ ] Existing EndogenAI agent files — inventory current Markdown-heading section names to determine XML tag candidates
+- [ ] Prior art: any XML-to-agent-md migration tooling in the wild
+
+### What to Produce (Programmatic-First)
+This research should produce, at minimum:
+- [ ] A documented XML schema for EndogenAI agent instruction files (section tags, nesting rules, required vs. optional sections)
+- [ ] A migration script: `scripts/migrate_agents_to_xml.py --dry-run` — converts Markdown headings to XML tags across all `.agent.md` files
+- [ ] A validation script: `scripts/validate_agent_format.py` — checks each file for required sections, correct tag nesting, no mixed formats
+- [ ] An updated `scaffold_agent.py` that emits XML-format stubs instead of Markdown-heading stubs
+
+### Gate Deliverables
+- [ ] D1 — Documented XML schema for agent instruction files with rationale
+- [ ] D2 — `scripts/migrate_agents_to_xml.py` and `scripts/validate_agent_format.py` written and tested
+- [ ] D3 — All 15+ agent files migrated (via script) and validated
+- [ ] D4 — `scaffold_agent.py` updated to emit XML format
+- [ ] D5 — `docs/guides/agents.md` and `.github/agents/AGENTS.md` updated with XML format documentation
+
+---
+
+## Issue #12 Follow-Up Open Questions (XML Agent Instruction Format)
+
+Resolved: 2026-03-06. The following questions remain open after the primary research deliverable was completed.
+
+**OQ-12-1 — Language Model API prompt pre-processing**
+Does the VS Code Language Model API (the layer below the Chat Participant API) perform any prompt normalisation, caching, or XML-aware pre-processing before forwarding to the Claude endpoint? Target source: `code.visualstudio.com/api/extension-guides/ai/language-model`. Until confirmed, the conduit finding for XML pass-through is conditional on this layer.
+
+**OQ-12-2 — Instruction-following fidelity: XML vs. plain Markdown (empirical)**
+Design and run an ablation test using the Research Synthesizer agent in XML-hybrid form vs. its current plain-Markdown form. Measure: completion criteria satisfaction rate, constraint-violation rate, and section-addressing accuracy. Encode the comparison as a script. Results to be committed to `docs/research/`.
+
+**OQ-12-3 — Non-Claude model XML degradation**
+How do XML-tagged instruction bodies behave when routed to Ollama-hosted local models or GPT-family cloud models? Is there graceful degradation, neutral pass-through, or active interference with instruction parsing? Must be resolved before the `--model-scope` gate in ADAPT item B2 can be relaxed.
+
+**OQ-12-4 — `handoffs: prompt:` field and XML**
+Do YAML `handoffs: prompt:` field values benefit from or tolerate XML structuring when those prompts are complex multi-step instructions? Currently plain prose strings. May be relevant once orchestrator-tier agents are migrated and handoff prompts grow in complexity.
+
+---
+
+## Recommended Issue Execution Pairings
+
+Recorded 2026-03-06. Group remaining open issues for efficiency — each pairing shares domain, sources, and guide deliverables.
+
+| Session | Issues | Rationale |
+|---|---|---|
+| Infrastructure | #5 + #6 | Local compute (Ollama/LM Studio) + locally distributed MCP share source domains and feed `docs/guides/local-compute.md` |
+| Cost/Reliability | #7 + #8 | Async process handling + LLM tier strategy are both reliability/cost concerns; small source sets benefit from batching |
+| Memory (deferred) | #9 + #13 + #14 | Methodology lit review, episodic memory, and AIGNE AFS all have prerequisite on #5 (local compute resolved first) |
+
+Issue #10 (agent fleet design patterns) is executed standalone — sources are mostly already cached and the deliverables include guide + README updates.
+
+---
+
+## Issue #10 Follow-Up Open Questions (Agent Fleet Design Patterns)
+
+Resolved: 2026-03-06. The following questions remain open after the primary research deliverable was completed.
+
+**OQ-10-1 — Compression ratio by task type**
+What task-type-specific compression ratios should be used at handoff boundaries? The 1,000–2,000 token figure is Anthropic's guideline stated without benchmark. At what compression level does precision-critical context (exact syntax in code synthesis) begin to degrade downstream output quality?
+
+**OQ-10-2 — Minimal viable `.tmp/` scratchpad isolation without new infrastructure**
+Section-scoped writes are proposed as the isolation mechanism, enforced through instruction conventions only. What is the minimum viable enforcement mechanism that prevents lateral context bleed without requiring new script infrastructure? Has agent-instruction-only enforcement been validated against multi-agent parallel runs?
+
+**OQ-10-3 — Evaluator-optimizer convergence criteria for synthesis tasks**
+The evaluator-optimizer loop specifies mandatory stopping conditions but does not define them for synthesis (as opposed to code). How reliable is LLM-as-judge evaluation for research synthesis documents, and what constitutes a well-formed stopping condition for the Reviewer agent?

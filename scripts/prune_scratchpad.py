@@ -15,7 +15,7 @@ Purpose:
     Sections whose heading contains "Active", "Escalation", "Session" (current), or
     "Plan" are treated as live and left intact.
 
-    The rule of thumb: prune when the active session file exceeds 200 lines.
+    The rule of thumb: prune when the active session file exceeds 2000 lines.
 
 Path resolution (when --file is not provided):
     1. Read current git branch: git rev-parse --abbrev-ref HEAD
@@ -57,9 +57,15 @@ Usage:
     uv run python scripts/prune_scratchpad.py --annotate
     uv run python scripts/prune_scratchpad.py --annotate --file .tmp/my-branch/2026-03-05.md
 
+    # Append a session summary block safely (no heredocs)
+    uv run python scripts/prune_scratchpad.py --append-summary "Session closed. Phases 1-3 complete."
+
+    # Corruption check only — exits 0 if clean, 1 if corruption found
+    uv run python scripts/prune_scratchpad.py --check-only
+
 Exit codes:
-    0 — success (pruned, initialised, or no pruning needed)
-    1 — file not found or parse error
+    0 — success (pruned, initialised, annotated, summary appended, or no pruning needed)
+    1 — file not found, parse error, or corruption detected (--check-only)
 """
 
 from __future__ import annotations
@@ -80,7 +86,7 @@ ARCHIVE_KEYWORDS = frozenset(
 )
 
 # If line count is below this threshold, skip pruning unless --force
-SIZE_GUARD = 200
+SIZE_GUARD = 2000
 
 
 def _git_branch() -> str:
@@ -158,6 +164,24 @@ def _first_content_line(lines: list[str]) -> str:
         if stripped and not stripped.startswith("#"):
             return stripped[:80] + ("…" if len(stripped) > 80 else "")
     return "(no content)"
+
+
+def detect_corruption(text: str) -> list[int]:
+    """
+    Scan text for lines that appear to be corrupted by concurrent write collisions.
+
+    A line is considered corrupted if it contains a heading fragment repeated three
+    or more times consecutively, e.g.:
+        ### Phase 1### Phase 1### Phase 1
+        ## Scout Output## Scout Output
+
+    Returns a list of 1-based line numbers where corruption was detected.
+    """
+    corrupted: list[int] = []
+    for i, line in enumerate(text.splitlines(), start=1):
+        if re.search(r'(#{1,3} \S{3,})\1{2,}', line):
+            corrupted.append(i)
+    return corrupted
 
 
 def parse_sections(text: str) -> list[dict]:
@@ -301,6 +325,38 @@ def prune(text: str, today: str) -> tuple[str, list[str], list[str]]:
     return pruned, archived, kept
 
 
+def append_summary(path: Path, summary: str, today: str) -> int:
+    """
+    Append a '## Session Summary — YYYY-MM-DD' block to the scratchpad file.
+
+    If a summary block for today already exists, uses a counter suffix:
+        ## Session Summary — YYYY-MM-DD (2)
+
+    Uses Python file I/O only — no heredocs or shell string embedding.
+
+    Returns 0 on success, 1 on error.
+    """
+    text = path.read_text(encoding="utf-8")
+
+    # Count existing Session Summary blocks for today's date
+    pattern = rf"^## Session Summary — {re.escape(today)}"
+    existing = re.findall(pattern, text, re.MULTILINE)
+    count = len(existing)
+
+    if count == 0:
+        heading = f"## Session Summary — {today}"
+    else:
+        heading = f"## Session Summary — {today} ({count + 1})"
+
+    block = f"\n{heading}\n\n{summary}\n"
+
+    with path.open("a", encoding="utf-8") as fh:
+        fh.write(block)
+
+    print(f"Appended session summary to {path}")
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Scratchpad size management for .tmp/<branch>/<date>.md"
@@ -333,19 +389,76 @@ def main() -> int:
             "then exit. Idempotent — safe to run after every write."
         ),
     )
+    parser.add_argument(
+        "--append-summary",
+        metavar="TEXT",
+        default=None,
+        help=(
+            "Append a '## Session Summary' block to today's scratchpad file. "
+            "Uses Python file I/O — safe for content containing backticks or "
+            "special characters that would corrupt heredoc writes."
+        ),
+    )
+    parser.add_argument(
+        "--check-only",
+        action="store_true",
+        help=(
+            "Run corruption detection only. Exits 0 if no corruption found, "
+            "1 if corrupted lines are detected. Does not modify any file."
+        ),
+    )
     args = parser.parse_args()
 
     today = date.today().isoformat()
 
     if args.init:
         path = resolve_active_file()
+        pre_exists = path.exists()
         init_session_file(path)
+        # Warn about corruption if the file already existed (init does not overwrite)
+        if pre_exists and path.exists():
+            text = path.read_text(encoding="utf-8")
+            corrupted = detect_corruption(text)
+            if corrupted:
+                line_nums = ", ".join(str(n) for n in corrupted)
+                print(
+                    f"WARNING: Possible scratchpad corruption detected in {path}\n"
+                    f"Lines with repeated heading patterns: {line_nums}\n"
+                    "Run with --check-only to inspect without modifying.",
+                    file=sys.stderr,
+                )
         return 0
 
     if args.file:
         path = Path(args.file)
     else:
         path = resolve_active_file()
+
+    # --check-only: corruption detection only, no modifications
+    if args.check_only:
+        if not path.exists():
+            print(f"ERROR: {path} not found.", file=sys.stderr)
+            return 1
+        text = path.read_text(encoding="utf-8")
+        corrupted = detect_corruption(text)
+        if corrupted:
+            line_nums = ", ".join(str(n) for n in corrupted)
+            print(
+                f"WARNING: Possible scratchpad corruption detected in {path}\n"
+                f"Lines with repeated heading patterns: {line_nums}\n"
+                "Run with --check-only to inspect without modifying.",
+                file=sys.stderr,
+            )
+            return 1
+        print(f"OK: No corruption detected in {path}")
+        return 0
+
+    # --append-summary: safe Python-based session summary write
+    if args.append_summary is not None:
+        if not path.exists():
+            print(f"ERROR: No scratchpad file found at {path}", file=sys.stderr)
+            return 1
+        return append_summary(path, args.append_summary, today)
 
     if not path.exists():
         print(f"ERROR: {path} not found.", file=sys.stderr)
@@ -364,6 +477,18 @@ def main() -> int:
         return 0
 
     text = path.read_text(encoding="utf-8")
+
+    # Corruption check — warn but do not abort pruning
+    corrupted = detect_corruption(text)
+    if corrupted:
+        line_nums = ", ".join(str(n) for n in corrupted)
+        print(
+            f"WARNING: Possible scratchpad corruption detected in {path}\n"
+            f"Lines with repeated heading patterns: {line_nums}\n"
+            "Run with --check-only to inspect without modifying.",
+            file=sys.stderr,
+        )
+
     line_count = text.count("\n")
 
     if not args.force and line_count < SIZE_GUARD:
