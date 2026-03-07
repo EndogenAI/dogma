@@ -649,6 +649,20 @@ Do not begin executing — return the plan for approval.
 Request: [describe]
 ```
 
+**Continue from a prior session (session handoff):**
+```
+@Executive Orchestrator Please continue the session on branch [branch-slug].
+Read the active scratchpad at .tmp/[branch-slug]/[YYYY-MM-DD].md before delegating anything —
+specifically the ## Executive Handoff and ## Session Summary sections.
+Focus for this session: [one sentence from the handoff's "Recommended Next Session" section].
+Write ## Session Start with a one-paragraph orientation before proceeding.
+```
+
+> **Encoding note**: This is the standard session continuation handoff prompt. Copy-paste it
+> when re-opening work on an existing branch. Replace `[branch-slug]`, `[YYYY-MM-DD]`, and
+> the focus sentence. See `docs/guides/session-management.md#starting-a-new-session` for the
+> full protocol.
+
 ### Fleet Management Prompts
 
 **Audit the fleet:**

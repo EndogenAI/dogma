@@ -315,3 +315,44 @@ Run `/compact` proactively (before being forced) when:
 Run `prune_scratchpad.py` to keep the scratchpad lean so the re-read after compaction is fast.
 Run `/compact` when the conversation context window is full and you want the model to continue with a fresh context window.
 
+---
+
+## Starting a New Session
+
+When opening a new chat on an existing branch (whether after compaction, after a break, or at the start of a new day), use the **session continuation handoff prompt**.
+
+### Standard Continuation Prompt
+
+```
+@Executive Orchestrator Please continue the session on branch [branch-slug].
+Read the active scratchpad at .tmp/[branch-slug]/[YYYY-MM-DD].md before delegating anything —
+specifically the ## Executive Handoff and ## Session Summary sections.
+Focus for this session: [one sentence from the handoff's "Recommended Next Session" section].
+Write ## Session Start with a one-paragraph orientation before proceeding.
+```
+
+**How to fill it in:**
+1. `[branch-slug]` — the branch name with `/` replaced by `-` (e.g., `feat-implement-research-findings`)
+2. `[YYYY-MM-DD]` — today's date (`date +%Y-%m-%d` in a terminal)
+3. `[one sentence...]` — copy from the `### Recommended Next Session` section of the prior `## Executive Handoff`, or from `### What Is Open` in the `## Session Summary`
+
+### What the Orchestrator Should Do After Receiving This Prompt
+
+1. Run `uv run python scripts/prune_scratchpad.py --init` to create today's file if needed
+2. Read the scratchpad — specifically `## Executive Handoff` and `## Session Summary`
+3. Write `## Session Start` with a one-paragraph orientation (branch, HEAD commit, what was done, what is next)
+4. Write a committed workplan in `docs/plans/` if the session has ≥ 3 phases
+5. Begin delegating — one phase at a time
+
+### Writing a Useful Handoff Section
+
+At the **end** of any session that will continue later, write a `## Executive Handoff — <date>` section in the scratchpad covering:
+
+- **New Lessons Learned** — what went wrong or better than expected; not yet in AGENTS.md
+- **Synthesis Recs Status** — table of R-items from research docs: done / not done / partial
+- **Open Research Threads** — prioritized list of next research questions
+- **Missing Workflows** — gaps in `docs/guides/workflows.md` needed before the next phase
+- **Recommended Next Session Scope** — one paragraph per candidate session (Session A, Session B…)
+
+The handoff section is the contract between sessions. Without it, the next session re-discovers at token cost what the prior session already knew.
+

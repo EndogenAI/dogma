@@ -232,6 +232,22 @@ find . -name 'AGENTS.md' | grep -v node_modules
 
 **Default posture: stop and ask before any ambiguous or irreversible action.**
 
+### Session Continuation Handoff
+
+When starting a new session on an existing branch, **always reference the scratchpad before delegating**. Use this standard prompt:
+
+```
+@Executive Orchestrator Please continue the session on branch [branch-slug].
+Read the active scratchpad at .tmp/[branch-slug]/[YYYY-MM-DD].md before delegating anything —
+specifically the ## Executive Handoff and ## Session Summary sections.
+Focus for this session: [one sentence from the handoff's "Recommended Next Session" section].
+Write ## Session Start with a one-paragraph orientation before proceeding.
+```
+
+Full prompt library entry and protocol: `docs/guides/workflows.md` → **Orchestration & Planning Prompts** → *Continue from a prior session*.
+
+---
+
 ### Compaction-Aware Writing
 
 VS Code Copilot Chat can compact the conversation history at any time — either automatically when the context window is full, or manually via the `/compact` command or "Compact Conversation" button. **Write as if the next message will trigger compaction.**
