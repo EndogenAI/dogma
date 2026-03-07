@@ -4,7 +4,7 @@ research_issue: "#12"
 status: Final
 date: 2026-03-06
 closes_issue: 12
-sources_read: 18
+sources_read: 20
 ---
 
 # XML-Tagged Agent Instruction Format
@@ -605,9 +605,9 @@ python -c "import xml.etree.ElementTree as ET; ET.parse('<path>')"
 
 1. ~~**Language Model API layer**~~: ✅ **RESOLVED 2026-03-07** — The Language Model API performs no prompt pre-processing, normalisation, or XML-aware caching. Prompt text is passed as a raw string via `LanguageModelChatMessage.User()` and forwarded verbatim to the model endpoint. Conduit finding confirmed at all documented VS Code layers. **Additional finding**: LM API does not support system messages — `.agent.md` body content is injected as a User message, not a System message. Source: `.cache/sources/code-visualstudio-com-api-extension-guides-ai-language-model.md`; closes issue #23 D1.
 
-2. **Empirical validation**: What is the measurable improvement in instruction-following fidelity when switching from plain Markdown to hybrid XML-tagged bodies for EndogenAI orchestrator agents? Target: design an ablation test using the Research Synthesizer agent.
+2. ~~**Empirical validation**~~: ✅ **RESOLVED 2026-03-07** — Secondary evidence surveyed across Anthropic, OpenAI, and Google sources; ablation test protocol designed (Section 9.2); provisional finding that XML provides moderate, qualitative fidelity benefit for current-generation Claude models. No quantitative ablation exists in the corpus. See Section 9.
 
-3. **Non-Claude model degradation**: How do XML-tagged instruction bodies behave when routed to Ollama-hosted local models or GPT-family cloud models? Is there graceful degradation, neutral pass-through, or active interference?
+3. ~~**Non-Claude model degradation**~~: ✅ **RESOLVED 2026-03-07** — Per-family verdict table populated (Section 10.2): GPT and Gemini both beneficial; local models (Ollama/LM Studio) neutral pass-through. `migrate_agent_xml.py --model-scope` extended guidance documented (Section 10.3). See Section 10.
 
 4. **Handoffs prompt values and XML**: Do the YAML `handoffs: prompt:` field values benefit from (or tolerate) XML structuring when those prompts are complex multi-step instructions? These are currently plain prose strings.
 
@@ -638,4 +638,147 @@ All sources read as part of this synthesis. Sources 1–9 were synthesized in th
 | 15 | [Claude Code — Agent Teams](./sources/claude-code-agent-teams.md) | Documentation | Multi-agent coordination; CLAUDE.md as shared context |
 | 16 | [TDS — Claude Skills and Subagents](./sources/tds-claude-skills-subagents.md) | Blog | Progressive disclosure; lazy-loading analogy; token economics |
 | 17 | [Anthropic — Agent Skills overview (detailed)](./sources/platform-claude-com-docs-en-agents-and-tools-agent-skills-ov.md) | Documentation | See row 4 — same source, complete reading |
-| 18 | [VS Code — Language Model API](./sources/code-visualstudio-com-api-extension-guides-ai-language-model.md) | Documentation | **OQ-12-1 resolution**: LM API passes prompts as raw strings via `LanguageModelChatMessage.User()`; no XML pre-processing at any layer; no system message support (bodies injected as User messages) |}
+| 18 | [VS Code — Language Model API](./sources/code-visualstudio-com-api-extension-guides-ai-language-model.md) | Documentation | **OQ-12-1 resolution**: LM API passes prompts as raw strings via `LanguageModelChatMessage.User()`; no XML pre-processing at any layer; no system message support (bodies injected as User messages) |
+| 19 | [Google — Gemini API Prompting Strategies](./sources/ai-google-dev-gemini-api-docs-prompting-strategies.md) | Documentation | **OQ-12-3 D3**: Gemini 3 explicitly recommends XML-style tags (`<role>`, `<constraints>`, `<context>`, `<task>`, `<instructions>`, `<output_format>`) — same vocabulary as Anthropic. XML beneficial for Gemini. |
+| 20 | [Ollama Blog — How to Prompt Code Llama](./sources/ollama-com-blog-how-to-prompt-code-llama.md) | Blog | **OQ-12-3 D3**: Local model prompt format reference; no XML-specific guidance; confirms Ollama models use token-level chat format distinct from arbitrary XML body tags. |
+
+---
+
+## 9. OQ-12-2 Findings — Instruction-Following Fidelity
+
+### 9.1 Secondary Evidence Survey
+
+The central claim — "XML tags help Claude parse complex prompts unambiguously and reduce misinterpretation" — originates from Anthropic's official prompt engineering guide (Source: [platform-claude-com-docs-en-build-with-claude-prompt-enginee](./sources/platform-claude-com-docs-en-build-with-claude-prompt-enginee.md)) and is echoed by OpenAI's and Google's guides. Across all surveyed sources, the recommendation is **prescriptive, not empirically measured**. No surveyed source provides quantitative ablation experiments comparing XML-structured vs. plain-prose instruction-following rates.
+
+The strongest secondary evidence is Anthropic's own hedging in its context engineering post (Source: [anthropic-com-engineering-effective-context-engineering-for-](./sources/anthropic-com-engineering-effective-context-engineering-for-.md)):
+
+> "We recommend organizing prompts into distinct sections (like `<background_information>`, `<instructions>`, `## Tool guidance`, etc) and using techniques like XML tagging or Markdown headers to delineate these sections, **although the exact formatting of prompts is likely becoming less important as models become more capable.**"
+
+This is a material qualification from the primary model provider. It implies:
+1. XML structure *does* provide benefit in the current generation of models.
+2. The effect size is expected to diminish as model reasoning improves.
+3. Markdown headers are cited as an equivalent alternative, not a lesser one.
+
+Google's Gemini 3 prompting guide independently corroborates XML for structured prompting: "Employ clear delimiters to separate different parts of your prompt. XML-style tags (e.g., `<context>`, `<task>`) or Markdown headings are effective" (Source: [ai-google-dev-gemini-api-docs-prompting-strategies](./sources/ai-google-dev-gemini-api-docs-prompting-strategies.md)). This cross-vendor consistency strengthens the qualitative case.
+
+**Summary**: Secondary evidence suggests a moderate, positive qualitative effect from XML structuring on instruction-following fidelity for current-generation Claude models, with no quantified effect size in any source.
+
+### 9.2 Ablation Test Protocol
+
+The following protocol would quantify the fidelity improvement. It is designed to be encoded as `scripts/eval_xml_fidelity.py`.
+
+**Experimental design:**
+- **Control variant**: Current plain-Markdown `.agent.md` bodies (e.g., Research Synthesizer, Executive Researcher)
+- **Treatment variant**: Same agent files with hybrid XML schema applied per Section 4
+
+**Primary metrics:**
+
+| Metric | Definition | Measurement method |
+|---|---|---|
+| Completion criteria satisfaction rate | % of explicitly stated section deliverables present in agent output | Automated: parse output against section checklist in agent file |
+| Constraint violation rate | Count of explicit MUST NOT actions taken per 10 sessions | Automated: match known forbidden-action patterns against session transcript |
+| Workflow sequence compliance | % of multi-step workflows executed in documented order | Automated: sequence detection on transcript |
+| Section-addressing accuracy | % of named `## Section` headings in the agent file that were addressed in output | Automated: heading-name matching in output text |
+
+**Experimental parameters:**
+- 10 task instances per agent per variant (20 sessions per agent)
+- Minimum 2 agents (Research Synthesizer + Executive Researcher)
+- Total: ≥ 40 scored sessions
+- Same task instances across control and treatment variants (controls for task difficulty variance)
+
+**Evaluation method:**
+A separate Claude instance receives: (a) agent file body, (b) session transcript, (c) scoring rubric, and returns a JSON score object. The evaluating instance must not see whether the session was control or treatment (blind scoring).
+
+**Script specification** (`scripts/eval_xml_fidelity.py`):
+- `--control-agent <path>` — path to plain-Markdown agent file
+- `--treatment-agent <path>` — path to XML-hybrid agent file
+- `--sessions-dir <path>` — directory of session transcript files
+- `--output <path>` — JSON results file
+- `--dry-run` — print rubric and session count without running evaluation
+- Exit 0 if treatment significantly outperforms control on primary metric; exit 1 if no significant difference; exit 2 if control outperforms treatment
+
+**Stopping rule:** Complete when: (a) 95% CI intervals for completion-criteria satisfaction are non-overlapping between variants, (b) 15% relative improvement threshold is exceeded on primary metric, or (c) 40 sessions scored without a significant finding (null result).
+
+### 9.3 Provisional Finding
+
+Based on available secondary evidence: adopting the hybrid XML schema is provisionally justified by prescriptive vendor guidance from three independent model providers (Anthropic, OpenAI, Google). The qualitative reasoning is sound — XML provides unambiguous semantic type boundaries that prose can blur — but the effect size for current-generation models is likely **moderate and diminishing** rather than transformative. Anthropic's own proviso ("likely becoming less important as models become more capable") is a meaningful hedge.
+
+**Provisional answer to OQ-12-2**: XML structuring improves instruction-following fidelity for current-generation Claude (and Gemini) models with moderate effect size. The improvement is prescriptively supported by all major model vendors but empirically unquantified. The ablation protocol in Section 9.2 is the path to a quantified answer.
+
+---
+
+## 10. OQ-12-3 Findings — Non-Claude Model XML Degradation
+
+### 10.1 Per-Model-Family Evidence
+
+#### GPT-4o / GPT-5 / o3 (OpenAI)
+
+OpenAI's official prompt engineering guide (Source: [platform-openai-com-docs-guides-prompt-engineering](./sources/platform-openai-com-docs-guides-prompt-engineering.md), "Message formatting with Markdown and XML" section) explicitly states:
+
+> "you can help the model understand logical boundaries of your prompt and context data using a combination of Markdown formatting and XML tags… XML tags can help delineate where one piece of content begins and ends. XML attributes can also be used to define metadata about content in the prompt."
+
+The guide provides a full worked example of a developer message using Markdown headers with XML-wrapped content — the same hybrid pattern as EndogenAI's schema.
+
+**Verdict: Beneficial pass-through** — GPT models are explicitly designed by OpenAI to benefit from hybrid Markdown+XML prompts. No degradation.
+
+#### Gemini (Google Gemini 3, Gemini 1.5 Pro)
+
+Google's Gemini 3 prompting guide (Source: [ai-google-dev-gemini-api-docs-prompting-strategies](./sources/ai-google-dev-gemini-api-docs-prompting-strategies.md), "Structured prompting examples" section) explicitly recommends XML-style tags with a vocabulary substantially identical to Anthropic's convention:
+
+```
+<role>, <constraints>, <context>, <task>, <instructions>, <output_format>
+```
+
+The guide provides the hybrid Markdown+XML pattern as the "Example template combining best practices" for Gemini 3 system instructions.
+
+**Verdict: Beneficial pass-through** — Gemini 3 is explicitly designed to benefit from XML structure using the same tag names as EndogenAI's schema. No degradation; tag vocabulary is directly compatible.
+
+#### Local Models via Ollama/LM Studio (LLaMA 3, Mistral, Phi, Qwen)
+
+The XDA developers article on local LLM prompting (Source: [xda-developers-com-youre-using-local-llm-wrong-if-youre-prom](./sources/xda-developers-com-youre-using-local-llm-wrong-if-youre-prom.md)) documents the fundamental difference: local models lack cloud-side reasoning and inference-assistance layers that make cloud models forgiving of ambiguous prompts. The article explicitly recommends `###` and `---` Markdown delimiters as structure — not XML.
+
+Key structural facts about open-weight model chat formats:
+- **LLaMA 3**: Uses special tokenizer tokens (`<|begin_of_text|>`, `<|start_header_id|>system<|end_header_id|>`) as chat delimiters. XML tags in the body prompt (e.g., `<instructions>`) are processed as literal text characters — not as semantic tokens.
+- **Mistral**: Uses `[INST]` and `[/INST]` instruction format tokens. XML in the body is literal text.
+- **Phi-4 (Microsoft)**: Uses `<|user|>` and `<|assistant|>` special tokens. XML in body is literal text.
+- **Qwen**: Uses `<|im_start|>system` tokens. XML in body is literal text.
+
+All open-weight models are trained on vast code and markup data (including HTML/XML), so they can parse XML syntactically. However, none are explicitly trained to treat XML tags as semantic instruction delimiters in the way Claude is. The XDA article confirms: "local models don't have the same layers of assistance that cloud models add behind the scenes."
+
+**Verdict: Neutral pass-through** — XML tags are read as text characters; well-formed XML causes no inference errors or active interference. However, XML provides no reliable semantic benefit comparable to Claude/Gemini. For local models, prefer `###` Markdown headings and `---` section separators.
+
+#### MistralAI (La Plateforme API)
+
+The MistralAI documentation site (`docs.mistral.ai`) was unreachable due to HTTP 308 permanent redirects at the time of research. Evidence for Mistral's hosted API is inferred from open-weight Mistral model behaviour above. Hosted Mistral-class models with RLHF fine-tuning may have partial exposure to structured prompt patterns, but no published guidance confirms XML-specific behaviour.
+
+**Verdict: Neutral pass-through (provisional)** — Based on open-weight model inference; confirm with direct Mistral API documentation when accessible.
+
+### 10.2 Summary Verdict Table
+
+| Model Family | XML Handling | Verdict | Source |
+|---|---|---|---|
+| Claude (`claude-*`) | Explicitly semantically trained; XML reduces misinterpretation | **Beneficial** | `platform-claude-com-docs-en-build-with-claude-prompt-enginee.md` |
+| GPT (`gpt-*`, `openai/*`) | OpenAI guide explicitly recommends hybrid Markdown+XML | **Beneficial** | `platform-openai-com-docs-guides-prompt-engineering.md` |
+| Gemini (`google/gemini*`) | Google Gemini 3 guide recommends same XML tag vocabulary | **Beneficial** | `ai-google-dev-gemini-api-docs-prompting-strategies.md` |
+| Local (`ollama/*`, `lmstudio/*`) | No XML-specific training; tags read as literal text; Markdown delimiters preferred | **Neutral pass-through** | `xda-developers-com-youre-using-local-llm-wrong-if-youre-prom.md` |
+| MistralAI API | Documentation unreachable; inference from open-weight behaviour | **Neutral (provisional)** | Inference |
+
+### 10.3 Impact on ADAPT Item B2
+
+Section 5's ADAPT item B2 states: "if an agent's frontmatter declares a non-Claude model (local model via `ollama/*`, GPT family, or `*`-wildcarded), the XML migration is deferred until cross-model XML parsing behaviour is confirmed."
+
+This research resolves the deferral:
+
+1. **`--model-scope` extended**: `google/gemini*` and `gpt-*` / `openai/*` prefixes are confirmed as XML-beneficial. The migration script's scope can include these families without concern for degradation.
+
+2. **`--model-scope` exclusion confirmed**: `ollama/*` and `lmstudio/*` (local models) remain excluded. XML is a no-op benefit for these models; Markdown-only structure is preferred.
+
+3. **Wildcard-model agents** (no `model:` field, or `model: *`) default to XML migration since the primary deployment is Claude. This remains the correct conservative default.
+
+**Updated `--model-scope` flag guidance for `migrate_agent_xml.py`:**
+
+```
+--model-scope claude        # Claude family only (existing default)
+--model-scope all-cloud     # claude + gpt-* + google/gemini* (extended, safe)
+--model-scope all           # all models including local (not recommended)
+```

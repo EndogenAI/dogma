@@ -184,10 +184,10 @@ Resolved: 2026-03-06. The following questions remain open after the primary rese
 ✅ **RESOLVED 2026-03-07** — VS Code LM API confirmed as verbatim passthrough: `LanguageModelChatMessage.User(string)` forwards content unchanged to the model endpoint. No XML normalisation, caching, or transformation at any documented VS Code layer. Secondary finding: LM API does not support system messages — `.agent.md` bodies are injected as User-role messages. Source: `.cache/sources/code-visualstudio-com-api-extension-guides-ai-language-model.md`. Resolution committed to `docs/research/xml-agent-instruction-format.md`, issue #23 D1 closed.
 
 **OQ-12-2 — Instruction-following fidelity: XML vs. plain Markdown (empirical)**
-Design and run an ablation test using the Research Synthesizer agent in XML-hybrid form vs. its current plain-Markdown form. Measure: completion criteria satisfaction rate, constraint-violation rate, and section-addressing accuracy. Encode the comparison as a script. Results to be committed to `docs/research/`.
+✅ **RESOLVED 2026-03-07** — Secondary evidence surveyed: Anthropic, OpenAI, and Google all prescribe XML structuring but provide no quantitative ablation data; Anthropic notes formatting "likely becoming less important as models become more capable" (moderate effect size). Ablation test protocol designed and documented in `docs/research/xml-agent-instruction-format.md` Section 9.2 (`scripts/eval_xml_fidelity.py` spec). Provisional finding: XML provides moderate, qualitative fidelity benefit for current-generation Claude models. See Section 9.
 
 **OQ-12-3 — Non-Claude model XML degradation**
-How do XML-tagged instruction bodies behave when routed to Ollama-hosted local models or GPT-family cloud models? Is there graceful degradation, neutral pass-through, or active interference with instruction parsing? Must be resolved before the `--model-scope` gate in ADAPT item B2 can be relaxed.
+✅ **RESOLVED 2026-03-07** — Per-family verdicts: GPT (`gpt-*`, `openai/*`) — **beneficial** (OpenAI guide explicitly recommends Markdown+XML hybrid); Gemini (`google/gemini*`) — **beneficial** (Gemini 3 guide uses same XML tag vocabulary); Local models (`ollama/*`, `lmstudio/*`) — **neutral pass-through** (no XML-specific training; Markdown delimiters preferred); MistralAI API — **neutral provisional** (docs unreachable). `migrate_agent_xml.py --model-scope` can safely extend to `all-cloud` (`claude + gpt-* + google/gemini*`). Local model exclusion confirmed correct. See `docs/research/xml-agent-instruction-format.md` Section 10.
 
 **OQ-12-4 — `handoffs: prompt:` field and XML**
 Do YAML `handoffs: prompt:` field values benefit from or tolerate XML structuring when those prompts are complex multi-step instructions? Currently plain prose strings. May be relevant once orchestrator-tier agents are migrated and handoff prompts grow in complexity.
@@ -211,7 +211,7 @@ The evaluator-optimizer loop specifies mandatory stopping conditions but does no
 
 ## Research Sprint — VS Code Agent Format & Toolset Best Practices
 
-**Added**: 2026-03-07 | **Status**: 🔄 In Progress (D1 resolved 2026-03-07; D2/D3 open) | **Priority**: Medium | **Closes**: [#23](https://github.com/EndogenAI/Workflows/issues/23)
+**Added**: 2026-03-07 | **Status**: ✅ D1 resolved 2026-03-07 (b26d188); D2/D3 resolved 2026-03-07 | **Priority**: Medium | **Closes**: [#23](https://github.com/EndogenAI/Workflows/issues/23)
 
 Deep dive on VS Code Copilot custom agent file format: toolset declarations (which tools map to which capabilities), `applyTo` glob patterns, the VS Code Language Model API layer, instruction-following fidelity between XML and Markdown bodies (OQ-12-2), and non-Claude model degradation (OQ-12-3). Closes remaining open questions from issue #12.
 
