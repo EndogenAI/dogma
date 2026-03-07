@@ -32,7 +32,7 @@ further research.
 
 **Depends on**: nothing  
 **Gate**: Phase 2 does not begin until Phase 1 changes are committed  
-**Status**: ⬜ Not started  
+**Status**: ✅ Complete  
 
 ---
 
@@ -51,7 +51,7 @@ further research.
 
 **Depends on**: Phase 1 committed  
 **Gate**: Phase 3 does not begin until Phase 2 changes are committed  
-**Status**: ⬜ Not started  
+**Status**: ✅ Complete  
 
 ---
 
@@ -71,18 +71,18 @@ further research.
 
 **Depends on**: Phase 2 committed  
 **Gate**: Session closes when Phase 3 is committed and pushed  
-**Status**: ⬜ Not started  
+**Status**: ✅ Complete  
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] AGENTS.md names the Focus-on-Descent / Compression-on-Ascent principle with ≤ 2,000 token target
-- [ ] AGENTS.md documents per-agent section-scope isolation rule for `.tmp/` scratchpad
-- [ ] `docs/guides/session-management.md` mirrors these two additions
-- [ ] `scripts/validate_synthesis.py` exits 0 on a valid D3 file and 1 with a specific error on an invalid one
-- [ ] `research-archivist.agent.md` Workflow runs validation before commit
-- [ ] `scripts/migrate_agent_xml.py --dry-run --file <agent>` produces correct diff without writing
-- [ ] `scripts/scaffold_agent.py --dry-run` emits XML-tagged stubs
-- [ ] All three phases committed with Conventional Commit messages
+- [x] AGENTS.md names the Focus-on-Descent / Compression-on-Ascent principle with ≤ 2,000 token target
+- [x] AGENTS.md documents per-agent section-scope isolation rule for `.tmp/` scratchpad
+- [x] `docs/guides/session-management.md` mirrors these two additions
+- [x] `scripts/validate_synthesis.py` exits 0 on a valid D3 file and 1 with a specific error on an invalid one
+- [x] `research-archivist.agent.md` Workflow runs validation before commit
+- [x] `scripts/migrate_agent_xml.py --dry-run --file <agent>` produces correct diff without writing
+- [x] `scripts/scaffold_agent.py --dry-run` emits XML-tagged stubs
+- [x] All three phases committed with Conventional Commit messages
 - [ ] Branch pushed to origin; PR opened
