@@ -23,5 +23,5 @@ https://stevemcconnell.com/articles/software-development-team-topologies/
 https://www.martinfowler.com/articles/adr.html
 
 # Atlassian kanban-vs-scrum — returns HTTP 202 Accepted instead of 200.
-# Lychee rejects non-2xx-success codes; content is valid and accessible.
+# Lychee treats non-200 responses (e.g., 202 Accepted) as failures; content is valid and accessible.
 https://www.atlassian.com/agile/kanban/kanban-vs-scrum
