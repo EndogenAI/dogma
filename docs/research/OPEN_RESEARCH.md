@@ -234,3 +234,17 @@ How do XML-tagged instruction bodies behave when routed to Ollama-hosted local m
 
 **OQ-12-4 — `handoffs: prompt:` field and XML**
 Do YAML `handoffs: prompt:` field values benefit from or tolerate XML structuring when those prompts are complex multi-step instructions? Currently plain prose strings. May be relevant once orchestrator-tier agents are migrated and handoff prompts grow in complexity.
+
+---
+
+## Recommended Issue Execution Pairings
+
+Recorded 2026-03-06. Group remaining open issues for efficiency — each pairing shares domain, sources, and guide deliverables.
+
+| Session | Issues | Rationale |
+|---|---|---|
+| Infrastructure | #5 + #6 | Local compute (Ollama/LM Studio) + locally distributed MCP share source domains and feed `docs/guides/local-compute.md` |
+| Cost/Reliability | #7 + #8 | Async process handling + LLM tier strategy are both reliability/cost concerns; small source sets benefit from batching |
+| Memory (deferred) | #9 + #13 + #14 | Methodology lit review, episodic memory, and AIGNE AFS all have prerequisite on #5 (local compute resolved first) |
+
+Issue #10 (agent fleet design patterns) is executed standalone — sources are mostly already cached and the deliverables include guide + README updates.
