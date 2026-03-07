@@ -4,7 +4,7 @@ research_issue: "#12"
 status: Final
 date: 2026-03-06
 closes_issue: 12
-sources_read: 17
+sources_read: 18
 ---
 
 # XML-Tagged Agent Instruction Format
@@ -19,7 +19,9 @@ sources_read: 17
 
 After surveying 17 sources spanning Anthropic's official guidance, VS Code's `.agent.md` file specification, the Claude Code and Agent Skills ecosystems, OpenAI's prompt engineering guide, AutoGen, LangChain, and the Anthropic cookbook multi-agent pipeline, the answer to Issue #12 is unambiguous: **EndogenAI should adopt a hybrid schema — Markdown `## Section` headings for file structure, XML tags wrapping the content within each section for Claude's instruction parsing.**
 
-The central finding is architectural, not cosmetic. XML and Markdown serve different masters. `## Section` headings exist for two audiences: humans reading the file in editors and the IDE's agent registration and navigation machinery. XML tags exist for one audience: the Claude model receiving the instruction text. These two concerns are orthogonal. VS Code forwards the entire `.agent.md` body verbatim to the model without parsing or transformation — acting as a conduit, not a compiler (contingent on Language Model API layer confirmation — see Open Question #1). This means both layers can coexist in the same file without conflict.
+The central finding is architectural, not cosmetic. XML and Markdown serve different masters. `## Section` headings exist for two audiences: humans reading the file in editors and the IDE's agent registration and navigation machinery. XML tags exist for one audience: the Claude model receiving the instruction text. These two concerns are orthogonal. VS Code forwards the entire `.agent.md` body verbatim to the model without parsing or transformation — acting as a conduit, not a compiler. (**OQ-12-1 resolved 2026-03-07**: the Language Model API layer also performs no XML-aware pre-processing; see Section 6 and Open Question 1.) This means both layers can coexist in the same file without conflict.
+
+**Secondary finding (2026-03-07)**: The VS Code Language Model API does not support system messages. The prompt instructions from a `.agent.md` body are prepended as a *User*-role message, not a System message. XML tags in the body still pass through unchanged; this finding affects only message role, not XML handling.
 
 The apparent contradiction in the evidence — that Claude Code sub-agent files and Agent Skills files use plain Markdown bodies with no XML, while Anthropic's cookbook agents and official prompt engineering guide use XML extensively — resolves directly on execution context. Claude Code sub-agents are minimal, task-specific workers invoked via `<function_calls>` tool calls; their "instruction body" is intentionally lean. Anthropic's cookbook orchestrator agents are complex, multi-role system prompts sent as raw strings to the API; XML is the only structuring mechanism available because there is no Markdown heading layer. EndogenAI's `.agent.md` files occupy a third position: they are file-format agents with IDE requirements *and* complex behavioural guidance. For this position, the correct pattern is to use both layers.
 
@@ -440,7 +442,9 @@ The evidence base for the hybrid pattern is unusually strong by comparative stan
 
 ### Evidence Limitations
 
-1. **The Language Model API layer remains uninspected.** The VS Code Chat Extension API operates on top of the Language Model API (a separate layer documented at `vscode.com/api/extension-guides/ai/language-model`). The Chat Participant API source confirms its own layer is a passthrough, but explicitly defers questions about the Language Model API layer to that separate documentation. If the Language Model API performs prompt assembly, normalisation, or caching steps that affect XML tag handling, the conduit finding applies only to the layers above it. Until the Language Model API layer is confirmed to be equally passthrough, the XML adoption recommendation should note this contingency.
+1. **~~The Language Model API layer remains uninspected.~~** ✅ **RESOLVED 2026-03-07** — The VS Code Language Model API (`code.visualstudio.com/api/extension-guides/ai/language-model`) was read on 2026-03-07. Finding: the LM API accepts prompt content as raw strings via `LanguageModelChatMessage.User(string)` and forwards them directly to the model endpoint. No XML parsing, stripping, normalisation, or caching occurs at this layer. The conduit finding is now confirmed at **all documented VS Code stack layers**. (Source: [code-visualstudio-com-api-extension-guides-ai-language-model](./sources/code-visualstudio-com-api-extension-guides-ai-language-model.md))
+
+   **Secondary finding**: The LM API documentation explicitly states "Currently, the Language Model API doesn't support the use of system messages." `.agent.md` body content therefore reaches the Claude endpoint as a *User*-role message, not a System message. This does not affect XML pass-through (unchanged), but is relevant context for prompt role reasoning: Claude processes `<instructions>` and `<constraints>` XML blocks within user messages, not within a system prompt. See the `@vscode/prompt-tsx` library note in that documentation — it is an optional tool for extension developers and is not used by VS Code's built-in custom agents feature, which uses simple string prepend.
 
 2. **Claude Code sub-agents represent a counter-signal that cannot be dismissed by context alone.** The Claude Code sub-agent format uses plain Markdown bodies. This source is first-party Anthropic documentation. While the execution-context argument (minimal workers vs. complex orchestrators) is compelling, it is an inference, not an explicit statement from Anthropic. Anthropic has not published a document saying "use XML for complex agents but not simple ones." The context argument is the most parsimonious reading of the available evidence, but it is not confirmed.
 
@@ -599,7 +603,7 @@ python -c "import xml.etree.ElementTree as ET; ET.parse('<path>')"
 
 ## Open Questions
 
-1. **Language Model API layer**: Does the VS Code Language Model API (the layer below the Chat Participant API) perform any prompt pre-processing, normalisation, or caching that would affect XML tag handling? This must be confirmed before the migration is declared fully unblocked.
+1. ~~**Language Model API layer**~~: ✅ **RESOLVED 2026-03-07** — The Language Model API performs no prompt pre-processing, normalisation, or XML-aware caching. Prompt text is passed as a raw string via `LanguageModelChatMessage.User()` and forwarded verbatim to the model endpoint. Conduit finding confirmed at all documented VS Code layers. **Additional finding**: LM API does not support system messages — `.agent.md` body content is injected as a User message, not a System message. Source: `.cache/sources/code-visualstudio-com-api-extension-guides-ai-language-model.md`; closes issue #23 D1.
 
 2. **Empirical validation**: What is the measurable improvement in instruction-following fidelity when switching from plain Markdown to hybrid XML-tagged bodies for EndogenAI orchestrator agents? Target: design an ablation test using the Research Synthesizer agent.
 
@@ -613,7 +617,7 @@ python -c "import xml.etree.ElementTree as ET; ET.parse('<path>')"
 
 ## Sources
 
-All sources read as part of this D4 synthesis. Sources 1–9 were synthesized in this session (new D3s); sources 10–17 are existing D3s from prior sessions.
+All sources read as part of this synthesis. Sources 1–9 were synthesized in the original session (new D3s); sources 10–17 are existing D3s from prior sessions; source 18 added 2026-03-07 to resolve OQ-12-1.
 
 | # | Source | Type | Key Contribution |
 |---|---|---|---|
@@ -634,3 +638,4 @@ All sources read as part of this D4 synthesis. Sources 1–9 were synthesized in
 | 15 | [Claude Code — Agent Teams](./sources/claude-code-agent-teams.md) | Documentation | Multi-agent coordination; CLAUDE.md as shared context |
 | 16 | [TDS — Claude Skills and Subagents](./sources/tds-claude-skills-subagents.md) | Blog | Progressive disclosure; lazy-loading analogy; token economics |
 | 17 | [Anthropic — Agent Skills overview (detailed)](./sources/platform-claude-com-docs-en-agents-and-tools-agent-skills-ov.md) | Documentation | See row 4 — same source, complete reading |
+| 18 | [VS Code — Language Model API](./sources/code-visualstudio-com-api-extension-guides-ai-language-model.md) | Documentation | **OQ-12-1 resolution**: LM API passes prompts as raw strings via `LanguageModelChatMessage.User()`; no XML pre-processing at any layer; no system message support (bodies injected as User messages) |}
