@@ -220,6 +220,79 @@ def test_handles_404(monkeypatch):
 
 ---
 
+## Mocking Conventions
+
+### Use `mocker.patch` for callable mocking
+
+Always use `mocker.patch` (from `pytest-mock`) when replacing callables where call assertions (`assert_called_once_with`, etc.) are needed. Never use the `@patch` decorator on test functions — it obscures setup order and complicates parametrised tests.
+
+```python
+# Correct
+def test_reads_branch(mocker):
+    mocker.patch("subprocess.run", return_value=MagicMock(stdout=b"main", returncode=0))
+    assert get_current_branch() == "main"
+
+# Do not use
+@patch("subprocess.run")
+def test_reads_branch(mock_run):
+    mock_run.return_value = MagicMock(stdout=b"main", returncode=0)
+    assert get_current_branch() == "main"
+```
+
+Keep `monkeypatch.setattr/setenv/chdir` for environment variables, working directory, and attribute replacements where no call assertions are needed.
+
+### HTTP mocking: `urllib.request.urlopen`
+
+`fetch_source.py` uses `urllib.request` (stdlib). Neither `respx` nor `responses` intercepts stdlib urllib calls. The correct mock boundary is `urllib.request.urlopen` itself:
+
+```python
+def test_fetch_caches_response(tmp_path, mocker):
+    mock_resp = mocker.MagicMock()
+    mock_resp.read.return_value = b"<html><body>Test content</body></html>"
+    mock_resp.headers = {"Content-Type": "text/html"}
+    mock_resp.__enter__ = lambda s: s
+    mock_resp.__exit__ = mocker.MagicMock(return_value=False)
+    mocker.patch("urllib.request.urlopen", return_value=mock_resp)
+```
+
+Matching mock library to HTTP client is mandatory — using the wrong library means calls pass through unintercepted.
+
+### Subprocess mocking: `pytest-subprocess`
+
+For scripts that invoke `subprocess.run` (git operations, etc.), `pytest-subprocess` (`fake_process` fixture) is preferred over hand-crafted `MagicMock` replacements. It raises `ProcessNotRegisteredError` on unexpected calls, surfacing gaps that a blanket `MagicMock` would silently swallow.
+
+```python
+def test_git_branch(fake_process):
+    fake_process.register_subprocess(
+        ["git", "rev-parse", "--abbrev-ref", "HEAD"], stdout="main"
+    )
+    assert get_current_branch() == "main"
+```
+
+Add `pytest-subprocess>=1.5` to dev dependencies in `pyproject.toml`.
+
+### LLM API mocking: `respx`
+
+If scripts call the Anthropic SDK (which uses `httpx` internally), mock at the HTTP transport layer using `respx` — not at the SDK client level. Mocking SDK methods creates tests tied to SDK internals that break on version upgrades.
+
+```python
+import respx, httpx
+
+@respx.mock
+def test_llm_call():
+    respx.post("https://api.anthropic.com/v1/messages").mock(
+        return_value=httpx.Response(200, json={
+            "content": [{"type": "text", "text": "stub response"}]
+        })
+    )
+    result = call_summary_api(prompt="test")
+    assert result == "stub response"
+```
+
+Add `respx>=0.21` to dev dependencies when first needed.
+
+---
+
 ## Running Tests
 
 ### Local Development
@@ -242,7 +315,12 @@ uv run pytest tests/test_scaffold_agent.py::TestScaffoldAgentValidation::test_re
 
 # Watch mode (requires pytest-watch)
 ptw tests/
+
+# Parallel runs (optional — CI speedup with pytest-xdist)
+uv run pytest tests/ -n auto
 ```
+
+> **`pytest-xdist` (optional)**: `-n auto` requires `pytest-xdist>=3.0` as a dev dependency. Not required currently — the test suite runs in seconds — but available as a no-configuration CI speedup. Do **not** add `-n auto` to `addopts` without additional `--dist` configuration; it requires extra setup to work correctly alongside coverage collection.
 
 ### Continuous Integration
 
@@ -254,6 +332,8 @@ uv run pytest tests/ --cov=scripts --cov-report=term-missing --cov-fail-under=80
 ```
 
 If coverage drops below 80%, the PR is blocked.
+
+> **Note**: Do not add `--cov` to `addopts` in `pyproject.toml`. Coverage collection in `addopts` adds overhead to every local `pytest` run and conflicts with `pytest-xdist` (`-n auto`). The CI command above is the correct and only enforcement point for the coverage gate.
 
 ---
 

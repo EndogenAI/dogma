@@ -440,6 +440,48 @@ Orient → Audit (issues, changelog, community health) → Triage → Update →
 - **Label every open issue** — no label = invisible in triage.
 - **Do not edit `MANIFESTO.md`** — that is Executive Docs territory.
 
+### Planning Model
+
+This project uses **Kanban over Scrum**. Irregular contributor cadence — including ad-hoc agent sessions — is incompatible with fixed sprint cycles. Work items flow continuously through the board; no sprint planning ceremonies or retrospectives are required. A Scrumban hybrid (Kanban day-to-day, retrospective per release milestone) is appropriate if a regular versioned release cadence is adopted.
+
+### Agent Fleet as Team Topology
+
+The agent fleet maps onto Team Topologies' four-team-type framework:
+
+| Team Topologies type | Role |
+|---|---|
+| Stream-aligned | Human maintainers — own the product and drive direction |
+| Enabling | Executive agents (Researcher, Docs, Scripter) — task-scoped capability augmentation |
+| Complicated Subsystem | Research Scout, Synthesizer, domain specialist agents — deep expertise, on-demand |
+| Platform | GitHub agent, Review agent — consumed X-as-a-Service |
+
+Default interaction mode: **X-as-a-Service** (consume agent output via defined handoff contracts). Switch to **Collaboration** only when discovering new capabilities on a first-run workflow.
+
+Agents are runtime instances of function contracts, not standing team members. Define agent SLAs — e.g., "Research Scout returns ≤ 2,000 tokens within one session" — not sprint assignments.
+
+### Three-Tier Planning Hierarchy
+
+Three planning tiers are active in this repo, scoped to different time horizons:
+
+| Tier | Artifact | Scope | State |
+|------|----------|-------|-------|
+| Tactical | `.tmp/<branch>/<date>.md` | Live session state | Ephemeral (gitignored) |
+| Operational | `docs/plans/YYYY-MM-DD-<slug>.md` | Committed workplans | Durable per-session |
+| Strategic | GitHub Milestones | Longer-horizon goals | Publicly visible |
+
+Use the correct tier for each artifact. Do not commit session-scoped scratchpad content to `docs/plans/`; do not track strategic milestones in ephemeral scratchpads.
+
+### Architecture Decision Records
+
+ADRs live in `docs/decisions/` (directory to be created on first ADR). An ADR is warranted when a decision has non-obvious tradeoffs, is difficult to reverse, or would be confusing to a future agent or contributor without prior context.
+
+First ADRs planned:
+- Why `uv run` over `python` directly
+- Why Kanban-not-Scrum
+- Why the XML hybrid agent instruction format
+
+Use the Nygard format (Title, Status, Context, Decision, Consequences), targeting ≤ 30 lines per record. Optimise for future agent readability — assume no session context.
+
 ### Gate Summary
 
 | Gate | Criteria |

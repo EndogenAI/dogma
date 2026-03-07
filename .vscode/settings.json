@@ -7,6 +7,10 @@
         "git push": true,
         "uv": true,
         "sed -n": true,
-        "diff": true
+        "python scripts/fetch_source.py": true,
+        "python scripts/validate_synthesis.py": true,
+        "source .venv/bin/activate": true,
+        "diff": true,
+        "wait": true
     }
 }
