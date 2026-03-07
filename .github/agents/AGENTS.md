@@ -196,7 +196,7 @@ Step-by-step process here.
 
 **Rules**:
 - XML tags apply **only to the body below the YAML `---` fence**. Never put XML in frontmatter values.
-- Tag names follow `lowercase_underscore` convention.
+- Tag names are lowercase.
 - Sections with fewer than 3 lines of body content may omit the XML wrapper.
 - `scripts/scaffold_agent.py` emits XML-tagged stubs by default — new agents start correct.
 - To migrate an existing agent: `uv run python scripts/migrate_agent_xml.py --file <path> --dry-run` (review diff), then without `--dry-run` to apply.

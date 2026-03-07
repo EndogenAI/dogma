@@ -51,8 +51,8 @@ Outputs:
     stderr: warnings (skipped files, well-formedness issues).
 
 Exit codes:
-    0  Success (all targeted files processed).
-    1  Parse error, well-formedness failure, or no files matched.
+    0  Success (no parse/well-formedness errors), including no-op runs.
+    1  Parse error or well-formedness failure.
 
 Usage examples:
     # Dry-run a single file
@@ -289,8 +289,14 @@ def process_file(
     dry_run: bool,
     min_lines: int,
     model_scope: str | None,
-) -> bool:
-    """Process a single agent file. Returns True if a change was made (or would be)."""
+) -> bool | None:
+    """Process a single agent file.
+
+    Returns:
+        True   — a change was made (or would be in dry-run mode).
+        False  — file was skipped or required no change.
+        None   — well-formedness failure; the file was not written.
+    """
     try:
         original = path.read_text(encoding="utf-8")
     except OSError as exc:
@@ -327,7 +333,7 @@ def process_file(
             + "\n".join(f"  {e}" for e in errors),
             file=sys.stderr,
         )
-        return False
+        return None
 
     if dry_run:
         original_lines = original.splitlines(keepends=True)
@@ -428,20 +434,26 @@ def main() -> None:
         print("# DRY RUN — no files will be written\n")
 
     changed_count = 0
+    error_count = 0
     for f in files:
-        changed = process_file(
+        result = process_file(
             path=f,
             tag_map=tag_map,
             dry_run=args.dry_run,
             min_lines=args.min_lines,
             model_scope=args.model_scope,
         )
-        if changed:
+        if result is True:
             changed_count += 1
+        elif result is None:
+            error_count += 1
 
     noun = "file" if changed_count == 1 else "files"
     action = "would change" if args.dry_run else "changed"
     print(f"\n{changed_count} {noun} {action}.")
+    if error_count:
+        print(f"{error_count} file(s) had well-formedness errors — see stderr.", file=sys.stderr)
+        sys.exit(1)
 
     sys.exit(0)
 

@@ -28,7 +28,7 @@ further research.
 - `docs/guides/session-management.md` — matching update under "During a Session / Writing to
   the Scratchpad" documenting the section-scope isolation rule.
 - `docs/AGENTS.md` — no change required (no agent authoring convention implicated).
-- `.github/agents/AGENTS.md` — no change required.
+- `.github/agents/AGENTS.md` — no change required as planned (Phase 3 later added the Hybrid XML Schema section and renamed Prompt Enrichment Chain → Focus-on-Descent to this file, which was not anticipated in the Phase 1 plan).
 
 **Depends on**: nothing  
 **Gate**: Phase 2 does not begin until Phase 1 changes are committed  

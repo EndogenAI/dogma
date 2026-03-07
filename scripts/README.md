@@ -470,7 +470,7 @@ uv run python scripts/migrate_agent_xml.py --all --min-lines 30
 | `--all` | Migrate all `*.agent.md` files in `.github/agents/` |
 | `--dry-run` | Print diff without writing |
 | `--min-lines <int>` | Skip files with fewer instruction lines (default: 30) |
-| `--model-scope claude` | Only migrate files where `model` field begins with `Claude` (default: claude) |
+| `--model-scope <prefix>` | Only migrate files where `model` field begins with given prefix (default: disabled — all files processed) |
 
 **Exit codes**: `0` = success; `1` = parse error or well-formedness failure.
 

@@ -29,7 +29,7 @@ Checks (D4 issue synthesis):
 Inputs:
     <file>         Path to the synthesis file to validate.  (positional, required)
     --min-lines    Minimum non-blank line count.            (default: 100)
-    --strict       Fail on any warning, not just errors.   (flag)
+    --strict       Reserved for future use — currently a no-op flag.
 
 Outputs:
     stdout:  Human-readable pass/fail summary with specific gap list.
@@ -159,7 +159,6 @@ def validate(file_path: Path, min_lines: int) -> tuple[bool, list[str]]:
         return False, [f"Path is not a file: {file_path}"]
 
     text = file_path.read_text(encoding="utf-8")
-    doc_type = "D3 (per-source)" if is_d3(file_path) else "D4 (issue synthesis)"
 
     # --- Check 2: minimum non-blank line count ---
     actual_lines = non_blank_line_count(text)
