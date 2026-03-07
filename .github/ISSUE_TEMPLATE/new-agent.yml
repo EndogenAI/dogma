@@ -2,6 +2,7 @@ name: New Agent
 description: Propose a new VS Code Copilot agent for the fleet
 title: "feat(agents): "
 labels: ["type:feature", "area:agents"]
+projects: ["EndogenAI/1"]
 body:
   - type: markdown
     attributes:

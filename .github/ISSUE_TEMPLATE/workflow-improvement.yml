@@ -2,6 +2,7 @@ name: Workflow Improvement
 description: Propose an improvement to the endogenic development workflow, methodology, or best practices
 title: "feat(workflows): "
 labels: ["type:feature", "area:docs"]
+projects: ["EndogenAI/1"]
 body:
   - type: markdown
     attributes:

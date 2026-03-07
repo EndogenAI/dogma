@@ -2,6 +2,7 @@ name: Research Task
 description: Track a research topic to synthesize into the endogenic workflow methodology
 title: "Research: "
 labels: ["type:research"]
+projects: ["EndogenAI/1"]
 body:
   - type: markdown
     attributes:
