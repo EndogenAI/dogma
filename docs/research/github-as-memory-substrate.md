@@ -189,7 +189,7 @@ docs/research/ + docs/guides/
 
 ## 6. What Not To Do
 
-1. **Bulk issue ingestion into context**: 50 issues × ~2K chars = ~25K tokens minimum. Use targeted retrieval only.
+1. **Bulk issue ingestion into context**: 50 issues × ~2K tokens ≈ 100K tokens — near or beyond a single context window. Use targeted retrieval only.
 
 2. **GitHub as vector/semantic store**: No native embedding. Building an embedding layer over issue content requires external infra — violates local-compute-first. Semantic memory belongs in `docs/`, not GitHub search.
 
