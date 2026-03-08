@@ -45,15 +45,35 @@ VS Code Copilot can route requests to local models via OpenAI-compatible APIs.
 | [LM Studio](https://lmstudio.ai) | GUI, easy model management | OpenAI-compatible API on `localhost:1234` |
 | [llama.cpp](https://github.com/ggerganov/llama.cpp) | Maximum control, low overhead | Requires more setup |
 
-**Configuration** (VS Code settings):
+**Configuration** — VS Code Language Models editor (UI path):
+
+1. Open Chat (⌃⌘I) → model picker dropdown → **Manage Models**
+2. Select **Add Models** → choose **Ollama** from the provider list
+3. VS Code discovers locally-running models automatically
+4. Select the model in the chat model picker
+
+**Requirements**: Ollama must be running (`ollama serve`), a Copilot plan (minimum: Free) is required, and internet access is still needed for some Copilot service requests.
+
+**Current constraints** (Q1 2026):
+- Local models work for chat only — inline suggestions cannot use local models
+- BYOK is only available for Copilot Individual (not Business/Enterprise)
+- Models must support tool calling to be usable in agent mode
+
+For custom endpoints (VS Code Insiders, 1.104+):
 
 ```json
-{
-  "github.copilot.chat.experimental.completionContext": true
-}
+// settings.json
+"github.copilot.chat.customOAIModels": [
+  {
+    "id": "llama3.2",
+    "name": "Llama 3.2 (Local)",
+    "endpoint": "http://localhost:11434/v1",
+    "modelName": "llama3.2"
+  }
+]
 ```
 
-> **Research needed**: The exact VS Code Copilot local model configuration is an active research area. See [GitHub Issue: Local VS Code Copilot Setup](https://github.com/EndogenAI/Workflows/issues) for the latest findings.
+For full setup guide and model selection rationale, see [`docs/research/local-copilot-models.md`](../research/local-copilot-models.md).
 
 ### Model Selection Strategy
 
@@ -75,7 +95,30 @@ If you have access to a machine with a capable GPU (e.g., Apple Silicon M-series
 2. Expose the API on the local network (e.g., `OLLAMA_HOST=0.0.0.0 ollama serve`)
 3. Point VS Code on your development machine to the network address
 
-> **Research needed**: Secure local network MCP distribution is an open research question. See the related issue for current findings.
+VS Code has **native MCP server support** (1.103+): configure servers in `.vscode/mcp.json` and they are automatically available in chat.
+
+```json
+// .vscode/mcp.json — workspace-scoped, commit to share with team
+{
+  "servers": {
+    "filesystem": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "${workspaceFolder}"],
+      "sandboxEnabled": true,
+      "sandbox": { "filesystem": { "allowWrite": ["${workspaceFolder}"] } }
+    },
+    "gpu-machine": {
+      "type": "http",
+      "url": "http://192.168.1.100:11434/mcp"
+    }
+  }
+}
+```
+
+**Sandboxing** (macOS/Linux): enable `sandboxEnabled: true` to restrict stdio servers to configured filesystem paths and network domains. Auto-approves tool calls within the sandbox.
+
+For architecture recommendations and the endogenic MCP server design, see [`docs/research/local-mcp-frameworks.md`](../research/local-mcp-frameworks.md).
 
 ---
 
@@ -140,12 +183,14 @@ For the full rationale, model capability map, and lazy escalation pattern, see t
 
 ---
 
-## Open Research Tasks
+## Research Docs
 
-The following are open questions tracked as GitHub Issues:
+Detailed synthesis documents for local compute topics:
 
-- [ ] Exact VS Code Copilot local model configuration steps (issue #5)
-- [ ] Secure local network distribution of MCP frameworks (issue #6)
-- [ ] Benchmarking token usage: local vs. cloud for common agent workflows
+| Topic | Document | Status |
+|-------|----------|--------|
+| VS Code Copilot with local models | [`docs/research/local-copilot-models.md`](../research/local-copilot-models.md) | Draft |
+| Locally distributed MCP frameworks | [`docs/research/local-mcp-frameworks.md`](../research/local-mcp-frameworks.md) | Draft |
+| Benchmarking local vs. cloud token usage | Open — see [issue #5 D3](https://github.com/EndogenAI/Workflows/issues/5) | Not started |
 
-See the [GitHub Issues](https://github.com/EndogenAI/Workflows/issues?q=label%3Aresearch) for current status.
+See [GitHub Issues labeled `research`](https://github.com/EndogenAI/Workflows/issues?q=label%3Aresearch) for current status.
