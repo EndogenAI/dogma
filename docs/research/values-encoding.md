@@ -367,7 +367,7 @@ Ordered by encoding fidelity risk × breadth of impact:
 
 1. **Endogenous-First F2 (canonical example)** — The primary axiom is missing its prototype anchor. Without a concrete session example, the principle is vulnerable to semantic drift through paraphrase. Highest-risk single gap in the [4,1] code. *→ Phase 3 (issue #70), first addition.*
 
-2. **Local Compute-First F4 (hard programmatic gate)** — Only axiom without CI enforcement. The current soft gate (human judgment + agent guidance) is the weakest encoding form. Either formalise the human-judgment gate as intentional design, or create `scripts/check_model_usage.py`. *→ Phase 3 (issue #70), follow-on.*
+2. **Local Compute-First F4 (candidate hard programmatic gate)** — Currently the only axiom without any programmatic enforcement (no CI or session-start script). The current soft gate (human judgment + agent guidance) is the weakest encoding form. Either formalise the human-judgment gate as intentional design, or create `scripts/check_model_usage.py`. *→ Phase 3 (issue #70), follow-on.*
 
 3. **Guiding Principles F3 (anti-patterns) — Programmatic-First, Documentation-First, Minimal Posture** — Three most-cited principles with zero anti-patterns. Anti-patterns are the most resilient encoding form (survive paraphrasing); their absence is a compounding drift risk. *→ Phase 3 (issue #70), second pass on principles.*
 
