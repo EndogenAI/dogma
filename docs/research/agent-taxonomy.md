@@ -401,8 +401,8 @@ No file renames are required to implement these recommendations. The following d
 
 9. **[`docs/guides/agents.md`](../guides/agents.md)** — current agent guide; posture table, handoff patterns, agent selection table. Confirmed "custom agents" terminology already in use.
 
-10. **[`.github/agents/AGENTS.md`](.github/agents/AGENTS.md)** — agent-authoring conventions; frontmatter schema, posture-to-toolset table, validation script.
+10. **[`.github/agents/AGENTS.md`](../../.github/agents/AGENTS.md)** — agent-authoring conventions; frontmatter schema, posture-to-toolset table, validation script.
 
-11. **[`.github/agents/executive-docs.agent.md`](.github/agents/executive-docs.agent.md)** — representative agent file; confirmed correct balance of role-exclusive content vs skill candidates.
+11. **[`.github/agents/executive-docs.agent.md`](../../.github/agents/executive-docs.agent.md)** — representative agent file; confirmed correct balance of role-exclusive content vs skill candidates.
 
-12. **[`.github/skills/session-management/SKILL.md`](.github/skills/session-management/SKILL.md)** — representative skill file; confirmed correct skill structure, AGENTS.md cross-reference in first section, procedure-not-rule content type.
+12. **[`.github/skills/session-management/SKILL.md`](../../.github/skills/session-management/SKILL.md)** — representative skill file; confirmed correct skill structure, AGENTS.md cross-reference in first section, procedure-not-rule content type.

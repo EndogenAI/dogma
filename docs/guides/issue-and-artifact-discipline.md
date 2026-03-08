@@ -355,9 +355,9 @@ This discipline provides:
 ## References
 
 - [`AGENTS.md`](../../AGENTS.md) — Agent fleet constraints and discipline
-- [`.github/agents/AGENTS.md`](.githu/agents/AGENTS.md) — Agent-specific governance
-- [`.github/agents/README.md`](.github/agents/README.md) — Fleet catalog with milestone mapping
+- [`.github/agents/AGENTS.md`](../../.github/agents/AGENTS.md) — Agent-specific governance
+- [`.github/agents/README.md`](../../.github/agents/README.md) — Fleet catalog with milestone mapping
 - [`docs/guides/agents.md`](./agents.md) — Agent authoring guide with issue linkage
-- [`.github/skills/agent-file-authoring/SKILL.md`](.github/skills/agent-file-authoring/SKILL.md) — Skill authoring discipline
-- [`.github/skills/skill-authoring/SKILL.md`](.github/skills/skill-authoring/SKILL.md) — SKILL.md-specific discipline
+- [`.github/skills/agent-file-authoring/SKILL.md`](../../.github/skills/agent-file-authoring/SKILL.md) — Skill authoring discipline
+- [`.github/skills/skill-authoring/SKILL.md`](../../.github/skills/skill-authoring/SKILL.md) — SKILL.md-specific discipline
 - [`docs/guides/github-workflow.md`](./github-workflow.md) — GitHub label and issue conventions
