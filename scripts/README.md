@@ -24,6 +24,7 @@ scripts/
   pr_review_reply.py           # Post replies to PR inline review comments and resolve threads (--reply-to, --resolve, --batch)
   seed_labels.py               # Idempotent GitHub label seeder — reads data/labels.yml and syncs via gh label create --force (--dry-run, --delete-legacy)
   fetch_toolchain_docs.py      # Cache gh CLI help output as structured Markdown under .cache/toolchain/ (--check, --force, --dry-run)
+  wait_for_unblock.py          # Poll a GitHub issue until status:blocked is removed; writes trigger file on exit 0 (--issue, --interval, --timeout, --dry-run)
 ```
 
 ---
@@ -753,6 +754,46 @@ legacy_labels:
 **Exit codes**: `0` success; `1` validation/auth error; `2` labels file not found.
 
 **Dependencies**: stdlib + `pyyaml`; requires `gh` CLI authenticated (`gh auth login`).
+
+---
+
+## scripts/wait_for_unblock.py
+
+Poll a GitHub issue on an interval until `status:blocked` is removed from its
+labels. Designed for two integration patterns:
+
+**Tier 1 — in-session block** (requires an open VS Code session):
+Run as a background terminal; the agent session blocks on it with `await_terminal`.
+When the label is removed (e.g. by the `unblock-issues.yml` Actions workflow on
+PR merge), the terminal exits 0 and the agent auto-continues orchestration.
+
+**Tier 2 — cross-session trigger file**:
+Run as a `launchd` / `cron` daemon. On exit 0, writes
+`.tmp/triggers/<repo>-issue-<N>.unblocked` — a session-start check discovers it
+and presents the ready-to-run orchestration prompt. Works even when VS Code is
+closed.
+
+```bash
+# In-session: poll every 60s with a 2-hour timeout
+uv run python scripts/wait_for_unblock.py --issue 60 --interval 60 --timeout 7200
+
+# Dry-run to verify config
+uv run python scripts/wait_for_unblock.py --issue 60 --dry-run
+
+# Explicit repo
+uv run python scripts/wait_for_unblock.py --issue 60 --repo EndogenAI/Workflows
+
+# Session-start trigger check
+ls .tmp/triggers/*.unblocked 2>/dev/null && cat .tmp/triggers/*.unblocked
+```
+
+**Exit codes**: `0` unblocked; `1` timeout; `2` error (bad issue, gh CLI failure).
+
+**Trigger file location**: `.tmp/triggers/<owner>-<repo>-issue-<N>.unblocked`
+(gitignored). Contains: issue, repo, title, url, unblocked_at (ISO 8601 UTC).
+
+**Publisher side**: `.github/workflows/unblock-issues.yml` removes `status:blocked`
+automatically when a PR containing `Unblocks #N` in its body is merged to `main`.
 
 ---
 

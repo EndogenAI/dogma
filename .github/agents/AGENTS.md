@@ -227,6 +227,24 @@ Use lowercase kebab-case for filenames.
 
 ---
 
+## Pre-Commit Gate for Agent Files
+
+**Before committing any `.agent.md` file (new or edited), run:**
+
+```bash
+uv run python scripts/validate_agent_files.py --all
+```
+
+All 4 checks must pass:
+- YAML frontmatter: `name` + `description` present
+- Required sections: Endogenous Sources, Action section (heading containing `workflow`/`checklist`/`conventions`/`playbook`/`scope`/`methodology`), Quality-gate section (heading containing `completion criteria` or `guardrails`)
+- Cross-reference density: ≥1 link to `MANIFESTO.md` or `AGENTS.md`
+- No heredoc writes
+
+This check also runs as a pre-commit hook (`validate-agent-files` in `.pre-commit-config.yaml`) so any unforced `git commit` on `.agent.md` files will catch failures automatically. **Never bypass with `--no-verify`.** CI enforces the same check as a blocking gate.
+
+---
+
 ## File Writing Guardrail
 
 **Never use heredocs to write agent or Markdown file content.**

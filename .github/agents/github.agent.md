@@ -61,7 +61,25 @@ chore(scripts): add scaffold_agent.py
 
 Do not commit unless the delegating agent has confirmed that **Review** has approved the changes. If not, return to the delegating agent.
 
-### 2. Stage and Commit
+### 2. Run Local Checks
+
+Before staging anything, verify the checks that CI will enforce:
+
+```bash
+# Lint + format
+uv run ruff check scripts/ tests/
+uv run ruff format --check scripts/ tests/
+
+# Fast tests (skip slow/integration)
+uv run pytest tests/ -x -m "not slow and not integration" -q
+
+# Agent file compliance (if any .github/agents/*.agent.md changed)
+uv run python scripts/validate_agent_files.py --all
+```
+
+If any check fails, **stop and report the failure to the delegating agent** — do not commit broken code.
+
+### 3. Stage and Commit
 
 ```bash
 git add <specific files>   # never git add -A without verifying what's staged
@@ -69,9 +87,10 @@ git status                 # confirm what will be committed
 git commit -m "<type>(<scope>): <description>"
 ```
 
-For multi-file commits that belong together, use a single commit. For logically separate changes, use separate commits.
+For multi-file commits that belong together, use a single commit. For logically
+separate changes, use separate commits.
 
-### 3. Reference Issues
+### 4. Reference Issues
 
 If the commit closes or relates to a GitHub issue, add a footer:
 
@@ -81,7 +100,7 @@ git commit -m "docs(research): add final synthesis — <title>
 Closes #<issue-number>"
 ```
 
-### 4. Push
+### 5. Push
 
 ```bash
 git push origin HEAD

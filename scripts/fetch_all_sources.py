@@ -3,9 +3,10 @@ fetch_all_sources.py — Batch-fetch and cache all research sources referenced i
 
 Purpose
 -------
-Scan all known source lists in the repo — OPEN_RESEARCH.md "Resources to Survey" sections
-and docs/research/*.md YAML frontmatter `sources:` lists — extract every URL, and fetch any
-that are not already cached in .cache/sources/ using fetch_source.py.
+Scan all known source lists in the repo — OPEN_RESEARCH.md "Resources to Survey" sections,
+docs/research/*.md YAML frontmatter `sources:` lists, and optional sprint manifest JSON files
+— extract every URL, and fetch any that are not already cached in .cache/sources/ using
+fetch_source.py.
 
 Run this at the start of any research session so scouts can use read_file on cached .md paths
 instead of re-fetching sources through the context window. Fetch once, read many times.
@@ -18,6 +19,7 @@ Inputs
 ------
 - docs/research/OPEN_RESEARCH.md  — "Resources to Survey" bullet URLs (https:// lines)
 - docs/research/*.md frontmatter  — `sources:` YAML list entries
+- docs/research/manifests/*.json  — sprint manifest files (via --manifest)
 - .cache/sources/manifest.json    — existing cache; URLs already cached are skipped
 
 Outputs
@@ -42,6 +44,12 @@ uv run python scripts/fetch_all_sources.py --open-research-only
 
 # Only scan docs/research/*.md frontmatter (skip OPEN_RESEARCH.md)
 uv run python scripts/fetch_all_sources.py --research-docs-only
+
+# Fetch all sources in a sprint manifest JSON file
+uv run python scripts/fetch_all_sources.py --manifest docs/research/manifests/methodology-deep-dive.json
+
+# Dry run for a specific manifest
+uv run python scripts/fetch_all_sources.py --manifest docs/research/manifests/methodology-deep-dive.json --dry-run
 
 # Show what is currently cached
 uv run python scripts/fetch_source.py --list
@@ -99,6 +107,21 @@ def extract_urls_from_open_research(path: Path) -> list[str]:
             urls.extend(found)
 
     return urls
+
+
+def extract_urls_from_manifest(manifest_path: Path) -> list[str]:
+    """Extract pending source URLs from a sprint manifest JSON file."""
+    if not manifest_path.exists():
+        print(f"[fetch_all_sources] Warning: manifest not found: {manifest_path}", file=sys.stderr)
+        return []
+    try:
+        data = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        print(f"[fetch_all_sources] Warning: invalid manifest JSON {manifest_path}: {exc}", file=sys.stderr)
+        return []
+
+    sources = data.get("sources", [])
+    return [s["url"] for s in sources if isinstance(s, dict) and "url" in s and s.get("status", "pending") != "skip"]
 
 
 def extract_urls_from_research_frontmatter(docs_dir: Path) -> list[str]:
@@ -235,6 +258,16 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Only scan docs/research/*.md frontmatter (skip OPEN_RESEARCH.md).",
     )
+    parser.add_argument(
+        "--manifest",
+        default=None,
+        metavar="PATH",
+        help=(
+            "Path to a sprint manifest JSON file. "
+            "Fetches all 'pending' source URLs from the manifest. "
+            "Can be combined with other flags to also fetch from OPEN_RESEARCH.md etc."
+        ),
+    )
     return parser
 
 
@@ -245,12 +278,22 @@ def main() -> None:
     # Collect URLs from configured sources
     all_urls: list[str] = []
 
-    if not args.research_docs_only:
+    if args.manifest:
+        manifest_urls = extract_urls_from_manifest(Path(args.manifest))
+        print(f"Manifest ({args.manifest}): {len(manifest_urls)} URLs found")
+        all_urls.extend(manifest_urls)
+
+    # When --manifest is used alone (without explicit standard-source flags),
+    # only fetch from the manifest. Add --open-research-only or
+    # --research-docs-only to also include standard sources.
+    manifest_only = bool(args.manifest) and not args.open_research_only and not args.research_docs_only
+
+    if not manifest_only and not args.research_docs_only:
         open_research_urls = extract_urls_from_open_research(OPEN_RESEARCH_PATH)
         print(f"OPEN_RESEARCH.md:        {len(open_research_urls)} URLs found")
         all_urls.extend(open_research_urls)
 
-    if not args.open_research_only:
+    if not manifest_only and not args.open_research_only:
         frontmatter_urls = extract_urls_from_research_frontmatter(RESEARCH_DOCS_DIR)
         print(f"docs/research/*.md:      {len(frontmatter_urls)} URLs found")
         all_urls.extend(frontmatter_urls)

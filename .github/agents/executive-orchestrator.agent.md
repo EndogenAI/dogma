@@ -221,6 +221,8 @@ When a phase depends on another agent's output:
 When all phases are complete:
 
 - Write `## Session Summary` — orientation for the next session, what was done, what's open.
+- **Update the issue body checkboxes** for every completed deliverable. Write the updated body to a temp file (`gh issue edit <num> --body-file <path>`) and verify with `gh issue view <num> --json body -q '.body' | grep -E '\[x\]|\[ \]'`. The issue body is the live deliverable tracker — keep it current.
+- **Post a progress comment on every GitHub issue actively worked this session.** Summarise: what phase completed, commit SHAs, what comes next. Write the body to a temp file and post with `gh issue comment <num> --body-file <path>`. Verify with `gh issue view <num> --json comments -q '.comments[-1].body[:80]'`. This is a mandatory close step, not optional.
 - Run `uv run python scripts/prune_scratchpad.py --force` to archive and compress.
 - Confirm all commits are pushed with `git status` and `git log --oneline -5`.
 
@@ -234,6 +236,8 @@ When all phases are complete:
 - Session scratchpad has `## Orchestration Plan`, one `## Phase N Output` per phase, and a `## Session Summary`.
 - All phase deliverables are confirmed committed to the branch.
 - All changes are pushed to origin.
+- Issue body checkboxes updated to reflect all completed deliverables.
+- A progress comment has been posted on every GitHub issue actively worked during the session.
 - No phase has been skipped or batched without an explicit gate decision recorded in the scratchpad.
 
 ---
@@ -286,6 +290,8 @@ A correct output from this agent looks like:
 - Do not modify `MANIFESTO.md` — that is Executive Docs territory.
 - Do not proceed past a phase gate if the prior deliverables are not committed and confirmed.
 - Do not close the session without writing a `## Session Summary` and running `prune_scratchpad.py --force`.
+- **Update issue body checkboxes at phase completion** — update completed deliverable checkboxes in the issue body after each phase gate. Write the updated body to a temp file and use `gh issue edit <num> --body-file <path>`. Verify with `gh issue view <num> --json body -q '.body' | grep -E '\[x\]|\[ \]'`. This keeps the issue body as a live progress tracker, not just the initial spec.
+- **Post issue progress comments at session close** — for every GitHub issue actively worked, post a `gh issue comment <num> --body-file <path>` summary before closing. Use `gh issue view <num> --json comments -q '.comments[-1].body[:80]'` to verify. Skipping this step breaks async continuity for collaborators and future sessions.
 - **Delegation-first** — never perform substantive domain work directly. If a specialist agent exists for the task (see the Delegation Decision Gate in the Workflow), delegate to it. Direct action is reserved for coordination, verification reads, and state management (git, scratchpad writes). Doing domain work directly burns the main context window; delegation isolates it.
 - **Compact-before-reorient** — when returning after a compaction event, always re-read the scratchpad and workplan from disk before acting. The compact summary is a lossy digest; on-disk files are the authoritative state record.
 - **Per-phase compaction checkpoints are mandatory** — after every phase gate, write `## Pre-Compact Checkpoint` to the scratchpad, prune if > 200 lines, and commit in-progress work. Recommend `/compact` before any long research or synthesis delegation.

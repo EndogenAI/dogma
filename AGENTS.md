@@ -218,6 +218,8 @@ Rules:
 - The **Executive is the sole integration point** — it alone reads the full scratchpad to synthesise findings across all agents. Subagents do not read laterally.
 - The executive **reads today's session file first** before delegating to avoid re-discovering context another agent already gathered.
 - At session end, the executive writes a `## Session Summary` section so the next session starts with an orientation point.
+- At session end, the executive **posts a progress comment** on every GitHub issue that was actively worked during the session — summarising what phase completed, what was committed, and what comes next. Use `gh issue comment <num> --body-file <path>`. This is a non-negotiable close step, same as writing the Session Summary.
+- At phase completion, the executive **updates the issue body checkboxes** to reflect completed deliverables. Write the updated body to a temp file and use `gh issue edit <num> --body-file <path>`. Verify with `gh issue view <num> --json body -q '.body' | grep -E '\[x\]|\[ \]'`. This keeps the issue body as a live progress tracker, not just the initial spec.
 - Use the active session file for inter-agent handoff notes, gap reports, and aggregated sub-agent results.
 
 ### Focus-on-Descent / Compression-on-Ascent
@@ -267,8 +269,10 @@ Any command that creates or modifies a remote side effect must be immediately fo
 | `git push` | `git log --oneline -1` then `gh run list --limit 3` to monitor CI |
 | `gh pr create` | `gh pr view` |
 | `gh issue close` | `gh issue view <number>` |
-| `gh issue edit <num>` | `gh issue view <num> --json labels,milestone` |
+| `gh issue edit <num>` (labels/milestone) | `gh issue view <num> --json labels,milestone` |
+| `gh issue edit <num>` (body/checkboxes) | `gh issue view <num> --json body -q '.body' \| grep -E '\[x\]\|\[ \]'` |
 | milestone create via API | `gh api repos/:owner/:repo/milestones` |
+| `gh issue comment` (session-end update) | `gh issue view <num> --json comments -q '.comments[-1].body[:80]'` |
 
 **Zero error output is not confirmation of success.** Output truncation, network timeouts, and silent API failures all produce clean exits. Always verify.
 
@@ -410,6 +414,29 @@ are in scope, or URLs are passed to scripts.
 ---
 
 ## Guardrails
+
+**Run these checks before every `git commit` / `git push`:**
+
+```bash
+# Lint + format (also enforced by pre-commit hook)
+uv run ruff check scripts/ tests/
+uv run ruff format --check scripts/ tests/
+
+# Tests (fast subset — skip slow/integration)
+uv run pytest tests/ -x -m "not slow and not integration" -q
+
+# Agent file compliance (if any .github/agents/*.agent.md changed)
+uv run python scripts/validate_agent_files.py --all
+
+# Research doc compliance (if any docs/research/*.md changed)
+uv run python scripts/validate_synthesis.py docs/research/<changed-file>.md
+```
+
+Pre-commit hooks (`uv run pre-commit install` once per clone) automate ruff, validate-synthesis, and validate-agent-files on every `git commit`. Install them; do not skip with `--no-verify`.
+
+**CI must pass before requesting or re-requesting Copilot review.** After every push, run `gh run list --limit 3` and wait for green before reviewing.
+
+---
 
 **Never do these without explicit instruction:**
 

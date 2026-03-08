@@ -190,8 +190,20 @@ uv run python scripts/prune_scratchpad.py --dry-run
 ## Ending a Session
 
 1. The executive agent writes a `## Session Summary` section
-2. Run `uv run python scripts/prune_scratchpad.py --force` to archive and update `_index.md`
-3. Stop the scratchpad watcher (Ctrl-C)
+2. **Update the issue body checkboxes** for every completed deliverable on actively worked issues:
+   ```bash
+   # Edit the body with a temp file (never use --body with multi-line content)
+   gh issue edit <num> --body-file /tmp/issue_<num>_body.md
+   # Verify checkboxes reflect reality
+   gh issue view <num> --json body -q '.body' | grep -E '\[x\]|\[ \]'
+   ```
+3. **Post a progress comment on every GitHub issue actively worked this session** — summarise what phase completed, what was committed, and what comes next:
+   ```bash
+   gh issue comment <num> --body-file /tmp/session_close_<num>.md
+   gh issue view <num> --json comments -q '.comments[-1].body[:80]'
+   ```
+4. Run `uv run python scripts/prune_scratchpad.py --force` to archive and update `_index.md`
+5. Stop the scratchpad watcher (Ctrl-C)
 
 The `_index.md` accumulates one-line stubs of all closed sessions on the branch. Future sessions can read it to orient quickly without opening old session files.
 

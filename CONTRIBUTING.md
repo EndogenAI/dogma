@@ -41,13 +41,16 @@ cd Workflows
 # 2. Install dependencies (uv manages the virtual environment)
 uv sync
 
-# 3. Run the test suite
+# 3. Install pre-commit hooks (runs ruff, ruff-format, validate-synthesis, validate-agent-files on every git commit)
+uv run pre-commit install
+
+# 4. Run the test suite
 uv run pytest tests/
 
-# 4. Run the full test suite with coverage
+# 5. Run the full test suite with coverage
 uv run pytest tests/ --cov=scripts --cov-report=term-missing
 
-# 5. Run only fast tests (skip IO and integration)
+# 6. Run only fast tests (skip IO and integration)
 uv run pytest tests/ -m "not slow and not integration"
 ```
 

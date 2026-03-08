@@ -16,3 +16,9 @@ repos:
         files: ^docs/research/
         exclude: ^docs/research/OPEN_RESEARCH\.md$
         pass_filenames: true
+      - id: validate-agent-files
+        name: Validate agent files
+        entry: python3 scripts/validate_agent_files.py --all
+        language: system
+        files: ^\.github/agents/.*\.agent\.md$
+        pass_filenames: false
