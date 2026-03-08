@@ -318,6 +318,63 @@ These questions require a further research pass or empirical investigation withi
 
 ---
 
+## 6. Appendix — [4,1] Encoding Coverage Audit
+
+**Audit date**: 2026-03-08
+**Reviewer**: Executive Orchestrator, first session on milestone #7
+**Source**: `MANIFESTO.md` reviewed in full against the [4,1] repetition code forms from §3 Pattern 1
+**Closes**: [issue #73](https://github.com/EndogenAI/Workflows/issues/73) — feeds Phase 3 (issue #70)
+
+Form definitions (from Pattern 1, §3):
+- **F1 — Principle statement**: Abstract declaration of the value
+- **F2 — Canonical example**: Concrete demonstration with labelled `**Canonical example**:` heading
+- **F3 — Anti-pattern**: Explicit counter-example with labelled `**Anti-pattern**:` heading
+- **F4 — Programmatic gate**: A script or CI check enforcing the structural implication of the value
+
+### Core Axiom Coverage
+
+| Axiom | F1 Principle | F2 Example | F3 Anti-pattern | F4 Gate |
+|-------|:---:|:---:|:---:|:---:|
+| Endogenous-First | ✅ | ❌ | ✅ (×2) | ✅ |
+| Algorithms Before Tokens | ✅ | ✅ | ✅ | ✅ |
+| Local Compute-First | ✅ | ✅ | ✅ | ⚠️ |
+
+**F2 gap — Endogenous-First**: No `**Canonical example**:` section. The inheritance-principle prose describes the concept but provides no concrete session prototype anchor. Recommended: add a before/after example of a session that opens with `AGENTS.md` + scratchpad read versus one that skips this step (the canonical ABT violation is already documented; the Endogenous-First equivalent is missing).
+
+**F4 gap — Local Compute-First**: Soft gate only — `docs/guides/local-compute.md` + `LLM Cost Optimizer` agent. No CI-enforced script. Note in MANIFESTO.md explicitly states "No hard CI gate exists for this axiom — it requires human judgment." This should either be formalised as an intentional human-judgment gate or addressed by a future `scripts/check_model_usage.py`.
+
+### Guiding Principle Coverage
+
+| Principle | F1 Principle | F2 Example | F3 Anti-pattern | F4 Gate |
+|-----------|:---:|:---:|:---:|:---:|
+| Programmatic-First | ✅ | ❌ | ❌ | ❌ |
+| Documentation-First | ✅ | ❌ | ❌ | ❌ |
+| Adopt Over Author | ✅ | ❌ | ❌ | ❌ |
+| Self-Governance & Guardrails | ✅ | ❌ | ❌ | ⚠️ |
+| Compress Context | ✅ | ✅ implicit | ❌ | ❌ |
+| Isolate Invocations | ✅ | ✅ (labelled) | ❌ | ❌ |
+| Validate & Gate | ✅ | ✅ implicit | ❌ | ❌ |
+| Minimal Posture | ✅ | ❌ | ❌ | ❌ |
+| Testing-First | ✅ | ✅ implicit | ❌ | ⚠️ |
+
+Notes: "implicit" = empirical basis note present but not in dedicated `**Canonical example**:` format. "⚠️" = partial gate (cross-reference to a guide or agent without a CI-enforced enforcement script).
+
+### Priority-Ordered Gap List
+
+Ordered by encoding fidelity risk × breadth of impact:
+
+1. **Endogenous-First F2 (canonical example)** — The primary axiom is missing its prototype anchor. Without a concrete session example, the principle is vulnerable to semantic drift through paraphrase. Highest-risk single gap in the [4,1] code. *→ Phase 3 (issue #70), first addition.*
+
+2. **Local Compute-First F4 (hard programmatic gate)** — Only axiom without CI enforcement. The current soft gate (human judgment + agent guidance) is the weakest encoding form. Either formalise the human-judgment gate as intentional design, or create `scripts/check_model_usage.py`. *→ Phase 3 (issue #70), follow-on.*
+
+3. **Guiding Principles F3 (anti-patterns) — Programmatic-First, Documentation-First, Minimal Posture** — Three most-cited principles with zero anti-patterns. Anti-patterns are the most resilient encoding form (survive paraphrasing); their absence is a compounding drift risk. *→ Phase 3 (issue #70), second pass on principles.*
+
+4. **Guiding Principles F2 (canonical examples) — Programmatic-First, Documentation-First, Minimal Posture** — Same three principles lack prototype anchors. "Compress Context", "Isolate Invocations", and "Validate & Gate" have implicit empirical notes but not labelled examples. *→ Phase 3 (issue #70), second pass.*
+
+5. **Guiding Principles F4 (programmatic gates)** — None have dedicated enforcement scripts. Lower risk than F2/F3 gaps (a gate without an example anchor builds on sand), but forms a long-tail coverage gap. *→ Phase 4 (issue #54) + Phase 7 (issue #82).*
+
+---
+
 ## Cross-Sectoral Sources (D1 Manifest)
 
 | Domain | Key sources / works |

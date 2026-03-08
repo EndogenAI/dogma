@@ -25,6 +25,8 @@ Additional operational constraints:
 
 For a complete treatment of guiding principles and ethical values, read [`MANIFESTO.md#guiding-principles-cross-cutting`](MANIFESTO.md#guiding-principles-cross-cutting) and [`MANIFESTO.md#ethical-values`](MANIFESTO.md#ethical-values).
 
+For the **interpretation framework** — axiom priority ordering, novel-situation derivation, and anti-pattern primacy — see [`MANIFESTO.md#how-to-read-this-document`](MANIFESTO.md#how-to-read-this-document).
+
 ---
 
 ## Programmatic-First Principle
