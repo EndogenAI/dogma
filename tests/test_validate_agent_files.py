@@ -532,3 +532,27 @@ class TestValidateSkillFile:
         f = _make_skill_file(tmp_path, content)
         errors = vaf.validate_skill_file(f)
         assert any("too short" in e for e in errors)
+
+    @pytest.mark.io
+    def test_skill_double_quoted_name_passes(self, tmp_path):
+        """A skill with a double-quoted name scalar must still pass validation."""
+        content = (
+            '---\nname: "my-skill"\ndescription: A valid description for this skill.\n---\n\n'
+            "# Body\n\nReferences [`AGENTS.md`](../../../AGENTS.md) and MANIFESTO.md.\n"
+            "This body is long enough to satisfy the minimum body length requirement for validation.\n"
+        )
+        f = _make_skill_file(tmp_path, content)
+        errors = vaf.validate_skill_file(f)
+        assert errors == [], f"Unexpected errors with double-quoted name: {errors}"
+
+    @pytest.mark.io
+    def test_skill_single_quoted_name_passes(self, tmp_path):
+        """A skill with a single-quoted name scalar must still pass validation."""
+        content = (
+            "---\nname: 'my-skill'\ndescription: A valid description for this skill.\n---\n\n"
+            "# Body\n\nReferences [`AGENTS.md`](../../../AGENTS.md) and MANIFESTO.md.\n"
+            "This body is long enough to satisfy the minimum body length requirement for validation.\n"
+        )
+        f = _make_skill_file(tmp_path, content)
+        errors = vaf.validate_skill_file(f)
+        assert errors == [], f"Unexpected errors with single-quoted name: {errors}"

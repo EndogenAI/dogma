@@ -7,7 +7,7 @@ argument-hint: "skill name slug (e.g. deep-research-sprint)"
 
 # SKILL.md Authoring
 
-This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](../../MANIFESTO.md): skills are re-encodings of documented procedures and patterns from [`AGENTS.md`](../../AGENTS.md), not independent inventions.
+This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md): skills are re-encodings of documented procedures and patterns from [`AGENTS.md`](../../../AGENTS.md), not independent inventions.
 
 Skills are tactical-layer knowledge artifacts that encode *how a task is done*. They sit beneath agents (who encode *who does a task*) and above session behavior.
 
@@ -19,12 +19,14 @@ Skills are tactical-layer knowledge artifacts that encode *how a task is done*. 
 - **Slug format**: kebab-case, lowercase, e.g. `deep-research-sprint`, `pr-review-reply`, `session-management`
 - **One skill per domain** — do not combine multiple domain procedures into a single skill file
 
-Use the scaffold helper to generate a compliant template:
+To create a new skill, create the directory `.github/skills/<skill-name>/` and add a `SKILL.md` file.
+You can copy an existing `SKILL.md` as a starting point — for example:
 
 ```bash
-uv run python scripts/scaffold_agent.py <skill-slug>  # adapt agent scaffold for skill structure
-# Creates: .github/skills/<skill-slug>/SKILL.md
+cp .github/skills/source-caching/SKILL.md .github/skills/<skill-name>/SKILL.md
 ```
+
+Then update the frontmatter and sections according to the conventions in this document.
 
 ---
 
@@ -86,7 +88,7 @@ Every skill file must contain at least one of each:
 
 **Discipline rule for Endogenous Sources section**: Always encode:
 
-1. The governing axiom this skill enacts (from [`MANIFESTO.md`](../../MANIFESTO.md))
+1. The governing axiom this skill enacts (from [`MANIFESTO.md`](../../../MANIFESTO.md))
 2. The pattern or GitHub issue this skill implements (e.g., `#45 Research: Product Definition`)
 3. Which agents and tools depend on this skill
 4. Citation chain to foundational documents
@@ -96,7 +98,7 @@ Every skill file must contain at least one of each:
 ```markdown
 ## Endogenous Sources
 
-This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](../../MANIFESTO.md) by encoding the complete research sprint workflow as a reusable procedure.
+This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md) by encoding the complete research sprint workflow as a reusable procedure.
 
 **Implements**: The research orchestration pattern from issue [#45 (Research: Product Definition)](https://github.com/EndogenAI/Workflows/issues/45)
 
@@ -108,9 +110,9 @@ This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](../../MANIF
 - Research Archivist (commits deliverables)
 
 **Foundation documents**:
-- [`AGENTS.md`](../../AGENTS.md) — governance constraints
-- [`docs/guides/deep-research.md`](../../docs/guides/deep-research.md) — full investigation methodology
-- [`docs/research/methodology-review.md`](../../docs/research/methodology-review.md) — prior art survey
+- [`AGENTS.md`](../../../AGENTS.md) — governance constraints
+- [`docs/guides/deep-research.md`](../../../docs/guides/deep-research.md) — full investigation methodology
+- [`docs/research/methodology-review.md`](../../../docs/research/methodology-review.md) — prior art survey
 ```
 
 ---
@@ -132,19 +134,9 @@ This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](../../MANIF
 
 ## 5. Relative Path Rule
 
-**All references to repo-root files must use `../../` prefix** — exactly like agent files.
+**All references to repo-root files must use `../../../` prefix.** Skill files are one level deeper than agent files.
 
-Skill files live at `.github/skills/<skill-name>/SKILL.md`. The repo root is two levels up (same as agents):
-
-```
-.github/skills/<skill-name>/SKILL.md
-          │
-          ├─ ../   → .github/skills/     ← WRONG
-          ├─ ../../ → .github/           ← Also WRONG (goes one level too far)
-          └─ ../../../ → (repo root)     ← Actually CORRECT for skills
-```
-
-Wait — that's three levels. Let me correct:
+Skill files live at `.github/skills/<skill-name>/SKILL.md`. The repo root is three levels up:
 
 ```
 .github/skills/my-skill/SKILL.md          ← This is the skill file
@@ -170,9 +162,9 @@ Wait — that's three levels. Let me correct:
 
 Every skill file must contain at least one back-reference to the foundational document that governs it:
 
-- Pure procedural skills → reference `../../AGENTS.md` (or `../../../AGENTS.md` for skills)
-- Research-oriented skills → reference `../../MANIFESTO.md` (Endogenous-First axiom)
-- Automation/scripting skills → reference `../../AGENTS.md` § Programmatic-First
+- Pure procedural skills → reference `../../../AGENTS.md`
+- Research-oriented skills → reference `../../../MANIFESTO.md` (Endogenous-First axiom)
+- Automation/scripting skills → reference `../../../AGENTS.md` § Programmatic-First
 
 **Minimum pattern** (place in Endogenous Sources):
 
@@ -275,11 +267,9 @@ Like agents, skill files must not contain `cat >> file << 'EOF'` patterns or inl
 Before committing a new or modified skill:
 
 ```bash
-# Manual checks (automated validation coming)
-# 1. Verify relative paths use ../../../ (not ../../)
-# 2. Check Endogenous Sources section is complete
-# 3. Ensure all three required sections are present
-# 4. Run CI to catch any missed violations
+uv run python scripts/validate_agent_files.py --skills
+# To validate a single skill:
+uv run python scripts/validate_agent_files.py .github/skills/<skill-name>/SKILL.md
 ```
 
 **Pre-commit checklist**:

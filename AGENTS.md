@@ -390,10 +390,10 @@ Key agents for this repo:
 
 Skills are `SKILL.md` files at `.github/skills/<skill-name>/SKILL.md`. **Agents encode *who does a task*; skills encode *how a task is done*.** If a procedure is needed by more than one agent or AI tool, it belongs in a skill — not an agent body.
 
-**Encoding inheritance chain** — five layers:
+**Encoding inheritance chain** — six layers:
 
 ```
-MANIFESTO.md → AGENTS.md → .agent.md files → SKILL.md files → session behaviour
+MANIFESTO.md → AGENTS.md → subdirectory AGENTS.md files → .agent.md files → SKILL.md files → session behaviour
 ```
 
 Every `SKILL.md` body **must reference this file (`AGENTS.md`) as its governing constraint** — cite the governing axiom in the first substantive section.

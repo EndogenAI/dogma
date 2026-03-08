@@ -112,7 +112,10 @@ def parse_frontmatter(text: str) -> dict[str, str]:
     for line in match.group(1).splitlines():
         if ":" in line and not line.strip().startswith("-"):
             key, _, val = line.partition(":")
-            fm[key.strip()] = val.strip()
+            v = val.strip()
+            if len(v) >= 2 and v[0] in ('"', "'") and v[0] == v[-1]:
+                v = v[1:-1]
+            fm[key.strip()] = v
     return fm
 
 
@@ -149,6 +152,9 @@ def _get_frontmatter_value(text: str, key: str) -> str:
             continue
         after_colon = stripped[len(key) + 1 :].strip()
         if after_colon and after_colon not in ("|", "|-", "|+"):
+            # Strip surrounding single/double quotes from inline scalars
+            if len(after_colon) >= 2 and after_colon[0] in ('"', "'") and after_colon[0] == after_colon[-1]:
+                return after_colon[1:-1]
             return after_colon  # inline scalar
         if after_colon in ("|", "|-", "|+"):
             # Collect indented block-scalar continuation lines

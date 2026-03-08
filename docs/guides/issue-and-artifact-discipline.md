@@ -53,7 +53,7 @@ Implement the Executive PM agent to maintain issues, milestones, and community h
 - [ ] Integrated into `.github/agents/README.md` fleet catalog
 - [ ] CI passes: `validate_agent_files.py --all`
 
-## Governi axiom
+## Governing axiom
 Endogenous-First — the agent reads project governance (issues, milestones, labels) before proposing any changes.
 ```
 
