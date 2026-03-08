@@ -81,11 +81,11 @@ Phases are ordered by impact-to-cost ratio and dependency satisfaction. Each pha
 This phase is the **measurement baseline** for the entire milestone. Its findings determine which of the four intervention categories (compression / retrieval / extraction / pruning) to prioritise in later phases. Run this before committing to heavy implementation work.
 
 **Gate deliverables**:
-- [ ] Baseline measurement: instruction context fraction in a sample Executive Orchestrator session
-- [ ] Degradation threshold identified
-- [ ] Ranked intervention recommendations with cost/impact
-- [ ] `docs/research/context-budget-balance.md` committed (Final status)
-- [ ] `context_budget_target.md` policy draft
+- [x] Baseline measurement: instruction context fraction in a sample Executive Orchestrator session *(D1: ~14,375 tokens fixed load; INCONCLUSIVE — scale-dependent at 32K–200K context)*
+- [x] Degradation threshold identified *(D2: CONFIRMED — adherence degrades when instruction fraction ≤15–20% of total in-context tokens)*
+- [x] Ranked intervention recommendations with cost/impact *(D3: R1 Extraction > R2 Pruning > R3 RAG > R4 Compression)*
+- [x] `docs/research/context-budget-balance.md` committed (Final status) — commit `8447fc4`
+- [x] `docs/context_budget_target.md` policy draft — commit `aa940b2`
 
 **Review gate**: Research Reviewer validates synthesis quality per D4 standard.
 
