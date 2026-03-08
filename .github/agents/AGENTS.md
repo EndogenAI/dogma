@@ -155,7 +155,7 @@ Any session with ≥ 2 domain phases must include a Review gate between each con
   send: false
 ```
 
-**Gate enforcement rule**: the orchestrator may not delegate Phase N+1 without a `## Review Output: APPROVED` entry in the scratchpad.
+**Gate enforcement rule**: the orchestrator may not delegate Phase N+1 unless the scratchpad contains a `## Review Output` section whose verdict is `APPROVED` (for example, via a `**Verdict**: APPROVED` line within that section).
 
 ### Evaluator-Optimizer Loop (Executive Pattern)
 

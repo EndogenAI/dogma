@@ -270,7 +270,7 @@ A correct output from this agent looks like:
 - Do not commit directly — route through Review, then GitHub agent.
 - Do not modify `MANIFESTO.md` — that is Executive Docs territory.
 - Do not proceed past a phase gate if the prior deliverables are not committed and confirmed.
-- **Invoke the Review agent between every domain phase** — a Review gate APPROVED verdict, logged to the scratchpad under `## Phase N Review Output`, is required before the next phase begins. Skipping the Review gate is an anti-pattern equivalent to committing without CI.
+- **Invoke the Review agent between every domain phase** — a Review gate `**Verdict**: APPROVED` logged in the scratchpad under the `## Review Output` section is required before the next phase begins. Skipping the Review gate is an anti-pattern equivalent to committing without CI.
 - Do not close the session without writing a `## Session Summary` and running `prune_scratchpad.py --force`.
 - **Update issue body checkboxes at phase completion** — update completed deliverable checkboxes in the issue body after each phase gate. Write the updated body to a temp file and use `gh issue edit <num> --body-file <path>`. Verify with `gh issue view <num> --json body -q '.body' | grep -E '\[x\]|\[ \]'`. This keeps the issue body as a live progress tracker, not just the initial spec.
 - **Post issue progress comments at session close** — for every GitHub issue actively worked, post a `gh issue comment <num> --body-file <path>` summary before closing. Use `gh issue view <num> --json comments -q '.comments[-1].body[:80]'` to verify. Skipping this step breaks async continuity for collaborators and future sessions.
