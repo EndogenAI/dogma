@@ -14,6 +14,8 @@ These constraints govern all agent behavior. They derive from three core axioms 
 
 **Encoding Inheritance Chain**: Values flow through four layers — `MANIFESTO.md` (foundational axioms) → `AGENTS.md` (operational constraints) → agent files (specific implementation) → session prompts (enacted behavior). Each layer is a re-encoding of the layer above it. Agents must minimise lossy re-encoding: prefer direct quotation or explicit citation over paraphrase when invoking a foundational principle. Cross-reference density (back-references to `MANIFESTO.md` in your output) is a proxy for encoding fidelity. Low density signals likely drift. See [`docs/research/values-encoding.md`](docs/research/values-encoding.md) for the cross-sectoral evidence base.
 
+**Session-Start Encoding Checkpoint**: At the start of every session, the first sentence of `## Session Start` in the scratchpad must name the governing axiom and one primary endogenous source. See [`docs/guides/session-management.md` → Session-Start Encoding Checkpoint](docs/guides/session-management.md#session-start-encoding-checkpoint) for format and examples.
+
 Additional operational constraints:
 
 - **Minimal Posture** — agents carry only the tools required for their stated role

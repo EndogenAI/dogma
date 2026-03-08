@@ -56,6 +56,27 @@ This partnership is why we encode knowledge, minimize token burn, and enforce go
 
 ---
 
+## How to Read This Document
+
+This document is a **constitution**, not a guidebook — it defines what kind of system we are, not just how to act. Apply it accordingly.
+
+**Axiom priority order**: The three core axioms are ordered by priority. When they appear to conflict, resolve as follows:
+1. **Endogenous-First** supersedes all other axioms — read the system's own encoded knowledge before taking any action.
+2. **Algorithms Before Tokens** supersedes Local Compute-First — prefer a deterministic encoded solution over an interactive session, even when a local model is available.
+3. **Local Compute-First** applies when no deterministic solution exists and inference is required — choose the least expensive compute option.
+
+**Guiding Principles are not hierarchical** — they reinforce and constrain the axioms together. When principles appear to conflict, derive behavior from the axioms (which are more fundamental) rather than from the principles alone.
+
+**Novel situations**: When faced with a situation not explicitly covered, ask: *"What does a system that is Endogenous-First, Algorithms Before Tokens, and Local Compute-First do here?"* — derive from axioms, not from analogy.
+
+**Anti-patterns are canonical veto rules**: If a proposed action matches a stated anti-pattern, reject it — regardless of whether a cross-cutting principle appears to permit it. Anti-patterns are the most resilient encoding form; they survive paraphrasing and drift.
+
+**Encoding hierarchy**: MANIFESTO.md → AGENTS.md → agent files → session prompts. Each layer is a re-encoding of the layer above. When layers appear to conflict, the higher layer governs. When an AGENTS.md is silent on a topic, derive behavior from MANIFESTO.md.
+
+For the evidence base underpinning this hermeneutical frame, see [`docs/research/values-encoding.md`](docs/research/values-encoding.md).
+
+---
+
 ## The Three Core Axioms
 
 ### 1. Endogenous-First
@@ -78,6 +99,8 @@ This inheritance principle has a precise biological grounding in Maturana and Va
 
 **Anti-pattern (vibe coding)**: Dropping into Copilot Chat without reading `AGENTS.md` and asking the agent to "write a script to do X" — the agent will re-invent the wheel, miss project conventions, and burn tokens discovering what is already documented. You've forgotten your own genetic code.
 
+**Programmatic gate**: `uv run python scripts/fetch_all_sources.py` — run at the start of every research session to batch-populate the local source cache from all committed URLs. This is the primary machinery of the "read-before-act" posture: the system reads what it already knows before any agent fetches anything. `scripts/generate_agent_manifest.py` keeps the agent inventory discoverable without runtime rediscovery. Together these scripts are the morphogenetic gatekeepers of the principle.
+
 ### 2. Algorithms Before Tokens
 
 > Prefer deterministic, encoded solutions over interactive token burn. Invest in automation early.
@@ -92,6 +115,12 @@ This axiom drives:
 
 See [`docs/guides/programmatic-first.md`](docs/guides/programmatic-first.md) for decision criteria and examples.
 
+**Canonical example**: `scripts/watch_scratchpad.py` — rather than asking an agent to annotate scratchpad headings with line numbers after every write (interactive token burn), a file watcher does this automatically with zero tokens. First-time cost: one scripting session. Per-session saving: hundreds of tokens across every scratchpad write, every day.
+
+**Anti-pattern**: Using Copilot Chat to look up `gh` CLI syntax repeatedly instead of reading `docs/toolchain/gh.md` — burning tokens to re-discover information that is already deterministically encoded. "Let me ask the agent" when the answer is in a committed file is the canonical ABT violation. The same applies to re-running interactive research that `scripts/fetch_all_sources.py` could have pre-computed.
+
+**Programmatic gate**: The decision table in `AGENTS.md#programmatic-first-principle` is the behavioral gate ("check `scripts/` first"). Pre-commit hooks (`ruff`, `uv sync`) and `scripts/prune_scratchpad.py` ensure session artifacts are compressed and committed, preventing context re-discovery next session. The CI test suite is the terminal gate: every committed script must have automated tests — the tests are the deterministic record of what the algorithm does.
+
 ### 3. Local Compute-First
 
 > Minimize token burn. Run locally whenever possible.
@@ -103,6 +132,12 @@ Cloud LLM inference is expensive — in tokens, money, and environmental cost. T
 - Caching and pre-computing context rather than re-discovering it interactively
 
 When tight feedback loops between human and system are required, local models enable the augmentive partnership to function without delays.
+
+**Canonical example**: Running `ollama pull llama3.2:3b` for interactive annotation tasks — batch classification of research sources, draft section summaries, or quick schema validation queries that do not require frontier model capability. At $0 per inference versus $0.01–$0.15 per cloud API call, 1,000 such calls per month saves $10–$150/month while keeping the feedback loop local and fast.
+
+**Anti-pattern**: Using a cloud frontier model to run a simple transformation because "it's faster to prompt than to script" — this simultaneously violates Local Compute-First (cloud inference was used) and Algorithms Before Tokens (it should have been a script). The double-axiom violation is the canonical signal: when two axioms converge on the same objection, the anti-pattern is unambiguous.
+
+**Programmatic gate**: `docs/guides/local-compute.md` encodes the model selection decision tree. The `LLM Cost Optimizer` agent maintains the live model-tier table and surfaces cloud-model usage for tasks within local-model capability. No hard CI gate exists for this axiom — it requires human judgment at code review and conversation review; the gate is the Augmentive Partnership itself.
 
 ---
 

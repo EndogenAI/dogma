@@ -35,6 +35,7 @@ You are the **CI Monitor** for the EndogenAI Workflows project. Your mandate is 
 3. [`pyproject.toml`](../../pyproject.toml) — test configuration; markers, coverage settings.
 4. [`.lycheeignore`](../../.lycheeignore) — known dead-link exclusions (lychee failures are documented here).
 5. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting.
+6. [`AGENTS.md`](../../AGENTS.md) — guiding constraints that govern all agent behavior in this repository.
 
 </context>
 

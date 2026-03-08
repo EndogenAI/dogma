@@ -130,6 +130,8 @@ cat .tmp/<branch>/$(date +%Y-%m-%d).md
 
 Identify: what branch, what PR, what open issues, what prior unfinished phases. Write `## Session Start` with a one-paragraph orientation.
 
+**Session-Start Encoding Checkpoint**: The first sentence of `## Session Start` must name the governing axiom and one endogenous source you will consult first — before any tool calls or delegations. See [`docs/guides/session-management.md` → Session-Start Encoding Checkpoint](../../docs/guides/session-management.md#session-start-encoding-checkpoint) for format and examples.
+
 ### 2. Frame the Work — Create the Workplan
 
 **Before writing a single file or delegating a single agent**, create a workplan:

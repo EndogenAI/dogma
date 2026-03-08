@@ -11,12 +11,167 @@ Tests cover:
 - Integration with OPEN_RESEARCH.md
 - Idempotency
 - Network error handling
+- Security: SSRF prevention (#50), path traversal prevention (#49), untrusted header (#51)
 """
+
+import sys
+from pathlib import Path
 
 import pytest
 
+# Add scripts/ to path so we can import directly
+sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
+from fetch_source import _UNTRUSTED_HEADER, validate_slug, validate_url  # noqa: E402
 
-class TestFetchSourceCepository:
+
+class TestValidateUrl:
+    """Security tests for SSRF prevention — issue #50."""
+
+    def test_accepts_https_url(self):
+        """Valid public https URL passes validation."""
+        validate_url("https://arxiv.org/abs/2512.05470")  # no exception
+
+    def test_rejects_http_scheme(self):
+        """http:// is rejected — only https allowed."""
+        with pytest.raises(ValueError, match="scheme"):
+            validate_url("http://example.com/page")
+
+    def test_rejects_file_scheme(self):
+        """file:// is rejected — prevents local file read via SSRF."""
+        with pytest.raises(ValueError, match="scheme"):
+            validate_url("file:///etc/passwd")
+
+    def test_rejects_ftp_scheme(self):
+        """ftp:// is rejected."""
+        with pytest.raises(ValueError, match="scheme"):
+            validate_url("ftp://example.com/file.txt")
+
+    def test_rejects_localhost(self):
+        """localhost is rejected — prevents SSRF to local services."""
+        with pytest.raises(ValueError, match="hostname"):
+            validate_url("https://localhost/admin")
+
+    def test_rejects_loopback_ip(self):
+        """127.0.0.1 is rejected."""
+        with pytest.raises(ValueError, match="hostname"):
+            validate_url("https://127.0.0.1/secret")
+
+    def test_rejects_private_10_range(self):
+        """10.x.x.x is rejected — private RFC1918 range."""
+        with pytest.raises(ValueError, match="hostname"):
+            validate_url("https://10.0.0.1/internal")
+
+    def test_rejects_private_192_168_range(self):
+        """192.168.x.x is rejected — private RFC1918 range."""
+        with pytest.raises(ValueError, match="hostname"):
+            validate_url("https://192.168.1.1/router")
+
+    def test_rejects_link_local(self):
+        """169.254.x.x is rejected — AWS/GCP metadata endpoint range."""
+        with pytest.raises(ValueError, match="hostname"):
+            validate_url("https://169.254.169.254/latest/meta-data/")
+
+    def test_rejects_ipv6_loopback(self):
+        """IPv6 loopback ::1 is rejected."""
+        with pytest.raises(ValueError, match="hostname"):
+            validate_url("https://[::1]/secret")
+
+    def test_rejects_ipv6_link_local(self):
+        """IPv6 link-local fe80::/10 is rejected."""
+        with pytest.raises(ValueError, match="hostname"):
+            validate_url("https://[fe80::1]/secret")
+
+    def test_rejects_private_172_range(self):
+        """172.16-31.x.x is rejected — private RFC1918 range."""
+        with pytest.raises(ValueError, match="hostname"):
+            validate_url("https://172.16.0.1/internal")
+
+
+class TestValidateSlug:
+    """Security tests for path traversal prevention — issue #49."""
+
+    def test_accepts_simple_slug(self):
+        """Simple alphanumeric slug passes validation."""
+        validate_slug("arxiv-org-abs-2512-05470")  # no exception
+
+    def test_accepts_slug_with_underscores(self):
+        """Underscores are allowed in slugs."""
+        validate_slug("my_slug_123")  # no exception
+
+    def test_rejects_path_traversal_dotdot(self):
+        """../etc/passwd is rejected — path traversal."""
+        with pytest.raises(ValueError):
+            validate_slug("../../etc/passwd")
+
+    def test_rejects_slash(self):
+        """Forward slash is rejected."""
+        with pytest.raises(ValueError):
+            validate_slug("some/path")
+
+    def test_rejects_backslash(self):
+        """Backslash is rejected."""
+        with pytest.raises(ValueError):
+            validate_slug("some\\path")
+
+    def test_rejects_null_byte(self):
+        """Null byte is rejected."""
+        with pytest.raises(ValueError):
+            validate_slug("slug\x00evil")
+
+    def test_rejects_leading_hyphen(self):
+        """Slug must start with alphanumeric, not hyphen."""
+        with pytest.raises(ValueError):
+            validate_slug("-bad-start")
+
+    def test_rejects_empty_slug(self):
+        """Empty slug is rejected."""
+        with pytest.raises(ValueError):
+            validate_slug("")
+
+    def test_rejects_slug_too_long(self):
+        """Slug over 60 chars is rejected."""
+        with pytest.raises(ValueError):
+            validate_slug("a" * 61)
+
+    def test_rejects_dotdot_alone(self):
+        """'..' alone is rejected."""
+        with pytest.raises(ValueError):
+            validate_slug("..")
+
+
+class TestUntrustedHeader:
+    """Tests that cached files include the untrusted-content header — issue #51."""
+
+    def test_untrusted_header_format(self):
+        """Untrusted header template contains required keywords."""
+        header = _UNTRUSTED_HEADER.format(url="https://example.com", fetched_at="2026-03-07T00:00:00")
+        assert "UNTRUSTED EXTERNAL CONTENT" in header
+        assert "not instructions" in header
+        assert "https://example.com" in header
+
+    @pytest.mark.io
+    def test_cached_file_starts_with_untrusted_header(self, tmp_path, monkeypatch):
+        """Every file written to cache is prefixed with the untrusted-content header."""
+        import scripts.fetch_source as fs
+
+        # Redirect CACHE_DIR and REPO_ROOT to tmp
+        monkeypatch.setattr(fs, "CACHE_DIR", tmp_path / ".cache" / "sources")
+        monkeypatch.setattr(fs, "MANIFEST_PATH", tmp_path / ".cache" / "sources" / "manifest.json")
+        monkeypatch.setattr(fs, "REPO_ROOT", tmp_path)
+
+        fake_html = b"<html><head><title>Test</title></head><body><h1>Hello</h1></body></html>"
+
+        def fake_fetch(url):
+            return fake_html, "text/html"
+
+        monkeypatch.setattr(fs, "fetch_url", fake_fetch)
+
+        result_path = fs.cache_source("https://example.com/page", "example-com-page")
+        content = result_path.read_text()
+        assert content.startswith("<!-- UNTRUSTED EXTERNAL CONTENT")
+
+
+class TestFetchSourceRepository:
     """Tests for cache storage and retrieval."""
 
     @pytest.mark.io

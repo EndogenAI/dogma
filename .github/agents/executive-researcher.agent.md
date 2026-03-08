@@ -109,6 +109,8 @@ cat .tmp/<branch>/<date>.md 2>/dev/null || echo "No scratchpad yet."
 
 Read `docs/research/OPEN_RESEARCH.md`. Check for open GitHub issues tagged `research`. Identify whether the topic has prior work in `docs/research/` or related guides.
 
+**Session-Start Encoding Checkpoint**: The first sentence of `## Session Start` must name the governing axiom and one endogenous source. For research sessions this is typically Axiom 1 (Endogenous-First). See [`docs/guides/session-management.md` → Session-Start Encoding Checkpoint](../../docs/guides/session-management.md#session-start-encoding-checkpoint).
+
 ### 2. Frame the Research Question ← **highest-leverage step**
 
 **This is the most important phase.** A well-framed question produces a Scout prompt that no human would write cold. Spend the time here — it compounds directly into synthesis quality. Read `OPEN_RESEARCH.md`, all open `research` issues, and any prior scratchpad entries before writing the frame.

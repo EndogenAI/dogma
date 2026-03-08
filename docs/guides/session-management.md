@@ -86,6 +86,26 @@ uv run python scripts/fetch_all_sources.py
 This implements the **fetch-before-act** posture: scouts read cached `.md` files with `read_file`
 rather than re-fetching pages through the context window, saving tokens every session.
 
+### Session-Start Encoding Checkpoint
+
+At the start of every session, before taking any first action, write which axiom governs the work and name one endogenous source you will consult first. This is the **first sentence** of the `## Session Start` scratchpad entry — before any tool calls.
+
+**Format:**
+
+> **Session-Start Checkpoint**: This session is governed by Axiom _N_ (_name_). Primary endogenous source: `<path>` — _one sentence on why_.
+
+**When**: Required at the start of any session where the agent operates under `AGENTS.md` scope.
+
+**Why**: Confirms axiom absorption before token spend begins. Creates an auditable drift signal — future reviewers can check whether the stated axiom is consistent with the actions taken in the session. Low checkpoint density → likely encoding drift.
+
+**Examples:**
+
+- _Research session_: "This session is governed by Axiom 1 (Endogenous-First). Primary endogenous source: `docs/research/OPEN_RESEARCH.md` — frames the research question before any web fetching."
+- _Scripting session_: "This session is governed by Axiom 2 (Algorithms Before Tokens). Primary endogenous source: `scripts/watch_scratchpad.py` — canonical example of automating a repeated manual task."
+- _Documentation session_: "This session is governed by Axiom 1 (Endogenous-First). Primary endogenous source: `docs/guides/workflows.md` — existing patterns to extend rather than re-author."
+
+See [`MANIFESTO.md` → How to Read This Document](../../MANIFESTO.md) for axiom priority order and anti-pattern veto rules.
+
 ---
 
 ## During a Session
