@@ -40,6 +40,9 @@ Usage examples:
     # Validate all agent files in .github/agents/
     uv run python scripts/validate_agent_files.py --all
 
+    # Validate all SKILL.md files in .github/skills/
+    uv run python scripts/validate_agent_files.py --skills
+
     # Integrate into CI (non-zero exit blocks the job)
     for f in .github/agents/*.agent.md; do
         uv run python scripts/validate_agent_files.py "$f"
@@ -126,7 +129,7 @@ def extract_headings(text: str) -> list[str]:
 def _extract_body(text: str) -> str:
     """Return the document body after the frontmatter block."""
     fm_match = _FRONTMATTER_RE.match(text)
-    return text[fm_match.end():] if fm_match else text
+    return text[fm_match.end() :] if fm_match else text
 
 
 def _get_frontmatter_value(text: str, key: str) -> str:
@@ -144,13 +147,13 @@ def _get_frontmatter_value(text: str, key: str) -> str:
         stripped = line.strip()
         if not stripped.startswith(f"{key}:"):
             continue
-        after_colon = stripped[len(key) + 1:].strip()
+        after_colon = stripped[len(key) + 1 :].strip()
         if after_colon and after_colon not in ("|", "|-", "|+"):
             return after_colon  # inline scalar
         if after_colon in ("|", "|-", "|+"):
             # Collect indented block-scalar continuation lines
             block: list[str] = []
-            for nxt in lines[i + 1:]:
+            for nxt in lines[i + 1 :]:
                 if nxt and not nxt[0].isspace():
                     break
                 block.append(nxt.strip())
@@ -258,39 +261,30 @@ def validate_skill_file(path: Path) -> list[str]:
     # Check 3: name format (only if name is present)
     if name_val:
         if len(name_val) > SKILL_NAME_MAX_LEN:
-            errors.append(
-                f"Frontmatter 'name' exceeds {SKILL_NAME_MAX_LEN} characters (got {len(name_val)})"
-            )
+            errors.append(f"Frontmatter 'name' exceeds {SKILL_NAME_MAX_LEN} characters (got {len(name_val)})")
         if not _SKILL_NAME_RE.match(name_val):
             errors.append(
                 f"Frontmatter 'name' must match ^[a-z][a-z0-9-]*[a-z0-9]$ "
                 f"(lowercase kebab-case, no leading/trailing hyphens): {name_val!r}"
             )
         elif _CONSECUTIVE_HYPHENS_RE.search(name_val):
-            errors.append(
-                f"Frontmatter 'name' must not contain consecutive hyphens: {name_val!r}"
-            )
+            errors.append(f"Frontmatter 'name' must not contain consecutive hyphens: {name_val!r}")
 
         # Check 4: name matches parent directory
         parent_dir = path.parent.name
         if name_val != parent_dir:
-            errors.append(
-                f"Frontmatter 'name' ({name_val!r}) must match "
-                f"the parent directory name ({parent_dir!r})"
-            )
+            errors.append(f"Frontmatter 'name' ({name_val!r}) must match the parent directory name ({parent_dir!r})")
 
     # Check 5: description length
     if desc_val:
         desc_len = len(desc_val)
         if desc_len < SKILL_DESCRIPTION_MIN_LEN:
             errors.append(
-                f"Frontmatter 'description' is too short "
-                f"({desc_len} chars, minimum {SKILL_DESCRIPTION_MIN_LEN})"
+                f"Frontmatter 'description' is too short ({desc_len} chars, minimum {SKILL_DESCRIPTION_MIN_LEN})"
             )
         if desc_len > SKILL_DESCRIPTION_MAX_LEN:
             errors.append(
-                f"Frontmatter 'description' is too long "
-                f"({desc_len} chars, maximum {SKILL_DESCRIPTION_MAX_LEN})"
+                f"Frontmatter 'description' is too long ({desc_len} chars, maximum {SKILL_DESCRIPTION_MAX_LEN})"
             )
 
     # Check 6: cross-reference density (body only)
@@ -304,10 +298,7 @@ def validate_skill_file(path: Path) -> list[str]:
     # Check 7: minimum body length
     body_stripped = body.strip()
     if len(body_stripped) < SKILL_BODY_MIN_LEN:
-        errors.append(
-            f"Body is too short ({len(body_stripped)} chars after frontmatter, "
-            f"minimum {SKILL_BODY_MIN_LEN})"
-        )
+        errors.append(f"Body is too short ({len(body_stripped)} chars after frontmatter, minimum {SKILL_BODY_MIN_LEN})")
 
     return errors
 
@@ -332,10 +323,7 @@ def main() -> None:
         "--all",
         action="store_true",
         dest="scan_all",
-        help=(
-            f"Scan every *.agent.md in {AGENTS_DIR}/ AND every SKILL.md "
-            f"in {SKILLS_DIR}/*/SKILL.md."
-        ),
+        help=(f"Scan every *.agent.md in {AGENTS_DIR}/ AND every SKILL.md in {SKILLS_DIR}/*/SKILL.md."),
     )
     parser.add_argument(
         "--skills",

@@ -1,7 +1,7 @@
 ---
 name: deep-research-sprint
 description: |
-  Orchestrates the full research sprint: fetch-before-act source warming, Research Scout → Synthesizer → Reviewer → Archivist → GitHub agent pipeline. USE FOR: starting a research topic with a formal synthesis deliverable; coordinating the research fleet end-to-end; producing D4 docs/research/*.md files with YAML frontmatter (title, status) and required headings (Summary, Background, Findings, Recommendations, Sources). DO NOT USE FOR: single source lookups; non-research implementation tasks; documentation updates without new research.
+  Orchestrates the full research sprint: fetch-before-act source warming, Research Scout → Synthesizer → Reviewer → Archivist → GitHub agent pipeline. USE FOR: starting a research topic with a formal synthesis deliverable; coordinating the research fleet end-to-end; producing D4 docs/research/*.md files with YAML frontmatter (title, status) and required headings (Executive Summary, Hypothesis Validation, Pattern Catalog, Recommendations, Sources). DO NOT USE FOR: single source lookups; non-research implementation tasks; documentation updates without new research.
 argument-hint: "research topic or issue number"
 ---
 
@@ -100,9 +100,9 @@ Required `status` values: `Draft` (initial), `Final` (after Reviewer approval).
 ```markdown
 # <Research Topic> — Research Synthesis
 
-## 1. Executive Summary  (or ## Summary)
-## 2. Background
-## 3. Findings           (or ## Hypothesis Validation)
+## 1. Executive Summary
+## 2. Hypothesis Validation
+## 3. Pattern Catalog
 ## 4. Recommendations
 ## 5. Sources
 ```

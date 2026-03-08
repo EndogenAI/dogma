@@ -387,6 +387,17 @@ class TestCLI:
         assert result.returncode == 1
         assert "FAIL" in result.stdout
 
+    @pytest.mark.integration
+    def test_skills_flag_passes_on_clean_repo(self):
+        """--skills against the real skills directory must exit 0."""
+        result = subprocess.run(
+            [sys.executable, "scripts/validate_agent_files.py", "--skills"],
+            capture_output=True,
+            text=True,
+        )
+        assert result.returncode == 0, f"Unexpected failures:\n{result.stdout}"
+        assert "file(s) passed" in result.stdout
+
 
 # ---------------------------------------------------------------------------
 # SKILL.md validation
@@ -516,8 +527,7 @@ class TestValidateSkillFile:
     def test_skill_empty_body_fails(self, tmp_path):
         """A body shorter than 100 chars must fail the minimum body length check."""
         content = (
-            "---\nname: my-skill\ndescription: A valid description for this skill.\n---\n\n"
-            "AGENTS.md MANIFESTO.md\n"
+            "---\nname: my-skill\ndescription: A valid description for this skill.\n---\n\nAGENTS.md MANIFESTO.md\n"
         )
         f = _make_skill_file(tmp_path, content)
         errors = vaf.validate_skill_file(f)

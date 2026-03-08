@@ -71,7 +71,7 @@ This document is a **constitution**, not a guidebook — it defines what kind of
 
 **Anti-patterns are canonical veto rules**: If a proposed action matches a stated anti-pattern, reject it — regardless of whether a cross-cutting principle appears to permit it. Anti-patterns are the most resilient encoding form; they survive paraphrasing and drift.
 
-**Encoding hierarchy**: MANIFESTO.md → AGENTS.md → agent files → session prompts. Each layer is a re-encoding of the layer above. When layers appear to conflict, the higher layer governs. When an AGENTS.md is silent on a topic, derive behavior from MANIFESTO.md.
+**Encoding hierarchy**: MANIFESTO.md → AGENTS.md → agent files → SKILL.md files → session prompts. Each layer is a re-encoding of the layer above. When layers appear to conflict, the higher layer governs. When an AGENTS.md is silent on a topic, derive behavior from MANIFESTO.md.
 
 For the evidence base underpinning this hermeneutical frame, see [`docs/research/values-encoding.md`](docs/research/values-encoding.md).
 

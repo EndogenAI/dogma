@@ -195,10 +195,10 @@ action token.
 
 ### 3.1 The Encoding Chain
 
-The framework's primary organizational structure is a four-level cascade:
+The framework's primary organizational structure is a five-level cascade:
 
 ```
-MANIFESTO.md → AGENTS.md → agent files → session prompts
+MANIFESTO.md → AGENTS.md → agent files → SKILL.md files → session prompts
 ```
 
 Each level re-encodes the level above it, carrying values and constraints forward with lower

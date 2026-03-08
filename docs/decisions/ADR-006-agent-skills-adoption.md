@@ -68,7 +68,7 @@ Extend `validate_agent_files.py` with a `--skills` flag, or create a parallel `v
 2. `name` format: `^[a-z][a-z0-9-]*[a-z0-9]$`, max 64 chars, no consecutive hyphens
 3. `name` matches parent directory name
 4. At least one cross-reference to `AGENTS.md` or `MANIFESTO.md` in the body (encoding inheritance check)
-5. Minimum body length: ≥ 20 non-blank lines
+5. Minimum body length: ≥ 100 chars (after frontmatter)
 
 The CI `lint` job must run this check on every PR that touches `.github/skills/`.
 
