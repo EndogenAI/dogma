@@ -222,6 +222,7 @@ Rules:
 - The executive **reads today's session file first** before delegating to avoid re-discovering context another agent already gathered.
 - At session end, the executive writes a `## Session Summary` section so the next session starts with an orientation point.
 - At session end, the executive **posts a progress comment** on every GitHub issue that was actively worked during the session — summarising what phase completed, what was committed, and what comes next. Use `gh issue comment <num> --body-file <path>`. This is a non-negotiable close step, same as writing the Session Summary.
+- If the session produced novel patterns, efficiency observations, or techniques that outperformed prior expectations — run the **session-retrospective** skill before closing: `@session-retrospective What lessons did we learn this session?`
 - At phase completion, the executive **updates the issue body checkboxes** to reflect completed deliverables. Write the updated body to a temp file and use `gh issue edit <num> --body-file <path>`. Verify with `gh issue view <num> --json body -q '.body' | grep -E '\[x\]|\[ \]'`. This keeps the issue body as a live progress tracker, not just the initial spec.
 - Use the active session file for inter-agent handoff notes, gap reports, and aggregated sub-agent results.
 
