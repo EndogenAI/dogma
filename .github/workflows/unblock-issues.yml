@@ -1,0 +1,100 @@
+name: Unblock Issues on PR Merge
+
+# Triggered when any PR merges to main.
+# Parses the PR body for "Unblocks #N" or "Unblock #N" (case-insensitive),
+# removes the status:blocked label from each matched issue, and posts a
+# ready-to-run orchestration prompt as a comment.
+#
+# Keyword format (anywhere in PR body):
+#   Unblocks #60
+#   Unblock #60, #61
+#   unblocks #60
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+permissions:
+  issues: write
+
+jobs:
+  unblock:
+    name: Remove status:blocked from mentioned issues
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Unblock issues and post orchestration prompt
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.pull_request.body || '';
+            const pr   = context.payload.pull_request;
+
+            // Match "Unblock(s) #N" — single or comma/space-separated issue numbers
+            const matches = [...body.matchAll(/[Uu]nblocks?\s+(#\d+(?:[,\s]+#\d+)*)/g)];
+            if (matches.length === 0) {
+              console.log('No "Unblocks #N" patterns found in PR body — nothing to do.');
+              return;
+            }
+
+            // Flatten all issue numbers from all match groups
+            const issueNumbers = matches
+              .flatMap(m => m[1].match(/\d+/g))
+              .map(Number);
+
+            console.log(`Found issues to unblock: ${issueNumbers.join(', ')}`);
+
+            for (const issueNumber of issueNumbers) {
+              // 1. Remove status:blocked label (gracefully skip if already absent)
+              try {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo:  context.repo.repo,
+                  issue_number: issueNumber,
+                  name: 'status:blocked',
+                });
+                console.log(`Removed status:blocked from #${issueNumber}`);
+              } catch (e) {
+                if (e.status === 404) {
+                  console.log(`status:blocked not present on #${issueNumber} — skipping removal`);
+                } else {
+                  throw e;
+                }
+              }
+
+              // 2. Post an unblock comment with a ready-to-run orchestration prompt
+              const prompt = [
+                `@Executive Orchestrator Please start the research workflow for issue #${issueNumber}.`,
+                ``,
+                `Read the issue body for the research frame, seed sources, and proposed deliverables:`,
+                `https://github.com/${context.repo.owner}/${context.repo.repo}/issues/${issueNumber}`,
+                ``,
+                `Steps:`,
+                `1. Run \`uv run python scripts/prune_scratchpad.py --init\` to initialise the scratchpad`,
+                `2. Create a workplan in \`docs/plans/\` before delegating`,
+                `3. Delegate Phase 1 (Scout) to Executive Researcher`,
+              ].join('\n');
+
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo:  context.repo.repo,
+                issue_number: issueNumber,
+                body: [
+                  `## ✅ Unblocked by PR #${pr.number}`,
+                  ``,
+                  `[**${pr.title}**](${pr.html_url}) merged to \`main\` — \`status:blocked\` removed.`,
+                  ``,
+                  `### Ready to orchestrate`,
+                  ``,
+                  `Paste this prompt into a new VS Code Copilot Chat session to begin:`,
+                  ``,
+                  '```',
+                  prompt,
+                  '```',
+                ].join('\n'),
+              });
+
+              console.log(`Posted orchestration prompt comment on #${issueNumber}`);
+            }
