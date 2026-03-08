@@ -126,6 +126,88 @@ You are the **My Agent** for the EndogenAI Workflows project.
 
 ---
 
+## Agent Skills
+
+Skills are `SKILL.md` files stored in `.github/skills/<skill-name>/` and discovered automatically by GitHub Copilot. Only the `name` and `description` frontmatter (~100 tokens per skill) is loaded at startup; the full skill body loads only when a request matches its description. Skills sit at the tactical layer of the VS Code customization stack, beneath `.agent.md` files and above session behaviour.
+
+For the full decision record, see [`docs/decisions/ADR-006-agent-skills-adoption.md`](../../docs/decisions/ADR-006-agent-skills-adoption.md).
+
+### Skills vs Agents — Composition Rule
+
+**Agents encode *who does a task***; **skills encode *how a task is done***.
+
+| Primitive | Encodes | When to use |
+|-----------|---------|-------------|
+| `.agent.md` | Persona, posture, tool restrictions, handoff graph | Unique posture, handoff logic, or tool restriction is required |
+| `SKILL.md` | Workflow procedures, conventions, templates | The procedure is needed by more than one agent or AI tool |
+
+**Extraction test**: if a procedure in an agent body would benefit a *different* agent or AI tool without requiring that agent's posture or tool restrictions, it belongs in a skill. Do not extract a procedure until the agent body has been updated to reference the new skill.
+
+### File Structure
+
+```
+.github/skills/
+  <skill-name>/
+    SKILL.md          ← required
+    scripts/          ← optional: helper scripts referenced by the skill
+    examples/         ← optional: worked examples
+```
+
+The directory name must exactly match the `name` field in the frontmatter.
+
+### Frontmatter Fields
+
+**Required:**
+
+| Field | Constraint |
+|-------|------------|
+| `name` | Lowercase, hyphens only, max 64 chars; must match parent directory name |
+| `description` | Max 1024 chars; drives auto-loading — be precise |
+
+**Optional (VS Code Copilot only; degrade gracefully on other agents):**
+
+| Field | Use |
+|-------|-----|
+| `argument-hint` | Hints for the argument the skill accepts |
+| `user-invocable` | `true` to allow direct user invocation via `/skill-name` |
+| `disable-model-invocation` | `true` to prevent automatic loading; user must invoke explicitly |
+
+### Encoding Inheritance and AGENTS.md Requirement
+
+Skills extend the encoding inheritance chain to five layers:
+
+```
+MANIFESTO.md       → foundational axioms
+AGENTS.md          → operational constraints
+.agent.md files    → specific functional implementations
+SKILL.md files     → reusable tactical knowledge
+Session behaviour  → observable output
+```
+
+Every `SKILL.md` body **must reference [`AGENTS.md`](../../AGENTS.md) as its governing constraint**. This anchors skills to the encoding inheritance chain and makes fidelity auditable via CI. The governing axiom citation must appear in the first substantive section of the body.
+
+### Existing Skills
+
+| Skill | Description |
+|-------|-------------|
+| [`session-management`](../../.github/skills/session-management/SKILL.md) | Full session lifecycle: scratchpad init/close, encoding checkpoints, session-start/end procedure |
+| [`deep-research-sprint`](../../.github/skills/deep-research-sprint/SKILL.md) | Research sprint orchestration: Scout → Synthesizer → Reviewer → Archivist pipeline |
+| [`conventional-commit`](../../.github/skills/conventional-commit/SKILL.md) | Conventional Commits format + endogenic commit discipline for this repository |
+
+### CI Validation
+
+Run before committing any `.github/skills/` change:
+
+```bash
+uv run python scripts/validate_agent_files.py --skills
+# or validate everything at once:
+uv run python scripts/validate_agent_files.py --all
+```
+
+CI enforces this check on every PR that touches `.github/skills/`.
+
+---
+
 ## The Endogenous Sources Requirement
 
 Every agent must list the files it reads **before acting**. This is not boilerplate — it is the mechanism by which the agent fleet bootstraps from encoded knowledge rather than from zero context.
