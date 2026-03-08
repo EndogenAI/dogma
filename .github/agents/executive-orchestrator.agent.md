@@ -212,7 +212,7 @@ When a phase depends on another agent's output:
 
 3. **Present the session handoff prompt** to the user — copy the block below exactly, filling in the bracketed fields from the scratchpad:
 
-   > `@Executive Orchestrator` Please continue the [milestone name] session.
+   > @Executive Orchestrator Please continue the [milestone name] session.
    >
    > - **Branch**: `[current_phase_branch]`
    > - **Workplan**: `docs/plans/[workplan-slug].md`
