@@ -191,7 +191,52 @@ When a phase depends on another agent's output:
 - Pass the output location explicitly in the delegation prompt — do not expect the receiving agent to discover it.
 - If an output is not committed, request a commit before proceeding.
 
-### 5. Session Close
+### 5. Context Window Alert Protocol
+
+**Trigger signal**: Compaction has occurred in this session, OR the user signals that compaction is becoming frequent, OR you detect you are reconstructing context already explored (re-reading the same file, re-running the same search).
+
+**When triggered — full stop. Pause all delegation and execute immediately:**
+
+1. **Write `## Context Window Checkpoint`** to the scratchpad with all of:
+   - Active phase (number, name, current status)
+   - Deliverables committed vs. in-progress (include commit SHA for each committed item)
+   - Last agent delegated and a ≤ 100-token summary of what it returned
+   - The single next concrete step
+   - Any open blockers, decisions pending, or ambiguous requirements
+
+2. **Commit all in-progress changes**:
+   ```bash
+   git add -A && git commit -m "chore: context-window checkpoint — Phase N [description] in progress"
+   git push
+   ```
+
+3. **Present the session handoff prompt** to the user — copy the block below exactly, filling in the bracketed fields from the scratchpad:
+
+   > `@Executive Orchestrator` Please continue the [milestone name] session.
+   >
+   > - **Branch**: `[current_phase_branch]`
+   > - **Workplan**: `docs/plans/[workplan-slug].md`
+   > - **Scratchpad**: `.tmp/[branch-slug]/[YYYY-MM-DD].md`
+   > - **Governing axiom**: [e.g. Endogenous-First]
+   >
+   > Before acting:
+   > 1. Run `uv run python scripts/prune_scratchpad.py --init` and read the scratchpad
+   > 2. Read the workplan — find the active phase and its gate status
+   > 3. Run `git log --oneline -5` and `git status`
+   > 4. Write `## Session Start` citing governing axiom and workplan as primary endogenous source
+   >
+   > **Last committed**: [commit SHA + one-line description]
+   > **Active phase**: Phase [N] — [name] — status: [in progress / at review gate / blocked]
+   > **Next step**: [one specific concrete action — no ambiguity]
+   > **Open issues**: [list any blockers or pending decisions, or "none"]
+
+4. **Do not proceed** with any further delegation or action until the user resumes the session with a fresh context via this prompt.
+
+**This protocol takes priority over all other in-progress work.** A session that exhausts context without a recoverable state record cannot be handed off. Pause deliberately; resume cleanly.
+
+---
+
+### 6. Session Close
 
 When all phases are complete:
 
