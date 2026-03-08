@@ -107,6 +107,121 @@ This is why the rebase-and-merge policy exists: see [ADR-005](../decisions/ADR-0
 
 ---
 
+## Real-World Analogy: Restaurant as an Endogenic System
+
+To bring these three metaphors together, imagine you're scaling a restaurant network and want consistency, quality, and autonomous decision-making across all locations and roles.
+
+### The Contrast: Vibe vs. Endogenic
+
+**The Vibe Approach**:
+- Every shift, you tell staff what to do. They're always asking questions.
+- Recipes aren't written down. Procedures vary by location.
+- New hires take weeks to become independent. Everything is reactive.
+- Nothing improves systematically because nothing is documented.
+
+**The Endogenic Approach**: You create four layers of documented knowledge that flow from foundational principles down to daily execution.
+
+### Layer 1: Franchise Constitution (MANIFESTO.md)
+
+Your foundational values and why your restaurant exists:
+- "Quality ingredients over speed"
+- "Staff autonomy over micromanagement"
+- "Systematic improvement over crisis firefighting"
+- "Knowledge is encoded, not held in individuals' heads"
+
+These principles govern everything downstream.
+
+### Layer 2: Restaurant Operations Manual (AGENTS.md)
+
+Behavioral standards that apply to **everyone** — chefs, servers, managers:
+- "Every decision is documented in the Log Book before execution"
+- "Quality gates happen before service, not after complaints"
+- "New team members read the manual first, ask clarifying questions second"
+- "If you do a task manually twice, the third time it's a script (Programmatic-First Principle)"
+
+These constraints ensure consistency across all roles and locations. They are the genetic code that all roles inherit.
+
+### Layer 3: Custom Agent Roles (`.agent.md` files)
+
+Specialized roles with unique responsibilities and expertise:
+
+**Chef de Cuisine** (core agent)
+- **Endogenous Sources**: Franchise Constitution, Operations Manual, Michelin standards
+- **Action**: Design seasonal menus, train sous chefs, own food quality
+- **Tool Restrictions**: Kitchen only; can approve dish innovations; cannot hire/fire
+- **Quality Gate**: All new recipes tested twice before service; documented in Recipe Log
+
+**Maître d'** (specialized agent)
+- **Endogenous Sources**: Franchise Constitution, Service Standards Manual
+- **Action**: Orchestrate table flow, train servers, handle VIP seating
+- **Tool Restrictions**: Front-of-house only; can authorize seating exceptions; cannot change pricing
+- **Quality Gate**: Guest satisfaction score > 95%; feedback documented daily
+
+**Sous Chef** (support agent)
+- Bridges kitchen operations and line cooks
+- Escalates quality issues to Chef de Cuisine
+- Owns prep work and inventory
+- Trains new line cooks on standardized Technique Cards
+
+Each role is a different `.agent.md` file. Same operational manual (AGENTS.md); different specialized responsibilities.
+
+### Layer 4: Technique Cards and Shared Procedures (SKILL.md files)
+
+Specialized procedures that **multiple roles might use**:
+
+**Technique Card: "Perfect Béarnaise Sauce"**
+- **Used by**: Chef de Cuisine, Sous Chef, Senior Line Cook
+- **Purpose**: Consistent sauce across all locations
+- **Steps**: Temperature control, emulsification, seasoning sequence
+- **Quality Gate**: Passes blind taste test by Chef de Cuisine weekly
+- **Why it's a Skill, not a Role**: Different roles execute it; it's reusable knowledge
+
+**Technique Card: "Table Service Etiquette"**
+- **Used by**: Maître d', Servers, Bus Staff
+- **Purpose**: Consistent guest experience
+- **Steps**: Approach angle, plate presentation, water refill timing
+
+**Technique Card: "Supplier Negotiation Protocol"**
+- **Used by**: Chef de Cuisine, Maître d', General Manager
+- **Purpose**: Standardized procurement across locations
+- **Steps**: RFQ format, price/quality matrix, contract terms
+
+### The Encoding Hierarchy in Action
+
+```
+Franchise Constitution (MANIFESTO.md: why we exist)
+    ↓
+Restaurant Operations Manual (AGENTS.md: how everyone behaves)
+    ↓
+Role Descriptions (Custom Agents in .agent.md files: specialized responsibilities)
+    ↓
+Technique Cards (SKILL.md files: reusable procedures all roles reference)
+    ↓
+Validation & Training (onboarding via this system)
+    ↓
+Daily Execution (autonomous, aligned decision-making)
+```
+
+### Onboarding a New Team Member
+
+1. **Day 1**: Read the Franchise Constitution + Operations Manual
+2. **Day 2**: Read your specific Role Job Description (e.g., "Sous Chef")
+3. **Days 3+**: Learn the Technique Cards you'll use (e.g., "Perfect Béarnaise," "Inventory Management")
+4. **Week 2**: Work alongside a mentor who validates you against the Quality Gates
+5. **Week 3+**: You're trusted to make autonomous decisions aligned with what you've read
+
+No more "I'll tell you as I go" — they're empowered because they have the encoded system.
+
+### How This Connects to Our Three Metaphors
+
+**DNA** (Encoding): The Franchise Constitution, Operations Manual, and Technique Cards are your genetic code. Staff (human or AI) read them before they ever start work. They are instructions that get executed, not improvised.
+
+**Seedlings** (Phased Growth): New team members unfold through onboarding phases. Each phase has conditions (read the manual; work alongside a mentor; validate against quality gates). These are the environmental conditions that let growth happen correctly.
+
+**Tree Rings** (Accumulated Knowledge): Each iteration of a Technique Card gets better. Each season, the operations manual gets refined. Git history shows the rings: when sauce techniques shifted, when service standards evolved, when a new role was added. The system gets stronger with accumulated, durable improvements.
+
+---
+
 ## How the Three Metaphors Interlock
 
 | DNA | Seedlings | Tree Rings |

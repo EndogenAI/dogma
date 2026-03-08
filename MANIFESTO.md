@@ -23,7 +23,7 @@ The name comes from biology: an endogenous process is one that originates from w
 
 **Intellectual heritage**: Endogenic Development Methodology synthesizes several established traditions: Engelbart's augmentation framework (1962) supplies the Augmentive Partnership principle; Turing's morphogenesis (1952) and Maturana & Varela's autopoiesis (1972) supply the biological substrate metaphors; Knuth's literate programming (1984) and Martraire's living documentation (2019) supply the encode-once-reuse-many strategy; and Alexander's Pattern Language (1977) supplies the interconnected-principles architecture. The endogenic contribution is the synthesis of these traditions specifically for AI-assisted development across all domains, where LLM agents, scripts, and automation re-read the encoded substrate to orient each new session. See [`docs/research/methodology-review.md`](docs/research/methodology-review.md) for the full prior art survey.
 
-For a deeper exploration of these metaphors and how they guide all endogenous practice, see [`docs/guides/mental-models.md`](docs/guides/mental-models.md).
+For a deeper exploration of these metaphors and how they guide all endogenous practice, see [`docs/guides/mental-models.md`](docs/guides/mental-models.md). To see how these principles apply in a concrete organizational context — with Custom Agents as Roles and SKILL.md files as reusable Techniques — read the restaurant analogy in that same guide.
 
 ### The Balance: Inside Out, Not Inside Only
 
