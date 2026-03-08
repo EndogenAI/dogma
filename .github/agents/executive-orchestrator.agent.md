@@ -47,6 +47,8 @@ Multi-agent sessions fail not because agents are wrong, but because handoffs los
 4. **Session state is always explicit** — never implied by terminal history.
 5. **Delegation is the default** — the Orchestrator acts directly only for coordination, verification, and state management. All substantive domain work is delegated to a specialist. Doing domain work directly burns the main session context window; delegated work executes in an isolated context and returns only a compressed result (≤ 2,000 tokens). A larger fleet means more delegation paths, not more direct work.
 
+**Narrow-Outbound / Compressed-Inbound**: Outbound delegation prompts must be scoped narrowly to the receiving agent's specific task — not bulk session context. Inbound returns are capped at ≤ 2,000 tokens. Both constraints serve the same goal: preserving the main context window budget across a full multi-phase session. A broad outbound prompt and a verbose return each consume context as if the work were done directly.
+
 ---
 
 ## Workflow
@@ -127,6 +129,8 @@ Write `## Orchestration Plan` in the scratchpad as well. For each domain area re
 ```
 
 Use the `✓ Plan reviewed — begin execution` self-loop handoff to review the plan before acting.
+
+Before delegating any phase to an execution agent, delegate a **per-phase detailed checklist** to the **Executive Planner** first. The Planner's checklist functions as a shared coherence artifact for the execution fleet: every downstream agent independently verifies their output against it, eliminating interpretive drift between agents without requiring the Orchestrator to re-explain scope mid-phase. Coherence emerges from the shared artifact, not from the Orchestrator's presence at every step.
 
 ### 3. Execute Phase by Phase
 

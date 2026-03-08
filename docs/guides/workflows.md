@@ -1135,6 +1135,8 @@ Do not begin executing — return the plan for approval.
 Request: [describe]
 ```
 
+When the plan is approved, delegate a **per-phase execution checklist** to Executive Planner before Phase 1 begins. The checklist becomes the shared acceptance specification that every execution agent (Scout, Synthesizer, Reviewer, Archivist) verifies their output against — eliminating interpretive drift across handoffs without requiring the Orchestrator to re-explain scope at each delegation.
+
 **Continue from a prior session (session handoff):**
 ```
 @Executive Orchestrator Please continue the session on branch [branch-slug].
