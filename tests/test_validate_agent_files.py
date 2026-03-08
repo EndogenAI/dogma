@@ -556,3 +556,69 @@ class TestValidateSkillFile:
         f = _make_skill_file(tmp_path, content)
         errors = vaf.validate_skill_file(f)
         assert errors == [], f"Unexpected errors with single-quoted name: {errors}"
+
+
+# ---------------------------------------------------------------------------
+# Fetch-before-check and Phase-N-Review-Output detection
+# ---------------------------------------------------------------------------
+
+
+class TestFetchBeforeCheckAndPhaseNReview:
+    @pytest.mark.io
+    def test_fetch_before_check_label_flagged(self, tmp_path):
+        """An agent file with 'Fetch-before-check' guardrail label is flagged."""
+        content = (
+            "---\nname: A\ndescription: B\n---\n\n"
+            "## Endogenous Sources\n\n## Workflow\n\n"
+            "## Completion Criteria\n\nReferences AGENTS.md.\n\n"
+            "## Guardrails\n\n"
+            "- **Fetch-before-check**: Always fetch before checking.\n"
+        )
+        f = _make_agent_file(tmp_path, content)
+        passed, failures = vaf.validate(f)
+        assert passed is False
+        assert any("Fetch-before-check" in msg for msg in failures)
+
+    @pytest.mark.io
+    def test_fetch_before_check_negation_not_flagged(self, tmp_path):
+        """A line prohibiting 'Fetch-before-check' must NOT be flagged."""
+        content = (
+            "---\nname: A\ndescription: B\n---\n\n"
+            "## Endogenous Sources\n\n## Workflow\n\n"
+            "## Completion Criteria\n\nReferences AGENTS.md.\n\n"
+            "## Guardrails\n\n"
+            "- Never label a guardrail `Fetch-before-check` \u2014 correct is `Check-before-fetch`.\n"
+        )
+        f = _make_agent_file(tmp_path, content)
+        passed, failures = vaf.validate(f)
+        assert passed is True, f"Should pass but got: {failures}"
+
+    @pytest.mark.io
+    def test_phase_n_review_output_heading_flagged(self, tmp_path):
+        """An agent file with '## Phase N Review Output' heading is flagged."""
+        content = (
+            "---\nname: A\ndescription: B\n---\n\n"
+            "## Endogenous Sources\n\n## Workflow\n\n"
+            "## Completion Criteria\n\nReferences AGENTS.md.\n\n"
+            "## Phase N Review Output\n\nReview notes here.\n"
+        )
+        f = _make_agent_file(tmp_path, content)
+        passed, failures = vaf.validate(f)
+        assert passed is False
+        assert any("Phase N Review Output" in msg for msg in failures)
+
+    @pytest.mark.io
+    def test_phase_n_review_output_in_skill_flagged(self, tmp_path):
+        """A SKILL.md with '## Phase N Review Output' is flagged via validate_skill_file()."""
+        skill_dir = tmp_path / "my-skill"
+        skill_dir.mkdir()
+        content = (
+            "---\nname: my-skill\ndescription: A test skill with sufficient length for the description field.\n---\n\n"
+            "## Overview\n\nSee AGENTS.md for conventions and guidelines.\n\n"
+            "## Phase N Review Output\n\nSome review notes.\n\n"
+            "More body content here to exceed the minimum body length requirement of one hundred chars minimum.\n"
+        )
+        skill_file = skill_dir / "SKILL.md"
+        skill_file.write_text(content, encoding="utf-8")
+        errors = vaf.validate_skill_file(skill_file)
+        assert any("Phase N Review Output" in e for e in errors)

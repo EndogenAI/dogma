@@ -17,6 +17,10 @@ Checks:
        density ≥ 1).  Low density signals likely encoding drift.
     4. No heredoc-based file writes (``cat >> ... << 'EOF'`` patterns), which
        silently corrupt Markdown content containing backticks.
+    5. No ``Fetch-before-check`` guardrail label (correct label is
+       ``Check-before-fetch`` — check cache first, then fetch only if absent).
+    6. No ``## Phase N Review Output`` heading (use ``## Review Output``
+       as defined in ``review.agent.md``).
 
 Inputs:
     [file ...]    One or more .agent.md files to validate.  (positional, optional)
@@ -96,6 +100,12 @@ _CROSSREF_RE = re.compile(r"MANIFESTO\.md|AGENTS\.md")
 
 # Frontmatter block pattern.
 _FRONTMATTER_RE = re.compile(r"^---\n(.*?)\n---", re.DOTALL)
+
+# Pattern for the incorrect 'Fetch-before-check' label ordering.
+_FETCH_BEFORE_CHECK_PATTERN = re.compile(r"fetch-before-check", re.IGNORECASE)
+
+# Pattern for the incorrect '## Phase N Review Output' heading.
+_PHASE_N_REVIEW_RE = re.compile(r"##\s+Phase\s+N\s+Review\s+Output", re.IGNORECASE)
 
 
 # ---------------------------------------------------------------------------
@@ -223,6 +233,24 @@ def validate(file_path: Path) -> tuple[bool, list[str]]:
                 )
                 break
 
+    # --- Check 5: no Fetch-before-check label (negation-aware) ---
+    for line in text.splitlines():
+        if _FETCH_BEFORE_CHECK_PATTERN.search(line):
+            lower = line.lower()
+            if not any(neg in lower for neg in _HEREDOC_NEGATIONS):
+                failures.append(
+                    "Guardrail label ordering error: 'Fetch-before-check' found — correct label is "
+                    "'Check-before-fetch' (check cache first, then fetch only if absent)"
+                )
+                break
+
+    # --- Check 6: no '## Phase N Review Output' heading ---
+    if _PHASE_N_REVIEW_RE.search(text):
+        failures.append(
+            "Heading contract violation: '## Phase N Review Output' found — use '## Review Output' "
+            "(defined in review.agent.md; do not restate with 'Phase N' prefix)"
+        )
+
     passed = len(failures) == 0
     return passed, failures
 
@@ -305,6 +333,13 @@ def validate_skill_file(path: Path) -> list[str]:
     body_stripped = body.strip()
     if len(body_stripped) < SKILL_BODY_MIN_LEN:
         errors.append(f"Body is too short ({len(body_stripped)} chars after frontmatter, minimum {SKILL_BODY_MIN_LEN})")
+
+    # Check 8: no '## Phase N Review Output' heading
+    if _PHASE_N_REVIEW_RE.search(text):
+        errors.append(
+            "Heading contract violation: '## Phase N Review Output' found — use '## Review Output' "
+            "(defined in review.agent.md; do not restate with 'Phase N' prefix)"
+        )
 
     return errors
 

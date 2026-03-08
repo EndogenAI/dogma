@@ -10,9 +10,14 @@ Unit and integration tests for:
 (Each script group could have its own test file; combined here for brevity.)
 """
 
+import sys
 from datetime import date
+from pathlib import Path
 
 import pytest
+
+sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
+import scaffold_workplan as sw  # noqa: E402, I001
 
 # ===== scaffold_workplan.py tests =====
 
@@ -75,6 +80,86 @@ class TestScaffoldWorkplanCreation:
 
         # Real test: exit 1
         assert existing.exists()
+
+    @pytest.mark.io
+    def test_ci_field_in_phase_template(self, tmp_path, monkeypatch):
+        """Generated workplan contains **CI**: field."""
+        monkeypatch.chdir(tmp_path)
+        (tmp_path / "docs" / "plans").mkdir(parents=True)
+        monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "ci-test"])
+        monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
+        monkeypatch.setattr(sw, "_prompt", lambda msg, default: default)
+        rc = sw.main()
+        assert rc == 0
+        content = (tmp_path / "docs" / "plans" / f"{date.today().isoformat()}-ci-test.md").read_text()
+        assert "**CI**:" in content
+
+    @pytest.mark.io
+    def test_ci_field_default_value(self, tmp_path, monkeypatch):
+        """Generated workplan with default CI input contains 'Tests, Auto-validate'."""
+        monkeypatch.chdir(tmp_path)
+        (tmp_path / "docs" / "plans").mkdir(parents=True)
+        monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "ci-default"])
+        monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
+        monkeypatch.setattr(sw, "_prompt", lambda msg, default: default)
+        rc = sw.main()
+        assert rc == 0
+        content = (tmp_path / "docs" / "plans" / f"{date.today().isoformat()}-ci-default.md").read_text()
+        assert "**CI**: Tests, Auto-validate" in content
+
+    @pytest.mark.io
+    def test_ci_field_invalid_value_exits_1(self, tmp_path, monkeypatch):
+        """Providing an invalid CI token causes exit code 1."""
+        monkeypatch.chdir(tmp_path)
+        (tmp_path / "docs" / "plans").mkdir(parents=True)
+        monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "ci-invalid"])
+        monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
+        call_count = {"n": 0}
+
+        def fake_prompt(msg, default):
+            call_count["n"] += 1
+            if call_count["n"] == 1:  # CI prompt
+                return "InvalidCI"
+            return default
+
+        monkeypatch.setattr(sw, "_prompt", fake_prompt)
+        rc = sw.main()
+        assert rc == 1
+
+    @pytest.mark.io
+    def test_linked_issues_emits_closes(self, tmp_path, monkeypatch):
+        """Providing issue numbers 42,43 emits Closes #42, Closes #43."""
+        monkeypatch.chdir(tmp_path)
+        (tmp_path / "docs" / "plans").mkdir(parents=True)
+        monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "issue-test"])
+        monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
+        call_count = {"n": 0}
+
+        def fake_prompt(msg, default):
+            call_count["n"] += 1
+            if call_count["n"] == 1:  # CI prompt
+                return default
+            return "42,43"  # linked issues
+
+        monkeypatch.setattr(sw, "_prompt", fake_prompt)
+        rc = sw.main()
+        assert rc == 0
+        content = (tmp_path / "docs" / "plans" / f"{date.today().isoformat()}-issue-test.md").read_text()
+        assert "Closes #42" in content
+        assert "Closes #43" in content
+
+    @pytest.mark.io
+    def test_no_linked_issues_no_section(self, tmp_path, monkeypatch):
+        """Providing no issue numbers omits the PR Description Template section."""
+        monkeypatch.chdir(tmp_path)
+        (tmp_path / "docs" / "plans").mkdir(parents=True)
+        monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "no-issues"])
+        monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
+        monkeypatch.setattr(sw, "_prompt", lambda msg, default: default)
+        rc = sw.main()
+        assert rc == 0
+        content = (tmp_path / "docs" / "plans" / f"{date.today().isoformat()}-no-issues.md").read_text()
+        assert "## PR Description Template" not in content
 
 
 # ===== generate_agent_manifest.py tests =====

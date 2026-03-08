@@ -39,6 +39,26 @@ import sys
 from datetime import date
 from pathlib import Path
 
+ALLOWED_CI_VALUES: frozenset[str] = frozenset({"Tests", "Auto-validate", "Lint"})
+DEFAULT_CI = "Tests, Auto-validate"
+
+
+def _get_root() -> Path:
+    """Return the workspace root (parent of scripts/).  Monkeypatched in tests."""
+    return Path(__file__).resolve().parent.parent
+
+
+def _prompt(msg: str, default: str) -> str:
+    """Display *msg* and return user input, or *default* if non-interactive or empty.
+
+    Non-interactive detection: ``sys.stdin.isatty()`` returns False (e.g. CI or tests).
+    """
+    if not sys.stdin.isatty():
+        return default
+    response = input(msg).strip()
+    return response if response else default
+
+
 TEMPLATE = """\
 # Workplan: {title}
 
@@ -62,6 +82,7 @@ TEMPLATE = """\
 - <!-- list deliverables -->
 
 **Depends on**: nothing
+**CI**: {ci}
 **Status**: Not started
 
 ---
@@ -115,7 +136,35 @@ def main() -> int:
     branch = _git_branch()
     title = slug_to_title(slug)
 
-    root = Path(__file__).parent.parent
+    # --- CI strategy prompt ---
+    ci_raw = _prompt(
+        f"CI options (comma-separated, choose from: Tests, Auto-validate, Lint) [{DEFAULT_CI}]: ",
+        DEFAULT_CI,
+    )
+    ci_tokens = [t.strip() for t in ci_raw.split(",") if t.strip()]
+    invalid_ci = [t for t in ci_tokens if t not in ALLOWED_CI_VALUES]
+    if invalid_ci:
+        print(f"ERROR: invalid CI values: {invalid_ci}. Allowed: Tests, Auto-validate, Lint.", file=sys.stderr)
+        return 1
+    ci_value = ", ".join(ci_tokens) if ci_tokens else DEFAULT_CI
+
+    # --- Linked issues prompt ---
+    issues_raw = _prompt("Linked issue numbers (comma-separated, e.g. 42,43) [none]: ", "")
+    issue_numbers: list[int] = []
+    if issues_raw.strip():
+        invalid_issues: list[str] = []
+        for token in issues_raw.split(","):
+            token = token.strip()
+            if token:
+                try:
+                    issue_numbers.append(int(token))
+                except ValueError:
+                    invalid_issues.append(token)
+        if invalid_issues:
+            print(f"ERROR: issue numbers must be integers: {invalid_issues}", file=sys.stderr)
+            return 1
+
+    root = _get_root()
     plans_dir = root / "docs" / "plans"
     plans_dir.mkdir(parents=True, exist_ok=True)
 
@@ -129,7 +178,14 @@ def main() -> int:
         )
         return 1
 
-    content = TEMPLATE.format(title=title, branch=branch, date=today)
+    content = TEMPLATE.format(title=title, branch=branch, date=today, ci=ci_value)
+    if issue_numbers:
+        closes = ", ".join(f"Closes #{n}" for n in issue_numbers)
+        content += (
+            "\n## PR Description Template\n\n"
+            "<!-- Copy to PR description when opening the PR -->\n\n"
+            f"{closes}\n"
+        )
     target.write_text(content, encoding="utf-8")
 
     rel = target.relative_to(root)
