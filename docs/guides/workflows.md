@@ -710,7 +710,7 @@ For complex sessions where the scope is unclear before execution, first invoke
 
 ```
 Plan (Executive Planner) → Approve plan → Orchestrate phases (Executive Orchestrator)
-  └── Phase 1: Delegate to domain executive → gate → Phase 2 → ... → Review → Commit → Summarise
+  └── Phase 1: delegate → Review gate → Phase 2: delegate → Review gate → ... → Commit → Summarise
 ```
 
 ### When to invoke
@@ -725,15 +725,17 @@ Plan (Executive Planner) → Approve plan → Orchestrate phases (Executive Orch
 
 1. **Write a plan before delegating**: Orchestrator must produce `## Orchestration Plan` in the scratchpad before any phase delegation.
 2. **One phase at a time**: phases are sequential unless explicitly marked parallelisable.
-3. **Gate deliverables are concrete**: a gate deliverable is a committed file or a confirmed GitHub state — not "phase done".
-4. **Close the loop**: every session ends with `## Session Summary` + `uv run python scripts/prune_scratchpad.py --force`.
+3. **Review gate between every domain phase**: after each domain phase completes, invoke the Review agent. The next domain phase may not begin until Review returns APPROVED. Record the verdict in the scratchpad under `## Phase N Review Output`.
+4. **Gate deliverables are concrete**: a gate deliverable is a committed file or a confirmed GitHub state — not "phase done".
+5. **Close the loop**: every session ends with `## Session Summary` + `uv run python scripts/prune_scratchpad.py --force`.
 
 ### Gate Summary
 
 | Gate | Criteria |
 |------|----------|
 | Before Phase 1 | Orchestration plan written; phases + gates documented |
-| Between phases | Prior phase output confirmed committed; deliverables verified |
+| Between phases | Review agent invoked; APPROVED verdict logged to scratchpad |
+| Before final commit | Review APPROVED for all phases; GitHub agent handles commit/push |
 | Session close | All phases done; session summary written; scratchpad pruned |
 
 ---

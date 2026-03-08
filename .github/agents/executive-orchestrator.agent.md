@@ -88,7 +88,7 @@ uv run python scripts/scaffold_workplan.py <brief-slug> 2>/dev/null || \
 
 The workplan file (`docs/plans/YYYY-MM-DD-<slug>.md`) is committed to git and is the **plan of record**. The scratchpad `## Orchestration Plan` section is a live mirror — useful during the session but not authoritative. See `AGENTS.md` → `docs/plans/` section for the required structure.
 
-Write `## Orchestration Plan` in the scratchpad as well. For each domain area required, create a phase entry:
+Write `## Orchestration Plan` in the scratchpad as well. For each domain area required, create a phase entry. **Every domain phase must be followed by a Review gate phase before the next domain phase begins.** The plan template with Review gates:
 
 ```markdown
 ## Orchestration Plan
@@ -98,14 +98,32 @@ Write `## Orchestration Plan` in the scratchpad as well. For each domain area re
 **Agent**: Executive Researcher
 **Deliverables**: docs/research/<slug>.md committed, Status: Final
 **Depends on**: nothing
-**Gate**: Phase 2 does not start until Phase 1 deliverables confirmed
+**Gate**: Phase 1 Review does not start until deliverables committed
+**Status**: ⬜ Not started
+
+### Phase 1 Review — Review Gate
+
+**Agent**: Review
+**Deliverables**: `## Review Output` appended to scratchpad, verdict: APPROVED
+**Depends on**: Phase 1 deliverables committed
+**Gate**: Phase 2 does not start until Review returns APPROVED
+**Status**: ⬜ Not started
 
 ### Phase 2 — Docs Update
 
 **Agent**: Executive Docs
 **Deliverables**: docs/guides/<guide>.md updated and committed
-**Depends on**: Phase 1 (research output must exist)
-**Gate**: Phase 3 does not start until Phase 2 committed
+**Depends on**: Phase 1 Review APPROVED
+**Gate**: Phase 2 Review does not start until deliverables committed
+**Status**: ⬜ Not started
+
+### Phase 2 Review — Review Gate
+
+**Agent**: Review
+**Deliverables**: `## Review Output` appended to scratchpad, verdict: APPROVED
+**Depends on**: Phase 2 deliverables committed
+**Gate**: Phase 3 does not start until Review returns APPROVED
+**Status**: ⬜ Not started
 ```
 
 Use the `✓ Plan reviewed — begin execution` self-loop handoff to review the plan before acting.
@@ -138,16 +156,19 @@ Use the `✓ Plan reviewed — begin execution` self-loop handoff to review the 
 
 **If the work does not appear in the "Act directly" list, delegate it.**
 
-Delegate to the appropriate executive agent. Wait for control to return. Write the output summary to the scratchpad under `## Phase N Output`. Use `✓ Phase done — review & continue` to confirm deliverables before proceeding.
+Delegate to the appropriate executive agent. Wait for control to return. Write the output summary to the scratchpad under `## Phase N Output`.
 
 Do not batch delegations. One phase at a time.
 
-**Per-phase compaction checkpoint** — run this sequence after every `## Phase N Output` write, before delegating the next phase:
+**After every domain phase, invoke the Review gate before proceeding to the next phase.** The Review agent validates changed files against AGENTS.md constraints and returns either APPROVED or REQUEST CHANGES. Append the verdict to the scratchpad under `## Phase N Review Output`. Only advance when APPROVED.
 
-1. Prune the scratchpad if it exceeds 200 lines: `uv run python scripts/prune_scratchpad.py`
-2. Write a `## Pre-Compact Checkpoint` to the scratchpad capturing: what is complete, what is next, any open questions.
-3. Commit all in-progress changes: `git add -A && git commit -m "chore: pre-compact checkpoint — Phase N complete"`
-4. If the completed phase was a long research, synthesis, or multi-file editing delegation — recommend running `/compact` before delegating the next phase.
+**Per-phase sequence** — run this sequence after every `## Phase N Output` write, before delegating the next domain phase:
+
+1. Invoke **Review** agent: pass the changed file list and the scratchpad location. Wait for APPROVED verdict.
+2. Prune the scratchpad if it exceeds 200 lines: `uv run python scripts/prune_scratchpad.py`
+3. Write a `## Pre-Compact Checkpoint` to the scratchpad capturing: what is complete, what is next, any open questions.
+4. Commit all in-progress changes: `git add -A && git commit -m "chore: pre-compact checkpoint — Phase N complete"`
+5. If the completed phase was a long research, synthesis, or multi-file editing delegation — recommend running `/compact` before delegating the next phase.
 
 After any `/compact` event: always re-read the scratchpad and workplan from disk before continuing (see Step 1).
 
@@ -176,7 +197,8 @@ When all phases are complete:
 
 <output>
 
-- Session scratchpad has `## Orchestration Plan`, one `## Phase N Output` per phase, and a `## Session Summary`.
+- Session scratchpad has `## Orchestration Plan`, one `## Phase N Output` per domain phase, one `## Phase N Review Output` per Review gate, and a `## Session Summary`.
+- Every domain phase has a corresponding Review gate record with APPROVED verdict in the scratchpad before the next phase began.
 - All phase deliverables are confirmed committed to the branch.
 - All changes are pushed to origin.
 - Issue body checkboxes updated to reflect all completed deliverables.
@@ -200,22 +222,38 @@ A correct output from this agent looks like:
 **Agent**: Executive Researcher
 **Deliverables**: docs/research/context-engineering.md, Status: Final
 **Depends on**: nothing
-**Gate**: Phase 2 does not begin until deliverable is committed and confirmed
+**Gate**: Phase 1 Review does not start until deliverable is committed
 **Status**: ✅ Complete
+
+### Phase 1 Review — Review Gate
+
+**Agent**: Review
+**Deliverables**: `## Phase 1 Review Output` in scratchpad, verdict: APPROVED
+**Depends on**: Phase 1 committed
+**Gate**: Phase 2 does not begin until Review returns APPROVED
+**Status**: ✅ Complete — APPROVED
 
 ### Phase 2 — Docs Update
 
 **Agent**: Executive Docs
 **Deliverables**: docs/guides/session-management.md updated section on context windows
-**Depends on**: Phase 1
-**Gate**: Phase 3 does not begin until changes are committed
+**Depends on**: Phase 1 Review APPROVED
+**Gate**: Phase 2 Review does not start until changes are committed
 **Status**: ✅ Complete
+
+### Phase 2 Review — Review Gate
+
+**Agent**: Review
+**Deliverables**: `## Phase 2 Review Output` in scratchpad, verdict: APPROVED
+**Depends on**: Phase 2 committed
+**Gate**: Phase 3 does not begin until Review returns APPROVED
+**Status**: ✅ Complete — APPROVED
 
 ### Phase 3 — Commit & Push
 
 **Agent**: GitHub
 **Deliverables**: feat/context-engineering branch pushed, PR opened
-**Depends on**: Phase 2
+**Depends on**: Phase 2 Review APPROVED
 **Gate**: Session closes when PR URL is returned
 **Status**: ⬜ Not started
 ```
@@ -232,6 +270,7 @@ A correct output from this agent looks like:
 - Do not commit directly — route through Review, then GitHub agent.
 - Do not modify `MANIFESTO.md` — that is Executive Docs territory.
 - Do not proceed past a phase gate if the prior deliverables are not committed and confirmed.
+- **Invoke the Review agent between every domain phase** — a Review gate APPROVED verdict, logged to the scratchpad under `## Phase N Review Output`, is required before the next phase begins. Skipping the Review gate is an anti-pattern equivalent to committing without CI.
 - Do not close the session without writing a `## Session Summary` and running `prune_scratchpad.py --force`.
 - **Update issue body checkboxes at phase completion** — update completed deliverable checkboxes in the issue body after each phase gate. Write the updated body to a temp file and use `gh issue edit <num> --body-file <path>`. Verify with `gh issue view <num> --json body -q '.body' | grep -E '\[x\]|\[ \]'`. This keeps the issue body as a live progress tracker, not just the initial spec.
 - **Post issue progress comments at session close** — for every GitHub issue actively worked, post a `gh issue comment <num> --body-file <path>` summary before closing. Use `gh issue view <num> --json comments -q '.comments[-1].body[:80]'` to verify. Skipping this step breaks async continuity for collaborators and future sessions.

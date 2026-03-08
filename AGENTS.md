@@ -247,7 +247,7 @@ For any multi-phase session, create a **workplan** before execution begins and c
 
 **Contents** (use `docs/plans/2026-03-06-formalize-workflows.md` as the canonical template):
 - Objective
-- Phase plan: agent, deliverables, depends-on, status
+- Phase plan: agent, deliverables, depends-on, status — **with a Review gate phase after every domain phase**
 - Acceptance criteria checklist
 
 **Commit** the workplan at the start of the session (before Phase 1 executes), then update status markers as phases complete. This creates an auditable plan history in git, separate from the ephemeral `.tmp/` scratchpad.
