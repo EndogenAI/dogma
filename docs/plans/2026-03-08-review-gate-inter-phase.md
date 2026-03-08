@@ -1,4 +1,4 @@
-# Workplan: Review Gate Inter Phase
+# Workplan: Review Gate Inter-Phase
 
 **Branch**: `feat/review-gate-inter-phase`
 **Date**: 2026-03-08
