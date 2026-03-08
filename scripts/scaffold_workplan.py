@@ -181,11 +181,7 @@ def main() -> int:
     content = TEMPLATE.format(title=title, branch=branch, date=today, ci=ci_value)
     if issue_numbers:
         closes = ", ".join(f"Closes #{n}" for n in issue_numbers)
-        content += (
-            "\n## PR Description Template\n\n"
-            "<!-- Copy to PR description when opening the PR -->\n\n"
-            f"{closes}\n"
-        )
+        content += f"\n## PR Description Template\n\n<!-- Copy to PR description when opening the PR -->\n\n{closes}\n"
     target.write_text(content, encoding="utf-8")
 
     rel = target.relative_to(root)
