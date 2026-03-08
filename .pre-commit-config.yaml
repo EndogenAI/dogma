@@ -22,3 +22,10 @@ repos:
         language: system
         files: ^\.github/agents/.*\.agent\.md$
         pass_filenames: false
+      - id: check-doc-links
+        name: Check relative file links in Markdown docs
+        entry: python3 scripts/check_doc_links.py
+        language: system
+        types: [markdown]
+        files: ^(docs/(?!research/sources/).*\.md|README\.md|CONTRIBUTING\.md|CHANGELOG\.md)$
+        pass_filenames: true
