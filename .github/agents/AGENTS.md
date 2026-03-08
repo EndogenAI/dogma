@@ -124,7 +124,7 @@ Executive (multi-phase)  →  [Phase 1] → Review → [Phase 2] → Review → 
 ```
 
 - An executive agent orchestrates its fleet and must hand off to Review before committing.
-- **Multi-phase executives invoke Review between every domain phase** — a Review gate APPROVED verdict, appended to the scratchpad under `## Phase N Review Output`, is required before the next domain phase begins.
+- **Multi-phase executives invoke Review between every domain phase** — a Review gate APPROVED verdict, appended to the scratchpad under `## Review Output`, is required before the next domain phase begins.
 - Sub-agents return control to their executive via takeback — they do not chain directly to the next sub-agent.
 - Read-only agents (review, plan, audit) hand off to action agents or GitHub.
 - The `send: false` default is strongly preferred — avoid auto-submitting prompts.
@@ -147,14 +147,15 @@ Any session with ≥ 2 domain phases must include a Review gate between each con
 # Pattern: after Phase N output is logged, invoke Review before Phase N+1
 - label: "✓ Phase N complete — Review gate"
   agent: Review
-  prompt: "Phase N output is logged to the scratchpad under '## Phase N Output'.
-           Changed files: [list]. Please validate against AGENTS.md constraints.
-           Append verdict to scratchpad as '## Phase N Review Output'.
-           Phase N+1 does not begin until APPROVED."
+  prompt: |
+    Phase N output is logged to the scratchpad under '## Phase N Output'.
+    Changed files: [list]. Please validate against AGENTS.md constraints.
+    Append verdict to scratchpad as '## Review Output'.
+    Phase N+1 does not begin until APPROVED.
   send: false
 ```
 
-**Gate enforcement rule**: the orchestrator may not delegate Phase N+1 without a `## Phase N Review Output: APPROVED` entry in the scratchpad.
+**Gate enforcement rule**: the orchestrator may not delegate Phase N+1 without a `## Review Output: APPROVED` entry in the scratchpad.
 
 ### Evaluator-Optimizer Loop (Executive Pattern)
 

@@ -160,14 +160,14 @@ Delegate to the appropriate executive agent. Wait for control to return. Write t
 
 Do not batch delegations. One phase at a time.
 
-**After every domain phase, invoke the Review gate before proceeding to the next phase.** The Review agent validates changed files against AGENTS.md constraints and returns either APPROVED or REQUEST CHANGES. Append the verdict to the scratchpad under `## Phase N Review Output`. Only advance when APPROVED.
+**After every domain phase, invoke the Review gate before proceeding to the next phase.** The Review agent validates changed files against AGENTS.md constraints and returns either APPROVED or REQUEST CHANGES. Append the verdict to the scratchpad under `## Review Output`. Only advance when APPROVED.
 
 **Per-phase sequence** — run this sequence after every `## Phase N Output` write, before delegating the next domain phase:
 
-1. Invoke **Review** agent: pass the changed file list and the scratchpad location. Wait for APPROVED verdict.
-2. Prune the scratchpad if it exceeds 200 lines: `uv run python scripts/prune_scratchpad.py`
-3. Write a `## Pre-Compact Checkpoint` to the scratchpad capturing: what is complete, what is next, any open questions.
-4. Commit all in-progress changes: `git add -A && git commit -m "chore: pre-compact checkpoint — Phase N complete"`
+1. Prune the scratchpad if it exceeds 200 lines: `uv run python scripts/prune_scratchpad.py`
+2. Write a `## Pre-Compact Checkpoint` to the scratchpad capturing: what is complete, what is next, any open questions.
+3. Commit all in-progress changes: `git add -A && git commit -m "chore: pre-compact checkpoint — Phase N complete"`
+4. Invoke **Review** agent: pass the changed file list and the scratchpad location. Wait for APPROVED verdict.
 5. If the completed phase was a long research, synthesis, or multi-file editing delegation — recommend running `/compact` before delegating the next phase.
 
 After any `/compact` event: always re-read the scratchpad and workplan from disk before continuing (see Step 1).
@@ -197,7 +197,7 @@ When all phases are complete:
 
 <output>
 
-- Session scratchpad has `## Orchestration Plan`, one `## Phase N Output` per domain phase, one `## Phase N Review Output` per Review gate, and a `## Session Summary`.
+- Session scratchpad has `## Orchestration Plan`, one `## Phase N Output` per domain phase, one `## Review Output` per Review gate, and a `## Session Summary`.
 - Every domain phase has a corresponding Review gate record with APPROVED verdict in the scratchpad before the next phase began.
 - All phase deliverables are confirmed committed to the branch.
 - All changes are pushed to origin.
@@ -228,7 +228,7 @@ A correct output from this agent looks like:
 ### Phase 1 Review — Review Gate
 
 **Agent**: Review
-**Deliverables**: `## Phase 1 Review Output` in scratchpad, verdict: APPROVED
+**Deliverables**: `## Review Output` appended to scratchpad, verdict: APPROVED
 **Depends on**: Phase 1 committed
 **Gate**: Phase 2 does not begin until Review returns APPROVED
 **Status**: ✅ Complete — APPROVED
@@ -244,7 +244,7 @@ A correct output from this agent looks like:
 ### Phase 2 Review — Review Gate
 
 **Agent**: Review
-**Deliverables**: `## Phase 2 Review Output` in scratchpad, verdict: APPROVED
+**Deliverables**: `## Review Output` appended to scratchpad, verdict: APPROVED
 **Depends on**: Phase 2 committed
 **Gate**: Phase 3 does not begin until Review returns APPROVED
 **Status**: ✅ Complete — APPROVED
