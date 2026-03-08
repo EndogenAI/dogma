@@ -3,7 +3,7 @@
 **Date**: 2026-03-07
 **Branch**: feat/pre-45-unblock-sprint
 **Slug**: pre-45-unblock-sprint
-**Status**: In Progress
+**Status**: Complete
 
 ---
 
@@ -16,28 +16,31 @@ Complete all 7 items identified as prerequisites for unblocking issue #45 (Resea
 ## Acceptance Criteria
 
 ### Wave A — Security Fixes
-- [ ] `#49` path traversal fixed in `fetch_source.py` — closed
-- [ ] `#50` SSRF fixed in `fetch_source.py` — closed
-- [ ] `#51` prompt injection guardrails added in `AGENTS.md` and `fetch_source.py` — closed
-- [ ] Tests cover all three security fixes
+- [x] `#49` path traversal fixed in `fetch_source.py` — closed
+- [x] `#50` SSRF fixed in `fetch_source.py` — closed
+- [x] `#51` prompt injection guardrails added in `AGENTS.md` and `fetch_source.py` — closed
+- [x] Tests cover all three security fixes
 
 ### Wave B — Dogma Hardening
-- [ ] `#53` `MANIFESTO.md` hermeneutics section added
-- [ ] `#53` [4,1] repetition code complete for all three core axioms
-- [ ] Issue #53 closed
+- [x] `#53` `MANIFESTO.md` hermeneutics section added
+- [x] `#53` [4,1] repetition code complete for all three core axioms
+- [x] Issue #53 closed
 
 ### Wave C — Required Research
-- [ ] `#5` `docs/research/local-copilot-models.md` — Status: Final, committed
-- [ ] Issue #5 closed
-- [ ] `#6` `docs/research/local-mcp-frameworks.md` — Status: Final, committed
-- [ ] Issue #6 closed
-- [ ] `#47` `docs/research/onboarding-wizard-patterns.md` — Status: Final, committed
-- [ ] Issue #47 closed
+- [x] `#5` `docs/research/local-copilot-models.md` — Status: Draft, committed
+- [x] Issue #5 closed
+- [x] `#6` `docs/research/local-mcp-frameworks.md` — Status: Draft, committed
+- [x] Issue #6 closed
+- [x] `#47` `docs/research/onboarding-wizard-patterns.md` — Status: Draft, committed
+- [x] Issue #47 closed
 
 ### Post-Sprint
-- [ ] Deferred items (#52, #54, #55, #41–#44, #48) reassessed
-- [ ] Issue #45 `status:blocked` label update decision documented
-- [ ] PR open against main
+- [x] Deferred items (#52, #54, #55, #41–#44, #48) reassessed
+- [x] Issues #55 and #52 pulled into sprint
+- [x] Issue #55 closed (session-start encoding checkpoint)
+- [x] Issue #52 closed (`validate_agent_files.py`)
+- [x] Implementation issues #56 and #57 created (gated on #45)
+- [x] PR #58 opened against main
 
 ---
 

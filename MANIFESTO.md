@@ -137,7 +137,7 @@ When tight feedback loops between human and system are required, local models en
 
 **Anti-pattern**: Using a cloud frontier model to run a simple transformation because "it's faster to prompt than to script" — this simultaneously violates Local Compute-First (cloud inference was used) and Algorithms Before Tokens (it should have been a script). The double-axiom violation is the canonical signal: when two axioms converge on the same objection, the anti-pattern is unambiguous.
 
-**Programmatic gate**: `docs/research/local-compute.md` and `docs/guides/local-compute.md` encode the model selection decision tree. The `LLM Cost Optimizer` agent maintains the live model-tier table and surfaces cloud-model usage for tasks within local-model capability. No hard CI gate exists for this axiom — it requires human judgment at code review and conversation review; the gate is the Augmentive Partnership itself.
+**Programmatic gate**: `docs/guides/local-compute.md` encodes the model selection decision tree. The `LLM Cost Optimizer` agent maintains the live model-tier table and surfaces cloud-model usage for tasks within local-model capability. No hard CI gate exists for this axiom — it requires human judgment at code review and conversation review; the gate is the Augmentive Partnership itself.
 
 ---
 

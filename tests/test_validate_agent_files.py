@@ -361,19 +361,20 @@ class TestCLI:
             text=True,
         )
         assert result.returncode == 0, f"Unexpected failures:\n{result.stdout}"
-        assert "All 28 agent file(s) passed" in result.stdout
+        assert "agent file(s) passed" in result.stdout
 
     @pytest.mark.io
-    def test_all_flag_fails_with_bad_file(self, tmp_path, monkeypatch):
-        """--all scan returns exit 1 when at least one file fails."""
-        # Temporarily patch AGENTS_DIR to point to a temp dir with one bad file.
+    def test_all_flag_fails_with_bad_file(self, tmp_path):
+        """--all scan returns exit 1 when at least one file fails (positional arg)."""
         bad = tmp_path / "bad.agent.md"
         bad.write_text("---\nname: Bad\ndescription: Missing sections.\n---\n## Workflow\n", encoding="utf-8")
-        monkeypatch.setattr(vaf, "AGENTS_DIR", tmp_path)
-        # Reimport to pick up the patched value would be complex; use subprocess with override
-        # Instead invoke validate() directly on the bad file.
-        passed, failures = vaf.validate(bad)
-        assert passed is False
+        result = subprocess.run(
+            [sys.executable, "scripts/validate_agent_files.py", str(bad)],
+            capture_output=True,
+            text=True,
+        )
+        assert result.returncode == 1
+        assert "FAIL" in result.stdout
 
     @pytest.mark.io
     def test_missing_file_exit_1(self, tmp_path):

@@ -217,12 +217,14 @@ def main() -> None:
         sys.exit(0)
 
     overall_pass = True
+    failed_count = 0
     for file_path in targets:
         passed, failures = validate(file_path)
         if passed:
             print(f"PASS  {file_path}")
         else:
             overall_pass = False
+            failed_count += 1
             print(f"FAIL  {file_path}")
             for msg in failures:
                 print(f"      • {msg}")
@@ -231,7 +233,6 @@ def main() -> None:
     if overall_pass:
         print(f"All {len(targets)} agent file(s) passed.")
     else:
-        failed_count = sum(1 for p in targets if not validate(p)[0])
         print(f"{failed_count} of {len(targets)} agent file(s) failed.")
         sys.exit(1)
 

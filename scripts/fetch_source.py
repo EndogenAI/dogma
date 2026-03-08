@@ -95,7 +95,7 @@ _SAFE_SLUG_RE = re.compile(r"^[a-zA-Z0-9][a-zA-Z0-9\-_]{0,59}$")
 
 # Hostnames that resolve to private/loopback ranges — SSRF targets
 _PRIVATE_HOST_RE = re.compile(
-    r"^(localhost|127\.|10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[01])\.|169\.254\.|::1|0\.0\.0\.0)",
+    r"^(localhost|127\.|10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[01])\.|169\.254\.|fe80:|::1|0\.0\.0\.0)",
     re.IGNORECASE,
 )
 
@@ -151,6 +151,7 @@ def validate_slug(slug: str) -> None:
         raise ValueError(
             f"Slug {slug!r} resolves to a path outside the cache directory — path traversal rejected."
         ) from exc
+
 
 # ---------------------------------------------------------------------------
 # Slug generation

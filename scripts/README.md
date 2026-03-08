@@ -19,6 +19,7 @@ scripts/
   fetch_all_sources.py         # Batch-fetch all URLs from OPEN_RESEARCH.md + research doc frontmatter
   link_source_stubs.py         # Populate ## Referenced By sections in per-source stubs (bidirectional link graph)
   validate_synthesis.py        # Quality gate for D3/D4 synthesis documents — run before any Archivist commit (exit 0 = pass, 1 = fail)
+  validate_agent_files.py      # Encoding fidelity gate for .agent.md files — 4 checks (frontmatter, sections, cross-refs, heredocs); run in CI
   migrate_agent_xml.py         # Bulk-migrate .agent.md body sections to hybrid Markdown + XML format (--dry-run safe)
   pr_review_reply.py           # Post replies to PR inline review comments and resolve threads (--reply-to, --resolve, --batch)
   seed_labels.py               # Idempotent GitHub label seeder — reads data/labels.yml and syncs via gh label create --force (--dry-run, --delete-legacy)
@@ -540,6 +541,39 @@ uv run python scripts/validate_synthesis.py "$FILE" || exit 1
 4. Frontmatter has `title`, `status`
 
 **Exit codes**: `0` = all checks passed; `1` = one or more checks failed (specific gaps listed to stdout).
+
+**Dependencies**: stdlib only.
+
+---
+
+## scripts/validate_agent_files.py
+
+**Purpose**: Programmatic encoding-fidelity gate for `.agent.md` files in `.github/agents/`.
+Equivalent to `validate_synthesis.py` but for agent files — prevents encoding drift
+in the MANIFESTO → AGENTS.md → agent files → session prompts inheritance chain.
+
+**Checks (4)**:
+1. Valid YAML frontmatter with required fields: `name`, `description`
+2. Required section headings present: Endogenous Sources, an Action section (Workflow/Checklist/Scope/Methodology), and a Quality-gate section (Completion Criteria or Guardrails)
+3. At least one back-reference to `MANIFESTO.md` or `AGENTS.md` (cross-reference density ≥ 1)
+4. No heredoc file writes (`cat >> ... << 'EOF'` patterns) outside negation context
+
+**Usage**:
+
+```bash
+# Validate a single agent file
+uv run python scripts/validate_agent_files.py .github/agents/executive-orchestrator.agent.md
+
+# Validate all agent files in .github/agents/
+uv run python scripts/validate_agent_files.py --all
+
+# In CI (non-zero exit blocks the job)
+for f in .github/agents/*.agent.md; do
+    uv run python scripts/validate_agent_files.py "$f"
+done
+```
+
+**Exit codes**: `0` = all checked files pass; `1` = one or more checks failed (specific gaps listed to stdout).
 
 **Dependencies**: stdlib only.
 

@@ -21,7 +21,7 @@ import pytest
 
 # Add scripts/ to path so we can import directly
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
-from fetch_source import validate_url, validate_slug, _UNTRUSTED_HEADER, cache_source, CACHE_DIR
+from fetch_source import _UNTRUSTED_HEADER, validate_slug, validate_url  # noqa: E402
 
 
 class TestValidateUrl:
@@ -75,6 +75,16 @@ class TestValidateUrl:
         """IPv6 loopback ::1 is rejected."""
         with pytest.raises(ValueError, match="hostname"):
             validate_url("https://[::1]/secret")
+
+    def test_rejects_ipv6_link_local(self):
+        """IPv6 link-local fe80::/10 is rejected."""
+        with pytest.raises(ValueError, match="hostname"):
+            validate_url("https://[fe80::1]/secret")
+
+    def test_rejects_private_172_range(self):
+        """172.16-31.x.x is rejected — private RFC1918 range."""
+        with pytest.raises(ValueError, match="hostname"):
+            validate_url("https://172.16.0.1/internal")
 
 
 class TestValidateSlug:
@@ -161,7 +171,7 @@ class TestUntrustedHeader:
         assert content.startswith("<!-- UNTRUSTED EXTERNAL CONTENT")
 
 
-class TestFetchSourceCepository:
+class TestFetchSourceRepository:
     """Tests for cache storage and retrieval."""
 
     @pytest.mark.io
