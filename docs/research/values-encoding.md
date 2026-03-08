@@ -335,11 +335,13 @@ Form definitions (from Pattern 1, §3):
 
 | Axiom | F1 Principle | F2 Example | F3 Anti-pattern | F4 Gate |
 |-------|:---:|:---:|:---:|:---:|
-| Endogenous-First | ✅ | ❌ | ✅ (×2) | ✅ |
+| Endogenous-First | ✅ | ❌ | ✅ (×2) | ⚠️ |
 | Algorithms Before Tokens | ✅ | ✅ | ✅ | ✅ |
 | Local Compute-First | ✅ | ✅ | ✅ | ⚠️ |
 
 **F2 gap — Endogenous-First**: No `**Canonical example**:` section. The inheritance-principle prose describes the concept but provides no concrete session prototype anchor. Recommended: add a before/after example of a session that opens with `AGENTS.md` + scratchpad read versus one that skips this step (the canonical ABT violation is already documented; the Endogenous-First equivalent is missing).
+
+**F4 gap — Endogenous-First**: `scripts/fetch_all_sources.py` and `scripts/generate_agent_manifest.py` are named as programmatic gates in MANIFESTO.md (added in ce8ee48 / PR #53). However, these are *invocation-time* session-start scripts — no automated CI check runs them at push time. This places EF-F4 in the same partial-gate status as LCF-F4. §4 R2 predates PR #53 and asked for this gate to be added; the behavioural gate was added but a hard CI check still does not exist.
 
 **F4 gap — Local Compute-First**: Soft gate only — `docs/guides/local-compute.md` + `LLM Cost Optimizer` agent. No CI-enforced script. Note in MANIFESTO.md explicitly states "No hard CI gate exists for this axiom — it requires human judgment." This should either be formalised as an intentional human-judgment gate or addressed by a future `scripts/check_model_usage.py`.
 
