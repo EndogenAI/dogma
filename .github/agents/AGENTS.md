@@ -2,6 +2,7 @@
 
 > This file narrows the constraints in the root [`AGENTS.md`](../../AGENTS.md).
 > It does not contradict any root constraint — it only adds agent-authoring-specific rules.
+> Full authoring guide: [`docs/guides/agents.md`](../../docs/guides/agents.md)
 
 ---
 
