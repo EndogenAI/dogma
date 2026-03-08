@@ -138,6 +138,61 @@ python scripts/prune_scratchpad.py
 
 ---
 
+## Async Process Handling
+
+Long-running terminal operations (model downloads, container startup, test suites, package installs) must use explicit timeout and polling patterns. Omitting a timeout on a blocking call = indefinite hang. Proceeding after a zero exit without verifying state = silent failure.
+
+### Tool Selection
+
+| Situation | Tool | Key parameter |
+|-----------|------|--------------|
+| Short operation, must finish before proceeding | `run_in_terminal` | `isBackground: false`, `timeout: <ms>` |
+| Long/unbounded operation, can do other work | `run_in_terminal` + `get_terminal_output` | `isBackground: true`, poll loop |
+| Background terminal, want to block until done | `await_terminal` | `timeout: <ms>` — always handle timeout case |
+| Service must be healthy before proceeding | `run_in_terminal` (check cmd) in poll loop | exit 0 + success pattern |
+
+**Always set `timeout` on blocking `run_in_terminal` calls.** Default ceiling: 120 000 ms (120 s) unless the operation type warrants more (see table below).
+
+### Timeout Defaults
+
+| Operation | Pattern | Recommended ceiling |
+|-----------|---------|---------------------|
+| `uv sync` / `pip install` (cached) | blocking | 60 s |
+| `uv sync` / `pip install` (cold) | poll | 5 min total |
+| `npm install` (cached) | blocking | 90 s |
+| `npm install` (cold) | poll | 10 min total |
+| `pytest` full suite (< 100 tests) | blocking | 120 s |
+| `pytest` full suite (> 500 tests) | blocking | 600 s |
+| Docker pull (< 500 MB) | poll | 5 min total |
+| Docker pull (> 2 GB) | poll | 30 min total |
+| Container startup (no healthcheck) | poll health check | 10 × 5 s |
+| Container startup (with healthcheck) | poll health check | 30 × 5 s |
+| Ollama model pull (3B–8B) | poll | 15 min total |
+| Ollama daemon startup | poll health check | 10 × 3 s |
+| `gh` CLI operations | blocking | 30 s |
+
+### Service Readiness Checks
+
+After launching a service, verify health via its status API — do not treat a zero launch-exit as "ready":
+
+| Service | Check command | Success signal |
+|---------|--------------|----------------|
+| Docker daemon | `docker info` | exit 0 |
+| Docker container | `docker inspect --format '{{.State.Health.Status}}' <name>` | `healthy` |
+| Ollama | `curl -sf http://localhost:11434/` | `Ollama is running` |
+| Local HTTP service | `curl -sf http://localhost:<port>/health` | exit 0 |
+
+### Retry and Abort Policy
+
+- **Retry once** for plausibly transient failures (network timeout, service still starting).
+- **Abort immediately** (no retry) for: test failures, dependency resolution errors, timeout after a generous ceiling.
+- **Surface to user** with: command that failed, exit code or "timeout", last output lines, suggested next step.
+- **Never** silently swallow a failure and proceed to the next step.
+
+For a full pattern reference including polling algorithms, observable status APIs, and a script candidate spec for `wait_for_service.py`, see [`docs/research/async-process-handling.md`](docs/research/async-process-handling.md).
+
+---
+
 ## Agent Communication
 
 ### `.tmp/` — Per-Session Cross-Agent Scratchpad
