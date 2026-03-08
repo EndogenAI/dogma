@@ -361,7 +361,7 @@ class TestCLI:
             text=True,
         )
         assert result.returncode == 0, f"Unexpected failures:\n{result.stdout}"
-        assert "agent file(s) passed" in result.stdout
+        assert "file(s) passed" in result.stdout
 
     @pytest.mark.io
     def test_all_flag_fails_with_bad_file(self, tmp_path):
@@ -386,3 +386,139 @@ class TestCLI:
         )
         assert result.returncode == 1
         assert "FAIL" in result.stdout
+
+
+# ---------------------------------------------------------------------------
+# SKILL.md validation
+# ---------------------------------------------------------------------------
+
+
+MINIMAL_SKILL_PASS = """\
+---
+name: my-skill
+description: A minimal valid skill that passes all checks.
+---
+
+# My Skill
+
+This skill is governed by [`AGENTS.md`](../../AGENTS.md) and enacts the
+*Algorithms Before Tokens* axiom from [`MANIFESTO.md`](../../MANIFESTO.md).
+
+## Workflow
+
+Read the source material, then execute the procedure step by step.
+This body is long enough to satisfy the minimum body length requirement.
+"""
+
+
+def _make_skill_file(tmp_path: Path, content: str, dir_name: str = "my-skill") -> Path:
+    """Write a SKILL.md in ``tmp_path/<dir_name>/`` and return its Path."""
+    skill_dir = tmp_path / dir_name
+    skill_dir.mkdir(parents=True, exist_ok=True)
+    p = skill_dir / "SKILL.md"
+    p.write_text(content, encoding="utf-8")
+    return p
+
+
+class TestValidateSkillFile:
+    @pytest.mark.io
+    def test_valid_skill_file_passes(self, tmp_path):
+        """A well-formed SKILL.md with all required elements passes."""
+        f = _make_skill_file(tmp_path, MINIMAL_SKILL_PASS)
+        errors = vaf.validate_skill_file(f)
+        assert errors == [], f"Unexpected errors: {errors}"
+
+    @pytest.mark.io
+    def test_skill_missing_name_fails(self, tmp_path):
+        content = (
+            "---\ndescription: A skill without a name.\n---\n\n"
+            "# Body\n\nReferences [`AGENTS.md`](../../AGENTS.md) and MANIFESTO.md.\n"
+            "This body is long enough to satisfy the minimum length requirement for skill validation.\n"
+        )
+        f = _make_skill_file(tmp_path, content)
+        errors = vaf.validate_skill_file(f)
+        assert any("'name'" in e for e in errors)
+
+    @pytest.mark.io
+    def test_skill_missing_description_fails(self, tmp_path):
+        content = (
+            "---\nname: my-skill\n---\n\n"
+            "# Body\n\nReferences [`AGENTS.md`](../../AGENTS.md) and MANIFESTO.md.\n"
+            "This body is long enough to satisfy the minimum length requirement for skill validation.\n"
+        )
+        f = _make_skill_file(tmp_path, content)
+        errors = vaf.validate_skill_file(f)
+        assert any("'description'" in e for e in errors)
+
+    @pytest.mark.io
+    def test_skill_name_invalid_format_fails(self, tmp_path):
+        """A name with uppercase letters must fail the format check."""
+        content = (
+            "---\nname: My-Skill\ndescription: Has uppercase name.\n---\n\n"
+            "# Body\n\nReferences AGENTS.md and MANIFESTO.md.\n"
+            "This body is long enough to satisfy the minimum length requirement.\n"
+        )
+        f = _make_skill_file(tmp_path, content, dir_name="My-Skill")
+        errors = vaf.validate_skill_file(f)
+        assert any("must match" in e or "kebab-case" in e for e in errors)
+
+    @pytest.mark.io
+    def test_skill_name_too_long_fails(self, tmp_path):
+        long_name = "a" + "-b" * 32  # 65 chars
+        content = (
+            f"---\nname: {long_name}\ndescription: Name is too long.\n---\n\n"
+            "# Body\n\nReferences AGENTS.md and MANIFESTO.md.\n"
+            "This body is long enough to satisfy the minimum length requirement.\n"
+        )
+        f = _make_skill_file(tmp_path, content, dir_name=long_name)
+        errors = vaf.validate_skill_file(f)
+        assert any("exceeds" in e for e in errors)
+
+    @pytest.mark.io
+    def test_skill_name_mismatch_fails(self, tmp_path):
+        """name in frontmatter must match the parent directory name."""
+        content = (
+            "---\nname: wrong-name\ndescription: Name does not match directory.\n---\n\n"
+            "# Body\n\nReferences AGENTS.md and MANIFESTO.md.\n"
+            "This body is long enough to satisfy the minimum length requirement.\n"
+        )
+        # Directory is 'correct-dir' but name is 'wrong-name'
+        f = _make_skill_file(tmp_path, content, dir_name="correct-dir")
+        errors = vaf.validate_skill_file(f)
+        assert any("parent directory" in e for e in errors)
+
+    @pytest.mark.io
+    def test_skill_description_too_long_fails(self, tmp_path):
+        long_desc = "x" * 1025
+        content = (
+            f"---\nname: my-skill\ndescription: {long_desc}\n---\n\n"
+            "# Body\n\nReferences AGENTS.md and MANIFESTO.md.\n"
+            "This body is long enough to satisfy the minimum length requirement.\n"
+        )
+        f = _make_skill_file(tmp_path, content)
+        errors = vaf.validate_skill_file(f)
+        assert any("too long" in e for e in errors)
+
+    @pytest.mark.io
+    def test_skill_no_cross_reference_fails(self, tmp_path):
+        """Body with no AGENTS.md or MANIFESTO.md reference must fail."""
+        content = (
+            "---\nname: my-skill\ndescription: A valid description for this skill.\n---\n\n"
+            "# Body\n\n"
+            "This is a long enough body but it has no reference to the governing documents.\n"
+            "It lacks the required cross-reference density to satisfy the encoding fidelity check.\n"
+        )
+        f = _make_skill_file(tmp_path, content)
+        errors = vaf.validate_skill_file(f)
+        assert any("Cross-reference density" in e for e in errors)
+
+    @pytest.mark.io
+    def test_skill_empty_body_fails(self, tmp_path):
+        """A body shorter than 100 chars must fail the minimum body length check."""
+        content = (
+            "---\nname: my-skill\ndescription: A valid description for this skill.\n---\n\n"
+            "AGENTS.md MANIFESTO.md\n"
+        )
+        f = _make_skill_file(tmp_path, content)
+        errors = vaf.validate_skill_file(f)
+        assert any("too short" in e for e in errors)
