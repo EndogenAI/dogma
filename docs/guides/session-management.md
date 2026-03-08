@@ -205,6 +205,8 @@ uv run python scripts/prune_scratchpad.py --dry-run
 4. Run `uv run python scripts/prune_scratchpad.py --force` to archive and update `_index.md`
 5. Stop the scratchpad watcher (Ctrl-C)
 
+**Substrate Retrospective (when applicable)**: If the session produced novel patterns or efficiency gains not yet encoded in the substrate, run the session-retrospective skill before closing. Invoke it with: "What lessons did we learn? Delegate querying which ones are encoded and which aren't, routing to the fleet to update the executive orchestrator and appropriate workflows." This encodes session experience back into the substrate — the session-level enactment of the neuroplasticity principle (see issue #82).
+
 The `_index.md` accumulates one-line stubs of all closed sessions on the branch. Future sessions can read it to orient quickly without opening old session files.
 
 ---
