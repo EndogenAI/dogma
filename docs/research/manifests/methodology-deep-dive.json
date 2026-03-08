@@ -1,0 +1,142 @@
+{
+  "name": "methodology-deep-dive",
+  "description": "Exhaustive deep dive into endogenic methodology foundations \u2014 H1 novelty, H2 biological metaphors, H3 augmentation, H4 encode-before-act, and cross-cutting pattern catalog.",
+  "created": "2026-03-07",
+  "sprints": {
+    "A": "H1 \u2014 Novelty verification and scientific grounding",
+    "B": "H2 \u2014 Biological metaphors as precise mappings",
+    "C": "H3 \u2014 Augmentive partnership lineage",
+    "D": "H4 \u2014 Encode-before-act lineage",
+    "E": "Cross-cutting: Pattern Catalog Adopt/Gap items"
+  },
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2210.03629",
+      "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
+      "sprint": "A",
+      "priority": "high",
+      "reason": "Foundational agentic AI paper — tests H1 novelty claim at AI intersection",
+      "status": "pending"
+    },
+    {
+      "url": "https://arxiv.org/abs/2304.03442",
+      "title": "Generative Agents: Interactive Simulacra of Human Behavior",
+      "sprint": "A",
+      "priority": "high",
+      "reason": "Park et al. agent memory/reflection — tests H1 novelty of encode-before-act for agents",
+      "status": "pending"
+    },
+    {
+      "url": "https://arxiv.org/abs/2512.05470",
+      "title": "Context Engineering Survey (2512.05470)",
+      "sprint": "A",
+      "priority": "high",
+      "reason": "Already in corpus; surveys LLM context management, directly tests H1 novelty",
+      "status": "pending"
+    },
+    {
+      "url": "https://arxiv.org/abs/2507.13334",
+      "title": "arXiv 2507.13334 — title to extract from cache",
+      "sprint": "A",
+      "priority": "medium",
+      "reason": "In corpus cache, needs investigation for H1 relevance",
+      "status": "pending"
+    },
+    {
+      "url": "https://arxiv.org/abs/2501.13956",
+      "title": "arXiv 2501.13956 — title to extract from cache",
+      "sprint": "A",
+      "priority": "medium",
+      "reason": "In corpus cache, needs investigation for H1 relevance",
+      "status": "pending"
+    },
+    {
+      "url": "https://royalsocietypublishing.org/doi/10.1098/rstb.1952.0012",
+      "title": "Turing 1952 — The Chemical Basis of Morphogenesis",
+      "sprint": "B",
+      "priority": "high",
+      "reason": "Primary source H2: Turing morphogenesis maps to morphogenetic seed concept",
+      "status": "pending"
+    },
+    {
+      "url": "https://link.springer.com/book/10.1007/978-94-009-8947-4",
+      "title": "Maturana & Varela 1980 — Autopoiesis and Cognition",
+      "sprint": "B",
+      "priority": "high",
+      "reason": "Primary source H2: autopoiesis maps to self-producing endogenic substrate",
+      "status": "pending"
+    },
+    {
+      "url": "https://global.oup.com/academic/product/the-origins-of-order-9780195079517",
+      "title": "Kauffman 1993 — The Origins of Order",
+      "sprint": "B",
+      "priority": "high",
+      "reason": "Primary source H2: NK fitness landscapes map to agent fleet coupling patterns",
+      "status": "pending"
+    },
+    {
+      "url": "https://www.dougengelbart.org/content/view/138",
+      "title": "Engelbart 1962 — Augmenting Human Intellect: A Conceptual Framework",
+      "sprint": "C",
+      "priority": "high",
+      "reason": "Primary source H3: augmentive partnership principle direct lineage",
+      "status": "pending"
+    },
+    {
+      "url": "https://www.theatlantic.com/magazine/archive/1945/07/as-we-may-think/303881/",
+      "title": "Bush 1945 — As We May Think (The Atlantic)",
+      "sprint": "C",
+      "priority": "high",
+      "reason": "Primary source H3: memex vision lineage to augmentive partnership",
+      "status": "pending"
+    },
+    {
+      "url": "https://academic.oup.com/comjnl/article/27/2/97/315610",
+      "title": "Knuth 1984 — Literate Programming (The Computer Journal)",
+      "sprint": "D",
+      "priority": "high",
+      "reason": "Primary source H4: literate programming lineage to encode-before-act",
+      "status": "pending"
+    },
+    {
+      "url": "https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions",
+      "title": "Nygard 2011 — Documenting Architecture Decisions",
+      "sprint": "D",
+      "priority": "high",
+      "reason": "Primary source H4: ADR as living documentation encode-before-act pattern",
+      "status": "pending"
+    },
+    {
+      "url": "https://www.martinfowler.com/articles/adr.html",
+      "title": "Fowler — Architecture Decision Records (martinfowler.com)",
+      "sprint": "D",
+      "priority": "high",
+      "reason": "Already in corpus — ADR practice reference for H4 encode-before-act lineage",
+      "status": "pending"
+    },
+    {
+      "url": "https://martinfowler.com/articles/practical-test-pyramid.html",
+      "title": "Fowler — The Practical Test Pyramid",
+      "sprint": "D",
+      "priority": "low",
+      "reason": "In corpus — test pyramid as specification doc (H4 BDD/Specification by Example)",
+      "status": "pending"
+    },
+    {
+      "url": "https://www.informit.com/store/living-documentation-continuous-knowledge-sharing-by-9780134689326",
+      "title": "Martraire 2019 — Living Documentation (Addison-Wesley)",
+      "sprint": "E",
+      "priority": "high",
+      "reason": "Primary source: Living Glossary pattern in Pattern Catalog; H4 encode-before-act",
+      "status": "pending"
+    },
+    {
+      "url": "https://www.oreilly.com/library/view/generative-programming-methods/0201309777/",
+      "title": "Czarnecki & Eisenecker 2000 — Generative Programming",
+      "sprint": "E",
+      "priority": "high",
+      "reason": "Primary source: generative programming / feature model in Pattern Catalog",
+      "status": "pending"
+    }
+  ]
+}

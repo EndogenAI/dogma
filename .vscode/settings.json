@@ -13,6 +13,10 @@
         "diff": true,
         "wait": true,
         "git stash": true,
-        "git pull": true
+        "git pull": true,
+        "exit": true,
+        "test": true,
+        "awk": true,
+        "git fetch": true
     }
 }

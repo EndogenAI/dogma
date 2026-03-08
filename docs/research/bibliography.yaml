@@ -1,0 +1,220 @@
+# bibliography.yaml — Structured bibliography for Endogenic Design and Development research
+#
+# Format: ACM SIG Proceedings compatible metadata.
+# Each entry has: id, type, title, authors, year, venue, and optionally:
+#   doi, url, volume, issue, pages, publisher, address, retrieved
+#
+# Types: article | book | inproceedings | techreport | misc | web
+#
+# Add new entries with:
+#   uv run python scripts/add_source_to_manifest.py ...
+#
+# Render ACM reference list with:
+#   uv run python scripts/format_citations.py
+#
+# Seeded from: docs/research/methodology-review.md cited works
+
+# =============================================================================
+# H1 — Endogenic Development as Synthesis
+# =============================================================================
+
+- id: czarnecki2000
+  type: book
+  title: "Generative Programming: Methods, Tools, and Applications"
+  authors:
+    - "Krzysztof Czarnecki"
+    - "Ulrich W. Eisenecker"
+  year: 2000
+  publisher: "Addison-Wesley"
+  address: "Reading, MA"
+  url: "https://www.oreilly.com/library/view/generative-programming-methods/0201309777/"
+
+- id: fowler2010
+  type: book
+  title: "Domain-Specific Languages"
+  authors:
+    - "Martin Fowler"
+  year: 2010
+  publisher: "Addison-Wesley Professional"
+  address: "Upper Saddle River, NJ"
+  url: "https://martinfowler.com/books/dsl.html"
+
+# =============================================================================
+# H2 — Biological Metaphors as Precise Mappings
+# =============================================================================
+
+- id: turing1952
+  type: article
+  title: "The Chemical Basis of Morphogenesis"
+  authors:
+    - "Alan M. Turing"
+  year: 1952
+  venue: "Philosophical Transactions of the Royal Society of London. Series B, Biological Sciences"
+  volume: 237
+  issue: 641
+  pages: "37-72"
+  doi: "10.1098/rstb.1952.0012"
+  url: "https://royalsocietypublishing.org/doi/10.1098/rstb.1952.0012"
+
+- id: maturana1972
+  type: book
+  title: "Autopoiesis and Cognition: The Realization of the Living"
+  authors:
+    - "Humberto R. Maturana"
+    - "Francisco J. Varela"
+  year: 1980
+  publisher: "D. Reidel Publishing"
+  address: "Dordrecht, Netherlands"
+  url: "https://link.springer.com/book/10.1007/978-94-009-8947-4"
+
+- id: lindenmayer1968
+  type: article
+  title: "Mathematical Models for Cellular Interactions in Development, Parts I and II"
+  authors:
+    - "Aristid Lindenmayer"
+  year: 1968
+  venue: "Journal of Theoretical Biology"
+  volume: 18
+  issue: 3
+  pages: "280-315"
+  doi: "10.1016/0022-5193(68)90079-9"
+
+- id: kauffman1993
+  type: book
+  title: "The Origins of Order: Self-Organization and Selection in Evolution"
+  authors:
+    - "Stuart A. Kauffman"
+  year: 1993
+  publisher: "Oxford University Press"
+  address: "New York, NY"
+  url: "https://global.oup.com/academic/product/the-origins-of-order-9780195079517"
+
+# =============================================================================
+# H3 — Augmentive Partnership vs. Autonomous Agency
+# =============================================================================
+
+- id: bush1945
+  type: web
+  title: "As We May Think"
+  authors:
+    - "Vannevar Bush"
+  year: 1945
+  venue: "The Atlantic Monthly"
+  url: "https://www.theatlantic.com/magazine/archive/1945/07/as-we-may-think/303881/"
+  retrieved: "2026-03-07"
+
+- id: engelbart1962
+  type: techreport
+  title: "Augmenting Human Intellect: A Conceptual Framework"
+  authors:
+    - "Douglas C. Engelbart"
+  year: 1962
+  venue: "SRI Summary Report AFOSR-3223, Stanford Research Institute"
+  url: "https://www.dougengelbart.org/content/view/138"
+  retrieved: "2026-03-07"
+
+# =============================================================================
+# H4 — Encode-Before-Act Substrate Pattern
+# =============================================================================
+
+- id: knuth1984
+  type: article
+  title: "Literate Programming"
+  authors:
+    - "Donald E. Knuth"
+  year: 1984
+  venue: "The Computer Journal"
+  volume: 27
+  issue: 2
+  pages: "97-111"
+  doi: "10.1093/comjnl/27.2.97"
+  url: "https://academic.oup.com/comjnl/article/27/2/97/315610"
+
+- id: martraire2019
+  type: book
+  title: "Living Documentation: Continuous Knowledge Sharing by Design"
+  authors:
+    - "Cyrille Martraire"
+  year: 2019
+  publisher: "Addison-Wesley Professional"
+  address: "Upper Saddle River, NJ"
+  url: "https://www.informit.com/store/living-documentation-continuous-knowledge-sharing-by-9780134689326"
+
+- id: adzic2011
+  type: book
+  title: "Specification by Example: How Successful Teams Deliver the Right Software"
+  authors:
+    - "Gojko Adzic"
+  year: 2011
+  publisher: "Manning Publications"
+  address: "Shelter Island, NY"
+  url: "https://www.manning.com/books/specification-by-example"
+
+- id: nygard2011
+  type: web
+  title: "Documenting Architecture Decisions"
+  authors:
+    - "Michael Nygard"
+  year: 2011
+  venue: "Blog post"
+  url: "https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions"
+  retrieved: "2026-03-07"
+
+# =============================================================================
+# Cross-Cutting — Pattern Catalog and Methodology
+# =============================================================================
+
+- id: alexander1977
+  type: book
+  title: "A Pattern Language: Towns, Buildings, Construction"
+  authors:
+    - "Christopher Alexander"
+    - "Sara Ishikawa"
+    - "Murray Silverstein"
+  year: 1977
+  publisher: "Oxford University Press"
+  address: "New York, NY"
+
+- id: nonaka1995
+  type: book
+  title: "The Knowledge-Creating Company: How Japanese Companies Create the Dynamics of Innovation"
+  authors:
+    - "Ikujiro Nonaka"
+    - "Hirotaka Takeuchi"
+  year: 1995
+  publisher: "Oxford University Press"
+  address: "New York, NY"
+
+- id: boyd1986
+  type: techreport
+  title: "Patterns of Conflict"
+  authors:
+    - "John R. Boyd"
+  year: 1986
+  venue: "Unpublished briefing slides, US Air Force"
+  url: "https://www.projectwhitehorse.com/pdfs/boyd/patterns_of_conflict.pdf"
+  retrieved: "2026-03-07"
+
+- id: jennings2000
+  type: article
+  title: "On Agent-Based Software Engineering"
+  authors:
+    - "Nicholas R. Jennings"
+  year: 2000
+  venue: "Artificial Intelligence"
+  volume: 117
+  issue: 2
+  pages: "277-296"
+  doi: "10.1016/S0004-3702(99)00107-1"
+
+- id: brooks1986
+  type: inproceedings
+  title: "A Robust Layered Control System for a Mobile Robot"
+  authors:
+    - "Rodney A. Brooks"
+  year: 1986
+  venue: "IEEE Journal on Robotics and Automation"
+  volume: 2
+  issue: 1
+  pages: "14-23"
+  doi: "10.1109/JRA.1986.1087032"
