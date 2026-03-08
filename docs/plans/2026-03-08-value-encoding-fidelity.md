@@ -89,6 +89,169 @@ This phase is the **measurement baseline** for the entire milestone. Its finding
 
 **Review gate**: Research Reviewer validates synthesis quality per D4 standard.
 
+### Phase 2 Detailed Checklist
+
+**Issue**: #85 | **Branch**: `research/context-window-budget` (off `feat/value-encoding-fidelity`)
+
+---
+
+#### Step 1 — Branch Setup
+**Owner: Executive Orchestrator**
+
+- [ ] Ensure `feat/value-encoding-fidelity` is up to date: `git fetch origin && git checkout feat/value-encoding-fidelity && git pull`
+- [ ] Create branch: `git checkout -b research/context-window-budget`
+- [ ] Push branch: `git push -u origin research/context-window-budget`
+- [ ] Verify: `git branch -vv` confirms tracking remote
+
+---
+
+#### Step 2 — Pre-Flight Source Cache Warm
+**Owner: Executive Orchestrator → Research Scout**
+
+- [ ] Warm cache: `uv run python scripts/fetch_all_sources.py`
+- [ ] Check priority URLs before fetching (re-fetching cached sources wastes tokens):
+
+| URL to survey | Topic |
+|---|---|
+| Anthropic prompt caching docs | Instruction caching strategies |
+| LangChain context management guide | Retrieval-augmented governance |
+| `tiktoken` library docs (OpenAI/PyPI) | Token measurement methodology |
+| Lilian Weng "Prompt Engineering" (lilianweng.github.io) | Instruction compression patterns |
+| `docs/research/values-encoding.md` (endogenous) | Pattern 7, R2 — retrieval-augmented governance |
+
+- [ ] Read `.cache/sources/` listing post-warm: confirm ≥ 3 relevant sources cached before Scout begins
+
+---
+
+#### Step 3 — Scratchpad Init
+**Owner: Executive Orchestrator**
+
+- [ ] Run: `uv run python scripts/prune_scratchpad.py --init`
+- [ ] Confirm active scratchpad at `.tmp/research-context-window-budget/2026-03-08.md`
+- [ ] Write `## Session Start` with governing axiom (Endogenous-First) and primary endogenous source (`docs/research/values-encoding.md`)
+
+---
+
+#### Step 4 — Research Delegation Brief to Executive Researcher
+**Owner: Executive Orchestrator (hands off to Executive Researcher)**
+
+Delegate with this scope:
+
+> **Research question**: How do we prevent instruction volume from saturating the session context window while preserving full fidelity of encoded values?
+>
+> **Hypotheses to validate** (structured verdict blocks required):
+> - Q1: Instruction context fraction in a typical Executive Orchestrator session exceeds 30% of usable context
+> - Q2: Adherence measurably degrades above a measurable instruction-to-task ratio
+> - Q3: Retrieval-augmented governance (Pattern 7 from `values-encoding.md`) yields the best cost/impact ratio among: compression / retrieval / extraction / pruning
+>
+> **Cross-references required** (read before writing):
+> - `docs/research/values-encoding.md` §3 Pattern 7 and §4 R2
+> - Issues #14 (AIGNE AFS), #13 (episodic memory), #75 (handoff drift), #80 (queryable docs), #79 (skills-as-decision), #82 (neuroplasticity)
+>
+> **Exclusions**: Do not modify MANIFESTO.md, AGENTS.md, or any agent file. Research-read and synthesis-write only.
+
+---
+
+#### Step 5 — Research Scout Survey
+**Owner: Research Scout (under Executive Researcher)**
+
+- [ ] Survey the pre-warmed cache and fetch any missing priority sources
+- [ ] Measure token counts for instruction layers using tiktoken methodology:
+  - `AGENTS.md` alone
+  - Executive Orchestrator system prompt (estimated)
+  - Full session context at a typical mid-session state
+- [ ] Return compressed handoff (≤ 2,000 tokens) to scratchpad under `## Scout Output`
+
+---
+
+#### Step 6 — Synthesizer Produces D4 Document
+**Owner: Research Synthesizer**
+
+**Target file**: `docs/research/context-budget-balance.md`
+
+**Required D4 frontmatter**:
+```yaml
+---
+title: "Context Window Budget — Research Synthesis"
+status: Draft
+---
+```
+
+**Required section outline**:
+```
+# Context Window Budget — Research Synthesis
+## 1. Executive Summary
+## 2. Hypothesis Validation
+  ### Q1 — Instruction Fraction Baseline   (Verdict: CONFIRMED/REFUTED/INCONCLUSIVE/DEFERRED)
+  ### Q2 — Adherence Degradation Threshold (Verdict: …)
+  ### Q3 — Intervention Cost/Impact Ranking (Verdict: …)
+## 3. Pattern Catalog   (≥ 3 patterns; each: Name, Evidence, Endogenous applicability)
+## 4. Recommendations  (Ranked R1–R4; each: Action, Cost, Impact, Depends-on issue)
+## 5. Sources
+```
+
+**Cross-reference requirement**: ≥ 1 explicit reference to `../../MANIFESTO.md` or `../../AGENTS.md` before closing `## 4. Recommendations`.
+
+---
+
+#### Step 7 — Policy Document Draft
+**Owner: Research Synthesizer (same pass as D4 doc)**
+
+**Target file**: `docs/context_budget_target.md`
+
+**Required schema**: status header, Tiers table (T1 Instruction / T2 Session / T3 Output / T4 Reserve with budget ceilings derived from D1 baseline), Intervention Triggers table, Derivation section referencing synthesis, Related Issues list (#85, #80, #13).
+
+---
+
+#### Step 8 — Reviewer Validation Gate
+**Owner: Research Reviewer**
+
+- [ ] Run: `uv run python scripts/validate_synthesis.py docs/research/context-budget-balance.md` (must exit 0)
+- [ ] YAML frontmatter has `title` and `status`; all five required headings present in order
+- [ ] ≥ 3 hypothesis verdicts recorded; ≥ 1 MANIFESTO/AGENTS cross-reference
+- [ ] Update `status: Draft` → `status: Final` after checklist passes
+- [ ] Record Reviewer verdict in scratchpad under `## Reviewer Verdict`
+
+---
+
+#### Step 9 — Commit Sequence
+**Owner: Research Archivist**
+
+```bash
+git add docs/research/context-budget-balance.md docs/research/sources/
+git commit -m "docs(research): add context-budget-balance synthesis — status: Final
+
+Closes #85. D4 synthesis: D1 baseline, D2 threshold, D3 ranked interventions.
+Refs #14, #13, #75, #80, #79, #82"
+
+git add docs/context_budget_target.md
+git commit -m "docs: add context_budget_target.md policy draft"
+
+git push origin research/context-window-budget
+```
+
+---
+
+#### Step 10 — Workplan Update & Issue Close
+**Owner: Research Archivist**
+
+- [ ] Mark Phase 2 gate deliverables `[x]` in this workplan
+- [ ] Write close comment to temp file and post: `gh issue comment 85 --body-file /tmp/issue-85-close.md`
+- [ ] Close: `gh issue close 85` then verify: `gh issue view 85`
+
+---
+
+#### Acceptance Criteria Summary
+
+| Deliverable | Path | Status check |
+|---|---|---|
+| D1 baseline | §2 Q1 in synthesis | Reviewer verdict |
+| D2 threshold | §2 Q2 in synthesis | Reviewer verdict |
+| D3 recommendations | §4 in synthesis | `validate_synthesis.py` exit 0 |
+| D4 synthesis doc | `docs/research/context-budget-balance.md` | `status: Final` in frontmatter |
+| D5 policy draft | `docs/context_budget_target.md` | Committed on branch |
+| CI | branch CI | `gh run list --limit 3` all green before PR |
+
 ---
 
 ### Phase 3 — Encode the Four Forms
