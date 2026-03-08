@@ -25,16 +25,15 @@ Clarify the three-entity taxonomy of the VS Code customization stack — `AGENTS
 **Gate**: Phase 2 does not start until research doc committed and Status: Final
 **Status**: ✅ Complete — 2026-03-07
 
-### Phase 2 — Documentation Update ⬜
+### Phase 2 — Documentation Update ✅
 **Agent**: Executive Docs
 **Deliverables**:
-- `AGENTS.md`: updated taxonomy section with canonical names and boundary definitions
-- `docs/guides/agents.md`: updated to reflect clarified taxonomy
-- `.github/agents/AGENTS.md`: updated naming conventions
-- Terminology consistent across all three docs
+- `AGENTS.md`: six-layer chain + VS Code Customization Taxonomy table ✅
+- `docs/guides/agents.md`: six-layer chain updated ✅
+- `docs/decisions/ADR-006-agent-skills-adoption.md`: four→six layers updated ✅
 **Depends on**: Phase 1
 **Gate**: Phase 3 does not start until all three docs committed
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — 2026-03-07 (commit `39881c7`)
 
 ### Phase 3 — Fleet Audit ⬜
 **Agent**: Executive Fleet

@@ -5,7 +5,6 @@ tools:
   - search
   - read
   - edit
-  - web
   - changes
   - usages
 handoffs:

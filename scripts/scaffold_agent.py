@@ -76,6 +76,16 @@ handoffs:
     agent: {executive_hint}
     prompt: "Results are ready. Please review and decide on the next step."
     send: false
+
+# Optional governance fields — encode project milestone, effort, and status
+# Uncomment and fill in to track this agent's development lifecycle
+# tier: <Foundation|Wave 1|Wave 2|Adoption|Hardening>
+# effort: <s|m|l|xl>
+# status: <active|beta|deprecated|blocked>
+# area: <agents|scripts|docs|ci|tests|deps|research>
+# depends-on:
+#   - Review
+#   - GitHub
 ---
 
 ## Persona
@@ -91,11 +101,17 @@ You are the **{name}** for the EndogenAI Workflows project.
 ## Endogenous Sources — Read Before Acting
 
 <context>
-1. [`AGENTS.md`](../../AGENTS.md) — guiding constraints.
-2. [`docs/guides/`](../../docs/guides/) — existing formalized guides.
+1. [`AGENTS.md`](../../AGENTS.md) — guiding constraints and governance hierarchy.
+2. [`docs/guides/agents.md`](../../docs/guides/agents.md) — agent authoring discipline and issue linkage patterns.
 3. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting to avoid re-discovering context.
 
-<!-- TODO: Add any additional files this agent must read before acting. -->
+<!-- TODO: If this agent implements a GitHub issue, add it here:
+   - **Issue**: [#XX Name](https://github.com/EndogenAI/Workflows/issues/XX)
+   - **Milestone**: <Which phase>
+   - **Governing axiom**: <Which core axiom from MANIFESTO.md>
+-->
+
+<!-- TODO: Add any additional endogenous source files this agent must read. -->
 </context>
 
 ---

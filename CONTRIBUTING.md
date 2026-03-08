@@ -29,7 +29,19 @@ See [`MANIFESTO.md#the-three-core-axioms`](MANIFESTO.md#the-three-core-axioms) f
 
 ---
 
-## Development Environment Setup
+## Every Artifact Links to a Decision
+
+Before creating any agent, skill, or script, **create or reference the GitHub issue that defines it**. 
+
+The issue is the source of truth. Every artifact (`.agent.md`, `SKILL.md`, script) must encode:
+- A link to the defining GitHub issue (number and title)
+- The milestone it targets (from issue assignment)
+- The effort estimate and priority (from issue labels)
+- How it satisfies the issue's acceptance criteria
+
+See [`docs/guides/issue-and-artifact-discipline.md`](docs/guides/issue-and-artifact-discipline.md) for the complete discipline and validation checklist.
+
+---
 
 > **Start here if you're setting up a local dev environment for script development or testing.**
 

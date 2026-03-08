@@ -49,14 +49,39 @@ handoffs:                       # Required. At least one handoff per agent.
     agent: <Target agent name>  # Must match the `name` field of the target exactly.
     prompt: <Pre-filled prompt>
     send: false
+
+# Optional discipline fields — encode project governance and tracking
+tier: <Wave 1|Wave 2|Foundation|...>  # Milestone this agent targets/belongs to
+effort: <s|m|l|xl>                     # Effort to implement: small/medium/large/xlarge
+status: <active|beta|deprecated|blocked>  # Current status
+area: <agents|scripts|docs|ci|tests|deps|research>  # Codebase domain
+depends-on:                            # Other agents this agent requires/follows from
+  - <Agent Name>
 ---
 ```
+
+**Field requirements** (enforced by `validate_agent_files.py`):
+
+| Field | Required | Constraint |
+|-------|---------|----------|
+| `name` | Yes | Non-empty string |
+| `description` | Yes | ≤ 200 characters |
+| `tools` | Yes | Minimal set per posture |
+| `handoffs` | Yes | At least one route out |
+| `tier` | No | Maps to project milestone (for tracking) |
+| `effort` | No | Effort estimate: s/m/l/xl |
+| `status` | No | active/beta/deprecated/blocked |
+| `area` | No | One of: agents/scripts/docs/ci/tests/deps/research |
+| `depends-on` | No | List of agent `name` values |
 
 **Validation rules:**
 - `name` must be unique across all `.agent.md` files in this directory.
 - `description` must be one sentence, ≤ 200 characters.
 - Every `handoffs[].agent` value must match an existing agent's `name` field exactly.
+- Every `depends-on` agent must be defined in the fleet.
 - `tools` must be the **minimum** set required for the agent's posture (see below).
+
+**Discipline rule**: Every agent should encode a link to its defining GitHub issue (see "Endogenous Sources" section in agent body). The optional frontmatter fields (`tier`, `effort`, `status`, `area`) enable project management queries and milestone tracking without separate GitHub API calls.
 
 ---
 
@@ -206,6 +231,8 @@ Step-by-step process here.
 ---
 
 ## Naming Conventions
+
+**Canonical term**: Files in this directory are **custom agents** — the VS Code upstream term since v1.106 (previously "custom chat modes"). Use "custom agents" in all documentation; never "chat modes" or "personas" as a standalone term. The full three-primitive taxonomy (fleet constraints / custom agents / Agent Skills) is defined in the [root `AGENTS.md` → VS Code Customization Taxonomy](../../AGENTS.md#vs-code-customization-taxonomy) section.
 
 ### Convention Propagation Rule
 

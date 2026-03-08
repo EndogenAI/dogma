@@ -9,17 +9,33 @@ Typical workflow: **Plan → (approve) → Implement → (complete) → Review �
 
 ---
 
+## Milestone-Driven Agent Organization
+
+Agents are organized by **project milestone phase**, reflecting the Endogenic Development Methodology buildout:
+
+| Milestone | Purpose | Phase | Agents |
+|-----------|---------|-------|--------|
+| **Foundation: Endogenic Methodology** | Codify framework, research, strategy | Current | Executive Researcher fleet |
+| **Wave 1: Agent Fleet Tier A+B** | Specialist research + engineering agents | **Focus** | Tier A (6 research agents), Tier B (5 engineering agents), Skills agents |
+| **Wave 2: Agent Fleet Tier C+D** | Community + knowledge/governance agents | Planned | Tier C (3 community agents), Tier D (5 knowledge agents) |
+| **Adoption: Scripts & Tooling** | Onboarding wizards, developer tools | Planned | Executive Scripter, adoption agents |
+| **Hardening: Production Readiness** | Security, performance, CI gates | Queued | Security agents, CI Monitor, Test Coordinator |
+
+Each agent in the catalog below is tagged with its milestone (`tier:`) and effort estimate (`effort:`).
+
+---
+
 ## Research Agents
 
 Orchestrate research sessions from question to committed synthesis. The Executive Researcher drives the fleet using the expansion→contraction pattern.
 
-| Agent | File | Posture | Trigger | Handoffs |
-|-------|------|---------|---------|----------|
-| **Executive Researcher** | `executive-researcher.agent.md` | full | Start a research session; orchestrate Scout→Synthesizer→Reviewer→Archivist; spawn new area agents | Research Scout, Research Synthesizer, Research Reviewer, Research Archivist, Executive Docs, Review |
-| **Research Scout** | `research-scout.agent.md` | read + web | Gather and catalogue raw sources for a topic — no synthesis | Executive Researcher |
-| **Research Synthesizer** | `research-synthesizer.agent.md` | read + create | Transform Scout findings into a structured synthesis draft in `docs/research/` | Executive Researcher |
-| **Research Reviewer** | `research-reviewer.agent.md` | read-only | Validate synthesis drafts against methodology standards; flag gaps and unsupported claims | Executive Researcher |
-| **Research Archivist** | `research-archivist.agent.md` | read + create | Finalise approved drafts, commit to `docs/research/`, update issue | Review, Executive Researcher |
+| Agent | File | Posture | Tier | Effort | Trigger |
+|-------|------|---------|------|--------|----------|
+| **Executive Researcher** | `executive-researcher.agent.md` | full | Foundation | L | Start a research session; orchestrate Scout→Synthesizer→Reviewer→Archivist; spawn new area agents |
+| **Research Scout** | `research-scout.agent.md` | read + web | Foundation | M | Gather and catalogue raw sources for a topic — no synthesis |
+| **Research Synthesizer** | `research-synthesizer.agent.md` | read + create | Foundation | L | Transform Scout findings into a structured synthesis draft in `docs/research/` |
+| **Research Reviewer** | `research-reviewer.agent.md` | read-only | Foundation | M | Validate synthesis drafts against methodology standards; flag gaps and unsupported claims |
+| **Research Archivist** | `research-archivist.agent.md` | read + create | Foundation | S | Finalise approved drafts, commit to `docs/research/`, update issue |
 
 ---
 
@@ -27,9 +43,9 @@ Orchestrate research sessions from question to committed synthesis. The Executiv
 
 Maintain and evolve all project documentation — encoding dogmatic values and methodology across every documentation layer.
 
-| Agent | File | Posture | Trigger | Handoffs |
-|-------|------|---------|---------|----------|
-| **Executive Docs** | `executive-docs.agent.md` | read + create | Update guides, top-level docs, AGENTS.md, MANIFESTO.md; codify values across all documentation layers | Review, GitHub, Executive Researcher |
+| Agent | File | Posture | Tier | Effort | Trigger |
+|-------|------|---------|------|--------|----------|
+| **Executive Docs** | `executive-docs.agent.md` | read + create | Foundation | L | Update guides, top-level docs, AGENTS.md, MANIFESTO.md; codify values across all documentation layers |
 
 ---
 
@@ -37,10 +53,10 @@ Maintain and evolve all project documentation — encoding dogmatic values and m
 
 Enforce the programmatic-first principle — encode repeated tasks as scripts and non-agent automation before performing them a third time interactively.
 
-| Agent | File | Posture | Trigger | Handoffs |
-|-------|------|---------|---------|----------|
-| **Executive Scripter** | `executive-scripter.agent.md` | full | Identify tasks done >2 times interactively; audit `scripts/` for gaps; write or extend scripts | Review, GitHub, Executive Automator |
-| **Executive Automator** | `executive-automator.agent.md` | full | Design file watchers, pre-commit hooks, CI tasks, VS Code background tasks; first escalation for event-driven automation | Review, GitHub, Executive Scripter |
+| Agent | File | Posture | Tier | Effort | Trigger |
+|-------|------|---------|------|--------|----------|
+| **Executive Scripter** | `executive-scripter.agent.md` | full | Wave 1 | L | Identify tasks done >2 times interactively; audit `scripts/` for gaps; write or extend scripts |
+| **Executive Automator** | `executive-automator.agent.md` | full | Wave 1 | L | Design file watchers, pre-commit hooks, CI tasks, VS Code background tasks; first escalation for event-driven automation |
 
 ---
 
@@ -48,10 +64,10 @@ Enforce the programmatic-first principle — encode repeated tasks as scripts an
 
 Decompose and sequence complex multi-domain work before execution begins. Invoke these when a request spans multiple executive agents or requires explicit dependency ordering.
 
-| Agent | File | Posture | Trigger | Handoffs |
-|-------|------|---------|---------|----------|
-| **Executive Orchestrator** | `executive-orchestrator.agent.md` | full | Coordinate multi-workflow sessions spanning research, docs, scripting, and fleet changes — sequence executive agents and maintain session coherence | All executive agents, Review, GitHub |
-| **Executive Planner** | `executive-planner.agent.md` | read-only | Decompose complex multi-step requests into structured plans with phases, gates, agent assignments, and dependency ordering — before any execution | Executive Orchestrator |
+| Agent | File | Posture | Tier | Effort | Trigger |
+|-------|------|---------|------|--------|----------|
+| **Executive Orchestrator** | `executive-orchestrator.agent.md` | full | Foundation | XL | Coordinate multi-workflow sessions spanning research, docs, scripting, and fleet changes — sequence executive agents and maintain session coherence |
+| **Executive Planner** | `executive-planner.agent.md` | read-only | Foundation | L | Decompose complex multi-step requests into structured plans with phases, gates, agent assignments, and dependency ordering — before any execution |
 
 ---
 
@@ -59,9 +75,9 @@ Decompose and sequence complex multi-domain work before execution begins. Invoke
 
 Maintain the health and standards compliance of the agent fleet itself.
 
-| Agent | File | Posture | Trigger | Handoffs |
-|-------|------|---------|---------|----------|
-| **Executive Fleet** | `executive-fleet.agent.md` | full | Manage the agent fleet — create, audit, update, and deprecate `.agent.md` files and fleet documentation | Review, GitHub, Executive Docs |
+| Agent | File | Posture | Tier | Effort | Trigger |
+|-------|------|---------|------|--------|----------|
+| **Executive Fleet** | `executive-fleet.agent.md` | full | Wave 1 | L | Manage the agent fleet — create, audit, update, and deprecate `.agent.md` files and fleet documentation |
 
 ---
 
@@ -69,9 +85,9 @@ Maintain the health and standards compliance of the agent fleet itself.
 
 Maintain the health of the repository as an open-source resource.
 
-| Agent | File | Posture | Trigger | Handoffs |
-|-------|------|---------|---------|----------|
-| **Executive PM** | `executive-pm.agent.md` | full | Maintain issues, labels, milestones, changelog, contributing docs, and community health files following open-source best practices | Review, GitHub, Executive Docs, Executive Orchestrator |
+| Agent | File | Posture | Tier | Effort | Trigger |
+|-------|------|---------|------|--------|----------|
+| **Executive PM** | `executive-pm.agent.md` | full | Wave 1 | M | Maintain issues, labels, milestones, changelog, contributing docs, and community health files following open-source best practices |
 
 ---
 
@@ -79,9 +95,9 @@ Maintain the health of the repository as an open-source resource.
 
 Conduct lightweight, asynchronous user research using GitHub-native data sources.
 
-| Agent | File | Posture | Trigger | Handoffs |
-|-------|------|---------|---------|----------|
-| **User Researcher** | `user-researcher.agent.md` | read + create | Synthesize closed issues, PRs, and Discussions into JTBD summaries and friction reports — invoked quarterly or after >20 closed issues | Review, GitHub, Executive PM |
+| Agent | File | Posture | Tier | Effort | Trigger |
+|-------|------|---------|------|--------|----------|
+| **User Researcher** | `user-researcher.agent.md` | read + create | Wave 2 | M | Synthesize closed issues, PRs, and Discussions into JTBD summaries and friction reports — invoked quarterly or after >20 closed issues |
 
 ---
 
@@ -89,10 +105,10 @@ Conduct lightweight, asynchronous user research using GitHub-native data sources
 
 Cross-cutting agents used at the end of every workflow for quality gating and committing.
 
-| Agent | File | Posture | Trigger | Handoffs |
-|-------|------|---------|---------|----------|
-| **Review** | `review.agent.md` | read-only | Validate any changed files against AGENTS.md constraints before committing | GitHub, originating agent |
-| **GitHub** | `github.agent.md` | terminal | Commit approved changes to the current branch following Conventional Commits | Review |
+| Agent | File | Posture | Tier | Effort | Trigger |
+|-------|------|---------|------|--------|----------|
+| **Review** | `review.agent.md` | read-only | Foundation | S | Validate any changed files against AGENTS.md constraints before committing |
+| **GitHub** | `github.agent.md` | terminal | Foundation | S | Commit approved changes to the current branch following Conventional Commits |
 
 ---
 

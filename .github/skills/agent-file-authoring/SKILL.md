@@ -49,17 +49,78 @@ The `description` field should be a `|` block for multi-line content. It is cons
 
 ---
 
+## 2b. Optional Discipline Fields for Project Governance
+
+Every agent file **should** include optional frontmatter fields to track project governance and effort:
+
+```yaml
+---
+name: Executive PM
+description: Maintain issues, labels, milestones, and project hygiene...
+
+# Optional — encode project governance, milestone tracking, and effort
+tier: Wave 1                    # Milestone this agent targets/belongs to (Foundation|Wave 1|Wave 2|Adoption|Hardening)
+effort: M                       # Effort to implement: s/m/l/xl (small/medium/large/xlarge)
+status: active                  # Current status: active | beta | deprecated | blocked
+area: agents                    # Codebase domain: agents | scripts | docs | ci | tests | deps | research
+depends-on:                     # Other agents this agent requires/follows from
+  - Review
+  - GitHub
+---
+```
+
+**Why encode these fields?**
+
+| Field | Purpose | Example |
+|-------|---------|---------|
+| `tier` | Maps to project milestone; enables planning queries | `Wave 1: Agent Fleet Tier A+B` |
+| `effort` | Effort estimate for implementation | `xl` (large initiative), `s` (small script) |
+| `status` | Tracks lifecycle (active → beta → deprecated) | If issue #45 is blocked, agent status: `blocked` |
+| `area` | Enables filtering by codebase domain | `area: agents` vs `area: scripts` |
+| `depends-on` | Records agent dependency graph | Which agents must execute before this one |
+
+These fields are optional in syntax but **semantically required** for mature agent governance. Every agent should encode these values in its Endogenous Sources section (body), whether or not frontmatter is populated.
+
+**Discipline rule**: When an agent is created for a GitHub issue, encode:
+- The issue number and title in the Endogenous Sources section
+- The milestone (tier) in frontmatter or body
+- The effort estimate from the issue label (effort:s/m/l/xl)
+- The guiding axiom and acceptance criteria
+
+See [`.github/agents/README.md`](../README.md) for the milestone structure and [docs/guides/agents.md](../../docs/guides/agents.md) for issue linkage patterns.
+
+---
+
 ## 3. Required Sections
 
 CI fuzzy-matches for three required section types. Every agent file must contain at least one of each:
 
-| Category | Accepted heading variants |
-|----------|--------------------------|
-| Endogenous Sources | `Endogenous Sources`, `Sources`, `Reference`, `Context` |
-| Action | `Action`, `Workflow`, `Checklist`, `Conventions`, `Instructions`, `Steps` |
-| Quality-gate | `Quality-gate`, `Completion Criteria`, `Guardrails`, `Done When`, `Acceptance` |
+| Category | Accepted heading variants | Purpose |
+|----------|--------------------------|---------|
+| Endogenous Sources | `Endogenous Sources`, `Sources`, `Reference`, `Context` | Declare guiding axioms, link to defining GitHub issue, state acceptance criteria |
+| Action | `Action`, `Workflow`, `Checklist`, `Conventions`, `Instructions`, `Steps` | Define the agent's workflow and execution steps |
+| Quality-gate | `Quality-gate`, `Completion Criteria`, `Guardrails`, `Done When`, `Acceptance` | State what "completed" looks like per the defining issue |
 
 Use `## Endogenous Sources`, `## Workflow`, and `## Completion Criteria` as the canonical heading names unless you have a specific reason to deviate.
+
+**Discipline rule for Endogenous Sources section**: Always encode:
+1. The governing axiom from [`MANIFESTO.md`](../../MANIFESTO.md) this agent enacts
+2. Link to the GitHub issue number that defines this agent (e.g., `#62 Implement Remaining Agent Skills`)
+3. The milestone this agent targets (from Optional Discipline Fields above)
+4. A reference to the issue's acceptance criteria (see docs/guides/agents.md for example)
+
+**Example Endogenous Sources**:
+```markdown
+## Endogenous Sources
+
+This agent is defined by:
+- **Issue**: [#62 Implement Remaining Agent Skills](https://github.com/EndogenAI/Workflows/issues/62)
+- **Milestone**: Wave 1: Agent Fleet Tier A+B
+- **Governing axiom**: *Endogenous-First* (from [`MANIFESTO.md`](../../MANIFESTO.md))
+- **Acceptance criteria**: All deliverables in the linked issue checklist
+
+Read [`AGENTS.md`](../../AGENTS.md) and [`docs/guides/agents.md`](../../docs/guides/agents.md) before modifying this agent.
+```
 
 ---
 
@@ -156,7 +217,18 @@ The validator enforces:
 3. At least one cross-reference to `../../MANIFESTO.md` or `../../AGENTS.md`
 4. No heredoc patterns
 
-A file that fails validation will also fail CI. Fix all violations before committing.
+**Manual pre-commit checklist** (in addition to automated validation):
+
+- ✅ Agent frontmatter includes optional discipline fields (`tier`, `effort`, `status`, `area`, `depends-on`) where applicable
+- ✅ Endogenous Sources section references the defining GitHub issue number (e.g., `#62`)
+- ✅ Endogenous Sources section declares the governing axiom (one of the three core axioms from `MANIFESTO.md`)
+- ✅ Completion Criteria section mirrors the defining issue's acceptance checklist
+- ✅ All repo-root paths use `../../` prefix, not `../`
+- ✅ No heredoc write patterns in workflow steps
+- ✅ No orphaned URLs or dead links to internal docs
+- ✅ Every agent has at least one handoff to a downstream agent
+
+A file that fails validation or the manual checklist will also fail CI. Fix all violations before committing.
 
 ---
 

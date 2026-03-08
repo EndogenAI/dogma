@@ -81,14 +81,55 @@ The **takeback pattern** is recommended: each sub-agent returns control to the e
 
 ---
 
+## Linking Agents to Project Governance
+
+**Every agent should encode a reference to the GitHub issue it implements or the milestone it belongs to.** This creates an audit trail and ensures agent behavior stays aligned with project decisions.
+
+### In Frontmatter (Optional but Recommended)
+
+```yaml
+---
+name: Executive PM
+tier: Wave 1                    # Milestone this agent targets
+effort: M                       # Effort estimate to implement
+status: active                  # active | beta | deprecated | blocked
+area: agents                    # Codebase domain
+---
+```
+
+### In Endogenous Sources (Required)
+
+Always include:
+
+```markdown
+## Endogenous Sources
+
+This agent is defined by:
+- **Issue**: #62 (Implement Remaining Agent Skills) — use the issue number and title
+- **Milestone**: Wave 1: Agent Fleet Tier A+B
+- **Labels**: type:feature, priority:high, area:agents
+- **Acceptance criteria**: see the linked issue for completeness definition
+
+[Read `AGENTS.md` before modifying this agent](../../AGENTS.md)
+```
+
+**Why**: This encoding ensures developers know:
+1. Why the agent exists (the defining issue)
+2. What milestone phase it belongs to (planning visibility)
+3. What acceptance criteria define "done" (issue checklist)
+4. How to update the agent if requirements change (reference loop back to issue)
+
+---
+
 ## Authoring a New Agent
 
 Before creating a new agent:
 
 1. Check [`.github/agents/README.md`](../../.github/agents/README.md) — does an existing agent cover the need?
-2. Read [`.github/agents/AGENTS.md`](../../.github/agents/AGENTS.md) for the frontmatter schema and conventions
-3. Choose the minimum posture that fulfils the agent's role
-4. Follow the body structure: role statement → endogenous sources → workflow → guardrails
+2. Create or reference the GitHub issue that defines this agent's scope
+3. Read [`.github/agents/AGENTS.md`](../../.github/agents/AGENTS.md) for the frontmatter schema and conventions
+4. Choose the minimum posture that fulfils the agent's role
+5. Follow the body structure: role statement → endogenous sources → workflow → guardrails
 
 ### Minimum Viable Agent Template
 
@@ -129,6 +170,8 @@ You are the **My Agent** for the EndogenAI Workflows project.
 ## Agent Skills
 
 Skills are `SKILL.md` files stored in `.github/skills/<skill-name>/` and discovered automatically by GitHub Copilot. Only the `name` and `description` frontmatter (~100 tokens per skill) is loaded at startup; the full skill body loads only when a request matches its description. Skills sit at the tactical layer of the VS Code customization stack, beneath `.agent.md` files and above session behaviour.
+
+**For detailed skill authoring guidance**, see the [`skill-authoring` skill](../../.github/skills/skill-authoring/SKILL.md) — it parallels agent-file-authoring but documents the skill-specific YAML frontmatter (tier, type, effort, applies-to), relative path conventions (../../../ for skills vs ../../ for agents), and issue linkage patterns.
 
 For the full decision record, see [`docs/decisions/ADR-006-agent-skills-adoption.md`](../../docs/decisions/ADR-006-agent-skills-adoption.md).
 
