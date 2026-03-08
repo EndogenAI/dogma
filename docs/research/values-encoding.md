@@ -359,7 +359,7 @@ Form definitions (from Pattern 1, §3):
 | Minimal Posture | ✅ | ❌ | ❌ | ❌ |
 | Testing-First | ✅ | ✅ implicit | ❌ | ⚠️ |
 
-Notes: "implicit" = empirical basis note present but not in dedicated `**Canonical example**:` format. "⚠️" = partial gate (cross-reference to a guide or agent without a CI-enforced enforcement script).
+Notes: "implicit" = empirical basis note present but not in dedicated `**Canonical example**:` format. "⚠️" = partial gate (not automatically enforced in CI; may rely on guides, agents, or manually-invoked scripts rather than CI-wired checks).
 
 ### Priority-Ordered Gap List
 
