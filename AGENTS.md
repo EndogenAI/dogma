@@ -50,7 +50,8 @@ This is a constraint on the entire agent fleet, not an optional preference. More
 ### What This Means for Agents
 
 - **Check `scripts/` first** before performing a multi-step task interactively.
-- **At the start of any research session, pre-warm the source cache** — run `uv run python scripts/fetch_all_sources.py` to batch-fetch all URLs from `OPEN_RESEARCH.md` and existing research doc frontmatter. This is the **fetch-before-act** posture: populate locally, then research.
+- **At the start of any research session, pre-warm the source cache** — run `uv run python scripts/fetch_all_sources.py` (Orchestrator responsibility — run this before delegating to the Research fleet, not inside the Scout's delegation) to batch-fetch all URLs from `OPEN_RESEARCH.md` and existing research doc frontmatter. This is the **fetch-before-act** posture: populate locally, then research.
+  Check-before-fetch: run with `--check` flag on individual URLs before the Scout begins to eliminate redundant token burn during research delegation.
 - **Check `.cache/sources/` before fetching any individual URL** — use `uv run python scripts/fetch_source.py <url> --check` to see if a page is already cached as distilled Markdown. Re-fetching a cached source wastes tokens.
 - **Extend, don't duplicate** — if a script partially covers your need, extend it.
 - **Propose new scripts proactively** — if you perform an investigation or transformation that required significant context to execute, encapsulate it as a script and commit it so future sessions start with that knowledge encoded.
@@ -226,7 +227,7 @@ Rules:
 
 ### Focus-on-Descent / Compression-on-Ascent
 
-**Outbound delegation prompts should be narrow and task-scoped** — dispatch the minimum necessary context to complete the subagent's task. **Returned results should target ≤ 2,000 tokens** — subagents compress extensive exploration into a dense handoff; they do not return raw search histories or intermediate reasoning.
+**Outbound delegation prompts should be narrow and task-scoped** — dispatch the minimum necessary context to complete the subagent's task. **Returned results should target ≤ 2,000 tokens** — subagents compress extensive exploration into a dense handoff; they do not return raw search histories or intermediate reasoning. Both constraints serve the same purpose: preserving the main-session context window across a full multi-phase session — a broad outbound prompt and verbose return each consume context as if the work were done directly.
 
 ### Size Guard and Archive Convention
 
@@ -253,6 +254,16 @@ For any multi-phase session, create a **workplan** before execution begins and c
 - Acceptance criteria checklist
 
 **Commit** the workplan at the start of the session (before Phase 1 executes), then update status markers as phases complete. This creates an auditable plan history in git, separate from the ephemeral `.tmp/` scratchpad.
+
+The planning gate is also a **fleet coherence mechanism**: a committed workplan with per-phase detailed checklists gives every downstream execution agent (Scout, Synthesizer, Reviewer) a shared written specification to verify against — without the Orchestrator needing to re-explain scope at each handoff. Coherence emerges from the artifact, not from the Orchestrator's presence at every step.
+
+### Per-Phase Execution Checklists
+
+Before delegating any multi-step execution phase, the Orchestrator should delegate a detailed per-phase checklist to the **Executive Planner** first. The checklist becomes a shared written specification that every downstream execution agent independently verifies their output against — preventing interpretive drift without requiring the Orchestrator to re-explain scope at each handoff.
+
+- Workplan created → delegate checklist creation to Executive Planner
+- Checklist committed to scratchpad or workplan doc before Phase 1 begins
+- Each execution phase invocation references the checklist as its acceptance criteria
 
 ### Scope-Narrowing in Delegations
 
