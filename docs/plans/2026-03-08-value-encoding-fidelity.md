@@ -98,18 +98,18 @@ This phase is the **measurement baseline** for the entire milestone. Its finding
 #### Step 1 — Branch Setup
 **Owner: Executive Orchestrator**
 
-- [ ] Ensure `feat/value-encoding-fidelity` is up to date: `git fetch origin && git checkout feat/value-encoding-fidelity && git pull`
-- [ ] Create branch: `git checkout -b research/context-window-budget`
-- [ ] Push branch: `git push -u origin research/context-window-budget`
-- [ ] Verify: `git branch -vv` confirms tracking remote
+- [x] Ensure `feat/value-encoding-fidelity` is up to date: `git fetch origin && git checkout feat/value-encoding-fidelity && git pull`
+- [x] Create branch: `git checkout -b research/context-window-budget`
+- [x] Push branch: `git push -u origin research/context-window-budget`
+- [x] Verify: `git branch -vv` confirms tracking remote
 
 ---
 
 #### Step 2 — Pre-Flight Source Cache Warm
 **Owner: Executive Orchestrator → Research Scout**
 
-- [ ] Warm cache: `uv run python scripts/fetch_all_sources.py`
-- [ ] Check priority URLs before fetching (re-fetching cached sources wastes tokens):
+- [x] Warm cache: `uv run python scripts/fetch_all_sources.py`
+- [x] Check priority URLs before fetching (re-fetching cached sources wastes tokens):
 
 | URL to survey | Topic |
 |---|---|
@@ -119,16 +119,16 @@ This phase is the **measurement baseline** for the entire milestone. Its finding
 | Lilian Weng "Prompt Engineering" (lilianweng.github.io) | Instruction compression patterns |
 | `docs/research/values-encoding.md` (endogenous) | Pattern 7, R2 — retrieval-augmented governance |
 
-- [ ] Read `.cache/sources/` listing post-warm: confirm ≥ 3 relevant sources cached before Scout begins
+- [x] Read `.cache/sources/` listing post-warm: confirm ≥ 3 relevant sources cached before Scout begins
 
 ---
 
 #### Step 3 — Scratchpad Init
 **Owner: Executive Orchestrator**
 
-- [ ] Run: `uv run python scripts/prune_scratchpad.py --init`
-- [ ] Confirm active scratchpad at `.tmp/research-context-window-budget/2026-03-08.md`
-- [ ] Write `## Session Start` with governing axiom (Endogenous-First) and primary endogenous source (`docs/research/values-encoding.md`)
+- [x] Run: `uv run python scripts/prune_scratchpad.py --init`
+- [x] Confirm active scratchpad at `.tmp/research-context-window-budget/2026-03-08.md`
+- [x] Write `## Session Start` with governing axiom (Endogenous-First) and primary endogenous source (`docs/research/values-encoding.md`)
 
 ---
 
@@ -155,12 +155,12 @@ Delegate with this scope:
 #### Step 5 — Research Scout Survey
 **Owner: Research Scout (under Executive Researcher)**
 
-- [ ] Survey the pre-warmed cache and fetch any missing priority sources
-- [ ] Measure token counts for instruction layers using tiktoken methodology:
+- [x] Survey the pre-warmed cache and fetch any missing priority sources
+- [x] Measure token counts for instruction layers using tiktoken methodology:
   - `AGENTS.md` alone
   - Executive Orchestrator system prompt (estimated)
   - Full session context at a typical mid-session state
-- [ ] Return compressed handoff (≤ 2,000 tokens) to scratchpad under `## Scout Output`
+- [x] Return compressed handoff (≤ 2,000 tokens) to scratchpad under `## Scout Output`
 
 ---
 
@@ -206,11 +206,11 @@ status: Draft
 #### Step 8 — Reviewer Validation Gate
 **Owner: Research Reviewer**
 
-- [ ] Run: `uv run python scripts/validate_synthesis.py docs/research/context-budget-balance.md` (must exit 0)
-- [ ] YAML frontmatter has `title` and `status`; all five required headings present in order
-- [ ] ≥ 3 hypothesis verdicts recorded; ≥ 1 MANIFESTO/AGENTS cross-reference
-- [ ] Update `status: Draft` → `status: Final` after checklist passes
-- [ ] Record Reviewer verdict in scratchpad under `## Reviewer Verdict`
+- [x] Run: `uv run python scripts/validate_synthesis.py docs/research/context-budget-balance.md` (must exit 0)
+- [x] YAML frontmatter has `title` and `status`; all five required headings present in order
+- [x] ≥ 3 hypothesis verdicts recorded; ≥ 1 MANIFESTO/AGENTS cross-reference
+- [x] Update `status: Draft` → `status: Final` after checklist passes
+- [x] Record Reviewer verdict in scratchpad under `## Reviewer Verdict`
 
 ---
 
@@ -235,9 +235,9 @@ git push origin research/context-window-budget
 #### Step 10 — Workplan Update & Issue Close
 **Owner: Research Archivist**
 
-- [ ] Mark Phase 2 gate deliverables `[x]` in this workplan
-- [ ] Write close comment to temp file and post: `gh issue comment 85 --body-file /tmp/issue-85-close.md`
-- [ ] Close: `gh issue close 85` then verify: `gh issue view 85`
+- [x] Mark Phase 2 gate deliverables `[x]` in this workplan
+- [x] Write close comment to temp file and post: `gh issue comment 85 --body-file /tmp/issue-85-close.md`
+- [x] Close: `gh issue close 85` then verify: `gh issue view 85`
 
 ---
 
