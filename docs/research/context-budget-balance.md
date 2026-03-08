@@ -157,12 +157,12 @@ These recommendations are ordered by implementable cost/impact ratio (R1 is high
 
 ## 5. Sources
 
-### Cached Sources (`.cache/sources/`)
+### Sources
 
-- [`anthropic-com-engineering-effective-context-engineering-for-.md`](../../.cache/sources/anthropic-com-engineering-effective-context-engineering-for-.md) — Anthropic Applied AI team: "Context Engineering for AI Agents." Covers compaction, structured note-taking, sub-agent architectures, and the "just in time" retrieval pattern. Primary source for Q2 degradation threshold and Pattern B (Progressive Disclosure).
-- [`arxiv-context-engineering-survey.md`](../../.cache/sources/arxiv-context-engineering-survey.md) — Mei et al. (2025) "A Survey of Context Engineering for Large Language Models" (arXiv:2507.13334). Survey of 1,400+ papers; identifies the fundamental asymmetry between long-context understanding and generation. Source for Q2 confirmation and Pattern A framing.
-- [`lilianweng-github-io-posts-2023-03-15-prompt-engineering.md`](../../.cache/sources/lilianweng-github-io-posts-2023-03-15-prompt-engineering.md) — Lilian Weng: "Prompt Engineering." Context for few-shot, chain-of-thought, and system prompt architecture tradeoffs.
-- [`docs-anthropic-com-en-docs-build-with-claude-prompt-caching.md`](../../.cache/sources/docs-anthropic-com-en-docs-build-with-claude-prompt-caching.md) — Anthropic prompt caching documentation. Relevant to T1 instruction caching as a retrieval-cost mitigation.
+- [`anthropic-com-engineering-effective-context-engineering-for-.md`](sources/anthropic-com-engineering-effective-context-engineering-for-.md) — Anthropic Applied AI team: "Context Engineering for AI Agents." Covers compaction, structured note-taking, sub-agent architectures, and the "just in time" retrieval pattern. Primary source for Q2 degradation threshold and Pattern B (Progressive Disclosure).
+- [`arxiv-context-engineering-survey.md`](sources/arxiv-context-engineering-survey.md) — Mei et al. (2025) "A Survey of Context Engineering for Large Language Models" (arXiv:2507.13334). Survey of 1,400+ papers; identifies the fundamental asymmetry between long-context understanding and generation. Source for Q2 confirmation and Pattern A framing.
+- [`lilianweng-github-io-posts-2023-03-15-prompt-engineering.md`](sources/lilianweng-github-io-posts-2023-03-15-prompt-engineering.md) — Lilian Weng: "Prompt Engineering." Context for few-shot, chain-of-thought, and system prompt architecture tradeoffs.
+- [`docs-anthropic-com-en-docs-build-with-claude-prompt-caching.md`](sources/docs-anthropic-com-en-docs-build-with-claude-prompt-caching.md) — Anthropic prompt caching documentation. Relevant to T1 instruction caching as a retrieval-cost mitigation.
 
 ### Endogenous Sources
 

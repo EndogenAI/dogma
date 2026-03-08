@@ -51,7 +51,7 @@ This is a constraint on the entire agent fleet, not an optional preference. More
 
 - **Check `scripts/` first** before performing a multi-step task interactively.
 - **At the start of any research session, pre-warm the source cache** — run `uv run python scripts/fetch_all_sources.py` (Orchestrator responsibility — run this before delegating to the Research fleet, not inside the Scout's delegation) to batch-fetch all URLs from `OPEN_RESEARCH.md` and existing research doc frontmatter. This is the **fetch-before-act** posture: populate locally, then research.
-  Check-before-fetch: run with `--check` flag on individual URLs before the Scout begins to eliminate redundant token burn during research delegation.
+  Check-before-fetch: run `uv run python scripts/fetch_source.py <url> --check` on individual URLs before the Scout begins to eliminate redundant token burn during research delegation.
 - **Check `.cache/sources/` before fetching any individual URL** — use `uv run python scripts/fetch_source.py <url> --check` to see if a page is already cached as distilled Markdown. Re-fetching a cached source wastes tokens.
 - **Extend, don't duplicate** — if a script partially covers your need, extend it.
 - **Propose new scripts proactively** — if you perform an investigation or transformation that required significant context to execute, encapsulate it as a script and commit it so future sessions start with that knowledge encoded.
