@@ -33,6 +33,7 @@ You are **read-only and advisory** — you flag issues, recommend remediation, a
 4. [`.github/workflows/`](../../.github/workflows/) — CI matrix; Python version and OS matrix.
 5. [`docs/toolchain/uv.md`](../../docs/toolchain/uv.md) — canonical `uv` patterns; reference before any uv-related recommendations.
 6. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting.
+7. [`AGENTS.md`](../../AGENTS.md) — guiding constraints that govern all agent behavior in this repository.
 
 </context>
 

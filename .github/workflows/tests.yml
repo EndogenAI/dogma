@@ -78,6 +78,12 @@ jobs:
             uv run python3 scripts/validate_synthesis.py "$f"
           done
 
+      - name: Run validate_agent_files
+        run: |
+          for f in .github/agents/*.agent.md; do
+            uv run python3 scripts/validate_agent_files.py "$f"
+          done
+
       - name: Run ruff format (check)
         run: uv run ruff format --check scripts/ tests/
 
