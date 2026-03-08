@@ -167,8 +167,13 @@ Do not batch delegations. One phase at a time.
 1. Prune the scratchpad if it exceeds 200 lines: `uv run python scripts/prune_scratchpad.py`
 2. Write a `## Pre-Compact Checkpoint` to the scratchpad capturing: what is complete, what is next, any open questions.
 3. Commit all in-progress changes: `git add -A && git commit -m "chore: pre-compact checkpoint — Phase N complete"`
-4. Invoke **Review** agent: pass the changed file list and the scratchpad location. Wait for APPROVED verdict.
-5. If the completed phase was a long research, synthesis, or multi-file editing delegation — recommend running `/compact` before delegating the next phase.
+4. **Pre-review grep sweep** — before requesting Copilot review, scan for known erroneous patterns in changed files:
+   ```bash
+   grep -r "Phase N Review Output\|Fetch-before-check" .github/ 2>/dev/null && echo "ERROR: known pattern violations found — fix before requesting review" || echo "grep sweep clean"
+   ```
+   If any matches are found, fix them before invoking the Review agent. This prevents multi-round review cycles caused by residual heading-contract or label-ordering violations.
+5. Invoke **Review** agent: pass the changed file list and the scratchpad location. Wait for APPROVED verdict.
+6. If the completed phase was a long research, synthesis, or multi-file editing delegation — recommend running `/compact` before delegating the next phase.
 
 After any `/compact` event: always re-read the scratchpad and workplan from disk before continuing (see Step 1).
 

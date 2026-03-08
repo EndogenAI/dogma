@@ -622,3 +622,17 @@ class TestFetchBeforeCheckAndPhaseNReview:
         skill_file.write_text(content, encoding="utf-8")
         errors = vaf.validate_skill_file(skill_file)
         assert any("Phase N Review Output" in e for e in errors)
+
+    @pytest.mark.io
+    def test_fetch_before_check_in_grep_context_not_flagged(self, tmp_path):
+        """A line using grep to *detect* 'Fetch-before-check' must NOT be flagged."""
+        content = (
+            "---\nname: A\ndescription: B\n---\n\n"
+            "## Endogenous Sources\n\n## Workflow\n\n"
+            "## Completion Criteria\n\nReferences AGENTS.md.\n\n"
+            "## Guardrails\n\n"
+            '- Run: `grep -r "Fetch-before-check" .github/` to detect violations.\n'
+        )
+        f = _make_agent_file(tmp_path, content)
+        passed, failures = vaf.validate(f)
+        assert passed is True, f"Should pass but got: {failures}"

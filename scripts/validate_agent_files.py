@@ -104,6 +104,10 @@ _FRONTMATTER_RE = re.compile(r"^---\n(.*?)\n---", re.DOTALL)
 # Pattern for the incorrect 'Fetch-before-check' label ordering.
 _FETCH_BEFORE_CHECK_PATTERN = re.compile(r"fetch-before-check", re.IGNORECASE)
 
+# Negation words for Fetch-before-check check: includes 'grep' so detection
+# patterns (e.g. grep-sweep examples) do not trigger a false positive.
+_FETCH_BEFORE_CHECK_NEGATIONS = frozenset(_HEREDOC_NEGATIONS | {"grep"})
+
 # Pattern for the incorrect '## Phase N Review Output' heading.
 _PHASE_N_REVIEW_RE = re.compile(r"##\s+Phase\s+N\s+Review\s+Output", re.IGNORECASE)
 
@@ -237,7 +241,7 @@ def validate(file_path: Path) -> tuple[bool, list[str]]:
     for line in text.splitlines():
         if _FETCH_BEFORE_CHECK_PATTERN.search(line):
             lower = line.lower()
-            if not any(neg in lower for neg in _HEREDOC_NEGATIONS):
+            if not any(neg in lower for neg in _FETCH_BEFORE_CHECK_NEGATIONS):
                 failures.append(
                     "Guardrail label ordering error: 'Fetch-before-check' found — correct label is "
                     "'Check-before-fetch' (check cache first, then fetch only if absent)"
