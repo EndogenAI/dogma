@@ -20,8 +20,9 @@ Checks:
 
 Inputs:
     [file ...]    One or more .agent.md files to validate.  (positional, optional)
-    --all         Scan every *.agent.md in .github/agents/ (excluding AGENTS.md
-                  and README.md).
+    --all         Scan every *.agent.md in .github/agents/ AND every SKILL.md
+                  in .github/skills/*/SKILL.md.
+    --skills      Scan every SKILL.md in .github/skills/*/SKILL.md.
     --strict      Reserved for future use — currently a no-op flag.
 
 Outputs:
@@ -38,6 +39,9 @@ Usage examples:
 
     # Validate all agent files in .github/agents/
     uv run python scripts/validate_agent_files.py --all
+
+    # Validate all SKILL.md files in .github/skills/
+    uv run python scripts/validate_agent_files.py --skills
 
     # Integrate into CI (non-zero exit blocks the job)
     for f in .github/agents/*.agent.md; do
@@ -57,6 +61,15 @@ from pathlib import Path
 # ---------------------------------------------------------------------------
 
 AGENTS_DIR = Path(".github/agents")
+SKILLS_DIR = Path(".github/skills")
+
+# --- Skill-specific validation constants ---
+_SKILL_NAME_RE = re.compile(r"^[a-z][a-z0-9-]*[a-z0-9]$")
+_CONSECUTIVE_HYPHENS_RE = re.compile(r"--")
+SKILL_NAME_MAX_LEN = 64
+SKILL_DESCRIPTION_MIN_LEN = 10
+SKILL_DESCRIPTION_MAX_LEN = 1024
+SKILL_BODY_MIN_LEN = 100
 
 # YAML frontmatter fields that must be present and non-empty in every agent file.
 REQUIRED_FRONTMATTER: list[str] = ["name", "description"]
@@ -99,7 +112,10 @@ def parse_frontmatter(text: str) -> dict[str, str]:
     for line in match.group(1).splitlines():
         if ":" in line and not line.strip().startswith("-"):
             key, _, val = line.partition(":")
-            fm[key.strip()] = val.strip()
+            v = val.strip()
+            if len(v) >= 2 and v[0] in ('"', "'") and v[0] == v[-1]:
+                v = v[1:-1]
+            fm[key.strip()] = v
     return fm
 
 
@@ -111,6 +127,44 @@ def extract_headings(text: str) -> list[str]:
         body_start = fm_match.end()
     body = text[body_start:]
     return [line.rstrip() for line in body.splitlines() if line.startswith("## ")]
+
+
+def _extract_body(text: str) -> str:
+    """Return the document body after the frontmatter block."""
+    fm_match = _FRONTMATTER_RE.match(text)
+    return text[fm_match.end() :] if fm_match else text
+
+
+def _get_frontmatter_value(text: str, key: str) -> str:
+    """Return the full string value of *key* from YAML frontmatter.
+
+    Handles both inline scalars and block scalars (the ``|`` indicator).
+    An inline value is returned as-is; a block scalar's lines are joined
+    with a single space after stripping per-line whitespace.
+    """
+    fm_match = _FRONTMATTER_RE.match(text)
+    if not fm_match:
+        return ""
+    lines = fm_match.group(1).splitlines()
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+        if not stripped.startswith(f"{key}:"):
+            continue
+        after_colon = stripped[len(key) + 1 :].strip()
+        if after_colon and after_colon not in ("|", "|-", "|+"):
+            # Strip surrounding single/double quotes from inline scalars
+            if len(after_colon) >= 2 and after_colon[0] in ('"', "'") and after_colon[0] == after_colon[-1]:
+                return after_colon[1:-1]
+            return after_colon  # inline scalar
+        if after_colon in ("|", "|-", "|+"):
+            # Collect indented block-scalar continuation lines
+            block: list[str] = []
+            for nxt in lines[i + 1 :]:
+                if nxt and not nxt[0].isspace():
+                    break
+                block.append(nxt.strip())
+            return " ".join(filter(None, block)).strip()
+    return ""
 
 
 # ---------------------------------------------------------------------------
@@ -173,6 +227,88 @@ def validate(file_path: Path) -> tuple[bool, list[str]]:
     return passed, failures
 
 
+def validate_skill_file(path: Path) -> list[str]:
+    """Validate a SKILL.md file for encoding fidelity.
+
+    Returns a list of error strings; an empty list means all checks passed.
+    Checks applied:
+      1. YAML frontmatter present.
+      2. Required fields: ``name`` and ``description``.
+      3. Name format: ``^[a-z][a-z0-9-]*[a-z0-9]$``, max 64 chars, no ``--``.
+      4. Name matches parent directory name.
+      5. Description length: ≥10 and ≤1024 chars.
+      6. Cross-reference density: body contains ≥1 ref to AGENTS.md or MANIFESTO.md.
+      7. Minimum body length: ≥100 chars (after frontmatter).
+    """
+    errors: list[str] = []
+
+    if not path.exists():
+        return [f"File not found: {path}"]
+    if not path.is_file():
+        return [f"Path is not a file: {path}"]
+
+    text = path.read_text(encoding="utf-8")
+
+    # Check 1: frontmatter present
+    fm = parse_frontmatter(text)
+    if not fm:
+        errors.append("No YAML frontmatter found (expected --- block at top of file)")
+        return errors  # remaining checks require frontmatter
+
+    # Check 2: required fields
+    name_val = _get_frontmatter_value(text, "name")
+    desc_val = _get_frontmatter_value(text, "description")
+
+    if not name_val:
+        errors.append("Missing or empty frontmatter field: 'name'")
+    if not desc_val:
+        errors.append("Missing or empty frontmatter field: 'description'")
+
+    # Check 3: name format (only if name is present)
+    if name_val:
+        if len(name_val) > SKILL_NAME_MAX_LEN:
+            errors.append(f"Frontmatter 'name' exceeds {SKILL_NAME_MAX_LEN} characters (got {len(name_val)})")
+        if not _SKILL_NAME_RE.match(name_val):
+            errors.append(
+                f"Frontmatter 'name' must match ^[a-z][a-z0-9-]*[a-z0-9]$ "
+                f"(lowercase kebab-case, no leading/trailing hyphens): {name_val!r}"
+            )
+        elif _CONSECUTIVE_HYPHENS_RE.search(name_val):
+            errors.append(f"Frontmatter 'name' must not contain consecutive hyphens: {name_val!r}")
+
+        # Check 4: name matches parent directory
+        parent_dir = path.parent.name
+        if name_val != parent_dir:
+            errors.append(f"Frontmatter 'name' ({name_val!r}) must match the parent directory name ({parent_dir!r})")
+
+    # Check 5: description length
+    if desc_val:
+        desc_len = len(desc_val)
+        if desc_len < SKILL_DESCRIPTION_MIN_LEN:
+            errors.append(
+                f"Frontmatter 'description' is too short ({desc_len} chars, minimum {SKILL_DESCRIPTION_MIN_LEN})"
+            )
+        if desc_len > SKILL_DESCRIPTION_MAX_LEN:
+            errors.append(
+                f"Frontmatter 'description' is too long ({desc_len} chars, maximum {SKILL_DESCRIPTION_MAX_LEN})"
+            )
+
+    # Check 6: cross-reference density (body only)
+    body = _extract_body(text)
+    if not _CROSSREF_RE.search(body):
+        errors.append(
+            "Cross-reference density too low: no back-reference to MANIFESTO.md or AGENTS.md "
+            "found in body (add at least one link to maintain encoding fidelity)"
+        )
+
+    # Check 7: minimum body length
+    body_stripped = body.strip()
+    if len(body_stripped) < SKILL_BODY_MIN_LEN:
+        errors.append(f"Body is too short ({len(body_stripped)} chars after frontmatter, minimum {SKILL_BODY_MIN_LEN})")
+
+    return errors
+
+
 # ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
@@ -180,20 +316,26 @@ def validate(file_path: Path) -> tuple[bool, list[str]]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Validate agent files for encoding fidelity.",
+        description="Validate agent and skill files for encoding fidelity.",
         epilog="Exit 0 = all pass. Exit 1 = one or more checks failed.",
     )
     parser.add_argument(
         "files",
         nargs="*",
         metavar="file",
-        help="One or more .agent.md files to validate.",
+        help="One or more .agent.md or SKILL.md files to validate.",
     )
     parser.add_argument(
         "--all",
         action="store_true",
         dest="scan_all",
-        help=f"Scan every *.agent.md in {AGENTS_DIR}/ (excluding AGENTS.md and README.md).",
+        help=(f"Scan every *.agent.md in {AGENTS_DIR}/ AND every SKILL.md in {SKILLS_DIR}/*/SKILL.md."),
+    )
+    parser.add_argument(
+        "--skills",
+        action="store_true",
+        dest="scan_skills",
+        help=f"Scan every SKILL.md in {SKILLS_DIR}/*/SKILL.md.",
     )
     parser.add_argument(
         "--strict",
@@ -202,23 +344,34 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    targets: list[Path] = []
+    agent_targets: list[Path] = []
+    skill_targets: list[Path] = []
 
     if args.scan_all:
-        targets = [p for p in sorted(AGENTS_DIR.glob("*.agent.md"))]
+        agent_targets = sorted(AGENTS_DIR.glob("*.agent.md"))
+        skill_targets = sorted(SKILLS_DIR.glob("*/SKILL.md"))
+    elif args.scan_skills:
+        skill_targets = sorted(SKILLS_DIR.glob("*/SKILL.md"))
     elif args.files:
-        targets = [Path(f) for f in args.files]
+        for f in args.files:
+            p = Path(f)
+            if p.name == "SKILL.md":
+                skill_targets.append(p)
+            else:
+                agent_targets.append(p)
     else:
         parser.print_help()
         sys.exit(0)
 
-    if not targets:
-        print(f"No agent files found in {AGENTS_DIR}/ — nothing to validate.")
+    total = len(agent_targets) + len(skill_targets)
+    if total == 0:
+        print("No files found — nothing to validate.")
         sys.exit(0)
 
     overall_pass = True
     failed_count = 0
-    for file_path in targets:
+
+    for file_path in agent_targets:
         passed, failures = validate(file_path)
         if passed:
             print(f"PASS  {file_path}")
@@ -229,11 +382,22 @@ def main() -> None:
             for msg in failures:
                 print(f"      • {msg}")
 
+    for file_path in skill_targets:
+        errors = validate_skill_file(file_path)
+        if not errors:
+            print(f"PASS  {file_path}")
+        else:
+            overall_pass = False
+            failed_count += 1
+            print(f"FAIL  {file_path}")
+            for msg in errors:
+                print(f"      • {msg}")
+
     print()
     if overall_pass:
-        print(f"All {len(targets)} agent file(s) passed.")
+        print(f"All {total} file(s) passed.")
     else:
-        print(f"{failed_count} of {len(targets)} agent file(s) failed.")
+        print(f"{failed_count} of {total} file(s) failed.")
         sys.exit(1)
 
 

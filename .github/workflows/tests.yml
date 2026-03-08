@@ -84,6 +84,12 @@ jobs:
             uv run python3 scripts/validate_agent_files.py "$f"
           done
 
+      - name: Run validate_agent_files (skills)
+        run: |
+          if compgen -G ".github/skills/*/SKILL.md" > /dev/null 2>&1; then
+            uv run python3 scripts/validate_agent_files.py --skills
+          fi
+
       - name: Run ruff format (check)
         run: uv run ruff format --check scripts/ tests/
 

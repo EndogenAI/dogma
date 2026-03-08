@@ -1,6 +1,6 @@
 # Endogenic Development Manifesto
 
-> We are not vibe coding. We are pioneering **endogenic / agentic product design and development**.
+> We are not vibe coding. We are pioneering **Endogenic Development Methodology** — a complete design framework for AI-assisted systems.
 
 > *"If I have seen further, it is by standing on the shoulders of giants."* — Attributed to Isaac Newton (and before him, many others)
 
@@ -8,9 +8,9 @@
 
 ## What Is Endogenic Development?
 
-Endogenic development is the practice of building AI-assisted systems from the inside out — while **standing on the shoulders of giants**.
+Endogenic Development is a methodology for building AI-assisted systems — agents, scripts, documentation, and knowledge infrastructure — from the inside out, while **standing on the shoulders of giants**.
 
-Rather than prompting an agent from zero context and hoping for the best — the "vibe coding" anti-pattern — endogenic development:
+Rather than building each capability in isolation and hoping an AI agent will figure out your conventions — the "vibe coding" anti-pattern — Endogenic Development:
 
 - **Encodes knowledge as DNA** 🧬: scripts, agent files, schemas, and seed documents that persist across sessions. Like DNA, this is both blueprint and inheritance — what the system reads to inform every action, and what it passes forward to future sessions.
 - **Grows from a seed** 🌱: every new capability scaffolds from what the system already knows about itself *and* from the best of existing external practices. A seed contains everything needed to grow; it just needs the right environment.
@@ -21,9 +21,9 @@ Rather than prompting an agent from zero context and hoping for the best — the
 
 The name comes from biology: an endogenous process is one that originates from within the organism. Like all living systems, our endogenic substrate is built from inherited knowledge (standing on giants' shoulders) and continuous synthesis of external wisdom (tools, frameworks, best practices). We grow from within, but we do not grow alone.
 
-**Intellectual heritage**: Endogenic development synthesizes several established traditions: Engelbart's augmentation framework (1962) supplies the Augmentive Partnership principle; Turing's morphogenesis (1952) and Maturana & Varela's autopoiesis (1972) supply the biological substrate metaphors; Knuth's literate programming (1984) and Martraire's living documentation (2019) supply the encode-once-reuse-many strategy; and Alexander's Pattern Language (1977) supplies the interconnected-principles architecture. The endogenic contribution is the synthesis of these traditions specifically for AI-assisted development, where LLM agents re-read the encoded substrate to orient each new session. See [`docs/research/methodology-review.md`](docs/research/methodology-review.md) for the full prior art survey.
+**Intellectual heritage**: Endogenic Development Methodology synthesizes several established traditions: Engelbart's augmentation framework (1962) supplies the Augmentive Partnership principle; Turing's morphogenesis (1952) and Maturana & Varela's autopoiesis (1972) supply the biological substrate metaphors; Knuth's literate programming (1984) and Martraire's living documentation (2019) supply the encode-once-reuse-many strategy; and Alexander's Pattern Language (1977) supplies the interconnected-principles architecture. The endogenic contribution is the synthesis of these traditions specifically for AI-assisted development across all domains, where LLM agents, scripts, and automation re-read the encoded substrate to orient each new session. See [`docs/research/methodology-review.md`](docs/research/methodology-review.md) for the full prior art survey.
 
-For a deeper exploration of these metaphors and how they guide all endogenous practice, see [`docs/guides/mental-models.md`](docs/guides/mental-models.md).
+For a deeper exploration of these metaphors and how they guide all endogenous practice, see [`docs/guides/mental-models.md`](docs/guides/mental-models.md). To see how these principles apply in a concrete organizational context — with Custom Agents as Roles and SKILL.md files as reusable Techniques — read the restaurant analogy in that same guide.
 
 ### The Balance: Inside Out, Not Inside Only
 
@@ -32,7 +32,7 @@ Endogenic development is **not isolationism**. The distinction is:
 | Vibe Coding | Endogenic Development |
 |-------------|----------------------|
 | No persistent context — re-discovers everything each session | Encodes context as committed artifacts |
-| No conventions — each prompt is freeform | Governed by documented conventions agents read before acting |
+| No conventions — each prompt is freeform | Governed by documented conventions read before acting |
 | Ignores external best practices | Researches, synthesizes, and integrates external practices into the encoded substrate |
 | Output is ephemeral | Output is committed, reviewed, and grows the system |
 | Depends entirely on the LLM's prior training | Combines LLM capability with project-specific encoded knowledge |
@@ -71,7 +71,7 @@ This document is a **constitution**, not a guidebook — it defines what kind of
 
 **Anti-patterns are canonical veto rules**: If a proposed action matches a stated anti-pattern, reject it — regardless of whether a cross-cutting principle appears to permit it. Anti-patterns are the most resilient encoding form; they survive paraphrasing and drift.
 
-**Encoding hierarchy**: MANIFESTO.md → AGENTS.md → agent files → session prompts. Each layer is a re-encoding of the layer above. When layers appear to conflict, the higher layer governs. When an AGENTS.md is silent on a topic, derive behavior from MANIFESTO.md.
+**Encoding hierarchy**: MANIFESTO.md → AGENTS.md → agent files → SKILL.md files → session prompts. Each layer is a re-encoding of the layer above. When layers appear to conflict, the higher layer governs. When an AGENTS.md is silent on a topic, derive behavior from MANIFESTO.md.
 
 For the evidence base underpinning this hermeneutical frame, see [`docs/research/values-encoding.md`](docs/research/values-encoding.md).
 

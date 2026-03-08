@@ -12,7 +12,7 @@ These constraints govern all agent behavior. They derive from three core axioms 
 2. **Algorithms Before Tokens** — prefer deterministic, encoded solutions over interactive token burn
 3. **Local Compute-First** — minimize token usage; run locally whenever possible
 
-**Encoding Inheritance Chain**: Values flow through four layers — `MANIFESTO.md` (foundational axioms) → `AGENTS.md` (operational constraints) → agent files (specific implementation) → session prompts (enacted behavior). Each layer is a re-encoding of the layer above it. Agents must minimise lossy re-encoding: prefer direct quotation or explicit citation over paraphrase when invoking a foundational principle. Cross-reference density (back-references to `MANIFESTO.md` in your output) is a proxy for encoding fidelity. Low density signals likely drift. See [`docs/research/values-encoding.md`](docs/research/values-encoding.md) for the cross-sectoral evidence base.
+**Encoding Inheritance Chain**: Values flow through six layers — `MANIFESTO.md` (foundational axioms) → `AGENTS.md` (operational constraints) → subdirectory `AGENTS.md` files (narrowing constraints for specific scopes) → role files (`.agent.md`; VS Code: Custom Agents) → `SKILL.md` files (reusable tactical knowledge) → session prompts (enacted behavior). Each layer is a re-encoding of the layer above it. Agents must minimise lossy re-encoding: prefer direct quotation or explicit citation over paraphrase when invoking a foundational principle. Cross-reference density (back-references to `MANIFESTO.md` in your output) is a proxy for encoding fidelity. Low density signals likely drift. See [`docs/research/values-encoding.md`](docs/research/values-encoding.md) for the cross-sectoral evidence base.
 
 **Session-Start Encoding Checkpoint**: At the start of every session, the first sentence of `## Session Start` in the scratchpad must name the governing axiom and one primary endogenous source. See [`docs/guides/session-management.md` → Session-Start Encoding Checkpoint](docs/guides/session-management.md#session-start-encoding-checkpoint) for format and examples.
 
@@ -363,6 +363,18 @@ When proceeding under ambiguity, **document the assumption inline** (code commen
 
 See [`.github/agents/README.md`](.github/agents/README.md) for the full agent catalog.
 
+### VS Code Customization Taxonomy
+
+The three first-class primitives in this repository's customization stack:
+
+| Primitive | File Format | Encodes | Decision Rule |
+|-----------|------------|---------|---------------|
+| Fleet constraints | `AGENTS.md` files | *What all agents must do* — universal behaviours, guardrails, operational conventions | Use for any constraint that would appear identically in every agent file |
+| **Roles** | `.agent.md` in `.github/agents/` (VS Code: Custom Agents) | *Who does a task* — role-specific persona, posture, tool restrictions, endogenous sources, handoff graph | Use for anything exclusively about a single agent's identity and capabilities |
+| **Agent Skills** | `SKILL.md` in `.github/skills/<name>/` | *How a task is done* — reusable workflow procedures loadable on demand | Use when a procedure could benefit more than one agent or AI tool without needing a specific agent's posture |
+
+**Boundary decision rule**: Content belongs in a role file (`.agent.md`) when it is exclusively about that agent's role. Content belongs in a `SKILL.md` when it describes how a task is performed and at least one other agent or tool could benefit from it. If the same procedure appears in two agent bodies, extract it to a skill before writing a third copy (Programmatic-First applied to instruction prose). See `docs/research/agent-taxonomy.md` for the full decision tree.
+
 Key agents for this repo:
 
 | Agent | Trigger |
@@ -373,6 +385,28 @@ Key agents for this repo:
 | **Executive Automator** | Design file watchers, pre-commit hooks, CI tasks |
 | **Review** | Validate any changed files against AGENTS.md constraints before committing |
 | **GitHub** | Commit approved changes following Conventional Commits |
+
+### Agent Skills
+
+Skills are `SKILL.md` files at `.github/skills/<skill-name>/SKILL.md`. **Agents encode *who does a task*; skills encode *how a task is done*.** If a procedure is needed by more than one agent or AI tool, it belongs in a skill — not an agent body.
+
+**Encoding inheritance chain** — six layers:
+
+```
+MANIFESTO.md → AGENTS.md → subdirectory AGENTS.md files → .agent.md files → SKILL.md files → session behaviour
+```
+
+Every `SKILL.md` body **must reference this file (`AGENTS.md`) as its governing constraint** — cite the governing axiom in the first substantive section.
+
+**CI validation** — run before committing any `.github/skills/` change:
+
+```bash
+uv run python scripts/validate_agent_files.py --skills
+```
+
+CI enforces this check on every PR that touches `.github/skills/`.
+
+For full authoring guidance, see [`docs/guides/agents.md`](docs/guides/agents.md#agent-skills). For the formal decision, see [`docs/decisions/ADR-006-agent-skills-adoption.md`](docs/decisions/ADR-006-agent-skills-adoption.md).
 
 ---
 

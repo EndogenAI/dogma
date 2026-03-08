@@ -6,7 +6,7 @@ A guide to authoring, using, and extending the VS Code Copilot agent fleet.
 
 ## What Are Agents?
 
-VS Code Copilot custom agents (`.agent.md` files) are reusable, governed AI personas that appear in the Copilot Chat dropdown. Each agent:
+Roles (`.agent.md` files — VS Code: Custom Agents) are reusable, governed AI personas that appear in the Copilot Chat dropdown. Each agent:
 
 - Has a **defined scope and posture** (what it can do and what tools it can use)
 - Reads **endogenous sources** before acting (project docs, existing scripts, session scratchpad)
@@ -81,14 +81,55 @@ The **takeback pattern** is recommended: each sub-agent returns control to the e
 
 ---
 
+## Linking Agents to Project Governance
+
+**Every agent should encode a reference to the GitHub issue it implements or the milestone it belongs to.** This creates an audit trail and ensures agent behavior stays aligned with project decisions.
+
+### In Frontmatter (Optional but Recommended)
+
+```yaml
+---
+name: Executive PM
+tier: Wave 1                    # Milestone this agent targets
+effort: M                       # Effort estimate to implement
+status: active                  # active | beta | deprecated | blocked
+area: agents                    # Codebase domain
+---
+```
+
+### In Endogenous Sources (Required)
+
+Always include:
+
+```markdown
+## Endogenous Sources
+
+This agent is defined by:
+- **Issue**: #62 (Implement Remaining Agent Skills) — use the issue number and title
+- **Milestone**: Wave 1: Agent Fleet Tier A+B
+- **Labels**: type:feature, priority:high, area:agents
+- **Acceptance criteria**: see the linked issue for completeness definition
+
+[Read `AGENTS.md` before modifying this agent](../../AGENTS.md)
+```
+
+**Why**: This encoding ensures developers know:
+1. Why the agent exists (the defining issue)
+2. What milestone phase it belongs to (planning visibility)
+3. What acceptance criteria define "done" (issue checklist)
+4. How to update the agent if requirements change (reference loop back to issue)
+
+---
+
 ## Authoring a New Agent
 
 Before creating a new agent:
 
 1. Check [`.github/agents/README.md`](../../.github/agents/README.md) — does an existing agent cover the need?
-2. Read [`.github/agents/AGENTS.md`](../../.github/agents/AGENTS.md) for the frontmatter schema and conventions
-3. Choose the minimum posture that fulfils the agent's role
-4. Follow the body structure: role statement → endogenous sources → workflow → guardrails
+2. Create or reference the GitHub issue that defines this agent's scope
+3. Read [`.github/agents/AGENTS.md`](../../.github/agents/AGENTS.md) for the frontmatter schema and conventions
+4. Choose the minimum posture that fulfils the agent's role
+5. Follow the body structure: role statement → endogenous sources → workflow → guardrails
 
 ### Minimum Viable Agent Template
 
@@ -123,6 +164,91 @@ You are the **My Agent** for the EndogenAI Workflows project.
 - Never do X
 - Escalate to Y if Z
 ```
+
+---
+
+## Agent Skills
+
+Skills are `SKILL.md` files stored in `.github/skills/<skill-name>/` and discovered automatically by GitHub Copilot. Only the `name` and `description` frontmatter (~100 tokens per skill) is loaded at startup; the full skill body loads only when a request matches its description. Skills sit at the tactical layer of the VS Code customization stack, beneath `.agent.md` files and above session behaviour.
+
+**For detailed skill authoring guidance**, see the [`skill-authoring` skill](../../.github/skills/skill-authoring/SKILL.md) — it parallels agent-file-authoring but documents the skill-specific YAML frontmatter (tier, type, effort, applies-to), relative path conventions (../../../ for skills vs ../../ for agents), and issue linkage patterns.
+
+For the full decision record, see [`docs/decisions/ADR-006-agent-skills-adoption.md`](../../docs/decisions/ADR-006-agent-skills-adoption.md).
+
+### Skills vs Agents — Composition Rule
+
+**Agents encode *who does a task***; **skills encode *how a task is done***.
+
+| Primitive | Encodes | When to use |
+|-----------|---------|-------------|
+| `.agent.md` | Persona, posture, tool restrictions, handoff graph | Unique posture, handoff logic, or tool restriction is required |
+| `SKILL.md` | Workflow procedures, conventions, templates | The procedure is needed by more than one agent or AI tool |
+
+**Extraction test**: if a procedure in an agent body would benefit a *different* agent or AI tool without requiring that agent's posture or tool restrictions, it belongs in a skill. Do not extract a procedure until the agent body has been updated to reference the new skill.
+
+### File Structure
+
+```
+.github/skills/
+  <skill-name>/
+    SKILL.md          ← required
+    scripts/          ← optional: helper scripts referenced by the skill
+    examples/         ← optional: worked examples
+```
+
+The directory name must exactly match the `name` field in the frontmatter.
+
+### Frontmatter Fields
+
+**Required:**
+
+| Field | Constraint |
+|-------|------------|
+| `name` | Lowercase, hyphens only, max 64 chars; must match parent directory name |
+| `description` | Max 1024 chars; drives auto-loading — be precise |
+
+**Optional (VS Code Copilot only; degrade gracefully on other agents):**
+
+| Field | Use |
+|-------|-----|
+| `argument-hint` | Hints for the argument the skill accepts |
+| `user-invocable` | `true` to allow direct user invocation via `/skill-name` |
+| `disable-model-invocation` | `true` to prevent automatic loading; user must invoke explicitly |
+
+### Encoding Inheritance and AGENTS.md Requirement
+
+Skills extend the encoding inheritance chain to six layers (subdirectory `AGENTS.md` files are the fourth tier):
+
+```
+MANIFESTO.md              ← foundational axioms
+AGENTS.md (root)          ← operational constraints
+AGENTS.md (subdirectory)  ← narrowing constraints (docs/, .github/agents/)
+.agent.md files           ← Roles (VS Code: Custom Agents)
+SKILL.md files            ← reusable tactical knowledge
+session behaviour         ← enacted output
+```
+
+Every `SKILL.md` body **must reference [`AGENTS.md`](../../AGENTS.md) as its governing constraint**. This anchors skills to the encoding inheritance chain and makes fidelity auditable via CI. The governing axiom citation must appear in the first substantive section of the body.
+
+### Existing Skills
+
+| Skill | Description |
+|-------|-------------|
+| [`session-management`](../../.github/skills/session-management/SKILL.md) | Full session lifecycle: scratchpad init/close, encoding checkpoints, session-start/end procedure |
+| [`deep-research-sprint`](../../.github/skills/deep-research-sprint/SKILL.md) | Research sprint orchestration: Scout → Synthesizer → Reviewer → Archivist pipeline |
+| [`conventional-commit`](../../.github/skills/conventional-commit/SKILL.md) | Conventional Commits format + endogenic commit discipline for this repository |
+
+### CI Validation
+
+Run before committing any `.github/skills/` change:
+
+```bash
+uv run python scripts/validate_agent_files.py --skills
+# or validate everything at once:
+uv run python scripts/validate_agent_files.py --all
+```
+
+CI enforces this check on every PR that touches `.github/skills/`.
 
 ---
 

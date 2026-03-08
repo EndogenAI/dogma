@@ -19,7 +19,7 @@ scripts/
   fetch_all_sources.py         # Batch-fetch all URLs from OPEN_RESEARCH.md + research doc frontmatter
   link_source_stubs.py         # Populate ## Referenced By sections in per-source stubs (bidirectional link graph)
   validate_synthesis.py        # Quality gate for D3/D4 synthesis documents — run before any Archivist commit (exit 0 = pass, 1 = fail)
-  validate_agent_files.py      # Encoding fidelity gate for .agent.md files — 4 checks (frontmatter, sections, cross-refs, heredocs); run in CI
+  validate_agent_files.py      # Encoding fidelity gate for .agent.md AND SKILL.md files — agent (4 checks) + skill (7 checks); --skills flag; run in CI
   migrate_agent_xml.py         # Bulk-migrate .agent.md body sections to hybrid Markdown + XML format (--dry-run safe)
   pr_review_reply.py           # Post replies to PR inline review comments and resolve threads (--reply-to, --resolve, --batch)
   seed_labels.py               # Idempotent GitHub label seeder — reads data/labels.yml and syncs via gh label create --force (--dry-run, --delete-legacy)
@@ -549,15 +549,24 @@ uv run python scripts/validate_synthesis.py "$FILE" || exit 1
 
 ## scripts/validate_agent_files.py
 
-**Purpose**: Programmatic encoding-fidelity gate for `.agent.md` files in `.github/agents/`.
-Equivalent to `validate_synthesis.py` but for agent files — prevents encoding drift
-in the MANIFESTO → AGENTS.md → agent files → session prompts inheritance chain.
+**Purpose**: Programmatic encoding-fidelity gate for `.agent.md` files in `.github/agents/`
+and `SKILL.md` files in `.github/skills/`. Prevents encoding drift in the
+MANIFESTO → AGENTS.md → agent files / skill files → session prompts inheritance chain.
 
-**Checks (4)**:
+**Agent file checks (4)**:
 1. Valid YAML frontmatter with required fields: `name`, `description`
 2. Required section headings present: Endogenous Sources, an Action section (Workflow/Checklist/Scope/Methodology), and a Quality-gate section (Completion Criteria or Guardrails)
 3. At least one back-reference to `MANIFESTO.md` or `AGENTS.md` (cross-reference density ≥ 1)
 4. No heredoc file writes (`cat >> ... << 'EOF'` patterns) outside negation context
+
+**SKILL.md checks (7)**:
+1. Valid YAML frontmatter present
+2. Required fields: `name`, `description`
+3. Name format: `^[a-z][a-z0-9-]*[a-z0-9]$`, max 64 chars, no consecutive hyphens
+4. `name` matches parent directory name
+5. Description length: ≥10 and ≤1024 chars (block scalars handled automatically)
+6. At least one back-reference to `AGENTS.md` or `MANIFESTO.md` in body
+7. Minimum body length: ≥100 chars after frontmatter
 
 **Usage**:
 
@@ -565,7 +574,16 @@ in the MANIFESTO → AGENTS.md → agent files → session prompts inheritance c
 # Validate a single agent file
 uv run python scripts/validate_agent_files.py .github/agents/executive-orchestrator.agent.md
 
+# Validate a single SKILL.md file
+uv run python scripts/validate_agent_files.py .github/skills/session-management/SKILL.md
+
 # Validate all agent files in .github/agents/
+uv run python scripts/validate_agent_files.py --all
+
+# Validate all SKILL.md files in .github/skills/
+uv run python scripts/validate_agent_files.py --skills
+
+# Validate both agent files AND SKILL.md files
 uv run python scripts/validate_agent_files.py --all
 
 # In CI (non-zero exit blocks the job)

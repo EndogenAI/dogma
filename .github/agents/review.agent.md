@@ -30,7 +30,7 @@ You are **read-only**. You do not edit files. You flag issues and hand off to ei
 
 1. [`AGENTS.md`](../../AGENTS.md) — the primary checklist for all reviews.
 2. [`MANIFESTO.md`](../../MANIFESTO.md) — core values; any change that dilutes a stated value is a blocker.
-3. [`.github/agents/AGENTS.md`](.github/agents/AGENTS.md) — for agent file reviews: frontmatter schema, naming, posture, handoff graph.
+3. [`.github/agents/AGENTS.md`](./AGENTS.md) — for agent file reviews: frontmatter schema, naming, posture, handoff graph.
 4. [`scripts/README.md`](../../scripts/README.md) — for script reviews: catalog coverage, conventions.
 5. [`docs/research/testing-tools-and-frameworks.md`](../../docs/research/testing-tools-and-frameworks.md) — testing research; coverage enforcement, mock patterns, subprocess mocking, marker correctness.
 

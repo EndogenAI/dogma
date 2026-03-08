@@ -1,9 +1,9 @@
 ---
-title: "Endogenic Agent Design: A Four-Layer Framework for AI Agent Fleets Grounded in Software Engineering Tradition and Biological Self-Organisation"
+title: "Endogenic Development Methodology: A Four-Layer Framework for AI-Assisted System Design Grounded in Software Engineering Tradition and Biological Self-Organisation"
 status: Draft
 ---
 
-# Endogenic Agent Design: A Four-Layer Framework for AI Agent Fleets Grounded in Software Engineering Tradition and Biological Self-Organisation
+# Endogenic Development Methodology: A Four-Layer Framework for AI-Assisted System Design Grounded in Software Engineering Tradition and Biological Self-Organisation
 
 **Authors**: EndogenAI Research Team
 **Venue**: [Target: ACM CHI / CSCW / FSE — TBD]
@@ -11,64 +11,72 @@ status: Draft
 
 ## Executive Summary
 
-EndogenAI is the first operationalised AI agent design framework to connect a fifty-year
+EndogenAI is the first operationalised development methodology to connect a fifty-year
 software engineering documentation tradition — literate programming → Architecture Decision
-Records → living documentation — directly to a session-initialization discipline for AI coding
-agents, grounded in biological self-organisation theory and Engelbart's augmentation paradigm.
-The composite four-hypothesis architecture (CS design lineage H4, encode-before-act H1,
-augmentive partnership H3, morphogenetic fleet design H2) constitutes a prescriptive,
-CI-enforced operational framework with no identified precedent in the academic literature.
+Records → living documentation — directly to a session-initialization discipline for AI-assisted
+work across all domains (agents, scripting, documentation, knowledge management), grounded in
+biological self-organisation theory and Engelbart's augmentation paradigm. The composite
+four-hypothesis architecture (CS design lineage H4, encode-before-act H1, augmentive partnership
+H3, morphogenetic system design H2) constitutes a prescriptive, CI-enforced operational
+framework with no identified precedent in the academic literature.
 
 ## Abstract
 
-AI agent systems for software development have proliferated rapidly, yet the methodological
-principles governing how agents should be designed, initialized, and maintained lack formal
+AI-assisted systems for software development have proliferated rapidly, yet the methodological
+principles governing how such systems should be designed, initialized, and maintained lack formal
 treatment. Most frameworks address runtime behaviour — prompt chaining, tool selection, memory
-retrieval — while neglecting the design-time question: what structured knowledge should agents
-receive before they act, and how should that knowledge be authored, validated, and sustained
-over time?
+retrieval — while neglecting the design-time question: what structured knowledge should a
+system receive before it acts, and how should that knowledge be authored, validated, and sustained
+over time? This question applies equally to agent fleets, scripting automation, documentation
+practices, and knowledge management infrastructure.
 
-We present EndogenAI: a prescriptive operational framework for multi-agent coding fleets built
-on a four-hypothesis architecture spanning four distinct theoretical traditions. The framework's
-central claim is the *encode-before-act* principle: before issuing any action token, an agent
-must be initialized from a pre-authored structured knowledge base rather than reconstructing
-context interactively from session history.
+We present Endogenic Development Methodology: a prescriptive operational framework built
+on a four-hypothesis architecture spanning four distinct theoretical traditions. The methodology's
+central claim is the *encode-before-act* principle: before issuing any action token, any system
+component — whether an agent, script, or human practitioner — must be initialized from a
+pre-authored structured knowledge base rather than reconstructing context interactively from
+session history. This paper demonstrates the methodology by applying it to multi-agent coding
+fleets, and describes its broader applicability across scripting, documentation, and knowledge
+management domains.
 
 Our primary contribution (C1) is the identification of a traceable intellectual lineage —
 Knuth's literate programming (1984) → Nygard's Architecture Decision Records (2011) →
 Martraire's living documentation (2019) → the AGENTS.md / CLAUDE.md artifact class used in
-contemporary AI agent workflows. This chain has not been previously identified or published;
-drawing it establishes AI agent context files as the most recent expression of a fifty-year
-software engineering principle: human-readable specification asserts temporal and epistemic
-priority over executable behaviour. We further contribute (C2) a four-hypothesis architecture
-— CS design lineage (H4), encode-before-act discipline (H1), augmentive partnership (H3), and
-morphogenetic fleet design (H2) — in which each hypothesis both requires and explains at least
-one other, forming a mutually reinforcing structure whose composite novelty exceeds the sum
-of its parts. We introduce (C3) four cross-hypothesis design patterns that are actionable
-engineering principles derived from the architecture, and provide (C4) an operational
-implementation with CI-enforced validation gates, scaffold scripts, and named fleet roles.
+contemporary AI workflows. This chain has not been previously identified or published; drawing it
+establishes AI agent context files as the most recent expression of a fifty-year software
+engineering principle: human-readable specification asserts temporal and epistemic priority over
+executable behaviour. We further contribute (C2) a four-hypothesis architecture — CS design
+lineage (H4), encode-before-act discipline (H1), augmentive partnership (H3), and morphogenetic
+system design (H2) — in which each hypothesis both requires and explains at least one other,
+forming a mutually reinforcing structure whose composite novelty exceeds the sum of its parts.
+We introduce (C3) four cross-hypothesis design patterns that are actionable engineering principles
+derived from the architecture, and provide (C4) an operational implementation with CI-enforced
+validation gates, scaffold scripts, and named roles demonstrating applicability across agent
+fleets, scripting automation, and documentation workflows.
 
 A four-sprint research investigation grounded these claims against the closest prior art from
 context engineering, augmentation theory, multi-agent systems dynamics, and the CS
 documentation tradition. Novelty verdicts range from Partially Novel (H1–H3) to Novel (H4);
-H4 is the strongest single contribution and the correct anchoring point for the framework's
+H4 is the strongest single contribution and the correct anchoring point for the methodology's
 CS legitimation claim.
 
 ## 1. Introduction
 
-The design of effective multi-agent systems for software engineering has emerged as a central
-challenge in applied AI research. While considerable work addresses what agents should *do*
-during execution — tool selection, chain-of-thought reasoning, and memory retrieval — far less
-attention has been paid to how agents should be *designed* and *initialized* before the first
-action token is issued. The question is not merely practical; it is structural. An agent that
-begins each session by reconstructing its operating context, conventions, and role constraints
-from interaction history is fundamentally different from one initialized from a structured,
-pre-authored knowledge base. The former burns tokens on rediscovery; the latter begins from a
-principled specification.
+The design of effective AI-assisted systems for software development has emerged as a central
+challenge in applied AI research. While considerable work addresses what systems should *do*
+during execution — prompt chaining, tool selection, chain-of-thought reasoning, memory retrieval
+— far less attention has been paid to how systems should be *designed* and *initialized* before
+the first action token is issued. This design-time question applies across multiple domains:
+multi-agent fleets, automation scripting, documentation practices, and knowledge management
+infrastructure. Yet the underlying principle is the same: what structured knowledge should a
+system receive before acting, and how should that knowledge be authored, validated, and sustained
+over time?
 
 We argue that this distinction — between reactive context reconstruction and principled
-pre-session initialization — is the central design question for AI coding agents, and that it
-has an answer grounded in a fifty-year tradition of software engineering thought.
+pre-session initialization — is the central design question for AI-assisted systems, and that it
+has an answer grounded in a fifty-year tradition of software engineering thought. This paper
+develops the methodology generally, then demonstrates its application to multi-agent coding
+fleets.
 
 Our motivating observation is that the AGENTS.md and CLAUDE.md files now appearing in
 AI-oriented repositories are, structurally, living documentation artifacts in the sense that
@@ -81,13 +89,16 @@ in 2011, and that Martraire synthesized into the living documentation paradigm i
 chain has not been identified as such in the published literature; drawing it is our primary
 contribution.
 
-The EndogenAI methodology operationalizes this insight as a complete design framework. It
-specifies not only the artifact class — AGENTS.md-style files, guides, workplans, and
+The Endogenic Development Methodology operationalizes this insight as a complete design framework.
+It specifies not only the artifact class — AGENTS.md-style files, guides, workplans, and
 Architecture Decision Records — but the behavioural discipline (encode-before-act: read the
-specification before any action), the fleet architecture (role-specialized agents with low
-epistatic coupling), and the human-AI relationship (agents as co-authors of the structured
-knowledge substrate that governs their own future behaviour). The framework is validated by a
-four-sprint research investigation whose findings we synthesize here.
+specification before any action), the system architecture (role-specialized components — agents,
+scripts, automation — with low epistatic coupling), and the human-system relationship (agents
+and scripts as co-authors of the structured knowledge substrate that governs their own future
+behaviour). The methodology is validated by a four-sprint research investigation whose findings
+we synthesize here. This paper focuses on agent fleet design as the primary demonstration domain,
+though the methodology applies equally to scripting automation, documentation practices, and
+knowledge management infrastructure.
 
 **Contributions** — This paper makes four contributions:
 
@@ -184,10 +195,10 @@ action token.
 
 ### 3.1 The Encoding Chain
 
-The framework's primary organizational structure is a four-level cascade:
+The framework's primary organizational structure is a five-level cascade:
 
 ```
-MANIFESTO.md → AGENTS.md → agent files → session prompts
+MANIFESTO.md → AGENTS.md → agent files → SKILL.md files → session prompts
 ```
 
 Each level re-encodes the level above it, carrying values and constraints forward with lower
