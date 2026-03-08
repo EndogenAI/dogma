@@ -13,6 +13,7 @@ directly to design thinking methodology and is the endogenic approach to all kno
 ## Contents
 
 - [Handoff Architecture](#handoff-architecture)
+- [Issue Seeding Workflow](#issue-seeding-workflow)
 - [Research Workflow](#research-workflow)
   - [CI Gates for Research Documents](#ci-gates-for-research-documents)
 - [Implementation Workflow](#implementation-workflow)
@@ -106,6 +107,138 @@ issue crosses fleet boundaries.
 
 The hybrid model gives fleets quasi-autonomy while keeping the executive in oversight as the
 default path.
+
+---
+
+## Issue Seeding Workflow
+
+Converts a newly-identified capability gap into a well-seeded GitHub research issue. This
+is the step that *creates* the trigger for the Research Workflow — a seeded issue, not
+an empty stub. It is fast (one session, no agent delegation), endogenous-first (workspace
+state is checked before any external fetch), and produces a durable record that Scout,
+Synthesizer, and Reviewer can work from without rediscovering context.
+
+```
+Identify gap → Check workspace → Pre-flight fetch → Frame issue → Create issue → Verify
+```
+
+### Trigger
+
+An agent or human notices a missing primitive, capability, or encoded knowledge area.
+Common signals:
+- A task is performed repeatedly without a script, guide, or agent covering it
+- A VS Code / GitHub Copilot capability exists in the ecosystem that the project doesn't use
+- A research question arises mid-session that cannot be answered from `docs/research/`
+- An external open standard or tool is adopted by the broader community but not encoded here
+
+### Phase 1 — Check Workspace (Endogenous-First)
+
+**Agent**: Any (Orchestrator, or directly in the active session)
+
+Before fetching anything externally, confirm what is already encoded:
+
+```bash
+# Is there already an issue or research doc on this topic?
+gh issue list --state all | grep -i "<keyword>"
+find docs/research/ -name "*.md" | xargs grep -l "<keyword>" 2>/dev/null
+# Is the capability already present in the workspace?
+find . -name "SKILL.md" -o -name "*.agent.md" | xargs grep -l "<keyword>" 2>/dev/null
+```
+
+**Gate before advancing**: confirm no duplicate issue and no existing coverage in
+`docs/research/` or the agent fleet. If coverage exists, skip to Issue Seeding or stop.
+
+### Phase 2 — Pre-Flight Fetch
+
+**Agent**: Active session (or Research Scout if topic is broad)
+
+Fetch the minimal set of primary sources needed to write an informed issue body. Target:
+- Official docs for the capability (e.g., VS Code docs page, open standard specification)
+- A community or reference implementation (e.g., `github/awesome-copilot`, `anthropics/skills`)
+- One overview or comparison resource
+
+Use the source cache check first:
+
+```bash
+# Check if primary source is already cached
+uv run python scripts/fetch_source.py <url> --check
+```
+
+**What to gather** (keep it light — you are seeding, not synthesizing):
+- What the capability is and what problem it solves
+- How it fits relative to existing project primitives
+- An initial list of 3–7 research questions the full synthesis will need to answer
+- 5–10 candidate use cases or adoption areas specific to this project
+- A seed sources table (name + URL + type)
+
+**Gate before advancing**: at least 2 primary sources read; seed sources table populated;
+research questions drafted; no synthesis attempted yet.
+
+### Phase 3 — Frame the Issue Body
+
+Write the issue body as a Markdown file before creating the issue (never `--body "..."`
+with multi-line content — always `--body-file <path>`):
+
+```
+.tmp/issue-<slug>-body.md
+```
+
+**Required sections**:
+
+| Section | Purpose |
+|---------|--------|
+| `## Research Goal` | What gaps this issue closes; endogenic alignment statement |
+| `## Background` | 3–5 paragraph summary from pre-flight fetch |
+| `## Candidate Areas` | Prioritised table of adoption candidates (Tier 1 / Tier 2) |
+| `## Key Research Questions` | Numbered list (Q1–Q7) of questions the synthesis must answer |
+| `## Seed Sources` | Table of name + URL + type for all pre-flight sources |
+| `## Proposed Deliverables` | Checkbox list of concrete output files (`- [ ] path`) |
+| `## Labels` | Inline label list at the end of the body |
+
+The issue body is the **scout brief + research frame in one document**. When the Research
+Workflow begins, the Researcher reads it as the starting context — so it must be dense
+enough to stand alone.
+
+**Gate before advancing**: all 7 sections present; research questions are specific
+(not generic); seed sources include at least the official docs URL; deliverables
+are concrete file paths, not vague themes.
+
+### Phase 4 — Create & Verify
+
+```bash
+gh issue create \
+  --title "Research: <Short descriptive title>" \
+  --body-file .tmp/issue-<slug>-body.md \
+  --label "type:research" \
+  --label "priority:<level>" \
+  --label "area:<area>"
+
+# Verify
+gh issue view <N> --json number,title,labels -q '"#\(.number): \(.title)\nLabels: \([.labels[].name] | join(", "))"'
+```
+
+### Key Rules
+
+- **Endogenous-first always**: workspace check precedes any external fetch.
+- **Seed, don't synthesize**: the issue body captures what is known, not what is concluded.
+  Synthesis happens later in the Research Workflow.
+- **Dense enough to stand alone**: the Researcher and Scout reading this issue in a future
+  session must not need to re-fetch the overview sources — the background section prevents that.
+- **Research questions drive Scout scope**: poorly-framed Q items produce unfocused Scout output.
+  Each Q should be answerable with a specific source type (paper / docs / code / community).
+- **Deliverables are file paths**: `- [ ] docs/research/agent-skills-integration.md` not
+  `- [ ] research this topic`.
+- **Always `--body-file`**: never `--body "..."` with multi-line Markdown — shell quoting
+  and backtick interpolation corrupt or hang.
+
+### Gate Summary
+
+| Gate | Criteria |
+|------|----------|
+| Before fetching | Workspace check done; no duplicate issue or research doc found |
+| Before framing | ≥2 primary sources read; seed sources table populated; Qs drafted |
+| Before creating | All 7 body sections present; deliverables are concrete file paths |
+| After creating | Verified with `gh issue view #N`; labels confirmed |
 
 ---
 
@@ -832,6 +965,31 @@ Explicit points where an agent must stop and wait for human input before continu
 
 Standard invocation prompts for recurring handoffs. Copy-paste these when delegating to agents
 in Copilot Chat or in handoff `prompt:` fields.
+
+### Issue Seeding Prompts
+
+**Seed a new research issue from an identified gap:**
+```
+I've identified a gap: [describe the missing capability or knowledge area].
+Please run the Issue Seeding Workflow:
+1. Check the workspace for any existing coverage (issues, research docs, agent files)
+2. Fetch the primary sources (official docs, open standard, reference impl)
+3. Frame the issue body with all 7 required sections
+4. Create the issue with correct labels and verify it
+Target labels: type:research, priority:[level], area:[area]
+```
+
+**Seed from a mid-session observation:**
+```
+We just identified a gap while working on [topic]. Before closing this session,
+please do a quick Issue Seeding pass:
+- Gap: [describe gap in one sentence]
+- Likely primary sources: [URL or topic hint]
+- Candidate label: type:research, area:[area]
+Create a seeded research issue and return the issue number.
+```
+
+---
 
 ### Research Workflow Prompts
 
