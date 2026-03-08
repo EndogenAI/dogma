@@ -58,11 +58,11 @@ Phases are ordered by impact-to-cost ratio and dependency satisfaction. Each pha
 | #73 | [4,1] encoding coverage audit | chore | xs |
 
 **Gate deliverables**:
-- [ ] `MANIFESTO.md` updated with "How to Read This Document" note (exact text in issue body)
-- [ ] `AGENTS.md` cross-reference updated to cite the hermeneutics note
-- [ ] Audit table committed to `docs/research/values-encoding.md` §5 appendix
-- [ ] Priority-ordered gap list ready to drive Phase 3
-- [ ] CI passes; changes committed and PR opened
+- [x] `MANIFESTO.md` updated with "How to Read This Document" note (exact text in issue body) *(done ce8ee48 / PR #53 — pre-existing)*
+- [x] `AGENTS.md` cross-reference updated to cite the hermeneutics note *(done PR #86)*
+- [x] Audit table committed to `docs/research/values-encoding.md` §6 appendix *(done PR #86)*
+- [x] Priority-ordered gap list ready to drive Phase 3 *(done PR #86)*
+- [x] CI passes; changes committed and PR opened *(PR #86 — all CI green)*
 
 **Review gate**: Review agent validates MANIFESTO.md edit against existing axiom structure — no contradictions, no axiom reordering.
 
