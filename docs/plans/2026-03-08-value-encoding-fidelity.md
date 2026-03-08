@@ -51,6 +51,7 @@ Phases are ordered by impact-to-cost ratio and dependency satisfaction. Each pha
 **Issues**: #69, #73
 **Branch convention**: `feat/value-encoding-phase-1-quick-wins`
 **Agent**: Executive Docs (#69), Explore subagent for audit work (#73)
+**Status**: ✅ Complete — PR #86 (pending merge to main)
 
 | Issue | Title | Type | Effort |
 |-------|-------|------|--------|
@@ -73,6 +74,7 @@ Phases are ordered by impact-to-cost ratio and dependency satisfaction. Each pha
 **Issue**: #85
 **Branch convention**: `research/context-window-budget`
 **Agent**: Executive Researcher → Research Scout
+**Status**: ✅ Complete — branch `research/context-window-budget`
 
 | Issue | Title | Type | Effort |
 |-------|-------|------|--------|
@@ -106,7 +108,7 @@ This phase is the **measurement baseline** for the entire milestone. Its finding
 ---
 
 #### Step 2 — Pre-Flight Source Cache Warm
-**Owner: Executive Orchestrator → Research Scout**
+**Owner: Executive Orchestrator**
 
 - [x] Warm cache: `uv run python scripts/fetch_all_sources.py`
 - [x] Check priority URLs before fetching (re-fetching cached sources wastes tokens):
@@ -254,12 +256,45 @@ git push origin research/context-window-budget
 
 ---
 
+### Phase 3 Handoff Prompt
+
+Use this prompt to start the Phase 3 session in a new context window:
+
+```
+@Executive Orchestrator Please continue the Value Encoding & Fidelity milestone — Phase 3.
+
+- **Workplan**: `docs/plans/2026-03-08-value-encoding-fidelity.md`
+- **Scratchpad**: `.tmp/feat-value-encoding-fidelity/<YYYY-MM-DD>.md` (today's date)
+- **Governing axiom**: Endogenous-First
+- **Milestone**: https://github.com/EndogenAI/Workflows/milestone/7
+
+Before acting:
+1. Run `uv run python scripts/prune_scratchpad.py --init` and read the scratchpad `## Session Summary`
+2. Confirm PR #86 is merged: `gh pr view 86 --json state` — Phase 3 is blocked until merged
+3. If merged: create branch `feat/value-encoding-phase-3-four-forms` off main:
+   `git checkout main && git pull && git checkout -b feat/value-encoding-phase-3-four-forms`
+4. Read the Phase 3 section of this workplan (issue #70 — Encode Four Forms)
+5. Read `docs/research/values-encoding.md` §6 in full — the audit gap list is the inventory for Phase 3
+6. Write `## Session Start` citing Endogenous-First and this workplan as the primary endogenous source
+7. Delegate a detailed Phase 3 checklist to Executive Planner; review and update it as needed, then append to the workplan under `### Phase 3`
+8. Then delegate Phase 3 execution to Executive Docs
+
+Last committed: `a2a445f` (research/context-window-budget — Phase 2 sprint + session retrospective)
+Active phase: Phase 3 — Encode the Four Forms (issue #70)
+Key input: values-encoding.md §6 — Endogenous-First F2 (canonical example) is highest-priority gap; EF-F4 and LCF-F4 are ⚠️ (behavioural, not CI-enforced)
+Blocker: PR #86 must merge to main before Phase 3 edits MANIFESTO.md (conflict risk)
+```
+
+---
+
 ### Phase 3 — Encode the Four Forms
 
 **Issue**: #70
 **Branch convention**: `feat/value-encoding-phase-3-four-forms`
 **Agent**: Executive Docs
 **Depends on**: Phase 1 (#73 audit output as the gap inventory)
+**Status**: ⬜ Not started — blocked on PR #86 merge
+**Checklist**: Delegate detailed per-phase execution checklist to Executive Planner before beginning execution (per AGENTS.md § Per-Phase Execution Checklists).
 
 | Issue | Title | Type | Effort |
 |-------|-------|------|--------|
@@ -280,6 +315,8 @@ git push origin research/context-window-budget
 **Issues**: #54, #78, #71
 **Branch convention**: `feat/value-encoding-phase-4-programmatic`
 **Agent**: Executive Scripter (leads), Research Scout (for #78 survey)
+**Status**: ⬜ Not started
+**Checklist**: Delegate detailed per-phase execution checklist to Executive Planner before beginning execution (per AGENTS.md § Per-Phase Execution Checklists).
 
 | Issue | Title | Type | Effort |
 |-------|-------|------|--------|
@@ -306,6 +343,8 @@ git push origin research/context-window-budget
 **Branch convention**: `research/queryable-substrate`
 **Agent**: Executive Researcher (#80 survey + design), Executive Scripter (#80 and #84 implementation)
 **Informed by**: Phase 2 (#85) findings on compression/retrieval tradeoff
+**Status**: ⬜ Not started
+**Checklist**: Delegate detailed per-phase execution checklist to Executive Planner before beginning execution (per AGENTS.md § Per-Phase Execution Checklists).
 
 | Issue | Title | Type | Effort |
 |-------|-------|------|--------|
@@ -329,6 +368,8 @@ git push origin research/context-window-budget
 **Branch convention**: `research/skills-decision-logic`
 **Agent**: Executive Fleet (#79 audit + skill authoring), Executive Researcher (#81 survey)
 **Informed by**: Phase 2 (#85) findings on extraction intervention
+**Status**: ⬜ Not started
+**Checklist**: Delegate detailed per-phase execution checklist to Executive Planner before beginning execution (per AGENTS.md § Per-Phase Execution Checklists).
 
 | Issue | Title | Type | Effort |
 |-------|-------|------|--------|
@@ -354,6 +395,8 @@ git push origin research/context-window-budget
 **Branch convention**: `research/dogma-neuroplasticity`
 **Agent**: Executive Researcher → Research Scout → Synthesizer → Archivist
 **Informed by**: Phase 6 (what's extractable), Phase 4 (drift measurement provides signal source)
+**Status**: ⬜ Not started
+**Checklist**: Delegate detailed per-phase execution checklist to Executive Planner before beginning execution (per AGENTS.md § Per-Phase Execution Checklists).
 
 | Issue | Title | Type | Effort |
 |-------|-------|------|--------|
@@ -376,13 +419,17 @@ git push origin research/context-window-budget
 **Issue**: #83
 **Branch convention**: `research/external-value-encoding`
 **Agent**: Executive Researcher
-**Depends on**: Phase 1 (#69 + #70 complete — the core layer must be solid before adding external layers); Adopt wizard (#56) design stable
+**Depends on**: Phase 1 (#69 complete) and Phase 3 (#70 complete — the core layer must be solid before client-layer additions can be designed coherently); Adopt wizard (#56) design stable
+**Status**: ⬜ Not started — deferred
+**Checklist**: Delegate detailed per-phase execution checklist to Executive Planner before beginning execution (per AGENTS.md § Per-Phase Execution Checklists).
 
 | Issue | Title | Effort |
 |-------|-------|--------|
 | #83 | Encoding external product and client values — layered value architecture | xl |
 
 **Note**: This phase is intentionally last. The layered value architecture requires the core encoding layer to be stable and well-specified before client-layer additions can be designed coherently. Confirm framing assumption in issue body before starting.
+
+**Review gate**: Review agent validates that the external-value layering design does not contradict existing core axioms in MANIFESTO.md and does not introduce unresolved conflicts with Phase 3's four-form encoding.
 
 ---
 
@@ -410,7 +457,7 @@ git push origin research/context-window-budget
 
 ---
 
-## Session Session-Start Checklist
+## Session-Start Checklist
 
 Every session picking up a phase in this milestone must complete this before acting:
 
@@ -420,3 +467,14 @@ Every session picking up a phase in this milestone must complete this before act
 4. Read today's scratchpad: `cat .tmp/<branch>/<date>.md`  
 5. State the governing axiom for today's work (Endogenous-First unless a specific phase changes it)  
 6. Run `uv run python scripts/prune_scratchpad.py --init` to initialise the scratchpad  
+
+## Session-Close Checklist
+
+Every session working on a phase in this milestone must complete these steps before closing:
+
+1. Write `## Session Summary` to the active scratchpad (`.tmp/<branch>/<date>.md`)
+2. Post a progress comment on every GitHub issue actively worked: `gh issue comment <num> --body-file /tmp/progress.md`
+3. Update issue body checkboxes for completed deliverables: `gh issue edit <num> --body-file /tmp/updated-body.md`
+4. Confirm all commits pushed: `git log --oneline -3` + `git status`
+5. Run `uv run python scripts/prune_scratchpad.py --force` to archive the session
+6. If novel patterns, efficiency gains, or techniques emerged: run `@session-retrospective What lessons did we learn this session?` before closing
