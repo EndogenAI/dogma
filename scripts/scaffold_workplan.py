@@ -157,11 +157,17 @@ def main() -> int:
             token = token.strip()
             if token:
                 try:
-                    issue_numbers.append(int(token))
+                    value = int(token)
+                    if value <= 0:
+                        invalid_issues.append(token)
+                    else:
+                        issue_numbers.append(value)
                 except ValueError:
                     invalid_issues.append(token)
+        # Deduplicate while preserving order
+        issue_numbers = list(dict.fromkeys(issue_numbers))
         if invalid_issues:
-            print(f"ERROR: issue numbers must be integers: {invalid_issues}", file=sys.stderr)
+            print(f"ERROR: issue numbers must be positive integers: {invalid_issues}", file=sys.stderr)
             return 1
 
     root = _get_root()

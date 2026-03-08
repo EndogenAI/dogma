@@ -636,3 +636,16 @@ class TestFetchBeforeCheckAndPhaseNReview:
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
         assert passed is True, f"Should pass but got: {failures}"
+
+    @pytest.mark.io
+    def test_phase_n_review_output_prose_mention_not_flagged(self, tmp_path):
+        """Inline prose mentioning '## Phase N Review Output' (not an actual heading) must NOT be flagged."""
+        content = (
+            "---\nname: A\ndescription: B\n---\n\n"
+            "## Endogenous Sources\n\n## Workflow\n\n"
+            "Do not use `## Phase N Review Output` — use `## Review Output` instead.\n\n"
+            "## Completion Criteria\n\nReferences AGENTS.md."
+        )
+        f = _make_agent_file(tmp_path, content)
+        passed, failures = vaf.validate(f)
+        assert passed is True, f"Should pass but got: {failures}"

@@ -161,6 +161,48 @@ class TestScaffoldWorkplanCreation:
         content = (tmp_path / "docs" / "plans" / f"{date.today().isoformat()}-no-issues.md").read_text()
         assert "## PR Description Template" not in content
 
+    @pytest.mark.io
+    def test_negative_issue_number_exits_1(self, tmp_path, monkeypatch):
+        """Providing a negative issue number (e.g. -1) causes exit code 1."""
+        monkeypatch.chdir(tmp_path)
+        (tmp_path / "docs" / "plans").mkdir(parents=True)
+        monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "neg-issue"])
+        monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
+        call_count = {"n": 0}
+
+        def fake_prompt(msg, default):
+            call_count["n"] += 1
+            if call_count["n"] == 1:
+                return default
+            return "-1"  # negative issue number
+
+        monkeypatch.setattr(sw, "_prompt", fake_prompt)
+        rc = sw.main()
+        assert rc == 1
+
+    @pytest.mark.io
+    def test_duplicate_issues_deduplicated(self, tmp_path, monkeypatch):
+        """Duplicate issue numbers are deduplicated in the output."""
+        monkeypatch.chdir(tmp_path)
+        (tmp_path / "docs" / "plans").mkdir(parents=True)
+        monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "dedup-test"])
+        monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
+        call_count = {"n": 0}
+
+        def fake_prompt(msg, default):
+            call_count["n"] += 1
+            if call_count["n"] == 1:
+                return default
+            return "42,42,43"  # duplicate 42
+
+        monkeypatch.setattr(sw, "_prompt", fake_prompt)
+        rc = sw.main()
+        assert rc == 0
+        content = (tmp_path / "docs" / "plans" / f"{date.today().isoformat()}-dedup-test.md").read_text()
+        # Should appear only once
+        assert content.count("Closes #42") == 1
+        assert "Closes #43" in content
+
 
 # ===== generate_agent_manifest.py tests =====
 

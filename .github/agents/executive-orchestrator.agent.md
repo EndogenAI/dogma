@@ -169,7 +169,13 @@ Do not batch delegations. One phase at a time.
 3. Commit all in-progress changes: `git add -A && git commit -m "chore: pre-compact checkpoint — Phase N complete"`
 4. **Pre-review grep sweep** — before requesting Copilot review, scan for known erroneous patterns in changed files:
    ```bash
-   grep -r "Phase N Review Output\|Fetch-before-check" .github/ 2>/dev/null && echo "ERROR: known pattern violations found — fix before requesting review" || echo "grep sweep clean"
+   if grep -r "Phase N Review Output\|Fetch-before-check" .github/; then
+     echo "ERROR: known pattern violations found — fix before requesting review"
+   elif [ $? -eq 1 ]; then
+     echo "grep sweep clean"
+   else
+     echo "ERROR: grep failed during sweep — investigate before requesting review"
+   fi
    ```
    If any matches are found, fix them before invoking the Review agent. This prevents multi-round review cycles caused by residual heading-contract or label-ordering violations.
 5. Invoke **Review** agent: pass the changed file list and the scratchpad location. Wait for APPROVED verdict.

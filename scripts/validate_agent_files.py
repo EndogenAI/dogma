@@ -109,7 +109,9 @@ _FETCH_BEFORE_CHECK_PATTERN = re.compile(r"fetch-before-check", re.IGNORECASE)
 _FETCH_BEFORE_CHECK_NEGATIONS = frozenset(_HEREDOC_NEGATIONS | {"grep"})
 
 # Pattern for the incorrect '## Phase N Review Output' heading.
-_PHASE_N_REVIEW_RE = re.compile(r"##\s+Phase\s+N\s+Review\s+Output", re.IGNORECASE)
+# Anchored to line start (MULTILINE) so inline mentions in prose/guardrails
+# (e.g. "do not use '## Phase N Review Output'") are not incorrectly flagged.
+_PHASE_N_REVIEW_RE = re.compile(r"^##\s+Phase\s+N\s+Review\s+Output", re.IGNORECASE | re.MULTILINE)
 
 
 # ---------------------------------------------------------------------------
@@ -271,6 +273,7 @@ def validate_skill_file(path: Path) -> list[str]:
       5. Description length: ≥10 and ≤1024 chars.
       6. Cross-reference density: body contains ≥1 ref to AGENTS.md or MANIFESTO.md.
       7. Minimum body length: ≥100 chars (after frontmatter).
+      8. No literal ``## Phase N Review Output`` heading (use ``## Review Output``).
     """
     errors: list[str] = []
 
