@@ -122,6 +122,7 @@ Domain-specific research agents that extend the core research fleet with focused
 | **Local Compute Scout** | `local-compute-scout.agent.md` | read + create | Survey Ollama / LM Studio / llama.cpp stacks; benchmark local models; document hardware prereqs; maintain a local model registry | Research Synthesizer, Executive Researcher, Executive Scripter, Review |
 | **MCP Architect** | `mcp-architect.agent.md` | read + create | Design locally-distributed MCP topologies (stdio, HTTP/SSE); evaluate server composition patterns; define project MCP deployment conventions | Research Synthesizer, Executive Scripter, Local Compute Scout, Review, Executive Researcher |
 | **Values Researcher** | `values-researcher.agent.md` | read + create | Research value encoding via speech act theory, deontic logic, and constitutional AI; evaluate MANIFESTO.md against encoding principles | Research Synthesizer, Executive Docs, Review, Executive Researcher |
+| **A5 Context Architect** | `a5-context-architect.agent.md` | read + analyze | Evaluate AFS context layers, semantic memory isolation patterns, and scratchpad vs repo-memory tradeoffs; design context layering conventions; produce ADR draft | Research Reviewer, Executive Orchestrator, Executive Docs |
 
 ---
 
@@ -133,6 +134,7 @@ Operational agents for release coordination, environment validation, test covera
 |-------|------|---------|---------|----------|
 | **Release Manager** | `release-manager.agent.md` | full (no agent) | Orchestrate SemVer versioning, CHANGELOG entries, git tags, and GitHub Releases; milestone wrap-up | Review, GitHub, Executive PM, Executive Orchestrator |
 | **Env Validator** | `env-validator.agent.md` | read-only | Read-only audit of `.python-version`, `uv.lock`, `pyproject.toml`, and CI matrix for consistency — advisory only | Executive Scripter, Executive Orchestrator |
+| **B5 Dependency Auditor** | `b5-dependency-auditor.agent.md` | read-only | Audit `uv.lock` and `pyproject.toml` for CVEs, outdated packages, and version conflicts; output structured compatibility report | Executive Scripter, Security Researcher, Executive Orchestrator |
 | **Test Coordinator** | `test-coordinator.agent.md` | read-only | Map pytest markers to CI phases; identify untested scripts; flag test anti-patterns — advisory only | Executive Scripter, Executive Orchestrator |
 | **CI Monitor** | `ci-monitor.agent.md` | read + execute | Watch `gh run` history for failure patterns, flaky tests, and slow steps; categorise failures across CI failure modes; produce health report | Executive Scripter, Executive Automator, Executive Orchestrator |
 
@@ -152,12 +154,14 @@ Agents that manage contributor relationships, developer relations, and community
 
 ## Knowledge & Governance Agents
 
-Agents focused on cost governance and documentation quality enforcement.
+Agents focused on cost governance, documentation quality enforcement, research queue management, and methodology compliance.
 
 | Agent | File | Posture | Trigger | Handoffs |
 |-------|------|---------|---------|----------|
 | **LLM Cost Optimizer** | `llm-cost-optimizer.agent.md` | read + web | Build and maintain a model selection decision table (capability × cost × latency) per task type; track free/local tier options; recommend model tiers to reduce token spend | Executive Docs, Executive Orchestrator |
 | **Docs Linter** | `docs-linter.agent.md` | read-only | Audit `docs/research/` for D4 heading gaps, dead source stubs, missing frontmatter, and `validate_synthesis.py` compliance — advisory only, never edits docs | Executive Docs, Review |
+| **D5 Knowledge Base** | `d5-knowledge-base.agent.md` | read + edit | Manage `docs/research/OPEN_RESEARCH.md` as a living queue — retire completed items, prioritise next candidates, propose seed questions from synthesis gaps | Executive Researcher, Executive PM, Executive Orchestrator |
+| **D4 Methodology Enforcer** | `d4-methodology-enforcer.agent.md` | read-only | Validate changes against MANIFESTO.md axioms — flag over-interactivity, token burn, and Programmatic-First violations; issue APPROVED / VIOLATIONS FOUND verdict | Executive Scripter, Executive Docs, Executive Orchestrator |
 
 ---
 
