@@ -16,7 +16,7 @@
 | T3 Output | Response buffer | ≤ 15% | Hard floor; never sacrifice to gain T1/T2 headroom |
 | T4 Reserve | Available for retrieval injection (RAG governance) | ≥ 5% | Required once R3 retrieval layer is implemented (#80) |
 
-> **Derivation**: T1 ceiling (25%) is set at 1.25× the D1 baseline fraction at 50K effective context (28.7%). This provides a 25% growth buffer before enforcement triggers while keeping T1 well below the Q2 degradation threshold of 30-45%. T2 (55%) + T3 (15%) + T4 (5%) = 75%. T1 (25%) + 75% = 100%. At 128K context, T1=25% = 32K tokens — enough headroom for current substrate plus one phase of R1 extraction growth.
+> **Derivation**: T1 ceiling (25%) is set below the D1 baseline fraction at 50K effective context (28.7%), reclaiming ~3.7 percentage points of context from fixed instruction into task and output capacity while accepting a modest Q2 degradation risk above the empirical ~15–20% instruction-token threshold reported in the linked synthesis. T2 (55%) + T3 (15%) + T4 (5%) = 75%. T1 (25%) + 75% = 100%. At 128K context, T1=25% = 32K tokens — enough headroom for current substrate plus one phase of R1 extraction growth.
 
 ---
 
