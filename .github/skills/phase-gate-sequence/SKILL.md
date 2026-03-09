@@ -40,7 +40,7 @@ Run this sequence after every `## Phase N Output` write, **before** delegating t
 
 ### Step 1 — Prune
 
-If the scratchpad exceeds 200 lines:
+If the scratchpad exceeds 2000 lines:
 ```bash
 uv run python scripts/prune_scratchpad.py
 ```
@@ -59,6 +59,8 @@ git add -A && git commit -m "chore: pre-compact checkpoint — Phase N complete"
 ```
 
 ### Step 4 — Pre-Review Grep Sweep
+
+Scans the entire `.github/` directory (all agent and skill files) for known heading-contract violations and erroneous patterns — not scoped to changed files only, since stale patterns can exist anywhere.
 
 ```bash
 if grep -r "Phase N Review Output\|Fetch-before-check" .github/; then
