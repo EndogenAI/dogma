@@ -761,6 +761,30 @@ Depends on: Phase 3 (PR #89) merged to feat/value-encoding-fidelity
 
 ---
 
+### Phase α — Wire `detect_drift.py` into CI
+
+**Issue**: #107
+**Branch convention**: `feat/value-encoding-fidelity` (no new branch needed — single-file CI edit)
+**Agent**: Executive Automator (CI step authoring) → Review → GitHub
+**Depends on**: Phase 4 (`detect_drift.py` implemented and tested)
+**Status**: ⬜ Not started
+**Checklist**: Single-phase; no Executive Planner delegation required.
+
+| Issue | Title | Type | Effort |
+|-------|-------|------|--------|
+| #107 | Wire `detect_drift.py` into CI lint job for value-alignment enforcement | chore | s |
+
+**Gate deliverables**:
+- [ ] `detect_drift.py` step added to `.github/workflows/tests.yml` lint job
+- [ ] Fleet baseline `fleet_avg` score recorded on issue #107
+- [ ] `--fail-below` threshold set to a calibrated value (not `0.0`)
+- [ ] CI passes with new step in place
+- [ ] Acceptance criterion ticked: `scripts/detect_drift.py (or equivalent) in CI`
+
+**Review gate**: Review agent validates CI YAML syntax and confirms step does not break existing test matrix.
+
+---
+
 ### Phase 7 — Neuroplasticity & Back-Propagation
 
 **Issues**: #82, #75
