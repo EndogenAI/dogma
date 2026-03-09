@@ -1,0 +1,46 @@
+# Link registry: bidirectional citation interweb for the EndogenAI/Workflows corpus
+# Schema: concept, canonical_source (repo-relative), aliases (list),
+#         applications (list), scopes (list, optional — paths where injection is allowed)
+# Managed by scripts/weave_links.py
+#
+# Usage:
+#   uv run python scripts/weave_links.py --dry-run            # preview all injections
+#   uv run python scripts/weave_links.py --scope docs/guides/ # apply to guides only
+#   uv run python scripts/weave_links.py --scope docs/guides/testing.md --dry-run
+
+concepts:
+  - concept: "Endogenous-First"
+    canonical_source: "MANIFESTO.md"
+    aliases: ["endogenous-first", "endogenous first"]
+    applications: ["AGENTS.md", "docs/guides/workflows.md"]
+    scopes: ["docs/", ".github/agents/"]  # never inject into MANIFESTO.md itself
+
+  - concept: "Algorithms Before Tokens"
+    canonical_source: "MANIFESTO.md"
+    aliases: ["algorithms-before-tokens", "algorithms before tokens"]
+    applications: ["AGENTS.md"]
+    scopes: ["docs/", ".github/agents/"]
+
+  - concept: "Programmatic-First"
+    canonical_source: "AGENTS.md"
+    aliases: ["programmatic-first", "programmatic first"]
+    applications: ["docs/guides/workflows.md", "docs/guides/programmatic-first.md"]
+    scopes: ["docs/", ".github/agents/"]
+
+  - concept: "Local Compute-First"
+    canonical_source: "MANIFESTO.md"
+    aliases: ["local compute-first", "local-compute-first"]
+    applications: ["docs/guides/local-compute.md"]
+    scopes: ["docs/", ".github/agents/"]
+
+  - concept: "D4 synthesis"
+    canonical_source: "docs/guides/agents.md"
+    aliases: ["D4 document", "D4 format"]
+    applications: ["docs/research/"]
+    scopes: ["docs/research/", ".github/agents/"]
+
+  - concept: "Documentation-First"
+    canonical_source: "AGENTS.md"
+    aliases: ["documentation-first", "documentation first"]
+    applications: ["docs/guides/agents.md"]
+    scopes: ["docs/", ".github/agents/"]
