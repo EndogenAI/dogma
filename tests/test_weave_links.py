@@ -70,6 +70,22 @@ class TestLoadRegistry:
         entries = wl.load_registry(yml)
         assert entries == []
 
+    def test_unsafe_canonical_source_raises_value_error(self, tmp_path):
+        """javascript: scheme in canonical_source must be rejected (OWASP A03)."""
+        yml = tmp_path / "reg.yml"
+        yml.write_text("concepts:\n  - concept: Foo\n    canonical_source: 'javascript:alert(1)'\n    aliases: []\n")
+        with pytest.raises(ValueError, match="Unsafe canonical_source"):
+            wl.load_registry(yml)
+
+    def test_https_canonical_source_accepted(self, tmp_path):
+        """https:// canonical_source is a valid external link."""
+        yml = tmp_path / "reg.yml"
+        yml.write_text(
+            "concepts:\n  - concept: Foo\n    canonical_source: 'https://example.com/doc'\n    aliases: []\n"
+        )
+        entries = wl.load_registry(yml)
+        assert entries[0]["canonical_source"] == "https://example.com/doc"
+
 
 # ---------------------------------------------------------------------------
 # is_already_linked
@@ -367,6 +383,24 @@ class TestMain:
             sys,
             "argv",
             ["weave_links.py", "--registry", str(tmp_path / "nonexistent.yml")],
+        )
+        with pytest.raises(SystemExit) as exc:
+            wl.main()
+        assert exc.value.code == 1
+
+    @pytest.mark.io
+    def test_main_scope_outside_repo_root_exits_one(self, tmp_path, monkeypatch):
+        """main() exits 1 when --scope resolves outside the repo root (OWASP A01)."""
+        import tempfile
+
+        outside = Path(tempfile.mkdtemp())
+        monkeypatch.setattr(wl, "find_repo_root", lambda: tmp_path)
+        import sys
+
+        monkeypatch.setattr(
+            sys,
+            "argv",
+            ["weave_links.py", "--scope", str(outside)],
         )
         with pytest.raises(SystemExit) as exc:
             wl.main()
