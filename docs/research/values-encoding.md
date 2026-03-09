@@ -389,3 +389,42 @@ Ordered by encoding fidelity risk × breadth of impact:
 | AI Alignment | Bai et al. (2022) Constitutional AI (Anthropic); Russell (2019) *Human Compatible*; Krakovna et al. (2020) specification gaming list; Christiano et al. (2017) RLHF; Leike et al. (2018) AI safety gridworlds |
 | Information Theory (encoding) | Kolmogorov (1965) complexity; Rissanen (1978) MDL; Stinson (2006) *Cryptography: Theory and Practice* |
 | Digital Humanities | Cerquiglini (1989) *In Praise of the Variant*; Maas (1958) *Textual Criticism*; Sahle (2013) digital scholarly editing |
+
+---
+
+## Value Drift Detection — Implementation Findings (Issue #71)
+
+**Added**: 2026-03-08 | **Relates to**: OQ-VE-1, Pattern 3, `scripts/detect_drift.py`
+
+### Verdict: Watermark-Phrase Detection (Approach A) — Implemented
+
+The Research Scout survey (2026-03-08) evaluated two candidate approaches against the Local Compute-First axiom:
+
+**Approach A (Watermark-Phrase Detection)** was selected. Pattern 3 in §3 above already identified the three axiom names as functioning phrase-level watermarks — their absence is "a measurable signal of value drift." This approach requires zero external dependencies, runs in <1ms per file, and extends the deterministic pattern already established by `validate_agent_files.py`.
+
+**Approach B (Embedding-Similarity)** was deferred. `sentence-transformers` requires a ~90 MB network pull on first CI use; `nomic-embed-text` via Ollama requires the daemon running in CI (not standard). Defer to a post-baseline phase once a local daemon strategy is confirmed.
+
+### Canonical Watermark Phrases
+
+The six phrases in `scripts/detect_drift.py::WATERMARK_PHRASES` are:
+
+| Phrase | Source |
+|---|---|
+| `Endogenous-First` | MANIFESTO.md Axiom 1 name |
+| `Algorithms Before Tokens` | MANIFESTO.md Axiom 2 name |
+| `Local Compute-First` | MANIFESTO.md Axiom 3 name |
+| `encode-before-act` | §2 H4 watermark phrase; §3 Pattern 3 |
+| `morphogenetic seed` | §3 Pattern 3 explicit watermark |
+| `programmatic-first` | AGENTS.md/MANIFESTO.md Guiding Principles |
+
+### Drift Score Formula
+
+`drift_score = count_matched_phrases / 6` (case-insensitive; body after frontmatter only; each phrase counted once)
+
+### Threshold Calibration
+
+Fleet baseline (33 agents, 2026-03-08): **avg drift_score = 0.1364** (26 of 33 agents below 0.33 warning threshold). This indicates current agent files are low on explicit axiom phrase density — most agents reference their specific domain without restating the foundational phrases. Warning threshold of `0.33` is appropriate as an aspirational floor, not a gate. Calibrate against 3-sprint cycles before enabling `--fail-below` in CI.
+
+### OQ-VE-1 Status Update
+
+OQ-VE-1 ("Is the watermark-phrase approach sufficient, or does it only detect surface-level alignment?") remains open pending empirical calibration. The watermark approach detects *surface* alignment — it will not catch semantic contradictions where axiom names appear but are used inconsistently. Embedding-similarity (Approach B) addresses this, deferred to a future phase.
