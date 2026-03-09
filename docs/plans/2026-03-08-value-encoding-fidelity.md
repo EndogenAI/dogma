@@ -392,13 +392,42 @@ Note: Phase 3 is COMPLETE as of 2026-03-08 — this prompt is preserved as histo
 
 ---
 
+### Phase 3 → 4 Handoff Prompt
+
+Use this prompt to start the Phase 4 session in a new context window:
+
+```
+@Executive Orchestrator Please continue the Value Encoding & Fidelity milestone — Phase 4.
+
+- **Branch**: feat/value-encoding-fidelity (create feat/value-encoding-phase-4-programmatic off this)
+- **Workplan**: docs/plans/2026-03-08-value-encoding-fidelity.md
+- **Scratchpad**: .tmp/feat-value-encoding-fidelity/<YYYY-MM-DD>.md
+- **Governing axiom**: Endogenous-First
+
+Before acting:
+1. Run `uv run python scripts/prune_scratchpad.py --init` and read today's scratchpad
+2. Run `git checkout feat/value-encoding-fidelity && git pull` to confirm Phase 3 (PR #89) is merged
+3. Run `git log --oneline -5` and `git status`
+4. Read the Phase 4 section of this workplan (issues #54, #71, #78)
+5. Read docs/research/values-encoding.md for programmatic fidelity context
+6. Write `## Session Start` citing governing axiom and this workplan as primary endogenous source
+7. Delegate a detailed Phase 4 checklist to Executive Planner; append under `### Phase 4`
+8. Then delegate Phase 4 execution to Executive Scripter (leads) and Research Scout (#78)
+
+Active phase: Phase 4 — Programmatic Fidelity Infrastructure (issues #54, #71, #78)
+Issue order: #54 first (density score), then #71 (drift detection), then #78 (provenance tracing)
+Depends on: Phase 3 (PR #89) merged to feat/value-encoding-fidelity
+```
+
+---
+
 ### Phase 4 — Programmatic Fidelity Infrastructure
 
 **Issues**: #54, #78, #71
 **Branch convention**: `feat/value-encoding-phase-4-programmatic`
 **Agent**: Executive Scripter (leads), Research Scout (for #78 survey)
-**Status**: ⬜ Not started
-**Checklist**: Delegate detailed per-phase execution checklist to Executive Planner before beginning execution (per AGENTS.md § Per-Phase Execution Checklists).
+**Status**: 🔄 In progress — 2026-03-08
+**Checklist**: ✅ Delegated to Executive Planner — see `### Phase 4 Detailed Checklist` below
 
 | Issue | Title | Type | Effort |
 |-------|-------|------|--------|
@@ -419,7 +448,151 @@ Note: Phase 3 is COMPLETE as of 2026-03-08 — this prompt is preserved as histo
 
 ---
 
-### Phase 5 — Queryable Substrate & Doc Interweb
+### Phase 4 Detailed Checklist
+
+**Issues**: #54 → #71 → #78 | **Branch**: `feat/value-encoding-phase-4-programmatic`
+**Execution order**: Sequential — #54 completes before #71 begins; #78 requires both #54 and #71 outputs.
+
+---
+
+#### Group A — Setup
+**Owner: Executive Orchestrator**
+
+- [x] **1. Branch guard**: PR #89 confirmed MERGED to `feat/value-encoding-fidelity` — done 2026-03-08
+- [x] **2. Branch creation**: `git checkout -b feat/value-encoding-phase-4-programmatic` off `origin/feat/value-encoding-fidelity` — done 2026-03-08
+- [x] **3. Push tracking**: `git push -u origin feat/value-encoding-phase-4-programmatic` — done 2026-03-08
+- [ ] **4. Pre-read endogenous sources** (read before touching any file):
+  - `docs/research/values-encoding.md` §4 R3 (programmatic enforcement), §6 gap list
+  - `scripts/generate_agent_manifest.py` lines 1–537 (full read — understand `process_agent_file()`, `build_manifest()`, `format_markdown()`, `main()`)
+  - `tests/test_remaining_scripts.py` — locate `TestGenerateAgentManifest` class (4 placeholder stubs)
+- [x] **5. Scratchpad check**: Session Start written 2026-03-08 with governing axiom (Endogenous-First) and this workplan as primary endogenous source.
+
+---
+
+#### Group B — Issue #54: Cross-Reference Density Score
+**Owner: Executive Scripter**
+
+**B1 — Implement density counting in `generate_agent_manifest.py`**
+
+- [ ] **6. Read `process_agent_file()`** fully to understand dict keys currently returned (`name`, `description`, `tools`, `posture`, `capabilities`, `handoffs`, `file`).
+- [ ] **7. Add `count_cross_ref_density(content: str) -> int` helper function** before `process_agent_file()`. Rules:
+  - Count unique lines containing any of: `MANIFESTO.md`, `AGENTS.md`, `docs/guides/`
+  - Return integer count (distinct lines — not total occurrences)
+  - Include module docstring update: add `cross_ref_density` to Outputs description.
+- [ ] **8. Wire density into `process_agent_file()`**: add `cross_ref_density` key to the returned dict.
+- [ ] **9. Add fleet-wide average to `build_manifest()`**: compute `avg_cross_ref_density`; store on manifest dict (guard against empty list).
+- [ ] **10. Add density warning in `build_manifest()`**: for agents where `cross_ref_density < 1`, emit `logging.warning()` with agent name. Not a raised exception — warning only.
+- [ ] **11. Expose in `format_markdown()`**: append a `## Cross-Reference Density` section; table `Agent | cross_ref_density`; fleet average line below.
+- [ ] **12. Expose in JSON output**: confirm `cross_ref_density` per-agent and `avg_cross_ref_density` at manifest root.
+
+**B2 — Update `TestGenerateAgentManifest` in `tests/test_remaining_scripts.py`**
+
+- [ ] **13. Read existing test class** (4 stubs; all `assert True`) to locate line numbers before editing.
+- [ ] **14. Replace stub `test_reads_all_agent_files`**: verify JSON output contains ≥1 agent entry. `@pytest.mark.io`
+- [ ] **15. Replace stub `test_outputs_json_manifest`**: assert `cross_ref_density` per-agent and `avg_cross_ref_density` at root. `@pytest.mark.io`
+- [ ] **16. Replace stub `test_outputs_markdown_manifest`**: assert `## Cross-Reference Density` heading + `|` table row present. `@pytest.mark.io`
+- [ ] **17. Replace stub `test_includes_agent_metadata`**: assert `name`, `description`, `cross_ref_density` keys per agent. `@pytest.mark.io`
+- [ ] **18. Add `test_count_cross_ref_density_unit`**: unit tests: empty → 0; one `MANIFESTO.md` ref → 1; `MANIFESTO.md` + `AGENTS.md` → 2; same ref repeated → still 1 per line; `docs/guides/` → 1. No I/O markers.
+- [ ] **19. Add `test_low_density_warning_emitted`**: fake agent with `cross_ref_density=0`; call `build_manifest()` + assert WARNING log message emitted with agent name.
+
+**B3 — Fleet Manifest Regeneration + PR Note**
+
+- [ ] **20. Run coverage**: `uv run pytest tests/test_remaining_scripts.py::TestGenerateAgentManifest --cov=scripts/generate_agent_manifest -q` — must reach ≥80%.
+- [ ] **21. Regenerate manifest**: verify exact flags via `--help`, then `uv run python scripts/generate_agent_manifest.py --output .github/agents/manifest.json`.
+- [ ] **22. Note low-density agents**: copy WARNING lines to `/tmp/phase4-pr-body.md` under `## Density Warnings`.
+
+---
+
+#### Group C — Issue #71: Semantic Drift Detection
+**Owner: Research Scout (survey D1) → Executive Scripter (implementation D2–D4)**
+
+**C1 — Survey Phase (Research Scout)**
+
+- [ ] **23. Check source cache**: `uv run python scripts/fetch_source.py <sbert_url> --check` before fetching.
+- [ ] **24. Survey watermark-phrase approach**: identify 3–5 canonical watermark phrases from `docs/research/values-encoding.md` §3; estimate false-negative rate.
+- [ ] **25. Survey embedding-similarity approach**: `sentence-transformers` (PyPI network requirement?) vs `nomic-embed-text` via Ollama (local-compute compliant); estimate cost/latency.
+- [ ] **26. Write D1 verdict** to scratchpad `## Scout Output #71` (≤500 tokens): recommended approach + threshold + implementation notes.
+
+**C2 — Implementation (Executive Scripter)**
+
+- [ ] **27. Read D1 verdict** from scratchpad before writing any code.
+- [ ] **28. Create `scripts/detect_drift.py`** with module docstring (purpose, inputs, outputs, usage).
+- [ ] **29. Implement per-agent drift score** per D1 verdict approach.
+- [ ] **30. Fleet-wide report** JSON: `{ "agents": [...], "fleet_avg", "below_threshold": [...] }`.
+- [ ] **31. `--fail-below <float>` flag**: exit 1 if any agent below threshold; exit 0 otherwise.
+- [ ] **32. Write `tests/test_detect_drift.py`** (5+ tests): happy path, zero drift, exit-1, exit-0, JSON schema. `@pytest.mark.io` for file tests; `@pytest.mark.integration` for embedding tests.
+- [ ] **33. Coverage**: `uv run pytest tests/test_detect_drift.py --cov=scripts/detect_drift -q` — ≥80%.
+- [ ] **34. D4 CI decision**: write 2-sentence CI recommendation to `/tmp/phase4-drift-ci-decision.md` (warning-only until threshold calibrated).
+
+**C3 — Research Document**
+
+- [ ] **35. Append findings to `docs/research/values-encoding.md`** (new `## Value Drift Detection` section) OR create standalone `docs/research/value-drift-detection.md` with full D4 frontmatter + required headings.
+- [ ] **36. Validate**: `uv run python scripts/validate_synthesis.py docs/research/value-drift-detection.md` → exit 0 (if standalone).
+
+---
+
+#### Group D — Issue #78: Programmatic Value Provenance
+**Owner: Executive Scripter (builds on #54 and #71)**
+
+**Prerequisites**:
+- [ ] **37. Verify Group B gate**: `python -c "import json; m=json.load(open('.github/agents/manifest.json')); assert 'avg_cross_ref_density' in m"`
+- [ ] **38. Verify Group C gate**: `uv run python scripts/detect_drift.py --help` → exit 0.
+
+**D1 — Annotation Format**
+
+- [ ] **39. Evaluate annotation formats**: inline HTML `<!-- axiom: ... -->` vs YAML frontmatter `governs:` vs external JSON manifest. Constraint: parseable by ≤50-line Python, no external deps. Write recommendation to scratchpad `## Scripter Output #78`.
+
+**D2 — `scripts/audit_provenance.py` Implementation**
+
+- [ ] **40. Create `scripts/audit_provenance.py`** with module docstring.
+- [ ] **41. Implement axiom extraction** per chosen format: extract `(axiom_name, source_ref)` per instruction block.
+- [ ] **42. Citation plausibility check**: load `MANIFESTO.md`, confirm cited axiom appears as H2/H3. Flag missing as `unverifiable`.
+- [ ] **43. Orphan detection**: instructions with no annotation → `orphaned` count.
+- [ ] **44. JSON output schema**: `{ "files": [...], "fleet_citation_coverage_pct", "total_unverifiable" }`.
+
+**D3 — Tests**
+
+- [ ] **45. Write `tests/test_audit_provenance.py`** (5 tests): happy path, orphaned detection, unverifiable citation, JSON schema, exit codes. `@pytest.mark.io` for file tests.
+- [ ] **46. Coverage**: `uv run pytest tests/test_audit_provenance.py --cov=scripts/audit_provenance -q` — ≥80%.
+
+**D4 — Research Document**
+
+- [ ] **47. Create `docs/research/value-provenance.md`** with D4 frontmatter + required headings (Executive Summary, Hypothesis Validation, Pattern Catalog, Recommendations, Sources).
+- [ ] **48. Validate**: `uv run python scripts/validate_synthesis.py docs/research/value-provenance.md` → exit 0.
+
+---
+
+#### Group E — Validation & Close
+**Owner: Executive Scripter → Executive Orchestrator**
+
+- [ ] **49. Pre-commit validation**: `ruff check scripts/ tests/ && ruff format --check scripts/ tests/ && pytest tests/ -x -m "not slow and not integration" -q` — all exit 0.
+- [ ] **50. Smoke test**: `uv run python scripts/generate_agent_manifest.py --help && uv run python scripts/detect_drift.py --help && uv run python scripts/audit_provenance.py --help` — each exits 0.
+- [ ] **51. Coverage summary**: all three new/updated modules ≥80%.
+- [ ] **52. Workplan update**: mark Phase 4 gate deliverables `[x]`.
+- [ ] **53. Issue close comments** (write to temp files; use `--body-file`):
+  - `gh issue comment 54 --body-file /tmp/issue-54-close.md && gh issue close 54`
+  - `gh issue comment 71 --body-file /tmp/issue-71-close.md && gh issue close 71`
+  - `gh issue comment 78 --body-file /tmp/issue-78-close.md && gh issue close 78`
+
+---
+
+### Phase 4 Acceptance Criteria Summary
+
+| Deliverable | Path | Verification |
+|---|---|---|
+| Density scoring | `scripts/generate_agent_manifest.py` | `grep "cross_ref_density"` ≥3 matches |
+| Tests for density | `tests/test_remaining_scripts.py::TestGenerateAgentManifest` | 6 real tests; coverage ≥80% |
+| Manifest regenerated | `.github/agents/manifest.json` | `avg_cross_ref_density` key in JSON |
+| detect_drift.py | `scripts/detect_drift.py` | `--help` exits 0 |
+| Drift tests | `tests/test_detect_drift.py` | coverage ≥80% |
+| Drift research doc | `docs/research/value-drift-detection.md` or `values-encoding.md` update | `validate_synthesis.py` exits 0 |
+| audit_provenance.py | `scripts/audit_provenance.py` | `--help` exits 0 |
+| Provenance tests | `tests/test_audit_provenance.py` | coverage ≥80% |
+| Provenance research | `docs/research/value-provenance.md` | `validate_synthesis.py` exits 0; `status: Final` |
+| Pre-commit | n/a | ruff + pytest all green |
+| CI green | branch | `gh run list --limit 3` all `success` |
+
+---
 
 **Issues**: #80, #84
 **Branch convention**: `research/queryable-substrate`
