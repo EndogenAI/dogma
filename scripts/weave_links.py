@@ -69,13 +69,18 @@ def load_registry(path: Path) -> list[dict]:
     Each entry must have: concept, canonical_source, aliases.
     scopes is optional (default: all files).
     Raises KeyError if a required field is missing.
+    Raises ValueError if canonical_source is not a safe relative path or https:// URL.
     """
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
     entries = data.get("concepts", [])
+    _safe_path = re.compile(r"^[a-zA-Z0-9_./ -][a-zA-Z0-9_./ /-]*$")
     for entry in entries:
         for required in ("concept", "canonical_source", "aliases"):
             if required not in entry:
                 raise KeyError(f"Registry entry missing required field: {required!r}")
+        src = entry["canonical_source"]
+        if not (src.startswith("https://") or _safe_path.match(src)):
+            raise ValueError(f"Unsafe canonical_source {src!r}: must be a relative path or https:// URL")
     return entries
 
 
@@ -234,6 +239,11 @@ def main() -> None:
     registry = load_registry(registry_path)
 
     scope_path = Path(args.scope) if Path(args.scope).is_absolute() else repo_root / args.scope
+    try:
+        scope_path.resolve().relative_to(repo_root.resolve())
+    except ValueError:
+        print(f"Error: --scope '{args.scope}' resolves outside the repository root.", file=sys.stderr)
+        sys.exit(1)
     if scope_path.is_file():
         md_files = [scope_path]
     else:
@@ -243,10 +253,32 @@ def main() -> None:
     files_modified = 0
 
     for md_file in md_files:
-        injections = weave_file(md_file, registry, dry_run=args.dry_run, repo_root=repo_root)
-        if injections > 0:
-            total_injections += injections
-            files_modified += 1
+        if args.dry_run:
+            # Collect diff lines without writing; count injection pairs
+            text = md_file.read_text(encoding="utf-8")
+            diffs_all: list[str] = []
+            for entry in registry:
+                scopes = entry.get("scopes")
+                if scopes:
+                    try:
+                        rel_str = str(md_file.relative_to(repo_root))
+                    except ValueError:
+                        continue
+                    if not any(rel_str.startswith(s) for s in scopes):
+                        continue
+                _, diffs = inject_link(text, entry, dry_run=True)
+                diffs_all.extend(diffs)
+            if diffs_all:
+                print(f"--- {md_file.relative_to(repo_root)}")
+                for line in diffs_all:
+                    print(line)
+                total_injections += len(diffs_all) // 2
+                files_modified += 1
+        else:
+            injections = weave_file(md_file, registry, dry_run=False, repo_root=repo_root)
+            if injections > 0:
+                total_injections += injections
+                files_modified += 1
 
     print(f"{total_injections} injections in {files_modified} files")
     sys.exit(0)
