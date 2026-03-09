@@ -257,6 +257,7 @@ class TestGenerateAgentManifest:
         assert any("Low-Density Agent" in r.message for r in caplog.records)
 
     @pytest.mark.io
+    @pytest.mark.integration
     def test_reads_all_agent_files(self, tmp_path, monkeypatch):
         """generate_agent_manifest scans .github/agents/*.agent.md."""
         import json as jsonmod
@@ -286,6 +287,7 @@ class TestGenerateAgentManifest:
         assert data["agents"][0]["name"] == "Test Agent"
 
     @pytest.mark.io
+    @pytest.mark.integration
     def test_outputs_json_manifest_with_density(self, tmp_path):
         """JSON manifest includes cross_ref_density per agent and avg_cross_ref_density at root."""
         import json as jsonmod
@@ -317,6 +319,7 @@ class TestGenerateAgentManifest:
         assert data["agents"][0]["cross_ref_density"] >= 1
 
     @pytest.mark.io
+    @pytest.mark.integration
     def test_outputs_markdown_manifest_with_density_section(self, tmp_path):
         """Markdown output includes '## Cross-Reference Density' section."""
         import subprocess
@@ -345,6 +348,7 @@ class TestGenerateAgentManifest:
         assert "| Agent | cross_ref_density |" in result.stdout
 
     @pytest.mark.io
+    @pytest.mark.integration
     def test_includes_agent_metadata(self, tmp_path):
         """Manifest includes name, description, cross_ref_density per agent."""
         import json as jsonmod
