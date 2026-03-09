@@ -15,15 +15,18 @@ Inputs:
 Outputs:
     JSON manifest (default) or Markdown table to stdout, or to --output file.
     Each agent entry contains:
-        name          — display name from frontmatter
-        description   — one-line summary from frontmatter
-        tools         — list of tool names from frontmatter
-        posture       — derived from tools: "readonly" | "creator" | "full"
-        capabilities  — 2-5 short lowercase-hyphenated tags from description
-        handoffs      — list of agent names this agent can hand off to
-        file          — repo-relative path to the .agent.md file
+        name               — display name from frontmatter
+        description        — one-line summary from frontmatter
+        tools              — list of tool names from frontmatter
+        posture            — derived from tools: "readonly" | "creator" | "full"
+        capabilities       — 2-5 short lowercase-hyphenated tags from description
+        handoffs           — list of agent names this agent can hand off to
+        file               — repo-relative path to the .agent.md file
+        cross_ref_density  — int count of lines referencing MANIFESTO.md, AGENTS.md, or docs/guides/
     Summary line is always written to stderr:
         Generated manifest: N agents
+    Fleet average: avg_cross_ref_density included in manifest root.
+    Warnings to stderr: agents with cross_ref_density < 1 are flagged.
 
 Usage examples:
     # Print JSON manifest to stdout
@@ -50,6 +53,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 import re
 import sys
 from datetime import datetime, timezone
@@ -331,6 +335,16 @@ def extract_handoff_agents(yaml_text: str) -> list[str]:
 # ---------------------------------------------------------------------------
 
 
+def count_cross_ref_density(content: str) -> int:
+    """
+    Count the number of lines in *content* that contain a back-reference to
+    MANIFESTO.md, AGENTS.md, or docs/guides/.  Each line is counted once
+    regardless of how many reference targets it contains.
+    """
+    markers = ("MANIFESTO.md", "AGENTS.md", "docs/guides/")
+    return sum(1 for line in content.splitlines() if any(m in line for m in markers))
+
+
 def process_agent_file(path: Path) -> dict | None:
     """
     Read one .agent.md file and return a manifest entry dict, or None on
@@ -392,6 +406,7 @@ def process_agent_file(path: Path) -> dict | None:
         "capabilities": derive_capabilities(description),
         "handoffs": extract_handoff_agents(frontmatter_raw),
         "file": str(path),
+        "cross_ref_density": count_cross_ref_density(text),
     }
 
 
@@ -407,11 +422,20 @@ def build_manifest(agent_entries: list[dict], repo_root: Path) -> dict:
             e["file"] = str(Path(e["file"]).relative_to(repo_root))
         except ValueError:
             pass  # keep absolute if somehow outside repo root
+        if e.get("cross_ref_density", 1) < 1:
+            logging.warning(
+                "agent '%s' cross_ref_density=0 — add MANIFESTO.md/AGENTS.md back-references",
+                e["name"],
+            )
         entries.append(e)
+
+    densities = [e.get("cross_ref_density", 0) for e in entries]
+    avg = sum(densities) / len(densities) if densities else 0.0
 
     return {
         "generated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S"),
         "agent_count": len(entries),
+        "avg_cross_ref_density": round(avg, 2),
         "agents": entries,
     }
 
@@ -429,6 +453,18 @@ def format_markdown(manifest: dict) -> str:
         caps = ", ".join(agent.get("capabilities", []))
         handoffs = ", ".join(agent.get("handoffs", []))
         rows.append(f"| {name} | {desc} | {posture} | {caps} | {handoffs} |")
+
+    # Cross-reference density section
+    rows.append("")
+    rows.append("## Cross-Reference Density")
+    rows.append("")
+    rows.append("| Agent | cross_ref_density |")
+    rows.append("|-------|-------------------|")
+    for agent in manifest["agents"]:
+        rows.append(f"| {agent['name']} | {agent.get('cross_ref_density', 0)} |")
+    avg = manifest.get("avg_cross_ref_density", 0.0)
+    rows.append(f"| **Fleet average** | **{avg}** |")
+
     return "\n".join(rows)
 
 
