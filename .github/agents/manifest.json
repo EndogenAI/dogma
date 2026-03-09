@@ -1,0 +1,850 @@
+{
+  "generated": "2026-03-09T00:51:38",
+  "agent_count": 33,
+  "avg_cross_ref_density": 5.36,
+  "agents": [
+    {
+      "name": "A5 Context Architect",
+      "description": "Evaluate context governance options \u2014 AFS context layers, semantic memory isolation, and scratchpad vs repo-memory tradeoffs \u2014 and design context layering conventions.",
+      "tools": [
+        "search",
+        "read",
+        "web",
+        "changes"
+      ],
+      "posture": "readonly",
+      "capabilities": [
+        "evaluate-context",
+        "afs-context",
+        "semantic-memory",
+        "scratchpad-repo-memory",
+        "design-context"
+      ],
+      "handoffs": [
+        "Research Reviewer",
+        "Executive Orchestrator",
+        "Executive Docs"
+      ],
+      "file": ".github/agents/a5-context-architect.agent.md",
+      "cross_ref_density": 12
+    },
+    {
+      "name": "B5 Dependency Auditor",
+      "description": "Audit uv.lock and pyproject.toml for known CVEs, outdated packages, and version conflicts; output a structured compatibility report.",
+      "tools": [
+        "search",
+        "read",
+        "changes",
+        "usages"
+      ],
+      "posture": "readonly",
+      "capabilities": [
+        "audit",
+        "lock-pyproject",
+        "toml-known",
+        "outdated-packages",
+        "version-conflicts"
+      ],
+      "handoffs": [
+        "Executive Scripter",
+        "Security Researcher",
+        "Executive Orchestrator"
+      ],
+      "file": ".github/agents/b5-dependency-auditor.agent.md",
+      "cross_ref_density": 3
+    },
+    {
+      "name": "CI Monitor",
+      "description": "Watch CI run history for recurring failure patterns, triage flaky tests, identify slow steps, and surface actionable fix suggestions for the GitHub Actions pipeline.",
+      "tools": [
+        "search",
+        "read",
+        "execute",
+        "changes",
+        "usages"
+      ],
+      "posture": "full",
+      "capabilities": [
+        "watch-run",
+        "triage-flaky",
+        "identify-slow",
+        "surface-actionable"
+      ],
+      "handoffs": [
+        "Executive Scripter",
+        "Executive Automator",
+        "Executive Orchestrator"
+      ],
+      "file": ".github/agents/ci-monitor.agent.md",
+      "cross_ref_density": 1
+    },
+    {
+      "name": "Community Pulse",
+      "description": "Aggregate GitHub community health signals \u2014 Stars, issue response time, PR velocity, contributor retention \u2014 and produce periodic health reports for project maintainers.",
+      "tools": [
+        "search",
+        "read",
+        "execute",
+        "changes",
+        "usages"
+      ],
+      "posture": "full",
+      "capabilities": [
+        "aggregate-github",
+        "stars",
+        "issue-response",
+        "velocity",
+        "contributor-retention"
+      ],
+      "handoffs": [
+        "Executive PM",
+        "DevRel Strategist",
+        "Executive Orchestrator"
+      ],
+      "file": ".github/agents/community-pulse.agent.md",
+      "cross_ref_density": 1
+    },
+    {
+      "name": "D4 Methodology Enforcer",
+      "description": "Validate proposed changes against MANIFESTO.md axioms \u2014 flag over-interactivity, unnecessary token burn, and Programmatic-First violations.",
+      "tools": [
+        "search",
+        "read",
+        "changes",
+        "usages"
+      ],
+      "posture": "readonly",
+      "capabilities": [
+        "validate-proposed",
+        "axioms",
+        "flag-over-interactivity",
+        "unnecessary-token",
+        "programmatic-first-violations"
+      ],
+      "handoffs": [
+        "Executive Scripter",
+        "Executive Docs",
+        "Executive Orchestrator"
+      ],
+      "file": ".github/agents/d4-methodology-enforcer.agent.md",
+      "cross_ref_density": 22
+    },
+    {
+      "name": "D5 Knowledge Base",
+      "description": "Manage docs/research/OPEN_RESEARCH.md as a living queue \u2014 track status, retire completed items, and propose new seed questions from synthesis gaps.",
+      "tools": [
+        "search",
+        "read",
+        "edit",
+        "changes"
+      ],
+      "posture": "creator",
+      "capabilities": [
+        "manage-docs",
+        "living-queue",
+        "track-status",
+        "retire-completed",
+        "propose-new"
+      ],
+      "handoffs": [
+        "Executive Researcher",
+        "Executive PM",
+        "Executive Orchestrator"
+      ],
+      "file": ".github/agents/d5-knowledge-base.agent.md",
+      "cross_ref_density": 4
+    },
+    {
+      "name": "Deep Research",
+      "description": ">",
+      "tools": [
+        "search",
+        "read",
+        "edit",
+        "write",
+        "execute",
+        "terminal",
+        "agent"
+      ],
+      "posture": "full",
+      "capabilities": [],
+      "handoffs": [
+        "Deep Research",
+        "Research Scout",
+        "Research Synthesizer",
+        "Research Reviewer",
+        "Research Archivist"
+      ],
+      "file": ".github/agents/deep-research.agent.md",
+      "cross_ref_density": 5
+    },
+    {
+      "name": "DevRel Strategist",
+      "description": "Plan developer relations content \u2014 blog cadence, tutorial pipeline, Discussions announcements, and DevEx narrative for an agent-first open-source project.",
+      "tools": [
+        "search",
+        "read",
+        "edit",
+        "changes",
+        "usages"
+      ],
+      "posture": "creator",
+      "capabilities": [
+        "plan-developer",
+        "blog-cadence",
+        "tutorial-pipeline",
+        "discussions-announcements",
+        "devex-narrative"
+      ],
+      "handoffs": [
+        "Executive Docs",
+        "Executive PM",
+        "Executive Orchestrator"
+      ],
+      "file": ".github/agents/devrel-strategist.agent.md",
+      "cross_ref_density": 5
+    },
+    {
+      "name": "Docs Linter",
+      "description": "Audit docs/research/ for D4 heading gaps, dead source stubs, missing frontmatter, and validate_synthesis compliance. Advisory-only; never edits docs directly.",
+      "tools": [
+        "search",
+        "read",
+        "usages",
+        "changes"
+      ],
+      "posture": "readonly",
+      "capabilities": [
+        "audit-docs",
+        "dead-source",
+        "missing-frontmatter",
+        "validate-synthesis",
+        "advisory-only"
+      ],
+      "handoffs": [
+        "Executive Docs",
+        "Review"
+      ],
+      "file": ".github/agents/docs-linter.agent.md",
+      "cross_ref_density": 3
+    },
+    {
+      "name": "Env Validator",
+      "description": "Audit Python environment consistency across .python-version, uv.lock, pyproject.toml, and CI matrix \u2014 flag compatibility drift and suggest remediation.",
+      "tools": [
+        "search",
+        "read",
+        "changes",
+        "usages"
+      ],
+      "posture": "readonly",
+      "capabilities": [
+        "audit-python",
+        "python-version",
+        "lock",
+        "pyproject",
+        "toml"
+      ],
+      "handoffs": [
+        "Executive Scripter",
+        "Executive Orchestrator"
+      ],
+      "file": ".github/agents/env-validator.agent.md",
+      "cross_ref_density": 1
+    },
+    {
+      "name": "Executive Automator",
+      "description": "Design and implement non-agent automation \u2014 file watchers, pre-commit hooks, CI tasks, and VS Code task definitions. First escalation point for anything that should run without an agent.",
+      "tools": [
+        "search",
+        "read",
+        "edit",
+        "write",
+        "execute",
+        "terminal",
+        "usages",
+        "changes"
+      ],
+      "posture": "full",
+      "capabilities": [
+        "design-implement",
+        "file-watchers",
+        "pre-commit-hooks",
+        "tasks",
+        "code-task"
+      ],
+      "handoffs": [
+        "Review",
+        "GitHub",
+        "Executive Scripter"
+      ],
+      "file": ".github/agents/executive-automator.agent.md",
+      "cross_ref_density": 3
+    },
+    {
+      "name": "Executive Docs",
+      "description": "Maintain and evolve all project documentation \u2014 encoding dogmatic values, guiding axioms, and methodology across every documentation layer.",
+      "tools": [
+        "search",
+        "read",
+        "edit",
+        "write",
+        "usages",
+        "changes"
+      ],
+      "posture": "creator",
+      "capabilities": [
+        "maintain-evolve",
+        "encoding-dogmatic",
+        "guiding-axioms",
+        "methodology-across"
+      ],
+      "handoffs": [
+        "Review",
+        "GitHub",
+        "Executive Researcher"
+      ],
+      "file": ".github/agents/executive-docs.agent.md",
+      "cross_ref_density": 16
+    },
+    {
+      "name": "Executive Fleet",
+      "description": "Manage the agent fleet \u2014 create, audit, update, and deprecate .agent.md files and fleet documentation to maintain standards compliance.",
+      "tools": [
+        "search",
+        "read",
+        "edit",
+        "write",
+        "execute",
+        "terminal",
+        "usages",
+        "changes",
+        "agent"
+      ],
+      "posture": "full",
+      "capabilities": [
+        "manage-agent",
+        "create",
+        "audit",
+        "update",
+        "deprecate"
+      ],
+      "handoffs": [
+        "Executive Fleet",
+        "Review",
+        "GitHub",
+        "Executive Docs"
+      ],
+      "file": ".github/agents/executive-fleet.agent.md",
+      "cross_ref_density": 7
+    },
+    {
+      "name": "Executive Orchestrator",
+      "description": "Coordinate multi-workflow sessions spanning research, docs, scripting, and fleet changes \u2014 sequence executive agents and maintain session coherence.",
+      "tools": [
+        "search",
+        "read",
+        "edit",
+        "write",
+        "web",
+        "execute",
+        "terminal",
+        "usages",
+        "changes",
+        "agent"
+      ],
+      "posture": "full",
+      "capabilities": [
+        "coordinate-multi-workflow",
+        "docs",
+        "scripting",
+        "fleet-changes",
+        "sequence-executive"
+      ],
+      "handoffs": [],
+      "file": ".github/agents/executive-orchestrator.agent.md",
+      "cross_ref_density": 9
+    },
+    {
+      "name": "Executive Planner",
+      "description": "Decompose complex multi-step requests into structured plans with phases, gates, agent assignments, and dependency ordering before any execution begins.",
+      "tools": [
+        "search",
+        "read",
+        "changes",
+        "usages"
+      ],
+      "posture": "readonly",
+      "capabilities": [
+        "decompose-complex",
+        "gates",
+        "agent-assignments",
+        "dependency-ordering"
+      ],
+      "handoffs": [
+        "Executive Orchestrator"
+      ],
+      "file": ".github/agents/executive-planner.agent.md",
+      "cross_ref_density": 7
+    },
+    {
+      "name": "Executive PM",
+      "description": "Maintain the health of the repository as an open-source resource \u2014 issues, labels, milestones, changelog, contributing docs, and community standards.",
+      "tools": [
+        "search",
+        "read",
+        "edit",
+        "write",
+        "execute",
+        "terminal",
+        "usages",
+        "changes",
+        "agent"
+      ],
+      "posture": "full",
+      "capabilities": [
+        "maintain-health",
+        "issues",
+        "labels",
+        "milestones",
+        "changelog"
+      ],
+      "handoffs": [
+        "Executive PM",
+        "Review",
+        "GitHub",
+        "Executive Docs",
+        "Executive Orchestrator"
+      ],
+      "file": ".github/agents/executive-pm.agent.md",
+      "cross_ref_density": 11
+    },
+    {
+      "name": "Executive Researcher",
+      "description": "Orchestrate research sessions end-to-end \u2014 delegate to the research fleet, synthesize outputs, and spawn new area-specific research agents as needed.",
+      "tools": [
+        "search",
+        "read",
+        "edit",
+        "write",
+        "execute",
+        "terminal",
+        "usages",
+        "changes",
+        "agent"
+      ],
+      "posture": "full",
+      "capabilities": [
+        "orchestrate-research",
+        "delegate-research",
+        "synthesize-outputs",
+        "spawn-new"
+      ],
+      "handoffs": [
+        "Executive Researcher",
+        "Research Scout",
+        "Research Synthesizer",
+        "Research Reviewer",
+        "Research Archivist",
+        "Executive Scripter",
+        "Executive Docs",
+        "Review"
+      ],
+      "file": ".github/agents/executive-researcher.agent.md",
+      "cross_ref_density": 7
+    },
+    {
+      "name": "Executive Scripter",
+      "description": "Identify repeated interactive tasks and encode them as committed scripts. Audit scripts/ for gaps, propose new scripts, and extend existing ones \u2014 enforcing the programmatic-first principle.",
+      "tools": [
+        "search",
+        "read",
+        "edit",
+        "write",
+        "execute",
+        "terminal",
+        "usages",
+        "changes"
+      ],
+      "posture": "full",
+      "capabilities": [
+        "identify-repeated",
+        "audit-scripts",
+        "propose-new",
+        "extend-existing",
+        "enforcing-programmatic-first"
+      ],
+      "handoffs": [
+        "Review",
+        "GitHub",
+        "Executive Automator"
+      ],
+      "file": ".github/agents/executive-scripter.agent.md",
+      "cross_ref_density": 3
+    },
+    {
+      "name": "GitHub",
+      "description": "Commit approved changes to the current branch following Conventional Commits. The final step in every agent workflow before human review.",
+      "tools": [
+        "terminal",
+        "execute",
+        "read",
+        "changes"
+      ],
+      "posture": "full",
+      "capabilities": [
+        "commit-approved",
+        "final-step"
+      ],
+      "handoffs": [
+        "Review"
+      ],
+      "file": ".github/agents/github.agent.md",
+      "cross_ref_density": 2
+    },
+    {
+      "name": "Issue Triage",
+      "description": "First-pass triage on new issues \u2014 suggest labels, priority, effort; flag duplicates; draft clarifying comments. Does not close or merge without human confirmation.",
+      "tools": [
+        "search",
+        "read",
+        "edit",
+        "execute",
+        "changes",
+        "usages"
+      ],
+      "posture": "full",
+      "capabilities": [
+        "first-pass-triage",
+        "suggest-labels",
+        "priority",
+        "effort",
+        "flag-duplicates"
+      ],
+      "handoffs": [
+        "Executive PM",
+        "Executive Orchestrator"
+      ],
+      "file": ".github/agents/issue-triage.agent.md",
+      "cross_ref_density": 2
+    },
+    {
+      "name": "LLM Cost Optimizer",
+      "description": "Build and maintain a model selection decision table (capability \u00d7 cost \u00d7 latency) and recommend model tiers per task type to minimize token spend.",
+      "tools": [
+        "search",
+        "read",
+        "edit",
+        "web",
+        "changes",
+        "usages"
+      ],
+      "posture": "creator",
+      "capabilities": [
+        "build-maintain",
+        "build"
+      ],
+      "handoffs": [
+        "Executive Docs",
+        "Executive Orchestrator"
+      ],
+      "file": ".github/agents/llm-cost-optimizer.agent.md",
+      "cross_ref_density": 5
+    },
+    {
+      "name": "Local Compute Scout",
+      "description": "Survey local inference stacks (Ollama, LM Studio, llama.cpp), benchmark models, document hardware prereqs, and maintain a local model registry for this project.",
+      "tools": [
+        "search",
+        "read",
+        "edit",
+        "web",
+        "changes",
+        "usages"
+      ],
+      "posture": "creator",
+      "capabilities": [
+        "survey-local",
+        "studio",
+        "llama",
+        "cpp",
+        "benchmark-models"
+      ],
+      "handoffs": [
+        "Research Synthesizer",
+        "Executive Researcher",
+        "Executive Scripter",
+        "Review"
+      ],
+      "file": ".github/agents/local-compute-scout.agent.md",
+      "cross_ref_density": 3
+    },
+    {
+      "name": "MCP Architect",
+      "description": "Design locally-distributed MCP framework topologies, evaluate server composition patterns, and define MCP deployment conventions for this project.",
+      "tools": [
+        "search",
+        "read",
+        "edit",
+        "web",
+        "changes",
+        "usages"
+      ],
+      "posture": "creator",
+      "capabilities": [
+        "design-locally-distributed",
+        "evaluate-server",
+        "define-mcp"
+      ],
+      "handoffs": [
+        "Research Synthesizer",
+        "Executive Scripter",
+        "Local Compute Scout",
+        "Review",
+        "Executive Researcher"
+      ],
+      "file": ".github/agents/mcp-architect.agent.md",
+      "cross_ref_density": 3
+    },
+    {
+      "name": "Release Manager",
+      "description": "Orchestrate versioning, CHANGELOG entries, and GitHub Releases \u2014 manage SemVer decisions, tag commits, and ensure every release has a correlated milestone.",
+      "tools": [
+        "search",
+        "read",
+        "edit",
+        "execute",
+        "terminal",
+        "changes",
+        "usages"
+      ],
+      "posture": "full",
+      "capabilities": [
+        "orchestrate-versioning",
+        "changelog-entries",
+        "github-releases",
+        "manage-semver",
+        "tag-commits"
+      ],
+      "handoffs": [
+        "Review",
+        "GitHub",
+        "Executive PM",
+        "Executive Orchestrator"
+      ],
+      "file": ".github/agents/release-manager.agent.md",
+      "cross_ref_density": 2
+    },
+    {
+      "name": "Research Archivist",
+      "description": "Finalise reviewed research drafts \u2014 update status, commit to docs/research/, and close the corresponding GitHub issue.",
+      "tools": [
+        "search",
+        "read",
+        "edit",
+        "terminal",
+        "changes"
+      ],
+      "posture": "full",
+      "capabilities": [
+        "finalise-reviewed",
+        "update-status",
+        "commit-docs",
+        "close-corresponding"
+      ],
+      "handoffs": [
+        "Review",
+        "Executive Researcher"
+      ],
+      "file": ".github/agents/research-archivist.agent.md",
+      "cross_ref_density": 2
+    },
+    {
+      "name": "Research Reviewer",
+      "description": "Validate research synthesis drafts against endogenic methodology standards \u2014 flag gaps, unsupported claims, and contradictions before archiving.",
+      "tools": [
+        "search",
+        "read",
+        "changes",
+        "usages"
+      ],
+      "posture": "readonly",
+      "capabilities": [
+        "validate-research",
+        "flag-gaps",
+        "unsupported-claims",
+        "contradictions-archiving"
+      ],
+      "handoffs": [
+        "Executive Researcher"
+      ],
+      "file": ".github/agents/research-reviewer.agent.md",
+      "cross_ref_density": 5
+    },
+    {
+      "name": "Research Scout",
+      "description": "Survey the web and local sources for a given research topic. Catalogue raw findings in the session scratchpad \u2014 do not synthesize.",
+      "tools": [
+        "search",
+        "read",
+        "web",
+        "changes"
+      ],
+      "posture": "readonly",
+      "capabilities": [
+        "survey-web",
+        "catalogue-raw",
+        "synthesize"
+      ],
+      "handoffs": [
+        "Executive Researcher"
+      ],
+      "file": ".github/agents/research-scout.agent.md",
+      "cross_ref_density": 1
+    },
+    {
+      "name": "Research Synthesizer",
+      "description": "Transform raw Scout findings into structured, opinionated synthesis documents in docs/research/ following the expansion\u2192contraction pattern.",
+      "tools": [
+        "search",
+        "read",
+        "edit",
+        "write",
+        "changes"
+      ],
+      "posture": "creator",
+      "capabilities": [
+        "transform-raw",
+        "opinionated-synthesis"
+      ],
+      "handoffs": [
+        "Executive Researcher"
+      ],
+      "file": ".github/agents/research-synthesizer.agent.md",
+      "cross_ref_density": 2
+    },
+    {
+      "name": "Review",
+      "description": "Review changed files against AGENTS.md constraints and project standards before any commit. Read-only \u2014 flags issues and returns control to the originating agent.",
+      "tools": [
+        "search",
+        "read",
+        "changes",
+        "usages"
+      ],
+      "posture": "readonly",
+      "capabilities": [
+        "review-changed",
+        "constraints-project",
+        "read-only",
+        "flags-issues"
+      ],
+      "handoffs": [
+        "GitHub",
+        "Executive Researcher"
+      ],
+      "file": ".github/agents/review.agent.md",
+      "cross_ref_density": 9
+    },
+    {
+      "name": "Security Researcher",
+      "description": "Threat-model agentic workflows and identify attack surfaces \u2014 survey OWASP, evaluate CIA-triad exposure in agent designs, and produce security synthesis docs.",
+      "tools": [
+        "search",
+        "read",
+        "edit",
+        "web",
+        "changes",
+        "usages"
+      ],
+      "posture": "creator",
+      "capabilities": [
+        "threat-model-agentic",
+        "survey-owasp",
+        "evaluate-cia-triad",
+        "produce-security"
+      ],
+      "handoffs": [
+        "Research Synthesizer",
+        "Research Reviewer",
+        "Executive Researcher",
+        "Executive Docs",
+        "Review"
+      ],
+      "file": ".github/agents/security-researcher.agent.md",
+      "cross_ref_density": 5
+    },
+    {
+      "name": "Test Coordinator",
+      "description": "Map pytest markers to CI phases, identify untested scripts, and recommend which tests gate which PR merge stage to keep the test suite fast and meaningful.",
+      "tools": [
+        "search",
+        "read",
+        "changes",
+        "usages"
+      ],
+      "posture": "readonly",
+      "capabilities": [
+        "map-pytest",
+        "identify-untested",
+        "recommend-which"
+      ],
+      "handoffs": [
+        "Executive Scripter",
+        "Executive Orchestrator"
+      ],
+      "file": ".github/agents/test-coordinator.agent.md",
+      "cross_ref_density": 2
+    },
+    {
+      "name": "User Researcher",
+      "description": "Synthesize closed GitHub issues, PRs, and Discussions into JTBD summaries and friction reports for quarterly OSS user research.",
+      "tools": [
+        "search",
+        "read",
+        "edit",
+        "terminal"
+      ],
+      "posture": "full",
+      "capabilities": [
+        "synthesize-closed",
+        "prs",
+        "discussions-jtbd"
+      ],
+      "handoffs": [
+        "Review",
+        "GitHub",
+        "Executive PM"
+      ],
+      "file": ".github/agents/user-researcher.agent.md",
+      "cross_ref_density": 1
+    },
+    {
+      "name": "Values Researcher",
+      "description": "Investigate verbally encoding values in agent instructions \u2014 survey philosophy-of-language, alignment literature, and prior art to ground endogenic axiom authoring.",
+      "tools": [
+        "search",
+        "read",
+        "edit",
+        "web",
+        "changes",
+        "usages"
+      ],
+      "posture": "creator",
+      "capabilities": [
+        "investigate-verbally",
+        "survey-philosophy-of-language",
+        "alignment-literature",
+        "prior-art"
+      ],
+      "handoffs": [
+        "Research Synthesizer",
+        "Executive Docs",
+        "Review",
+        "Executive Researcher"
+      ],
+      "file": ".github/agents/values-researcher.agent.md",
+      "cross_ref_density": 13
+    }
+  ]
+}

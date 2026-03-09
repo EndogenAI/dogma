@@ -251,6 +251,9 @@ rather than paying the full ~5K-token cost per agent body (lazy-loading pattern;
 | `capabilities` | `list[str]` | 2–5 lowercase-hyphenated tags extracted from description |
 | `handoffs` | `list[str]` | Agent names this agent can delegate to (from `handoffs[].agent`) |
 | `file` | `str` | Repo-relative path to the `.agent.md` file |
+| `cross_ref_density` | `int` | Count of lines referencing `MANIFESTO.md`, `AGENTS.md`, or `docs/guides/` |
+
+**Manifest-level fields** also include `avg_cross_ref_density` (fleet average, `float`). Agents with `cross_ref_density < 1` emit a `WARNING` to stderr.
 
 **Posture derivation rules**:
 - `full` — tools include any of: `execute`, `terminal`, `agent`, `run`, `browser`
