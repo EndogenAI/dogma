@@ -734,6 +734,8 @@ Depends on: Phase 3 (PR #89) merged to feat/value-encoding-fidelity
 
 ---
 
+### Phase 6 — Skills as Decision Logic & Deterministic Components
+
 **Issues**: #79, #81, #72
 **Branch convention**: `research/skills-decision-logic`
 **Agent**: Executive Fleet (#79 audit + skill authoring), Executive Researcher (#81 survey)
