@@ -595,6 +595,8 @@ Depends on: Phase 3 (PR #89) merged to feat/value-encoding-fidelity
 
 ---
 
+### Phase 5 — Queryable Documentation Substrate
+
 **Issues**: #80, #84
 **Branch convention**: `research/queryable-substrate`
 **Agent**: Executive Researcher (#80 survey + design), Executive Scripter (#80 and #84 implementation)
