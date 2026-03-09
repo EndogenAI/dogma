@@ -828,7 +828,7 @@ automatically when a PR containing `Unblocks #N` in its body is merged to `main`
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `path` | `str` | Repo-relative path to the `.agent.md` file |
+| `path` | `str` | Filesystem path to the `.agent.md` file (typically an absolute path under `.github/agents/`) |
 | `citations` | `list[str]` | Normalised axiom names found in `governs:` |
 | `orphaned` | `bool` | `True` if no `governs:` key in frontmatter |
 | `unverifiable` | `list[str]` | Axiom names not found as H2/H3 headings in MANIFESTO.md |
@@ -864,7 +864,7 @@ uv run python scripts/audit_provenance.py --agents-dir path/to/agents/ --manifes
 | `--output` | no | Write output to this file instead of stdout |
 | `--format` | no | `json` (default) or `summary` |
 
-**Exit codes**: `0` always (advisory tool — no hard-fail at this stage).
+**Exit codes**: `0` on success; `1` on configuration or usage errors (for example, when `--agents-dir` or `--manifesto` point to missing paths).
 
 **Dependencies**: stdlib only — no third-party packages required.
 
