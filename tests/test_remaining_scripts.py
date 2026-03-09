@@ -272,7 +272,7 @@ class TestGenerateAgentManifest:
 
         result = subprocess.run(
             [
-                "python",
+                sys.executable,
                 str(Path(__file__).parent.parent / "scripts" / "generate_agent_manifest.py"),
                 "--agents-dir",
                 str(agents_dir),
@@ -303,7 +303,7 @@ class TestGenerateAgentManifest:
 
         result = subprocess.run(
             [
-                "python",
+                sys.executable,
                 str(Path(__file__).parent.parent / "scripts" / "generate_agent_manifest.py"),
                 "--agents-dir",
                 str(agents_dir),
@@ -332,7 +332,7 @@ class TestGenerateAgentManifest:
 
         result = subprocess.run(
             [
-                "python",
+                sys.executable,
                 str(Path(__file__).parent.parent / "scripts" / "generate_agent_manifest.py"),
                 "--agents-dir",
                 str(agents_dir),
@@ -362,7 +362,7 @@ class TestGenerateAgentManifest:
 
         result = subprocess.run(
             [
-                "python",
+                sys.executable,
                 str(Path(__file__).parent.parent / "scripts" / "generate_agent_manifest.py"),
                 "--agents-dir",
                 str(agents_dir),

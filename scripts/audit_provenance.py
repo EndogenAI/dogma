@@ -36,7 +36,7 @@ Outputs:
         "fleet_citation_coverage_pct": float,  # % of files with governs:
         "total_unverifiable": int
     }
-    Exit code: 0 always (advisory tool -- no hard fail at this stage).
+    Exit code: 0 on success; non-zero on configuration or runtime errors.
 
 Usage examples:
     uv run python scripts/audit_provenance.py
@@ -130,10 +130,13 @@ def _normalise_axiom_name(heading: str) -> str:
     Normalise a Markdown heading to a lowercase-hyphenated axiom name.
     E.g. 'Algorithms Before Tokens' -> 'algorithms-before-tokens'
          'Endogenous-First'         -> 'endogenous-first'
+         '1. Endogenous-First'      -> 'endogenous-first'
     """
     # Strip any inline Markdown (bold, code, etc.)
     heading = re.sub(r"[`*_]", "", heading)
     heading = heading.strip()
+    # Strip leading numeric prefixes like "1. ", "1.2. ", "2) "
+    heading = re.sub(r"^[0-9]+(?:\.[0-9]+)*\s*[\.\)]?\s*", "", heading)
     # Replace spaces (and existing hyphens) normalise to single hyphens
     heading = re.sub(r"\s+", "-", heading)
     return heading.lower()
@@ -157,7 +160,11 @@ def audit_file(agent_path: Path, known_axioms: set[str]) -> dict:
 
     Returns a dict with keys: path, citations, orphaned, unverifiable.
     """
-    text = agent_path.read_text(encoding="utf-8")
+    try:
+        text = agent_path.read_text(encoding="utf-8")
+    except OSError as exc:
+        print(f"WARNING: cannot read {agent_path}: {exc}", file=sys.stderr)
+        return {"path": str(agent_path), "citations": [], "orphaned": True, "unverifiable": []}
     fm_raw = extract_frontmatter(text)
     fm = parse_simple_yaml(fm_raw) if fm_raw else {}
 
@@ -294,6 +301,7 @@ def main(argv: list[str] | None = None) -> int:
         output_text = json.dumps(report, indent=2)
 
     if args.output:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(output_text, encoding="utf-8")
     else:
         print(output_text)
