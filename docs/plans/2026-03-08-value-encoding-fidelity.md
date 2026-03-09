@@ -740,8 +740,8 @@ Depends on: Phase 3 (PR #89) merged to feat/value-encoding-fidelity
 **Branch convention**: `research/skills-decision-logic`
 **Agent**: Executive Fleet (#79 audit + skill authoring), Executive Researcher (#81 survey)
 **Informed by**: Phase 2 (#85) findings on extraction intervention
-**Status**: ⬜ Not started
-**Checklist**: Delegate detailed per-phase execution checklist to Executive Planner before beginning execution (per AGENTS.md § Per-Phase Execution Checklists).
+**Status**: ✅ Complete — PR #92 committed fd20524 (2026-03-09); awaiting merge into `feat/value-encoding-fidelity`
+**Checklist**: ✅ Delegated to Executive Planner — see session scratchpad `.tmp/feat-value-encoding-fidelity/2026-03-09.md`
 
 | Issue | Title | Type | Effort |
 |-------|-------|------|--------|
@@ -750,14 +750,14 @@ Depends on: Phase 3 (PR #89) merged to feat/value-encoding-fidelity
 | #72 | Context-sensitive axiom amplification — epigenetic tagging | research | m |
 
 **Gate deliverables**:
-- [ ] Audit of decision patterns appearing in ≥2 agent bodies; token savings estimate
-- [ ] `delegation-routing` SKILL.md prototype
-- [ ] `phase-gate-sequence` SKILL.md prototype
-- [ ] FSM state specification for the orchestration phase-gate loop
-- [ ] Epigenetic tagging recommendation (metadata / AGENTS.md selector / script)
-- [ ] `docs/research/skills-as-decision-logic.md` + `docs/research/deterministic-agent-components.md` committed
+- [x] Audit of decision patterns appearing in ≥2 agent bodies; token savings estimate (~748 tokens/session)
+- [x] `delegation-routing` SKILL.md prototype
+- [x] `phase-gate-sequence` SKILL.md prototype
+- [x] FSM state specification for the orchestration phase-gate loop (`data/phase-gate-fsm.yml`)
+- [x] Epigenetic tagging recommendation (AGENTS.md lookup table adopted; script deferred)
+- [x] `docs/research/skills-as-decision-logic.md` + `docs/research/deterministic-agent-components.md` committed
 
-**Review gate**: Executive Fleet Review validates new skills against `agent-file-authoring` SKILL.md and `validate_agent_files.py`.
+**Review gate**: ✅ APPROVED — Review agent verified all 10 checks; `validate_agent_files.py --all` 45/45 PASS.
 
 ---
 
