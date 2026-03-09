@@ -42,7 +42,7 @@ fsm:
           guard: "verdict_equals_APPROVED AND review_section_in_scratchpad"
           next_state: COMPACT_CHECK
         - event: review_rejected
-          guard: "verdict_equals_REQUEST_CHANGES"
+          guard: "verdict_equals_REQUEST_CHANGES"  # canonical verdict string: "REQUEST CHANGES" (space, not underscore)
           next_state: PHASE_RUNNING
 
     COMPACT_CHECK:
@@ -51,10 +51,10 @@ fsm:
         is warranted before advancing to the next phase. All progress committed to git.
       transitions:
         - event: context_within_budget
-          guard: "scratchpad_lt_200_lines AND no_recent_compaction"
+          guard: "scratchpad_lt_2000_lines AND no_recent_compaction"
           next_state: COMMIT
         - event: compaction_warranted
-          guard: "scratchpad_gte_200_lines OR compaction_signal_present"
+          guard: "scratchpad_gte_2000_lines OR compaction_signal_present"  # recommend /compact before COMMIT
           next_state: COMMIT
 
     COMMIT:

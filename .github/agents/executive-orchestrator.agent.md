@@ -168,10 +168,10 @@ Do not batch delegations. One phase at a time.
 
 **Per-phase sequence** — run this sequence after every `## Phase N Output` write, before delegating the next domain phase:
 
-1. Prune the scratchpad if it exceeds 200 lines: `uv run python scripts/prune_scratchpad.py`
+1. Prune the scratchpad if it exceeds 2000 lines: `uv run python scripts/prune_scratchpad.py`
 2. Write a `## Pre-Compact Checkpoint` to the scratchpad capturing: what is complete, what is next, any open questions.
 3. Commit all in-progress changes: `git add -A && git commit -m "chore: pre-compact checkpoint — Phase N complete"`
-4. **Pre-review grep sweep** — before requesting Copilot review, scan for known erroneous patterns in changed files:
+4. **Pre-review grep sweep** — before requesting Copilot review, scan agent and skill files in `.github/` for known erroneous patterns:
    ```bash
    if grep -r "Phase N Review Output\|Fetch-before-check" .github/; then
      echo "ERROR: known pattern violations found — fix before requesting review"

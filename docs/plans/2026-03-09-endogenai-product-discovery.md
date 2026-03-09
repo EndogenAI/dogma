@@ -38,7 +38,7 @@ Establish product strategy, org structure, and sequenced roadmap for scaling End
 ### Phase 1 Review — Review Gate (Non-blocking)
 
 **Agent**: Review
-**Deliverables**: `## Phase 1 Review Output` appended to scratchpad; verdict: APPROVED or REQUEST CHANGES
+**Deliverables**: `## Review Output` appended to scratchpad; verdict: APPROVED or REQUEST CHANGES
 **Depends on**: Phase 1 deliverables (issue creation)
 **Purpose**: Validate issue structure, labeling, and clarity before discovery begins
 **Status**: ⬜ Not started
@@ -69,7 +69,7 @@ Establish product strategy, org structure, and sequenced roadmap for scaling End
 ### Phase 2 Review — Review Gate
 
 **Agent**: Review
-**Deliverables**: `## Phase 2 Review Output` appended to scratchpad; verdict: APPROVED or REQUEST CHANGES
+**Deliverables**: `## Review Output` appended to scratchpad; verdict: APPROVED or REQUEST CHANGES
 **Depends on**: Phase 2 deliverables (discovery document)
 **Purpose**: Validate discovery synthesis quality, evidence, and alignment with MANIFESTO
 **Status**: ⬜ Not started
@@ -106,7 +106,7 @@ Establish product strategy, org structure, and sequenced roadmap for scaling End
 ### Phase 3 Review — Review Gate
 
 **Agent**: Review
-**Deliverables**: `## Phase 3 Review Output` appended to scratchpad; verdict: APPROVED or REQUEST CHANGES
+**Deliverables**: `## Review Output` appended to scratchpad; verdict: APPROVED or REQUEST CHANGES
 **Depends on**: Phase 3 deliverables
 **Purpose**: Validate roadmap quality, feasibility, and sequencing before execution
 **Status**: ⬜ Not started
