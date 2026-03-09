@@ -601,7 +601,7 @@ Depends on: Phase 3 (PR #89) merged to feat/value-encoding-fidelity
 **Branch convention**: `research/queryable-substrate`
 **Agent**: Executive Researcher (#80 survey + design), Executive Scripter (#80 and #84 implementation)
 **Informed by**: Phase 2 (#85) findings on compression/retrieval tradeoff
-**Status**: ✅ Complete — PR #91 open 2026-03-08 (targeting `feat/value-encoding-fidelity`)
+**Status**: ✅ Complete — PR #91 merged 2026-03-08 into `feat/value-encoding-fidelity` (27a0eb7); issues #80, #84 closed
 **Checklist**: ✅ Delegated to Executive Planner — see `### Phase 5 Detailed Checklist` below
 
 | Issue | Title | Type | Effort |
