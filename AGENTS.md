@@ -18,9 +18,9 @@ These constraints govern all agent behavior. They derive from three core axioms 
 
 ### Context-Sensitive Amplification
 
-When writing the encoding checkpoint sentence in `## Session Start`, consult this table and name the amplified axiom for your session's primary task type.
+When writing the encoding checkpoint sentence in `## Session Start`, consult this table and name the amplified principle or axiom for your session's primary task type.
 
-| Primary task type keyword | Amplify axiom | Expression hint |
+| Primary task type keyword | Amplify principle | Expression hint |
 |---|---|---|
 | research / survey / scout / synthesize | **Endogenous-First** | Read prior docs and cached sources before reaching outward |
 | commit / push / review / merge / PR | **Documentation-First** | Every changed workflow/agent/script must have accompanying docs |
@@ -28,7 +28,7 @@ When writing the encoding checkpoint sentence in `## Session Start`, consult thi
 | agent / skill / authoring / fleet | **Endogenous-First** + **Minimal Posture** | Read existing fleet before spawning; carry only required tools |
 | local / inference / model / cost | **Local Compute-First** | Prefer local model invocation; document when external API is required |
 
-**How to use**: Match your session's primary task to the nearest keyword row. In the encoding checkpoint, write: *"Governing axiom: [amplified axiom] — primary endogenous source: [source name]."* If a session spans multiple task types, name the axiom for the **first phase** and update in subsequent `## Pre-Compact Checkpoint` entries.
+**How to use**: Match your session's primary task to the nearest keyword row. In the encoding checkpoint, write: *"Governing axiom: [amplified principle or axiom] — primary endogenous source: [source name]."* If a session spans multiple task types, name the axiom for the **first phase** and update in subsequent `## Pre-Compact Checkpoint` entries.
 
 *Implements OQ-VE-2 from [`docs/research/values-encoding.md`](docs/research/values-encoding.md) §5 — epigenetic tagging via AGENTS.md lookup table (Phase 1 mechanism). See that document for mechanism comparison and deferred Phase 2 script implementation.*
 
