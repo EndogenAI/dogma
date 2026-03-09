@@ -141,13 +141,13 @@ Store all concept → canonical link mappings in `data/link_registry.yml`, forma
 
 ```yaml
 concepts:
-  - name: "Endogenous-First"
+  - concept: "Endogenous-First"
     aliases: ["endogenous-first", "Endogenous First"]
-    target: "../../MANIFESTO.md#endogenous-first"
+    canonical_source: "MANIFESTO.md#endogenous-first"
     scopes: ["docs/", ".github/agents/", "AGENTS.md"]
-  - name: "Algorithms Before Tokens"
+  - concept: "Algorithms Before Tokens"
     aliases: ["algorithms-before-tokens"]
-    target: "../../MANIFESTO.md#algorithms-before-tokens"
+    canonical_source: "MANIFESTO.md#algorithms-before-tokens"
     scopes: ["docs/", ".github/agents/"]
 ```
 

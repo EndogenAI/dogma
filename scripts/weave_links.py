@@ -39,6 +39,7 @@ Usage examples:
 from __future__ import annotations
 
 import argparse
+import os
 import re
 import sys
 from pathlib import Path
@@ -73,13 +74,17 @@ def load_registry(path: Path) -> list[dict]:
     """
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
     entries = data.get("concepts", [])
-    _safe_path = re.compile(r"^[a-zA-Z0-9_./ -][a-zA-Z0-9_./ /-]*$")
+    _safe_path = re.compile(r"^[a-zA-Z0-9_.][a-zA-Z0-9_./# -]*$")
     for entry in entries:
         for required in ("concept", "canonical_source", "aliases"):
             if required not in entry:
                 raise KeyError(f"Registry entry missing required field: {required!r}")
         src = entry["canonical_source"]
-        if not (src.startswith("https://") or _safe_path.match(src)):
+        if src.startswith("https://"):
+            pass  # always valid
+        elif src.startswith("/") or src.startswith("//"):
+            raise ValueError(f"Unsafe canonical_source {src!r}: absolute/scheme-relative paths not allowed")
+        elif not _safe_path.match(src):
             raise ValueError(f"Unsafe canonical_source {src!r}: must be a relative path or https:// URL")
     return entries
 
@@ -93,6 +98,23 @@ def is_already_linked(line: str, canonical_source: str) -> bool:
     """Return True if line already contains a Markdown link to canonical_source."""
     escaped = re.escape(canonical_source)
     return bool(re.search(r"\[.*?\]\(" + escaped, line))
+
+
+def is_inside_any_link(line: str, match: re.Match) -> bool:  # type: ignore[type-arg]
+    """Return True if the matched span is already inside a Markdown link construct.
+
+    Prevents injecting link text inside existing link text or URL spans, which
+    would produce nested/broken Markdown like [[text](A)](B).
+    """
+    before = line[: match.start()]
+    after = line[match.end() :]
+    # Inside link text: [...<match>...](url) — unclosed [ before and ]( immediately after
+    if "[" in before and re.search(r"^\s*\]\(", after):
+        return True
+    # Inside link URL: [text](...<match>...) — unclosed ]( before, no closing ) yet
+    if re.search(r"\]\([^\)]*$", before):
+        return True
+    return False
 
 
 # ---------------------------------------------------------------------------
@@ -151,6 +173,8 @@ def inject_link(text: str, entry: dict, dry_run: bool) -> tuple[str, list[str]]:
                     continue
                 match = re.search(pattern, line, re.IGNORECASE)
                 if match:
+                    if is_inside_any_link(line, match):
+                        continue
                     matched_text = match.group(0)
                     new_line = line[: match.start()] + f"[{matched_text}]({canonical_source})" + line[match.end() :]
                     diff_lines.append(f"- {line}")
@@ -167,6 +191,29 @@ def inject_link(text: str, entry: dict, dry_run: bool) -> tuple[str, list[str]]:
     if dry_run:
         return text, diff_lines
     return result_text, diff_lines
+
+
+# ---------------------------------------------------------------------------
+# Canonical source path resolution
+# ---------------------------------------------------------------------------
+
+
+def resolve_canonical_source(canonical_source: str, filepath: Path, repo_root: Path) -> str:
+    """Compute a Markdown-safe relative link path from filepath to canonical_source.
+
+    canonical_source is repo-root-relative (e.g. 'MANIFESTO.md', 'docs/guides/agents.md').
+    Returns a POSIX relative path suitable for use in Markdown links.
+    https:// sources are returned unchanged.
+    """
+    if canonical_source.startswith("https://"):
+        return canonical_source
+    # Split off any #fragment
+    parts = canonical_source.split("#", 1)
+    path_part = parts[0]
+    fragment = "#" + parts[1] if len(parts) > 1 else ""
+    target = repo_root / path_part
+    rel = os.path.relpath(str(target), str(filepath.parent))
+    return rel.replace("\\", "/") + fragment
 
 
 # ---------------------------------------------------------------------------
@@ -189,14 +236,17 @@ def weave_file(filepath: Path, registry: list[dict], dry_run: bool, repo_root: P
         scopes = entry.get("scopes")
         if scopes:
             try:
-                rel_str = str(filepath.relative_to(repo_root))
+                rel_str = filepath.relative_to(repo_root).as_posix()
             except ValueError:
                 continue
             if not any(rel_str.startswith(s) for s in scopes):
                 continue
 
-        # Always compute with dry_run=False to accumulate and count changes
-        new_text, diffs = inject_link(modified_text, entry, dry_run=False)
+        resolved_entry = {
+            **entry,
+            "canonical_source": resolve_canonical_source(entry["canonical_source"], filepath, repo_root),
+        }
+        new_text, diffs = inject_link(modified_text, resolved_entry, dry_run=False)
         total_injections += len(diffs) // 2
         modified_text = new_text
 
@@ -254,20 +304,25 @@ def main() -> None:
 
     for md_file in md_files:
         if args.dry_run:
-            # Collect diff lines without writing; count injection pairs
+            # Apply entries sequentially (mirroring non-dry-run) to get accurate diffs
             text = md_file.read_text(encoding="utf-8")
             diffs_all: list[str] = []
             for entry in registry:
                 scopes = entry.get("scopes")
                 if scopes:
                     try:
-                        rel_str = str(md_file.relative_to(repo_root))
+                        rel_str = md_file.relative_to(repo_root).as_posix()
                     except ValueError:
                         continue
                     if not any(rel_str.startswith(s) for s in scopes):
                         continue
-                _, diffs = inject_link(text, entry, dry_run=True)
+                resolved_entry = {
+                    **entry,
+                    "canonical_source": resolve_canonical_source(entry["canonical_source"], md_file, repo_root),
+                }
+                new_text, diffs = inject_link(text, resolved_entry, dry_run=False)
                 diffs_all.extend(diffs)
+                text = new_text  # apply sequentially to mirror actual run
             if diffs_all:
                 print(f"--- {md_file.relative_to(repo_root)}")
                 for line in diffs_all:

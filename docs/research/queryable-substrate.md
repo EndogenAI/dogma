@@ -20,7 +20,7 @@ before any task-specific reasoning begins. `docs/research/values-encoding.md` Pa
 ("Retrieval-Augmented Governance") identifies this as a structural loss point: the
 compress-and-include architecture displaces the foundational constraint as context fills.
 
-This synthesis validates three design decisions for a `scripts/query_substrate.py` tool
+This synthesis validates three design decisions for a `scripts/query_docs.py` tool
 that implements on-demand BM25 retrieval over scoped corpus slices. All three hypotheses
 are confirmed by endogenous evidence. The corpus size (≈157 text files) places this
 comfortably within BM25's efficient range without requiring embedding infrastructure.
@@ -37,7 +37,7 @@ The work directly enacts `../../AGENTS.md` Axioms 2 and 3: **Algorithms Before T
 **Corpus facts**:
 - `docs/` contains **124** `.md` files; `.github/agents/` contains **33** `.agent.md` files.
 - Total corpus: ≈157 text files, predominantly governance prose and structured reference material.
-- `rank_bm25` is **not yet listed** in `pyproject.toml` [project.dependencies]; it needs adding.
+- `rank_bm25>=0.2` is listed in `pyproject.toml` [project.dependencies] and included in `uv.lock`.
 - No embedding server, vector database, or GPU is assumed available in the dev environment.
 
 **Endogenous evidence**:
@@ -166,7 +166,7 @@ def chunk_file(text: str) -> list[str]:
 
 Extend `docs/research/values-encoding.md` Pattern 7 into a concrete script. The workflow:
 
-1. Agent calls `uv run python scripts/query_substrate.py "<query>" --scope guides --top-k 3`
+1. Agent calls `uv run python scripts/query_docs.py "<query>" --scope guides --top-n 3`
 2. Script returns top-3 scored chunks as Markdown-fenced output including source path and score.
 3. Agent reads only those chunks, not the full file.
 
@@ -198,14 +198,14 @@ in `../../AGENTS.md`.
 
 ## 4. Recommendations
 
-### R1 — Add `rank_bm25` to `pyproject.toml` and implement `scripts/query_substrate.py`
+### R1 — `rank_bm25` and `scripts/query_docs.py` delivered in Phase 5
 
 **Rationale**: `../../AGENTS.md` Axiom 2 ("Algorithms Before Tokens") mandates deterministic,
 encoded solutions. A BM25 retrieval tool encodes the query → section lookup once, eliminating
 repeated manual bulk-loading across sessions. `rank_bm25>=0.2` is a pure-Python dependency
 with no system requirements and a stable API.
 
-**Acceptance criteria**: `uv run python scripts/query_substrate.py "programmatic-first" --scope agents --top-k 3`
+**Acceptance criteria**: `uv run python scripts/query_docs.py "programmatic-first" --scope agents --top-n 3`
 returns the three highest-scoring paragraphs from `AGENTS.md` and `.github/agents/*.agent.md`
 within 500 ms on a cold start.
 
@@ -229,7 +229,7 @@ manually — defeating the purpose of the retrieval tool.
 ### R3 — Tests must cover happy path, empty-scope error, and score-threshold logic
 
 **Rationale**: `../../AGENTS.md` §Testing-First Requirement states every script must have
-automated tests before it ships. For `query_substrate.py`, critical regressions include:
+automated tests before it ships. For `query_docs.py`, critical regressions include:
 (a) a scope glob that resolves to zero files silently returns no results rather than erroring,
 and (b) score-threshold logic that filters all results when set too high. Mark I/O tests with
 `@pytest.mark.io` per `pyproject.toml` marker conventions.
@@ -242,7 +242,7 @@ and (b) score-threshold logic that filters all results when set too high. Mark I
   §Testing-First Requirement
 - `../../docs/research/values-encoding.md` — §Pattern 7 (Retrieval-Augmented Governance)
 - `../../scripts/audit_provenance.py` — canonical corpus-read pattern (`Path.glob` + `read_text`)
-- `../../pyproject.toml` — dependency list (confirms `rank_bm25` not yet present)
+- `../../pyproject.toml` — dependency list (`rank_bm25>=0.2` added in Phase 5)
 - `rank_bm25` PyPI package — pure-Python BM25 implementation, no external dependencies
 - BM25 (Okapi BM25): Robertson & Zaragoza, "The Probabilistic Relevance Framework: BM25 and
   Beyond", Foundations and Trends in Information Retrieval, 3(4), 2009

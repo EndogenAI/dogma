@@ -24,7 +24,8 @@ Outputs:
 
 Exit codes:
     0: success
-    1: invalid scope or other error
+    1: other runtime error
+    2: invalid argument (argparse; e.g. unrecognized --scope or --output value)
 
 Usage examples:
     uv run python scripts/query_docs.py "endogenous first" --scope manifesto
@@ -119,8 +120,8 @@ def chunk_markdown(text: str, filepath: str) -> list[dict]:
                 if lines[i].strip().startswith("```") and len(fence_lines) > 1:
                     break
                 i += 1
-            segments.append((fence_start, i, "\n".join(fence_lines), True))
-            seg_start = i + 1
+            segments.append((fence_start, min(i, len(lines) - 1), "\n".join(fence_lines), True))
+            seg_start = min(i + 1, len(lines))
 
         elif line.strip() == "":
             if seg_lines:
