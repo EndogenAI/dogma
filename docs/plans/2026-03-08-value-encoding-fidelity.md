@@ -308,6 +308,88 @@ Blocker: PR #86 must merge to main before Phase 3 edits MANIFESTO.md (conflict r
 
 **Review gate**: Review agent checks that form 2 examples are concrete (not abstract), and form 4 gates link to real existing scripts/checks.
 
+### Phase 3 Detailed Checklist
+
+**Issue**: #70 | **Branch**: `feat/value-encoding-phase-3-four-forms` | **Agent**: Executive Docs
+
+---
+
+#### Group A — Setup
+
+- [x] **1. Branch guard**: Confirm PR #86 is merged to `feat/value-encoding-fidelity` (`gh pr view 86 --json state,baseRefName -q '"\(.state) → \(.baseRefName)"'` → `MERGED → feat/value-encoding-fidelity`); ✅ confirmed 2026-03-08T22:35:08Z.
+- [x] **2. Branch creation**: `git checkout feat/value-encoding-fidelity && git pull && git checkout -b feat/value-encoding-phase-3-four-forms` — ✅ done 2026-03-08. Note: PR #86 merged to `feat/value-encoding-fidelity` (milestone integration branch), not to `main`. Phase 3 branch correctly based off this branch.
+- [ ] **3. Pre-read sources** (read before touching any file):
+  - `docs/research/values-encoding.md` §6 gap list — the complete audit inventory
+  - `MANIFESTO.md` lines 82–102 (EF section), lines 124–162 (LCF section), lines 165–250 (Guiding Principles)
+  - This workplan Phase 3 gate deliverables as the completion criterion
+
+---
+
+#### Group B — Core Axiom Edits
+
+- [ ] **4. EF-F2 — Endogenous-First canonical example** *(HIGHEST PRIORITY)*: Insert a `**Canonical example**:` block immediately before the `**Programmatic gate**:` line in the Endogenous-First section. Content must show a concrete before/after contrast: session A opens by reading `AGENTS.md` + the active scratchpad before delegating (endogenous-first posture); session B drops straight into Copilot Chat and re-invents conventions already encoded (vibe-coding posture). Verification: `grep -n "Canonical example" MANIFESTO.md` shows a new match in the EF block (line ~101).
+
+- [ ] **5. LCF-F4 — Formalise human-judgment gate as intentional design**: In the Local Compute-First `**Programmatic gate**:` block, replace the sentence `No hard CI gate exists for this axiom — it requires human judgment at code review and conversation review; the gate is the Augmentive Partnership itself.` with a positive statement that makes the human-judgment gate an **explicit architectural decision**, not a gap acknowledgment. Pattern: `The absence of a CI gate is intentional — cloud-model usage detection requires semantic context that no static linter can evaluate; the gate is the Augmentive Partnership review step, a deliberate design choice consistent with ADR-002 (kanban, human judgment at each phase boundary) and recorded as such.` Verification: the word "gap" or "no hard CI gate" does not appear in the LCF block.
+
+---
+
+#### Group C — Guiding Principles Additions (in priority order)
+
+- [ ] **6. Programmatic-First F2 + F3**: Append a `**Canonical example**:` block and an `**Anti-pattern**:` block after the existing principle prose and before the next section heading.
+  - F2: A commit history where the same data-extraction task (e.g., extracting citation metadata) was run interactively twice, then encoded as `scripts/format_citations.py` on the third occurrence — cite this script as the repo's canonical instance.
+  - F3: Running `gh issue list` manually in each session to check open issues instead of encoding that check into a script — the information is re-discovered at token cost every time.
+
+- [ ] **7. Documentation-First F2 + F3**: Append `**Canonical example**:` and `**Anti-pattern**:` blocks after the existing principle prose.
+  - F2: Adding `scripts/fetch_source.py` to `scripts/` with a module-level docstring, an entry in `scripts/README.md`, and a `tests/test_fetch_source.py` file — the triple completion signal; all three must land in the same commit.
+  - F3: Merging a working script with no docstring and no `scripts/README.md` entry — the knowledge it encodes is invisible to the next agent or human; the substrate did not grow.
+
+- [ ] **8. Minimal Posture F2 + F3**: Append `**Canonical example**:` and `**Anti-pattern**:` blocks after the existing principle prose (before `### Testing-First`).
+  - F2: `scripts/prune_scratchpad.py --init` — does one thing (init the daily scratchpad file), returns one value (the file path), loads nothing it does not need.
+  - F3: An agent file that pre-loads all 42 sibling agents' instruction bodies into its system prompt "just in case" one is relevant — N×context overhead for 0 marginal value per invocation.
+
+---
+
+#### Group D — Label Renames (mechanical)
+
+- [ ] **9. Convert three `**Empirical basis**:` labels to `**Canonical example**:`**: In the Guiding Principles section, find and replace the `**Empirical basis**:` label (bold prefix only, not the content) in each of the three affected principles:
+  - `Compress Context, Not Content`
+  - `Isolate Invocations, Parallelize Safely`
+  - `Validate & Gate, Always`
+  Verification: `grep -n "Empirical basis" MANIFESTO.md` returns zero matches.
+
+---
+
+#### Group E — Validation & Close
+
+- [ ] **10. Redundancy check**: Re-read `docs/research/values-encoding.md` §6 gap list. Confirm every addition corresponds to a listed gap — no new blocks were added beyond what the audit specified.
+
+- [ ] **11. Pre-commit validation**:
+  ```bash
+  uv run ruff check scripts/ tests/
+  uv run ruff format --check scripts/ tests/
+  uv run pytest tests/ -x -m "not slow and not integration" -q
+  ```
+  All three must exit 0. `MANIFESTO.md` has no test coverage — no pytest change expected.
+
+- [ ] **12. Commit + push**: Single atomic commit — `docs(manifesto): encode four forms for all axioms and guiding principles (#70)`. Body summarises each of the 6 edit groups (A–D).
+
+- [ ] **13. PR + CI**: `gh pr create --title "docs(manifesto): encode four forms for all axioms and guiding principles" --body-file <tmp>` (write body to temp file). Wait for CI green: `gh run list --limit 3`. Fix any lint failures before requesting review. Verify: `gh pr view` shows CI status passing.
+
+---
+
+### Phase 3 Acceptance Criteria (self-check before marking complete)
+
+| Check | Verification command / observable |
+|-------|----------------------------------|
+| EF has all 4 forms | `grep -A2 "Endogenous-First" MANIFESTO.md` shows principle, canonical example (new), 2× anti-patterns, gate |
+| ABT has all 4 forms | Already complete (PR #86) — confirm no regression |
+| LCF-F4 reframed | Sentence `No hard CI gate` absent from LCF block |
+| PF has F2 + F3 | `grep -A5 "Programmatic-First" MANIFESTO.md` shows canonical example + anti-pattern |
+| DF has F2 + F3 | Same pattern for `Documentation-First` |
+| MP has F2 + F3 | Same pattern for `Minimal Posture` |
+| Empirical basis removed | `grep -c "Empirical basis" MANIFESTO.md` = 0 |
+| CI green | `gh run list --limit 1 --json conclusion -q '.[0].conclusion'` = `success` |
+
 ---
 
 ### Phase 4 — Programmatic Fidelity Infrastructure
