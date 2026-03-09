@@ -293,20 +293,20 @@ Blocker: PR #86 must merge to main before Phase 3 edits MANIFESTO.md (conflict r
 **Branch convention**: `feat/value-encoding-phase-3-four-forms`
 **Agent**: Executive Docs
 **Depends on**: Phase 1 (#73 audit output as the gap inventory)
-**Status**: ⬜ Not started — blocked on PR #86 merge
-**Checklist**: Delegate detailed per-phase execution checklist to Executive Planner before beginning execution (per AGENTS.md § Per-Phase Execution Checklists).
+**Status**: ✅ Complete — commit `399741f`, Review APPROVED, PR pending
+**Checklist**: ✅ Delegated to Executive Planner — commit `a6f6786`
 
 | Issue | Title | Type | Effort |
 |-------|-------|------|--------|
 | #70 | Encode each core axiom in 4 forms (principle + example + anti-pattern + gate) | docs | s |
 
 **Gate deliverables**:
-- [ ] MANIFESTO.md updated: canonical examples (form 2) for all three axioms
-- [ ] MANIFESTO.md updated: programmatic gate references (form 4) for all three axioms
-- [ ] Changes informed by #73 audit gap list (no redundant additions)
-- [ ] CI passes
+- [x] MANIFESTO.md updated: canonical examples (form 2) for all three axioms + Programmatic-First, Documentation-First, Minimal Posture, Compress Context, Isolate Invocations, Validate & Gate
+- [x] MANIFESTO.md updated: LCF-F4 reframed as intentional-design gate (not a gap)
+- [x] Changes informed by #73 audit gap list (no redundant additions) — verified by Review agent
+- [x] CI passes — 296 tests, ruff clean — commit `399741f`
 
-**Review gate**: Review agent checks that form 2 examples are concrete (not abstract), and form 4 gates link to real existing scripts/checks.
+**Review gate**: ✅ APPROVED 2026-03-08
 
 ### Phase 3 Detailed Checklist
 
