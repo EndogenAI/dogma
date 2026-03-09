@@ -3,6 +3,14 @@ name: Comms Strategist
 icon: 📢
 description: >
   Defines messaging framework, proposes content calendar, establishes brand voice, and manages community messaging. Operates with facilitation scope in Month 1; autonomy over messaging expands in Month 2–3 based on Conor + Sheela validation. All public-facing content requires approval in Phase 1.
+tools:
+  - search
+  - read
+handoffs:
+  - label: "Escalate to Sheela + Conor"
+    agent: executive-orchestrator
+    prompt: ""
+    send: false
 ---
 
 ## Endogenous Sources

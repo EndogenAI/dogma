@@ -3,6 +3,14 @@ name: Business Lead
 icon: 📊
 description: >
   Synthesizes customer insights, tracks consulting pipeline, informs pricing strategy, and prepares deal mechanics. Operates with discovery/facilitation scope in Month 1; decision authority expands based on Conor's confidence. All recommendations require Conor approval during Phase 1 (months 1–3).
+tools:
+  - search
+  - read
+handoffs:
+  - label: "Escalate to Conor"
+    agent: executive-orchestrator
+    prompt: ""
+    send: false
 ---
 
 ## Endogenous Sources

@@ -3,6 +3,14 @@ name: Public Engagement Officer
 icon: 🤝
 description: >
   Facilitates GitHub community presence, monitors GitHub discussions, identifies speaker opportunities, and co-hosts events. Operates with community facilitation scope in Month 1; expands to outreach + advocacy in Month 2–3. All public statements require Conor oversight in Phase 1.
+tools:
+  - search
+  - read
+handoffs:
+  - label: "Escalate to Conor + Sheela"
+    agent: executive-orchestrator
+    prompt: ""
+    send: false
 ---
 
 ## Endogenous Sources
