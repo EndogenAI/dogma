@@ -26,6 +26,7 @@ scripts/
   fetch_toolchain_docs.py      # Cache gh CLI help output as structured Markdown under .cache/toolchain/ (--check, --force, --dry-run)
   wait_for_unblock.py          # Poll a GitHub issue until status:blocked is removed; writes trigger file on exit 0 (--issue, --interval, --timeout, --dry-run)
   detect_drift.py              # Detect value-encoding drift in .agent.md files via watermark-phrase analysis (--agents-dir, --threshold, --fail-below, --format, --output)
+  audit_provenance.py          # Audit .agent.md files for governs: provenance annotations; report orphaned files and unverifiable axiom citations (--agents-dir, --manifesto, --format, --output)
 ```
 
 ---
@@ -816,6 +817,60 @@ ls .tmp/triggers/*.unblocked 2>/dev/null && cat .tmp/triggers/*.unblocked
 
 **Publisher side**: `.github/workflows/unblock-issues.yml` removes `status:blocked`
 automatically when a PR containing `Unblocks #N` in its body is merged to `main`.
+
+---
+
+## scripts/audit_provenance.py
+
+**Purpose**: Audit `.agent.md` files in `.github/agents/` for `governs:` frontmatter annotations that trace each file's instructions back to foundational MANIFESTO.md axioms. Extends `detect_drift.py` (phrasal watermark alignment) and `generate_agent_manifest.py` (cross-reference density) with chain-of-custody tracing at the file level.
+
+**Output fields per file**:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `path` | `str` | Repo-relative path to the `.agent.md` file |
+| `citations` | `list[str]` | Normalised axiom names found in `governs:` |
+| `orphaned` | `bool` | `True` if no `governs:` key in frontmatter |
+| `unverifiable` | `list[str]` | Axiom names not found as H2/H3 headings in MANIFESTO.md |
+
+**Report-level fields**: `fleet_citation_coverage_pct` (% of files with `governs:`), `total_unverifiable`.
+
+**Axiom vocabulary** (validated against MANIFESTO.md H2/H3 headings):
+`endogenous-first`, `algorithms-before-tokens`, `local-compute-first`,
+`programmatic-first`, `documentation-first`, `minimal-posture`
+
+**Usage**:
+
+```bash
+# Print JSON report to stdout
+uv run python scripts/audit_provenance.py
+
+# Human-readable summary (one line per file with ✓/⚠️/✗ status)
+uv run python scripts/audit_provenance.py --format summary
+
+# Write report to a file
+uv run python scripts/audit_provenance.py --output /tmp/provenance.json
+
+# Use a custom agents directory or MANIFESTO.md path
+uv run python scripts/audit_provenance.py --agents-dir path/to/agents/ --manifesto path/to/MANIFESTO.md
+```
+
+**Arguments**:
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--agents-dir` | no | Path to `.agent.md` directory (default: `.github/agents/`) |
+| `--manifesto` | no | Path to `MANIFESTO.md` (default: repo root) |
+| `--output` | no | Write output to this file instead of stdout |
+| `--format` | no | `json` (default) or `summary` |
+
+**Exit codes**: `0` always (advisory tool — no hard-fail at this stage).
+
+**Dependencies**: stdlib only — no third-party packages required.
+
+**Tests**: [`tests/test_audit_provenance.py`](../tests/test_audit_provenance.py)
+
+**Related**: `scripts/detect_drift.py` (watermark phrases), `scripts/generate_agent_manifest.py` (cross-reference density), `docs/research/value-provenance.md` (synthesis).
 
 ---
 
