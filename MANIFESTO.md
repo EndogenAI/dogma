@@ -95,6 +95,8 @@ Before writing any new agent, script, or document:
 
 This inheritance principle has a precise biological grounding in Maturana and Varela's autopoiesis (1972): a system is autopoietic if it produces and maintains its own components. An endogenic project is autopoietic — each session produces scripts, guides, and agent files that maintain the substrate, so future sessions start richer than the ones that preceded them.
 
+**Canonical example**: A session begins with the agent reading `AGENTS.md`, the active scratchpad (`.tmp/<branch>/<date>.md`), and the open research plan before taking any action — the agent knows the project's conventions, what prior work exists, and the current phase's scope without burning a single interactive token on discovery. Contrast with a session that opens directly in Copilot Chat asking "write me a script to do X" — the agent re-invents conventions already in `scripts/`, misses project patterns already encoded, and produces output that contradicts or duplicates what the system already knows. The before/after delta is not capability: it is the difference between reading your DNA before acting versus pretending it doesn't exist.
+
 **Anti-pattern (isolationism)**: Refusing to adopt an existing open-source tool because "we should build it ourselves." If a well-maintained external tool solves a problem correctly, the DNA principle says: absorb it, document it, and encode its usage patterns into the project's scripts and agents.
 
 **Anti-pattern (vibe coding)**: Dropping into Copilot Chat without reading `AGENTS.md` and asking the agent to "write a script to do X" — the agent will re-invent the wheel, miss project conventions, and burn tokens discovering what is already documented. You've forgotten your own genetic code.
@@ -137,7 +139,7 @@ When tight feedback loops between human and system are required, local models en
 
 **Anti-pattern**: Using a cloud frontier model to run a simple transformation because "it's faster to prompt than to script" — this simultaneously violates Local Compute-First (cloud inference was used) and Algorithms Before Tokens (it should have been a script). The double-axiom violation is the canonical signal: when two axioms converge on the same objection, the anti-pattern is unambiguous.
 
-**Programmatic gate**: `docs/guides/local-compute.md` encodes the model selection decision tree. The `LLM Cost Optimizer` agent maintains the live model-tier table and surfaces cloud-model usage for tasks within local-model capability. No hard CI gate exists for this axiom — it requires human judgment at code review and conversation review; the gate is the Augmentive Partnership itself.
+**Programmatic gate**: `docs/guides/local-compute.md` encodes the model selection decision tree. The `LLM Cost Optimizer` agent maintains the live model-tier table and surfaces cloud-model usage for tasks within local-model capability. The absence of a CI gate is intentional: cloud-model usage detection requires semantic context no static linter can evaluate. The gate is the Augmentive Partnership review step — a deliberate architectural choice consistent with the human-judgment principle at each phase boundary. If usage patterns warrant formalisation in future, a candidate script would be `scripts/check_model_usage.py`; this is deferred, not forgotten.
 
 ---
 
@@ -155,6 +157,10 @@ Any repeated or automatable task must be encoded as a committed script or automa
 
 **Why**: Interactive agent sessions are expensive (tokens, time, potential for error). Scripts are cheap, deterministic, and composable. Encoding knowledge as scripts is the primary mechanism by which the system grows its own intelligence and serves the human-system partnership.
 
+**Canonical example**: `scripts/format_citations.py` — citation metadata extraction was run interactively in the first two research sessions, then encoded as a committed script on the third occurrence. Every subsequent session runs the script with zero tokens spent on the task. The script *is* the encoded knowledge; the interactive sessions that preceded it were its specification.
+
+**Anti-pattern**: Running `gh issue list` or `grep`-ing through files manually in each session to check open issues and conventions, instead of encoding that check into a script. The information is re-discovered at token cost every session; the substrate did not grow.
+
 ### Documentation-First
 
 **Reinforces**: All three axioms
@@ -164,6 +170,10 @@ Any repeated or automatable task must be encoded as a committed script or automa
 Documentation is not an afterthought — it is part of the change. A script without a docstring is incomplete. An agent without an `AGENTS.md` reference is incomplete. A feature without a guide is incomplete.
 
 This principle exists because the documentation *is* the knowledge the system encodes for future agents. It reflects what humans have decided; it guides future human decisions.
+
+**Canonical example**: `scripts/fetch_source.py` landed in a single commit that included: the script itself with a module-level docstring, an entry in `scripts/README.md`, and `tests/test_fetch_source.py`. All three completed simultaneously — the triple completion signal. The documentation was part of the change, not a follow-up.
+
+**Anti-pattern**: Merging a working script with no docstring and no `scripts/README.md` entry. The script works, but its knowledge is invisible to the next agent or human who reads `scripts/README.md` for an inventory. The substrate did not grow; the next session starts blind.
 
 ### Adopt Over Author (Avoid Reinventing the Wheel)
 
@@ -203,7 +213,7 @@ Context engineering is critical for token efficiency and bounded inference costs
 - Caching: store pre-fetched sources, pre-computed vectors, and analysis results
 - Isolation: strip irrelevant conversation history from agent prompts
 
-**Empirical basis**: Live session practice confirmed that when agents skip writing to `.tmp/`, the next agent starts blind — scout outputs existed only in the conversation summary and had to be reconstructed at token cost. The scratchpad is the only durable cross-agent memory that survives a context window boundary. Write discipline — not queryability — is the primary gap in practised context management; the write-back requirement has since been mechanically encoded into agent files. See [`docs/research/sources/session-synthesis-2026-03-06-a.md`](docs/research/sources/session-synthesis-2026-03-06-a.md).
+**Canonical example**: Live session practice confirmed that when agents skip writing to `.tmp/`, the next agent starts blind — scout outputs existed only in the conversation summary and had to be reconstructed at token cost. The scratchpad is the only durable cross-agent memory that survives a context window boundary. Write discipline — not queryability — is the primary gap in practised context management; the write-back requirement has since been mechanically encoded into agent files. See [`docs/research/sources/session-synthesis-2026-03-06-a.md`](docs/research/sources/session-synthesis-2026-03-06-a.md).
 
 ### Isolate Invocations, Parallelize Safely
 
@@ -218,7 +228,7 @@ When agents process large batches (e.g., multiple sources in a research synthesi
 
 This maintains fidelity across the entire batch and enables safe parallelization without context interference.
 
-**Empirical basis**: Five independent orchestration traditions — Anthropic *Building Effective Agents*, ReAct (arXiv:2210.03629), AIGNE (arXiv:2512.05470), the Claude Agent SDK, and Claude Code Agent Teams — all independently enforce strict per-invocation scope isolation. The SDK states the invariant most precisely: *"the only channel from parent to subagent is the Task prompt string."* These teams did not coordinate their specifications; the convergence confirms that per-invocation isolation is a structural requirement for reliable multi-agent behaviour, not a stylistic preference. Confirmed empirically in this project: running a Synthesizer across 22 sources in a single invocation produced context rot; per-source isolation eliminated it. See [`docs/research/agentic-research-flows.md`](docs/research/agentic-research-flows.md).
+**Canonical example**: Five independent orchestration traditions — Anthropic *Building Effective Agents*, ReAct (arXiv:2210.03629), AIGNE (arXiv:2512.05470), the Claude Agent SDK, and Claude Code Agent Teams — all independently enforce strict per-invocation scope isolation. The SDK states the invariant most precisely: *"the only channel from parent to subagent is the Task prompt string."* These teams did not coordinate their specifications; the convergence confirms that per-invocation isolation is a structural requirement for reliable multi-agent behaviour, not a stylistic preference. Confirmed empirically in this project: running a Synthesizer across 22 sources in a single invocation produced context rot; per-source isolation eliminated it. See [`docs/research/agentic-research-flows.md`](docs/research/agentic-research-flows.md).
 
 ### Validate & Gate, Always
 
@@ -231,7 +241,7 @@ Gates are the mechanism by which the system enforces governance without heavywei
 - Review gate before commit (all changes)
 - Completion criteria self-check before agent handoff
 
-**Empirical basis**: Mei et al.'s context engineering survey (arXiv:2507.13334, 1400+ papers) documents a fundamental comprehension-generation asymmetry across LLMs — models understand complex context far better than they generate equivalently sophisticated long-form outputs. This gap is structural, not model-family-specific. The evaluator-optimizer loop is the architecturally correct response: structuring output generation as iterative evaluate-and-refine compensates for models' relative weakness at long-form generation and independently validates the self-loop phase gate design. See [`docs/research/sources/arxiv-context-engineering-survey.md`](docs/research/sources/arxiv-context-engineering-survey.md).
+**Canonical example**: Mei et al.'s context engineering survey (arXiv:2507.13334, 1400+ papers) documents a fundamental comprehension-generation asymmetry across LLMs — models understand complex context far better than they generate equivalently sophisticated long-form outputs. This gap is structural, not model-family-specific. The evaluator-optimizer loop is the architecturally correct response: structuring output generation as iterative evaluate-and-refine compensates for models' relative weakness at long-form generation and independently validates the self-loop phase gate design. See [`docs/research/sources/arxiv-context-engineering-survey.md`](docs/research/sources/arxiv-context-engineering-survey.md).
 
 ### Minimal Posture
 
@@ -244,6 +254,10 @@ Minimal posture extends beyond agents to all design decisions:
 - Dependencies: validate before adding; prefer well-maintained over feature-rich
 - Context: load only what the task requires
 - Handoff information: include enough for the next agent to succeed, nothing more
+
+**Canonical example**: `scripts/prune_scratchpad.py --init` — does one thing (initialise the daily scratchpad file), accepts one flag, returns one value (the file path), loads nothing it does not need. Every tool and dependency it uses is directly necessary to its single purpose.
+
+**Anti-pattern**: An agent file that pre-loads all 42 sibling agents' instruction bodies into its system prompt "just in case" one is relevant to the current task. That is 42× context overhead for 0 marginal value per invocation — the opposite of minimal posture.
 
 ### Testing-First
 
