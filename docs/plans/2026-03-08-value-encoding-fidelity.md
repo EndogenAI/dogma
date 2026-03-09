@@ -595,12 +595,14 @@ Depends on: Phase 3 (PR #89) merged to feat/value-encoding-fidelity
 
 ---
 
+### Phase 5 — Queryable Documentation Substrate
+
 **Issues**: #80, #84
 **Branch convention**: `research/queryable-substrate`
 **Agent**: Executive Researcher (#80 survey + design), Executive Scripter (#80 and #84 implementation)
 **Informed by**: Phase 2 (#85) findings on compression/retrieval tradeoff
-**Status**: ⬜ Not started
-**Checklist**: Delegate detailed per-phase execution checklist to Executive Planner before beginning execution (per AGENTS.md § Per-Phase Execution Checklists).
+**Status**: ✅ Complete — PR #91 open 2026-03-08 (targeting `feat/value-encoding-fidelity`)
+**Checklist**: ✅ Delegated to Executive Planner — see `### Phase 5 Detailed Checklist` below
 
 | Issue | Title | Type | Effort |
 |-------|-------|------|--------|
@@ -608,17 +610,129 @@ Depends on: Phase 3 (PR #89) merged to feat/value-encoding-fidelity
 | #84 | Programmatic doc interlinking — citation interweb | research | m |
 
 **Gate deliverables**:
-- [ ] `scripts/query_docs.py` CLI tool (BM25 baseline) implemented and tested
-- [ ] `data/link_registry.yml` schema and initial population
-- [ ] `scripts/weave_links.py` prototype with dry-run mode
-- [ ] `docs/research/queryable-substrate.md` committed (Final)
-- [ ] `docs/research/doc-interweb.md` committed (Final)
+- [x] `scripts/query_docs.py` CLI tool (BM25 baseline) implemented and tested
+- [x] `data/link_registry.yml` schema and initial population
+- [x] `scripts/weave_links.py` prototype with dry-run mode
+- [x] `docs/research/queryable-substrate.md` committed (Final)
+- [x] `docs/research/doc-interweb.md` committed (Final)
 
 **Review gate**: Research Reviewer validates both synthesis docs.
 
 ---
 
-### Phase 6 — Skills as Decision Codifiers
+### Phase 5 Detailed Checklist
+
+**Issues**: #80 → #84 | **Branch**: `research/queryable-substrate`
+**Execution order**: A → B → C → D → E → F (D may begin after B completes, parallel to C)
+
+---
+
+#### Group A — Setup
+**Owner: Executive Orchestrator** | No prerequisites
+
+- [x] **A1.** Confirm Phase 4 gate: `git log --oneline -5` on `feat/value-encoding-fidelity`; verify `audit_provenance.py` and `generate_agent_manifest.py` density scoring commits are present before any work begins.
+- [x] **A2.** Create branch: `git checkout feat/value-encoding-fidelity && git pull && git checkout -b research/queryable-substrate && git push -u origin research/queryable-substrate`. Verify: `git branch --show-current` → `research/queryable-substrate`.
+- [x] **A3.** Pre-read endogenous sources: `docs/research/values-encoding.md` §4 R1 (bulk-load problem), `scripts/audit_provenance.py` (corpus structure), `AGENTS.md` §"Algorithms Before Tokens". Write `## Session Start` in scratchpad citing "Endogenous-First" and this workplan.
+
+---
+
+#### Group B — Issue #80 Research Survey
+**Owner: Research Scout → Research Synthesizer** | Prerequisite: A3
+
+- [x] **B4.** Source cache check: for planned BM25 URLs, run `uv run python scripts/fetch_source.py <url> --check` before fetching. Skip any already cached in `.cache/sources/`.
+- [x] **B5.** Scout: survey BM25 algorithm (TF-IDF weighting, k1/b parameters) from cached sources. Confirm: no external API or embeddings needed — local-compute compliant.
+- [x] **B6.** Scout: evaluate `rank_bm25` (PyPI). Record: pure-Python status, license (Apache-2.0), offline-operability, latest version. Compare against hand-rolled stdlib implementation (lines-of-code, test overhead).
+- [x] **B7.** Scout: survey Markdown paragraph chunking strategies — blank-line delimiter, heading boundary, fixed token window. Identify which preserves context without splitting code fences. Record recommendation (≤75 words).
+- [x] **B8.** Scout: enumerate doc corpus scope. Run `find docs/ -name '*.md' | wc -l` and `find . -name '*.agent.md' | wc -l`. Record file counts and total line count to inform chunking design.
+- [x] **B9.** Scout: design `SCOPE_PATHS` mapping: `manifesto → [MANIFESTO.md]`, `agents → [AGENTS.md, .github/agents/*.agent.md]`, `guides → [docs/guides/*.md]`, `research → [docs/research/*.md]`, `all → union`. Verify mapping covers all endogenous sources.
+- [x] **B10.** Synthesizer: draft `docs/research/queryable-substrate.md` — D4 frontmatter (`title`, `status: Final`); sections: Executive Summary, Hypothesis Validation, Pattern Catalog, Recommendations, Sources; ≥1 cite to `MANIFESTO.md` §"Algorithms Before Tokens".
+- [x] **B11.** Synthesizer: validate: `uv run python scripts/validate_synthesis.py docs/research/queryable-substrate.md` → exit 0.
+- [x] **B12.** Commit: `git add docs/research/queryable-substrate.md && git commit -m "docs(research): queryable substrate synthesis [#80]"`. Verify: `git log --oneline -1`.
+
+---
+
+#### Group C — Issue #80 Implementation
+**Owner: Executive Scripter** | Prerequisite: B12
+
+- [x] **C13.** Add `rank_bm25` to `pyproject.toml` `[project.dependencies]`. Run `uv sync`. Verify: `uv run python -c "import rank_bm25; print('ok')"` exits 0.
+- [x] **C14.** Create `scripts/query_docs.py` with module docstring: purpose, inputs (`query`, `--scope`, `--top-n`, `--output`), outputs (ranked snippets with file + line range), usage example.
+- [x] **C15.** Implement `SCOPE_PATHS: dict[str, list[str]]` constant using glob patterns from B9 design. `all` is the union of all four scopes.
+- [x] **C16.** Implement `chunk_markdown(text: str, filepath: str) -> list[dict]` — split on blank-line boundaries; each chunk: `{text, file, start_line, end_line}`; skip chunks ≤ 3 non-whitespace words; treat triple-backtick fences as single atomic chunks.
+- [x] **C17.** Implement `build_corpus(scope: str, repo_root: Path) -> list[dict]` — resolve `SCOPE_PATHS[scope]` globs, read each file, call `chunk_markdown()`. Silently skip missing files. Raise `KeyError` for unknown scope.
+- [x] **C18.** Implement `run_query(query: str, corpus: list[dict], top_n: int) -> list[dict]` — tokenize chunks, instantiate `BM25Okapi`, score query, return top-N chunks descending by score. Return `[]` for empty corpus.
+- [x] **C19.** Implement `format_output(results: list[dict], mode: str) -> str` — `text`: file:start–end header per result; `json`: `json.dumps(results, indent=2)`.
+- [x] **C20.** Implement `main()` with `argparse`: `query` (positional), `--scope` (choices: `manifesto agents guides research all`, default `all`), `--top-n` (int, default 5), `--output` (choices: `text json`, default `text`).
+- [x] **C21.** Smoke test: `uv run python scripts/query_docs.py "endogenous first" --scope manifesto --output text`. Expect ≥1 result with file + line range printed.
+- [x] **C22.** Create `tests/test_query_docs.py` with module docstring. Test functions import module directly (not subprocess) except where `@pytest.mark.io` is warranted.
+- [x] **C23.** `chunk_markdown` unit tests: empty string → `[]`; two paragraphs → 2 chunks with correct line numbers; ≤3-word paragraph excluded; code fence block → single chunk.
+- [x] **C24.** `build_corpus` + `run_query` tests: unknown scope → `KeyError`; synthetic 10-chunk corpus with query term in 3 → top-N returned descending; empty corpus → `[]`.
+- [x] **C25.** `format_output` + CLI tests: text mode contains `file:` header; JSON mode parses as valid list; `@pytest.mark.io` CLI test with `--scope manifesto` non-empty; `@pytest.mark.io` `--output json` parseable.
+- [x] **C26.** Coverage gate: `uv run pytest tests/test_query_docs.py --cov=scripts/query_docs --cov-report=term-missing -q` ≥ 80%. Fix gaps, then: `git add scripts/query_docs.py tests/test_query_docs.py && git commit -m "feat(scripts): BM25 query_docs CLI + tests [#80]"`.
+
+---
+
+#### Group D — Issue #84 Research Survey
+**Owner: Research Scout → Research Synthesizer** | Prerequisite: A3 (parallel-eligible with C13–C26)
+
+- [x] **D27.** Source cache check: for planned linking/interweb strategy URLs, run `uv run python scripts/fetch_source.py <url> --check` before fetching.
+- [x] **D28.** Scout: read `scripts/audit_provenance.py` fully. Identify: what concept mentions and cross-references it already detects. Document reuse opportunities for `weave_links.py`.
+- [x] **D29.** Scout: survey bidirectional linking strategies for Markdown corpora — inline `[term](canonical.md)` injection, footnote-style refs, YAML-registry-driven weaving. Evaluate idempotency guarantees for each.
+- [x] **D30.** Scout: design `link_registry.yml` schema: `{concept: str, canonical_source: str, applications: [str], aliases: [str]}`. Verify schema handles multi-word concepts and path-relative sources. Propose 3–5 seed entries from existing concepts (Endogenous-First, Algorithms Before Tokens, programmatic-first).
+- [x] **D31.** Scout: define idempotency contract for `weave_links.py` — if inline link already present for a concept, skip it (no double-wrapping). Specify regex or marker strategy for detecting existing links.
+- [x] **D32.** Scout: scope `--scope <path>` design — accepts a file path or directory; defaults to `docs/` if omitted; `--dry-run` prints diffs without writing.
+- [x] **D33.** Synthesizer: draft `docs/research/doc-interweb.md` — D4 frontmatter (`title`, `status: Final`); sections: Executive Summary, Hypothesis Validation, Pattern Catalog, Recommendations, Sources; ≥1 cite to `AGENTS.md` §"Documentation-First".
+- [x] **D34.** Synthesizer: validate: `uv run python scripts/validate_synthesis.py docs/research/doc-interweb.md` → exit 0.
+- [x] **D35.** Commit: `git add docs/research/doc-interweb.md && git commit -m "docs(research): doc interweb synthesis [#84]"`. Verify: `git log --oneline -1`.
+
+---
+
+#### Group E — Issue #84 Implementation
+**Owner: Executive Scripter** | Prerequisite: D35 and C26
+
+- [x] **E36.** Create `data/link_registry.yml` with schema from D30 design. Populate ≥5 seed entries: `Endogenous-First`, `Algorithms Before Tokens`, `programmatic-first`, `Local Compute-First`, `cross-reference density`. Each entry must have `canonical_source` as a repo-relative path.
+- [x] **E37.** Create `scripts/weave_links.py` with module docstring: purpose, inputs (`--scope`, `--dry-run`, `--registry`), outputs (modified files or dry-run diff), idempotency guarantee, usage example.
+- [x] **E38.** Implement `load_registry(path: Path) -> list[dict]` — reads `data/link_registry.yml`; validates each entry has `concept`, `canonical_source`, `aliases` (may be empty).
+- [x] **E39.** Implement `find_mentions(text: str, entry: dict) -> list[tuple[int, str]]` — returns `(line_number, matched_term)` for each unlinked occurrence of `concept` or any alias. Skip lines already containing a Markdown link to `canonical_source`.
+- [x] **E40.** Implement `inject_link(text: str, entry: dict, dry_run: bool) -> tuple[str, list[str]]` — wraps first unlinked occurrence per paragraph; returns `(modified_text, list_of_diff_lines)`. Idempotent: second call on already-modified text produces zero diff.
+- [x] **E41.** Implement `weave_file(filepath: Path, registry: list[dict], dry_run: bool) -> int` — applies `inject_link` for each registry entry; writes file only if `not dry_run` and changes exist; returns count of injections made.
+- [x] **E42.** Implement `main()` with `argparse`: `--scope` (path, default `docs/`), `--dry-run` (flag), `--registry` (path, default `data/link_registry.yml`), `--top-n` injections per file (int, default unlimited). Print summary: `N injections in M files`.
+- [x] **E43.** Idempotency smoke test: `uv run python scripts/weave_links.py --scope docs/guides/ --dry-run` (no writes). Run twice; assert second invocation reports same diffs. Verify: output non-empty and no crash.
+- [x] **E44.** Create `tests/test_weave_links.py` with module docstring. Import functions directly.
+- [x] **E45.** `find_mentions` + `inject_link` unit tests: unlinked term → detected; already-linked term → skipped; alias match → detected; inject twice → idempotent (zero second diff); `dry_run=True` → text unchanged.
+- [x] **E46.** `load_registry` + `weave_file` tests: missing required field → `KeyError`; valid registry entry → correct injection count; `@pytest.mark.io` real file round-trip with `dry_run=True` leaves file unchanged.
+- [x] **E47.** Coverage gate: `uv run pytest tests/test_weave_links.py --cov=scripts/weave_links --cov-report=term-missing -q` ≥ 80%. Fix gaps, then: `git add data/link_registry.yml scripts/weave_links.py tests/test_weave_links.py && git commit -m "feat(scripts): weave_links.py + link_registry + tests [#84]"`.
+
+---
+
+#### Group F — Validation & Close
+**Owner: Executive Scripter + Orchestrator** | Prerequisite: C26 and E47
+
+- [x] **F48.** Lint + format: `uv run ruff check scripts/query_docs.py scripts/weave_links.py tests/test_query_docs.py tests/test_weave_links.py && uv run ruff format --check scripts/ tests/`. Fix all violations before proceeding.
+- [x] **F49.** Full test suite (fast subset): `uv run pytest tests/ -x -m "not slow and not integration" -q`. All tests pass; no regressions in pre-existing tests. Fix any failures.
+- [x] **F50.** Synthesis validation: `uv run python scripts/validate_synthesis.py docs/research/queryable-substrate.md && uv run python scripts/validate_synthesis.py docs/research/doc-interweb.md`. Both exit 0.
+- [x] **F51.** Gate deliverable confirm: verify all five Phase 5 gate items in the workplan are checkable — `scripts/query_docs.py` present, `data/link_registry.yml` present, `scripts/weave_links.py` present, both research docs committed with `status: Final`. Check workplan checkboxes.
+- [x] **F52.** Push and open PR: `git push && gh pr create --base feat/value-encoding-fidelity --title "feat(phase-5): queryable substrate + doc interweb [#80, #84]" --body-file <temp-body-file>`. Verify: `gh pr view --json title,state`; post progress comment on issues #80 and #84 via `gh issue comment <num> --body-file <path>`.
+- [x] **F53.** Post-PR CI checks: monitor `gh run list --limit 3` for this branch; all must be `success`. Address any failures immediately.
+- [x] **F54.** Tag @AccessiT3ch for review on the PR once CI is green. Coordinate with reviewer for timely review and address feedback with the review PR Review skill.
+
+---
+
+### Phase 5 Acceptance Criteria Summary
+
+| Deliverable | Path | Verification |
+|---|---|---|
+| BM25 query CLI | `scripts/query_docs.py` | `--help` exits 0; `--scope manifesto` returns ≥1 result |
+| Query tests | `tests/test_query_docs.py` | coverage ≥80% |
+| `rank_bm25` dep | `pyproject.toml` | `uv run python -c "import rank_bm25"` exits 0 |
+| Link registry | `data/link_registry.yml` | ≥5 seed entries; schema-valid |
+| Weave links CLI | `scripts/weave_links.py` | `--dry-run` exits 0; idempotent on second run |
+| Weave tests | `tests/test_weave_links.py` | coverage ≥80% |
+| Queryable substrate doc | `docs/research/queryable-substrate.md` | `validate_synthesis.py` exits 0; `status: Final` |
+| Doc interweb doc | `docs/research/doc-interweb.md` | `validate_synthesis.py` exits 0; `status: Final` |
+| Pre-commit | n/a | ruff + pytest all green |
+| CI green | branch | `gh run list --limit 3` all `success` |
+
+---
 
 **Issues**: #79, #81, #72
 **Branch convention**: `research/skills-decision-logic`
