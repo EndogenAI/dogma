@@ -308,7 +308,44 @@ These questions require a further research pass or empirical investigation withi
 
 1. **Semantic drift detection**: Can we build a lightweight script that detects when an agent file's behavioral instructions have drifted from the MANIFESTO.md axioms? Would require either embedding-similarity comparison (semantic) or keyword-watermark detection (syntactic). Is the watermark-phrase approach sufficient, or does it only detect surface-level alignment?
 
-2. **Epigenetic tagging for context-sensitive amplification**: How should the system amplify different axioms for different task contexts? (Research tasks: amplify Endogenous-First; commit tasks: amplify Documentation-First.) Is this best implemented as agent-file metadata, task-type selectors in AGENTS.md, or a separate "context amplifier" script?
+2. **Epigenetic tagging for context-sensitive amplification** *(RESOLVED — 2026-03-09)*
+
+   **Question (original)**: How should the system amplify different axioms for different
+   task contexts? (Research → Endogenous-First; commit → Documentation-First.) Is this
+   best implemented as agent-file metadata, task-type selectors in AGENTS.md, or a
+   separate context-amplifier script?
+
+   **Resolution**: A **task-type lookup table in AGENTS.md** was adopted as the Phase 1
+   implementation. The table maps task-type keyword groups to the axiom that should be
+   amplified, and agents consult it during the encoding checkpoint at session start. This
+   approach was selected because:
+
+   - It requires no new tooling — all agents already read `AGENTS.md` as the first session
+     step.
+   - It is a single source of truth: one edit propagates to all agents simultaneously,
+     eliminating the per-agent drift risk of the YAML frontmatter option.
+   - It directly implements **Pattern 5 (Programmatic Governance)** from §3: *"The code
+     layer is the epigenetic layer: it regulates expression without altering the substrate."*
+     The table is the first encoding of the amplification rule as a governed specification
+     rather than discretionary per-agent choice.
+
+   A second-phase implementation — `scripts/amplify_context.py` — is deferred per the
+   Programmatic-First criterion: the table must be validated across at least two sessions
+   before scripting the automation. The script will retrieve the relevant axiom block
+   from `MANIFESTO.md` verbatim and prepend it to the scratchpad, completing the Pattern 5
+   implementation by fusing specification and enforcement.
+
+   **Mechanism comparison result**:
+
+   | Mechanism | Complexity | Drift risk | Local-compute |
+   |---|---|---|---|
+   | YAML frontmatter `amplify:` | Low per-agent | High (dispersed) | ✅ |
+   | AGENTS.md lookup table *(adopted)* | Very low | Low (centralized) | ✅ |
+   | `scripts/amplify_context.py` *(deferred)* | Medium | Very low | ✅ |
+
+   **Cites**: Pattern 5 §3 — *"Implement governance constraints as executable code that
+   runs automatically… The code layer is the epigenetic layer."* The lookup table is a
+   first-approximation epigenetic layer; the script is its programmatic completion.
 
 3. **[4,1] code coverage audit**: A full audit of which values currently have all four encoding forms (principle + example + anti-pattern + gate) and which have only 1–2. This would produce a priority list for the encode-in-four-forms work (R2).
 

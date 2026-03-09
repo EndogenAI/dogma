@@ -16,6 +16,22 @@ These constraints govern all agent behavior. They derive from three core axioms 
 
 **Session-Start Encoding Checkpoint**: At the start of every session, the first sentence of `## Session Start` in the scratchpad must name the governing axiom and one primary endogenous source. See [`docs/guides/session-management.md` → Session-Start Encoding Checkpoint](docs/guides/session-management.md#session-start-encoding-checkpoint) for format and examples.
 
+### Context-Sensitive Amplification
+
+When writing the encoding checkpoint sentence in `## Session Start`, consult this table and name the amplified axiom for your session's primary task type.
+
+| Primary task type keyword | Amplify axiom | Expression hint |
+|---|---|---|
+| research / survey / scout / synthesize | **Endogenous-First** | Read prior docs and cached sources before reaching outward |
+| commit / push / review / merge / PR | **Documentation-First** | Every changed workflow/agent/script must have accompanying docs |
+| script / automate / encode / CI | **Programmatic-First** | If done twice interactively → encode as script before third time |
+| agent / skill / authoring / fleet | **Endogenous-First** + **Minimal Posture** | Read existing fleet before spawning; carry only required tools |
+| local / inference / model / cost | **Local Compute-First** | Prefer local model invocation; document when external API is required |
+
+**How to use**: Match your session's primary task to the nearest keyword row. In the encoding checkpoint, write: *"Governing axiom: [amplified axiom] — primary endogenous source: [source name]."* If a session spans multiple task types, name the axiom for the **first phase** and update in subsequent `## Pre-Compact Checkpoint` entries.
+
+*Implements OQ-VE-2 from [`docs/research/values-encoding.md`](docs/research/values-encoding.md) §5 — epigenetic tagging via AGENTS.md lookup table (Phase 1 mechanism). See that document for mechanism comparison and deferred Phase 2 script implementation.*
+
 Additional operational constraints:
 
 - **Minimal Posture** — agents carry only the tools required for their stated role

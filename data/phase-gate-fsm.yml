@@ -1,0 +1,78 @@
+fsm:
+  name: phase-gate-loop
+  description: >
+    Finite state machine for the EndogenAI Orchestrator phase-gate loop.
+    Encodes the lifecycle from session init through phase execution, review gating,
+    compaction handling, commit, and close. Makes session state explicit and auditable.
+
+  initial_state: INIT
+
+  states:
+
+    INIT:
+      description: >
+        Session initialized. Scratchpad read from disk. Workplan created or verified.
+        Session Start and Orchestration Plan written. No phase has begun; no
+        specialist agent has been delegated.
+      transitions:
+        - event: plan_committed
+          guard: "workplan_file_exists AND scratchpad_session_start_written"
+          next_state: PHASE_RUNNING
+
+    PHASE_RUNNING:
+      description: >
+        A phase is actively delegated to a specialist agent. The Orchestrator
+        is waiting for a takeback handoff. No further delegation occurs until
+        the current phase returns control.
+      transitions:
+        - event: phase_deliverable_returned
+          guard: "deliverable_section_in_scratchpad AND output_confirmed_by_read"
+          next_state: GATE_CHECK
+        - event: context_window_alert
+          guard: "compaction_detected OR scratchpad_gte_2000_lines"
+          next_state: COMPACT_CHECK
+
+    GATE_CHECK:
+      description: >
+        Phase deliverable confirmed in scratchpad. Pre-review grep sweep executed.
+        Review agent delegated. Awaiting APPROVED or REQUEST_CHANGES verdict.
+        No next phase begins until APPROVED is recorded.
+      transitions:
+        - event: review_approved
+          guard: "verdict_equals_APPROVED AND review_section_in_scratchpad"
+          next_state: COMPACT_CHECK
+        - event: review_rejected
+          guard: "verdict_equals_REQUEST_CHANGES"
+          next_state: PHASE_RUNNING
+
+    COMPACT_CHECK:
+      description: >
+        Review approved. Pre-compact checkpoint written. Evaluate whether a /compact
+        is warranted before advancing to the next phase. All progress committed to git.
+      transitions:
+        - event: context_within_budget
+          guard: "scratchpad_lt_200_lines AND no_recent_compaction"
+          next_state: COMMIT
+        - event: compaction_warranted
+          guard: "scratchpad_gte_200_lines OR compaction_signal_present"
+          next_state: COMMIT
+
+    COMMIT:
+      description: >
+        Git add/commit/push executed. Checkpoint SHA recorded in scratchpad.
+        Scratchpad pruned if needed. Determines whether to loop back for the
+        next phase or close the session.
+      transitions:
+        - event: more_phases_pending
+          guard: "workplan_has_phases_with_status_not_started"
+          next_state: PHASE_RUNNING
+        - event: all_phases_complete
+          guard: "workplan_all_phase_statuses_approved"
+          next_state: CLOSED
+
+    CLOSED:
+      description: >
+        All phases complete and approved. Session Summary written. Issue body
+        checkboxes updated. Progress comments posted on all worked issues.
+        prune_scratchpad.py --force executed. Session is archived.
+      transitions: []  # terminal state — no further transitions
