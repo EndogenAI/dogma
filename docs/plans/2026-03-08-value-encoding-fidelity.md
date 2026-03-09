@@ -601,8 +601,8 @@ Depends on: Phase 3 (PR #89) merged to feat/value-encoding-fidelity
 **Branch convention**: `research/queryable-substrate`
 **Agent**: Executive Researcher (#80 survey + design), Executive Scripter (#80 and #84 implementation)
 **Informed by**: Phase 2 (#85) findings on compression/retrieval tradeoff
-**Status**: ⬜ Not started
-**Checklist**: Delegate detailed per-phase execution checklist to Executive Planner before beginning execution (per AGENTS.md § Per-Phase Execution Checklists).
+**Status**: ✅ Complete — PR #91 open 2026-03-08 (targeting `feat/value-encoding-fidelity`)
+**Checklist**: ✅ Delegated to Executive Planner — see `### Phase 5 Detailed Checklist` below
 
 | Issue | Title | Type | Effort |
 |-------|-------|------|--------|
@@ -610,11 +610,11 @@ Depends on: Phase 3 (PR #89) merged to feat/value-encoding-fidelity
 | #84 | Programmatic doc interlinking — citation interweb | research | m |
 
 **Gate deliverables**:
-- [ ] `scripts/query_docs.py` CLI tool (BM25 baseline) implemented and tested
-- [ ] `data/link_registry.yml` schema and initial population
-- [ ] `scripts/weave_links.py` prototype with dry-run mode
-- [ ] `docs/research/queryable-substrate.md` committed (Final)
-- [ ] `docs/research/doc-interweb.md` committed (Final)
+- [x] `scripts/query_docs.py` CLI tool (BM25 baseline) implemented and tested
+- [x] `data/link_registry.yml` schema and initial population
+- [x] `scripts/weave_links.py` prototype with dry-run mode
+- [x] `docs/research/queryable-substrate.md` committed (Final)
+- [x] `docs/research/doc-interweb.md` committed (Final)
 
 **Review gate**: Research Reviewer validates both synthesis docs.
 
@@ -712,6 +712,8 @@ Depends on: Phase 3 (PR #89) merged to feat/value-encoding-fidelity
 - [ ] **F50.** Synthesis validation: `uv run python scripts/validate_synthesis.py docs/research/queryable-substrate.md && uv run python scripts/validate_synthesis.py docs/research/doc-interweb.md`. Both exit 0.
 - [ ] **F51.** Gate deliverable confirm: verify all five Phase 5 gate items in the workplan are checkable — `scripts/query_docs.py` present, `data/link_registry.yml` present, `scripts/weave_links.py` present, both research docs committed with `status: Final`. Check workplan checkboxes.
 - [ ] **F52.** Push and open PR: `git push && gh pr create --base feat/value-encoding-fidelity --title "feat(phase-5): queryable substrate + doc interweb [#80, #84]" --body-file <temp-body-file>`. Verify: `gh pr view --json title,state`; post progress comment on issues #80 and #84 via `gh issue comment <num> --body-file <path>`.
+- [ ] **F53.** Post-PR CI checks: monitor `gh run list --limit 3` for this branch; all must be `success`. Address any failures immediately.
+- [ ] **F54.** Tag @AccessiT3ch for review on the PR once CI is green. Coordinate with reviewer for timely review and address feedback with the review PR Review skill.
 
 ---
 
