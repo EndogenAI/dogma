@@ -39,12 +39,12 @@ def prov_mod():
 def _write_manifesto(tmp_path: Path, extra_headings: list[str] | None = None) -> Path:
     """Write a minimal MANIFESTO.md with the canonical axiom headings."""
     headings = [
-        "## Endogenous-First",
-        "## Algorithms Before Tokens",
-        "## Local Compute-First",
-        "## Programmatic-First",
-        "## Documentation-First",
-        "## Minimal Posture",
+        "### 1. Endogenous-First",
+        "### 2. Algorithms Before Tokens",
+        "### 3. Local Compute-First",
+        "### 4. Programmatic-First",
+        "### 5. Documentation-First",
+        "### 6. Minimal Posture",
     ]
     if extra_headings:
         headings.extend(extra_headings)
