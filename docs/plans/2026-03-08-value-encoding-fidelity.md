@@ -426,7 +426,8 @@ Depends on: Phase 3 (PR #89) merged to feat/value-encoding-fidelity
 **Issues**: #54, #78, #71
 **Branch convention**: `feat/value-encoding-phase-4-programmatic`
 **Agent**: Executive Scripter (leads), Research Scout (for #78 survey)
-**Status**: 🔄 In progress — 2026-03-08
+**Status**: ✅ Complete — PR #90 open 2026-03-08 (targeting `feat/value-encoding-fidelity`)
+**Commits**: `b73466a` (checklist), `90203a0` (#54), `faadae1` (#71), `ab7ff2d` (#78)
 **Checklist**: ✅ Delegated to Executive Planner — see `### Phase 4 Detailed Checklist` below
 
 | Issue | Title | Type | Effort |
@@ -438,11 +439,11 @@ Depends on: Phase 3 (PR #89) merged to feat/value-encoding-fidelity
 #54 first (density count), then #71 (drift detection), then #78 (provenance tracing that builds on both).
 
 **Gate deliverables**:
-- [ ] `generate_agent_manifest.py` emits per-agent cross-reference density score and fleet average
-- [ ] `scripts/detect_drift.py` (or `validate_agent_files.py --semantic`) prototype with per-agent drift score
-- [ ] `scripts/audit_provenance.py` prototype with per-file provenance report
-- [ ] Tests for all new scripts (≥80% coverage each)
-- [ ] CI integration decision documented for each script
+- [x] `generate_agent_manifest.py` emits per-agent cross-reference density score and fleet average
+- [x] `scripts/detect_drift.py` (or `validate_agent_files.py --semantic`) prototype with per-agent drift score
+- [x] `scripts/audit_provenance.py` prototype with per-file provenance report
+- [x] Tests for all new scripts (≥80% coverage each)
+- [x] CI integration decision documented for each script
 
 **Review gate**: Review agent validates new scripts don't introduce security issues (SSRF, injection) and follow AGENTS.md programmatic-first conventions.
 
