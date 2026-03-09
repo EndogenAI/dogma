@@ -52,7 +52,9 @@ Specialized domain libraries built after the core ecosystem is operational. **Sk
 ### Commercial Engagement Models
 **Consulting**: [TBD — pricing model? typical project scope? estimated timeline per engagement?] EndogenAI provides advisory and implementation services for enterprises looking to adopt agentic workflows. Consulting engagements likely pair Conor or hires from `dogma` expertise with client teams to customize `init` and `adopt` wizards, author domain-specific agents, and integrate with client infrastructure. Revenue is project-based; contracts are a key asset that Business Lead Agent will manage.
 
-**Training & Certification**: [TBD — tiers (fundamentals, advanced, specialist)? curriculum timeline? pricing?] A structured training program that teaches practitioners how to build, deploy, and maintain EndogenAI agents. Certification signals competency; may be offered as cohort-based courses, self-paced modules, or corporate training packages. Revenue is per-participant or per-license; supporting the training program is a dedicated revenue stream that scales differently from consulting (lower cost-of-goods-sold, higher volume).
+**Training & Certification**: A structured training program that teaches practitioners how to build, deploy, and maintain EndogenAI agents. Certification signals competency; may be offered as cohort-based courses, self-paced modules, or corporate training packages. Revenue is per-participant or per-license; supporting the training program is a dedicated revenue stream that scales differently from consulting (lower cost-of-goods-sold, higher volume).
+
+  **Open Question**: Will the training platform be self-hosted (aligning with Local Compute-First axiom, similar to dogma repo's CI model) or use a managed commercial LMS (e.g., Teachable, Udemy)? This decision affects infrastructure costs, user experience, and strategic alignment with non-cloud-dependency positioning. [TBD pending business model refinement.]
 
 ### Target Audience
 - **Primary**: Enterprises (financial services, healthcare, manufacturing) and data-heavy teams looking to adopt agentic automation frameworks to reduce operational overhead and improve decision velocity.
@@ -63,13 +65,19 @@ Specialized domain libraries built after the core ecosystem is operational. **Sk
 [TBD — who is the ideal first customer type? What problem will EndogenAI solve for them? Why will they sign before competitors do?]
 
 ### Success Metrics (6-Month Horizon)
-[TBD — concrete targets: number of consulting inquiries, training enrollments, GitHub stars, active projects using `init`/`adopt`, revenue booked, partnerships signed?]
+Success will be measured across three dimensions:
+
+1. **Market Adoption**: GitHub stars; active projects using `init` and `adopt` wizards; community size (discussions activity, event participation).
+2. **Revenue Metrics**: Consulting pipeline value and contracted bookings; training program enrollment rate; average consulting contract value.
+3. **Community Health**: GitHub discussions activity level and quality; events hosted (webinars, workshops); speaker appearances at conferences and community forums.
+
+Specific numeric targets per dimension and timeline [TBD pending Conor + Sheela input during roadmap phase].
 
 ---
 
 ## Specialist Agents as Product Feature
 
-The following specialist agents are prerequisites for scaling business operations. They should also inform product decisions by surfacing market realities, customer needs, and operational constraints that affect roadmap prioritization.
+The following specialist agents are prerequisites for scaling business operations. They should also inform product decisions by surfacing market realities, customer needs, and operational constraints that affect roadmap prioritization. These three agents are scoped and defined as `.agent.md` files during Phase 1 (months 1–3) per the fleet authoring standards, with full operational implementation deferred to Phase 2 to avoid overload during initial product launch.
 
 ### Business Lead Agent
 **Status**: [TBD] Responsibilities: revenue forecasting, pricing model refinement, partnership strategy, contract review, investor relations (as applicable), budget allocation, hiring/headcount planning. Endogenous sources: financial models, partner agreements, customer research, market analysis. **Product role**: Flags when engineering decisions conflict with revenue targets or customer acquisition strategy. Proposes tiered offerings (free tier for open-source projects, paid tier for enterprises) based on unit economics. Escalates risk (e.g., if cloud hosting costs would break the Local Compute-First promise). Identifies gaps in go-to-market execution before they harm adoption.
