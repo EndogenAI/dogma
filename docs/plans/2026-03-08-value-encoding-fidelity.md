@@ -270,9 +270,9 @@ Use this prompt to start the Phase 3 session in a new context window:
 
 Before acting:
 1. Run `uv run python scripts/prune_scratchpad.py --init` and read the scratchpad `## Session Summary`
-2. Confirm PR #86 is merged: `gh pr view 86 --json state` — Phase 3 is blocked until merged
-3. If merged: create branch `feat/value-encoding-phase-3-four-forms` off main:
-   `git checkout main && git pull && git checkout -b feat/value-encoding-phase-3-four-forms`
+2. Confirm PR #86 is merged to `feat/value-encoding-fidelity`: `gh pr view 86 --json state,baseRefName` → `MERGED → feat/value-encoding-fidelity`
+3. Create branch off `feat/value-encoding-fidelity` (NOT main — PR #86 targets the milestone integration branch):
+   `git checkout feat/value-encoding-fidelity && git pull && git checkout -b feat/value-encoding-phase-3-four-forms`
 4. Read the Phase 3 section of this workplan (issue #70 — Encode Four Forms)
 5. Read `docs/research/values-encoding.md` §6 in full — the audit gap list is the inventory for Phase 3
 6. Write `## Session Start` citing Endogenous-First and this workplan as the primary endogenous source
@@ -282,7 +282,7 @@ Before acting:
 Last committed: `a2a445f` (research/context-window-budget — Phase 2 sprint + session retrospective)
 Active phase: Phase 3 — Encode the Four Forms (issue #70)
 Key input: values-encoding.md §6 — Endogenous-First F2 (canonical example) is highest-priority gap; EF-F4 and LCF-F4 are ⚠️ (behavioural, not CI-enforced)
-Blocker: PR #86 must merge to main before Phase 3 edits MANIFESTO.md (conflict risk)
+Note: Phase 3 is COMPLETE as of 2026-03-08 — this prompt is preserved as historical record. See Phase 3 status in the workplan body.
 ```
 
 ---
@@ -318,7 +318,7 @@ Blocker: PR #86 must merge to main before Phase 3 edits MANIFESTO.md (conflict r
 
 - [x] **1. Branch guard**: Confirm PR #86 is merged to `feat/value-encoding-fidelity` (`gh pr view 86 --json state,baseRefName -q '"\(.state) → \(.baseRefName)"'` → `MERGED → feat/value-encoding-fidelity`); ✅ confirmed 2026-03-08T22:35:08Z.
 - [x] **2. Branch creation**: `git checkout feat/value-encoding-fidelity && git pull && git checkout -b feat/value-encoding-phase-3-four-forms` — ✅ done 2026-03-08. Note: PR #86 merged to `feat/value-encoding-fidelity` (milestone integration branch), not to `main`. Phase 3 branch correctly based off this branch.
-- [ ] **3. Pre-read sources** (read before touching any file):
+- [x] **3. Pre-read sources** (read before touching any file):
   - `docs/research/values-encoding.md` §6 gap list — the complete audit inventory
   - `MANIFESTO.md` lines 82–102 (EF section), lines 124–162 (LCF section), lines 165–250 (Guiding Principles)
   - This workplan Phase 3 gate deliverables as the completion criterion
@@ -327,23 +327,23 @@ Blocker: PR #86 must merge to main before Phase 3 edits MANIFESTO.md (conflict r
 
 #### Group B — Core Axiom Edits
 
-- [ ] **4. EF-F2 — Endogenous-First canonical example** *(HIGHEST PRIORITY)*: Insert a `**Canonical example**:` block immediately before the `**Programmatic gate**:` line in the Endogenous-First section. Content must show a concrete before/after contrast: session A opens by reading `AGENTS.md` + the active scratchpad before delegating (endogenous-first posture); session B drops straight into Copilot Chat and re-invents conventions already encoded (vibe-coding posture). Verification: `grep -n "Canonical example" MANIFESTO.md` shows a new match in the EF block (line ~101).
+- [x] **4. EF-F2 — Endogenous-First canonical example** *(HIGHEST PRIORITY)*: Insert a `**Canonical example**:` block immediately before the `**Programmatic gate**:` line in the Endogenous-First section. Content must show a concrete before/after contrast: session A opens by reading `AGENTS.md` + the active scratchpad before delegating (endogenous-first posture); session B drops straight into Copilot Chat and re-invents conventions already encoded (vibe-coding posture). Verification: `grep -n "Canonical example" MANIFESTO.md` shows a new match in the EF block (line ~101).
 
-- [ ] **5. LCF-F4 — Formalise human-judgment gate as intentional design**: In the Local Compute-First `**Programmatic gate**:` block, replace the sentence `No hard CI gate exists for this axiom — it requires human judgment at code review and conversation review; the gate is the Augmentive Partnership itself.` with a positive statement that makes the human-judgment gate an **explicit architectural decision**, not a gap acknowledgment. Pattern: `The absence of a CI gate is intentional — cloud-model usage detection requires semantic context that no static linter can evaluate; the gate is the Augmentive Partnership review step, a deliberate design choice consistent with ADR-002 (kanban, human judgment at each phase boundary) and recorded as such.` Verification: the word "gap" or "no hard CI gate" does not appear in the LCF block.
+- [x] **5. LCF-F4 — Formalise human-judgment gate as intentional design**: In the Local Compute-First `**Programmatic gate**:` block, replace the sentence `No hard CI gate exists for this axiom — it requires human judgment at code review and conversation review; the gate is the Augmentive Partnership itself.` with a positive statement that makes the human-judgment gate an **explicit architectural decision**, not a gap acknowledgment. Pattern: `The absence of a CI gate is intentional — cloud-model usage detection requires semantic context that no static linter can evaluate; the gate is the Augmentive Partnership review step, a deliberate design choice consistent with ADR-002 (kanban, human judgment at each phase boundary) and recorded as such.` Verification: the word "gap" or "no hard CI gate" does not appear in the LCF block.
 
 ---
 
 #### Group C — Guiding Principles Additions (in priority order)
 
-- [ ] **6. Programmatic-First F2 + F3**: Append a `**Canonical example**:` block and an `**Anti-pattern**:` block after the existing principle prose and before the next section heading.
+- [x] **6. Programmatic-First F2 + F3**: Append a `**Canonical example**:` block and an `**Anti-pattern**:` block after the existing principle prose and before the next section heading.
   - F2: A commit history where the same data-extraction task (e.g., extracting citation metadata) was run interactively twice, then encoded as `scripts/format_citations.py` on the third occurrence — cite this script as the repo's canonical instance.
   - F3: Running `gh issue list` manually in each session to check open issues instead of encoding that check into a script — the information is re-discovered at token cost every time.
 
-- [ ] **7. Documentation-First F2 + F3**: Append `**Canonical example**:` and `**Anti-pattern**:` blocks after the existing principle prose.
+- [x] **7. Documentation-First F2 + F3**: Append `**Canonical example**:` and `**Anti-pattern**:` blocks after the existing principle prose.
   - F2: Adding `scripts/fetch_source.py` to `scripts/` with a module-level docstring, an entry in `scripts/README.md`, and a `tests/test_fetch_source.py` file — the triple completion signal; all three must land in the same commit.
   - F3: Merging a working script with no docstring and no `scripts/README.md` entry — the knowledge it encodes is invisible to the next agent or human; the substrate did not grow.
 
-- [ ] **8. Minimal Posture F2 + F3**: Append `**Canonical example**:` and `**Anti-pattern**:` blocks after the existing principle prose (before `### Testing-First`).
+- [x] **8. Minimal Posture F2 + F3**: Append `**Canonical example**:` and `**Anti-pattern**:` blocks after the existing principle prose (before `### Testing-First`).
   - F2: `scripts/prune_scratchpad.py --init` — does one thing (init the daily scratchpad file), returns one value (the file path), loads nothing it does not need.
   - F3: An agent file that pre-loads all 42 sibling agents' instruction bodies into its system prompt "just in case" one is relevant — N×context overhead for 0 marginal value per invocation.
 
@@ -351,7 +351,7 @@ Blocker: PR #86 must merge to main before Phase 3 edits MANIFESTO.md (conflict r
 
 #### Group D — Label Renames (mechanical)
 
-- [ ] **9. Convert three `**Empirical basis**:` labels to `**Canonical example**:`**: In the Guiding Principles section, find and replace the `**Empirical basis**:` label (bold prefix only, not the content) in each of the three affected principles:
+- [x] **9. Convert three `**Empirical basis**:` labels to `**Canonical example**:`**: In the Guiding Principles section, find and replace the `**Empirical basis**:` label (bold prefix only, not the content) in each of the three affected principles:
   - `Compress Context, Not Content`
   - `Isolate Invocations, Parallelize Safely`
   - `Validate & Gate, Always`
@@ -361,9 +361,9 @@ Blocker: PR #86 must merge to main before Phase 3 edits MANIFESTO.md (conflict r
 
 #### Group E — Validation & Close
 
-- [ ] **10. Redundancy check**: Re-read `docs/research/values-encoding.md` §6 gap list. Confirm every addition corresponds to a listed gap — no new blocks were added beyond what the audit specified.
+- [x] **10. Redundancy check**: Re-read `docs/research/values-encoding.md` §6 gap list. Confirm every addition corresponds to a listed gap — no new blocks were added beyond what the audit specified.
 
-- [ ] **11. Pre-commit validation**:
+- [x] **11. Pre-commit validation**:
   ```bash
   uv run ruff check scripts/ tests/
   uv run ruff format --check scripts/ tests/
@@ -371,9 +371,9 @@ Blocker: PR #86 must merge to main before Phase 3 edits MANIFESTO.md (conflict r
   ```
   All three must exit 0. `MANIFESTO.md` has no test coverage — no pytest change expected.
 
-- [ ] **12. Commit + push**: Single atomic commit — `docs(manifesto): encode four forms for all axioms and guiding principles (#70)`. Body summarises each of the 6 edit groups (A–D).
+- [x] **12. Commit + push**: Single atomic commit — `docs(manifesto): encode four forms for all axioms and guiding principles (#70)`. Body summarises each of the 6 edit groups (A–D).
 
-- [ ] **13. PR + CI**: `gh pr create --title "docs(manifesto): encode four forms for all axioms and guiding principles" --body-file <tmp>` (write body to temp file). Wait for CI green: `gh run list --limit 3`. Fix any lint failures before requesting review. Verify: `gh pr view` shows CI status passing.
+- [x] **13. PR + CI**: `gh pr create --title "docs(manifesto): encode four forms for all axioms and guiding principles" --body-file <tmp>` (write body to temp file). Wait for CI green: `gh run list --limit 3`. Fix any lint failures before requesting review. Verify: `gh pr view` shows CI status passing.
 
 ---
 

@@ -159,7 +159,7 @@ Any repeated or automatable task must be encoded as a committed script or automa
 
 **Canonical example**: `scripts/format_citations.py` — citation metadata extraction was run interactively in the first two research sessions, then encoded as a committed script on the third occurrence. Every subsequent session runs the script with zero tokens spent on the task. The script *is* the encoded knowledge; the interactive sessions that preceded it were its specification.
 
-**Anti-pattern**: Running `gh issue list` or `grep`-ing through files manually in each session to check open issues and conventions, instead of encoding that check into a script. The information is re-discovered at token cost every session; the substrate did not grow.
+**Anti-pattern**: Running `gh issue list` or grepping through files manually in each session to check open issues and conventions, instead of encoding that check into a script. The information is re-discovered at token cost every session; the substrate did not grow.
 
 ### Documentation-First
 
