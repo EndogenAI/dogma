@@ -647,7 +647,9 @@ class TestCustomRequiredSignals:
                 required_signals=["canonical_example", "invalid_signal"],
             )
 
-    def test_custom_signals_override_defaults(self, missing_anti_pattern_handoff := """
+    def test_custom_signals_override_defaults(self):
+        """Custom required_signals override membrane defaults."""
+        missing_anti_pattern_handoff = """
 ## Output
 
 **Canonical example**: Example
@@ -655,8 +657,7 @@ class TestCustomRequiredSignals:
 MANIFESTO.md
 
 [link](https://example.com)
-"""):
-        """Custom required_signals override membrane defaults."""
+"""
         # This handoff is missing anti_pattern, but if we don't require it, should pass
         result = validate_handoff_permeability(
             missing_anti_pattern_handoff,
