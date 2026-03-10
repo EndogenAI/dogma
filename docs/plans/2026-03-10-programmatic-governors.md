@@ -145,6 +145,79 @@ Act on a session insight: behavioral guardrails encoded as text instructions (AG
 
 ---
 
+---
+
+### Phase 6 — bash-preexec Decision (#161, effort:xs) ⬜
+
+**Agent**: Executive Docs
+**Issue**: [#161](https://github.com/EndogenAI/Workflows/issues/161)
+**Deliverables**:
+- [ ] `docs/decisions/ADR-007-bash-preexec.md` committed — status: Accepted; decision: adopt for API surface consistency, retain DEBUG trap + `kill -INT` for blocking
+- [ ] #161 closed
+**Depends on**: Phase 5 APPROVED
+**Gate**: Phase 6 Review does not start until ADR committed and #161 closed
+**Status**: ⬜ Not started
+
+---
+
+### Phase 6 Review — Review Gate ⬜
+
+**Agent**: Review
+**Deliverables**: `## Phase 6 Review Output` in scratchpad, verdict: APPROVED
+**Depends on**: Phase 6 committed
+**Gate**: Phase 7 does not start until APPROVED
+**Status**: ⬜ Not started
+
+---
+
+### Phase 7 — Governor B Implementation (#159, effort:m) ⬜
+
+**Agent**: Executive Scripter
+**Issue**: [#159](https://github.com/EndogenAI/Workflows/issues/159)
+**Deliverables**:
+- [ ] `.envrc` — `export PREEXEC_GOVERNOR_ENABLED=1` (single line; no layout directives needed — no existing `.envrc`, no direnv layout in `pyproject.toml`)
+- [ ] `docs/guides/governor-setup.md` — developer one-time setup guide: zsh ZLE `accept-line` wrapper (broad pattern + allowlist), bash `DEBUG` trap + `kill -INT`, bash-preexec sourcing note (refs ADR-007), `direnv allow` activation step, acceptance test
+- [ ] #159 closed
+**Depends on**: Phase 6 APPROVED (bash-preexec decision informs bash variant note)
+**Gate**: Phase 7 Review does not start until both files committed and #159 closed
+**Status**: ⬜ Not started
+
+---
+
+### Phase 7 Review — Review Gate ⬜
+
+**Agent**: Review
+**Deliverables**: `## Phase 7 Review Output` in scratchpad, verdict: APPROVED
+**Depends on**: Phase 7 committed
+**Gate**: Phase 8 does not start until APPROVED
+**Status**: ⬜ Not started
+
+---
+
+### Phase 8 — Documentation Finish (#160 + #162, effort:s + xs) ⬜
+
+**Agent**: Executive Docs (both sub-phases — different files, commit together)
+**Issues**: [#160](https://github.com/EndogenAI/Workflows/issues/160), [#162](https://github.com/EndogenAI/Workflows/issues/162)
+**Deliverables**:
+- [ ] `AGENTS.md` — new `## Programmatic Governors` section (between `## Security Guardrails` L457 and `## Guardrails` L494): names Governor A (pre-commit pygrep), Governor B (runtime shell, `PREEXEC_GOVERNOR_ENABLED=1`), cites `docs/guides/governor-setup.md`; #160 closed
+- [ ] `env-validator.agent.md` — new checklist item: `PREEXEC_GOVERNOR_ENABLED` env-var check, ⚠️ warning only (not ❌ failure — CI runners are non-interactive), refs `docs/guides/governor-setup.md`; #162 closed
+- [ ] `uv run python scripts/validate_agent_files.py --all` passes
+**Depends on**: Phase 7 APPROVED (activation command and env-var name confirmed via `.envrc`)
+**Gate**: Phase 8 Review does not start until all committed, both issues closed, and validator passes
+**Status**: ⬜ Not started
+
+---
+
+### Phase 8 Review — Review Gate ⬜
+
+**Agent**: Review → GitHub (push)
+**Deliverables**: `## Phase 8 Review Output` in scratchpad, verdict: APPROVED; all changes pushed; CI green
+**Depends on**: Phase 8 committed
+**Gate**: Session complete after push and `gh run list --limit 3` confirms CI green
+**Status**: ⬜ Not started
+
+---
+
 ## Acceptance Criteria
 
 - [x] `.pre-commit-config.yaml` contains `no-heredoc-writes` hook, CI-verified
@@ -155,3 +228,61 @@ Act on a session insight: behavioral guardrails encoded as text instructions (AG
 - [x] `docs/research/shell-preexec-governor.md` — D4, Status: Final; #150 closed
 - [x] `docs/research/shifting-constraints-from-tokens.md` — D4, Status: Final; commit `1e59c2e` includes `closes #151`
 - [x] #152 `status:blocked` label to be removed after Phase 5 Review gates (unblocks fleet audit sprint)
+- [x] Phase 6 (Terminal File I/O Linting): T2 ruff rule + AGENTS.md documentation complete
+- [x] Phase 7 (Runtime Capability Gates): T4 decorator pattern + audit logging complete
+- [x] P0 action items #154, #155 closed
+
+---
+
+## P0 Phase Plan (Action Items from Phase 5 Research)
+
+### Phase 6 — #154 (T2 Static Linting: ruff rule for terminal file I/O) ✅
+
+**Agent**: Executive Scripter
+**Deliverables**:
+- [x] Add ruff rule to pyproject.toml flagging `run_in_terminal` with I/O redirection (>, >>, pipes)
+- [x] Integrate rule into .pre-commit-config.yaml (`no-terminal-file-io-redirect` hook)
+- [x] Run ruff check on scripts/ and tests/ — zero violations
+- [x] Update AGENTS.md with terminal I/O enforcement documentation + Programmatic-First cites
+- [x] #154 closed via commit reference
+**Commits**: `298efc9` (rule), `78163e4` (AGENTS.md documentation)
+**Gate**: Phase 6 Review — ✅ APPROVED
+
+---
+
+### Phase 6 Review — Review Gate ✅
+
+**Verdict**: ✅ APPROVED
+All D2 (static linting) and documentation criteria met. T1→T2 shift grounded in research. Programmatic-First principle properly cited.
+
+---
+
+### Phase 7 — #155 (T4 Runtime Gate: API capability access control) ✅
+
+**Agent**: Executive Automator
+**Deliverables**:
+- [x] Design runtime capability gate decorator: @requires_capability("github_api")
+- [x] Implement audit logging middleware for API access
+- [x] Gate GitHub agent API calls; audit-log + reject other agents
+- [x] Add comprehensive test suite with @pytest.mark.io markers
+- [x] #155 closed via commit reference
+**Commits**: `7a30bf1` (initial), `534f0de` (cites + markers), `bb36a3b` (final markers)
+**Gate**: Phase 7 Review — ✅ APPROVED
+
+---
+
+### Phase 7 Review — Review Gate ✅
+
+**Verdict**: ✅ APPROVED
+All T4 (execution-time enforcement) and documentation criteria met. MANIFESTO.md §2 and Programmatic-First properly cited. Audit logging operational. Test suite complete with markers.
+
+---
+
+## P0 Consolidation ✅
+
+All P0 action items complete and APPROVED:
+- [x] Terminal file I/O: T1 text instruction → T2 static linting + pre-commit hook
+- [x] API capability gating: T1 documented → T4 runtime decorator + audit logging
+- [x] Both issues #154, #155 closed
+- [x] All commits pushed to `feat/programmatic-governors`
+- [x] Ready for P1 (medium-term) action items (#156, #157) or PR review
