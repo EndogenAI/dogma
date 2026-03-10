@@ -1,7 +1,7 @@
 ---
 title: "Programmatic Governors: Shifting AI Behavioral Constraints from Tokens to Deterministic Code"
 status: Draft
-research_issue: "(to be seeded)"
+research_issue: "#151"
 date: 2026-03-10
 ---
 
