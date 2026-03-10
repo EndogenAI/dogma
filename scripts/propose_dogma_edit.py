@@ -40,7 +40,6 @@ _SCRIPTS_DIR = Path(__file__).parent
 if str(_SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS_DIR))
 
-from audit_provenance import extract_manifesto_axioms  # noqa: E402, F401
 from detect_drift import WATERMARK_PHRASES  # noqa: E402
 
 # ---------------------------------------------------------------------------
@@ -304,7 +303,12 @@ def main(argv: list[str] | None = None) -> int:
 
     # Write output
     if args.output:
-        args.output.write_text(proposal, encoding="utf-8")
+        try:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(proposal, encoding="utf-8")
+        except OSError as exc:
+            print(f"ERROR: Cannot write output {args.output}: {exc}", file=sys.stderr)
+            return 1
     else:
         print(proposal)
 

@@ -879,9 +879,9 @@ uv run python scripts/audit_provenance.py --agents-dir path/to/agents/ --manifes
 
 ## scripts/propose_dogma_edit.py
 
-**Purpose**: Programmatic enforcer of the back-propagation protocol from `docs/research/dogma-neuroplasticity.md`. Reads a scratchpad session file, extracts watermark-phrase evidence lines, runs the coherence check (does the proposed delta remove a watermark phrase?), and emits an ADR-style Markdown proposal. Implements **Algorithms Before Tokens** (`MANIFESTO.md §2`) by encoding the evidence threshold check and coherence validation as a deterministic CLI.
+**Purpose**: Programmatic enforcer of the back-propagation protocol from `docs/research/dogma-neuroplasticity.md`. Reads a scratchpad session file, extracts watermark-phrase evidence lines, runs the coherence check (does the proposed delta remove a watermark phrase?), and emits an ADR-style Markdown proposal. Implements **Algorithms Before Tokens** (`MANIFESTO.md §2`) by encoding the evidence extraction and coherence validation as a deterministic CLI.
 
-**Imports**: `WATERMARK_PHRASES` from `detect_drift.py`; `extract_manifesto_axioms` from `audit_provenance.py` — does not reimplement either.
+**Imports**: `WATERMARK_PHRASES` from `detect_drift.py` — does not reimplement.
 
 **Tests**: [`tests/test_propose_dogma_edit.py`](../tests/test_propose_dogma_edit.py)
 
