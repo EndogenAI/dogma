@@ -133,6 +133,25 @@ Standard heading keywords:
 | `Results`, `Output`, `Done`, `Completed`, `Summary`, `Handoff` | Archived when pruned |
 | `Active`, `Plan`, `Session`, `Escalation` | Kept live when pruned |
 
+### Cross-Session Continuity (Pattern M1 — Scratchpad-as-Episodic-Index)
+
+The scratchpad already provides episodic memory at the session level. Cross-session continuity is provided by the **Session Start step**: re-reading the on-disk scratchpad before delegating anything. For multi-session projects, add a `## Session History` section to the scratchpad as a lightweight episodic index:
+
+```markdown
+## Session History
+
+| Date | Branch | Key decisions |
+|------|--------|---------------|
+| 2026-03-06 | feat/xml-migration | Adopted XML hybrid schema; OQ-12-1/2/3 resolved |
+| 2026-03-09 | research/bubble-clusters | Phase A–C complete; episodic memory deferred |
+```
+
+**Anti-pattern**: Skipping the Session Start scratchpad re-read because "the compact summary should have it" — the compact summary is a lossy digest; only the on-disk scratchpad is the authoritative state record. This is the zero-dependency implementation of episodic memory: no external library required, available immediately, consistent with Endogenous-First (`MANIFESTO.md` §1).
+
+*Source: `docs/research/episodic-memory-agents.md` Pattern M1 (Milestone 7, Endogenous-First).*
+
+---
+
 ### Handoff Notes
 
 When handing off to another agent, leave a structured note:

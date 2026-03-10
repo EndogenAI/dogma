@@ -176,8 +176,8 @@ Execute the remaining open research issues in Milestone 7, anchored on the **bub
 - [x] Phase B complete: `docs/research/external-value-architecture.md` and `docs/research/epigenetic-tagging.md` committed, issues #83 and #72 closed
 - [x] Phase C complete: `docs/research/llm-behavioral-testing.md` committed, issue #74 closed
 - [x] Phase D complete: all three research docs committed, issues #76, #13, #14 closed
-- [ ] Deferred issues closed: #82, #81, #79 closed with reference to their existing research docs
-- [ ] Executive Docs notified if any findings require updates to `AGENTS.md`, `MANIFESTO.md`, or guides
+- [x] Deferred issues closed: #82, #81, #79 closed with reference to their existing research docs
+- [x] Executive Docs notified if any findings require updates to `AGENTS.md`, `MANIFESTO.md`, or guides
 - [x] `docs/research/values-encoding.md` updated with a forward-reference to `docs/research/bubble-clusters-substrate.md` once Phase A is committed
 
 ---
