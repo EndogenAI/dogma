@@ -171,7 +171,7 @@ The programmatic enforcer of the back-propagation protocol. This implements **Al
 `load_stability_tiers() -> dict[str, dict]` — returns hardcoded tier metadata:
 ```python
 {"T1": {"name": "Axioms", "session_threshold": 3, "requires_adr": True},
- "T2": {"name": "Guiding Principles", "session_threshold": 3, "requires_adr": False},
+ "T2": {"name": "Guiding Principles", "session_threshold": 3, "requires_adr": True},
  "T3": {"name": "Operational Constraints", "session_threshold": 2, "requires_adr": False}}
 ```
 
