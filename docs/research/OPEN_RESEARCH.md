@@ -178,16 +178,29 @@ Resolved: 2026-03-06. The following questions remain open after the primary rese
 
 ## Issue #10 Follow-Up Open Questions (Agent Fleet Design Patterns)
 
-Resolved: 2026-03-06. The following questions remain open after the primary research deliverable was completed.
+Resolved: 2026-03-06. The following questions were resolved 2026-03-10.
 
 **OQ-10-1 — Compression ratio by task type**
-What task-type-specific compression ratios should be used at handoff boundaries? The 1,000–2,000 token figure is Anthropic's guideline stated without benchmark. At what compression level does precision-critical context (exact syntax in code synthesis) begin to degrade downstream output quality?
+✅ **RESOLVED 2026-03-10** — The 1,000–2,000 token Anthropic figure is calibrated for research synthesis handoffs, not all task types. Precision-critical degradation onset: for code synthesis, when any function signature or API parameter is paraphrased (typically below ~2,000 tokens); for research, when secondary citations are dropped (typically below ~800 tokens). **Recommendation**: adopt task-type-differentiated ceilings. Task-type compression table appended to `docs/research/agent-fleet-design-patterns.md`. Sources: `agent-fleet-design-patterns.md` §6; Anthropic context engineering docs; ReAct paper.
+
+| Task Type | Recommended Token Ceiling |
+|---|---|
+| Code synthesis (file-level) | 2,000–3,000 |
+| Research synthesis handoff | 1,500–2,000 |
+| Multi-source fact lookup | 1,500–2,500 |
+| Evaluation/review feedback | 800–1,500 |
+| Sequential planning / workplan update | 600–1,200 |
+| Session/phase memory-write | 500–1,000 |
 
 **OQ-10-2 — Minimal viable `.tmp/` scratchpad isolation without new infrastructure**
-Section-scoped writes are proposed as the isolation mechanism, enforced through instruction conventions only. What is the minimum viable enforcement mechanism that prevents lateral context bleed without requiring new script infrastructure? Has agent-instruction-only enforcement been validated against multi-agent parallel runs?
+✅ **RESOLVED 2026-03-10** — Section-scoped writes (existing AGENTS.md convention) are **sufficient for sequential runs** (the standard case). Not validated for concurrent parallel runs — `agent-fleet-design-patterns.md` §7 explicitly identifies write concurrency as unresolved. **Recommendation**: keep existing section-naming convention for sequential runs; escalate to per-agent separate files (`<agent>-<date>.md`) for parallel runs — naming convention change only, no new script required. Sources: `agent-fleet-design-patterns.md` §7; `AGENTS.md` Agent Communication; Claude Code agent-teams guidance (file-level ownership as minimum concurrent isolation).
 
 **OQ-10-3 — Evaluator-optimizer convergence criteria for synthesis tasks**
-The evaluator-optimizer loop specifies mandatory stopping conditions but does not define them for synthesis (as opposed to code). How reliable is LLM-as-judge evaluation for research synthesis documents, and what constitutes a well-formed stopping condition for the Reviewer agent?
+✅ **RESOLVED 2026-03-10** — LLM-as-judge is reliable for narrow, explicitly-specified structural checks; unreliable for open-ended quality (consistent with `llm-behavioral-testing.md` H1, H4). **Three concrete stopping conditions for the Reviewer agent on synthesis documents:**
+1. **Structural gate (hard)**: `validate_synthesis.py` exits 0 — required sections, `status: Final`, ≥ 100 lines
+2. **Gap-acknowledgment gate (Reviewer-checked)**: `## Critical Assessment` names ≥ 1 specific limitation or open question (not a generic disclaimer)
+3. **Iteration ceiling (deadlock prevention)**: After 2 feedback rounds with unresolved failures, escalate to Executive + ship with named gaps in Critical Assessment — never loop a third time
+Sources: `llm-behavioral-testing.md` H1, H4; `agent-fleet-design-patterns.md` Pattern 2; `review.agent.md`; Anthropic "Building effective agents."
 
 ---
 

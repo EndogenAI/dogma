@@ -434,3 +434,42 @@ The subagent research prompt formalises this as a behavioural norm: "Be detailed
 12. [Research Lead Agent System Prompt (Anthropic Cookbook)](sources/cookbook-research-lead-agent.md) — Anthropic Cookbook, 2025
 13. [Research Subagent System Prompt (Anthropic Cookbook)](sources/cookbook-research-subagent.md) — Anthropic Cookbook, 2025
 14. [Citations Agent System Prompt (Anthropic Cookbook)](sources/cookbook-citations-agent.md) — Anthropic Cookbook, 2024
+
+---
+
+## Appendix A — OQ-10 Follow-Up Resolutions (2026-03-10)
+
+*These questions were open since the primary research was completed 2026-03-06. Resolved as part of the open research closure sprint.*
+
+### OQ-10-1: Task-Type Compression Table
+
+The 1,000–2,000 token Anthropic handoff guideline (§6) is calibrated for research synthesis subagent→lead handoffs specifically. Precision-critical degradation onset varies by task type: code synthesis degrades when function signatures or API parameters are paraphrased (typically below ~2,000 tokens); research handoffs degrade when secondary citations are dropped (typically below ~800 tokens).
+
+**Recommended token ceilings by task type:**
+
+| Task Type | Token Ceiling | First-Order Degradation Signal |
+|---|---|---|
+| Code synthesis (file-level change) | 2,000–3,000 | Any function signature or API parameter paraphrased |
+| Research synthesis handoff | 1,500–2,000 | Secondary citations dropped |
+| Multi-source fact lookup | 1,500–2,500 | Source provenance (author, year, URL slug) falls out |
+| Evaluation/review feedback | 800–1,500 | File:line reference or specific rule name dropped |
+| Sequential planning / workplan update | 600–1,200 | Dependency links or phase status markers dropped |
+| Session/phase memory-write | 500–1,000 | Phase ordering or open decision lost |
+
+The full synthesis artifact always goes to external storage (git commit, scratchpad); only the compressed summary flows to the lead context.
+
+### OQ-10-2: Scratchpad Isolation Mechanism
+
+The existing AGENTS.md section-naming convention (`## <AgentName> Output`, read-own-section-only rule) is **sufficient for sequential runs** — the standard EndogenAI case. It has not been validated against concurrent parallel runs; the concurrency gap (§7) remains unresolved for simultaneous parallel execution.
+
+**Recommendation**: Keep existing convention for sequential runs. For any workflow that spawns agents in parallel, escalate to **per-agent separate files** (`<agent>-<date>.md`) — this is a naming convention extension, not a new script.
+
+### OQ-10-3: Reviewer Agent Stopping Conditions for Synthesis
+
+LLM-as-judge is reliable for narrow, explicitly-specified structural checks; unreliable for open-ended quality assessment (consistent with `docs/research/llm-behavioral-testing.md` H1, H4).
+
+**Three concrete stopping conditions for the Reviewer agent on synthesis documents:**
+
+1. **Structural gate (hard stop, Tier 1):** `validate_synthesis.py` exits 0 — all required sections present, `status: Final`, ≥ 100 lines. Fails → continue loop regardless.
+2. **Gap-acknowledgment gate (Tier 1):** `## Critical Assessment` section names ≥ 1 specific limitation, evidence quality qualification, or named open question — not a generic disclaimer. A Critical Assessment stating "no limitations found" = gate failure → Request Changes.
+3. **Iteration ceiling (convergence guarantee):** After **2 Reviewer feedback rounds**, if gates 1 or 2 still fail, escalate to Executive + ship with gaps named in Critical Assessment. Never loop a third time. This prevents the evaluator-optimizer deadlock identified in Pattern 2.
