@@ -61,6 +61,56 @@ Multi-agent sessions fail not because agents are wrong, but because handoffs los
 
 **Narrow-Outbound / Compressed-Inbound**: Outbound delegation prompts must be scoped narrowly to the receiving agent's specific task — not bulk session context. Inbound returns are capped at ≤ 2,000 tokens. Both constraints serve the same goal: preserving the main context window budget across a full multi-phase session. A broad outbound prompt and a verbose return each consume context as if the work were done directly.
 
+**When to Act Directly vs. Delegate (Gray-Area Logic)**
+
+Delegation is default, but edge cases are real (e.g., "fix this one typo in docs? Or delegate to Docs?"). Use this tree:
+
+```
+┌─ Is there a specialist agent for this domain?
+│  ├─ Yes  → Delegate to them
+│  └─ No   → Continue to step 2
+│
+├─ Would the output benefit from isolation (clean context, focused expertise)?
+│  ├─ Yes  → Delegate
+│  └─ No   → Continue to step 3
+│
+├─ Is this read-only (no persistent state changes)?
+│  ├─ Yes  → OK to act directly, but keep it short
+│  └─ No   → Continue to step 4
+│
+└─ Can you complete it in < 5 minutes without context burn?
+   ├─ Yes  → OK to act directly; document in scratchpad
+   └─ No   → Delegate
+```
+
+**Examples**:
+
+- **Single-line typo in docs/guides/foo.md**
+  - Specialist? Yes (Executive Docs)
+  - Isolation benefit? Maybe (1-line fix)
+  - Read-only? No (write)
+  - < 5 min? Yes
+  - **Decision**: Gray area. If it's 1 typo in 1 file → OK direct. If it's 5+ edits across 3+ files → delegate to Docs.
+
+- **Add a label to 10 issues**
+  - Specialist? Yes (Executive PM)
+  - Isolation benefit? Yes (bulk GitHub operations are their domain)
+  - **Decision**: Always delegate to PM.
+
+- **Run `git status` to confirm branch state**
+  - Specialist? No (coordination task)
+  - Read-only? Yes
+  - **Decision**: Always OK direct.
+
+- **Fix a broken link in an artifact you just created**
+  - Specialist? Maybe (content domain-specific)
+  - Read-only? No (write)
+  - Isolation benefit? No (verification-level, not expertise-level)
+  - < 5 min? Yes
+  - **Decision**: OK direct; this is post-verification touch-up.
+
+**Rule of Thumb**: When in doubt, ask "Would the specialist produce *meaningfully* better output?" If yes, delegate.
+
 ---
 
 ## Workflow
@@ -144,6 +194,30 @@ Use the `✓ Plan reviewed — begin execution` self-loop handoff to review the 
 
 Before delegating any phase to an execution agent, delegate a **per-phase detailed checklist** to the **Executive Planner** first. The Planner's checklist functions as a shared coherence artifact for the execution fleet: every downstream agent independently verifies their output against it, eliminating interpretive drift between agents without requiring the Orchestrator to re-explain scope mid-phase. Coherence emerges from the shared artifact, not from the Orchestrator's presence at every step.
 
+### 1.5 Pre-Task Commitment Checkpoint
+
+Before starting any task, ask yourself:
+
+**Question**: "Is this substantive domain work, or coordination/verification?"
+
+**Substantive Domain Work** → MUST delegate:
+- Writing or editing codebase/docs/configs
+- Executing research or synthesis
+- Running complex linting/tests for interpretation
+- Reviewing code against domain standards
+- Designing infrastructure or architectures
+
+**Coordination/Verification/State** → OK to do directly:
+- State queries: `git status`, `gh issue view`, `gh pr view`
+- Scratchpad management: `.tmp/` writes, `## Phase N Output` entries
+- Session orchestration: Invoking subagents, decision gates
+- Commits: `git add/commit/push` after Review approval only
+- Temp file validation: Pre-use checks before consuming files
+
+**Gray-area?** → Ask: "Would a specialist agent produce better output?" If yes, delegate.
+
+**Rationale (Endogenous-First)**: Delegation is the default. Every direct action should have a clear reason. If you're unsure, that's the signal to delegate—the specialist's focused context often produces better output than the Orchestrator's split attention.
+
 ### 3. Execute Phase by Phase
 
 **Before delegating any phase**, consult the Delegation Decision Gate:
@@ -163,14 +237,60 @@ Before delegating any phase to an execution agent, delegate a **per-phase detail
 | Model / cost optimisation | LLM Cost Optimizer |
 | Community health, DevRel | Community Pulse, DevRel Strategist |
 
-**Act directly only for:**
-- Reading files to confirm a deliverable exists
-- Running `git status`, `git log --oneline`, `gh pr view`, `gh issue view`
-- Writing scratchpad entries and workplan status updates
-- Running `git add/commit/push` after a subagent returns
-- Running `prune_scratchpad.py` or the pre-compact sequence
+**Act directly — allowlist:**
 
-**If the work does not appear in the "Act directly" list, delegate it.**
+✅ State Queries & Verification:
+- `git status`, `git log --oneline`, `git branch -vv`
+- `gh pr view`, `gh issue view`, branch tracking
+- Spot-checking deliverable files to confirm existence
+
+✅ Scratchpad & Workplan Management:
+- Writing `## Phase N Output`, `## Pre-Compact Checkpoint` entries
+- Updating workplan status markers (`⬜ Not started`, `⏳ In progress`, `✅ Complete`)
+- Temp file pre-use validation: `test -s /tmp/file`, `file | grep UTF-8`
+
+✅ Session Orchestration:
+- Invoking `runSubagent()` and waiting for returns
+- Decision gates: Review→Approved sequence
+- Cross-fleet delegation routing
+
+✅ Post-Review Commits:
+- `git add -A && git commit && git push` only after Review agent returns APPROVED
+- Verify with `git log --oneline -1`
+
+✅ Temp File Lifecycle:
+- Pre-consumption validation (see Pre-Task Checkpoint above)
+- Post-verification reads to confirm remote state
+
+---
+
+**DO NOT act directly — anti-patterns:**
+
+❌ File editing (docs, code, config):
+- Use Executive Docs, Executive Scripter, or specialist agents
+- Exception: Tiny one-liner changes *only if* it's 1 file and <1 min
+
+❌ Research, investigation, or synthesis:
+- Use Executive Researcher and the Research fleet
+- Exception: None — delegation is the point
+
+❌ Linting, formatting, or code review:
+- Use Review agent for validation
+- Use Executive Scripter for implementation
+- Orchestrator should not interpret test failures or lint output
+
+❌ Agent authoring, auditing, or fleet changes:
+- Use Executive Fleet exclusively
+- Orchestrator does not modify `.agent.md` or agent files
+
+❌ GitHub content creation (labels, milestones, issue seeding):
+- Use Executive PM exclusively
+
+❌ Complex decision interpretation:
+- Use specialist agents who own the domain
+- Orchestrator coordinates, doesn't judge
+
+**Rule**: If the work does not appear in the "allowlist," assume it should be delegated unless you have a very specific reason (and document it in the scratchpad).
 
 Delegate to the appropriate executive agent. Wait for control to return. Write the output summary to the scratchpad under `## Phase N Output`.
 
@@ -273,6 +393,27 @@ When a phase depends on another agent's output:
 When all phases are complete:
 
 - Write `## Session Summary` — orientation for the next session, what was done, what's open.
+
+### Session Delegation Audit (Optional Post-Session Check)
+
+After writing the `## Session Summary`, optionally review delegation health:
+
+| Metric | Target | How to Measure |
+|--------|--------|---|
+| **Delegation Ratio** | ≥ 70% of substantive work delegated | Count `**Agent**:` lines in scratchpad (non-Review, non-GitHub) / count total domain phases; multiply by 100 |
+| **Delegation Breadth** | Use ≥ 5 different specialists | List unique agent names in scratchpad `## Phase N` entries; count |
+| **Direct-Work Bloat** | < 20% of session output from direct reads/writes | Estimate: (scratchpad + workplan lines authored by Orchestrator directly) / (all changes this session); should be minimal |
+| **Gray-Area Decisions** | Document each one that arose | If you made a "act directly" call outside the allowlist, note it in `## Delegation Decisions` section with reasoning |
+
+**Interpretation**:
+- **Red flag** (Delegation Ratio < 50%): Next session should increase specialist breadth. Review this list for delegation opportunities you missed.
+- **Green light** (Ratio > 70%, Breadth ≥ 5): Session maintained good coherence. Orchestrator stayed in coordination role.
+- **Yellow** (Breadth < 5): Consider which specialist domains exist but were underutilized. Next session, look for opportunities to activate them.
+
+**Note**: This audit is optional and informational. It helps detect drift over time, not enforce hard quotas. The goal is visibility, not metrics gaming.
+
+---
+
 - **Update the issue body checkboxes** for every completed deliverable.
   1. Write updated body to temp file: `/tmp/issue_<num>_body.md`
   2. **Validate before use**: `test -s /tmp/issue_<num>_body.md && file /tmp/issue_<num>_body.md | grep -q "UTF-8\|ASCII" && grep -q "- \[.\]" /tmp/issue_<num>_body.md` (check for checkbox patterns)
