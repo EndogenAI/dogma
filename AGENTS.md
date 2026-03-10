@@ -246,6 +246,13 @@ Rules:
 
 **Outbound delegation prompts should be narrow and task-scoped** — dispatch the minimum necessary context to complete the subagent's task. **Returned results should target ≤ 2,000 tokens** — subagents compress extensive exploration into a dense handoff; they do not return raw search histories or intermediate reasoning. Both constraints serve the same purpose: preserving the main-session context window across a full multi-phase session — a broad outbound prompt and verbose return each consume context as if the work were done directly.
 
+**Signal preservation rules (additive — do not override tone above):**
+- When compressing Scout findings, preserve all labeled `**Canonical example**:` and `**Anti-pattern**:` instances verbatim — compress surrounding context, not concrete illustrations.
+- When compressing Scout findings, retain at least 2 explicit `MANIFESTO.md` axiom citations (by name + section reference) as anchors — paraphrased prose without citation does not preserve the signal.
+- Synthesizer drafts of D4 research documents must include at least one `**Canonical example**:` and one `**Anti-pattern**:` in the Pattern Catalog section; if Scout notes contained none, note the gap explicitly.
+
+*Amendments grounded in empirical handoff-drift audit (issue #75); degradation table in `docs/research/values-encoding.md` §5 OQ-VE-5.*
+
 ### Size Guard and Archive Convention
 
 | Situation | Action |

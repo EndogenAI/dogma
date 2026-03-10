@@ -351,7 +351,31 @@ These questions require a further research pass or empirical investigation withi
 
 4. **LLM behavioral testing for value fidelity**: Can session behavior be tested for alignment with foundational values? Constitutional AI's self-critique mechanism (ask the model to evaluate its output against the constitution) could be adapted as a post-session validation step. Would this be valuable as a `uv run python scripts/validate_session.py` post-commit hook?
 
-5. **Value drift in multi-agent handoffs**: How much fidelity is lost at each agent-to-agent boundary? A scratchpad audit comparing Scout output (raw, high-detail) to Synthesizer output (compressed) to archived document (structured) would measure per-boundary degradation empirically.
+5. **Value drift in multi-agent handoffs** *(RESOLVED — 2026-03-09)*
+
+   **Question (original)**: How much fidelity is lost at each agent-to-agent boundary? A scratchpad audit comparing Scout output (raw, high-detail) to Synthesizer output (compressed) to archived document (structured) would measure per-boundary degradation empirically.
+
+   **Resolution**: Empirical audit of Phase 5 (`queryable-substrate`) and Phase 6B (`skills-as-decision-logic` + `deterministic-agent-components`) completed 2026-03-09. Archive docs for both sessions measured directly; Scout stages estimated from scratchpad summaries (raw Scout sections pruned by `prune_scratchpad.py`).
+
+   **B8 Degradation Table** (4 element types × 2 handoff boundaries):
+
+   | Element Type | Scout→Synth loss % | Synth→Archive loss % | Note |
+   |---|---|---|---|
+   | MANIFESTO.md axiom citations | ~85–90% | Recovers in synthesis (+150%) | Compression strips informal refs; synthesis re-adds formal cites |
+   | Watermark phrase density (mean /6) | ~65–75% | ~10–20% stable | Archive: qs=3/6, skills=1/6, det=1/6 |
+   | Labeled `**Canonical example**:` | ~75% | 100% | **All zeroed by archive stage** |
+   | Labeled `**Anti-pattern**:` | ~75% | 100% | **All zeroed by archive stage** |
+
+   **Highest-loss element types**: Labeled canonical examples and anti-patterns are fully eliminated at the archive stage (100% loss). Recovery of axiom citations during synthesis is a positive finding but does not compensate for the complete loss of concrete illustrations.
+
+   **Resolution actions** (AGENTS.md §"Focus-on-Descent / Compression-on-Ascent" amendments, additive):
+   - When compressing Scout findings, preserve all labeled `**Canonical example**:` and `**Anti-pattern**:` instances verbatim — compress surrounding context, not concrete illustrations.
+   - When compressing Scout findings, retain at least 2 explicit `MANIFESTO.md` axiom citations (by name + section reference) as anchors — paraphrased prose without citation does not preserve the signal.
+   - Synthesizer drafts of D4 research documents must include at least one `**Canonical example**:` and one `**Anti-pattern**:` in the Pattern Catalog section; if Scout notes contained none, note the gap explicitly.
+
+   **Full back-propagation protocol**: `docs/research/dogma-neuroplasticity.md` §Pattern Catalog → Pattern C2.
+
+   **Closes**: [issue #75](https://github.com/EndogenAI/Workflows/issues/75) — empirical handoff drift audit complete.
 
 ---
 

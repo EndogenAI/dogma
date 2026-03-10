@@ -188,6 +188,13 @@ This is the endogenous-first principle in practice: context already encoded in t
 
 **Implication for prompt authoring**: handoff `prompt:` fields on executive agents should be narrow and task-scoped — dispatch the minimum necessary context. Sub-agents compress extensive exploration into dense results; they do not return raw search histories.
 
+**Signal preservation rules (additive — do not override compression principle above):**
+- When compressing Scout findings, preserve all labeled `**Canonical example**:` and `**Anti-pattern**:` instances verbatim — compress surrounding context, not concrete illustrations.
+- When compressing Scout findings, retain at least 2 explicit `MANIFESTO.md` axiom citations (by name + section reference) as anchors — paraphrased prose without citation does not preserve the signal.
+- Synthesizer drafts of D4 research documents must include at least one `**Canonical example**:` and one `**Anti-pattern**:` in the Pattern Catalog section; if Scout notes contained none, note the gap explicitly.
+
+*Amendments grounded in empirical handoff-drift audit (issue #75); degradation table in `docs/research/values-encoding.md` §5 OQ-VE-5.*
+
 ### Quasi-Encapsulated Sub-Fleets
 
 Sub-agents **default to returning to their executive** (takeback), but may escalate directly to another agent in exceptional cases — when the executive's context is insufficient or the issue crosses fleet boundaries.
