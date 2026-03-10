@@ -782,3 +782,105 @@ This research resolves the deferral:
 --model-scope all-cloud     # claude + gpt-* + google/gemini* (extended, safe)
 --model-scope all           # all models including local (not recommended)
 ```
+
+---
+
+## 11. OQ-12-4 Findings — `handoffs: prompt:` Fields and XML
+
+> **Resolved**: 2026-03-09 | **Closes**: Issue #76 | **Status**: Final
+
+### Research Question
+
+Do `handoffs: prompt:` YAML field values benefit from or tolerate XML structuring when those prompts contain complex multi-step orchestration instructions?
+
+### 11.1 Injection Path Analysis
+
+The VS Code custom agents specification defines `handoffs:` as a YAML frontmatter array. Each entry has a `label`, `agent`, `prompt`, and `send` field. The `prompt` value is a plain YAML string — it is **not** passed through the agent body channel. Instead, it is:
+
+1. Rendered in the VS Code Copilot Chat UI as the pre-populated text for the selected handoff button.
+2. Submitted as a new **user-role message** when the handoff is triggered, prepended with the agent reference.
+3. **Not concatenated into the receiving agent's instruction body** — it enters the conversation as a user turn, not as part of the system/instruction context.
+
+This injection path is architecturally distinct from the agent body path analyzed in Sections 2–5. The body path carries instruction content (system-role context); the handoff path carries invocation content (user-role messages triggering a new agent context).
+
+**Implication**: XML tags placed in a `handoffs: prompt:` value will be forwarded verbatim to the model as part of a user-role message. Claude is trained to recognise XML structure in both user and assistant turns — the architectural difference (user-role vs. system-role) does not impair XML parsing. However, the UI rendering concern is new: VS Code renders the handoff `prompt` value as visible button tooltip text in the chat interface. XML tags in that value will appear as raw `<tag>text</tag>` strings in the UI, not as formatted content.
+
+### 11.2 XML-in-YAML Preservation Test
+
+The concern raised in Section 7 (Gaps Revealed by Cross-Reading) was whether XML tags in YAML string values survive the YAML parsing layer. Empirical check against EndogenAI's own agent files:
+
+- YAML string values support angle-bracket characters (`<`, `>`) natively — they are not special characters in YAML scalar strings (unlike `*`, `&`, `:`, `#`, `{`, `}`, `[`, `]`).
+- A YAML string value such as `prompt: "Review the <context> block and confirm scope."` parses correctly; no escaping is required.
+- VS Code's YAML frontmatter parser (standard js-yaml) preserves angle brackets as literal characters in string values.
+- **Test result**: XML tags in `handoffs: prompt:` values are **preserved verbatim** through YAML parsing. There is no stripping, escaping, or validation applied to string values.
+
+This confirms OQ-12-4's preservation sub-question: XML in YAML string fields is technically safe.
+
+### 11.3 Survey of Existing Complex Handoff Prompts
+
+Three EndogenAI orchestrator-tier agents were surveyed for structural complexity:
+
+**Executive Researcher** (`.github/agents/executive-researcher.agent.md`):
+- Highest complexity: four phase-gate self-loop handoffs plus four outbound delegation handoffs.
+- Phase-gate prompts follow a pattern: *(a) locate the output, (b) apply a decision rule, (c) route to next agent or revise*.
+- Current plain-prose structure is functional but contains implicit conditional logic: *"If satisfied, delegate to X. If gaps remain, return to Y."*
+- The conditionals are discoverable but not explicitly bracketed — a reader must infer the branches.
+
+**Executive Planner** (`.github/agents/executive-planner.agent.md`):
+- Two outbound handoffs, short prompts, low structural complexity.
+- Plain prose is appropriate; no XML benefit at this complexity level.
+
+**Research Reviewer** (`.github/agents/research-reviewer.agent.md`):
+- Single outbound handoff with a three-step prompt (locate output, branch on verdict, route).
+- Same implicit-conditional pattern as Executive Researcher; same benefit/overhead tradeoff applies.
+
+### 11.4 Recommendation — Handoff Prompt Format
+
+**For simple handoffs (single action, no conditional logic)**: Plain prose is optimal. XML overhead is not justified. The majority of EndogenAI's current handoff prompts fall in this category.
+
+**For complex handoffs (two or more conditional branches, named phases, explicit scope constraints)**: A **lightweight Markdown-with-explicit-branches** template is recommended over XML. Rationale:
+
+1. **UI visibility**: Handoff prompts appear as pre-populated text in the VS Code Copilot Chat UI. XML tags render as raw strings in that context. Plain Markdown bullet points (`-`) and bold labels (`**If approved:**`) render cleanly.
+2. **User-role vs. system-role**: The XML parsing benefit documented in Sections 2–5 is strongest for system-role instruction content where the model resolves ambiguity between competing behavioural rules. A handoff prompt is a single-action invocation message, not a multi-rule behaviour specification. The fidelity gain from XML is proportionally smaller.
+3. **Maintenance**: YAML string values require escaping for some YAML special characters. Longer XML-wrapped handoff strings increase the risk of accidental YAML syntax errors during manual editing.
+
+**Recommended template for complex handoff prompts:**
+
+```yaml
+handoffs:
+  - label: "✓ Phase N done — review & route"
+    agent: Executive Orchestrator
+    prompt: |
+      **Context**: [Name the deliverable and its location — e.g., scratchpad section, file path]
+
+      **Check**:
+      - [ ] [Acceptance criterion 1]
+      - [ ] [Acceptance criterion 2]
+
+      **If approved**: [Next concrete action — one sentence]
+      **If revise**: [What to return — agent name + specific issue]
+      **Scope restriction**: [What the receiving agent must not do — if applicable]
+    send: false
+```
+
+This template makes conditional branches explicit without XML, preserves clean UI rendering, and passes YAML parsing without special character concerns.
+
+**Adopt XML in handoff prompts only if**: the prompt contains domain-typed content boundaries (e.g., a `<examples>` block with structured examples, or a `<context>` block with a verbatim document excerpt). In those cases, XML tags add genuine content-type disambiguation that benefits the receiving model.
+
+### 11.5 Migration Guidance
+
+The existing complex EndogenAI handoff prompts (Executive Researcher phase-gate loops, Research Reviewer verdict routing) do not require immediate XML migration. The current plain-prose structure is functional. The recommended improvement is to adopt the **explicit-branches template** above incrementally as those prompts are next edited — not as a separate migration pass.
+
+`migrate_agent_xml.py` should **not** attempt to transform `handoffs: prompt:` values. The script operates on agent body content (below the YAML closing `---`). Adding handoff-prompt transformation would require YAML parsing, branch-detection heuristics, and UI rendering awareness — scope beyond the script's intended remit. Handoff prompt improvements are a manual, case-by-case editorial task.
+
+### 11.6 OQ-12-4 Resolution Summary
+
+| Sub-question | Answer |
+|---|---|
+| How are `handoffs: prompt:` values injected into the model? | As user-role messages; not concatenated into agent body; rendered in VS Code UI |
+| Are XML tags in `handoffs: prompt:` values preserved through YAML parsing? | **Yes** — angle brackets are not special characters in YAML strings |
+| Do complex handoff prompts benefit from XML structuring? | **Partially** — XML is safe but not recommended for the majority of prompts; explicit Markdown branches are preferred for UI clarity |
+| Should the migration script transform handoff prompts? | **No** — out of scope; manual editorial task |
+| When is XML appropriate in handoff prompts? | When a prompt contains a typed content block (`<examples>`, `<context>`, verbatim document excerpt) where content-type disambiguation adds measurable value |
+
+**OQ-12-4 is resolved.** The cross-reference in `docs/research/OPEN_RESEARCH.md` should be updated to reflect this resolution.
