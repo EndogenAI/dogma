@@ -8,7 +8,7 @@ status: "Final"
 > **Status**: Final
 > **Research Question**: How are values encoded, preserved, and degraded across textual layers? What mechanisms strengthen signal fidelity, and how can they be applied to the endogenic substrate?
 > **Date**: 2026-03-07
-> **Related**: [`docs/research/methodology-review.md`](methodology-review.md) (prior art foundation for this research arc)
+> **Related**: [`docs/research/methodology-review.md`](methodology-review.md) (prior art foundation for this research arc); [`docs/research/bubble-clusters-substrate.md`](bubble-clusters-substrate.md) (bubble-cluster topology — additive spatial/topological model that extends the biological-homology framing)
 
 ---
 
