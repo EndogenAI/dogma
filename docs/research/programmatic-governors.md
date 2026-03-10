@@ -1,13 +1,13 @@
 ---
 title: "Programmatic Governors: Shifting AI Behavioral Constraints from Tokens to Deterministic Code"
-status: Draft
+status: Final
 research_issue: "#151"
 date: 2026-03-10
 ---
 
 # Programmatic Governors: Shifting AI Behavioral Constraints from Tokens to Deterministic Code
 
-> **Status**: Draft
+> **Status**: Final — Foundational synthesis. See [shifting-constraints-from-tokens.md](shifting-constraints-from-tokens.md) for deep architectural research on enforcement stacks and pattern catalogs.
 > **Research Question**: When an AI agent violates a guardrail encoded only as text instructions, what enforcement mechanisms exist that are immune to weight-level pattern completion? Where on the execution stack should governors sit?
 > **Date**: 2026-03-10
 > **Related**: [`docs/research/values-encoding.md`](values-encoding.md) (value degradation and programmatic encoding as drift-immune layer); [`docs/research/deterministic-agent-components.md`](deterministic-agent-components.md)
