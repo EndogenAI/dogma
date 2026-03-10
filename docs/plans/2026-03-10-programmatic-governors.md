@@ -86,10 +86,10 @@ Act on a session insight: behavioral guardrails encoded as text instructions (AG
   4. False-positive rate on legitimate shell operations
   5. Existing tooling already hooking this intercept point
 - [x] Code examples for both zsh and bash variants
-- [ ] #150 closed
+- [x] #150 closed
 **Depends on**: Phase 3 complete
 **Gate**: Phase 4 Review does not start until doc is committed and #150 closed
-**Status**: ✅ Complete (pending Phase 4 Review gate)
+**Status**: ✅ Complete
 
 ---
 
