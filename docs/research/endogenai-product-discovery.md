@@ -1,6 +1,6 @@
 ---
 title: EndogenAI Ecosystem Product Discovery
-status: draft
+status: Final
 ---
 
 ## 1. Executive Summary
@@ -166,6 +166,24 @@ Inherit the `dogma` repo's existing CI infrastructure: ruff (linting/formatting)
 5. **First Customer Profile**: Who is the *ideal* first paying customer, and why are they more likely to engage EndogenAI than a general-purpose consulting firm or AI automation vendor?
 
 6. **Training Cohort Model**: Is training delivered as instructor-led cohorts (high $, limited scale), self-paced modules (lower $, higher scale), or corporate packages (negotiated, key account model)?
+
+---
+
+## Critical Assessment
+
+This research document completes the **discovery phase** of issue #45. The following limitations and gaps are explicitly acknowledged:
+
+1. **TBD sections remain unresolved** — Go-to-Market pricing, first customer profile, training cohort model, tech stack choices, and all success metric numeric targets are marked `[TBD]`. These require Conor + Sheela facilitation sessions and are not resolvable via agent-led research alone.
+
+2. **Competitor analysis not performed** — A comprehensive competitor landscape survey (gate deliverable in #45) is not included in this document. It requires a dedicated research sprint and is tracked as a follow-up implementation issue.
+
+3. **No primary user research** — The target audience hypothesis and JTBD statements are inferred from the ecosystem design, not validated through direct user interviews or community feedback. This is a known gap in the discovery methodology.
+
+4. **Specialist agent scope under-specified** — Business Lead, Comms Strategist, and Public Engagement Officer roles are described at a feature level only. Full `.agent.md` authoring, decision authority definitions, and escalation paths are Phase 1 implementation work (not research).
+
+5. **Revenue model requires facilitation** — All revenue figures, contract structures, and pricing models are intentionally left as questions requiring Conor + Sheela input. This is a deliberate scope boundary, not a research gap.
+
+**Scope of this document**: This synthesis covers ecosystem architecture, hypothesis validation against MANIFESTO.md axioms, repository structure, go-to-market strategy framework, and open questions. Implementation deliverables from issue #45 (pitch deck, technical requirements doc, Adopt/Init wizard specs) are scoped to separate execution-phase issues.
 
 ---
 
