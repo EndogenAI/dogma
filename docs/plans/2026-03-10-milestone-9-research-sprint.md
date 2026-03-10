@@ -67,13 +67,14 @@ The sprint is organized into three research domains (Endogenic Design, Values En
 ### Domain 4: Foundational Theory & Extensions — Holographic Semantics, Consciousness Philosophy, and Substrate Architecture
 
 **Primary Papers**: Cross-cutting (semantic encoding aspects of values-encoding.md, consciousness implications of endogenic-design-paper.md, substrate taxonomy extensions of bubble-clusters-substrate.md)  
-**Related Issues**: #189, #190, #191 (new Phase 4 research topics)
+**Related Issues**: #189, #190, #191, #192 (Phase 4 research topics + bridge to Phase 5)
 
 | Issue # | Title | Type | Effort | Status |
 |---------|-------|------|--------|---------|
 | #189 | Semantic holography — Multi-level encoding of word meaning | Research/extension | Small–Medium (15–20h) | ⬜ |
 | #190 | IIT + panpsychism — Intelligence ≠ consciousness distinction | Research/extension | Medium (20–25h) | ⬜ |
 | #191 | Substrate taxonomy — Categorizing content, context, and middle ground | Research/extension | Medium (18–22h) | ⬜ |
+| #192 | Workflow formula encoding — DSL for decision/protocol trees inspired by chemical notation | Research/operationalization bridge | Medium–Large (25–35h) | ⬜ |
 
 ---
 
@@ -458,10 +459,17 @@ Phase 4 addresses three cross-cutting foundational research topics that strength
   - Acceptance: Taxonomy table with ≥20 substrates (type, regenerable, token cost, loss tolerance, archive trigger); fourth category proposed or ruled out; compaction policy per type; restoration protocol per substrate; token-efficiency projection; ≥2 MANIFESTO.md axiom citations; validate_synthesis.py passes
   - Estimated effort: 18–22 hours
 
+- [ ] **#192 — Workflow Formula Encoding DSL**
+  - Research Question: Can we encode complex workflows, decision trees, protocols as ultra-compact formulas (like chemical notation) using semantic holography principles from #189?
+  - Deliverable: `docs/research/workflow-formula-encoding-dsl.md` (D4 format)
+  - Acceptance: DSL grammar (BNF/EBNF); encoder/decoder algorithm pseudocode; ≥3 case study formulas with decode validation (session workflow, agent decision tree, conflict resolution); ≥2 DSL design papers cited; ≥2 workflow encoding papers cited; ≥2 MANIFESTO.md axiom citations; validate_synthesis.py passes
+  - Estimated effort: 25–35 hours
+
 **Dependencies**:
 - #189 works better with #188 (Holonomic Brain Theory) research depth; can proceed independently
 - #190 requires Tononi & panpsychism papers; accessibility must be verified
 - #191 requires repo commit history analysis
+- #192 depends on #189 completion (theoretical foundation for formula system)
 
 **Depends on**: Phase 2 Review (values-encoding.md context) and Phase 3a data (if needed); **may execute in parallel with Phase 3b–c**  
 **Gate**: All Phase 4 deliverables committed and reviewed before session closes  
@@ -526,15 +534,15 @@ Phase 1 Review APPROVED
 | Phase 3a | 45–65h | High effort (topological analysis) |
 | Phase 3b | 45–60h | High effort (scripting + testing) |
 | Phase 3c | 20–30h | Low–medium effort |
-| Phase 4a | 53–67h | Medium effort (literature + analysis; #189: 15–20h, #190: 20–25h, #191: 18–22h) |
-| **Total Sprint** | **418–582h** | **~10–15 weeks full-time** |
+| Phase 4a | 78–102h | Medium–High effort (literature + analysis + DSL design; #189: 15–20h, #190: 20–25h, #191: 18–22h, #192: 25–35h) |
+| **Total Sprint** | **443–617h** | **~11–15 weeks full-time** |
 | Topological mapping (#170, #185) may reveal missing dimensions/relationships | Allocate 10 hours buffer in Phase 3a for topology refinement after initial analysis |
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] All 20 research issues closed or merged to main (Phases 1–3: 17 issues; Phase 4: 3 new issues #189, #190, #191)
+- [ ] All 21 research issues closed or merged to main (Phases 1–3: 17 issues; Phase 4: 4 new issues #189, #190, #191, #192)
 - [ ] Every research synthesis doc (D4 format) committed to `docs/research/` (including Phase 4 docs)
 - [ ] All new scripts (#181, #182) have ≥80% test coverage and are CI-integrated
 - [ ] Three primary papers updated with forward references to new research docs
