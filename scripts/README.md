@@ -27,6 +27,7 @@ scripts/
   wait_for_unblock.py          # Poll a GitHub issue until status:blocked is removed; writes trigger file on exit 0 (--issue, --interval, --timeout, --dry-run)
   detect_drift.py              # Detect value-encoding drift in .agent.md files via watermark-phrase analysis (--agents-dir, --threshold, --fail-below, --format, --output)
   audit_provenance.py          # Audit .agent.md files for governs: provenance annotations; report orphaned files and unverifiable axiom citations (--agents-dir, --manifesto, --format, --output)
+  propose_dogma_edit.py        # Programmatic enforcer of the back-propagation protocol — generate ADR-style dogma edit proposals from session evidence (--input, --tier, --affected-axiom, --proposed-delta, --output)
   query_docs.py                # BM25 query CLI over the documentation corpus — scoped retrieval without bulk context loading (query, --scope, --top-n, --output text|json)
   weave_links.py               # Inject Markdown cross-reference links across the corpus via a YAML concept registry (--scope, --dry-run, --registry); idempotent
 ```
@@ -873,6 +874,69 @@ uv run python scripts/audit_provenance.py --agents-dir path/to/agents/ --manifes
 **Tests**: [`tests/test_audit_provenance.py`](../tests/test_audit_provenance.py)
 
 **Related**: `scripts/detect_drift.py` (watermark phrases), `scripts/generate_agent_manifest.py` (cross-reference density), `docs/research/value-provenance.md` (synthesis).
+
+---
+
+## scripts/propose_dogma_edit.py
+
+**Purpose**: Programmatic enforcer of the back-propagation protocol from `docs/research/dogma-neuroplasticity.md`. Reads a scratchpad session file, extracts watermark-phrase evidence lines, runs the coherence check (does the proposed delta remove a watermark phrase?), and emits an ADR-style Markdown proposal. Implements **Algorithms Before Tokens** (`MANIFESTO.md §2`) by encoding the evidence threshold check and coherence validation as a deterministic CLI.
+
+**Imports**: `WATERMARK_PHRASES` from `detect_drift.py`; `extract_manifesto_axioms` from `audit_provenance.py` — does not reimplement either.
+
+**Tests**: [`tests/test_propose_dogma_edit.py`](../tests/test_propose_dogma_edit.py)
+
+**Usage**:
+
+```bash
+# Generate a T3 proposal from today's session file
+uv run python scripts/propose_dogma_edit.py \
+  --input .tmp/feat-value-encoding-fidelity/2026-03-09.md \
+  --tier T3 \
+  --affected-axiom "Focus-on-Descent" \
+  --proposed-delta "Add signal-preservation rules for canonical examples" \
+  --output /tmp/proposal.md
+
+# T1 proposal — exits 1 if coherence check fails (blocking)
+uv run python scripts/propose_dogma_edit.py \
+  --input .tmp/feat-value-encoding-fidelity/2026-03-09.md \
+  --tier T1 \
+  --affected-axiom "Endogenous-First" \
+  --proposed-delta "Clarify scope of endogenous sources" \
+  --output /tmp/t1-proposal.md
+
+# Read proposed delta from stdin
+echo "Add signal-preservation bullet" | uv run python scripts/propose_dogma_edit.py \
+  --input .tmp/branch/2026-03-09.md \
+  --tier T2 \
+  --affected-axiom "Compression-on-Ascent" \
+  --proposed-delta -
+```
+
+**Flags**:
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--input PATH` | Yes | Path to a scratchpad session `.md` file |
+| `--tier T1\|T2\|T3` | Yes | Stability tier (T1=Axioms, T2=Guiding Principles, T3=Operational Constraints) |
+| `--affected-axiom STR` | Yes | Name/heading of the affected axiom or section |
+| `--proposed-delta STR` | No | Proposed change text; `-` reads from stdin (default: `-`) |
+| `--output PATH` | No | Output path for the Markdown proposal; default: stdout |
+
+**Exit codes**:
+- `0` — success, or coherence fails for T2/T3 (non-blocking)
+- `1` — coherence fails and tier is T1 (blocking); or session file unreadable
+
+**Stability tiers** (from `dogma-neuroplasticity.md §Pattern Catalog C1`):
+
+| Tier | Layer | Threshold | ADR required? |
+|------|-------|-----------|---------------|
+| T1 | Axioms (`MANIFESTO.md §axioms`) | 3 signals | Yes |
+| T2 | Guiding Principles (`MANIFESTO.md` non-axiom + `AGENTS.md §1`) | 3 signals | Yes |
+| T3 | Operational Constraints (`AGENTS.md` sections) | 2 signals | No |
+
+**Dependencies**: stdlib only — imports `detect_drift` and `audit_provenance` from `scripts/` (no third-party packages required beyond existing deps).
+
+**Related**: `scripts/detect_drift.py` (WATERMARK_PHRASES), `scripts/audit_provenance.py` (extract_manifesto_axioms), `docs/research/dogma-neuroplasticity.md` (full back-propagation protocol spec).
 
 ---
 
