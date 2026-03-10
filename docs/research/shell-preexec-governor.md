@@ -27,7 +27,7 @@ A shell `preexec` / `DEBUG` trap intercepts commands at the runtime boundary —
 4. **False-positive rate** — The heredoc-file-write pattern (`cat > file <<` / `tee file <<`) has low false-positive rate. The broader heredoc pattern (`<< ['"]?[A-Z_]+`) has a moderate false-positive rate against legitimate shell scripting; the narrow pattern is recommended for project governor use.
 5. **Existing tooling at this intercept point** — `atuin` (history), `bash-preexec` (DEBUG emulation), and `zsh-safe-rm` (safety wrapper) all use the same hook. `zsh-syntax-highlighting` uses the earlier ZLE layer. No existing tool targets heredoc-write blocking specifically.
 
-**MANIFESTO.md alignment**: This research is a direct implementation of the **Algorithms Before Tokens** axiom (`MANIFESTO.md` §3 — Algorithms Before Tokens): the heredoc prohibition is an instruction-layer rule; the `preexec` governor is the algorithmic enforcement layer that the substrate cannot override by generating a more confident token sequence. The **Endogenous-First** axiom (`MANIFESTO.md` §1 — Endogenous-First) is applied by building from the existing `programmatic-governors.md` enforcement stack taxonomy rather than re-deriving it.
+**MANIFESTO.md alignment**: This research is a direct implementation of the **Algorithms Before Tokens** axiom (`MANIFESTO.md` § 2): the heredoc prohibition is an instruction-layer rule; the `preexec` governor is the algorithmic enforcement layer that the substrate cannot override by generating a more confident token sequence. The **Endogenous-First** axiom (`MANIFESTO.md` § 1) is applied by building from the existing `programmatic-governors.md` enforcement stack taxonomy rather than re-deriving it.
 
 ---
 

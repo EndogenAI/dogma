@@ -47,10 +47,6 @@ Usage examples:
     except CapabilityDenied as e:
         print(f"Access denied: {e}")
 
-Daemon/Watch mode:
-    If executed directly, runs in daemon mode: watches the agent context file
-    for changes and re-loads the capability registry on demand.
-
 Exit codes:
     0  Normal operation (when used as a module)
     1  Registry validation failed (when executed as a script)
@@ -76,10 +72,6 @@ _DEFAULT_REGISTRY = Path(__file__).parent / "agent_capabilities.yaml"
 _DEFAULT_AUDIT_LOG = Path.cwd() / ".logs" / "capability_audit.jsonl"
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(
-    level=logging.INFO,
-    format="[%(asctime)s] %(levelname)s: %(message)s",
-)
 
 # ============================================================================
 # Global Context

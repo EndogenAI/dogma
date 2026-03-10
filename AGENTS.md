@@ -495,7 +495,7 @@ are in scope, or URLs are passed to scripts.
 
 The heredoc write anti-pattern is enforced by a two-tier programmatic stack. Text-level instructions (AGENTS.md) are the weakest tier — use these governors instead.
 
-### Governor A — Pre-commit (T2 Static)
+### Governor A — Pre-commit (T3 Static)
 
 **Mechanism**: `no-heredoc-writes` pygrep hook in `.pre-commit-config.yaml`  
 **Scope**: All committed `.py` and `.sh` files  
@@ -503,7 +503,7 @@ The heredoc write anti-pattern is enforced by a two-tier programmatic stack. Tex
 **Catches**: `cat >> file << 'EOF'` and `cat > file << 'EOF'` patterns at commit boundary  
 **Does not catch**: Commands typed directly in the terminal before committing
 
-### Governor B — Runtime Shell (T3 Interactive)
+### Governor B — Runtime Shell (T4 Interactive)
 
 **Mechanism**: zsh ZLE `accept-line` wrapper / bash `DEBUG` trap + `kill -INT $$`  
 **Scope**: Interactive terminal sessions in the project directory  
