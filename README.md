@@ -31,6 +31,7 @@ This repo holds the canonical reference for how we work with AI coding agents. I
 | [`MANIFESTO.md`](MANIFESTO.md) | Core philosophy and dogma of endogenic development |
 | [`AGENTS.md`](AGENTS.md) | Root guidance for all AI coding agents operating in this repo |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | How to contribute to this repo |
+| [`docs/glossary.md`](docs/glossary.md) | Canonical definitions for all key project terminology |
 | [`.github/agents/`](.github/agents/) | VS Code Copilot custom agent files |
 | [`scripts/`](scripts/) | Reusable automation and utility scripts |
 | [`docs/`](docs/) | Guides, protocols, and best practice documentation |
@@ -98,6 +99,7 @@ See [`scripts/README.md`](scripts/README.md) for the full catalog.
   pull_request_template.md
 
 docs/
+  glossary.md              # Canonical definitions for all key project terminology
   guides/
     agents.md              # How to author and use agents
     programmatic-first.md  # The programmatic-first principle
