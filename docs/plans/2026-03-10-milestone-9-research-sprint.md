@@ -83,23 +83,32 @@ The sprint is organized into **three sequential domain phases**, each with inter
 - Green, D. G. (2023). "Emergence in complex networks of simple agents." *Journal of Economic Interaction and Coordination*, 18(1), 1–18. doi:10.1007/s11403-023-00385-w — Theoretical framework for measuring fleet emergence
 - De Wolf, T., & Holvoet, T. (2006). "Design patterns for decentralised coordination in self-organising emergent systems." *Self-organizing systems*, 3464, 28–49. — Design patterns for coordinated agent behavior
 
+**Web Search Guidance for Phase 1a Scout**:  
+For each issue (#174, #168), conduct web searches to identify additional external sources supporting operationalization and governance themes. Search candidates:
+- Morphogenetic engineering implementations (arXiv, GitHub frameworks)
+- Decentralized governance case studies (academic papers, industry whitepapers)
+- Agent fleet architecture documentation (OpenAI, Google, Anthropic research blogs)
+- Constraint-based software design patterns (IEEE Xplore, ACM Digital Library)
+
 **Deliverables**:
-- [ ] #174 — Programmatic Governance Completeness Audit
+- [x] #174 — Programmatic Governance Completeness Audit
   - Audit all constraints in codebase (AGENTS.md, scripts/, agent files, CI), map to enforcement tiers T0–T5
   - Produce: `docs/research/enforcement-tier-mapping.md` (D4 format) — scope of audit, gap list, remediation roadmap
   - Acceptance: Comprehensive table of all constraints with tier assignments; gaps identified
   - Estimated effort: 20–30 hours (large corpus read, 50+ constraints to classify)
+  - **Committed**: `a0a2dbb` — validate_synthesis.py PASS
 
-- [ ] #168 — Morphogenetic System Design Operationalization (foundation phase)
+- [x] #168 — Morphogenetic System Design Operationalization (foundation phase)
   - Formalize fleet emergence model: define what "emergent fleet topology" means operationally
   - Study session history correlations between back-propagation cycle + agent role mutations + observed fleet behaviors
   - Produce: `docs/research/fleet-emergence-operationalization.md` — formal model spec + session-level metrics (citation density, role mutation rates, fleet topology changes)
   - Acceptance: Formal model definition with ≥3 session case studies showing metric correlations
   - Estimated effort: 25–35 hours (literature + corpus analysis + case study synthesisysis)
+  - **Committed**: `a0a2dbb` — validate_synthesis.py PASS
 
 **Depends on**: Nothing  
 **Gate**: Phase 1a deliverables must be committed before Phase 1b begins  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — commit `a0a2dbb`
 
 ---
 
@@ -107,6 +116,9 @@ The sprint is organized into **three sequential domain phases**, each with inter
 
 **Agent**: Executive Researcher  
 **Scope**: Validate operationalization specs via external case studies and empirical evidence  
+**Web Search Guidance for Phase 1b Scout**: Conduct searches for external team case studies and empirical validation sources. Priority search topics per issue (#167):
+- External team adoption case studies (published papers, blog posts, technical reports from open-source teams or research collaborators)
+- Methodology evaluation frameworks (CHI, CSCW, ICSE conferences for team-based studies)  
 **Deliverables**:
 - [ ] #167 — External Team Application Case Study
   - Identify ≥1 external team (research collaborator, open-source maintainer) to test Endogenic Design methodology
@@ -125,6 +137,10 @@ The sprint is organized into **three sequential domain phases**, each with inter
 
 **Agent**: Executive Researcher (orchestrates); may delegate peer-review coordination to Comms/DevRel  
 **Scope**: External peer validation and multi-principal deployment scenarios  
+**Web Search Guidance for Phase 1c Scout**: Conduct searches for peer review sources and multi-principal deployment case studies. Priority topics per issues (#172, #173):
+- Peer review credentialing and evaluation frameworks (academic program committee standards, open-source review processes)
+- Multi-stakeholder coordination case studies (governance papers, industry adoption studies, cross-organizational research collaborations)
+- Deployment scenarios from published whitepapers or technical documentation  
 **Deliverables**:
 - [ ] #172 — H4 Novelty External Peer Review
   - H4 = "four-hypothesis mutual reinforcement produces system that is learnable and operable by teams unfamiliar with first principles"
@@ -170,6 +186,13 @@ The sprint is organized into **three sequential domain phases**, each with inter
 - Zhang, Z., Yang, E. H., & Wei, V. K. (2002). "The redundancy of source coding with a fidelity criterion. 1. Known statistics." *IEEE Transactions on Information Theory*, 48(2), 564–581. — Formal analysis of redundancy in lossy encoding
 - Watson, S., & Brezovec, E. (2025). "Autopoietic programs in an autopoietic ecology." *Bulletin of the Ecological Society of America*. — Application of programmatic governance to self-organizing systems
 
+**Web Search Guidance for Phase 2a Scout**:  
+For each issue (#179, #169, #178), conduct web searches to identify additional sources on encoding theory, fidelity preservation, and constraint enforcement. Search candidates:
+- Information theory papers on lossy encoding and fidelity (IEEE Xplore, arXiv information theory archive)
+- Redundancy codes and error correction implementations (academic papers, standards documents like IETF RFCs)
+- Semantic preservation in communication systems (recent arXiv papers on semantic communication)
+- Value propagation in distributed systems (blockchain governance papers, open-source governance case studies)
+
 **Deliverables**:
 - [ ] #179 — Enforcement-Tier Complete Mapping
   - Parallel to #174 but focused on VALUES (axiom citations, encoding preservation, degradation) rather than CONSTRAINTS (behavioral rules)
@@ -203,6 +226,10 @@ The sprint is organized into **three sequential domain phases**, each with inter
 
 **Agent**: Executive Researcher  
 **Scope**: Operationalize external-values layer; formalize conflict-resolution rules  
+**Web Search Guidance for Phase 2b Scout**: Conduct searches for conflict resolution frameworks and hermeneutics guidance. Priority topics per issues (#177, #176):
+- Conflict resolution in multi-stakeholder systems (negotiation theory papers, consensus-building case studies)
+- Hermeneutics and interpretation frameworks (philosophy of science papers, pragmatics in software systems)
+- Decision tree implementations for value conflicts (academic papers on decision logic, production rule systems)  
 **Deliverables**:
 - [ ] #177 — External-Values Conflict Resolution Operationalization
   - Six-layer model specifies priority (Core > Deployment > Client > Session). Define decision algorithms: when an external value conflicts with core axiom, how should agent decide?
@@ -226,6 +253,10 @@ The sprint is organized into **three sequential domain phases**, each with inter
 
 **Agent**: Executive Docs  
 **Scope**: Integrate Phase 2a–b findings into primary paper; update guidance docs  
+**Web Search Guidance for Phase 2c Scout**: Conduct searches for documentation best practices and value encoding patterns. Priority topics:
+- Technical writing guides for constraint documentation (IEEE standards, academic style guides)
+- Value system documentation patterns (blockchain governance whitepapers, open-source constitution examples)
+- Guide authoring for hermeneutics and interpretation (philosophy methodology papers, education research on learning frameworks)  
 **Deliverables**:
 - Update `values-encoding.md` with links to three new research docs (#169, #177, #178, #179)
 - Update `docs/guides/session-management.md` with context-amplification task-type lookup table (validated from #178)
@@ -263,6 +294,13 @@ The sprint is organized into **three sequential domain phases**, each with inter
 - Min, Y., Jiang, T., Jin, C., Li, Q., & Jin, X. (2019). "Endogenetic structure of filter bubble in social networks." *Royal Society Open Science*, 6(11), 190868. doi:10.1098/rsos.190868 — Empirical validation of filter bubble topology in networks
 - Traxler, B., Boyd, D., & Beckwith, J. (1993). "The topological analysis of integral cytoplasmic membrane proteins." *The Journal of Membrane Biology*, 137(1), 1–10. doi:10.1007/BF00233047 — Classical topological membrane analysis methods
 
+**Web Search Guidance for Phase 3a Scout**:  
+For each issue (#170, #183), conduct web searches to identify additional topological and membrane theory sources. Search candidates:
+- Membrane theory and permeability papers (biophysics literature, topological data analysis papers)
+- Filter bubble and isolated network topologies (computational social science papers, network science journals)
+- Laplace pressure in different domains (physics papers, fluid mechanics, network dynamics)
+- Complete topology mapping case studies (systems engineering papers, architectural documentation standards)
+
 **Deliverables**:
 - [ ] #170 — Complete Topological Audit
   - Map complete substrate topology: 3D vertices (agents, scripts, docs), 2D faces (subsystem boundaries), 1D edges (communication channels)
@@ -288,6 +326,10 @@ The sprint is organized into **three sequential domain phases**, each with inter
 
 **Agent**: Executive Researcher + Executive Scripter  
 **Scope**: Operationalize membrane specs and provenance audit  
+**Web Search Guidance for Phase 3b Scout**: Conduct searches for validation script patterns and CI integration examples. Priority topics per issues (#181, #182, #184):
+- Data quality validation scripts in CI/CD (GitHub Actions examples, linting and validation tool documentation)
+- Boundary condition testing patterns (software testing best practices, property-based testing frameworks)
+- Threshold calibration methodologies (machine learning papers on hyperparameter tuning, statistical calibration methods)  
 **Deliverables**:
 - [ ] #181 — Membrane Permeability Validation Script Implementation
   - Automate validation of AGENTS.md boundary specifications (e.g., Scout→Synthesizer handoff must preserve "Canonical example" and axiom cites)
@@ -319,6 +361,10 @@ The sprint is organized into **three sequential domain phases**, each with inter
 
 **Agent**: Executive Researcher  
 **Scope**: Extend bubble topology to six-layer deployment model  
+**Web Search Guidance for Phase 3c Scout**: Conduct searches for multi-layer system architectures and deployment topology case studies. Priority topics per issue (#185):
+- Multi-layer software architectures (domain-driven design papers, systems design whitepapers)
+- Deployment model extensions and scaling (Kubernetes documentation, infrastructure-as-code case studies)
+- Cross-layer integration patterns (microservices papers, service mesh architecture documentation)  
 **Deliverables**:
 - [ ] #185 — Deployment-Layer Topological Extension
   - Current topology: nested three-cube model (MANIFESTO.md ↔ AGENTS.md ↔ agent files)
