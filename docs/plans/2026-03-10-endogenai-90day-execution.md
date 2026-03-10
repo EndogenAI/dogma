@@ -7,17 +7,21 @@ status: active
 
 ## Overview
 
-This workplan details week-by-week execution for Month 1 (critical path), month-level planning for Months 2–3, per-task assignments, effort estimates, risk mitigation, and success metrics. **Month 1 is the most time-constrained; Months 2–3 can flex based on first customer feedback and web SPA build timeline.**
+This workplan details week-by-week execution for Month 1 (critical path), month-level planning for Months 2–3, per-task assignments, effort estimates, risk mitigation, and success metrics.
+
+**Timeline Update (Mar 10, 2026)**: Web SPA launch moved to **Week 1 parallel track** (was deferred to Month 2). This accelerates market presence from Month 2 to Week 1, requiring ~31 person-hours in Week 1 but freeing Month 2 capacity for init/adopt feature expansion and customer outreach.
+
+**Month 1 Flexibility**: Weeks 2–4 can flex based on Web SPA completion status and first customer feedback from Week 1 launch.
 
 ---
 
 ## Month 1 — Foundation & Launch (Mar 10–Apr 10)
 
-### Week 1 (Mar 10–16): Dogma Rename & Infrastructure
+### Week 1 (Mar 10–16): Dogma Rename + Web SPA MVP Launch
 
-**Objective**: Safely rename `/workflows` → `@endogenai/dogma` with zero git history loss. Establish procedural guardrails for future repo operations.
+**Objective**: (1) Safely rename `/workflows` → `@endogenai/dogma` with zero git history loss; (2) Launch simple React SPA with public landing page at endogenai.accessi.tech. Execute in parallel to maximize Week 1 impact.
 
-#### Task List
+#### Task List — Dogma Rename Track
 
 - [ ] **Conor: Test dogma rename procedure on feature branch** (4 hrs)
   - Clone workflows repo locally
@@ -28,7 +32,7 @@ This workplan details week-by-week execution for Month 1 (critical path), month-
   - Verify CI passes (GitHub Actions workflow, pre-commit hooks)
 
 - [ ] **Conor: Execute dogma rename on main** (2 hrs)
-  - Merge feature branch to `research/skills-decision-logic` branch (or create new branch `feat/dogma-rename`)
+  - Merge feature branch to main (or PR for review)
   - Tag new version: `git tag -a v0.1.0-dogma -m "Official rename: /workflows -> @endogenai/dogma"`
   - Update CONTRIBUTING.md, CODE_OF_CONDUCT.md with new repo name
   - Push to origin; verify CI green
@@ -41,24 +45,53 @@ This workplan details week-by-week execution for Month 1 (critical path), month-
   - Test `uv sync` environment setup
   - Document findings; create GitHub issue for any dead links found
 
-- [ ] **Both: Prepare release notes & internal communication** (2 hrs)
+- [ ] **Both: Release notes & communications** (2 hrs)
   - Draft release announcement for GitHub issue #93 (epic update)
   - Update README.md front matter (rename reference)
-  - Update GitHub org description to reference "EndogenAI Dogma" if applicable
+  - Prepare dogma announcement for communities
 
-**Effort**: Conor 6 hrs, Sheela 6 hrs | **Total**: 12 hrs
+#### Task List — Web SPA Launch Track (Parallel)
+
+- [ ] **Conor: Scaffold React SPA project** (6 hrs)
+  - Initialize React app (Vite or Create React App, current best practices)
+  - Set up folder structure: `src/pages/`, `src/components/`, `public/`
+  - Configure GitHub Pages deployment (build → `docs/` folder, CNAME file for endogenai.accessi.tech)
+  - Install dependencies: React Router, Tailwind CSS or similar (minimal, high-performance setup)
+  - Verify build passes local tests
+
+- [ ] **Conor: Build landing pages** (8 hrs)
+  - Homepage: "What is EndogenAI — Vision & Positioning"
+  - Getting Started page: "Quick links to dogma, init, adopt; call-to-action for consulting"
+  - Use Case / case studies page: "How EndogenAI works for open-source + enterprise"
+  - About page: "Team, mission, links to GitHub/discussions"
+  - Deploy to GitHub Pages; test at endogenai.accessi.tech
+
+- [ ] **Sheela: Content & messaging for SPA** (4 hrs)
+  - Write homepage headline + value prop
+  - Draft getting started copy (motivate dogma, init, adopt repos)
+  - Prepare images/diagrams (what is agent-first development?)
+  - Proofread + accessibility check (alt text, color contrast)
+
+- [ ] **Conor: Domain setup & DNS** (1 hr)
+  - Point endogenai.accessi.tech CNAME to GitHub Pages
+  - Verify domain resolves + HTTPS is active
+  - Test mobile responsiveness
+
+**Effort**: Conor 21 hrs, Sheela 10 hrs | **Total**: 31 hrs | **Effort per person**: Conor ~3 days full-time, Sheela ~1.25 days
 
 **Risk**:
-- CI failure due to hardcoded paths → Mitigation: dry-run on feature branch; all tests pass before merge
-- Broken markdown links → Mitigation: lychee linked-link checker runs pre-rename
+- SPA build takes longer than 6 hrs → Mitigation: use template/starter (Vite React minimal template, not full-featured)
+- DNS propagation delays → Mitigation: start DNS change immediately; test GitHub Pages URL first, then point domain
+- Domain not responding by Friday → Mitigation: accept GitHub Pages default URL (github.com/..) as backup; DNS can finish over weekend
 
 **Success Criteria**:
-- Rename successfully executed on target branch
-- All CI checks passing
-- Git history preserved (verify `git log workflows/` redirects or shows pre-rename commits)
-- No broken links or configuration errors found
+- Dogma rename successfully executed; CI green; git history intact
+- Web SPA live at endogenai.accessi.tech with 4+ pages
+- HTTPS active; mobile responsive
+- No broken links on SPA
+- All content proofread + on-brand
 
-**Blocker for**: Week 2 (init/adopt repos depend on stable dogma reference)
+**Blocker for**: Week 2 (init/adopt repos depend on stable dogma reference + web presence completed)
 
 ---
 
