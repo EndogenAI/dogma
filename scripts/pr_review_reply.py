@@ -65,7 +65,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from capability_gate import requires_capability, set_agent_context, CapabilityDenied
+from capability_gate import requires_capability, set_agent_context
 
 # ---------------------------------------------------------------------------
 # GitHub API helpers
