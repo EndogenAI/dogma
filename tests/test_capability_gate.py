@@ -212,9 +212,7 @@ class TestDecorator:
         assert exc_info.value.capability == "github_api"
 
     @pytest.mark.io
-    def test_decorator_preserves_function_signature(
-        self, temp_registry: Path, temp_audit_log: Path
-    ) -> None:
+    def test_decorator_preserves_function_signature(self, temp_registry: Path, temp_audit_log: Path) -> None:
         """Test decorator preserves wrapped function name and docstring."""
         set_registry_path(temp_registry)
         set_audit_log_path(temp_audit_log)
@@ -228,9 +226,7 @@ class TestDecorator:
         assert my_function.__doc__ == "My docstring."
 
     @pytest.mark.io
-    def test_decorator_with_arguments(
-        self, temp_registry: Path, temp_audit_log: Path
-    ) -> None:
+    def test_decorator_with_arguments(self, temp_registry: Path, temp_audit_log: Path) -> None:
         """Test decorator works with functions that take arguments."""
         set_registry_path(temp_registry)
         set_audit_log_path(temp_audit_log)
