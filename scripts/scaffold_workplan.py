@@ -11,20 +11,27 @@ Purpose:
     printed and the script exits without overwriting.
 
 Inputs:
-    <slug>  — Required positional argument. A dash-separated slug for the workplan,
-              e.g. "formalize-workflows". The slug is converted to a title by replacing
-              dashes with spaces and applying title-casing.
+    <slug>       — Required positional argument. A dash-separated slug for the workplan,
+                   e.g. "formalize-workflows". The slug is converted to a title by replacing
+                   dashes with spaces and applying title-casing.
+    --ci         — Optional. Comma-separated CI values (e.g. "Tests,Auto-validate").
+                   Bypasses interactive prompt if provided.
+    --issues     — Optional. Comma-separated issue numbers (e.g. "42,43").
+                   Bypasses interactive prompt if provided.
 
 Outputs:
     docs/plans/YYYY-MM-DD-<slug>.md  — New workplan file at workspace root.
     Prints the created file path to stdout on success.
 
 Usage:
-    uv run python scripts/scaffold_workplan.py <slug>
+    uv run python scripts/scaffold_workplan.py <slug> [--ci <values>] [--issues <numbers>]
 
-    # Example
+    # Example (interactive prompts)
     uv run python scripts/scaffold_workplan.py formalize-workflows
     # Creates: docs/plans/2026-03-06-formalize-workflows.md
+
+    # Example (with flags, no prompts)
+    uv run python scripts/scaffold_workplan.py formalize-workflows --ci "Tests,Auto-validate" --issues "42,43"
 
 Exit codes:
     0 — success: file created
@@ -125,6 +132,18 @@ def main() -> int:
         "slug",
         help="Dash-separated slug for the workplan, e.g. formalize-workflows",
     )
+    parser.add_argument(
+        "--ci",
+        type=str,
+        default=None,
+        help="Comma-separated CI values (e.g. 'Tests,Auto-validate'). Bypasses interactive prompt.",
+    )
+    parser.add_argument(
+        "--issues",
+        type=str,
+        default=None,
+        help="Comma-separated issue numbers (e.g. '42,43'). Bypasses interactive prompt.",
+    )
     args = parser.parse_args()
 
     slug = args.slug.strip().lower()
@@ -136,11 +155,14 @@ def main() -> int:
     branch = _git_branch()
     title = slug_to_title(slug)
 
-    # --- CI strategy prompt ---
-    ci_raw = _prompt(
-        f"CI options (comma-separated, choose from: Tests, Auto-validate, Lint) [{DEFAULT_CI}]: ",
-        DEFAULT_CI,
-    )
+    # --- CI strategy: flag, prompt, or default ---
+    if args.ci is not None:
+        ci_raw = args.ci
+    else:
+        ci_raw = _prompt(
+            f"CI options (comma-separated, choose from: Tests, Auto-validate, Lint) [{DEFAULT_CI}]: ",
+            DEFAULT_CI,
+        )
     ci_tokens = [t.strip() for t in ci_raw.split(",") if t.strip()]
     invalid_ci = [t for t in ci_tokens if t not in ALLOWED_CI_VALUES]
     if invalid_ci:
@@ -148,8 +170,11 @@ def main() -> int:
         return 1
     ci_value = ", ".join(ci_tokens) if ci_tokens else DEFAULT_CI
 
-    # --- Linked issues prompt ---
-    issues_raw = _prompt("Linked issue numbers (comma-separated, e.g. 42,43) [none]: ", "")
+    # --- Linked issues: flag, prompt, or default ---
+    if args.issues is not None:
+        issues_raw = args.issues
+    else:
+        issues_raw = _prompt("Linked issue numbers (comma-separated, e.g. 42,43) [none]: ", "")
     issue_numbers: list[int] = []
     if issues_raw.strip():
         invalid_issues: list[str] = []

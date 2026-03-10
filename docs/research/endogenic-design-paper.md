@@ -217,6 +217,8 @@ Scripts that scaffold and validate the chain (`scaffold_agent.py`, `validate_age
 are not convenience tooling — they are the fleet's closure machinery. A role that exists only
 in documentation without a corresponding scaffold template violates organizational closure.
 
+**Deployment-Layer Extension**: This five-layer model assumes a single principal (EndogenAI). When the methodology is adopted by external teams or products, the encoding chain extends to six layers, with explicit conflict-resolution rules governing value priority when Core-layer axioms, Deployment-layer policies, Client-specific values, and Session-scoped constraints diverge. Corpus reference: [external-value-architecture.md](external-value-architecture.md) specifies the Deployment Layer architecture and Supremacy constraints (Core > Deployment > Client > Session) governing multi-principal scenarios.
+
 ### 3.2 The Encode-Before-Act Discipline
 
 The encode-before-act principle states: every agent session begins by reading the encoding
@@ -271,6 +273,8 @@ them at session scope (H1). Together they constitute a discipline: the agent enc
 artifact, reads it as a constitutive specification, and only then issues action tokens. This
 is not retrieval — it is initialization. The specification governs the session the way an ADR
 governs an architectural decision: unconditionally, before the work begins.
+
+**Programmatic Governance Stack (H1 × H4 × C4)**: Behavioral constraints are encoded at multiple enforcement tiers (T1–T5), with higher tiers providing stronger assurance. Prompt-level constraints (T1–T2) state the values; script-level gates (T3) check structural compliance; pre-commit hooks (T4) prevent non-compliant commits; runtime sandboxing (T5) enforces boundaries at execution time. The endogenic implementation instantiates this pattern: MANIFESTO.md (T1 specification), AGENTS.md (T2 re-encoding), `validate_synthesis.py` (T3 structure check), pre-commit hooks (T4 push gate), and `.github/workflows/` CI validation (T5 integration testing). Corpus reference: [shifting-constraints-from-tokens.md](shifting-constraints-from-tokens.md) formalizes the enforcement tier hierarchy, demonstrating why programmatic encoding is superior to token-based guidance for high-assurance constraints.
 
 **Substrate-Creation as LAM/T Layer Maintenance (H3 × H1)**: Sessions that produce substrate
 artifacts — guides, validated encoding updates, committed scripts — directly augment the
@@ -367,9 +371,23 @@ outcomes (token efficiency and session coherence). The empirical dimension — m
 advantages over a reactive reconstruction baseline — remains an open conjecture; H1's novelty
 claim is currently conceptual.
 
+### 4.3 Four-Hypothesis Mutual Reinforcement and Dependency Chain
+
+**Corpus validation of H4 ↔ H1 ↔ H3 ↔ H2 dependency structure**: The mutual reinforcement claim in C2 rests on a specific dependency order: H4 (CS legitimacy) → H1 (encode-before-act operationalization) → H3 (substrate co-authorship framing) → H2 (fleet dynamics explanation). Each dependency is grounded in corpus evidence:
+
+- **H4 → H1**: The fifty-year lineage (Knuth → Nygard → Martraire → AGENTS.md) identifies *what* encode-before-act is; [agent-fleet-design-patterns.md](agent-fleet-design-patterns.md) operationalizes *when* and *how* it is invoked at session scope.
+
+- **H1 → H3**: The encode-before-act gate ensures agents receive the substrate specification before acting, making substrate co-authorship possible. Corpus reference: [agent-fleet-design-patterns.md](agent-fleet-design-patterns.md) §H1.
+
+- **H3 → H2**: When agents co-author the substrate, system dynamics shift: substrate changes become selection pressures on subsequent behavior. Corpus reference: [dogma-neuroplasticity.md](dogma-neuroplasticity.md) §H2 Back-Propagation Protocol formalizes this feedback loop.
+
+- **H2 → H4**: The fleet exhibits self-organized dynamics only when constrained by design principles. [methodology-review.md](methodology-review.md) §H4 establishes that these principles express fifty years of documented software engineering tradition.
+
+**Operationalization checkpoint**: The [4,1] repetition code ensures this dependency structure is preserved across encoding layers. Cross-reference density measurement provides an algorithmic check that the chain remains intact.
+
 ## 5. Discussion
 
-### 5.1 Novelty Assessment
+### 5.1 Novelty Assessment and H4 Verdict Qualification
 
 The composite novelty of the four-hypothesis architecture exceeds the sum of the individual
 claims. No prior work presents a prescriptive AI agent design framework that simultaneously:
@@ -387,7 +405,13 @@ recent expression of Knuth's literate programming principle. That this statement
 with evidentiary support and has not been made before is the clearest empirical output of the
 four-sprint investigation.
 
-### 5.2 Limitations
+**Important qualification on H4**: The novelty verdict is a self-report grounded in an internal arXiv search and surveyed CS literature. External peer review by the software engineering and AI alignment research communities is required to validate that the Knuth → Nygard → Martraire → AGENTS.md lineage has not been previously identified. This is a genuine novelty claim but one that requires external validation before publication. The research record documents the identification process and search methodology; community vetting of the novelty claim is deferred to peer review.
+
+### 5.2 Limitations and Operational Breadth Gap
+
+**C4 Operational Implementation Breadth**: The paper claims applicability across three domains
+(agent fleets, scripting automation, documentation workflows) but grounds the claim primarily
+in agent fleet co-evolution within EndogenAI. External team validation remains future work: applying the full methodology to a greenfield scripting or documentation project would provide independent evidence of breadth and allow measurement of adoption barriers. The operational implementation is real; the evidence for breadth across three independent domains is partially theoretical pending external replication.
 
 The central limitation is H1's empirical gap. The claim that encode-before-act reduces token
 waste and improves session coherence is a design conjecture grounded in structural analysis of
@@ -409,7 +433,11 @@ between ADRs and living documentation is present in Martraire (2019) but lacks a
 primary source in the current corpus. Dedicated BDD sourcing — Adzic, North — would strengthen
 the chain and provide a citable intermediate step.
 
-### 5.3 Open Empirical Questions
+### 5.3 Security Threat Model and Governance Gaps
+
+**Threat Surface Acknowledgment**: Agent-driven workflows introduce new threat surfaces — fetch-source SSRF risk, prompt injection via externally-sourced content, and credential exposure through session context — that are orthogonal to the methodology's design contribution but critical for safe deployment. These are operational security concerns, not methodological flaws, but must be explicitly acknowledged as governance requirements. Corpus reference: [security-threat-model.md](security-threat-model.md) provides a formal threat catalog and mitigation strategies for agent-driven system threats. Any deployment of the endogenic methodology should incorporate the security framework as a complementary governance layer.
+
+### 5.4 Open Empirical Questions
 
 Five questions constitute the direct research agenda following from this framework:
 

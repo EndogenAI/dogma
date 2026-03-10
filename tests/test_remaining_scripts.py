@@ -203,6 +203,102 @@ class TestScaffoldWorkplanCreation:
         assert content.count("Closes #42") == 1
         assert "Closes #43" in content
 
+    @pytest.mark.io
+    def test_cli_flag_ci_bypasses_prompt(self, tmp_path, monkeypatch):
+        """--ci flag bypasses interactive CI prompt."""
+        monkeypatch.chdir(tmp_path)
+        (tmp_path / "docs" / "plans").mkdir(parents=True)
+        monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "flag-ci-test", "--ci", "Tests,Lint"])
+        monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
+        monkeypatch.setattr(sw, "_prompt", lambda msg, default: default)
+        rc = sw.main()
+        assert rc == 0
+        content = (tmp_path / "docs" / "plans" / f"{date.today().isoformat()}-flag-ci-test.md").read_text()
+        assert "**CI**: Tests, Lint" in content
+
+    @pytest.mark.io
+    def test_cli_flag_issues_bypasses_prompt(self, tmp_path, monkeypatch):
+        """--issues flag bypasses interactive issues prompt."""
+        monkeypatch.chdir(tmp_path)
+        (tmp_path / "docs" / "plans").mkdir(parents=True)
+        monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "flag-issues-test", "--issues", "99,100"])
+        monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
+        monkeypatch.setattr(sw, "_prompt", lambda msg, default: default)
+        rc = sw.main()
+        assert rc == 0
+        content = (tmp_path / "docs" / "plans" / f"{date.today().isoformat()}-flag-issues-test.md").read_text()
+        assert "Closes #99" in content
+        assert "Closes #100" in content
+
+    @pytest.mark.io
+    def test_cli_flags_both_together(self, tmp_path, monkeypatch):
+        """Both --ci and --issues flags work together."""
+        monkeypatch.chdir(tmp_path)
+        (tmp_path / "docs" / "plans").mkdir(parents=True)
+        monkeypatch.setattr(
+            "sys.argv",
+            ["scaffold_workplan.py", "flag-both-test", "--ci", "Tests", "--issues", "42,43"],
+        )
+        monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
+        monkeypatch.setattr(sw, "_prompt", lambda msg, default: default)
+        rc = sw.main()
+        assert rc == 0
+        content = (tmp_path / "docs" / "plans" / f"{date.today().isoformat()}-flag-both-test.md").read_text()
+        assert "**CI**: Tests" in content
+        assert "Closes #42" in content
+        assert "Closes #43" in content
+
+    @pytest.mark.io
+    def test_cli_flag_ci_invalid_value_exits_1(self, tmp_path, monkeypatch):
+        """Providing invalid CI value via --ci flag causes exit code 1."""
+        monkeypatch.chdir(tmp_path)
+        (tmp_path / "docs" / "plans").mkdir(parents=True)
+        monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "flag-ci-invalid", "--ci", "BadCI"])
+        monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
+        monkeypatch.setattr(sw, "_prompt", lambda msg, default: default)
+        rc = sw.main()
+        assert rc == 1
+
+    @pytest.mark.io
+    def test_cli_flag_issues_invalid_value_exits_1(self, tmp_path, monkeypatch):
+        """Providing invalid issue value via --issues flag causes exit code 1."""
+        monkeypatch.chdir(tmp_path)
+        (tmp_path / "docs" / "plans").mkdir(parents=True)
+        monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "flag-issues-invalid", "--issues", "not-a-number"])
+        monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
+        monkeypatch.setattr(sw, "_prompt", lambda msg, default: default)
+        rc = sw.main()
+        assert rc == 1
+
+    @pytest.mark.io
+    def test_cli_flag_ci_with_whitespace_trimmed(self, tmp_path, monkeypatch):
+        """--ci flag value is trimmed of whitespace."""
+        monkeypatch.chdir(tmp_path)
+        (tmp_path / "docs" / "plans").mkdir(parents=True)
+        argv = ["scaffold_workplan.py", "flag-ci-whitespace", "--ci", "  Tests  ,  Auto-validate  "]
+        monkeypatch.setattr("sys.argv", argv)
+        monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
+        monkeypatch.setattr(sw, "_prompt", lambda msg, default: default)
+        rc = sw.main()
+        assert rc == 0
+        plan_path = tmp_path / "docs" / "plans" / f"{date.today().isoformat()}-flag-ci-whitespace.md"
+        content = plan_path.read_text()
+        assert "**CI**: Tests, Auto-validate" in content
+
+    @pytest.mark.io
+    def test_cli_flag_issues_deduplicates(self, tmp_path, monkeypatch):
+        """--issues flag value is deduplicated."""
+        monkeypatch.chdir(tmp_path)
+        (tmp_path / "docs" / "plans").mkdir(parents=True)
+        monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "flag-issues-dedup", "--issues", "42,42,43"])
+        monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
+        monkeypatch.setattr(sw, "_prompt", lambda msg, default: default)
+        rc = sw.main()
+        assert rc == 0
+        content = (tmp_path / "docs" / "plans" / f"{date.today().isoformat()}-flag-issues-dedup.md").read_text()
+        assert content.count("Closes #42") == 1
+        assert "Closes #43" in content
+
 
 # ===== generate_agent_manifest.py tests =====
 

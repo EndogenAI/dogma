@@ -251,6 +251,27 @@ Ordered by impact-to-cost ratio (highest first):
 **Action**: Add a one-sentence note to the session-start encoding checkpoint: *"The agent fleet is the pressurizing medium — it gives each substrate coherent form but does not own the membrane or the bucket."* This frames the agent's self-understanding in the bubble-cluster model, preventing the anti-pattern of agents treating themselves as the substrate rather than as the intelligence maintaining it.
 **Rationale**: Low-cost, high-clarity framing that prevents a common over-reach pattern (agents treating session context as the authoritative substrate rather than as a bubble inside the larger system).
 
+### R6 — Extend Bubble Model to Deployment-Layer Topologies (Forward Reference)
+
+**Target**: New section or appendix in bubble-clusters-substrate.md; coordination with [external-value-architecture.md](external-value-architecture.md)
+**Action**: The bubble-cluster model currently maps the single-principal EndogenAI architecture (MANIFESTO.md ↔ AGENTS.md ↔ agent files). When the methodology is adopted by external teams, a seventh layer (Deployment Layer) is inserted, creating new junctions and membrane specifications. Document how bubbles and membranes scale in a six-layer deployment context.
+**Rationale**: Prepares the mental model for adoption scenarios without requiring mutation of the core bubble-cluster concepts. Corpus reference: [external-value-architecture.md](external-value-architecture.md) specifies the Deployment Layer membrane rules.
+**Status**: Deferred to Phase 2 post-adoption research.
+
+### R7 — Implement Membrane Permeability Validation Script (Pattern B1 Enforcement)
+
+**Target**: `scripts/validate_handoff_permeability.py` (new script)
+**Action**: Create a script that checks Scout→Synthesizer→Reviewer→Archivist handoffs for compliance with R1 membrane permeability specs. Validate that: (1) all labeled `**Canonical example**:` and `**Anti-pattern**:` instances are preserved verbatim at boundaries, (2) at least 2 explicit MANIFESTO.md citations (by section reference) are present at each handoff. Integrate into CI as a post-session lint gate.
+**Rationale**: Closes the root cause of fidelity loss at boundaries. Programmatic enforcement (Pattern B1) is stronger than prose specifications in AGENTS.md.
+**Status**: Design complete; implementation deferred to Phase 2 scripting sprint.
+
+### R8 — Integrate Provenance Audit into CI (Pattern B4 Operationalization)
+
+**Target**: `.github/workflows/`, weekly lint schedule
+**Action**: Integrate `scripts/audit_provenance.py` into CI as a weekly or per-commit job that flags agent files and research documents with zero MANIFESTO.md citations in a 30-day rolling window. Report cross-reference density scores and warn on isolated substrates (density < 1 per file).
+**Rationale**: Automates the echo-chamber detection (Pattern B4) so isolation risk is surfaced before drift becomes manifest. Currently `audit_provenance.py` exists but is not in CI.
+**Status**: Script exists; CI integration deferred to Phase 2 automation sprint.
+
 ---
 
 ## Sources
@@ -298,7 +319,19 @@ Three independent arguments rule out treating vertices as a fourth substrate cat
 
 ### Edges (1D) — Gap Acknowledgment
 
-The 32 edges of the nested-cube topology (where two faces share a border) have no explicit operational analog yet. An edge would represent a meta-constraint governing how two Pattern B1 membrane specs interact at their shared border. No immediate operational need has been identified; premature definition would violate Pattern B3. This gap is recorded for future work.
+The 32 edges of the nested-cube topology (where two faces share a border) have no explicit operational analog yet. An edge would represent a meta-constraint governing how two Pattern B1 membrane specs interact at their shared border. Operationalization of edges remains future work; premature definition would violate Pattern B3 (Evolutionary Pressure Test). This gap is recorded for Phase 2+ research.
+
+### 5.5 Temporal Stability Integration
+
+**Integration with dogma-neuroplasticity.md**: The bubble-cluster model addresses the *topological* dimension of substrate coherence (spatial structure, boundary permeability, connectivity geometry). The temporal dimension — stability tiers, mutation rates, back-propagation cycles — is addressed separately by [dogma-neuroplasticity.md](dogma-neuroplasticity.md) §Pattern Catalog (Patterns C1-C3).
+
+**Joint specification**: A substrate must satisfy *both* topological coherence (bubble properties per this document) and temporal coherence (stability tiers per dogma-neuroplasticity.md). For example, MANIFESTO.md is a 3D bubble with specific membrane properties (Pattern B1 permeability). It also occupies T1 (MANIFESTO.md mutation threshold = 3+ session signals + formal ADR). These constraints are orthogonal but joint: a substrate that violates either topological or temporal constraints exhibits measurable drift.
+
+**Stability tiers govern bubble pressurization**: The Laplace pressure inside a bubble depends on surface tension (membrane properties). Substrate bubbles also have an internal stability-tier-mediated pressure: their "internal pressure" is the mutation resistance (how many session signals to change the contents). A T1 substrate (high mutation resistance) is like a small bubble under high Laplace pressure — it resists deformation. A T5 substrate (low mutation resistance) is like air — it deforms readily with environmental pressure.
+
+**Complementary models**: The bubble-cluster model is complete in principle for topological reasoning; dogma-neuroplasticity is complete in principle for temporal reasoning. Neither model alone answers: "Given a substrate with specific topological properties and temporal mutation thresholds, what is its stability under evolutionary pressure (handoffs, session churn, team growth)?" The joint question requires both models acting together.
+
+**Corpus reference**: [dogma-neuroplasticity.md](dogma-neuroplasticity.md) §H2 Back-Propagation Protocol specifies the temporal dynamics; Pattern B1 (this document) specifies the spatial dynamics. Together they provide the complete substrate specification.
 
 ### Algorithms Before Tokens — The Governing Argument
 
