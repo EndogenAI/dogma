@@ -209,7 +209,7 @@ Ordered by impact-to-cost:
 ### R1 — Implement validate_session.py Tier 1 Structural Audit (Pattern G1)
 
 **Target**: `scripts/validate_session.py` (new)
-**Action**: Implement the 7 Tier 1 checks as a non-blocking post-commit script. Add to `scripts/README.md`. Add a CI step that runs the script on `docs/research/*.md` files as part of the PR check. Tests must achieve ≥ 80% line coverage.
+**Action**: Implement the 7 Tier 1 checks as a non-blocking post-commit script. Add to `scripts/README.md`. Add a CI step that runs the script against a session scratchpad file (`.tmp/<branch>/<date>.md`) passed explicitly, or a committed session summary — not against `docs/research/*.md` files, which are synthesis outputs and not the correct input type for a behavioral session audit. For CI, a deterministic input source (e.g., a PR description or committed session summary) must be specified. Tests must achieve ≥ 80% line coverage.
 **Rationale**: Immediately actionable, no LLM dependency, covers the highest-frequency anti-pattern classes identified in session retrospectives. Closes D1–D4 of issue #74 partial gate (Tier 1 scope).
 
 ### R2 — Add Value Fidelity Test Taxonomy to AGENTS.md (Pattern G3)

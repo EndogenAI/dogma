@@ -82,7 +82,7 @@ Execute the remaining open research issues in Milestone 7, anchored on the **bub
 - Governing axiom confirmed: **Endogenous-First** — primary endogenous source: `docs/research/values-encoding.md`
 - Bubble cluster model identified as conceptual evolution of §3 biological-homology framing in `values-encoding.md`
 - Scout scaffolding sources: `values-encoding.md` §3 (Patterns 1–6, §H5), `docs/research/dogma-neuroplasticity.md`, `docs/research/skills-as-decision-logic.md`
-- Phase A status updated: ⬜ → 🔄 (in progress)
+- Phase A status updated: ⬜ → 🔄 → ✅ (complete — `docs/research/bubble-clusters-substrate.md` committed)
 - Branch: `research/bubble-clusters-phase-a-neuroanatomy`
 
 ---

@@ -165,10 +165,10 @@ uv run python scripts/retrieve_afs_context.py \
   --branch "$(git branch --show-current)" \
   --query "bubble substrate model value encoding" \
   --top-n 5 \
-  --output .tmp/$(git branch --show-current)/afs-digest.md
+  --output ".tmp/$(git branch --show-current)/afs-digest.md"
 
 # Read the digest before writing Session Start
-cat .tmp/$(git branch --show-current)/afs-digest.md
+cat ".tmp/$(git branch --show-current)/afs-digest.md"
 ```
 
 **Anti-pattern**: Using the AFS digest as a replacement for the scratchpad re-read. The digest is a compressed retrieval — the on-disk scratchpad remains the authoritative state record for the current session (per `docs/guides/session-management.md`).

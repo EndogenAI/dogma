@@ -177,7 +177,7 @@ Used together: the biological-homology model governs vertical design (how to enc
 
 **Pattern**: Measure inter-substrate connectivity algorithmically, not by inspection. The cross-reference density score (number of back-references from agent files to `MANIFESTO.md` and `AGENTS.md`) is the endogenic connectivity atlas. A fleet with low cross-reference density is a collection of isolated bubbles, not a coherent substrate system.
 
-**Actionable implication**: Extend `scripts/generate_agent_manifest.py` to output a per-agent cross-reference density score and a fleet-wide average. Flag agents with density < 1 (no foundational back-references). This closes the gap identified in `values-encoding.md` §4 R6 and produces the algorithmic equivalent of the Allen Institute atlas.
+**Actionable implication**: `scripts/generate_agent_manifest.py` already outputs a per-agent `cross_ref_density` score, fleet-wide average, and a warning flag for agents with density < 1. Operationalize this existing output: run the manifest script as part of the CI report (or a standing fleet health check) and establish a concrete threshold policy (e.g., density < 1 = PR warning) in `AGENTS.md`. This closes the gap identified in `values-encoding.md` §4 R6 and makes the algorithmic connectivity atlas actionable, not just present.
 
 ---
 
@@ -213,10 +213,10 @@ Ordered by impact-to-cost ratio (highest first):
 **Action**: Add a named "Boundary Specification" for each major cross-agent handoff in the research fleet: Scout→Synthesizer, Synthesizer→Reviewer, Reviewer→Archivist. Each spec lists: permitted-signal list (preserve verbatim), compression-allowed list (context only), and surface-tension budget (max token count for compressed portion).
 **Rationale**: Closes the root cause of the 100% canonical-example loss documented in the B8 Degradation Table. Cost is a single AGENTS.md edit; benefit is system-wide handoff fidelity.
 
-### R2 — Extend generate_agent_manifest.py with Connectivity Atlas Output (Pattern B2)
+### R2 — Operationalize generate_agent_manifest.py Connectivity Atlas Output (Pattern B2)
 
-**Target**: `scripts/generate_agent_manifest.py`
-**Action**: For each agent file, count links to `MANIFESTO.md`, `AGENTS.md`, and `docs/guides/`. Output cross-reference density per agent and fleet average. Flag agents with density < 1.
+**Target**: `scripts/generate_agent_manifest.py`, CI, `AGENTS.md`
+**Action**: `generate_agent_manifest.py` already outputs `cross_ref_density` per agent, fleet average, and a flag for density < 1. Operationalize the existing output: (1) document the command and output format in `scripts/README.md`; (2) add a manifest step to CI that runs the script on every PR touching `.github/agents/`; (3) define a threshold policy (e.g., density < 1 = PR warning) in `AGENTS.md`.
 **Rationale**: Provides a computable, low-cost substrate health metric. Closes `values-encoding.md` §4 R6. Aligns with MANIFESTO.md — Axiom: Algorithms Before Tokens (§2): an algorithmic audit replaces manual inspection.
 
 ### R3 — Apply Evolutionary Pressure Test to Fleet Audit (Pattern B3)
