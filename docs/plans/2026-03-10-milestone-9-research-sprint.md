@@ -76,6 +76,13 @@ The sprint is organized into **three sequential domain phases**, each with inter
 
 **Agent**: Executive Researcher  
 **Scope**: Validate Endogenic Design Paper claims against corpus; identify operationalization roadmap for H2, H3, H4  
+
+**Seed Sources** (for corpus analysis and morphogenetic operationalization):
+- Doursat, R., Sayama, H., & Michel, O. (2013). "A review of morphogenetic engineering." *Natural Computing*, 12(2), 357–373. doi:10.1007/s11047-013-9398-1 — Foundational theory on how emergent behaviors arise from simple agent rules and morphogenetic systems design patterns
+- Toussaint, N., Norling, E., & Doursat, R. (2019). "Toward the self-organisation of emergency response teams based on morphogenetic network growth." *Artificial Life Conference Proceedings*, 31, 284–291. — Case study: morphogenetic fleet emergence in practice
+- Green, D. G. (2023). "Emergence in complex networks of simple agents." *Journal of Economic Interaction and Coordination*, 18(1), 1–18. doi:10.1007/s11403-023-00385-w — Theoretical framework for measuring fleet emergence
+- De Wolf, T., & Holvoet, T. (2006). "Design patterns for decentralised coordination in self-organising emergent systems." *Self-organizing systems*, 3464, 28–49. — Design patterns for coordinated agent behavior
+
 **Deliverables**:
 - [ ] #174 — Programmatic Governance Completeness Audit
   - Audit all constraints in codebase (AGENTS.md, scripts/, agent files, CI), map to enforcement tiers T0–T5
@@ -156,6 +163,13 @@ The sprint is organized into **three sequential domain phases**, each with inter
 
 **Agent**: Executive Researcher  
 **Scope**: Validate encoding fidelity hypotheses via corpus measurements; audit enforcement completeness  
+
+**Seed Sources** (for encoding theory and information redundancy):
+- Kieffer, J. C. (2002). "A survey of the theory of source coding with a fidelity criterion." *IEEE Transactions on Information Theory*, 39(5), 1473–1490. doi:10.1109/18.259635 — Foundational information theory on encoding fidelity and redundancy codes
+- Shi, G., Gao, D., Song, X., Chai, J., Yang, M., & Xie, X. (2021). "A new communication paradigm: From bit accuracy to semantic fidelity." *arXiv preprint arXiv:2101.12649*. — Modern application of fidelity theory to semantic content preservation
+- Zhang, Z., Yang, E. H., & Wei, V. K. (2002). "The redundancy of source coding with a fidelity criterion. 1. Known statistics." *IEEE Transactions on Information Theory*, 48(2), 564–581. — Formal analysis of redundancy in lossy encoding
+- Watson, S., & Brezovec, E. (2025). "Autopoietic programs in an autopoietic ecology." *Bulletin of the Ecological Society of America*. — Application of programmatic governance to self-organizing systems
+
 **Deliverables**:
 - [ ] #179 — Enforcement-Tier Complete Mapping
   - Parallel to #174 but focused on VALUES (axiom citations, encoding preservation, degradation) rather than CONSTRAINTS (behavioral rules)
@@ -240,6 +254,15 @@ The sprint is organized into **three sequential domain phases**, each with inter
 
 **Agent**: Executive Researcher  
 **Scope**: Formalize bubble topology; validate mathematical properties  
+
+**Seed Sources** (for topological analysis, membrane theory, and filter bubble dynamics):
+- Wang, X., Liu, Y., Wu, S., Zhao, Z., Hu, Y., Li, W., & others. (2026). "Ideological Isolation in Online Social Networks: A Survey of Computational Definitions, Metrics, and Mitigation Strategies." *arXiv preprint arXiv:2601.07884*. — Comprehensive survey on isolation risk metrics and threshold measurement
+- Interian, R., Marzo, R. G., & Mendoza, I. (2023). "Network polarization, filter bubbles, and echo chambers: an annotated review of measures and reduction methods." *International Transactions in Operational Research*, 30(6), 2745–2778. doi:10.1111/itor.13224 — Synthesis of filter bubble thresholds and measurement methods
+- Navascues, G. (1979). "Liquid surfaces: Theory of surface tension." *Reports on Progress in Physics*, 42(7), 1131–1193. doi:10.1088/0034-4885/42/7/002 — Classical theory of Laplace pressure and surface properties
+- Popinet, S. (2018). "Numerical models of surface tension." *Annual Review of Fluid Mechanics*, 50, 49–78. doi:10.1146/annurev-fluid-122316-045034 — Mathematical formalization of Laplace pressure and topological dynamics
+- Min, Y., Jiang, T., Jin, C., Li, Q., & Jin, X. (2019). "Endogenetic structure of filter bubble in social networks." *Royal Society Open Science*, 6(11), 190868. doi:10.1098/rsos.190868 — Empirical validation of filter bubble topology in networks
+- Traxler, B., Boyd, D., & Beckwith, J. (1993). "The topological analysis of integral cytoplasmic membrane proteins." *The Journal of Membrane Biology*, 137(1), 1–10. doi:10.1007/BF00233047 — Classical topological membrane analysis methods
+
 **Deliverables**:
 - [ ] #170 — Complete Topological Audit
   - Map complete substrate topology: 3D vertices (agents, scripts, docs), 2D faces (subsystem boundaries), 1D edges (communication channels)
