@@ -140,7 +140,7 @@ SIGNAL_PATTERNS = {
     ),
     "rationale_summary": SignalPattern(
         name="rationale_summary",
-        regex=r"(rationale|reason|decision):\s*(.{30,}?)(?=\n|$)",
+        regex=r"(?i)(rationale|reason|decision)(?:\s+\w+)*:\s*(.{30,}?)(?=\n|$)",
         description="Brief summary of decision rationale",
         specificity_check=None,
     ),
