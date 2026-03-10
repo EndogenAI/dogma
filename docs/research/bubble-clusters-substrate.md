@@ -203,6 +203,20 @@ Used together: the biological-homology model governs vertical design (how to enc
 
 ---
 
+### Pattern B5 — Junction Specification for N-way Convergence
+
+**Source fields**: Mathematical topology (simplex facets, Plateau's tetrahedral angle), MANIFESTO.md Axiom § Algorithms Before Tokens, Pattern B1 (Calibrated Membrane Permeability)
+
+**Pattern**: When three or more substrate boundaries converge at a single point, the junction requires a stricter permeability rule than any single binary face boundary. A junction specification is a named, algorithmically-validatable constraint — not a new substrate. It is the 0D dual of the 2D membrane permeability spec.
+
+**Canonical example**: Three substrates simultaneously constraining a single agent decision (MANIFESTO.md axiom + AGENTS.md encoded rule + agent file role restriction). The junction rule must require: (1) all three citations present and verbatim, (2) no new interpretation introduced, (3) order: foundational axiom first, encoded constraint second, role restriction third.
+
+**Anti-pattern**: Treating the junction as a new "meta-substrate" artifact (a fourth `junction-spec.md` file sitting between the three substrates). This inflates the substrate topology without evolutionary justification — Laplace pressure causes it to collapse back into the three parent faces. The junction spec belongs as a named rule INSIDE the membranes, not as an independent bubble.
+
+**Actionable implication**: Add 3–5 named Junction Specification types to AGENTS.md § Agent Communication, each with trigger condition, required citations, and compression rule. Extend `scripts/validate_agent_files.py` with a `--junctions` flag to validate that active junctions in agent files satisfy their spec. This is the high-throughput, programmatic implementation of the vertex model.
+
+---
+
 ## 4. Recommendations
 
 Ordered by impact-to-cost ratio (highest first):
@@ -254,3 +268,38 @@ Ordered by impact-to-cost ratio (highest first):
 - Cass Sunstein (2017) — *#Republic* — group polarization dynamics and the provenance-transparency counter-mechanism
 - Allen Institute for Brain Science — Mouse Brain Atlas connectivity data; cortical area demarcation methodology; neuron-to-neuron projection atlas
 - Bai et al. (2022) — "Constitutional AI: Harmlessness from AI Feedback" — constitutional self-critique as provenance-transparent value retrieval
+
+---
+
+## 5. Geometric Extension — The Nested-Cube Topology and Junction Specifications
+
+The endogenic inheritance chain — agent file nested inside `AGENTS.md` nested inside `MANIFESTO.md` — maps to three nested cubes, producing a hypercube-like topology with a complete dimensional accounting:
+
+| Dimension | Geometry | Substrate analog | Operational role |
+|-----------|----------|-----------------|------------------|
+| 3D | Bubble (cell) | Substrate (`MANIFESTO.md`, `AGENTS.md`, agent file) | Autonomous region with internal coherence |
+| 2D | Face | Cross-substrate boundary | Membrane with permeability spec (Pattern B1) |
+| 1D | Edge | Face-boundary intersection | Deferred — not yet operationalized |
+| 0D | Vertex | N-way membrane junction | Junction specification (Pattern B5) |
+
+### Why Vertices Should Not Be Inflated to Substrates
+
+Three independent arguments rule out treating vertices as a fourth substrate category:
+
+1. **Pattern B3 (Evolutionary Pressure Test)**: No distinct mutation rate or authoring role exists for a vertex. A junction is derived from its three parent boundaries, not authored independently. An entity with no evolutionary origin has no justification for substrate status.
+
+2. **Laplace pressure**: An inflated vertex approaches radius zero, giving internal pressure $\Delta P = \frac{4\gamma}{r} \to \infty$. Without a surfactant mechanism, it collapses immediately to a 0D point. The stability lives in the angle constraint (Plateau's Law 3: ~109.47° tetrahedral angle), not in internal volume.
+
+3. **Algorithms Before Tokens (MANIFESTO.md §2)**: The nested-cube model has 16 vertices. Inflating each to a substrate produces 16 new artifacts requiring documentation and CI validation — zero additional operational value at high token cost. The user's stated preference for "high throughput and low token — if not completely programmatic" is the direct practical expression of this axiom.
+
+**Canonical example**: The triple boundary where a MANIFESTO.md axiom, an AGENTS.md encoded rule, and an agent file role restriction simultaneously constrain a single agent decision. The junction rule — cite all three, in foundational-to-specific order, verbatim — lives inside the existing membrane specs (Pattern B1). No new artifact is required.
+
+**Anti-pattern**: Creating `junction-spec.md` at `.github/agents/` root to "document" the convergence point. This inflates the vertex into a substrate with its own maintenance cycle, CI gate, and drift exposure. Laplace pressure collapses it back: the file will be redundant with the three parent boundaries in every meaningful dimension, failing the Pattern B3 evolutionary pressure test.
+
+### Edges (1D) — Gap Acknowledgment
+
+The 32 edges of the nested-cube topology (where two faces share a border) have no explicit operational analog yet. An edge would represent a meta-constraint governing how two Pattern B1 membrane specs interact at their shared border. No immediate operational need has been identified; premature definition would violate Pattern B3. This gap is recorded for future work.
+
+### Algorithms Before Tokens — The Governing Argument
+
+The decision to treat vertices as junction specifications rather than substrates is the Algorithms Before Tokens axiom enacted: a junction spec is algorithmically validatable via a `--junctions` flag in `scripts/validate_agent_files.py`. An inflated vertex substrate requires human inspection of a new artifact class. The 0D constraint approach delivers the full operational benefit — enforced multi-citation ordering at convergence points — at the cost of a single script extension rather than 16 new substrate files.
