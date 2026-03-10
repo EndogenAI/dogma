@@ -20,6 +20,8 @@ The canonical insight: **Behavioral constraints belong in the execution environm
 
 ### H1: Text-Level Constraints Are Unreliable at Scale
 
+**Hypothesis Foundation**: [`MANIFESTO.md`](../../MANIFESTO.md) §1 (Endogenous-First) requires behavioral constraints to be discoverable from existing system knowledge and embedded in deterministic layers; token-only guardrails fail this test by relying on attention mechanisms that degrade under distribution shift.
+
 **Evidence**: The canonical failure mode in this repository — AI generating `cat >> file << 'EOF'` (heredoc-write pattern) despite explicit prohibition in AGENTS.md, repeated in user memory, and present in multiple agent files — is not a knowledge issue. It is a weight-level default issue.
 
 **Empirical support**:
@@ -466,6 +468,16 @@ An agent chasing a red herring or stuck in a hypothesis-test loop will ignore th
 
 11. **zsh-safe-rm Repository.** https://github.com/mattmc3/zsh-safe-rm
     - **Relevance**: Direct precedent for runtime interception via ZLE/preexec hooks; provides real-world code for Pattern 2 (blocklist + audit).
+
+### Endogenous Sources
+
+- [`MANIFESTO.md`](../../MANIFESTO.md) — Three core axioms: Endogenous-First (§1), Algorithms Before Tokens (§2), Local Compute-First (§3). This research encodes §2 corollary into enforcement stack architecture, mapping behavioral constraints from token-dependent instructions into deterministic code layers.
+
+- [`AGENTS.md`](../../AGENTS.md) — Programmatic-First principle and heredoc-write guardrail specification in Guardrails section. Operational anchors for the canonical failure mode analysis in recommendation section.
+
+- [docs/research/programmatic-governors.md](programmatic-governors.md) — Phase 2 foundational synthesis. Governor tier definitions and Watt governor analogy; forms theoretical foundation for layered enforcement concepts in this document.
+
+- [`docs/research/values-encoding.md`](values-encoding.md) — §H1 constitutional drift pattern. Theoretical basis for token-level instruction degradation documented in this research (Hypothesis Validation H1–H4).
 
 ---
 
