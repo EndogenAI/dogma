@@ -136,7 +136,7 @@ Close all currently open `type:research` GitHub issues by either:
 
 **Note on scope**: Issue #45 is `effort:xl` and `priority:critical`. The intent here is to advance the status of the product-discovery doc to Final and close the research sub-tasks. The downstream implementation work (Adopt wizard, Greenfield wizard per gate deliverables 4–9) should be split into separate `type:chore` or `type:feature` issues at close time.
 
-**Status**: ⬜ Not started
+**Status**: ✅ Complete (2026-03-10, commit 8b04ba1)
 
 ### Phase 3 Review — Review Gate
 
@@ -144,7 +144,7 @@ Close all currently open `type:research` GitHub issues by either:
 **Deliverables**: `## Review Output` in scratchpad, verdict: APPROVED
 **Depends on**: Phase 3 deliverables committed
 **Gate**: Phase 4 does not start until APPROVED
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED (2026-03-10)
 
 ---
 
@@ -157,7 +157,7 @@ Close all currently open `type:research` GitHub issues by either:
 
 **Depends on**: Phase 3 APPROVED
 **Gate**: Phase 4 Review before session close
-**Status**: ⬜ Not started
+**Status**: ✅ Complete (2026-03-10, issues #142–#147 created, #132 body updated)
 
 ### Phase 4 Review — Review Gate
 
@@ -165,7 +165,7 @@ Close all currently open `type:research` GitHub issues by either:
 **Deliverables**: `## Review Output` in scratchpad, verdict: APPROVED
 **Depends on**: Phase 4 deliverables committed
 **Gate**: Session does not close until APPROVED
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED (2026-03-10)
 
 ---
 
@@ -180,7 +180,7 @@ Close all currently open `type:research` GitHub issues by either:
 - PR opened or existing PR updated
 
 **Depends on**: Phase 4 APPROVED
-**Status**: ⬜ Not started
+**Status**: ✅ Complete (2026-03-10)
 
 ---
 
