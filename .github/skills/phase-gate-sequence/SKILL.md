@@ -52,7 +52,9 @@ Append `## Pre-Compact Checkpoint` to the scratchpad with:
 - What is next
 - Any open questions or blockers
 
-### Step 3 — Commit In-Progress Changes
+### Step 3 — Commit In-Progress Changes (Orchestrator)
+
+**Orchestrator commits in-progress changes via terminal**:
 
 ```bash
 git add -A && git commit -m "chore: pre-compact checkpoint — Phase N complete"

@@ -1,7 +1,7 @@
 ---
 name: session-management
 description: |
-  Governs the full agent session lifecycle: scratchpad init/close, encoding checkpoint at session start, compaction guard, phase gate protocol, and session summary. USE FOR: starting a new session (prune_scratchpad.py --init); writing ## Session Start with governing axiom; managing cross-agent context in .tmp/<branch>/<date>.md; running the pre-compact checkpoint sequence; writing ## Session Summary and running prune_scratchpad.py --force at session end. DO NOT USE FOR: individual task execution (use the agent directly); committing changes (use the GitHub agent); research synthesis (use the Research fleet).
+  Governs the full agent session lifecycle: scratchpad init/close, encoding checkpoint at session start, compaction guard, phase gate protocol, and session summary. USE FOR: starting a new session (prune_scratchpad.py --init); writing ## Session Start with governing axiom; managing cross-agent context in .tmp/<branch>/<date>.md; running the pre-compact checkpoint sequence; writing ## Session Summary and running prune_scratchpad.py --force at session end. DO NOT USE FOR: individual task execution (use the agent directly); committing changes (Orchestrator commits after Review approval); research synthesis (use the Research fleet).
 argument-hint: "session phase (start|checkpoint|close)"
 ---
 

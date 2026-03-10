@@ -29,13 +29,13 @@ Each agent in the catalog below is tagged with its milestone (`tier:`) and effor
 
 Orchestrate research sessions from question to committed synthesis. The Executive Researcher drives the fleet using the expansion→contraction pattern.
 
-| Agent | File | Posture | Tier | Effort | Trigger |
-|-------|------|---------|------|--------|----------|
-| **Executive Researcher** | `executive-researcher.agent.md` | full | Foundation | L | Start a research session; orchestrate Scout→Synthesizer→Reviewer→Archivist; spawn new area agents |
-| **Research Scout** | `research-scout.agent.md` | read + web | Foundation | M | Gather and catalogue raw sources for a topic — no synthesis |
-| **Research Synthesizer** | `research-synthesizer.agent.md` | read + create | Foundation | L | Transform Scout findings into a structured synthesis draft in `docs/research/` |
-| **Research Reviewer** | `research-reviewer.agent.md` | read-only | Foundation | M | Validate synthesis drafts against methodology standards; flag gaps and unsupported claims |
-| **Research Archivist** | `research-archivist.agent.md` | read + create | Foundation | S | Finalise approved drafts, commit to `docs/research/`, update issue |
+| Agent | File | Posture | Tier | Effort | Exec Tier | Terminal | Trigger |
+|-------|------|---------|------|--------|----------|---------|---------|
+| **Executive Researcher** | `executive-researcher.agent.md` | full | Foundation | L | Researcher | Y | Start a research session; orchestrate Scout→Synthesizer→Reviewer→Archivist; spawn new area agents |
+| **Research Scout** | `research-scout.agent.md` | read + web | Foundation | M | (none) | N | Gather and catalogue raw sources for a topic — no synthesis |
+| **Research Synthesizer** | `research-synthesizer.agent.md` | read + create | Foundation | L | (none) | N | Transform Scout findings into a structured synthesis draft in `docs/research/` |
+| **Research Reviewer** | `research-reviewer.agent.md` | read-only | Foundation | M | (none) | N | Validate synthesis drafts against methodology standards; flag gaps and unsupported claims |
+| **Research Archivist** | `research-archivist.agent.md` | read + create | Foundation | S | (none) | N | Finalise approved drafts, commit to `docs/research/`, update issue |
 
 **Guardrail — Web Scouting is Mandatory**: Every research sprint must include an explicit Scout delegation to conduct aggressive web searches for external authoritative sources (academic papers, official documentation, standards, industry reports, practitioner knowledge). Skipping web searching to save time or tokens is an anti-pattern. Endogenous-First means local sources are consulted *first*, but web discovery is the core expansion activity. A research sprint with <7 primary external sources is incomplete. For detailed web scouting requirements, see [`research-scout.agent.md`](./research-scout.agent.md) and [`.github/skills/deep-research-sprint/SKILL.md`](../skills/deep-research-sprint/SKILL.md).
 
@@ -45,9 +45,9 @@ Orchestrate research sessions from question to committed synthesis. The Executiv
 
 Maintain and evolve all project documentation — encoding dogmatic values and methodology across every documentation layer.
 
-| Agent | File | Posture | Tier | Effort | Trigger |
-|-------|------|---------|------|--------|----------|
-| **Executive Docs** | `executive-docs.agent.md` | read + create | Foundation | L | Update guides, top-level docs, AGENTS.md, MANIFESTO.md; codify values across all documentation layers |
+| Agent | File | Posture | Tier | Effort | Exec Tier | Terminal | Trigger |
+|-------|------|---------|------|--------|----------|---------|---------|
+| **Executive Docs** | `executive-docs.agent.md` | read + create | Foundation | L | Docs | Y | Update guides, top-level docs, AGENTS.md, MANIFESTO.md; codify values across all documentation layers |
 
 ---
 
@@ -55,10 +55,10 @@ Maintain and evolve all project documentation — encoding dogmatic values and m
 
 Enforce the programmatic-first principle — encode repeated tasks as scripts and non-agent automation before performing them a third time interactively.
 
-| Agent | File | Posture | Tier | Effort | Trigger |
-|-------|------|---------|------|--------|----------|
-| **Executive Scripter** | `executive-scripter.agent.md` | full | Wave 1 | L | Identify tasks done >2 times interactively; audit `scripts/` for gaps; write or extend scripts |
-| **Executive Automator** | `executive-automator.agent.md` | full | Wave 1 | L | Design file watchers, pre-commit hooks, CI tasks, VS Code background tasks; first escalation for event-driven automation |
+| Agent | File | Posture | Tier | Effort | Exec Tier | Terminal | Trigger |
+|-------|------|---------|------|--------|----------|---------|---------|
+| **Executive Scripter** | `executive-scripter.agent.md` | full | Wave 1 | L | Scripter | Y | Identify tasks done >2 times interactively; audit `scripts/` for gaps; write or extend scripts |
+| **Executive Automator** | `executive-automator.agent.md` | full | Wave 1 | L | Automator | Y | Design file watchers, pre-commit hooks, CI tasks, VS Code background tasks; first escalation for event-driven automation |
 
 ---
 
@@ -66,10 +66,10 @@ Enforce the programmatic-first principle — encode repeated tasks as scripts an
 
 Decompose and sequence complex multi-domain work before execution begins. Invoke these when a request spans multiple executive agents or requires explicit dependency ordering.
 
-| Agent | File | Posture | Tier | Effort | Trigger |
-|-------|------|---------|------|--------|----------|
-| **Executive Orchestrator** | `executive-orchestrator.agent.md` | full | Foundation | XL | Coordinate multi-workflow sessions spanning research, docs, scripting, and fleet changes — sequence executive agents and maintain session coherence |
-| **Executive Planner** | `executive-planner.agent.md` | read-only | Foundation | L | Decompose complex multi-step requests into structured plans with phases, gates, agent assignments, and dependency ordering — before any execution |
+| Agent | File | Posture | Tier | Effort | Exec Tier | Terminal | Trigger |
+|-------|------|---------|------|--------|----------|---------|---------|
+| **Executive Orchestrator** | `executive-orchestrator.agent.md` | full | Foundation | XL | Orchestrator | Y | Coordinate multi-workflow sessions spanning research, docs, scripting, and fleet changes — sequence executive agents and maintain session coherence |
+| **Executive Planner** | `executive-planner.agent.md` | read-only | Foundation | L | Planner | N | Decompose complex multi-step requests into structured plans with phases, gates, agent assignments, and dependency ordering — before any execution |
 
 ---
 
@@ -77,9 +77,9 @@ Decompose and sequence complex multi-domain work before execution begins. Invoke
 
 Maintain the health and standards compliance of the agent fleet itself.
 
-| Agent | File | Posture | Tier | Effort | Trigger |
-|-------|------|---------|------|--------|----------|
-| **Executive Fleet** | `executive-fleet.agent.md` | full | Wave 1 | L | Manage the agent fleet — create, audit, update, and deprecate `.agent.md` files and fleet documentation |
+| Agent | File | Posture | Tier | Effort | Exec Tier | Terminal | Trigger |
+|-------|------|---------|------|--------|----------|---------|---------|
+| **Executive Fleet** | `executive-fleet.agent.md` | full | Wave 1 | L | Fleet | Y | Manage the agent fleet — create, audit, update, and deprecate `.agent.md` files and fleet documentation |
 
 ---
 
@@ -87,9 +87,9 @@ Maintain the health and standards compliance of the agent fleet itself.
 
 Maintain the health of the repository as an open-source resource.
 
-| Agent | File | Posture | Tier | Effort | Trigger |
-|-------|------|---------|------|--------|----------|
-| **Executive PM** | `executive-pm.agent.md` | full | Wave 1 | M | Maintain issues, labels, milestones, changelog, contributing docs, and community health files following open-source best practices |
+| Agent | File | Posture | Tier | Effort | Exec Tier | Terminal | Trigger |
+|-------|------|---------|------|--------|----------|---------|---------|
+| **Executive PM** | `executive-pm.agent.md` | full | Wave 1 | M | PM | N | Maintain issues, labels, milestones, changelog, contributing docs, and community health files following open-source best practices |
 
 ---
 

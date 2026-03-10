@@ -322,6 +322,40 @@ Any command that creates or modifies a remote side effect must be immediately fo
 
 **CI must pass before requesting review.** After every `git push` to a PR branch: check CI status with `gh run list --limit 3` before requesting or re-requesting Copilot review. A passing push with failing CI is a broken PR — fix CI before doing anything else. Common CI failure modes: lychee dead link (add to `.lycheeignore`), ruff format (run `uv run ruff format scripts/ tests/`), validate_synthesis missing headings.
 
+### Subagent Commit Authority
+
+Only **Executive Orchestrator** and **Executive Docs** agents commit to the repository. All other agents (Research Scout, Synthesizer, etc.) return work to their executive for review and commit gatekeeping:
+- **Executive Orchestrator** commits after all phases pass Review approval; uses `git` terminal operations
+- **Executive Docs** commits updates to governance documentation (AGENTS.md, guides, MANIFESTO.md) independently; coordinates timing with Orchestrator for phase gates
+- Subagents do not invoke GitHub agent directly; they route through their executive
+
+---
+
+## Executive Fleet Privileges
+
+**Terminal Access Model**: The eight executive-tier agents (Orchestrator, Docs, Researcher, Scripter, Automator, PM, Fleet, Planner) hold terminal and remote-write authority proportional to their domain. This design instantiates the [Endogenous-First](../MANIFESTO.md#1-endogenous-first) principle: executives responsible for scripts, agents, and documentation are treated as endogenous knowledge infrastructure — their tool scope is scoped to their domain, not restricted by default. Terminal access **is not full shell access**; it is scoped to the agent's function:
+
+| Executive | Terminal Access Scope | Functions |
+|-----------|----------------------|----------| 
+| **Orchestrator** | `git`, `gh` CLI, `uv run` scripts | Commit, push, issue updates, script execution, multi-agent coordination |
+| **Docs** | `uv run` scripts, file tools | Documentation builds, validation checks, research doc synthesis |
+| **Researcher** | `uv run` scripts, fetch operations | Source caching, web discovery, research synthesis |
+| **Scripter** | Full execution: `uv run`, tests, source control | Script authoring, testing, debugging, CI inspection |
+| **Automator** | File watchers, pre-commit hooks, CI task authoring | Event-driven automation, static linting gates |
+| **PM** | `gh` CLI, `uv run` scripts | Issue/label/milestone operations, issue seeding, changelog updates |
+| **Fleet** | Agent file operations, `uv run` validation | Agent scaffolding, compliance checks, fleet audits |
+| **Planner** | Read-only; no terminal access | Decomposition, sequencing, plan generation (returns to Orchestrator) |
+
+**Handoff Topology**: Cross-fleet delegation follows explicit patterns:
+- **Orchestrator ↔ all executives**: Orchestrator can delegate to and review outputs from any executive; each executive may hand off back to Orchestrator after a phase completes
+- **Docs ↔ Researcher, Scripter, Automator**: Docs coordinates with specialist executives for methodology and encoding decisions
+- **Researcher ↔ Scripter**: Researcher may escalate research findings to Scripter when a caching or transformation script is needed
+- **Scripter ↔ Automator**: Scripter and Automator coordinate on script-to-automation escalation paths
+
+**File Write Discipline**: All file writes route through the established VS Code tools (`create_file`, `replace_string_in_file`, `multi_replace_string_in_file`). No agent uses heredocs, terminal I/O redirection, or inline Python file operations — these patterns corrupt content containing backticks and special characters. Enforced by pre-commit hook `no-heredoc-writes`.
+
+**Commit Discipline**: Every commit message follows [Conventional Commits](https://www.conventionalcommits.org/) format. Only Orchestrator and Docs agents invoke the GitHub agent to commit; all other agents return work for finalization. This restriction applies the [Algorithms Before Tokens](../MANIFESTO.md#2-algorithms-before-tokens) principle: centralized commit authority ensures every change is logged through a deterministic channel, preventing token-burn from distributed re-commitment and audit gaps. See [`CONTRIBUTING.md#commit-discipline`](CONTRIBUTING.md#commit-discipline) for format and examples.
+
 ### GitHub Label and Issue Conventions
 
 All issues must use the colon-prefixed label namespace from `docs/guides/github-workflow.md`:

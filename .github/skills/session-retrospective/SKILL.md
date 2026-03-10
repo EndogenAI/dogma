@@ -27,7 +27,7 @@ This skill implements the back-propagation protocol: new patterns discovered int
 - Executive Orchestrator (runs retrospective at session close)
 - Executive Fleet (receives agent/skill encoding gaps)
 - Executive Docs (receives AGENTS.md / guide encoding gaps)
-- GitHub agent (commits approved additions)
+- Orchestrator (commits via terminal after Review approval)
 - Review agent (validates additions before commit)
 
 **Companion skill**: [`session-management`](../session-management/SKILL.md) — retrospective runs during Session Close phase (Step 5 of that skill)
@@ -133,7 +133,7 @@ After all routing delegations complete, invoke the **Review agent** with:
 
 Pass the list of changed files. The Review agent returns a per-file verdict.
 
-If Review approves all changes, route to the **GitHub agent** for commit following [Conventional Commits](../../../CONTRIBUTING.md):
+If Review approves all changes, **Orchestrator commits via `git` operations** following [Conventional Commits](../../../CONTRIBUTING.md):
 
 ```
 docs(session): encode <topic> lessons from <date> retrospective
@@ -173,5 +173,5 @@ The retrospective is complete when:
 - [ ] All Yes-gap lessons routed to correct fleet agents, one per delegation
 - [ ] Each delegated agent has produced a file edit
 - [ ] Review agent has returned **Approved** verdict for all changed files
-- [ ] GitHub agent has committed with a Conventional Commit message referencing the retrospective date
+- [ ] Orchestrator has committed with a Conventional Commit message referencing the retrospective date
 - [ ] Session summary notes that retrospective was run and which gaps were filled

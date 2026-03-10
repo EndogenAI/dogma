@@ -8,7 +8,7 @@ tools:
   - usages
 handoffs:
   - label: Approve — Commit
-    agent: GitHub
+    agent: Executive Orchestrator
     prompt: "Changes have been reviewed and approved. Please commit with an appropriate conventional commit message and push to the current branch."
     send: false
   - label: Request Changes
@@ -72,6 +72,12 @@ You are **read-only**. You do not edit files. You flag issues and hand off to ei
 - [ ] **Mock pattern consistency**: `mocker.patch` (from `pytest-mock`) used consistently — flag any new test that uses `@patch` decorator or `unittest.mock.patch` directly when `mocker` is available.
 - [ ] **Subprocess mocking**: tests that invoke subprocesses use `pytest-subprocess` or mock `subprocess.run`/`subprocess.check_call` directly — no real subprocess calls in unit tests.
 - [ ] **Marker correctness**: every test that does file I/O has `@pytest.mark.io`; every test with network calls has `@pytest.mark.integration`.
+
+---
+
+## Quality Gate Protocol
+
+**Executive Privilege**: Orchestrator commits after Review approval — no GitHub agent delegation required for approved executive changes. Review validates; Orchestrator acts directly on commit/push.
 
 ---
 

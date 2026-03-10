@@ -11,6 +11,8 @@ tools:
   - usages
   - changes
   - agent
+  - execute/runInTerminal
+  - web/fetch
 handoffs:
   # ── Phase-gate checkpoints (self-loop) ────────────────────────────────────
   # Use these after a sub-agent returns control. Review the output, then decide
@@ -61,6 +63,18 @@ handoffs:
   - label: Review Research Output
     agent: Review
     prompt: "Research output is ready for final review before committing. Please check the changed files against AGENTS.md constraints and research quality standards."
+    send: false
+  - label: "Cross-Fleet: Orchestrator"
+    agent: Executive Orchestrator
+    prompt: "Research phase complete. Ready for handoff to next phase."
+    send: false
+  - label: "Cross-Fleet: Docs"
+    agent: Executive Docs
+    prompt: "Research is complete. Please review whether guides need updating."
+    send: false
+  - label: "Cross-Fleet: Scripter"
+    agent: Executive Scripter
+    prompt: "Research is complete. If any research tasks should be scripted, please assess."
     send: false
 
 ---
