@@ -64,6 +64,17 @@ The sprint is organized into three research domains (Endogenic Design, Values En
 | #184 | Filter-Bubble Threshold Calibration | Empirical validation | Medium | ⬜ |
 | #185 | Deployment-Layer Topological Extension | Research/extension | Medium | ⬜ |
 
+### Domain 4: Foundational Theory & Extensions — Holographic Semantics, Consciousness Philosophy, and Substrate Architecture
+
+**Primary Papers**: Cross-cutting (semantic encoding aspects of values-encoding.md, consciousness implications of endogenic-design-paper.md, substrate taxonomy extensions of bubble-clusters-substrate.md)  
+**Related Issues**: #189, #190, #191 (new Phase 4 research topics)
+
+| Issue # | Title | Type | Effort | Status |
+|---------|-------|------|--------|---------|
+| #189 | Semantic holography — Multi-level encoding of word meaning | Research/extension | Small–Medium (15–20h) | ⬜ |
+| #190 | IIT + panpsychism — Intelligence ≠ consciousness distinction | Research/extension | Medium (20–25h) | ⬜ |
+| #191 | Substrate taxonomy — Categorizing content, context, and middle ground | Research/extension | Medium (18–22h) | ⬜ |
+
 ---
 
 ## Execution Phases
@@ -399,7 +410,71 @@ For each issue (#170, #183), conduct web searches to identify additional topolog
 **Agent**: Review  
 **Deliverables**: `## Phase 3 Review Output` section in scratchpad; verdict: APPROVED or REQUEST CHANGES  
 **Depends on**: All Phase 3a–c deliverables committed (including passing tests for #181, #182)  
-**Gate**: Session closes after Review returns APPROVED  
+**Gate**: Phase 4 may begin in parallel or after Review returns APPROVED  
+**Status**: ⬜ Not started
+
+---
+
+## **Phase 4 — Foundational Theory & Extensions**
+
+### Overview
+Phase 4 addresses three cross-cutting foundational research topics that strengthen and extend the primary papers across all three domains:
+1. **Semantic Holography** (#189) — Bridges symbolic [4,1] encoding to semantic meaning preservation (extends values-encoding.md)
+2. **IIT + Panpsychism** (#190) — Rigorous philosophy-of-mind framework for consciousness vs. intelligence distinction (contextualizes endogenic-design-paper.md augmentative partnership design)
+3. **Substrate Taxonomy** (#191) — Operationalizes compaction and archival policy for all substrates (cross-cuts all three primary papers and session-management.md)
+
+**Phase 4 may be executed in parallel with Phase 3b–c** (non-blocking on Phase 3 completion), or sequentially after Phase 3 Review gate, depending on agent capacity.
+
+---
+
+#### Phase 4a: Foundational Theory Research
+
+**Agent**: Executive Researcher  
+**Scope**: Foundational theory synthesis for semantic encoding, consciousness philosophy, and substrate architecture
+
+**Seed Sources** (shared across all three issues):
+- Pribram, K. H. (2013). *The Implicate Order: A New Ordering for Physics, Mind, and Perception*. — Holonomic Brain Theory foundations
+- Tononi, G. (2012). "Consciousness as integrated information." *The Biological Bulletin*, 215(3), 216–242. — IIT foundational paper
+- Goff, P. (2017). *Consciousness and Fundamental Reality*. Oxford University Press. — Panpsychism philosophy framework
+- Kieffer, J. C. (2002). "A survey of the theory of source coding with a fidelity criterion." *IEEE Transactions on Information Theory*. — Information-theoretic fidelity basis
+
+**Deliverables**:
+
+- [ ] **#189 — Semantic Holography in Language**
+  - Research Question: Words are holographically encoded with definition, cultural, personal interpretations. Does [4,1] cite density preserve semantic meaning?
+  - Deliverable: `docs/research/semantic-holography-language-encoding.md` (D4 format)
+  - Acceptance: ≥3 holographic encoding papers cited; ≥2 computational linguistics papers; ≥1 axiom meaning variance case study; semantic similarity metrics proposed; ≥2 MANIFESTO.md axiom citations; validate_synthesis.py passes
+  - Estimated effort: 15–20 hours
+
+- [ ] **#190 — IIT + Panpsychism: Intelligence ≠ Consciousness**
+  - Research Question: Our system is intelligent (decision-making, adaptation). Is it conscious under IIT or panpsychism?
+  - Deliverable: `docs/research/iit-panpsychism-consciousness-bounds.md` (D4 format)
+  - Acceptance: ≥3 IIT papers cited (φ metric explained); ≥2 panpsychism philosophy papers (variants distinguished); consciousness requirements checklist; consciousness-excluding properties checklist; design implications brief (3–5 recommendations); ≥2 MANIFESTO.md axiom citations; validate_synthesis.py passes
+  - Estimated effort: 20–25 hours
+
+- [ ] **#191 — Substrate Taxonomy: Content, Context, and Hybrids**
+  - Research Question: Which substrates are content (never compact), context (always compact), or hybrid? What is a fourth category?
+  - Deliverable: `docs/research/substrate-taxonomy-content-context.md` (D4 format)
+  - Acceptance: Taxonomy table with ≥20 substrates (type, regenerable, token cost, loss tolerance, archive trigger); fourth category proposed or ruled out; compaction policy per type; restoration protocol per substrate; token-efficiency projection; ≥2 MANIFESTO.md axiom citations; validate_synthesis.py passes
+  - Estimated effort: 18–22 hours
+
+**Dependencies**:
+- #189 works better with #188 (Holonomic Brain Theory) research depth; can proceed independently
+- #190 requires Tononi & panpsychism papers; accessibility must be verified
+- #191 requires repo commit history analysis
+
+**Depends on**: Phase 2 Review (values-encoding.md context) and Phase 3a data (if needed); **may execute in parallel with Phase 3b–c**  
+**Gate**: All Phase 4 deliverables committed and reviewed before session closes  
+**Status**: ⬜ Not started
+
+---
+
+### Phase 4 Review — Final Gate ⬜
+
+**Agent**: Review  
+**Deliverables**: `## Phase 4 Review Output` in scratchpad; verdict: APPROVED  
+**Depends on**: All Phase 4 deliverables committed  
+**Gate**: Session closes after Phase 4 Review returns APPROVED (Phase 4 is terminal)  
 **Status**: ⬜ Not started
 
 ---
@@ -434,6 +509,7 @@ Phase 1 Review APPROVED
 | Phase 3a | Executive Researcher | — | Full research autonomy |
 | Phase 3b | Executive Scripter | Executive Researcher (specs) | Script implementation and testing; specs from 3a research |
 | Phase 3c | Executive Researcher | — | Full research autonomy |
+| Phase 4a | Executive Researcher | — | Full research autonomy (can execute in parallel with Phase 3b–c) |
 
 ---
 
@@ -450,28 +526,19 @@ Phase 1 Review APPROVED
 | Phase 3a | 45–65h | High effort (topological analysis) |
 | Phase 3b | 45–60h | High effort (scripting + testing) |
 | Phase 3c | 20–30h | Low–medium effort |
-| **Total Sprint** | **365–515h** | **~9–13 weeks full-time** |
-
----
-
-## Risk and Mitigation
-
-| Risk | Mitigation |
-|------|-----------|
-| Empirical validation (Phase 2a, 3a) requires external data that may be noisy or insufficient | Start Phase 2a early; if measurement signal is weak after 10 hours, escalate to Conor for scope reduction |
-| Case studies (#167, #173, #185) require external team coordination and may have scheduling delays | Start outreach in Phase 1a (parallel); confirm team availability before Phase 1b begins |
-| Peer review (#172) may require months to complete if late outreach | Identify reviewers in Phase 1a; send solicitations by end of Phase 1b max |
-| Scripting effort (#181, #182) may exceed estimate if testing is complex | Begin #181–#182 in parallel with 3a research; do not gate 3b on complete 3a if development path is clear |
+| Phase 4a | 53–67h | Medium effort (literature + analysis; #189: 15–20h, #190: 20–25h, #191: 18–22h) |
+| **Total Sprint** | **418–582h** | **~10–15 weeks full-time** |
 | Topological mapping (#170, #185) may reveal missing dimensions/relationships | Allocate 10 hours buffer in Phase 3a for topology refinement after initial analysis |
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] All 17 research issues closed or merged to main
-- [ ] Every research synthesis doc (D4 format) committed to `docs/research/`
+- [ ] All 20 research issues closed or merged to main (Phases 1–3: 17 issues; Phase 4: 3 new issues #189, #190, #191)
+- [ ] Every research synthesis doc (D4 format) committed to `docs/research/` (including Phase 4 docs)
 - [ ] All new scripts (#181, #182) have ≥80% test coverage and are CI-integrated
 - [ ] Three primary papers updated with forward references to new research docs
+- [ ] Phase 4 foundational papers linked from primary papers (values-encoding.md, endogenic-design-paper.md, bubble-clusters-substrate.md, session-management.md)
 - [ ] Every phase has a Review gate with APPROVED verdict before next phase begins
 - [ ] No phase advances without committed deliverables
 
