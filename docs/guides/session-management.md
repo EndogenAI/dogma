@@ -417,3 +417,9 @@ At the **end** of any session that will continue later, write a `## Executive Ha
 
 The handoff section is the contract between sessions. Without it, the next session re-discovers at token cost what the prior session already knew.
 
+---
+
+## Further Reading
+
+- [`docs/research/context-amplification-calibration.md`](../research/context-amplification-calibration.md) — Empirical calibration study for context-sensitive amplification weights (w₁/w₂/w₃) per task type. Validate thresholds against this document before adjusting the amplification lookup table in `AGENTS.md`.
+

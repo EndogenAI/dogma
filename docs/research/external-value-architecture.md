@@ -191,6 +191,12 @@ Ordered by impact-to-cost:
 **Action**: Add a check that flags agent files which cite `client-values.yml` as a higher-priority source than `MANIFESTO.md` or `AGENTS.md`.
 **Rationale**: Programmatic governance (MANIFESTO.md — Axiom: Algorithms Before Tokens §2) — the supremacy rule must be enforced by code, not by convention.
 
+### R5 — Operationalize conflict resolution as an encoded algorithm
+
+**Target**: `scripts/resolve_values_conflict.py` (new script)
+**Action**: The conflict taxonomy, decision tree (ALLOW/BLOCK/ESCALATE), and pseudocode specification for `scripts/resolve_values_conflict.py` are detailed in [`docs/research/external-values-decision-framework.md`](external-values-decision-framework.md). Implement R1–R4 in conjunction with the four-type conflict taxonomy defined there.
+**Rationale**: R1–R4 define structural encoding surfaces; the conflict-resolution algorithm is the runtime enforcement mechanism that makes those surfaces deterministic. Without an encoded resolution algorithm, deployment-layer conflicts remain dependent on agent interpretation at token cost.
+
 ---
 
 ## Sources
