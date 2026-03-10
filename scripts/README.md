@@ -137,12 +137,19 @@ created and committed *before* execution starts. This script makes that step one
 **Usage**:
 
 ```bash
-# Create a workplan for today
+# Create a workplan with interactive prompts (default)
 uv run python scripts/scaffold_workplan.py <slug>
 
-# Example
+# Create a workplan with CLI flags (no prompts)
+uv run python scripts/scaffold_workplan.py <slug> --ci "Tests,Auto-validate" --issues "42,43"
+
+# Example (interactive)
 uv run python scripts/scaffold_workplan.py formalize-workflows
-# Creates: docs/plans/2026-03-06-formalize-workflows.md
+# Creates: docs/plans/2026-03-06-formalize-workflows.md (prompts for CI and issue numbers)
+
+# Example (non-interactive using flags)
+uv run python scripts/scaffold_workplan.py formalize-workflows --ci "Tests" --issues "42"
+# Creates: docs/plans/2026-03-06-formalize-workflows.md (no prompts)
 ```
 
 **Arguments**:
@@ -150,8 +157,16 @@ uv run python scripts/scaffold_workplan.py formalize-workflows
 | Argument | Required | Description |
 |----------|----------|-------------|
 | `slug` | yes | Dash-separated slug, e.g. `fix-session-management`. Converted to title-case for the workplan heading. |
+| `--ci` | no | Comma-separated CI values (e.g. `Tests,Auto-validate`). Bypasses interactive CI prompt. Valid values: `Tests`, `Auto-validate`, `Lint`. |
+| `--issues` | no | Comma-separated issue numbers (e.g. `42,43`). Bypasses interactive issues prompt. Must be positive integers. Duplicates are automatically deduplicated. |
 
-**Exit codes**: `0` file created; `1` missing slug, file already exists, or write error.
+**Exit codes**: `0` file created; `1` missing slug, invalid flag values, file already exists, or write error.
+
+**Behavior**:
+- If `--ci` flag is provided, it is used directly; the interactive CI prompt is skipped.
+- If `--issues` flag is provided, it is used directly; the interactive issues prompt is skipped.
+- If neither flag is provided and stdin is interactive, the script prompts for values.
+- If neither flag is provided and stdin is non-interactive (e.g., in CI or agent context), sensible defaults are used.
 
 **After running**: fill in the `## Objective` section and at least one `## Phase Plan` entry,
 then commit with `docs(plans): add workplan for <slug>`.
