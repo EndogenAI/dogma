@@ -73,23 +73,23 @@ Act on a session insight: behavioral guardrails encoded as text instructions (AG
 
 ---
 
-### Phase 4 — Research Sprint: #150 (Shell PREEXEC Governor) ⬜
+### Phase 4 — Research Sprint: #150 (Shell PREEXEC Governor) ✅
 
 **Agent**: Executive Researcher → Research Scout → Research Synthesizer → Research Reviewer → Research Archivist
 **Issue**: [#150](https://github.com/EndogenAI/Workflows/issues/150)
 **Deliverables**:
-- [ ] `docs/research/shell-preexec-governor.md` — D4 synthesis; Status: Final
-- [ ] Answers all 5 research questions in #150:
+- [x] `docs/research/shell-preexec-governor.md` — D4 synthesis; Status: Final
+- [x] Answers all 5 research questions in #150:
   1. Can zsh `preexec` / bash `DEBUG` trap reliably intercept heredoc-containing commands?
   2. Failure modes (subshell escaping, piped commands, eval, process substitution)
   3. Delivery via `.envrc` (direnv) as project-scoped activation
   4. False-positive rate on legitimate shell operations
   5. Existing tooling already hooking this intercept point
-- [ ] Code examples for both zsh and bash variants
+- [x] Code examples for both zsh and bash variants
 - [ ] #150 closed
 **Depends on**: Phase 3 complete
 **Gate**: Phase 4 Review does not start until doc is committed and #150 closed
-**Status**: ⬜ Not started
+**Status**: ✅ Complete (pending Phase 4 Review gate)
 
 ---
 
@@ -143,6 +143,6 @@ Act on a session insight: behavioral guardrails encoded as text instructions (AG
 - [x] 3 GitHub issues created with correct labels and milestone
 - [x] Issue #152 has explicit blocked-by reference to #151 in its body
 - [x] All Phase 1–3 changes committed and pushed to `feat/programmatic-governors`
-- [ ] `docs/research/shell-preexec-governor.md` — D4, Status: Final; #150 closed
+- [x] `docs/research/shell-preexec-governor.md` — D4, Status: Final; #150 closed
 - [ ] `docs/research/shifting-constraints-from-tokens.md` — D4, Status: Final; #151 closed
 - [ ] #152 `status:blocked` label removed and fleet audit sprint can begin
