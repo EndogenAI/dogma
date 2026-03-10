@@ -303,20 +303,31 @@ When delegating with a restricted scope, **state exclusions explicitly** in the 
 Good example:
 > "Edit `.md` files only — do not modify scripts, config, or agent files."
 
+### Pre-Use Validation (Tier 0)
+
+**Always validate temp files before passing to downstream commands.** Validation catches silent truncation, encoding errors, and incomplete writes before they corrupt remote state.
+
+**Validation checklist**:
+- File is non-empty: `test -s /tmp/file`
+- File is valid UTF-8: `file /tmp/file | grep -q "UTF-8|ASCII"`
+- File contains expected content patterns (e.g., for issue bodies: `grep -q "^#"`)
+
+**When validation fails**: Print debug info (`cat /tmp/file`) and fix the issue before attempting the gh command again.
+
 ### Verify-After-Act for Remote Writes
 
-Any command that creates or modifies a remote side effect must be immediately followed by a verification read:
+Any command that creates or modifies a remote side effect must be immediately preceded by Tier 0 pre-use validation, then followed by a verification read:
 
-| Command | Verification |
-|---------|-------------|
-| `gh issue create` | `gh issue list --state open --limit 5` |
-| `git push` | `git log --oneline -1` then `gh run list --limit 3` to monitor CI |
-| `gh pr create` | `gh pr view` |
-| `gh issue close` | `gh issue view <number>` |
-| `gh issue edit <num>` (labels/milestone) | `gh issue view <num> --json labels,milestone` |
-| `gh issue edit <num>` (body/checkboxes) | `gh issue view <num> --json body -q '.body' \| grep -E '\[x\]\|\[ \]'` |
-| milestone create via API | `gh api repos/:owner/:repo/milestones` |
-| `gh issue comment` (session-end update) | `gh issue view <num> --json comments -q '.comments[-1].body[:80]'` |
+| Command | Pre-Use Validation | Verification |
+|---------|-------------------|------------|
+| `gh issue create` | `test -s /tmp/file && file /tmp/file \| grep -q "UTF-8"` | `gh issue list --state open --limit 5` |
+| `git push` | N/A (local commit) | `git log --oneline -1` then `gh run list --limit 3` to monitor CI |
+| `gh pr create` | `test -s /tmp/file && file /tmp/file \| grep -q "UTF-8"` | `gh pr view` |
+| `gh issue close` | N/A (no file) | `gh issue view <number>` |
+| `gh issue edit <num>` (labels/milestone) | N/A (no file) | `gh issue view <num> --json labels,milestone` |
+| `gh issue edit <num>` (body/checkboxes) | `test -s /tmp/file && file /tmp/file \| grep -q "UTF-8"` | `gh issue view <num> --json body -q '.body' \| grep -E '\[x\]\|\[ \]'` |
+| milestone create via API | N/A (JSON payload) | `gh api repos/:owner/:repo/milestones` |
+| `gh issue comment` (session-end update) | `test -s /tmp/file && file /tmp/file \| grep -q "UTF-8"` | `gh issue view <num> --json comments -q '.comments[-1].body[:80]'` |
 
 **Zero error output is not confirmation of success.** Output truncation, network timeouts, and silent API failures all produce clean exits. Always verify.
 

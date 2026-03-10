@@ -273,8 +273,17 @@ When a phase depends on another agent's output:
 When all phases are complete:
 
 - Write `## Session Summary` — orientation for the next session, what was done, what's open.
-- **Update the issue body checkboxes** for every completed deliverable. Write the updated body to a temp file (`gh issue edit <num> --body-file <path>`) and verify with `gh issue view <num> --json body -q '.body' | grep -E '\[x\]|\[ \]'`. The issue body is the live deliverable tracker — keep it current.
-- **Post a progress comment on every GitHub issue actively worked this session.** Summarise: what phase completed, commit SHAs, what comes next. Write the body to a temp file and post with `gh issue comment <num> --body-file <path>`. Verify with `gh issue view <num> --json comments -q '.comments[-1].body[:80]'`. This is a mandatory close step, not optional.
+- **Update the issue body checkboxes** for every completed deliverable.
+  1. Write updated body to temp file: `/tmp/issue_<num>_body.md`
+  2. **Validate before use**: `test -s /tmp/issue_<num>_body.md && file /tmp/issue_<num>_body.md | grep -q "UTF-8\|ASCII" && grep -q "- \[.\]" /tmp/issue_<num>_body.md` (check for checkbox patterns)
+  3. Pass to `gh issue edit`: `gh issue edit <num> --body-file /tmp/issue_<num>_body.md`
+  4. Verify result: `gh issue view <num> --json body -q '.body' | grep -E '\[x\]|\[ \]'`
+
+- **Post a progress comment on every GitHub issue actively worked this session.** Summarise what phase completed, commit SHAs, what comes next.
+  1. Write comment body to temp file: `/tmp/issue_<num>_comment.md`
+  2. **Validate before use**: `test -s /tmp/issue_<num>_comment.md && file /tmp/issue_<num>_comment.md | grep -q "UTF-8\|ASCII"` (check encoding only; comments often lack headings)
+  3. Post with `gh issue comment <num> --body-file /tmp/issue_<num>_comment.md`
+  4. Verify posted: `gh issue view <num> --json comments -q '.comments[-1].body[:80]'`
 - Run `uv run python scripts/prune_scratchpad.py --force` to archive and compress.
 - Confirm all commits are pushed with `git status` and `git log --oneline -5`.
 

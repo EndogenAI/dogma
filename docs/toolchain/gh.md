@@ -51,6 +51,69 @@ body.unlink()
 | Copilot ignores priority | Priority set only in Projects v2 field, not as label | Add `priority:` label explicitly |
 | Copilot misses context | Key facts in linked issues, not in body | Put key facts directly in issue body |
 
+## Pre-Use Validation for Temp Files
+
+Before passing a temporary file to any `gh` command with `--body-file`, validate file integrity:
+
+### Quick Check (Recommended)
+
+```bash
+# Validate temp file before gh issue/pr edit or comment
+test -s /tmp/body.md && file /tmp/body.md | grep -q "UTF-8\|ASCII" && \
+  grep -q "^#" /tmp/body.md && \
+  gh issue edit <num> --body-file /tmp/body.md || \
+  echo "ERROR: file validation failed"
+```
+
+### Full Validation Checklist
+
+| Check | Command | Why |
+|-------|---------|-----|
+| **Non-empty** | `test -s /tmp/file.md` | Catches silent truncation |
+| **Valid UTF-8** | `file /tmp/file.md \| grep -q "UTF-8\|ASCII"` | Catches codec corruption |
+| **Expected content** | `grep -q "^##" /tmp/file.md` | Catches incomplete writes |
+| **Reasonable size** | `[ $(wc -c < /tmp/file.md) -lt 1000000 ]` | 1MB max for safety |
+
+### Canonical Shell Wrapper
+
+Save this as a local function or script:
+
+```bash
+validate_and_edit_issue() {
+  local issue_num=$1
+  local body_file=$2
+  
+  # Validation before use
+  [[ -s "$body_file" ]] || { echo "ERROR: file empty or missing"; return 1; }
+  file "$body_file" | grep -q "UTF-8\|ASCII" || { 
+    echo "ERROR: file not valid UTF-8 text"; return 1; 
+  }
+  grep -q "## " "$body_file" || {
+    echo "WARNING: no markdown headings found in $body_file";
+  }
+  
+  # Safe to use now
+  gh issue edit "$issue_num" --body-file "$body_file"
+  
+  # Post-use verification (Tier 3)
+  gh issue view "$issue_num" --json body -q '.body' | diff -u "$body_file" - || {
+    echo "WARNING: file content did not match after edit"
+  }
+}
+```
+
+### When Pre-Validation is Essential
+
+- ✅ Composing long-form issue bodies (> 500 chars)
+- ✅ Multi-line markdown with backticks, code blocks, tables
+- ✅ Issue/PR bodies that are critical paths (e.g., epic checklists)
+- ✅ After any process that might corrupt file (terminal heredocs, large file writes)
+
+### When Pre-Validation is Optional
+
+- [ ] Simple one-line issue comments (< 100 chars)
+- [ ] File is read directly from a committed file (git checkout)
+
 ---
 
 ## Pull Requests
