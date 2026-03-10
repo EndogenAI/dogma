@@ -108,6 +108,16 @@ def test_link_in_code_fence_skipped(tmp_path: Path) -> None:
 
 
 @pytest.mark.io
+def test_link_in_inline_code_span_skipped(tmp_path: Path) -> None:
+    """Links inside inline backtick code spans should NOT be checked."""
+    doc = tmp_path / "source.md"
+    doc.write_text("Example: `[[text](url)](url)` nesting.\n")
+
+    exit_code, stderr = run_check([doc])
+    assert exit_code == 0
+
+
+@pytest.mark.io
 def test_placeholder_ellipsis_skipped(tmp_path: Path) -> None:
     """Placeholder targets like '...' should NOT be flagged as broken links."""
     doc = tmp_path / "source.md"
