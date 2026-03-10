@@ -16,7 +16,7 @@ These constraints govern all agent behavior. They derive from three core axioms 
 
 **Session-Start Encoding Checkpoint**: At the start of every session, the first sentence of `## Session Start` in the scratchpad must name the governing axiom and one primary endogenous source. See [`docs/guides/session-management.md` → Session-Start Encoding Checkpoint](docs/guides/session-management.md#session-start-encoding-checkpoint) for format and examples. The agent fleet is the pressurizing medium — it gives each substrate coherent form but does not own the membrane or the bucket.
 
-If `client-values.yml` exists in the workspace root, read it after AGENTS.md and note any Deployment Layer constraints in `## Session Start`.
+If `client-values.yml` exists in the workspace root, treat it as a Deployment Layer external-values file: read it after `AGENTS.md`, note any Deployment Layer constraints in `## Session Start`, and interpret its contents using [`docs/research/external-value-architecture.md`](../../docs/research/external-value-architecture.md) (schema, Deployment Layer rules, and Supremacy constraints). Do **not** treat `client-values.yml` as overriding Core Layer constraints in `MANIFESTO.md` or this `AGENTS.md`; it can only specialize them at the Deployment Layer.
 
 ### Context-Sensitive Amplification
 

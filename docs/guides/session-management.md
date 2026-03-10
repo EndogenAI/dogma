@@ -95,9 +95,7 @@ Include a `## Session History` table to track multi-session continuity:
 ```markdown
 ## Session History
 
-| Session | Branch | Phase | Status | Commit | Notes |
-|---------|--------|-------|--------|--------|-------|
-| [date] | [branch] | [phase] | ✅/🔄/⬜ | [SHA] | [summary] |
+Include a `## Session History` table to track multi-session continuity. Use the canonical table schema defined in the **Cross-Session Continuity (Pattern M1 — Scratchpad-as-Episodic-Index)** section below. Do not redefine an alternative schema here — keep all multi-session tracking to that single, authoritative definition.
 ```
 
 **Format:**

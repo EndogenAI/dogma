@@ -435,10 +435,27 @@ This appendix identifies research recommendations that are either:
 
 ### Recommended Next Steps
 
-1. **Batch process XS documentation edits** (R5.3, R4.4, R4.5, R1.1, R2.3) as a single PR
-2. **Create issue for validate_session.py implementation spec** (recommendation #1) — immediately actionable, high-impact, no external deps
-3. **Create issue for BM25 scope completion** (recommendation #8) — extends existing artifact; low effort, high value
-4. **Schedule quarterly user research synthesis** (recommendation #21 / R6) — lightweight process gate
-5. **Verify #62 (Agent Skills) completion** — confirm all 6 Tier 1 + Tier 2 skills are committed and tested
-6. **Defer external API vectorization** — all embedding/AFS work blocked on local compute baseline (#OPEN_RESEARCH item 1)
+**✅ COMPLETED (2026-03-09)**:
+- Issue seeding delegation to Executive PM: All 29 research recommendations extracted and scoped as issues #112–#140 in "Action Items from Research" milestone
+- Step 2: Create issue for validate_session.py implementation spec (recommendation #1) → **#112** ✅
+- Step 3: Create issue for BM25 scope completion (recommendation #8) → **#119** ✅
+
+**REMAINING ACTION ITEMS**:
+
+1. **Batch process XS documentation edits** (5 issues: #116, #126, #130, #135, #136, #140)
+   - Scope: AI-pressurizing-medium framing, deployment-layer reading, session history forward reference, session history table addition, BDI framework, D/LLM annotations
+   - Effort: Single PR, ~30 min total
+   - Issues: #116, #126, #130, #135, #136, #140
+
+2. **Schedule quarterly user research synthesis** (recommendation #21 / R6)
+   - Lightweight process gate for "voice of the user" synthesis
+   - Related issue: #132
+
+3. **Verify #62 (Agent Skills) completion**
+   - Confirm all 6 Tier 1 + Tier 2 skills are committed, tested, and integrated
+   - Related issue: #123
+
+4. **Defer external API vectorization**
+   - All embedding/AFS work blocked on local compute baseline confirmation
+   - Related issues: #128, #129, #131, #17 (gating condition: local compute foundation)
 
