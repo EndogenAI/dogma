@@ -36,3 +36,10 @@ repos:
         types_or: [python, shell]
         exclude: scripts/validate_agent_files\.py|tests/test_validate_agent_files\.py
         pass_filenames: true
+      - id: no-terminal-file-io-redirect
+        name: Block terminal file I/O redirection (use create_file / replace_string_in_file tools instead)
+        language: pygrep
+        entry: '>>?\s+\S+|\|\s+(tee|cat\s+>>)\s+\S+'
+        types_or: [python, shell]
+        exclude: scripts/validate_agent_files\.py|tests/test_validate_agent_files\.py|scripts/pr_review_reply\.py
+        pass_filenames: true

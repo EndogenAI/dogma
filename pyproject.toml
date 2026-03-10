@@ -62,3 +62,8 @@ target-version = "py39"
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I"]
+# T2 (static linting) enforcement: Terminal file I/O redirection is monitored
+# via pre-commit hook 'no-terminal-file-io-redirect' (see .pre-commit-config.yaml).
+# Patterns flagged: > file, >> file, | tee file, | cat >> file
+# Rationale: Shift file I/O from T1 (interactive terminal) to T2 (static tools)
+# like create_file or replace_string_in_file. Reference: Issue #154, #151 research
