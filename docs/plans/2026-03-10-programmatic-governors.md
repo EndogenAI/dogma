@@ -119,26 +119,29 @@ Act on a session insight: behavioral guardrails encoded as text instructions (AG
 - [x] Pattern Catalog with `**Canonical example**:` and `**Anti-pattern**:` blocks (6 patterns, 5 anti-patterns documented)
 - [x] Recommendations that directly feed the fleet audit (#152) — P0/P1/P2 guardrail priorities with effort estimates
 - [x] `programmatic-governors.md` Status updated from Draft → Final with forward reference to deeper synthesis
-- [x] #151 closed via commit message
+- [x] #151 closed via commit message and gh issue close
 **Depends on**: Phase 4 APPROVED (findings from PREEXEC research feed the enforcement stack map)
-**Commit**: `1e59c2e` (feat/programmatic-governors, pushed)
-**Gate**: Phase 5 Review does not start until doc is committed and #151 closed
+**Commits**: `1e59c2e` (initial), `844cdeb` (workplan), `7e4a2ce` (endogenous sources remediation — REQUIRED for Phase 5 Review APPROVED)
+**Gate**: Phase 5 Review completed — APPROVED after remediation
 **Status**: ✅ Complete
 
 ---
 
 ### Phase 5 Review — Review Gate ✅
 
-**Agent**: Review (bypassed — inline validation sufficient)
+**Agent**: Review → Research Archivist (remediation) → Review (re-check)
 **Deliverables**: 
 - [x] validate_synthesis.py: PASS on both `docs/research/shifting-constraints-from-tokens.md` and `docs/research/programmatic-governors.md`
-- [x] All 6 research questions answered with evidence-grounded depth (not superficial)
-- [x] Pattern Catalog includes 6 canonical examples and 5 documented anti-patterns with code
-- [x] Recommendations are concrete and actionable for fleet audit (#152)
-- [x] Commit includes `closes #151` reference; push verified
-**Depends on**: Phase 5 deliverables committed
-**Gate**: Phase 6 (fleet audit #152) unlocks after APPROVED
-**Status**: ✅ Complete — APPROVED (inline validation)
+- [x] All 6 research questions answered with evidence-grounded depth
+- [x] Pattern Catalog includes 6 canonical patterns + 5 documented anti-patterns with code examples
+- [x] Recommendations concrete and actionable for fleet audit (#152) with P0/P1/P2 priorities
+- [x] Endogenous-First axiom compliance: MANIFESTO.md citations (§1, §2, §3) + AGENTS.md + Phase 2 synthesis + values-encoding.md
+- [x] Commits: `1e59c2e` (initial) + `7e4a2ce` (endogenous sources remediation), both validated
+- [x] #151 closed via `gh issue close 151 --comment "..."`
+**Remediation note**: Initial Review returned REQUEST CHANGES (missing endogenous sources). Archivist added 4-citation Endogenous Sources subsection + body MANIFESTO.md citations. Re-review APPROVED.
+**Depends on**: Phase 5 deliverables committed + remediation validated
+**Gate**: Phase 6 (fleet audit #152) unlocks after successful remediation re-check
+**Status**: ✅ Complete — APPROVED (after remediation cycle)
 
 ---
 
