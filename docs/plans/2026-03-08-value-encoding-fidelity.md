@@ -791,8 +791,8 @@ Depends on: Phase 3 (PR #89) merged to feat/value-encoding-fidelity
 **Branch convention**: `research/dogma-neuroplasticity`
 **Agent**: Executive Researcher → Research Scout → Synthesizer → Archivist
 **Informed by**: Phase 6 (what's extractable), Phase 4 (drift measurement provides signal source)
-**Status**: ⬜ Not started
-**Checklist**: Delegate detailed per-phase execution checklist to Executive Planner before beginning execution (per AGENTS.md § Per-Phase Execution Checklists).
+**Status**: 🔄 In progress — checklist delegated; branch setup next
+**Checklist**: ✅ Delegated to Executive Planner — see `### Phase 7 Detailed Checklist` below
 
 | Issue | Title | Type | Effort |
 |-------|-------|------|--------|
@@ -802,11 +802,115 @@ Depends on: Phase 3 (PR #89) merged to feat/value-encoding-fidelity
 **Gate deliverables**:
 - [ ] Back-propagation protocol: evidence threshold, proposal format, coherence check, ADR template
 - [ ] Stability tier model for substrate (Axioms / Principles / Operational Constraints)
-- [ ] `scripts/propose_dogma_edit.py` specification
+- [ ] `scripts/propose_dogma_edit.py` implementation + tests ≥80%
 - [ ] Per-boundary degradation analysis from #75 (Scout → Synthesizer → Archive)
-- [ ] `docs/research/dogma-neuroplasticity.md` + OQ-VE-5 appended to `values-encoding.md`
+- [ ] `docs/research/dogma-neuroplasticity.md` committed (Final)
+- [ ] OQ-VE-5 appended to `docs/research/values-encoding.md`
 
 **Review gate**: Executive Docs reviews protocol for consistency with existing ADR process in `docs/decisions/`.
+
+---
+
+### Phase 7 Detailed Checklist
+
+**Issues**: #82 → #75 | **Branch**: `research/dogma-neuroplasticity`
+**Execution order**: A → B and C (parallel-eligible after A3) → D → E → F
+
+---
+
+#### Group A — Setup
+**Owner: Executive Orchestrator** | No prerequisites
+
+- [ ] **A1.** Confirm Phase 6 gate: `git log --oneline -10` on `feat/value-encoding-fidelity`; verify Phase 6 skills-decision-logic merge commit and Phase α detect_drift CI commit are present. Abort if missing — merge predecessor PRs first.
+- [ ] **A2.** Create branch: `git checkout feat/value-encoding-fidelity && git pull && git checkout -b research/dogma-neuroplasticity && git push -u origin research/dogma-neuroplasticity`. Verify: `git branch --show-current` → `research/dogma-neuroplasticity`.
+- [ ] **A3.** Pre-read endogenous sources: `docs/research/values-encoding.md` §5 item 5 (OQ-VE-5); `docs/decisions/ADR-001` through `ADR-006` for template structure; `AGENTS.md` §"Focus-on-Descent / Compression-on-Ascent"; skim `scripts/audit_provenance.py` and `scripts/detect_drift.py` for reuse surface. Write `## Session Start` in scratchpad citing "Endogenous-First" and this workplan.
+
+---
+
+#### Group B — Issue #75 Empirical Audit
+**Owner: Research Scout → Research Synthesizer** | Prerequisite: A3 (parallel-eligible with C)
+
+- [ ] **B4.** Identify audit corpus: run `git log --oneline --all | grep -E 'research/queryable|research/skills'` to confirm merged source branches. Select 2–3 sessions from `.tmp/feat-value-encoding-fidelity/2026-03-08.md` + `2026-03-09.md`; locate their archived research doc counterparts (`docs/research/queryable-substrate.md`, `docs/research/skills-as-decision-logic.md`). Record each as a `(Scout section, Synthesizer section, Archive doc)` trio in scratchpad.
+- [ ] **B5.** Element type 1 — Axiom citation density: for each session trio, count MANIFESTO.md back-references per stage. Run `uv run python scripts/audit_provenance.py` to score the archived doc; manually count in Scout and Synthesizer scratchpad sections. Record `{scout_count, synth_count, archive_count}` per session.
+- [ ] **B6.** Element type 4 — Watermark phrase survival: run `uv run python scripts/detect_drift.py --path <archived_doc> --threshold 0.0` for each archived doc. Scan Scout and Synthesizer sections for the same six `WATERMARK_PHRASES` constants (`Endogenous-First`, `Algorithms Before Tokens`, `Local Compute-First`, `encode-before-act`, `morphogenetic seed`, `programmatic-first`). Record survival rate per boundary.
+- [ ] **B7.** Element types 2 & 3 — Canonical example + anti-pattern preservation: grep each Scout, Synthesizer, and Archive stage for `\*\*Canonical example\*\*:` and `\*\*Anti-pattern\*\*:` patterns. Record count present at each stage per session.
+- [ ] **B8.** Synthesizer: compile degradation summary table — rows: four element types (axiom density, canonical examples, anti-patterns, watermark phrases); columns: Scout→Synth loss %, Synth→Archive loss % — averaged across the 2–3 sessions. Identify the element type with highest total loss.
+- [ ] **B9.** Synthesizer: draft proposed additive amendments to `AGENTS.md` §"Focus-on-Descent / Compression-on-Ascent" based on B8 findings — concrete additions only (e.g., "Retain axiom-citation count"; "Preserve ≥2 watermark phrases in Synthesizer return"). ≤3 bullet additions; no rewrites.
+- [ ] **B10.** Synthesizer: write OQ-VE-5 resolution section text to scratchpad under `## B10 — OQ-VE-5 Draft` — heading `**5. Value drift in multi-agent handoffs** *(RESOLVED — <date>)*`, B8 degradation table, resolution statement citing B9 AGENTS.md amendments, `**Closes**: issue #75`. ≤500 words.
+- [ ] **B11.** Review gate: Orchestrator reviews B10 draft. Confirm: degradation table spans ≥2 sessions and 4 element types; AGENTS.md amendment text is additive-only; OQ-VE-5 marked RESOLVED with date. Record `## B11 — Review: Approved` in scratchpad before C-group merge.
+
+---
+
+#### Group C — Issue #82 Research Survey
+**Owner: Research Scout → Research Synthesizer** | Prerequisite: A3 (parallel-eligible with B)
+
+- [ ] **C12.** Source cache check: for planned survey URLs (Constitutional AI RLAIF, Argyris double-loop learning, living specification methodologies, SemVer for prose), run `uv run python scripts/fetch_source.py <url> --check` before fetching. Skip already-cached URLs in `.cache/sources/`.
+- [ ] **C13.** Scout: survey Constitutional AI RLAIF feedback loop and Argyris single/double-loop learning. Extract: signal aggregation threshold patterns, feedback cycle duration, and conflict resolution when new signal contradicts existing rule. Map to substrate: single-loop = AGENTS.md edit; double-loop = MANIFESTO.md edit. Record ≤150 words in scratchpad.
+- [ ] **C14.** Scout: survey living specification methodologies and semantic versioning for prose. Identify empirical mutation-rate differences between stable policy layers vs. volatile operational layers. Record ≤75 words.
+- [ ] **C15.** Scout: design evidence threshold — draft 3-tier threshold: T3 Operational Constraints (2 independent session signals); T2 Guiding Principles (3 signals + scratchpad retrospective); T1 Axioms (3 signals + formal ADR in `docs/decisions/`). Justify in scratchpad.
+- [ ] **C16.** Scout: design stability tier model — T1 Axioms (`MANIFESTO.md` §axioms; very stable), T2 Guiding Principles (`MANIFESTO.md` non-axiom sections + `AGENTS.md` §1; moderately stable), T3 Operational Constraints (`AGENTS.md` operational sections; rapidly evolving). Record tier boundaries and mutation-rate rationale.
+- [ ] **C17.** Scout: draft ADR-style template for dogma edits — headings: Date, Tier, Current Text, Proposed Text (unified-diff format), Evidence (session file citations + timestamps), Coherence Check (inheritance chain cross-references), Status (Proposed | Accepted | Rejected). Compare against ADR-006 structure confirmed in A3.
+- [ ] **C18.** Synthesizer: draft `docs/research/dogma-neuroplasticity.md` — D4 frontmatter (`title: "Dogma Neuroplasticity & Back-Propagation Protocol"`, `status: Final`); required headings: Executive Summary, Hypothesis Validation, Pattern Catalog (stability tier model + back-propagation protocol + ADR template), Recommendations (`propose_dogma_edit.py` spec), Sources; ≥2 cites to `MANIFESTO.md` axioms.
+- [ ] **C19.** Validate: `uv run python scripts/validate_synthesis.py docs/research/dogma-neuroplasticity.md` → exit 0. Fix any missing heading or frontmatter issues before proceeding.
+- [ ] **C20.** Commit: `git add docs/research/dogma-neuroplasticity.md && git commit -m "docs(research): dogma neuroplasticity synthesis [#82]"`. Verify: `git log --oneline -1`.
+
+---
+
+#### Group D — Script Implementation (#82 gate deliverable D4)
+**Owner: Executive Scripter** | Prerequisite: C20 committed
+
+- [ ] **D21.** Before writing any code, read `scripts/audit_provenance.py` `extract_manifesto_axioms()` and `scripts/detect_drift.py` `WATERMARK_PHRASES` fully. Document reuse plan: import `WATERMARK_PHRASES` directly from `detect_drift`; import `extract_manifesto_axioms` from `audit_provenance`. No reimplementation.
+- [ ] **D22.** Create `scripts/propose_dogma_edit.py` with module docstring: purpose, inputs (`--input <session-file>`, `--tier T1|T2|T3`, `--affected-axiom <str>`, `--proposed-delta <str or - for stdin>`, `--output <path>`), outputs (ADR-style Markdown proposal), usage example.
+- [ ] **D23.** Implement `load_stability_tiers() -> dict[str, dict]` — hard-coded tier metadata (name, session_threshold, requires_adr) matching the C16 design and `dogma-neuroplasticity.md` §Pattern Catalog verbatim.
+- [ ] **D24.** Implement `extract_evidence(session_text: str) -> list[str]` — import `WATERMARK_PHRASES` from `detect_drift`; return lines in `session_text` containing any watermark phrase. Return `[]` for empty input.
+- [ ] **D25.** Implement `check_coherence(tier: str, proposed_delta: str, tiers: dict) -> dict` — returns `{"passes": bool, "session_threshold": int, "inheriting_layers": list[str]}`. Flag `passes: False` if proposed_delta removes any `WATERMARK_PHRASES` entry; T1 edits always require `requires_adr: True`.
+- [ ] **D26.** Implement `generate_proposal(...) -> str` — returns Markdown using the C17 ADR-style template: Date (today), Tier, Current Text (placeholder `<replace>`), Proposed Text (unified-diff input), Evidence (extract_evidence lines), Coherence Check (check_coherence result summary), Status: Proposed.
+- [ ] **D27.** Implement `main(argv: list[str] | None = None) -> int` with `argparse`. `--proposed-delta -` reads from stdin. Writes proposal to `--output` path or stdout. Returns 0 on success; 1 if `coherence["passes"] is False` and tier is T1.
+- [ ] **D28.** Smoke test: `uv run python scripts/propose_dogma_edit.py --input .tmp/feat-value-encoding-fidelity/2026-03-09.md --tier T3 --affected-axiom "Focus-on-Descent" --proposed-delta "+" --output /tmp/smoke-proposal.md`. Verify: file created; contains `## Coherence Check`; exit 0.
+- [ ] **D29.** Create `tests/test_propose_dogma_edit.py` with module docstring. Import all functions directly. Test: `load_stability_tiers()` returns all 3 tiers with T1 threshold > T3; `extract_evidence()` returns ≥1 line for watermark-containing text; `check_coherence()` T3 proposal removing watermark phrase → `passes: False`; valid T3 proposal → `passes: True`; `generate_proposal()` output contains all 7 ADR headings and `Status: Proposed`.
+- [ ] **D30.** CLI tests (`@pytest.mark.io`): missing `--input` → non-zero exit; valid invocation → output file created; output file is valid Markdown with ≥6 `##` headings.
+- [ ] **D31.** Coverage gate: `uv run pytest tests/test_propose_dogma_edit.py --cov=scripts/propose_dogma_edit --cov-report=term-missing -q` ≥ 80%. Fix gaps. Commit: `git add scripts/propose_dogma_edit.py tests/test_propose_dogma_edit.py && git commit -m "feat(scripts): propose_dogma_edit.py + tests ≥80% [#82]"`. Verify: `git log --oneline -1`.
+
+---
+
+#### Group E — AGENTS.md Amendments + OQ-VE-5 Resolution
+**Owner: Executive Docs** | Prerequisite: D31 committed + B11 approved
+
+- [ ] **E32.** Apply AGENTS.md amendments from B9 under `### Focus-on-Descent / Compression-on-Ascent` using `replace_string_in_file` (never heredoc). Verify: `grep -A 15 "Focus-on-Descent" AGENTS.md` shows new bullet(s); no existing bullet text deleted.
+- [ ] **E33.** Append OQ-VE-5 resolution text from `## B10 — OQ-VE-5 Draft` into `docs/research/values-encoding.md` §5 using `replace_string_in_file` anchored at the existing item 5 heading. Verify: `grep -n "RESOLVED" docs/research/values-encoding.md` → ≥1 match.
+- [ ] **E34.** Validate: `uv run python scripts/validate_synthesis.py docs/research/values-encoding.md` → exit 0. Then `uv run python scripts/validate_agent_files.py --all` → all PASS. Fix any regressions immediately.
+- [ ] **E35.** Commit: `git add AGENTS.md docs/research/values-encoding.md && git commit -m "docs(agents,research): focus-on-descent amendments + OQ-VE-5 resolution [#75, #82]"`. Verify: `git log --oneline -1`.
+- [ ] **E36.** Review gate: call Review agent on E35 diff. Confirm: AGENTS.md edit is additive-only (no deletions); OQ-VE-5 section appended without overwriting items 1–4; both validation scripts exit 0. Record `## E36 — Review: Approved` in scratchpad.
+
+---
+
+#### Group F — Validation & Close
+**Owner: Executive Orchestrator** | Prerequisite: E36 approved
+
+- [ ] **F37.** Lint + format: `uv run ruff check scripts/propose_dogma_edit.py tests/test_propose_dogma_edit.py && uv run ruff format --check scripts/ tests/`. Fix all violations before proceeding.
+- [ ] **F38.** Full test suite (fast subset): `uv run pytest tests/ -x -m "not slow and not integration" -q`. Zero regressions in pre-existing tests. Fix any failures.
+- [ ] **F39.** Gate deliverable confirm — verify all 6 Phase 7 items are checkable: (1) back-propagation protocol in `dogma-neuroplasticity.md` §Recommendations; (2) stability tier model in §Pattern Catalog; (3) `scripts/propose_dogma_edit.py` present + tests ≥80%; (4) B8 degradation table in scratchpad + OQ-VE-5 section; (5) `dogma-neuroplasticity.md` `status: Final`; (6) `grep "RESOLVED" docs/research/values-encoding.md` → match. Check all workplan gate item boxes.
+- [ ] **F40.** Update issue bodies: write updated checkbox bodies to temp files; `gh issue edit 82 --body-file <path>` and `gh issue edit 75 --body-file <path>`. Verify: `gh issue view 82 --json body -q '.body' | grep -E '\[x\]|\[ \]'`.
+- [ ] **F41.** Push and open PR: `git push && gh pr create --base feat/value-encoding-fidelity --title "feat(phase-7): dogma neuroplasticity + back-propagation [#82, #75]" --body-file <temp-body-file>`. Verify: `gh pr view --json title,state`.
+- [ ] **F42.** Post progress comments: `gh issue comment 82 --body-file <path>` and `gh issue comment 75 --body-file <path>`. Verify: `gh issue view 82 --json comments -q '.comments[-1].body[:80]'`.
+- [ ] **F43.** Monitor CI: `gh run list --limit 3` — all must be `success` before requesting review. Fix failures immediately. If session produced novel patterns (stability tier model, back-propagation evidence threshold), run `@session-retrospective What lessons did we learn this session?` before closing.
+
+---
+
+### Phase 7 Acceptance Criteria Summary
+
+| Deliverable | Path | Verification |
+|---|---|---|
+| Dogma neuroplasticity synthesis | `docs/research/dogma-neuroplasticity.md` | `validate_synthesis.py` exits 0; `status: Final` |
+| Back-propagation protocol | `dogma-neuroplasticity.md` §Recommendations | Evidence threshold, proposal format, coherence check, ADR template all present |
+| Stability tier model | `dogma-neuroplasticity.md` §Pattern Catalog | T1/T2/T3 tiers with session thresholds defined |
+| `propose_dogma_edit.py` | `scripts/propose_dogma_edit.py` | Smoke test exits 0; output contains `## Coherence Check` |
+| Script tests | `tests/test_propose_dogma_edit.py` | `--cov=scripts/propose_dogma_edit` ≥ 80% |
+| Degradation analysis | Scratchpad B8 + OQ-VE-5 section | Table spans 4 element types × 2 boundaries |
+| OQ-VE-5 resolution | `docs/research/values-encoding.md` §5 | `grep "RESOLVED" docs/research/values-encoding.md` → ≥1 match |
+| AGENTS.md amendments | `AGENTS.md` §Focus-on-Descent | `validate_agent_files.py --all` all PASS; edit is additive-only |
+| Pre-commit | n/a | ruff + pytest fast-subset all green |
+| CI green | branch | `gh run list --limit 3` all `success` |
 
 ---
 
