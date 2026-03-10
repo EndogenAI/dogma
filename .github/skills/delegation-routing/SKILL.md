@@ -58,7 +58,7 @@ This skill enacts the *Algorithms-Before-Tokens* axiom from [`MANIFESTO.md`](../
 - Reading files to confirm a deliverable exists
 - Running `git status`, `git log --oneline`, `gh pr view`, `gh issue view`
 - Writing scratchpad entries and workplan status updates
-- Running `git add/commit/push` after a subagent returns
+- **Orchestrator**: Running `git add/commit/push` after a subagent returns (terminal operations)
 - Running `prune_scratchpad.py` or the pre-compact sequence
 
 **If the work does not appear in the "Act directly" list, delegate it.**

@@ -11,6 +11,8 @@ tools:
   - usages
   - changes
   - agent
+  - github.vscode-pull-request-github/doSearch
+  - github.vscode-pull-request-github/issue_fetch
 handoffs:
   - label: "✓ Audit done — review & prioritise"
     agent: Executive PM
@@ -31,6 +33,14 @@ handoffs:
   - label: Escalate to Executive Orchestrator
     agent: Executive Orchestrator
     prompt: "A milestone or roadmap change has cross-workflow implications. Please coordinate with the relevant executive agents."
+    send: false
+  - label: "Cross-Fleet: Orchestrator"
+    agent: Executive Orchestrator
+    prompt: "Repository health updates complete. Ready for next workflow phase."
+    send: false
+  - label: "Cross-Fleet: Docs"
+    agent: Executive Docs
+    prompt: "Community health files updated. Please review for consistency."
     send: false
 ---
 

@@ -289,6 +289,45 @@ Step-by-step process here.
 
 ---
 
+## Executive Interconnection Patterns
+
+The executive tier comprises eight specialized agents that coordinate across research, documentation, scripting, automation, project management, fleet operations, and orchestration. Each executive maintains explicit handoff routes to sibling executives and subordinate sub-agents. This section documents the tool scope, cross-fleet access patterns, and handoff topology.
+
+### Executive Tool Scope Matrix
+
+| Executive | Git | `gh` CLI | `uv run` | File I/O | Terminal | Tests | Watch | Handoff to |
+|-----------|-----|---------|---------|----------|----------|-------|-------|------------|
+| **Orchestrator** | ✓ | ✓ | ✓ | ✓ (tools) | ✓ | – | – | All executives; Review; GitHub |
+| **Docs** | – | – | ✓ | ✓ (all) | ✓ | – | – | Researcher, Scripter, Automator, Review |
+| **Researcher** | – | – | ✓ | ✓ (read) | ✓ | – | – | Synthesizer, Scripter, Orchestrator, Review |
+| **Scripter** | – | – | ✓ | ✓ (all) | ✓ | ✓ | – | Automator, Orchestrator, Review |
+| **Automator** | – | – | ✓ | – | ✓ | – | ✓ | Scripter, Fleet, Orchestrator, Review |
+| **PM** | – | ✓ | ✓ | ✓ (read) | – | – | – | Orchestrator, Docs, Review |
+| **Fleet** | – | – | ✓ | ✓ (all) | ✓ | – | – | Orchestrator, Review |
+| **Planner** | – | – | – | ✓ (read) | – | – | – | Orchestrator (read-only, returns plan) |
+
+### Handoff Topology Diagram
+
+```
+                     Orchestrator (central)
+                   / | | | | | | \
+                  /  | | | | | |  \
+               Docs  Researcher  Scripter  Automator  PM  Fleet  Planner
+                |         |         |          |                     
+            (↔ Res,    (↔ Synth,  (↔ Auto,   (↔ Scr,             
+             Scr,       Scr)      Fleet)      Fleet)            
+             Auto)                                            
+```
+
+**Handoff rules**:
+- Orchestrator may delegate to any executive and receives delegations back after each phase completes
+- Docs coordinates with Researcher, Scripter, Automator for methodology, encoding, and synthesis decisions
+- Researcher escalates to Scripter when a synthesis requires a new caching or transformation script
+- Scripter and Automator coordinate on script-to-automation promotion paths
+- All other inter-executive handoffs route through Orchestrator (no lateral peer-to-peer except the named pairs above)
+
+---
+
 ## Naming Conventions
 
 **Canonical term**: Files in this directory are **Roles** — the EndogenAI endogenous term for VS Code Custom Agents (`.agent.md` files, the VS Code upstream term since v1.106, previously "custom chat modes"). Use **"Roles"** in project documentation. When referring specifically to the VS Code tooling mechanism, "Custom Agents" is also correct. Never use "chat modes" or "personas" as standalone terms. The full three-primitive taxonomy (fleet constraints / Roles / Agent Skills) is defined in the [root `AGENTS.md` → VS Code Customization Taxonomy](../../AGENTS.md#vs-code-customization-taxonomy) section.

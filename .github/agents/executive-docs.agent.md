@@ -8,6 +8,9 @@ tools:
   - write
   - usages
   - changes
+  - edit/editFiles
+  - execute/runInTerminal
+  - execute/getTerminalOutput
 handoffs:
   - label: Review Docs Changes
     agent: Review
@@ -20,6 +23,18 @@ handoffs:
   - label: Delegate Research Output
     agent: Executive Researcher
     prompt: "A documentation gap or open research question has been identified. Please initiate a research session to address it."
+    send: false
+  - label: "Cross-Fleet: Orchestrator"
+    agent: Executive Orchestrator
+    prompt: "Documentation update complete. Ready for phase gating and next steps."
+    send: false
+  - label: "Cross-Fleet: Researcher"
+    agent: Executive Researcher
+    prompt: "Documentation updates complete. Research findings have been integrated."
+    send: false
+  - label: "Cross-Fleet: Fleet"
+    agent: Executive Fleet
+    prompt: "Documentation complete. Please audit agent files for consistency."
     send: false
 
 ---

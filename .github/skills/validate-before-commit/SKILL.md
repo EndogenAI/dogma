@@ -118,9 +118,9 @@ Wait for the latest run to show a green `✓` status before requesting or re-req
 
 ---
 
-## 5. Commit Only After All Checks Pass
+## 5. Commit Only After All Checks Pass — Orchestrator Terminal Operations
 
-The full sequence in order:
+The **Orchestrator performs commits via direct terminal operations** after all checks pass. The full validation sequence in order:
 
 ```bash
 # 1. Lint + format

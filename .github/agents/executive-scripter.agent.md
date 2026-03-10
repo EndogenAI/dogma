@@ -10,6 +10,8 @@ tools:
   - terminal
   - usages
   - changes
+  - execute/runInTerminal
+  - execute/runTests
 handoffs:
   - label: Review New Script
     agent: Review
@@ -22,6 +24,18 @@ handoffs:
   - label: Delegate Automation
     agent: Executive Automator
     prompt: "The task requires file watchers, pre-commit hooks, or CI automation rather than a one-shot script. Please take over and encode the appropriate automation."
+    send: false
+  - label: "Cross-Fleet: Orchestrator"
+    agent: Executive Orchestrator
+    prompt: "Scripts authored and tested. Ready for review and commit."
+    send: false
+  - label: "Cross-Fleet: Automator"
+    agent: Executive Automator
+    prompt: "Scripting gap identified. Please assess whether automation is needed."
+    send: false
+  - label: "Cross-Fleet: Researcher"
+    agent: Executive Researcher
+    prompt: "Research task identified for scripting. Please hand off if needed."
     send: false
 
 ---

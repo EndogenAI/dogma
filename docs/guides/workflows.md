@@ -902,7 +902,7 @@ they prevent unfinished work from propagating forward.
 |-------|------------|---------|
 | **Phase gate** | Agent checklist (self-enforced) | "Scout output present before synthesizing" |
 | **Quality gate** | Review agent | "No unsupported claims; consistent with MANIFESTO.md" |
-| **Commit gate** | Review + GitHub agents | "Reviewed and approved before any push" |
+| **Commit gate** | Review agent + Orchestrator/Docs agents | "Reviewed and approved; Orchestrator or Docs executes `git` operations after Review passes" |
 | **Human gate** | Explicit checkpoint in workflow | "Human confirms scope before Scout runs" |
 
 ### Research Workflow Gate Summary

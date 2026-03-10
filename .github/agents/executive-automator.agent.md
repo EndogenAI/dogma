@@ -10,6 +10,7 @@ tools:
   - terminal
   - usages
   - changes
+  - execute/runInTerminal
 handoffs:
   - label: Review Automation
     agent: Review
@@ -22,6 +23,18 @@ handoffs:
   - label: Delegate Script
     agent: Executive Scripter
     prompt: "The task is a one-shot or on-demand script rather than event-driven automation. Please take over and encode it as a script in scripts/."
+    send: false
+  - label: "Cross-Fleet: Orchestrator"
+    agent: Executive Orchestrator
+    prompt: "Automation complete. Ready for phase gating."
+    send: false
+  - label: "Cross-Fleet: Scripter"
+    agent: Executive Scripter
+    prompt: "Automation identified. Assess if one-shot script is better."
+    send: false
+  - label: "Cross-Fleet: Fleet"
+    agent: Executive Fleet
+    prompt: "If automation involves agent workflows, please audit."
     send: false
 
 ---
