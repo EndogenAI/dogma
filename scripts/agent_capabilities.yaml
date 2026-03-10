@@ -1,0 +1,38 @@
+---
+# Agent Capability Registry
+#
+# Maps agents to their authorized capabilities. The runtime capability gate
+# (scripts/capability_gate.py) checks this registry before allowing any protected
+# operation.
+#
+# Capabilities are arbitrary string identifiers. Privileged capabilities (e.g.,
+# github_api) should be granted only to agents that genuinely need them. The
+# audit log (scripts/capability_gate.py) records all access attempts (granted
+# and denied).
+#
+# Reserved capability names: "all", "none", "*" (rejected by validator)
+#
+
+# GitHub agent: may call GitHub API, perform git operations
+github:
+  capabilities:
+    - github_api
+    - git_operations
+
+# Researcher agent: information retrieval only, no API writes
+researcher:
+  capabilities:
+    - read_docs
+    - search_codebase
+
+# Executive Orchestrator: coordination, no direct API access
+# (delegates to specialized agents who have the actual capabilities)
+executive:
+  capabilities:
+    - delegation
+    - session_management
+
+# Review agent: read-only GitHub operations for validation
+review:
+  capabilities:
+    - read_github_api

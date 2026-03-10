@@ -10,6 +10,7 @@ with a docstring describing its purpose, inputs, outputs, and usage examples.
 
 ```
 scripts/
+  capability_gate.py           # Runtime capability gates and audit logging — decorator-based access control for privileged operations (github_api, etc.) with JSONL audit log
   prune_scratchpad.py          # Cross-agent scratchpad session file manager (--init, --annotate, --force, --append-summary, --check-only)
   watch_scratchpad.py          # File watcher — auto-annotates .tmp/*.md on change (uses watchdog)
   scaffold_agent.py            # Scaffold a new .agent.md stub from a validated template

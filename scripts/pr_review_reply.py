@@ -65,6 +65,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from capability_gate import requires_capability, set_agent_context, CapabilityDenied
+
 # ---------------------------------------------------------------------------
 # GitHub API helpers
 # ---------------------------------------------------------------------------
@@ -90,6 +92,7 @@ def detect_repo() -> str:
     return out
 
 
+@requires_capability("github_api")
 def post_reply(repo: str, pr: int, comment_id: int, body: str) -> bool:
     """Post a reply to an inline review comment. Returns True on success."""
     payload = json.dumps({"in_reply_to": comment_id, "body": body})
@@ -109,6 +112,7 @@ def post_reply(repo: str, pr: int, comment_id: int, body: str) -> bool:
     return False
 
 
+@requires_capability("github_api")
 def resolve_thread(thread_node_id: str) -> bool:
     """Resolve a PR review thread by its GraphQL node ID. Returns True on success."""
     mutation = json.dumps(
@@ -181,6 +185,9 @@ def run_batch(ops: list[dict], repo: str, pr: int) -> int:
 
 
 def main() -> None:
+    # Set agent context (GitHub operations require github_api capability)
+    set_agent_context("github")
+
     parser = argparse.ArgumentParser(
         description="Post replies to PR inline review comments and resolve threads.",
         epilog="Exit 0 = all operations succeeded. Exit 1 = one or more failures.",
