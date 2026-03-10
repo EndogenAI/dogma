@@ -14,7 +14,9 @@ These constraints govern all agent behavior. They derive from three core axioms 
 
 **Encoding Inheritance Chain**: Values flow through six layers — `MANIFESTO.md` (foundational axioms) → `AGENTS.md` (operational constraints) → subdirectory `AGENTS.md` files (narrowing constraints for specific scopes) → role files (`.agent.md`; VS Code: Custom Agents) → `SKILL.md` files (reusable tactical knowledge) → session prompts (enacted behavior). Each layer is a re-encoding of the layer above it. Agents must minimise lossy re-encoding: prefer direct quotation or explicit citation over paraphrase when invoking a foundational principle. Cross-reference density (back-references to `MANIFESTO.md` in your output) is a proxy for encoding fidelity. Low density signals likely drift. See [`docs/research/values-encoding.md`](docs/research/values-encoding.md) for the cross-sectoral evidence base.
 
-**Session-Start Encoding Checkpoint**: At the start of every session, the first sentence of `## Session Start` in the scratchpad must name the governing axiom and one primary endogenous source. See [`docs/guides/session-management.md` → Session-Start Encoding Checkpoint](docs/guides/session-management.md#session-start-encoding-checkpoint) for format and examples.
+**Session-Start Encoding Checkpoint**: At the start of every session, the first sentence of `## Session Start` in the scratchpad must name the governing axiom and one primary endogenous source. See [`docs/guides/session-management.md` → Session-Start Encoding Checkpoint](docs/guides/session-management.md#session-start-encoding-checkpoint) for format and examples. The agent fleet is the pressurizing medium — it gives each substrate coherent form but does not own the membrane or the bucket.
+
+If `client-values.yml` exists in the workspace root, read it after AGENTS.md and note any Deployment Layer constraints in `## Session Start`.
 
 ### Context-Sensitive Amplification
 

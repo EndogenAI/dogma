@@ -237,6 +237,11 @@ Step-by-step process here.
 </constraints>
 ```
 
+**Agent File Sections** should organize their "Action" content using BDI (Beliefs/Desired outcomes/Intentions) structure:
+- ## Beliefs: What this agent knows and assumes
+- ## Desired Outcomes: What success looks like for assignments to this agent
+- ## Intentions: How this agent approaches its work (priorities, posture, delegation rules)
+
 **Canonical tag map** (see `docs/research/xml-agent-instruction-format.md` §4 for full inventory):
 
 | Heading keyword | XML tag |

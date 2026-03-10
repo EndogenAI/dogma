@@ -90,6 +90,16 @@ rather than re-fetching pages through the context window, saving tokens every se
 
 At the start of every session, before taking any first action, write which axiom governs the work and name one endogenous source you will consult first. This is the **first sentence** of the `## Session Start` scratchpad entry — before any tool calls.
 
+Include a `## Session History` table to track multi-session continuity:
+
+```markdown
+## Session History
+
+| Session | Branch | Phase | Status | Commit | Notes |
+|---------|--------|-------|--------|--------|-------|
+| [date] | [branch] | [phase] | ✅/🔄/⬜ | [SHA] | [summary] |
+```
+
 **Format:**
 
 > **Session-Start Checkpoint**: This session is governed by Axiom _N_ (_name_). Primary endogenous source: `<path>` — _one sentence on why_.

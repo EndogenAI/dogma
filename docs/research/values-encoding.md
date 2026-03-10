@@ -489,3 +489,9 @@ Fleet baseline (33 agents, 2026-03-08): **avg drift_score = 0.1364** (26 of 33 a
 ### OQ-VE-1 Status Update
 
 OQ-VE-1 ("Is the watermark-phrase approach sufficient, or does it only detect surface-level alignment?") remains open pending empirical calibration. The watermark approach detects *surface* alignment — it will not catch semantic contradictions where axiom names appear but are used inconsistently. Embedding-similarity (Approach B) addresses this, deferred to a future phase.
+
+---
+
+## Related
+
+- [bubble-clusters-substrate.md](bubble-clusters-substrate.md) (bubble-cluster topology — additive model extending §3 biological-homology framing)
