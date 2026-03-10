@@ -63,9 +63,10 @@ import argparse
 import json
 import subprocess
 import sys
+import os
 from pathlib import Path
 
-from capability_gate import requires_capability, set_agent_context
+from scripts.capability_gate import requires_capability, set_agent_context
 
 # ---------------------------------------------------------------------------
 # GitHub API helpers
@@ -185,9 +186,6 @@ def run_batch(ops: list[dict], repo: str, pr: int) -> int:
 
 
 def main() -> None:
-    # Set agent context (GitHub operations require github_api capability)
-    set_agent_context("github")
-
     parser = argparse.ArgumentParser(
         description="Post replies to PR inline review comments and resolve threads.",
         epilog="Exit 0 = all operations succeeded. Exit 1 = one or more failures.",
@@ -206,6 +204,12 @@ def main() -> None:
         metavar="<owner/repo>",
         default=None,
         help="Repository in owner/repo format. Defaults to current repo.",
+    )
+    parser.add_argument(
+        "--agent",
+        metavar="<name>",
+        default=None,
+        help="Agent context (derives from COPILOT_AGENT_ID env var if not set).",
     )
 
     mode = parser.add_mutually_exclusive_group(required=True)
@@ -234,6 +238,16 @@ def main() -> None:
     )
 
     args = parser.parse_args()
+
+    # Set agent context from env var or argument; error if neither provided
+    agent_context = args.agent or os.environ.get("COPILOT_AGENT_ID")
+    if not agent_context:
+        print(
+            "Error: Agent context not provided. Set --agent or COPILOT_AGENT_ID env var.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+    set_agent_context(agent_context)
 
     # Resolve repo and PR
     repo = args.repo or detect_repo()

@@ -439,7 +439,7 @@ An agent chasing a red herring or stuck in a hypothesis-test loop will ignore th
 3. **Liu, N. F., Lin, K., Hewitt, J., Parikh, A., Qian, M., & Bevilacqua, M. (2023).** "Lost in the Middle: How Language Models Use Long Contexts." *arXiv preprint arXiv:2307.03172*.
    - **Relevance**: Empirical evidence for position-dependent attention degradation in long contexts. Directly validates H4 (token-level constraint degradation with context length).
 
-4. **Inan, H., Upasani, K., Lu, J., Hu, B., Sze, Y., Goodman, B., & Soricut, R. (2023).** "LlamaGuard: LLM Agent Guardrailith Automated Reasoning." *arXiv preprint arXiv:2312.06674*.
+4. **Inan, H., Upasani, K., Lu, J., Hu, B., Sze, Y., Goodman, B., & Soricut, R. (2023).** "LlamaGuard: LLM Agent Guardrails with Automated Reasoning." *arXiv preprint arXiv:2312.06674*.
    - **Relevance**: Demonstrates T2–T4 post-execution classification-based guards achieving 97% precision on unsafe outputs with <1% false-positive rate. Empirical validation of programmatic enforcement superiority.
 
 5. **Patil, S. G., Zhang, T., Wang, X., & Stoica, I. (2023).** "Gorilla: Large Language Model Connected with Massive APIs." *arXiv preprint arXiv:2305.15334*.
@@ -458,7 +458,7 @@ An agent chasing a red herring or stuck in a hypothesis-test loop will ignore th
 8. **Talarian, A. et al. (2023).** "Agentive Architectures: Safe Multi-Agent Orchestration." *Conference on Autonomous Agents and Multiagent Systems (AAMAS)*.
    - **Relevance**: Agent sandboxing and capability delegation patterns. Consensus that capability-aware architectures require programmatic enforcement; instruction-only is insufficient.
 
-9. **Microsft Research (2024).** "Red-Teaming Constitutional AI Models." Internal Report.
+9. **Microsoft Research (2024).** "Red-Teaming Constitutional AI Models." Internal Report.
    - **Relevance**: Red-team findings showing adversarial inputs bypassing fine-tuned safety constraints. Demonstrates empirically that base-model behavior reasserts under adversarial distribution shifts.
 
 ### Tooling Precedents

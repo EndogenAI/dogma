@@ -60,7 +60,7 @@ Each tier catches a different class of occurrence. The pre-commit hook (now impl
 
 The ideal governor sits *inside the terminal tool middleware* — between the LLM tool call and the shell execution layer. VS Code's terminal tool forwards commands directly to the shell; there is no plugin hook in the current Copilot extension API to intercept at that boundary. This is an owner-inaccessible layer.
 
-The `bash` `DEBUG` trap (`trap 'check_command "$BASH_COMMAND"' DEBUG`) and `zsh` `preexec` hook (`preexec_functions+=check_command`) execute *before* any command the shell receives, including commands forwarded from external callers. Combined with `direnv` + `.envrc` for automatic per-project activation, this is the highest-fidelity governor reachable from outside the terminal tool middelware.
+The `bash` `DEBUG` trap (`trap 'check_command "$BASH_COMMAND"' DEBUG`) and `zsh` `preexec` hook (`preexec_functions+=check_command`) execute *before* any command the shell receives, including commands forwarded from external callers. Combined with `direnv` + `.envrc` for automatic per-project activation, this is the highest-fidelity governor reachable from outside the terminal tool middleware.
 
 ---
 
