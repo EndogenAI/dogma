@@ -96,6 +96,10 @@ The full protocol for accumulating and applying session evidence:
 
 **Step 6 — Propagation**: After the substrate edit lands, `scripts/validate_agent_files.py --all` is run to check for inheritance-chain incoherence in downstream agent files. Any agent file that references the edited section is flagged for review.
 
+**Canonical example**: Phase 5 + Phase 6B sessions each produced a signal that labeled `**Canonical example**:` and `**Anti-pattern**:` instances were 100% eliminated at the Synth→Archive boundary. Two independent sessions → T3 threshold (2 signals) met → AGENTS.md §Focus-on-Descent amended with 3 additive signal-preservation rules. This is a complete T3 back-propagation cycle: signal → aggregation → threshold check → coherence check (passes; additive-only) → substrate edit applied.
+
+**Anti-pattern**: Discovering through ad-hoc inspection that agents are ignoring a constraint (e.g., missing canonical examples in archive docs) and patching the constraint once without recording the signal. Without `propose_dogma_edit.py` accumulating evidence citations, the next session has no record of *why* the constraint exists, and the next Synthesizer will compress it out again. Signal-free edits are the substrate equivalent of undocumented code: locally correct, globally fragile.
+
 ### Pattern C3 — ADR-Style Dogma Edit Template
 
 All T1 and T2 substrate edits must use this template. T3 edits may use it optionally but are not required to.
