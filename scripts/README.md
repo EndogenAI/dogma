@@ -31,6 +31,8 @@ scripts/
   propose_dogma_edit.py        # Programmatic enforcer of the back-propagation protocol — generate ADR-style dogma edit proposals from session evidence (--input, --tier, --affected-axiom, --proposed-delta, --output)
   query_docs.py                # BM25 query CLI over the documentation corpus — scoped retrieval without bulk context loading (query, --scope, --top-n, --output text|json)
   weave_links.py               # Inject Markdown cross-reference links across the corpus via a YAML concept registry (--scope, --dry-run, --registry); idempotent
+  validate_handoff_permeability.py  # Validate cross-substrate handoff signal preservation (Canonical examples, Anti-patterns, Axiom citations, Source URLs) per membrane type (scout-to-synthesizer, synthesizer-to-reviewer, reviewer-to-archivist); AGENTS.md § Signal Preservation Rules enforcement
+  parse_audit_result.py        # Convert JSON provenance audit output to Markdown risk assessment & PR comments; compute risk levels (green/yellow/red) from axiom citation intensity and test coverage
 ```
 
 ---
@@ -953,6 +955,128 @@ echo "Add signal-preservation bullet" | uv run python scripts/propose_dogma_edit
 **Dependencies**: stdlib only — imports `detect_drift` and `audit_provenance` from `scripts/` (no third-party packages required beyond existing deps).
 
 **Related**: `scripts/detect_drift.py` (WATERMARK_PHRASES), `scripts/audit_provenance.py` (extract_manifesto_axioms), `docs/research/dogma-neuroplasticity.md` (full back-propagation protocol spec).
+
+---
+
+## scripts/validate_handoff_permeability.py
+
+**Purpose**: Validate that cross-substrate handoffs preserve required signal types per membrane
+layer in agent fleet communication. Implements the signal preservation rules from [`AGENTS.md`](../AGENTS.md)
+§ Agent Communication → Focus-on-Descent / Compression-on-Ascent.
+
+Handoffs across three membrane types must preserve specific signals to prevent value-encoding
+drift:
+- **Scout→Synthesizer**: preserve Canonical example, Anti-pattern, axiom citations, source URLs
+- **Synthesizer→Reviewer**: preserve synthesis structure, metrics, patterns
+- **Reviewer→Archivist**: preserve verdict and rationale summary
+
+**Tests**: [`tests/test_validate_handoff_permeability.py`](../tests/test_validate_handoff_permeability.py) (≥20 test functions)
+
+**Usage**:
+
+```bash
+# Validate a Scout→Synthesizer handoff
+uv run python scripts/validate_handoff_permeability.py \
+    --handoff-file .tmp/branch/2026-03-10.md \
+    --membrane-type scout-to-synthesizer \
+    --format text
+
+# Validate reviewer approval (brief verdict)
+uv run python scripts/validate_handoff_permeability.py \
+    --handoff-file /tmp/review.md \
+    --membrane-type reviewer-to-archivist \
+    --format json \
+    --output /tmp/verdict-report.json
+
+# Validate custom signals only
+uv run python scripts/validate_handoff_permeability.py \
+    --handoff-file /tmp/handoff.md \
+    --membrane-type scout-to-synthesizer \
+    --required-signals canonical_example,source_url
+```
+
+**Signals Detected** (via regex):
+
+| Signal | Pattern | Validates |
+|--------|---------|-----------|
+| `canonical_example` | `**Canonical example**:` | Specific (≥20 chars, not generic) |
+| `anti_pattern` | `**Anti-pattern**:` | Specific (≥15 chars, not generic) |
+| `axiom_citation` | Mentions of `MANIFESTO.md` or axiom names | ≥1 occurrence |
+| `source_url` | Markdown links `[text](https://...)` | ≥1 link |
+| `verdict` | `APPROVED` or `REQUEST CHANGES` | For Reviewer→Archivist only |
+| `rationale_summary` | 30+ chars after "rationale:" | For Reviewer→Archivist only |
+
+**Exit codes**: `0` (validation complete, result in JSON/text); `1` (configuration error).
+
+**When to run**: After every multi-agent delegation handoff to verify signals survived
+compression. Use in CI gates to prevent value-drift across fleet boundaries.
+
+---
+
+## scripts/parse_audit_result.py
+
+**Purpose**: Convert JSON provenance audit output (from [`audit_provenance.py`](../scripts/audit_provenance.py))
+into human-readable Markdown risk assessments and PR comment tables. Computes per-agent risk
+levels (green/yellow/red) based on axiom citation intensity and test coverage per
+[`docs/research/enforcement-tier-mapping.md`](../docs/research/enforcement-tier-mapping.md)
+and [`docs/research/bubble-clusters-substrate.md`](../docs/research/bubble-clusters-substrate.md).
+
+Risk assessment thresholds (configurable, baseline default 0.5):
+- **Green**: axiom_cites > threshold × 0.8 AND coverage > 80%
+- **Yellow**: mixed signals (medium cite intensity or medium coverage)
+- **Red**: axiom_cites < threshold × 0.5 AND coverage < 60%
+
+**Tests**: [`tests/test_parse_audit_result.py`](../tests/test_parse_audit_result.py) (≥5 test functions)
+
+**Usage**:
+
+```bash
+# Parse audit and print summary
+uv run python scripts/audit_provenance.py --output /tmp/audit.json
+uv run python scripts/parse_audit_result.py /tmp/audit.json --threshold 0.5
+
+# Generate PR comment for pull requests
+uv run python scripts/parse_audit_result.py /tmp/audit.json \
+    --threshold 0.5 \
+    --pr-comment \
+    --output /tmp/risk-assessment.json
+
+# Use in GitHub Actions CI (see .github/workflows/audit-provenance.yml)
+uv run python scripts/parse_audit_result.py /tmp/audit.json --pr-comment
+gh pr comment --body-file /tmp/audit-comment.md
+```
+
+**Output**:
+
+| Format | Location | Contents |
+|--------|----------|----------|
+| JSON | `--output FILE` or stdout | Risk summary, agent-level assessments, recommendations |
+| Markdown | `/tmp/audit-comment.md` | PR-formatted table with agent names, risk levels, notes |
+
+**Risk Assessment Fields**:
+
+```json
+{
+  "status": "green|yellow|red",
+  "summary": {
+    "agents_analyzed": int,
+    "green_count": int,
+    "yellow_count": int,
+    "red_count": int,
+    "avg_cite_intensity": float,
+    "overall_risk": str
+  },
+  "agents": [{"name": str, "status": str, "risk_level": str, ...}],
+  "recommendations": [str],
+  "markdown_report": str
+}
+```
+
+**Exit codes**: `0` (assessment complete); `1` (input error).
+
+**When to run**: In CI after every commit to `.github/agents/` or when integrating new
+agents. Use `--pr-comment` in GitHub Actions workflows to auto-comment on PRs with risk
+assessments.
 
 ---
 
