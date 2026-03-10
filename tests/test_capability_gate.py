@@ -82,18 +82,21 @@ class TestRegistryLoading:
         assert "github_api" in reg["github"]
         assert "git_operations" in reg["github"]
 
+    @pytest.mark.io
     def test_load_registry_missing_file(self, tmp_path: Path) -> None:
         """Test error when registry file is missing."""
         missing = tmp_path / "nonexistent.yaml"
         with pytest.raises(FileNotFoundError):
             load_registry(missing)
 
+    @pytest.mark.io
     def test_validate_registry_valid(self, temp_registry: Path) -> None:
         """Test validation of a valid registry."""
         is_valid, errors = validate_registry(temp_registry)
         assert is_valid
         assert errors == []
 
+    @pytest.mark.io
     def test_validate_registry_missing_file(self, tmp_path: Path) -> None:
         """Test validation error when registry is missing."""
         missing = tmp_path / "nonexistent.yaml"
@@ -137,6 +140,7 @@ github:
 class TestCapabilityChecking:
     """Test capability checking logic."""
 
+    @pytest.mark.io
     def test_has_capability(self, temp_registry: Path) -> None:
         """Test checking if an agent has a capability."""
         reg = load_registry(temp_registry)
@@ -144,11 +148,13 @@ class TestCapabilityChecking:
         assert has_capability("github", "git_operations", reg)
         assert not has_capability("researcher", "github_api", reg)
 
+    @pytest.mark.io
     def test_has_capability_nonexistent_agent(self, temp_registry: Path) -> None:
         """Test checking capability for nonexistent agent."""
         reg = load_registry(temp_registry)
         assert not has_capability("nonexistent", "any_capability", reg)
 
+    @pytest.mark.io
     def test_has_capability_nonexistent_capability(self, temp_registry: Path) -> None:
         """Test checking nonexistent capability."""
         reg = load_registry(temp_registry)
