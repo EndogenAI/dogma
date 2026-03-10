@@ -19,15 +19,18 @@ Execute all actionable items from the research sprint (Issues #112–#147). Mile
 
 | Category | Count |
 |---|---|
-| Total open | 29 |
-| `priority:high` | 7 |
-| `priority:medium` | 15 |
-| `priority:low` | 7 |
-| `type:feature` (scripts/tools) | 14 |
+| Total open | 35 |
+| `priority:high` | 8 |
+| `priority:medium` | 18 |
+| `priority:low` | 9 |
+| `type:feature` (scripts/tools) | 16 |
 | `type:docs` | 12 |
-| `type:chore` | 3 |
-| Blocked by external issue | 6 |
-| Actionable immediately | 23 |
+| `type:chore` | 6 |
+| `type:research` | 2 |
+| Blocked by external issue | 10 |
+| Actionable immediately | 25 |
+
+**6 new issues added 2026-03-10** — #150, #151, #152, #156, #157, #158 (derived from programmatic governors session insight; see parallel track below).
 
 ### Priority:High Issues (resolve first)
 
@@ -40,6 +43,17 @@ Execute all actionable items from the research sprint (Issues #112–#147). Mile
 | #122 | Skill File Validation (validate_skill_files.py) | feature | scripts |
 | #133 | Documentation Site Improvements | chore | docs/CI |
 | #138 | Deterministic Components: YAML FSM Specifications & Validators | feature | scripts |
+| #151 | Deep Research: Shifting AI behavioral constraints from tokens to code | research | docs/CI |
+
+### Parallel Track — Programmatic Governors (tracked in separate workplan)
+
+Issues #150, #151, #152 are being executed under [`docs/plans/2026-03-10-programmatic-governors.md`](2026-03-10-programmatic-governors.md). They live in milestone 9 but their phase sequencing is governed by that workplan, not this one. Issues #156, #157, #158 are blocked by #151 and are tracked in Phase 6 below.
+
+| # | Title | Status in this workplan |
+|---|---|---|
+| [#150](https://github.com/EndogenAI/Workflows/issues/150) | Research: Shell PREEXEC hook as project-scoped command governor | Parallel track |
+| [#151](https://github.com/EndogenAI/Workflows/issues/151) | Deep Research: Shifting AI behavioral constraints from tokens to code | Parallel track |
+| [#152](https://github.com/EndogenAI/Workflows/issues/152) | Audit fleet guardrails for programmatic enforcement | Parallel track (blocked by #151) |
 
 ### Blocked Issues (defer — do not schedule)
 
@@ -51,6 +65,10 @@ Execute all actionable items from the research sprint (Issues #112–#147). Mile
 | #128 | Phase 1 AFS Integration | #14 + local compute |
 | #129 | SQLite-only Pattern A1 for AFS — FTS5 Keyword Index | #14 |
 | #131 | Cognee Library Adoption (After Local Compute Baseline) | #13 + local compute |
+| #152 | Audit fleet guardrails for programmatic enforcement | #151 (parallel track) |
+| #156 | Token-spinning detection and rate-limiting (T4 runtime gate) | #151 |
+| #157 | Subshell audit logging in PREEXEC governor | #150 + #151 |
+| #158 | Capability-aware agent registry design | #151 (high effort, deferred) |
 
 ### Implementation State Notes
 
@@ -208,6 +226,8 @@ Execute all actionable items from the research sprint (Issues #112–#147). Mile
 
 These issues are actionable only after external blockers are resolved. No execution scheduled in this workplan.
 
+**Original blocked issues (external blockers):**
+
 | # | Title | Blocker | Next action when unblocked |
 |---|---|---|---|
 | #113 | Tier 2 Behavioral Testing — Drift Detection | #13 + local compute | Add to sprint after #13 closes |
@@ -217,7 +237,17 @@ These issues are actionable only after external blockers are resolved. No execut
 | #129 | SQLite-only Pattern A1 for AFS — FTS5 Keyword Index | #14 | Add to sprint after #14 closes |
 | #131 | Cognee Library Adoption | #13 + local compute | Add to sprint after #13 closes |
 
-**Action**: Add `status:blocked` label to all 6 issues and post a blocking comment citing the dependency.
+**New blocked issues (blocked by #151 deep research — added 2026-03-10):**
+
+| # | Title | Blocker | Next action when unblocked |
+|---|---|---|---|
+| #156 | Token-spinning detection and rate-limiting (T4 runtime gate) | #151 | Add to Phase 4 after #151 closes; Effort: Low |
+| #157 | Subshell audit logging in PREEXEC governor | #150 + #151 | Add to Phase 4 after #150 + #151 close; Effort: Low |
+| #158 | Capability-aware agent registry design | #151 | Schedule as standalone sprint after #151 closes; Effort: High — may warrant own workplan |
+
+**Action**: Add `status:blocked` label to all blocked issues and post a blocking comment citing the dependency.
+
+_Note_: #152 is also blocked by #151 but is tracked under the programmatic-governors workplan.
 
 ---
 
@@ -229,17 +259,24 @@ Phase 1 (XS docs)
             └── Phase 3 (high-priority scripts)
                     └── Phase 4 (medium scripts)
                             └── Phase 5 (docs site + GitHub PM)
-                                    └── Close Milestone 9 (23 issues)
+                                    └── Close Milestone 9 (25 actionable issues)
 
-Phase 6: Blocked (parallel track — unblocks independently)
+Phase 6: Blocked (unblocks independently when external blockers close)
+    ├── Original 6 issues: gate on #13/#14/#56/#65 + local compute
+    └── New 3 issues (#156, #157, #158): gate on #151 research sprint closing
+
+Parallel Track (programmatic-governors workplan):
+    #151 (deep research) → #152 (fleet audit) + #156/#157/#158 (governor impl)
+    #150 (PREEXEC research) → #157 (subshell audit)
 ```
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] All 23 non-blocked issues closed or in a PR targeting `main`
-- [ ] 6 blocked issues have `status:blocked` label and dependency comment
+- [ ] All 25 actionable issues closed or in a PR targeting `main`
+- [ ] 10 blocked issues have `status:blocked` label and dependency comment
+- [ ] #150, #151, #152 closed per the programmatic-governors workplan
 - [ ] Every new script has ≥80% test coverage and a docstring
 - [ ] Every new script is documented in `scripts/README.md`
 - [ ] CI passes on all phases (lint, format, tests, validate_synthesis, validate_agent_files)
