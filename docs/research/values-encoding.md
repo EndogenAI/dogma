@@ -534,3 +534,9 @@ OQ-VE-1 ("Is the watermark-phrase approach sufficient, or does it only detect su
 ## Related
 
 - [bubble-clusters-substrate.md](bubble-clusters-substrate.md) (bubble-cluster topology — additive model extending §3 biological-homology framing)
+
+### Phase 2a Research — Related Documents
+
+- [holographic-encoding-empirics.md](holographic-encoding-empirics.md) — Fleet-wide cite-density empirical measurement (#169)
+- [context-amplification-calibration.md](context-amplification-calibration.md) — Context-sensitive amplification threshold calibration (#178)
+- [values-enforcement-tier-mapping.md](values-enforcement-tier-mapping.md) — Values enforcement tier complete mapping (#179)
