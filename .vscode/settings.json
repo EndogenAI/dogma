@@ -17,6 +17,7 @@
         "exit": true,
         "test": true,
         "awk": true,
-        "git fetch": true
+        "git fetch": true,
+        "tee": true
     }
 }
