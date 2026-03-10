@@ -1,0 +1,128 @@
+name: "Provenance Audit — CI Integration"
+
+on:
+  push:
+    branches:
+      - main
+      - feat/**
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  audit-provenance:
+    name: "Provenance & Signal Integrity Audit"
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for git operations
+
+      - name: "Set up Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: "Install uv"
+        uses: astral-sh/setup-uv@v2
+        with:
+          enable-cache: true
+
+      - name: "Sync dependencies"
+        run: |
+          uv sync --frozen
+
+      - name: "Run Provenance Audit"
+        id: audit
+        run: |
+          uv run python scripts/audit_provenance.py \
+            --agents-dir .github/agents/ \
+            --manifesto MANIFESTO.md \
+            --output /tmp/audit-report.json \
+            --format json
+        continue-on-error: true
+
+      - name: "Parse Audit Result & Generate Risk Assessment"
+        id: parse
+        if: always()
+        run: |
+          uv run python scripts/parse_audit_result.py \
+            /tmp/audit-report.json \
+            --threshold 0.5 \
+            --pr-comment \
+            --output /tmp/risk-assessment.json
+        continue-on-error: true
+
+      - name: "Display Audit Summary"
+        if: always()
+        run: |
+          echo "## Provenance Audit Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f /tmp/audit-report.json ]; then
+            echo "**Audit Status**: ✅ Complete" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```json' >> $GITHUB_STEP_SUMMARY
+            python -m json.tool /tmp/audit-report.json 2>/dev/null | head -20 >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**Audit Status**: ⚠️ Report not found" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: "Display Risk Assessment"
+        if: always()
+        run: |
+          if [ -f /tmp/risk-assessment.json ]; then
+            echo "## Risk Assessment Summary" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            cat /tmp/risk-assessment.json | head -30 >> $GITHUB_STEP_SUMMARY || true
+          fi
+
+      - name: "Comment on PR (if Pull Request)"
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const path = '/tmp/audit-comment.md';
+            if (fs.existsSync(path)) {
+              const body = fs.readFileSync(path, 'utf8');
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: body
+              });
+              console.log('PR comment posted successfully');
+            } else {
+              console.log('No PR comment file found; skipping');
+            }
+
+      - name: "Check for Critical Issues (Non-blocking for Phase 3b)"
+        if: always()
+        run: |
+          if [ -f /tmp/audit-report.json ]; then
+            UNVERIFIABLE=$(grep -o '"total_unverifiable": [0-9]*' /tmp/audit-report.json | grep -o '[0-9]*')
+            if [ "$UNVERIFIABLE" -gt 0 ]; then
+              echo "::warning::Provenance audit detected $UNVERIFIABLE unverifiable citations"
+            fi
+          fi
+        continue-on-error: true
+
+      - name: "Store Artifacts"
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: provenance-audit-reports
+          path: |
+            /tmp/audit-report.json
+            /tmp/risk-assessment.json
+            /tmp/audit-comment.md
+          retention-days: 30
