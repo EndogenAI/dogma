@@ -275,12 +275,14 @@ class TestScaffoldWorkplanCreation:
         """--ci flag value is trimmed of whitespace."""
         monkeypatch.chdir(tmp_path)
         (tmp_path / "docs" / "plans").mkdir(parents=True)
-        monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "flag-ci-whitespace", "--ci", "  Tests  ,  Auto-validate  "])
+        argv = ["scaffold_workplan.py", "flag-ci-whitespace", "--ci", "  Tests  ,  Auto-validate  "]
+        monkeypatch.setattr("sys.argv", argv)
         monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
         monkeypatch.setattr(sw, "_prompt", lambda msg, default: default)
         rc = sw.main()
         assert rc == 0
-        content = (tmp_path / "docs" / "plans" / f"{date.today().isoformat()}-flag-ci-whitespace.md").read_text()
+        plan_path = tmp_path / "docs" / "plans" / f"{date.today().isoformat()}-flag-ci-whitespace.md"
+        content = plan_path.read_text()
         assert "**CI**: Tests, Auto-validate" in content
 
     @pytest.mark.io
