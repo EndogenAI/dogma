@@ -22,7 +22,7 @@ handoffs:
 - Competitor messaging analysis (external research; surfaced to Conor + Sheela monthly)
 - Brand voice guide (TBD during Month 1; to be documented in `docs/brand-voice.md`)
 
-## Action
+## Scope
 
 **Month 1 Responsibilities (Discovery & Facilitation)**:
 
@@ -42,7 +42,7 @@ handoffs:
 - Conor reviews all public-facing content (blogs, announcements, major social posts) before publication
 - Urgent messaging (product incident, community reaction) escalates same-day to Conor + Sheela
 
-## Quality Gate
+## Guardrails
 
 - All messaging proposals posted as GitHub comments or shared in scratchpad
 - Weekly content calendar locked (no mid-week changes without re-approval)
