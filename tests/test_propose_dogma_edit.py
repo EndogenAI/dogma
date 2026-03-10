@@ -297,7 +297,16 @@ def test_cli_success_path(tmp_path):
 @pytest.mark.io
 @pytest.mark.integration
 def test_cli_success_with_real_session_file(tmp_path):
-    """CLI: real session file at .tmp/feat-value-encoding-fidelity/2026-03-09.md → exit 0."""
+    """CLI: real session file at .tmp/feat-value-encoding-fidelity/2026-03-09.md → exit 0.
+
+    Opt-in only: set TEST_WITH_REAL_SESSION=1 to run. The .tmp/ directory is
+    gitignored and environment-specific, so this test is skipped by default in
+    CI and on machines without the specific session file.
+    """
+    import os
+
+    if not os.environ.get("TEST_WITH_REAL_SESSION"):
+        pytest.skip("Set TEST_WITH_REAL_SESSION=1 to enable this test")
     session_path = Path(".tmp/feat-value-encoding-fidelity/2026-03-09.md")
     if not session_path.exists():
         pytest.skip("Real session file not available in this environment")
