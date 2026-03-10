@@ -369,12 +369,15 @@ A proxy measure for [encoding fidelity](#encoding-fidelity). Cross-reference den
 
 ### D4 Research Document
 
-A synthesis document format used for research outputs in `docs/research/`. The format is enforced by `scripts/validate_synthesis.py` in CI. A valid D4 document must:
+A synthesis document format used for research outputs in `docs/research/`. The format is enforced by `scripts/validate_synthesis.py` in CI. A valid D4 document must (per the validator):
 
 - Have YAML frontmatter with at least a `title` and `status` field
+- Contain a section matching `## 1. Executive Summary`
 - Contain a section matching `## 2. Hypothesis Validation` (or with those keywords in the heading)
 - Contain a section matching `## 3. Pattern Catalog` (or with those keywords in the heading)
-- Include at least one `**Canonical example**:` and one `**Anti-pattern**:` in the Pattern Catalog section
+- Include at least a minimum number of second-level headings (`##`) overall (see `scripts/validate_synthesis.py` for the current threshold)
+
+Recommended (but not CI-enforced) conventions include annotating patterns in the Pattern Catalog section with `**Canonical example**:` and `**Anti-pattern**:` labels.
 
 The name derives from the four-phase structure (Document, Discover, Distill, Deliver) that all research synthesis follows.
 
@@ -545,7 +548,7 @@ The protocol takes priority over all in-progress work because a session that exh
 
 **Related terms**: [Scratchpad](#scratchpad), [Phase Gate](#phase-gate)
 
-*Source: [`AGENTS.md` §Context Window Alert Protocol](../AGENTS.md) (in Executive Orchestrator agent file)*
+*Source: [`.github/agents/executive-orchestrator.agent.md` §Context Window Alert Protocol](../.github/agents/executive-orchestrator.agent.md#context-window-alert-protocol)*
 
 ---
 
@@ -687,7 +690,7 @@ The workplan is committed at the start of the session (before Phase 1 executes) 
 
 **Related terms**: [Phase Gate](#phase-gate), [Scratchpad](#scratchpad)
 
-*Source: [`AGENTS.md` §docs/plans/ — Tracked Workplans](../AGENTS.md#docplans----tracked-workplans)*
+*Source: [`AGENTS.md` §docs/plans/ — Tracked Workplans](../AGENTS.md#docsplans----tracked-workplans)*
 
 ---
 
