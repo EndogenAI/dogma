@@ -192,3 +192,253 @@ Any future session picking up a phase must complete these steps before acting:
 4. Read today's scratchpad: `cat .tmp/main/$(date +%Y-%m-%d).md`
 5. State the governing axiom: "Endogenous-First — scaffold from existing research docs before reaching for external sources"
 6. Run `uv run python scripts/prune_scratchpad.py --init` if today's scratchpad does not exist
+
+---
+
+## Appendix: Untracked Recommendations from docs/research
+
+**Scanning all `docs/research/**.md` files for recommendations and actionable items not currently tracked by any GitHub issue (open or closed).**
+
+This appendix identifies research recommendations that are either:
+- Not yet scoped to a GitHub issue
+- Scoped to a related but broader issue where the specific recommendation is not independently captured
+- Documentation edits or design guidance not yet formalized as an issue
+
+### Untracked Recommendations (Priority Order)
+
+#### 1. **validate_session.py — LLM Behavioral Testing Framework (Tier 1 Structural Audit)** 
+- **Source**: [docs/research/llm-behavioral-testing.md](../research/llm-behavioral-testing.md#l205) (R1)
+- **Scope**: Implement 7-check Tier 1 post-commit script for session scratchpad audits (non-blocking)
+- **Acceptance criteria**: `σuv run python scripts/validate_session.py <scratchpad>` returns structured audit output; ≥80% test coverage
+- **Related issue**: #74 (LLM behavioral testing) exists but focuses on Constitutional AI evaluation, not `validate_session.py` implementation spec
+- **Status**: Not independently scoped
+
+#### 2. **Tier 2 Behavioral Testing — Drift Detection (Deferred)**
+- **Source**: [docs/research/llm-behavioral-testing.md](../research/llm-behavioral-testing.md#l205) (R3)
+- **Scope**: Defer Tier 2 `validate_session.py --tier2` implementation until (a) local model stack confirmed, (b) issue #13 (episodic memory) resolved
+- **Rationale**: Premature Tier 2 without local compute = external API call (violates Local Compute-First); single-session drift detection is weak without episodic memory baseline
+- **Status**: Dependency condition not independently logged
+
+#### 3. **Value Fidelity Test Taxonomy for AGENTS.md**
+- **Source**: [docs/research/llm-behavioral-testing.md](../research/llm-behavioral-testing.md#l238) (R2)
+- **Scope**: Add test taxonomy table to `AGENTS.md §Validate & Gate` as reference for Review agent and human reviewers
+- **Rationale**: Operationalizes "value fidelity" — makes assertions explicit and testable
+- **Status**: No issue
+
+#### 4. **Membrane Permeability Specifications in AGENTS.md**
+- **Source**: [docs/research/bubble-clusters-substrate.md](../research/bubble-clusters-substrate.md#l220) (B1 / R1)
+- **Scope**: Add named "Boundary Specification" for each major research fleet handoff (Scout→Synthesizer, Synthesizer→Reviewer, Reviewer→Archivist)
+- **Details**: Each spec lists permitted-signal list (preserve verbatim), compression-allowed list, and surface-tension budget (max token count)
+- **Rationale**: Closes 100% canonical-example loss documented in B8 Degradation Table (values-encoding.md)
+- **Status**: No issue
+
+#### 5. **AI-as-Pressurizing-Medium Framing in Session Start Ritual**
+- **Source**: [docs/research/bubble-clusters-substrate.md](../research/bubble-clusters-substrate.md#l281) (R5)
+- **Scope**: Add one-sentence note to session-start encoding checkpoint: *"The agent fleet is the pressurizing medium — it gives each substrate coherent form but does not own the membrane or the bucket."*
+- **Effort**: XS (documentation edit)
+- **Status**: No issue
+
+#### 6. **Evolutionary Pressure Test for Fleet Agent Audit**
+- **Source**: [docs/research/bubble-clusters-substrate.md](../research/bubble-clusters-substrate.md#l260) (B3 / R3)
+- **Scope**: Apply evolutionary pressure test to every `.github/agents/` file during fleet audit; agents lacking stability-tier and mutation-rate rationale must be merged or justified in `## Beliefs`
+- **Rationale**: Prevents spurious agent boundary proliferation (equivalent of unnecessary cortical area demarcations)
+- **Status**: No issue (design gate for fleet audit phase, not independent deliverable)
+
+#### 7. **Operationalize generate_agent_manifest.py Connectivity Atlas**
+- **Source**: [docs/research/bubble-clusters-substrate.md](../research/bubble-clusters-substrate.md#l247) (B2 / R2)
+- **Scope**: (1) Document command and output format in `scripts/README.md`; (2) add manifest validation step to CI on PRs touching `.github/agents/`; (3) define threshold policy (e.g., density < 1 = PR warning) in `AGENTS.md`
+- **Rationale**: Provides computable substrate health metric; closes `values-encoding.md §4 R6`; aligns with Algorithms Before Tokens (algorithmic audit replaces manual inspection)
+- **Status**: No issue
+
+#### 8. **BM25 Retrieval Tool Completion (scripts/query_docs.py)**
+- **Source**: [docs/research/queryable-substrate.md](../research/queryable-substrate.md#l199) (R1–R3)
+- **Scope**: Extend existing `scripts/query_docs.py` to include `toolchain` and `skills` scopes; add tests covering happy path, empty-scope error, and score-threshold logic (≥80% coverage)
+- **Acceptance criteria**: `uv run python scripts/query_docs.py "programmatic-first" --scope agents --top-n 3` returns three highest-scoring paragraphs within 500 ms; tests pass
+- **Related issue**: #80 (Queryable substrate) is CLOSED and `query_docs.py` exists; completion of scopes and test coverage not independently scoped
+- **Status**: Partial artifact exists; refinement not tracked
+
+#### 9. **Cross-Reference Link Registry & Automated Weaving Completion**
+- **Source**: [docs/research/doc-interweb.md](../research/doc-interweb.md#l229) (R1–R2)
+- **Scope**: (1) Create `data/link_registry.yml` with seed concepts; (2) implement `scripts/weave_links.py` with `--dry-run`, idempotency guard, `--scope` filter
+- **Constraints**: No self-referential injection; validated as per Programmatic-First
+- **Related issue**: #84 (Doc interlinking) is CLOSED and `weave_links.py` exists; YAML registry and scope filtering not confirmed as complete
+- **Status**: Partial artifact exists; completion specifics not tracked
+
+#### 10. **Propose_dogma_edit.py — Programmatic Back-Propagation Enforcer**
+- **Source**: [docs/research/dogma-neuroplasticity.md](../research/dogma-neuroplasticity.md#l150) (R1)
+- **Scope**: Implement script that enforces back-propagation evidence thresholds (3 sessions for T1/T2, 2 for T3) and generates ADR-style proposals automatically
+- **Inputs**: `--input <scratchpad>`, `--tier T1|T2|T3`, `--affected-axiom <str>`, `--proposed-delta <str|->`, `--output <path>`
+- **Spec**: Loads tier metadata, validates coherence, exit code 1 if T1 and coherence fails
+- **Related issue**: #82 (dogma-neuroplasticity research) is CLOSED; implementation spec not independently scoped
+- **Status**: No issue
+
+#### 11. **Skill File Validation (validate_skill_files.py)**
+- **Source**: [docs/research/agent-skills-integration.md](../research/agent-skills-integration.md#l255) (R7)
+- **Scope**: Extend or create `validate_skill_files.py` covering frontmatter schema, name format, directory-name match, cross-reference density, minimum body length; add to CI lint job
+- **Status**: No issue
+
+#### 12. **Six Agent Skills — Tier 1 Implementation** (3 skills)
+- **Source**: [docs/research/agent-skills-integration.md](../research/agent-skills-integration.md#l224) (R1–R3)
+- **Tier 1 skills** (high-value duplicates):
+  - `session-management`: scratchpad convention, session-start checkpoint, close protocol
+  - `deep-research-sprint`: Scout→Synthesizer→Reviewer→Archivist sequence, D4 doc requirements
+  - `conventional-commit`: Conventional Commits format, this repo's conventions
+- **Rationale**: Reduce token duplication; each skill saves ~500 tokens per session
+- **Related issue**: #62 (Implement Remaining Agent Skills) is CLOSED; verify all 6 Tier 1 + Tier 2 skills completed
+- **Status**: Issue closed; implementation completeness not verified
+
+#### 13. **Extended Agent Documentation Standard** (per-role documentation)
+- **Source**: [docs/research/agent-taxonomy.md](../research/agent-taxonomy.md) (implied) + docs
+- **Scope**: Create per-role documentation beyond `.agent.md` — canonical decision trees, tool matrices, worked examples in `docs/agents/[role-name]/`
+- **Status**: Issue #65 (feat(docs): Extended agent documentation standard) is OPEN
+
+#### 14. **Adopt Wizard Integration with client-values.yml**
+- **Source**: [docs/research/external-value-architecture.md](../research/external-value-architecture.md#l172) (E1)
+- **Scope**: Adopt wizard (`scripts/adopt_wizard.py`, issue #56) must generate `client-values.yml` stub pre-populated with `conflict_resolution` field and explanatory comment
+- **Rationale**: Makes Deployment Layer constraint encoding explicit; prevents Core Layer override risk
+- **Related issue**: #56 (feat: implement Adopt onboarding wizard) exists; specific `client-values.yml` seeding requirement is not independently scoped
+- **Status**: Depends on #56; seeding requirement not captured
+
+#### 15. **Add Deployment Layer Reading to Session Start Ritual**
+- **Source**: [docs/research/external-value-architecture.md](../research/external-value-architecture.md#l177) (E2)
+- **Scope**: Add conditional step to `AGENTS.md §Session Start Ritual`: If `client-values.yml` exists, read it after `AGENTS.md` and note constraints in `## Session Start`
+- **Effort**: One bullet point in AGENTS.md
+- **Status**: No issue
+
+#### 16. **Extend validate_agent_files.py for Core Layer Impermeability Check**
+- **Source**: [docs/research/external-value-architecture.md](../research/external-value-architecture.md#l186) (E3)
+- **Scope**: Flag agent files citing `client-values.yml` as higher-priority than `MANIFESTO.md`/`AGENTS.md` (Supremacy Rule violation)
+- **Rationale**: Algorithms Before Tokens — enforcement must be programmatic, not convention-based
+- **Status**: No issue
+
+#### 17. **Phase 1 AFS Integration — Index Session to AFS on Session Close**
+- **Source**: [docs/research/aigne-afs-evaluation.md](../research/aigne-afs-evaluation.md#l203) (R4)
+- **Scope**: Extend `prune_scratchpad.py --force` with `--index-afs` flag calling `scripts/index_session_to_afs.py`
+- **Adoption gate**: Deferred until local embedding stack confirmed (Local Compute-First)
+- **Related issue**: #14 (AIGNE AFS Context Governance) is OPEN; adoption gating conditions not independently scoped
+- **Status**: Phase gate condition not captured as separate issue
+
+#### 18. **SQLite-only Pattern A1 for AFS — FTS5 Keyword Index (Phase 1)**
+- **Source**: [docs/research/aigne-afs-evaluation.md](../research/aigne-afs-evaluation.md#l191) (R2)
+- **Scope**: Start with SQLite FTS5 keyword index before vector embeddings; respects Algorithms Before Tokens
+- **Status**: Dependent on #14; specific pattern not independently logged
+
+#### 19. **Session History Table in Scratchpad Template**
+- **Source**: [docs/research/episodic-memory-agents.md](../research/episodic-memory-agents.md#l162) (M1)
+- **Scope**: Add `## Session History` table to scratchpad template in `docs/guides/session-management.md`
+- **Effort**: XS (editorial update, zero dependencies)
+- **Rationale**: Zero-infrastructure episodic memory layer for multi-session tracking
+- **Status**: No issue
+
+#### 20. **Cognee Library Adoption (After Local Compute Baseline)**
+- **Source**: [docs/research/episodic-memory-agents.md](../research/episodic-memory-agents.md#l173) (R3)
+- **Scope**: When local compute baseline is confirmed, Cognee is the preferred library (native Ollama support, graph-based, local-first design)
+- **Related issue**: #13 (Episodic and Experiential Memory) is OPEN; library selection criteria not independently surfaced
+- **Status**: Recommendation deferred pending #13 + local compute setup completion
+
+#### 21. **Product User Research Infrastructure (Six Recommendations)**
+- **Source**: [docs/research/product-research-and-design.md](../research/product-research-and-design.md#l116) (R1–R6)
+- **Scope**: 
+  - R1: Add JTBD job statement to each `scripts/README.md` entry
+  - R2: Add legibility & idempotency checklist to `CONTRIBUTING.md`
+  - R3: Create pinned GitHub Discussion: "Friction & Feature Requests"
+  - R4: Adopt README-driven development for new tools (convention)
+  - R5: Implement prompt archaeology as post-sprint ritual (scan sessions for patterns → encode into `.agent.md` examples)
+  - R6: Quarterly "voice of the user" synthesis run (Scout session → `docs/research/` summary)
+- **Related issue**: #45 (Research: Product Definition) is OPEN but broader in scope; specific research infrastructure recommendations not independently captured
+- **Status**: Framework recommendations exist; no dedicated issue for infrastructure setup
+
+#### 22. **Documentation Site Improvements (Six Recommendations)**
+- **Source**: [docs/research/oss-documentation-best-practices.md](../research/oss-documentation-best-practices.md#l220) (R1–R6)
+- **Scope**:
+  - R1: Create `CHANGELOG.md` (immediate, 10 min)
+  - R2: Add CI badge + TOC to `README.md` (immediate, 20 min)
+  - R3: Add dev environment setup to `CONTRIBUTING.md` (immediate, 15 min)
+  - R4: Add MkDocs Material docsite (1–2 hours)
+  - R5: Add link-checker (lychee) to CI (30 min)
+  - R6: Run `validate_synthesis.py` in CI (15 min)
+- **Related issues**: #25 (GitHub PM Setup) is CLOSED; individual doc improvements not independently tracked; #27 (CI/DX Hygiene) is CLOSED but may not cover all six
+- **Status**: Specific improvements not individually scoped
+
+#### 23. **Commit .vscode/mcp.json & Design Endogenic MCP Server**
+- **Source**: [docs/research/local-mcp-frameworks.md](../research/local-mcp-frameworks.md#l215) (recommendations 1–2)
+- **Scope**: 
+  - Commit `.vscode/mcp.json` with GitHub MCP + endogenic filesystem server as default
+  - Design `scripts/mcp_server.py` wrapping key project scripts as tools (delegate to Executive Scripter for spec)
+- **Related issue**: #6 (Locally distributed MCP frameworks) is CLOSED; integration specifics not independently logged
+- **Status**: No issue
+
+#### 24. **BDI Framework for Agent File Sections**
+- **Source**: [docs/research/methodology-review.md](../research/methodology-review.md#l143) (D2)
+- **Scope**: Rename `.agent.md` sections to Beliefs / Desired outcomes / Intentions (BDI cognitive architecture framing)
+- **Effort**: Zero implementation cost; significant clarity gain
+- **Status**: No issue (design guidance)
+
+#### 25. **Add Session History Forward Reference to values-encoding.md**
+- **Source**: [docs/research/bubble-clusters-substrate.md](../research/bubble-clusters-substrate.md#l268) (R4)
+- **Scope**: Add one-line forward reference from `docs/research/values-encoding.md` Related section: `[bubble-clusters-substrate.md](bubble-clusters-substrate.md) (bubble-cluster topology — additive model)`
+- **Effort**: XS (documentation edit)
+- **Status**: No issue
+
+#### 26. **Canonical H-LAM/T Distinction in Docs (Substance vs. Substrate)**
+- **Source**: [docs/research/sprint-C-h3-augmentive.md](../research/sprint-C-h3-augmentive.md#l163)
+- **Scope**: 
+  - Draft substrate-creation distinction in `docs/guides/mental-models.md` using Engelbart H-LAM/T framework
+  - Audit session outputs for substrate ratio (commits to docs/, scripts/, .github/agents/)
+  - Add Engelbart citation to MANIFESTO.md augmentation axiom
+- **Rationale**: Grounds augmentation axiom in historical tradition; clarifies substance vs. substrate distinction
+- **Status**: No issue
+
+#### 27. **Deterministic Components: YAML FSM Specifications & Validators**
+- **Source**: [docs/research/deterministic-agent-components.md](../research/deterministic-agent-components.md#l129)
+- **Scope**:
+  - R1: Create `data/delegation-gate.yml` (machine-readable routing table)
+  - R2: Implement `scripts/validate_delegation_routing.py` (check routing declarations against canonical schema)
+  - R3: Implement `scripts/validate_session_state.py` (FSM validator reading `data/phase-gate-fsm.yml`)
+  - R4: Extract pre-review sweep to `scripts/pre_review_sweep.py` (testable, extensible)
+  - Bonus: Annotate orchestrator steps with D/LLM tags
+- **Rationale**: Operationalizes deterministic decision flows; replaces implicit agent judgment with explicit routing logic
+- **Status**: `data/` files exist (phase-gate-fsm.yml confirmed in workspace); validators not scoped as separate issue
+
+#### 28. **Extend GitHub Project Management — Rulesets, Discussions, Auto-Labeling**
+- **Source**: [docs/research/github-project-management.md](../research/github-project-management.md#l319)
+- **Scope**:
+  - R1: Seed label taxonomy via `scripts/seed_labels.py` reading `data/labels.yml` (immediate, 30 min)
+  - R2: Create GitHub Project with Priority field + Board view (15 min)
+  - R3: Migrate issue templates to YAML forms (45 min)
+  - R4: Add `area:` auto-label workflow via `.github/labeler.yml` (20 min)
+  - R5: Add stale bot (15 min)
+  - R6: Document `gh auth refresh -s project` in `CONTRIBUTING.md` (5 min)
+- **Related issue**: #25 (GitHub PM Setup) is CLOSED; detailed sequencing and specific recommendations not independently surfaced
+- **Status**: Framework exists (#25); individual automation tasks not granularly tracked
+
+#### 29. **Commit discipline: Inline D/LLM annotations for agent orchestration**
+- **Source**: [docs/research/deterministic-agent-components.md](../research/deterministic-agent-components.md#l148)
+- **Scope**: Annotate orchestrator steps with `<!-- D -->` (deterministic) or `<!-- L -->` (LLM-required) comments; makes the 63/37 split visible and auditable
+- **Effort**: Editorial annotation
+- **Status**: No issue
+
+---
+
+### Summary Table
+
+| Count | Category | Notes |
+|-------|----------|-------|
+| **29** | Total untracked recommendations extracted | — |
+| **8** | Have related but broader GitHub issues | Specifics not independently scoped (#45, #56, #62, #65, #74, #80, #82, #84) |
+| **21** | No GitHub issue exists | — |
+| **5** | Documentation edits only (XS effort) | Can be batched into single PR |
+| **4** | Deferred by dependency gate | Depend on #13, #14, local compute setup, or prior phase completion |
+| **3** | Already partially complete | Artifact exists; refinement/scope extension not tracked  |
+
+---
+
+### Recommended Next Steps
+
+1. **Batch process XS documentation edits** (R5.3, R4.4, R4.5, R1.1, R2.3) as a single PR
+2. **Create issue for validate_session.py implementation spec** (recommendation #1) — immediately actionable, high-impact, no external deps
+3. **Create issue for BM25 scope completion** (recommendation #8) — extends existing artifact; low effort, high value
+4. **Schedule quarterly user research synthesis** (recommendation #21 / R6) — lightweight process gate
+5. **Verify #62 (Agent Skills) completion** — confirm all 6 Tier 1 + Tier 2 skills are committed and tested
+6. **Defer external API vectorization** — all embedding/AFS work blocked on local compute baseline (#OPEN_RESEARCH item 1)
+
