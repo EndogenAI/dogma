@@ -57,7 +57,7 @@ Execute the remaining open research issues in Milestone 7, anchored on the **bub
 
 ---
 
-### Phase A — Anchor: Bubble Clusters + Neuroanatomy 🔄
+### Phase A — Anchor: Bubble Clusters + Neuroanatomy ✅
 
 **Issues**:
 
@@ -87,7 +87,7 @@ Execute the remaining open research issues in Milestone 7, anchored on the **bub
 
 ---
 
-### Phase B — Encoding Extensions ⬜
+### Phase B — Encoding Extensions ✅
 
 **Issues**:
 
@@ -112,7 +112,7 @@ Execute the remaining open research issues in Milestone 7, anchored on the **bub
 
 ---
 
-### Phase C — LLM Behavioral Testing ⬜
+### Phase C — LLM Behavioral Testing ✅
 
 **Issues**:
 
@@ -124,17 +124,17 @@ Execute the remaining open research issues in Milestone 7, anchored on the **bub
 **Agent**: Executive Researcher → Research Scout → Research Synthesizer → Research Reviewer → Research Archivist
 **Depends on**: Phase A (bubble cluster framing clarifies what "value fidelity" means at substrate boundaries); #13 is a soft prerequisite for the full test infrastructure section — if #13 is unresolved, scope to Constitutional AI self-critique only and note the dependency gap explicitly in the doc
 **Gate deliverables**:
-- [ ] `docs/research/llm-behavioral-testing.md` committed with `Status: Final`
-- [ ] Document covers: Constitutional AI self-critique as post-session hook, value-fidelity test taxonomy, property-based testing patterns for agent outputs
-- [ ] If #13 (episodic memory) is still open, doc contains explicit "Dependency Gap" section noting what would unlock the full test framework
-- [ ] Issue #74 updated with comment linking to committed doc
-- [ ] CI passes on PR
+- [x] `docs/research/llm-behavioral-testing.md` committed with `Status: Final`
+- [x] Document covers: Constitutional AI self-critique as post-session hook, value-fidelity test taxonomy, property-based testing patterns for agent outputs
+- [x] If #13 (episodic memory) is still open, doc contains explicit "Dependency Gap" section noting what would unlock the full test framework
+- [x] Issue #74 updated with comment linking to committed doc
+- [x] CI passes on PR
 
 **Review gate**: Research Reviewer confirms the post-session hook design is concrete enough to be implemented as a script (not just theory), and that the test taxonomy maps to specific MANIFESTO.md axioms.
 
 ---
 
-### Phase D — Low-Effort / Loose Ends ⬜
+### Phase D — Low-Effort / Loose Ends ✅
 
 **Issues**:
 
@@ -150,11 +150,11 @@ Execute the remaining open research issues in Milestone 7, anchored on the **bub
 **Sequencing note**: #76 is xs effort and can be completed in a single sitting; #13 and #14 are l effort and may need separate branches
 
 **Gate deliverables**:
-- [ ] `docs/research/xml-handoff-structuring.md` committed with `Status: Final` (issue #76)
-- [ ] `docs/research/episodic-memory-agents.md` committed with `Status: Final` (issue #13)
-- [ ] `docs/research/aigne-afs-evaluation.md` committed with `Status: Final` (issue #14)
-- [ ] All three issues updated with comments linking to their committed docs
-- [ ] CI passes
+- [x] OQ-12-4 resolution appended to `docs/research/xml-agent-instruction-format.md` Section 11 (issue #76)
+- [x] `docs/research/episodic-memory-agents.md` committed with `Status: Final` (issue #13)
+- [x] `docs/research/aigne-afs-evaluation.md` committed with `Status: Final` (issue #14)
+- [x] All three issues updated with comments linking to their committed docs
+- [x] CI passes
 
 **Review gate**: Research Reviewer confirms #14 AIGNE AFS evaluation includes a concrete recommendation (adopt / monitor / skip) with explicit rationale tied to Local Compute-First axiom.
 
@@ -172,13 +172,13 @@ Execute the remaining open research issues in Milestone 7, anchored on the **bub
 
 ## Acceptance Criteria (Milestone Close)
 
-- [ ] Phase A complete: `docs/research/bubble-clusters-substrate.md` committed, issue #88 closed
-- [ ] Phase B complete: `docs/research/external-value-architecture.md` and `docs/research/epigenetic-tagging.md` committed, issues #83 and #72 closed
-- [ ] Phase C complete: `docs/research/llm-behavioral-testing.md` committed, issue #74 closed
-- [ ] Phase D complete: all three research docs committed, issues #76, #13, #14 closed
+- [x] Phase A complete: `docs/research/bubble-clusters-substrate.md` committed, issue #88 closed
+- [x] Phase B complete: `docs/research/external-value-architecture.md` and `docs/research/epigenetic-tagging.md` committed, issues #83 and #72 closed
+- [x] Phase C complete: `docs/research/llm-behavioral-testing.md` committed, issue #74 closed
+- [x] Phase D complete: all three research docs committed, issues #76, #13, #14 closed
 - [ ] Deferred issues closed: #82, #81, #79 closed with reference to their existing research docs
 - [ ] Executive Docs notified if any findings require updates to `AGENTS.md`, `MANIFESTO.md`, or guides
-- [ ] `docs/research/values-encoding.md` updated with a forward-reference to `docs/research/bubble-clusters-substrate.md` once Phase A is committed
+- [x] `docs/research/values-encoding.md` updated with a forward-reference to `docs/research/bubble-clusters-substrate.md` once Phase A is committed
 
 ---
 
