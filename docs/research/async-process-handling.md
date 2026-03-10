@@ -406,8 +406,9 @@ Executive Scripter agent has a bounded, pre-researched scope.
 4. **Cap automatic retries at 1** — more retries without diagnosis compound failures and
    burn tokens on a session that cannot succeed.
 
-5. **Implement `wait_for_service.py`** — the script spec in §8 covers all recurrent
-   service-readiness checks in this fleet. Encode it before the third interactive use.
+5. **Implement specialized polling scripts** — concrete example: [`scripts/wait_for_github_run.py`](../../scripts/wait_for_github_run.py)
+   encodes Pattern 2 for GitHub Actions runs. Use this as a template for other operations
+   with recurrent polling needs (Ollama, Docker, etc.).
 
 6. **Add async handling guidelines to `AGENTS.md`** — the root file is the authoritative
    constraint source for all agents; per-instance reinvention of timeout values is the
