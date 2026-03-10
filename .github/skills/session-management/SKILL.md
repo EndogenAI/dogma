@@ -233,7 +233,15 @@ The executive agent writes a `## Session Summary` section to the scratchpad:
 Post a progress comment on every GitHub issue actively worked during the session. Write the body to a temp file — never use `--body "..."` with multi-line content:
 
 ```bash
+# Validate temp file before consumption
+test -s /tmp/session_close_<num>.md || { echo "ERROR: temp file empty"; exit 1; }
+file /tmp/session_close_<num>.md | grep -q "UTF-8\|ASCII" || { 
+  echo "ERROR: file not valid UTF-8"; exit 1; 
+}
+
+# Safe to use
 gh issue comment <num> --body-file /tmp/session_close_<num>.md
+
 # Verify the comment landed:
 gh issue view <num> --json comments -q '.comments[-1].body[:80]'
 ```
@@ -243,7 +251,19 @@ gh issue view <num> --json comments -q '.comments[-1].body[:80]'
 Update the issue body checkboxes to reflect completed deliverables:
 
 ```bash
+# Validate temp file before consumption
+test -s /tmp/issue_<num>_body.md || { echo "ERROR: temp file empty"; exit 1; }
+file /tmp/issue_<num>_body.md | grep -q "UTF-8\|ASCII" || { 
+  echo "ERROR: file not valid UTF-8"; exit 1; 
+}
+grep -q "- \[.\]" /tmp/issue_<num>_body.md || { 
+  echo "WARNING: no checkbox patterns found"; 
+}
+
+# Safe to use
 gh issue edit <num> --body-file /tmp/issue_<num>_body.md
+
+# Verify
 gh issue view <num> --json body -q '.body' | grep -E '\[x\]|\[ \]'
 ```
 
