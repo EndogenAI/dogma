@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Seed 29 GitHub issues from research recommendations."""
+
+# ruff: noqa: E501
 import subprocess
-import sys
 
 issues = [
     {
@@ -386,25 +387,27 @@ for i, issue in enumerate(issues, 1):
     title = issue["title"]
     body = issue["body"]
     labels = issue["labels"]
-    
+
     # Write body to temp file
     import tempfile
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False) as f:
+
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as f:
         f.write(body)
         temp_file = f.name
-    
+
     # Build command
     cmd = ["gh", "issue", "create", "--title", title, "--body-file", temp_file, "--milestone", milestone]
     for label in labels:
         cmd.extend(["--label", label])
-    
+
     try:
         result = subprocess.run(cmd, capture_output=True, text=True)
         if result.returncode == 0:
             output = result.stdout.strip()
             # Extract issue number from URL
             if "#" in output:
-                issue_num = output.split("#")[1].split("\n")[0] if "\n" in output.split("#")[1] else output.split("#")[1]
+                parts = output.split("#")[1]
+                issue_num = parts.split("\n")[0] if "\n" in parts else parts
                 created.append((i, issue_num.strip(), title[:40]))
                 print(f"✓ Issue {i}: #{issue_num.strip()}")
             else:
@@ -418,12 +421,13 @@ for i, issue in enumerate(issues, 1):
         print(f"✗ Issue {i}: {str(e)[:80]}")
     finally:
         import os
+
         try:
             os.unlink(temp_file)
-        except:
+        except OSError:
             pass
 
-print(f"\n## Summary")
+print("\n## Summary")
 print(f"Created: {len(created)}/29")
 print(f"Failed: {len(failed)}/29")
 if failed:
