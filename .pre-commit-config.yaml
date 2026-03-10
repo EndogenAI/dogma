@@ -29,3 +29,10 @@ repos:
         types: [markdown]
         files: ^(docs/(?!research/sources/).*\.md|README\.md|CONTRIBUTING\.md|CHANGELOG\.md)$
         pass_filenames: true
+      - id: no-heredoc-writes
+        name: Block heredoc file-write commands (use create_file / replace_string_in_file tools instead)
+        language: pygrep
+        entry: 'cat\s+>{1,2}\s+\S+\s+<<|<<\s+[''"]?(EOF|PYEOF|HEREDOC)[''"]?'
+        types_or: [python, shell]
+        exclude: scripts/validate_agent_files\.py|tests/test_validate_agent_files\.py
+        pass_filenames: true
