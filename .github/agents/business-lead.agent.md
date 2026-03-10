@@ -22,7 +22,7 @@ handoffs:
 - GitHub issues #95–104 (sub-issues) — repo-specific business context (dogma, init, adopt, web, etc.)
 - Consulting inquiry log (external; shared via GitHub issues or email thread)
 
-## Action
+## Workflow
 
 **Month 1 Responsibilities (Discovery & Facilitation)**:
 
@@ -40,7 +40,7 @@ handoffs:
 - Weekly sync with Conor (Fridays, 30 min) to review pipeline + recommendations
 - Urgent decisions (hot lead, competitive pressure) escalate same-day to Conor
 
-## Quality Gate
+## Completion Criteria
 
 - All recommendations logged as GitHub issue comments (threaded under #93 or live-updated consulting pipeline issue)
 - Weekly summary posted to scratchpad (`.tmp/`) for Conor review
