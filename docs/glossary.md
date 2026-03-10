@@ -13,6 +13,8 @@ Each entry cites the authoritative source where the term is introduced or most p
 - [Guiding Principles](#guiding-principles)
 - [Methodology Concepts](#methodology-concepts)
 - [Agent Fleet Concepts](#agent-fleet-concepts)
+- [Substrates](#substrates)
+- [Roles, Skills, and the Customization Taxonomy](#roles-skills-and-the-customization-taxonomy)
 - [Mental Models and Metaphors](#mental-models-and-metaphors)
 - [Ethical Values](#ethical-values)
 - [Anti-patterns](#anti-patterns)
@@ -24,10 +26,14 @@ Each entry cites the authoritative source where the term is introduced or most p
 | Term | Section |
 |------|---------|
 | [Adopt Over Author](#adopt-over-author) | Guiding Principles |
+| [Agent](#agent) | Roles, Skills, and the Customization Taxonomy |
+| [Agent Fleet](#agent-fleet) | Roles, Skills, and the Customization Taxonomy |
+| [Agent Posture](#agent-posture) | Roles, Skills, and the Customization Taxonomy |
 | [Algorithms Before Tokens](#algorithms-before-tokens) | Core Axioms |
 | [Anti-pattern](#anti-pattern) | Methodology Concepts |
 | [Augmentive Partnership](#augmentive-partnership) | Foundational Principle |
 | [Autopoiesis](#autopoiesis) | Mental Models |
+| [Bubble-Cluster Model](#bubble-cluster-model) | Substrates |
 | [Canonical Example](#canonical-example) | Methodology Concepts |
 | [Commit Discipline](#commit-discipline) | Agent Fleet Concepts |
 | [Compress Context, Not Content](#compress-context-not-content) | Guiding Principles |
@@ -35,33 +41,44 @@ Each entry cites the authoritative source where the term is introduced or most p
 | [Context Rot](#context-rot) | Anti-patterns |
 | [Context Window Alert Protocol](#context-window-alert-protocol) | Agent Fleet Concepts |
 | [Cross-Reference Density](#cross-reference-density) | Methodology Concepts |
+| [Custom Agent](#agent) | Roles, Skills, and the Customization Taxonomy |
 | [D4 Research Document](#d4-research-document) | Methodology Concepts |
 | [Delegation Decision Gate](#delegation-decision-gate) | Agent Fleet Concepts |
 | [DNA Metaphor](#dna-metaphor) | Mental Models |
 | [Documentation-First](#documentation-first) | Guiding Principles |
+| [Encoded Substrate](#encoded-substrate) | Substrates |
 | [Encoding Fidelity](#encoding-fidelity) | Methodology Concepts |
 | [Encoding Inheritance Chain](#encoding-inheritance-chain) | Methodology Concepts |
 | [Endogenous-First](#endogenous-first) | Core Axioms |
 | [Endogenic Development](#endogenic-development) | Methodology Concepts |
 | [Endogenic Flywheel](#endogenic-flywheel) | Methodology Concepts |
 | [Evaluator-Optimizer Loop](#evaluator-optimizer-loop) | Agent Fleet Concepts |
+| [Executable Documentation](#executable-documentation) | Methodology Concepts |
+| [Executive Agent](#executive-agent-vs-sub-agent) | Roles, Skills, and the Customization Taxonomy |
 | [Expansion → Contraction Pattern](#expansion--contraction-pattern) | Methodology Concepts |
 | [Fetch-Before-Act](#fetch-before-act) | Agent Fleet Concepts |
 | [Focus-on-Descent / Compression-on-Ascent](#focus-on-descent--compression-on-ascent) | Agent Fleet Concepts |
 | [Handoff Drift](#handoff-drift) | Anti-patterns |
 | [Isolate Invocations, Parallelize Safely](#isolate-invocations-parallelize-safely) | Guiding Principles |
+| [Knowledge Substrate](#knowledge-substrate) | Substrates |
 | [Local Compute-First](#local-compute-first) | Core Axioms |
+| [Membrane (Substrate Boundary)](#membrane-substrate-boundary) | Substrates |
 | [Minimal Posture](#minimal-posture) | Guiding Principles |
 | [Morphogenetic Seed](#morphogenetic-seed) | Mental Models |
 | [Phase Gate](#phase-gate) | Agent Fleet Concepts |
 | [Programmatic-First](#programmatic-first) | Guiding Principles |
 | [R-items](#r-items) | Methodology Concepts |
+| [Role](#role) | Roles, Skills, and the Customization Taxonomy |
 | [SECI Cycle](#seci-cycle) | Methodology Concepts |
 | [Self-Governance and Guardrails](#self-governance-and-guardrails) | Guiding Principles |
 | [Session-Start Encoding Checkpoint](#session-start-encoding-checkpoint) | Agent Fleet Concepts |
 | [Signal Preservation](#signal-preservation) | Methodology Concepts |
+| [Skill (SKILL.md)](#skill-skillmd) | Roles, Skills, and the Customization Taxonomy |
 | [Scratchpad](#scratchpad) | Agent Fleet Concepts |
+| [Sub-agent](#executive-agent-vs-sub-agent) | Roles, Skills, and the Customization Taxonomy |
+| [Substrate](#substrate) | Substrates |
 | [Testing-First](#testing-first) | Guiding Principles |
+| [Takeback Pattern](#takeback-pattern) | Agent Fleet Concepts |
 | [Token Burn](#token-burn) | Methodology Concepts |
 | [Tree Rings of Knowledge](#tree-rings-of-knowledge) | Mental Models |
 | [Validate and Gate, Always](#validate-and-gate-always) | Guiding Principles |
@@ -638,6 +655,22 @@ The purpose is to anchor each session to the encoding inheritance chain before a
 
 ---
 
+### Takeback Pattern
+
+The handoff pattern in which each sub-agent returns control to the executive after completing its task, rather than chaining directly to the next sub-agent. This keeps the executive in oversight at every step and ensures the scratchpad is updated before the next delegation begins.
+
+```
+Executive → Sub-agent A → [Back to Executive] → Sub-agent B → Review → GitHub
+```
+
+This pattern is recommended over direct agent-to-agent chaining because it maintains the executive as the sole integration point and prevents context from being lost between phases.
+
+**Related terms**: [Executive Agent vs. Sub-agent](#executive-agent-vs-sub-agent), [Phase Gate](#phase-gate)
+
+*Source: [`docs/guides/agents.md` §Handoff Patterns](guides/agents.md#handoff-patterns)*
+
+---
+
 ### Workplan
 
 A committed Markdown file in `docs/plans/` that captures the multi-phase execution plan for a session. Required for any session with ≥ 3 phases or ≥ 2 agent delegations.
@@ -655,6 +688,254 @@ The workplan is committed at the start of the session (before Phase 1 executes) 
 **Related terms**: [Phase Gate](#phase-gate), [Scratchpad](#scratchpad)
 
 *Source: [`AGENTS.md` §docs/plans/ — Tracked Workplans](../AGENTS.md#docplans----tracked-workplans)*
+
+---
+
+## Substrates
+
+A substrate is a discrete layer in the endogenic architecture — a bounded region of encoded knowledge with its own mutation rate, stability tier, and specificity level. The complete set of substrates forms the [Encoding Inheritance Chain](#encoding-inheritance-chain).
+
+*Source: [`MANIFESTO.md` §What Is Endogenic Development?](../MANIFESTO.md#what-is-endogenic-development), [`docs/research/bubble-clusters-substrate.md`](research/bubble-clusters-substrate.md)*
+
+---
+
+### Substrate
+
+The complete system of encoded knowledge, documentation, scripts, and governance structures that persist across development sessions and guide agent behavior.
+
+The components of the endogenic substrate are:
+
+| Substrate | Role |
+|-----------|------|
+| `MANIFESTO.md` | Foundational axioms and values; highest stability, slowest mutation rate |
+| `AGENTS.md` (root + subdirectory) | Operational constraints for the agent fleet |
+| `.agent.md` role files | Per-agent persona, posture, tools, and handoff logic |
+| `SKILL.md` files | Reusable tactical procedures |
+| `scripts/` | Encoded deterministic work (the primary machinery of Algorithms Before Tokens) |
+| `docs/` | Guides, research synthesis, toolchain references |
+| Session scratchpads (`.tmp/`) | Ephemeral inter-session memory; not committed |
+| CI gates | Programmatic enforcement of substrate health |
+
+**Key quote**: *"Like all living systems, our endogenic substrate is built from inherited knowledge (standing on giants' shoulders) and continuous synthesis of external wisdom (tools, frameworks, best practices)."* — `MANIFESTO.md`
+
+**Autopoietic property**: each session produces scripts, guides, and agent files that maintain the substrate, so future sessions start richer than the ones that preceded them.
+
+**Related terms**: [Encoding Inheritance Chain](#encoding-inheritance-chain), [Bubble-Cluster Model](#bubble-cluster-model), [DNA Metaphor](#dna-metaphor)
+
+*Source: [`MANIFESTO.md` §What Is Endogenic Development?](../MANIFESTO.md#what-is-endogenic-development)*
+
+---
+
+### Encoded Substrate
+
+Knowledge, conventions, and procedures deliberately written into committed files so agents can read and reuse them across sessions rather than re-discovering them interactively. When something is "encoded" into the substrate, a future session starts richer without burning tokens to rediscover it.
+
+**Examples**: Committed scripts, documented conventions in `AGENTS.md`, procedures in `SKILL.md` files, toolchain guides in `docs/toolchain/`
+
+**The anti-pattern signal**: *"The substrate did not grow; the next session starts blind."* This phrase in `MANIFESTO.md` flags whenever work was done interactively without encoding the result.
+
+**Related terms**: [Substrate](#substrate), [Programmatic-First](#programmatic-first), [Token Burn](#token-burn)
+
+*Source: [`MANIFESTO.md` §Documentation-First](../MANIFESTO.md#documentation-first), [`MANIFESTO.md` §Programmatic-First](../MANIFESTO.md#programmatic-first)*
+
+---
+
+### Knowledge Substrate
+
+The specific layer of substrate that encodes *operational knowledge* — what the system knows about how to perform its tasks. Includes guides, research synthesis documents, documented conventions in `AGENTS.md`, reusable procedures in `SKILL.md` files, and toolchain references.
+
+The `docs/toolchain/` substrate is the canonical example: it encodes canonical safe patterns and known footguns for heavily-used CLI tools so agents look them up rather than reconstruct them — the [Algorithms Before Tokens](#algorithms-before-tokens) axiom applied to documentation.
+
+**Related terms**: [Substrate](#substrate), [Encoded Substrate](#encoded-substrate), [Algorithms Before Tokens](#algorithms-before-tokens)
+
+*Source: [`AGENTS.md` §Toolchain Reference](../AGENTS.md#toolchain-reference)*
+
+---
+
+### Membrane (Substrate Boundary)
+
+In the [Bubble-Cluster Model](#bubble-cluster-model), the active boundary between two substrates that governs how information crosses between substrate layers. Membranes are not passive transitions — they are the primary site of signal fidelity loss and, when calibrated correctly, signal amplification.
+
+**Membrane dynamics**:
+- Too impermeable → the substrate drifts from the rest of the system (isolation)
+- Too permeable → the substrate loses its distinct identity and collapses into the adjacent substrate
+- Calibrated permeability → optimal signal fidelity across boundaries
+
+**Endogenic equivalent of membrane**: the handoff prompt between agents, the cross-reference citation in a document, the explicit `## Source:` field in research docs. These are the designed permeability controls.
+
+**Related terms**: [Bubble-Cluster Model](#bubble-cluster-model), [Signal Preservation](#signal-preservation), [Handoff Drift](#handoff-drift)
+
+*Source: [`docs/research/bubble-clusters-substrate.md`](research/bubble-clusters-substrate.md)*
+
+---
+
+### Bubble-Cluster Model
+
+A mental model that frames the endogenic substrate as a collection of discrete "bubbles" — each with an active boundary membrane — rather than a flat stack of layers. The model adds a spatial and topological dimension to the [Encoding Inheritance Chain](#encoding-inheritance-chain).
+
+**Metaphor mapping**:
+
+| Bubble element | Endogenic analog |
+|----------------|-----------------|
+| **Bucket** | The user / practitioner — the containing environment that holds all substrates and supplies intent |
+| **Soap** | Data, knowledge, research findings — reduces surface tension between substrates, enabling information transfer |
+| **Bubbles** | Substrates (`MANIFESTO.md`, `AGENTS.md`, agent files, scripts, scratchpads) — discrete, bounded regions |
+| **Air inside bubbles** | The AI agent fleet — the invisible pressurizing medium that gives each substrate its shape and internal coherence |
+
+**Key insight**: *"Value fidelity is not only a question of faithful re-encoding at each layer — it is equally a question of membrane permeability and connectivity geometry."* A substrate that is too isolated drifts. A substrate with no membrane collapses into its neighbor. Optimal signal fidelity requires calibrated membrane dynamics.
+
+**Relationship to inheritance-chain model**: The two models are additive. The inheritance chain describes the *vertical* dimension (top-down value propagation); the bubble-cluster model describes the *horizontal and topological* dimension (lateral signal dynamics, boundary permeability, inter-substrate connectivity gradients).
+
+**Related terms**: [Substrate](#substrate), [Membrane (Substrate Boundary)](#membrane-substrate-boundary), [Encoding Inheritance Chain](#encoding-inheritance-chain)
+
+*Source: [`docs/research/bubble-clusters-substrate.md`](research/bubble-clusters-substrate.md)*
+
+---
+
+## Roles, Skills, and the Customization Taxonomy
+
+The three first-class primitives in the repository's customization stack define *who does a task* (Roles), *what all agents must do* (AGENTS.md), and *how a task is done* (Skills).
+
+| Primitive | File Format | Encodes |
+|-----------|------------|---------|
+| Fleet constraints | `AGENTS.md` files | Universal behaviors, guardrails, operational conventions |
+| **Roles** | `.agent.md` in `.github/agents/` | Role-specific persona, posture, tool restrictions, endogenous sources, handoff graph |
+| **Skills** | `SKILL.md` in `.github/skills/<name>/` | Reusable workflow procedures loadable on demand |
+
+**Boundary decision rule**: Content belongs in a role file when it is exclusively about that agent's role. Content belongs in a `SKILL.md` when it describes *how a task is performed* and at least one other agent or AI tool could benefit from it. If the same procedure appears in two agent bodies, extract it to a skill before writing a third copy (Programmatic-First applied to instruction prose).
+
+*Source: [`AGENTS.md` §VS Code Customization Taxonomy](../AGENTS.md#vs-code-customization-taxonomy), [`docs/guides/agents.md`](guides/agents.md)*
+
+---
+
+### Role
+
+The identity concept that a `.agent.md` file encodes: *who does a task*. A Role is a discrete, bounded set of responsibilities with a unique posture, tool restrictions, and handoff logic. Roles appear as **Custom Agents** in VS Code Copilot Chat (invoked with `@<agent-name>`).
+
+**Synonyms**: Custom Agent, `.agent.md` file. The term "Character" has been proposed informally as an alternative but is not yet canonical.
+
+**Restaurant analogy** (from `docs/guides/mental-models.md`): Roles are *Job Descriptions* — the Chef de Cuisine, Maître d', and Sous Chef each have a different `.agent.md` file. All read the same `AGENTS.md` (Operations Manual); each has different specialized responsibilities, tool restrictions, and quality gates.
+
+**Characteristics of a Role**:
+- YAML frontmatter with `name` and `description`
+- `## Endogenous Sources` section (what to read before acting)
+- `## Action` section (what the role does)
+- `## Quality-gate` section (acceptance criteria)
+- Tool restriction declaration (read-only, read+create, or full execution)
+- Handoff graph (downstream agents)
+
+**vs. Skill**: Roles encode *who does a task*. Skills encode *how a task is done*. If a procedure could be used by more than one role without needing that role's posture, it belongs in a Skill.
+
+**Related terms**: [Skill (SKILL.md)](#skill-skillmd), [Agent Posture](#agent-posture), [Agent Fleet](#agent-fleet), [Encoding Inheritance Chain](#encoding-inheritance-chain)
+
+*Source: [`docs/guides/agents.md` §What Are Agents?](guides/agents.md#what-are-agents), [`MANIFESTO.md` §What Is Endogenic Development?](../MANIFESTO.md#what-is-endogenic-development)*
+
+---
+
+### Agent
+
+The runtime instance of a Role: a governed AI persona that reads its endogenous sources before acting, follows documented conventions, and hands off to downstream agents rather than overreaching its scope.
+
+> *"Agents are not magic — they are documented, reviewable, constrained workers. The value is in the constraints and the encoded knowledge they read before acting."* — `docs/guides/agents.md`
+
+Each agent:
+- Reads `AGENTS.md` and its own endogenous sources before taking any action
+- Operates within its declared [posture](#agent-posture)
+- Escalates decisions outside its scope rather than forcing them
+- Commits before handoff (via Review → GitHub)
+
+**In VS Code**: Agents are invoked as `@<agent-name>` in Copilot Chat. They appear as "Custom Agents."
+
+**Related terms**: [Role](#role), [Agent Posture](#agent-posture), [Agent Fleet](#agent-fleet), [Executive Agent vs. Sub-agent](#executive-agent-vs-sub-agent)
+
+*Source: [`docs/guides/agents.md` §What Are Agents?](guides/agents.md#what-are-agents)*
+
+---
+
+### Agent Fleet
+
+The complete set of defined agents that work together following the endogenic methodology. The fleet is organized hierarchically — executive agents coordinate and delegate to specialist sub-agents.
+
+**Pressurizing metaphor** (from [Bubble-Cluster Model](#bubble-cluster-model)): *"The agent fleet is the pressurizing medium — it gives each substrate coherent form but does not own the membrane or the bucket."* — `AGENTS.md`. The fleet is the air inside the bubbles: invisible, essential, the source of internal structure.
+
+**Fleet management**: Automated via `scripts/generate_agent_manifest.py`. The catalog of all agents is at `.github/agents/README.md`. Fleet authoring, auditing, and deprecation is owned by the **Executive Fleet** agent.
+
+**Named fleet architectures** (from `docs/research/agent-fleet-design-patterns.md`):
+- Orchestrator-Workers
+- Evaluator-Optimizer Loop
+- Parallel Research Fleet
+- Focus-Dispatch / Compression-Return
+- Context-Isolated Sub-Fleet
+- Hybrid (orchestrator + specialist sub-fleet)
+
+**Related terms**: [Agent](#agent), [Role](#role), [Executive Agent vs. Sub-agent](#executive-agent-vs-sub-agent)
+
+*Source: [`AGENTS.md` §Agent Fleet Overview](../AGENTS.md#agent-fleet-overview), [`docs/research/agent-fleet-design-patterns.md`](research/agent-fleet-design-patterns.md)*
+
+---
+
+### Executive Agent vs. Sub-agent
+
+**Executive Agent**: An agent with full execution posture that coordinates, delegates, and synthesizes across sub-agents. The sole integration point that reads the full scratchpad and writes `## Session Summary`. Executive agents orchestrate; they do not do all the work themselves.
+
+**Sub-agent**: An agent delegated by an executive to perform a specific, isolated task. Sub-agents do NOT read laterally across each other's scratchpad sections. They return results to the executive, which synthesizes them.
+
+**Key rule**: *"The Executive is the sole integration point — it alone reads the full scratchpad to synthesise findings across all agents. Subagents do not read laterally."* — `AGENTS.md`
+
+**Named executive agents**: Executive Orchestrator, Executive Researcher, Executive Docs, Executive Scripter, Executive Automator, Executive Fleet, Executive PM, Executive Planner.
+
+**Related terms**: [Agent Fleet](#agent-fleet), [Takeback Pattern](#takeback-pattern), [Scratchpad](#scratchpad), [Delegation Decision Gate](#delegation-decision-gate)
+
+*Source: [`AGENTS.md` §Agent Communication](../AGENTS.md#agent-communication)*
+
+---
+
+### Agent Posture
+
+The set of tools and capabilities an agent is permitted to use. Three tiers exist, corresponding to increasing capability and risk surface:
+
+| Posture | Permitted tools | Typical examples |
+|---------|----------------|-----------------|
+| **Read-only** | `search`, `read`, `changes`, `usages` | Review agent, plan agents |
+| **Read + create** | Adds `edit`, `web` | Scaffold agents, documentation agents |
+| **Full execution** | Adds `execute`, `terminal`, `agent` | Executive agents |
+
+**Minimal Posture constraint**: Agents should never carry more tools than their posture requires. If an agent needs to do something outside its posture, it must escalate to an agent with the appropriate posture rather than forcing it.
+
+**Related terms**: [Minimal Posture](#minimal-posture), [Role](#role), [Agent](#agent)
+
+*Source: [`docs/guides/agents.md` §Agent Posture](guides/agents.md#agent-posture)*
+
+---
+
+### Skill (SKILL.md)
+
+A `SKILL.md` file stored at `.github/skills/<skill-name>/SKILL.md` that encodes a reusable tactical workflow procedure. Skills are loaded on-demand only when relevant, making them token-efficient compared to always-on agent body instructions.
+
+**Core distinction**: *"Agents encode **who does a task**; skills encode **how a task is done**."* — `AGENTS.md`
+
+**When to extract to a Skill**: Any procedure in an agent body that a different agent or AI tool could also benefit from — without needing that agent's specific posture or tool restrictions — is a Skill candidate. If the same procedure appears in two agent bodies, extract it before writing a third copy (Programmatic-First applied to instruction prose).
+
+**Restaurant analogy**: Skills are *Technique Cards* — "Perfect Béarnaise Sauce" is a reusable technique that the Chef de Cuisine, Sous Chef, and Senior Line Cook all execute. It is not a Role.
+
+**Required frontmatter**:
+
+```yaml
+---
+name: <skill-name>         # lowercase, hyphens only, matches parent directory
+description: <one-line summary>
+---
+```
+
+**Every SKILL.md must** cite `AGENTS.md` as its governing constraint in the body, to anchor it to the encoding inheritance chain and make encoding-fidelity auditable.
+
+**Token efficiency**: At 20 registered skills, baseline overhead is ~2,000 tokens (metadata only) vs. the same knowledge always-on in agent bodies: ~20,000+ tokens. Per *Algorithms Before Tokens*, this is a meaningful reduction in session-time token burn.
+
+**CI validation**: `uv run python scripts/validate_agent_files.py --skills`
+
+**Related terms**: [Role](#role), [Agent](#agent), [Encoding Inheritance Chain](#encoding-inheritance-chain), [Minimal Posture](#minimal-posture)
+
+*Source: [`AGENTS.md` §Agent Skills](../AGENTS.md#agent-skills), [`docs/guides/agents.md` §Skills](guides/agents.md), [`docs/decisions/ADR-006-agent-skills-adoption.md`](decisions/ADR-006-agent-skills-adoption.md)*
 
 ---
 
