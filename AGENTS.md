@@ -491,6 +491,32 @@ are in scope, or URLs are passed to scripts.
 
 ---
 
+## Programmatic Governors
+
+The heredoc write anti-pattern is enforced by a two-tier programmatic stack. Text-level instructions (AGENTS.md) are the weakest tier — use these governors instead.
+
+### Governor A — Pre-commit (T2 Static)
+
+**Mechanism**: `no-heredoc-writes` pygrep hook in `.pre-commit-config.yaml`  
+**Scope**: All committed `.py` and `.sh` files  
+**Activation**: Automatic on every `git commit` (install pre-commit hooks with `pre-commit install`)  
+**Catches**: `cat >> file << 'EOF'` and `cat > file << 'EOF'` patterns at commit boundary  
+**Does not catch**: Commands typed directly in the terminal before committing
+
+### Governor B — Runtime Shell (T3 Interactive)
+
+**Mechanism**: zsh ZLE `accept-line` wrapper / bash `DEBUG` trap + `kill -INT $$`  
+**Scope**: Interactive terminal sessions in the project directory  
+**Activation**: `direnv allow` (sets `PREEXEC_GOVERNOR_ENABLED=1` via `.envrc`); one-time shell setup required — see `docs/guides/governor-setup.md`  
+**Catches**: Heredoc commands typed in the terminal before they execute  
+**Does not catch**: Non-interactive scripts (covered by Governor A)
+
+For the full setup guide, pattern details, and acceptance test: [`docs/guides/governor-setup.md`](docs/guides/governor-setup.md)  
+For the bash-preexec adoption decision: [`docs/decisions/ADR-007-bash-preexec.md`](docs/decisions/ADR-007-bash-preexec.md)  
+Research synthesis: [`docs/research/shell-preexec-governor.md`](docs/research/shell-preexec-governor.md)
+
+---
+
 ## Guardrails
 
 **Run these checks before every `git commit` / `git push`:**
