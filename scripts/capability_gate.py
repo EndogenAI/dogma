@@ -3,12 +3,14 @@
 Runtime capability gates and audit logging for agent API access.
 
 Purpose:
-    Enforces capability-based access control at runtime, allowing only authorized
-    agents to invoke privileged operations (e.g., GitHub API). Implements the T4
+    Encodes MANIFESTO.md §2 (Algorithms Before Tokens) and the Programmatic-First Principle 
+    (AGENTS.md #programmatic-first-principle) — shifting AI behavioral constraints from 
+    token-dependent instructions into programmatically-enforced code. This implements the T4 
     (execution-time intercept) governor tier from docs/research/shifting-constraints-from-tokens.md.
 
-    Provides a decorator-based interface for protecting sensitive operations and
-    audit logging for both authorized and denied access attempts.
+    Enforces capability-based access control at runtime, allowing only authorized agents to 
+    invoke privileged operations (e.g., GitHub API). Provides a decorator-based interface for 
+    protecting sensitive operations and audit logging for both authorized and denied access attempts.
 
 Architecture:
     - Capability registry: YAML file mapping agents → [capabilities]

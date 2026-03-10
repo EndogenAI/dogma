@@ -73,6 +73,7 @@ def reset_agent_context():
 class TestRegistryLoading:
     """Test registry loading and validation."""
 
+    @pytest.mark.io
     def test_load_registry(self, temp_registry: Path) -> None:
         """Test loading a valid registry."""
         reg = load_registry(temp_registry)
@@ -100,6 +101,7 @@ class TestRegistryLoading:
         assert not is_valid
         assert any("not found" in err for err in errors)
 
+    @pytest.mark.io
     def test_validate_registry_empty_agent(self, tmp_path: Path) -> None:
         """Test validation error for agent with no capabilities."""
         registry_file = tmp_path / "bad_registry.yaml"
@@ -116,6 +118,7 @@ empty_agent:
         assert not is_valid
         assert any("no capabilities" in err for err in errors)
 
+    @pytest.mark.io
     def test_validate_registry_reserved_capability(self, tmp_path: Path) -> None:
         """Test validation error for reserved capability names."""
         registry_file = tmp_path / "reserved_registry.yaml"
@@ -172,6 +175,7 @@ class TestAgentContext:
 class TestDecorator:
     """Test the @requires_capability decorator."""
 
+    @pytest.mark.io
     def test_decorator_granted(self, temp_registry: Path, temp_audit_log: Path) -> None:
         """Test decorator allows call when capability is granted."""
         set_registry_path(temp_registry)
@@ -185,6 +189,7 @@ class TestDecorator:
         result = protected_call()
         assert result == "success"
 
+    @pytest.mark.io
     def test_decorator_denied(self, temp_registry: Path, temp_audit_log: Path) -> None:
         """Test decorator raises CapabilityDenied when capability is denied."""
         set_registry_path(temp_registry)
@@ -201,6 +206,7 @@ class TestDecorator:
         assert exc_info.value.agent == "researcher"
         assert exc_info.value.capability == "github_api"
 
+    @pytest.mark.io
     def test_decorator_preserves_function_signature(
         self, temp_registry: Path, temp_audit_log: Path
     ) -> None:
@@ -216,6 +222,7 @@ class TestDecorator:
         assert my_function.__name__ == "my_function"
         assert my_function.__doc__ == "My docstring."
 
+    @pytest.mark.io
     def test_decorator_with_arguments(
         self, temp_registry: Path, temp_audit_log: Path
     ) -> None:
@@ -235,6 +242,7 @@ class TestDecorator:
 class TestAuditLogging:
     """Test audit logging functionality."""
 
+    @pytest.mark.io
     def test_audit_granted_logs_event(self, temp_audit_log: Path) -> None:
         """Test audit_granted writes to JSONL log."""
         set_audit_log_path(temp_audit_log)
@@ -255,6 +263,7 @@ class TestAuditLogging:
         assert event["issue_number"] == 123
         assert "timestamp" in event
 
+    @pytest.mark.io
     def test_audit_denied_logs_event(self, temp_audit_log: Path) -> None:
         """Test audit_denied writes to JSONL log."""
         set_audit_log_path(temp_audit_log)
@@ -278,6 +287,7 @@ class TestAuditLogging:
         assert event["reason"] == "Agent does not have capability"
         assert event["function"] == "post_reply"
 
+    @pytest.mark.io
     def test_audit_log_creates_directory(self, tmp_path: Path) -> None:
         """Test audit_log creates the .logs directory if missing."""
         log_path = tmp_path / "new" / "logs" / ".logs" / "audit.jsonl"
