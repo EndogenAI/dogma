@@ -63,7 +63,7 @@ Close all currently open `type:research` GitHub issues by either:
 
 **Depends on**: Nothing — all research docs already Final
 **Gate**: Phase 1 Review does not start until all closes are committed
-**Status**: ⬜ Not started
+**Status**: ✅ Complete (2026-03-10, commit 1e361a5)
 
 **Checklist**:
 - [ ] Verify each issue's gate deliverables against the research doc (spot-check 2–3 D-items per issue)
