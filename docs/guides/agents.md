@@ -54,6 +54,42 @@ Invoke an agent by name in the chat input:
 
 ---
 
+## Characters: Specialized Agents with Narrow Scope
+
+A **Character** is a type of agent designed for narrow domain expertise with explicit decision authority and escalation protocols. Characters operate in a single domain and are designed to act autonomously within defined scope, while flagging decisions that require human oversight.
+
+### Character vs. Broader Agents
+
+| Aspect | Character | Broader Agent (Executive, Research, etc.) |
+|--------|-----------|-------------------------------------------|
+| **Scope** | Single domain (business, comms, engagement) | Orchestration or functional area |
+| **Decision Authority** | Autonomous within scope; Conor flagging review | Orchestrates others; higher-level decisions |
+| **Escalation** | Flags specific decisions for Conor approval | Delegates to specialists; handles meta-coordination |
+| **Use Case** | Ongoing specialist function (e.g., "track consulting pipeline") | One-time orchestration or broad domains |
+| **Examples** | Business Lead, Comms Strategist, Public Engagement | Executive Researcher, Executive Docs, Review |
+
+### Current Characters (Month 1)
+
+During the initial EndogenAI product discovery phase, three specialist Characters are being drafted:
+
+1. **Business Lead Character** — Tracks consulting pipeline, synthesizes customer insights, informs pricing strategy, identifies revenue opportunities. Month 1: discovery/facilitation. Month 2+: autonomous pipeline management with Conor review loop.
+
+2. **Comms Strategist Character** — Defines messaging framework, proposes content calendar, establishes brand voice, manages community messaging. Month 1: discovery/facilitation. Month 2+: autonomous content planning with Conor approval on major campaigns.
+
+3. **Public Engagement Officer Character** — Facilitates GitHub community presence, monitors discussions, identifies speaker opportunities, co-hosts events. Month 1: community facilitation scope. Month 2+: expands to outreach + advocacy with Conor oversight.
+
+### Invoking a Character
+
+Characters are invoked the same way as any agent:
+
+```
+@Business Lead synthesize customer feedback from GitHub discussions into quarterly trends
+@Comms Strategist draft messaging for the new init wizard launch
+@Public Engagement Officer flag upcoming conferences for speaker submissions
+```
+
+---
+
 ## Agent Posture
 
 Every agent operates at one of three postures:
@@ -126,12 +162,38 @@ This agent is defined by:
 Before creating a new agent:
 
 1. Check [`.github/agents/README.md`](../../.github/agents/README.md) — does an existing agent cover the need?
-2. Create or reference the GitHub issue that defines this agent's scope
-3. Read [`.github/agents/AGENTS.md`](../../.github/agents/AGENTS.md) for the frontmatter schema and conventions
-4. Choose the minimum posture that fulfils the agent's role
-5. Follow the body structure: role statement → endogenous sources → workflow → guardrails
+2. Determine if you're authoring a **Character** (narrow scope, single domain, autonomous operations) or a broader **Role** (orchestration, broader functional area)
+3. Create or reference the GitHub issue that defines this agent's scope
+4. Read [`.github/agents/AGENTS.md`](../../.github/agents/AGENTS.md) for the frontmatter schema, Character designation, and conventions
+5. Choose the minimum posture that fulfils the agent's role
+6. Follow the body structure: role statement → endogenous sources → workflow → guardrails
 
-### Minimum Viable Agent Template
+### Authoring a Character
+
+If you're authoring a **Character**:
+
+- **Scope statement**: Open with a clear one-sentence scope statement (a single domain)
+- **Month 1 constraints**: If new, specify Month 1 constraints (discovery/facilitation, what requires human approval)
+- **Escalation protocol**: Explicitly define which decisions are autonomous and which are flagged for Conor review
+- **Endogenous sources**: Reference the GitHub issue defining the Character, the strategic roadmap (if applicable), and product discovery docs
+- **Autonomy signals**: Document in Endogenous Sources what metrics or events trigger scope expansion in future months
+
+**Example Character opening**:
+
+```markdown
+You are the **Business Lead Character** for the EndogenAI ecosystem.
+Your role is to synthesize customer insights, track the consulting pipeline, 
+and inform pricing strategy and revenue opportunities.
+
+## Month 1 Scope
+
+- Autonomous: Pipeline tracking via weekly spreadsheet reviews, customer inquiry synthesis
+- Flag for review: Any customer feedback influencing product positioning, pricing changes, 
+  new service offerings
+- Escalate to Conor: Contracts >$25K, partnerships, strategic partnerships
+```
+
+---
 
 ```yaml
 ---

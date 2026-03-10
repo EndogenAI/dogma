@@ -32,6 +32,32 @@ This file governs the authoring, review, and maintenance of Roles (`.agent.md` f
 
 ---
 
+## Agent Terminology: Character vs. Role
+
+**Character** and **Role** are two levels of agent taxonomy used throughout the fleet.
+
+### Character Designation
+
+A **Character** is a specialized agent with narrow scope, defined decision authority, and escalation protocols. Characters operate in a single domain (business, communications, engagement, security) and are designed to be autonomous within their scope, with explicit Conor flagging/review loops for decisions that require human oversight.
+
+**Characteristics**:
+- Single, well-defined domain of responsibility (business development, comms strategy, etc.)
+- Month 1 scope: discovery/facilitation (not autonomous contracts or final decisions)
+- Authority expands in Month 2+ based on validation and business outcomes
+- All decisions logged in GitHub issues; escalation paths explicitly defined in agent body
+- Examples: **Business Lead Character**, **Comms Strategist Character**, **Public Engagement Officer Character**
+
+### Role Designation (Fleet-Level Taxonomy)
+
+**Role** is a broader fleet classification used to group agents by function or domain:
+- Examples: "Research roles," "Infrastructure roles," "Orchestration roles," "Execution roles"
+- Not used for individual specialist agents (those are "Characters")
+- Used in workplans and dependencies to describe agent clusters
+
+**Decision rule**: If an agent has a narrow scope with explicit decision authority and escalation protocols, it is a **Character**. If it is a broader functional category or cluster, it is a **Role**.
+
+---
+
 ## Frontmatter Schema
 
 Agent files begin with a YAML front-matter block. The allowed fields are:
