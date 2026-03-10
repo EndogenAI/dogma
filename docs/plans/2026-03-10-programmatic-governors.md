@@ -147,30 +147,30 @@ Act on a session insight: behavioral guardrails encoded as text instructions (AG
 
 ---
 
-### Phase 6 — bash-preexec Decision (#161, effort:xs) ⬜
+### Phase 9 — bash-preexec Decision (#161, effort:xs) ⬜
 
 **Agent**: Executive Docs
 **Issue**: [#161](https://github.com/EndogenAI/Workflows/issues/161)
 **Deliverables**:
 - [ ] `docs/decisions/ADR-007-bash-preexec.md` committed — status: Accepted; decision: adopt for API surface consistency, retain DEBUG trap + `kill -INT` for blocking
 - [ ] #161 closed
-**Depends on**: Phase 5 APPROVED
-**Gate**: Phase 6 Review does not start until ADR committed and #161 closed
+**Depends on**: Phase 7 APPROVED
+**Gate**: Phase 9 Review does not start until ADR committed and #161 closed
 **Status**: ⬜ Not started
 
 ---
 
-### Phase 6 Review — Review Gate ⬜
+### Phase 9 Review — Review Gate ⬜
 
 **Agent**: Review
-**Deliverables**: `## Phase 6 Review Output` in scratchpad, verdict: APPROVED
-**Depends on**: Phase 6 committed
-**Gate**: Phase 7 does not start until APPROVED
+**Deliverables**: `## Phase 9 Review Output` in scratchpad, verdict: APPROVED
+**Depends on**: Phase 9 committed
+**Gate**: Phase 10 does not start until APPROVED
 **Status**: ⬜ Not started
 
 ---
 
-### Phase 7 — Governor B Implementation (#159, effort:m) ⬜
+### Phase 10 — Governor B Implementation (#159, effort:m) ⬜
 
 **Agent**: Executive Scripter
 **Issue**: [#159](https://github.com/EndogenAI/Workflows/issues/159)
@@ -178,41 +178,41 @@ Act on a session insight: behavioral guardrails encoded as text instructions (AG
 - [ ] `.envrc` — `export PREEXEC_GOVERNOR_ENABLED=1` (single line; no layout directives needed — no existing `.envrc`, no direnv layout in `pyproject.toml`)
 - [ ] `docs/guides/governor-setup.md` — developer one-time setup guide: zsh ZLE `accept-line` wrapper (broad pattern + allowlist), bash `DEBUG` trap + `kill -INT`, bash-preexec sourcing note (refs ADR-007), `direnv allow` activation step, acceptance test
 - [ ] #159 closed
-**Depends on**: Phase 6 APPROVED (bash-preexec decision informs bash variant note)
-**Gate**: Phase 7 Review does not start until both files committed and #159 closed
+**Depends on**: Phase 9 APPROVED (bash-preexec decision informs bash variant note)
+**Gate**: Phase 10 Review does not start until both files committed and #159 closed
 **Status**: ⬜ Not started
 
 ---
 
-### Phase 7 Review — Review Gate ⬜
+### Phase 10 Review — Review Gate ⬜
 
 **Agent**: Review
-**Deliverables**: `## Phase 7 Review Output` in scratchpad, verdict: APPROVED
-**Depends on**: Phase 7 committed
-**Gate**: Phase 8 does not start until APPROVED
+**Deliverables**: `## Phase 10 Review Output` in scratchpad, verdict: APPROVED
+**Depends on**: Phase 10 committed
+**Gate**: Phase 11 does not start until APPROVED
 **Status**: ⬜ Not started
 
 ---
 
-### Phase 8 — Documentation Finish (#160 + #162, effort:s + xs) ⬜
+### Phase 11 — Documentation Finish (#160 + #162, effort:s + xs) ⬜
 
 **Agent**: Executive Docs (both sub-phases — different files, commit together)
 **Issues**: [#160](https://github.com/EndogenAI/Workflows/issues/160), [#162](https://github.com/EndogenAI/Workflows/issues/162)
 **Deliverables**:
-- [ ] `AGENTS.md` — new `## Programmatic Governors` section (between `## Security Guardrails` L457 and `## Guardrails` L494): names Governor A (pre-commit pygrep), Governor B (runtime shell, `PREEXEC_GOVERNOR_ENABLED=1`), cites `docs/guides/governor-setup.md`; #160 closed
+- [ ] `AGENTS.md` — new `## Programmatic Governors` section (between `## Security Guardrails` and `## Guardrails`): names Governor A (pre-commit pygrep), Governor B (runtime shell, `PREEXEC_GOVERNOR_ENABLED=1`), cites `docs/guides/governor-setup.md`; #160 closed
 - [ ] `env-validator.agent.md` — new checklist item: `PREEXEC_GOVERNOR_ENABLED` env-var check, ⚠️ warning only (not ❌ failure — CI runners are non-interactive), refs `docs/guides/governor-setup.md`; #162 closed
 - [ ] `uv run python scripts/validate_agent_files.py --all` passes
-**Depends on**: Phase 7 APPROVED (activation command and env-var name confirmed via `.envrc`)
-**Gate**: Phase 8 Review does not start until all committed, both issues closed, and validator passes
+**Depends on**: Phase 10 APPROVED (activation command and env-var name confirmed via `.envrc`)
+**Gate**: Phase 11 Review does not start until all committed, both issues closed, and validator passes
 **Status**: ⬜ Not started
 
 ---
 
-### Phase 8 Review — Review Gate ⬜
+### Phase 11 Review — Review Gate ⬜
 
 **Agent**: Review → GitHub (push)
-**Deliverables**: `## Phase 8 Review Output` in scratchpad, verdict: APPROVED; all changes pushed; CI green
-**Depends on**: Phase 8 committed
+**Deliverables**: `## Phase 11 Review Output` in scratchpad, verdict: APPROVED; all changes pushed; CI green
+**Depends on**: Phase 11 committed
 **Gate**: Session complete after push and `gh run list --limit 3` confirms CI green
 **Status**: ⬜ Not started
 
