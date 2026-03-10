@@ -37,6 +37,8 @@ Orchestrate research sessions from question to committed synthesis. The Executiv
 | **Research Reviewer** | `research-reviewer.agent.md` | read-only | Foundation | M | Validate synthesis drafts against methodology standards; flag gaps and unsupported claims |
 | **Research Archivist** | `research-archivist.agent.md` | read + create | Foundation | S | Finalise approved drafts, commit to `docs/research/`, update issue |
 
+**Guardrail — Web Scouting is Mandatory**: Every research sprint must include an explicit Scout delegation to conduct aggressive web searches for external authoritative sources (academic papers, official documentation, standards, industry reports, practitioner knowledge). Skipping web searching to save time or tokens is an anti-pattern. Endogenous-First means local sources are consulted *first*, but web discovery is the core expansion activity. A research sprint with <7 primary external sources is incomplete. For detailed web scouting requirements, see [`research-scout.agent.md`](./research-scout.agent.md) and [`.github/skills/deep-research-sprint/SKILL.md`](../skills/deep-research-sprint/SKILL.md).
+
 ---
 
 ## Documentation Agents

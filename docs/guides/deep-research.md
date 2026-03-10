@@ -92,7 +92,9 @@ Key outputs to look for:
 
 ---
 
-### Phase 2 — Web Scouting (per Sprint)
+### Phase 2 — Web Scouting (per Sprint) [MANDATORY — DO NOT SKIP]
+
+**Every research sprint must include aggressive web sourcing.** Skipping Phase 2 is an anti-pattern equivalent to conducting research without primary sources. This phase cannot be compressed or deferred.
 
 Delegate to Research Scout. Provide:
 
@@ -100,11 +102,15 @@ Delegate to Research Scout. Provide:
 2. The depth level (exhaustive / broad / targeted)
 3. The manifest path (Scout appends URLs directly via `add_source_to_manifest.py`)
 4. Any seed URLs from the corpus scan
+5. **Explicit emphatic instruction**: Conduct exhaustive web searches across academic (arXiv, ACM, IEEE, Google Scholar), industry (official docs, standards, vendor reports), and practitioner (blogs, conference talks, discussions) sources. This is the primary mandate, not an optional addition.
 
-**Scouting tiers** (use all three for deep dives):
+**Scouting tiers** (use all three for deep dives; narrower sprints use at least two):
 - **Academic** — arXiv (`arxiv.org`), ACM Digital Library (`dl.acm.org`), IEEE Xplore (`ieeexplore.ieee.org`), Google Scholar
-- **Practitioner** — Conference talks, flagship blogs (ACM Queue, IEEE Spectrum, InfoQ, the morning paper), Hacker News discussions
-- **Grey literature** — Theses (ProQuest, DART-Europe), preprints (SSRN, PhilPapers), standards documents
+- **Industry & Standards** — RFC standards, W3C specs, ISO standards, official vendor documentation, whitepapers
+- **Practitioner** — Conference talks (YouTube, conference proceedings), flagship blogs (ACM Queue, IEEE Spectrum, InfoQ, the morning paper), Hacker News substantive discussions
+- **Grey literature** — Theses (ProQuest, DART-Europe), preprints (SSRN, PhilPapers), working papers from research labs
+
+**Minimum source count**: At least 7 primary sources per sprint. If fewer are found, the Scout must re-search — low hit count indicates either a narrow topic (split into sub-hypotheses) or inadequate search strategy.
 
 **Scout output format** (written to scratchpad `## Sprint X Scout Output`):
 ```markdown
