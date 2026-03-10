@@ -98,7 +98,9 @@ def check_file(path: Path) -> list[tuple[int, str, str]]:
                 in_code_fence = False
             continue  # Skip all lines inside a code fence.
 
-        for match in _LINK_RE.finditer(line):
+        # Strip inline code spans so links inside backticks are not checked.
+        line_for_links = re.sub(r"`[^`\n]+`", "", line)
+        for match in _LINK_RE.finditer(line_for_links):
             target = match.group(1).strip()
             if not is_relative_file_link(target):
                 continue
