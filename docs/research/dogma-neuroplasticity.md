@@ -88,9 +88,9 @@ The full protocol for accumulating and applying session evidence:
 
 **Step 2 — Signal aggregation**: After each session, run `uv run python scripts/propose_dogma_edit.py --input .tmp/<branch>/<date>.md --tier T3|T2|T1 --affected-axiom "<section name>" --proposed-delta "<brief delta description>"`. This reads signals from the session file and produces a draft ADR-style proposal. The proposal is committed to a `docs/decisions/` branch but not merged until the threshold is reached.
 
-**Step 3 — Threshold check**: The `propose_dogma_edit.py` CLI checks the evidence count against the tier threshold. If insufficient signals exist, it outputs a `Status: Pending — N signals collected, M required` note and exits 0. It does not block; it records.
+**Step 3 — Evidence extraction**: Run `propose_dogma_edit.py` on the session file. The script extracts all lines containing watermark phrases (MANIFESTO.md axiom names and governing vocabulary) as evidence. The generated proposal records these lines and displays the tier's configured session threshold for human review. Threshold assessment remains a human gate: the practitioner decides whether sufficient independent sessions have been recorded before opening an ADR draft.
 
-**Step 4 — Coherence check**: When the threshold is reached, `propose_dogma_edit.py` runs the coherence check: does the proposed delta remove any `WATERMARK_PHRASES` from the affected section? Does the proposed delta contradict any T1 axiom? If either check fails for a T1 edit, exit code is 1 (blocking).
+**Step 4 — Coherence check**: The script checks the proposed delta for phrase-removal coherence: does the proposed change remove any `WATERMARK_PHRASES` from the affected section? If this check fails for a T1 edit, the script exits 1 (blocking). For T2/T3 edits it records the result non-blockingly. The generated proposal captures the outcome in a `## Coherence Check` section.
 
 **Step 5 — ADR commit and review**: When the check passes, a formal ADR is committed to `docs/decisions/` (for T1/T2 edits). The Executive routes the ADR through the Review agent. Only after APPROVED is the substrate edit applied.
 
