@@ -259,6 +259,7 @@ def test_generate_proposal_coherence_result_in_output():
 
 
 @pytest.mark.io
+@pytest.mark.integration
 def test_cli_success_path(tmp_path):
     """CLI: valid args with T3 tier → exit 0 and output file created with '## Coherence Check'."""
     session_file = tmp_path / "session.md"
@@ -294,6 +295,7 @@ def test_cli_success_path(tmp_path):
 
 
 @pytest.mark.io
+@pytest.mark.integration
 def test_cli_success_with_real_session_file(tmp_path):
     """CLI: real session file at .tmp/feat-value-encoding-fidelity/2026-03-09.md → exit 0."""
     session_path = Path(".tmp/feat-value-encoding-fidelity/2026-03-09.md")
@@ -329,6 +331,7 @@ def test_cli_success_with_real_session_file(tmp_path):
 
 
 @pytest.mark.io
+@pytest.mark.integration
 def test_cli_missing_tier_arg():
     """CLI: missing required --tier arg → non-zero exit."""
     result = subprocess.run(
@@ -347,6 +350,7 @@ def test_cli_missing_tier_arg():
 
 
 @pytest.mark.io
+@pytest.mark.integration
 def test_cli_missing_input_arg():
     """CLI: missing required --input arg → non-zero exit."""
     result = subprocess.run(
@@ -365,6 +369,7 @@ def test_cli_missing_input_arg():
 
 
 @pytest.mark.io
+@pytest.mark.integration
 def test_cli_missing_affected_axiom_arg():
     """CLI: missing required --affected-axiom arg → non-zero exit."""
     result = subprocess.run(
@@ -387,6 +392,7 @@ def test_cli_missing_affected_axiom_arg():
 # ===========================================================================
 
 
+@pytest.mark.io
 def test_main_returns_1_when_t1_coherence_fails(tmp_path):
     """main() returns 1 when T1 coherence fails (watermark removal detected)."""
     session_file = tmp_path / "session.md"
@@ -409,6 +415,7 @@ def test_main_returns_1_when_t1_coherence_fails(tmp_path):
     assert ret == 1
 
 
+@pytest.mark.io
 def test_main_returns_0_when_t2_coherence_fails(tmp_path):
     """main() returns 0 (not blocking) when T2 coherence fails — only T1 is blocking."""
     session_file = tmp_path / "session.md"
@@ -448,6 +455,7 @@ def test_main_returns_1_on_unreadable_input_file():
     assert ret == 1
 
 
+@pytest.mark.io
 def test_main_returns_0_on_successful_run(tmp_path):
     """main() returns 0 on a clean T3 run with a valid session file."""
     session_file = tmp_path / "session.md"
