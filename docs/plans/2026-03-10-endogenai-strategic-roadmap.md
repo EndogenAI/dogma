@@ -29,19 +29,20 @@ EndogenAI is scaling from a single-repository foundational knowledge system into
 ### Success Criteria
 
 - ✅ Dogma renamed successfully; all git history intact; CI/CD fully operational
+- ✅ **Web SPA live at endogenai.accessi.tech** (React MVP, GitHub Pages hosting, 4+ landing pages) — launched Week 1
 - ✅ Init repo live with MVP CLI wizard (Python projects in Month 1; expand to other languages in Month 2)
 - ✅ Adopt repo live with playbook documentation and migration guidance
-- ✅ Web SPA basic structure operational (may be private until Month 3 launch)
-- ✅ All 3 specialist agents drafted, committed to dogma, syntax-validated
-- ✅ First consulting or training inquiry pipeline identified via web/email outreach
+- ✅ All 3 specialist agents (Business Lead, Comms, Public Engagement) drafted as `.agent.md` files, committed to dogma, syntax-validated
+- ✅ First consulting inquiry pipeline identified via web/email outreach
+- ✅ Character terminology formalized in agent governance; Month 1 scope (discovery/facilitation) documented
 
 ### Team & Effort
 
-- **Conor**: 100+ hours (dogma rename, init wizard, business development, specialist agent authoring)
-- **Sheela**: 80+ hours (documentation, adoption playbook, content strategy, comms agent)
-- **Optional**: 1 contractor (40–60 hrs) for web SPA design/build (defer to Month 2 if budget unavailable)
+- **Conor**: 120+ hours (dogma rename, Web SPA scaffold + build + deploy, init wizard design, business development)
+- **Sheela**: 90+ hours (dogma QA, Web SPA content/messaging, documentation, adoption playbook)
+- **Note**: Web SPA brought forward to Week 1 (was Month 2); no external contractor needed (in-house React MVP)
 
-Team capacity: ~180–220 person-hours for Month 1 across full workload
+Team capacity: ~210 person-hours for Month 1 across full workload
 
 ### Key Dependencies
 
@@ -55,10 +56,11 @@ Team capacity: ~180–220 person-hours for Month 1 across full workload
 | Risk | Impact | Probability | Mitigation |
 |------|--------|-------------|-----------|
 | Dogma rename breaks CI or links | High | Low | Pre-rename: run lychee link checker; dry-run rename on feature branch; verify git history post-rename |
-| Init wizard scope creep | Medium | Medium | MVP scope: Python only, single project template. Expand to TypeScript, Node, other languages in Month 2 |
-| Web SPA budget unavailable | High | Medium | **Plan A**: Conor builds SPA in Month 2; focus Month 1 on selling (positioning deck suffices). **Plan B**: Use free template (e.g., Astro) + Vercel for fast launch |
-| Specialist agent scope unclear | Medium | Medium | Keep agents narrow in Month 1: Business Lead tracks deals only; Comms handles messaging only; Public Engagement runs GitHub + events only. Expand scope in Month 2 after month 1 validation |
-| First customer deal slips past Month 3 | Medium | High | **Mitigation**: Begin outreach in Month 2 (Week 6 at latest). Accept LOI or signed engagement letter counts as "contract." |
+| Web SPA deliverable slips past Friday Mar 16 | Medium | Low | Use Vite React starter template (minimal deps); GitHub Pages URL as backup if DNS delays; can point domain over weekend |
+| Init wizard scope creep | Medium | Medium | MVP scope: Python only, single project template. Expand to TypeScript/Node in Month 2 per evolutionary-first principle |
+| Specialist agent scope unclear | Medium | Low | Character terminology formalized in governance; Month 1 scope (discovery/facilitation) explicit; escalation paths defined |
+| First customer deal closed before Month 3 | Medium | Medium | Start consulting outreach Week 2; target signed engagement letter ($10K–$15K minimum) for proof of market fit |
+| Training pilot format undefined | Low | Very Low | Hybrid format decided: self-paced foundational + async cohort (20–30 learners); Sheela leads curriculum Month 4 |
 
 ---
 
@@ -67,16 +69,17 @@ Team capacity: ~180–220 person-hours for Month 1 across full workload
 ### Primary Deliverables
 
 1. **Scratchpad Standalone** (`@endogenai/scratchpad`) — Extracted from dogma into reusable package
-2. **Library Resources** (`@endogenai/library`) — Curated research, patterns, benchmarks
-3. **Training Program Pilot** — 1 cohort-based course or self-paced module launched
+2. **Library Resources** (`@endoHybrid format (self-paced foundational content + async cohort, 20–30 learners, 70%+ completion target)
+4. **First Consulting Engagement** — Signed engagement letter ($10K–$15K), 4-week proof-of-concept projeched
 4. **First Consulting Engagement** — 1 customer, 4-week project, proof-of-concept
 
 ### Success Criteria
 
 - ✅ Scratchpad repo live with documentation and package installation test
-- ✅ Library repo live with searchable resource index (README + folder structure)
-- ✅ Training curriculum defined; first cohort enrolled or module published
-- ✅ First consulting contract fully executed (even if still in progress)
+- ✅ Library repo live with sear (hybrid format with self-paced foundation); first cohort enrolled; 70%+ completion target
+- ✅ First consulting contract signed and payment terms agreed ($10K–$15K minimum)
+- ✅ Specialist Characters fully autonomous; integrated into dogma decision workflows with defined escalation paths
+- ✅ Business Lead tracking pipeline value separately from booked revenue
 - ✅ Specialist agents fully operational; integrated into dogma decision workflows
 
 ### Team & Effort
@@ -149,13 +152,15 @@ Month 7+:
 ```
 
 ---
+Character Definitions (Month 1 Scope)
 
-## Specialist Agent Definitions (Month 1 Scope)
+Three specialist Characters are defined and drafted in Week 3 of Month 1. See `.github/agents/business-lead.agent.md`, `.github/agents/comms-strategist.agent.md`, `.github/agents/public-engagement-officer.agent.md` for full definitions. 
 
-Three specialist agents are scoped and drafted in Week 3 of Month 1. See `.github/agents/business-lead.agent.md`, `.github/agents/comms-strategist.agent.md`, `.github/agents/public-engagement-officer.agent.md` for full definitions. 
+**Character Terminology**: Formalized in `.github/agents/AGENTS.md` and `docs/guides/agents.md` (commit ccf1f6e). Characters are narrow-scope specialist agents with explicit decision authority and escalation protocols.
 
-**Month 1 Scope**: Each agent assists with discovery and team alignment; decision authority with Conor; escalation protocols defined.
+**Month 1 Scope**: Each Character assists with discovery and team alignment; all decisions flagged to Conor for review; escalation protocols explicitly defined.
 
+**Month 2+**: Character autonomy expands per Conor's confidence and business outcomes (consulting revenue, customer feedback, etc.)
 **Month 2+**: Agency and autonomy expand per Conor's confidence and revenue justification.
 
 ---

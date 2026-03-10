@@ -34,7 +34,7 @@ A greenfield setup wizard that helps new users create an EndogenAI-conformant pr
 An integration/adoption wizard for existing projects. Analyzes incoming codebases, detects existing agent definitions, CI/CD patterns, and business logic; proposes minimal changes to incorporate EndogenAI workflows and decision records; and generates a migration guide that preserves existing code while adding new tooling and practices. Targets enterprises with mature but rigid systems who need agentic capability grafted on without full rewrite.
 
 ### @endogenai/web
-Public-facing SPA (private repository to separate product narratives from operational dogma) that explains the EndogenAI approach to non-technical audiences and deep dives for advanced users. Includes landing pages for consulting and training offerings, case studies, interactive demos, and FAQ. Targets prospective clients, partners, and advanced practitioners. Hosting model TBD (Vercel/Netlify/self-hosted); analytics and conversion tracking to inform go-to-market adjustments.
+Public-facing SPA (initially GitHub Pages at endogenai.accessi.tech; private ownership to separate product narratives from operational dogma). Explains the EndogenAI approach to non-technical audiences with deep dives for advanced users. Includes landing pages for consulting and training offerings, case studies, demo link to dogma, and FAQ. Targets prospective clients, partners, and advanced practitioners. Launch: March Week 1 (React MVP, 4+ pages). Future: analytics and conversion tracking to inform go-to-market adjustments.
 
 ### @endogenai/scratchpad
 A standalone, installable session-management tool extracted from `dogma` into a reusable package. Implements the session lifecycle, context compaction, and scratchpad watcher functionality as a library that any project can integrate to enable Copilot-style multi-agent session orchestration. Reduces coupling between core dogma and projects that want session-level tooling without adopting the full ecosystem.
@@ -50,11 +50,9 @@ Specialized domain libraries built after the core ecosystem is operational. **Sk
 ## Go-To-Market Strategy
 
 ### Commercial Engagement Models
-**Consulting**: [TBD — pricing model? typical project scope? estimated timeline per engagement?] EndogenAI provides advisory and implementation services for enterprises looking to adopt agentic workflows. Consulting engagements likely pair Conor or hires from `dogma` expertise with client teams to customize `init` and `adopt` wizards, author domain-specific agents, and integrate with client infrastructure. Revenue is project-based; contracts are a key asset that Business Lead Agent will manage.
+**Consulting**: Pricing model established at ~$2.5K/day rate. Typical project scope: 1–4 weeks; estimated timeline per engagement: 2–6 weeks (including discovery + implementation). MinimumEngagement: signed engagement letter (binding commitment) with $10K–$15K value threshold to signal market fit (vs. non-binding LOI). Business Lead Character manages pipeline and tracks deal flow. Revenue model: project-based with recurring support options.
 
-**Training & Certification**: A structured training program that teaches practitioners how to build, deploy, and maintain EndogenAI agents. Certification signals competency; may be offered as cohort-based courses, self-paced modules, or corporate training packages. Revenue is per-participant or per-license; supporting the training program is a dedicated revenue stream that scales differently from consulting (lower cost-of-goods-sold, higher volume).
-
-  **Open Question**: Will the training platform be self-hosted (aligning with Local Compute-First axiom, similar to dogma repo's CI model) or use a managed commercial LMS (e.g., Teachable, Udemy)? This decision affects infrastructure costs, user experience, and strategic alignment with non-cloud-dependency positioning. [TBD pending business model refinement.]
+**Training & Certification**: Hybrid format decided. Sheela leads curriculum development in Month 4: self-paced foundational content (videos, labs, docs) paired with async community cohort (Discord/GitHub Discussions, 2x weekly syncs). First cohort: 20–30 learners, 6 weeks, 70%+ completion target with 2+ consulting leads generated as success signal. Revenue model: freemium (free OSS, paid enterprise tier with live lab support). Certification signals competency; future cohorts scale by moderation only (Algorithms Before Tokens axiom).
 
 ### Target Audience
 - **Primary**: Enterprises (financial services, healthcare, manufacturing) and data-heavy teams looking to adopt agentic automation frameworks to reduce operational overhead and improve decision velocity.
@@ -63,8 +61,9 @@ Specialized domain libraries built after the core ecosystem is operational. **Sk
 
 ### First Customer Hypothesis
 [TBD — who is the ideal first customer type? What problem will EndogenAI solve for them? Why will they sign before competitors do?]
+Profile
 
-### Success Metrics (6-Month Horizon)
+Target for Month 3 closed deal: Mid-market enterprise (50–500 employees) in finance, healthcare, or manufacturing with a specific workflow automation use case (e.g., document processing, compliance automation, decision support). Budget authority for $10K–$15K engagement. Platform: Python-based or cloud-agnostic (aligns with Local Compute-First positioning).
 Success will be measured across three dimensions:
 
 1. **Market Adoption**: GitHub stars; active projects using `init` and `adopt` wizards; community size (discussions activity, event participation).
