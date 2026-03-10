@@ -99,7 +99,23 @@ Check:
 - [ ] pytest markers registered under `[tool.pytest.ini_options].markers`
 - [ ] Coverage config under `[tool.coverage.run]`
 
-### 5. Produce Validation Report
+### 5. Governor B — Runtime Shell Active (Local Dev Only)
+
+```bash
+# Is the runtime shell governor active in this session?
+[ -n "$PREEXEC_GOVERNOR_ENABLED" ] && echo "active" || echo "inactive"
+```
+
+Check:
+- [ ] `PREEXEC_GOVERNOR_ENABLED` is set (local dev only — CI runners are non-interactive and will not have this set)
+
+> ⚠️ **Local dev only**: this check is advisory and will always be unset in CI. If unset in a local session, warn but do not fail.
+
+If unset locally: *"Governor B runtime shell governor is not active. Run `direnv allow` and complete one-time shell setup: `docs/guides/governor-setup.md`"*
+
+Reference: [`docs/guides/governor-setup.md`](../../docs/guides/governor-setup.md)
+
+### 6. Produce Validation Report
 
 Write a structured report to the scratchpad under `## Env Validator Output`:
 
@@ -113,6 +129,7 @@ Write a structured report to the scratchpad under `## Env Validator Output`:
 | uv.lock consistency | ✅ / ⚠️ / ❌ | ... |
 | CI install command | ✅ / ⚠️ / ❌ | ... |
 | ruff config section | ✅ / ⚠️ / ❌ | ... |
+| Governor B active (local only) | ✅ / ⚠️ (skip in CI) | ... |
 
 ### Issues Found
 - **Issue 1**: ... → Recommended fix: ...
