@@ -8,7 +8,7 @@ status: "Final"
 > **Status**: Final
 > **Research Question**: How are values encoded, preserved, and degraded across textual layers? What mechanisms strengthen signal fidelity, and how can they be applied to the endogenic substrate?
 > **Date**: 2026-03-07
-> **Related**: [`docs/research/methodology-review.md`](methodology-review.md) (prior art foundation for this research arc); [`docs/research/bubble-clusters-substrate.md`](bubble-clusters-substrate.md) (bubble-cluster topology — additive spatial/topological model that extends the biological-homology framing)
+> **Related**: [`docs/research/methodology-review.md`](methodology-review.md) (prior art foundation for this research arc); [`docs/research/bubble-clusters-substrate.md`](bubble-clusters-substrate.md) (bubble-cluster topology — complementary spatial/topological model extending the biological-homology framing)
 
 ---
 
@@ -90,7 +90,7 @@ This is the information-theoretic analog of moving a value from the message laye
 
 ### H4 — Holographic Encoding is Feasible
 
-**Verdict**: PLAUSIBLE — supported by prior art; not yet implemented
+**Verdict**: PLAUSIBLE (Empirical Validation Pending) — supported by prior art; not yet implemented fleet-wide
 
 "Holographic encoding" here means: every downstream layer contains an identifiable echo (not a copy) of the top-level values, such that reading any single layer allows reconstruction of the core value set. The analogy is the holographic plate: every piece of the plate contains the whole image, just at lower resolution.
 
@@ -102,7 +102,7 @@ This is the information-theoretic analog of moving a value from the message laye
 
 *Cross-reference density as a health metric:* The number of back-references from downstream documents (agent files, scratchpad entries) to `MANIFESTO.md` is a proxy for encoding integrity. A fleet of agent files with zero references to `MANIFESTO.md` is a fleet that has lost its holographic signal. A fleet with back-references from every agent file is one where every layer contains a traceable echo.
 
-*Algorithmic feasibility:* Axiomatic embedding — encoding a set of axioms as a formal prefix that every subagent receives in its system prompt regardless of task context — is already implemented by Constitutional AI (Bai et al., 2022). Anthropic's "constitution" is a set of principles the model uses to self-critique outputs. The mechanism is retrievable, inspectable, and updateable independently of the task prompt.
+*Algorithmic feasibility:* A measurement script exists (`generate_agent_manifest.py`) that computes cross-reference density scores per agent and fleet-wide average. However, a fleet-wide baseline has not yet been established, and empirical validation showing that density correlates with output quality remains pending. This prevents H4 from being validated as "confirmed"; the hypothesis remains plausible but awaiting empirical grounding. Corpus reference: [epigenetic-tagging.md](epigenetic-tagging.md) Phase 2 work includes baseline measurement and fleet-wide density scoring.
 
 ---
 
@@ -153,7 +153,7 @@ The DNA → RNA → Protein → Expression chain maps to MANIFESTO.md → AGENTS
 
 **Talmudic analog**: On each page of the Talmud, the Mishnah text occupies the center column; Rashi's commentary occupies one margin; Tosafot occupies the other. The layers are visually distinct. A reader cannot confuse the Torah with its commentary. The endogenic equivalent: `MANIFESTO.md` is the center column; `AGENTS.md` is Rashi; agent files are Tosafot. The hierarchy is architectural.
 
-**Endogenic gap**: No explicit hermeneutics note exists in MANIFESTO.md explaining HOW to read the axioms. The document states what the values are but not how to prioritize them in conflicts or how to derive new behavioral rules from the axioms.
+**Status — Partially Closed (2026-03-10)**: A hermeneutical frame has been added to MANIFESTO.md (per R1 recommendation and phase 2 enactment) explaining how to read the axioms, handle conflicts, and derive novel behaviors. The pattern is now operationalized. Corpus reference: MANIFESTO.md now includes an explicit "How to Read This Document" section.
 
 ---
 
@@ -258,6 +258,8 @@ Ordered by impact-to-cost ratio (highest first):
 
 ### R3 — Add validate_agent_files.py Script
 
+**Status**: IMPLEMENTED (2026-03-10)
+
 **Purpose**: Programmatic governance (Pattern 5) for agent files. Check that each `.agent.md` in `.github/agents/` contains required sections.
 
 **Required sections** (minimum):
@@ -266,7 +268,7 @@ Ordered by impact-to-cost ratio (highest first):
 - At least one reference (link) to `MANIFESTO.md` or `AGENTS.md`
 - No heredoc-style file write commands (security and corruption prevention)
 
-**Integration**: Add to `.github/workflows/tests.yml` alongside `validate_synthesis.py`. This closes the most significant gap in the current programmatic governance coverage.
+**Integration**: The script is integrated into `.github/workflows/tests.yml` alongside `validate_synthesis.py`. This closes most of the programmatic governance coverage gap.
 
 ---
 
@@ -299,6 +301,22 @@ Ordered by impact-to-cost ratio (highest first):
 **Addition**: For each agent file, count the number of links to `MANIFESTO.md`, `AGENTS.md`, and `docs/guides/`. Output a cross-reference density score per agent and a fleet-wide average. Flag agents with density < 1 (no foundational back-references).
 
 **Rationale**: Provides a quantitative measure of holographic encoding fidelity (Pattern 6) without requiring manual inspection.
+
+---
+
+### R7 — Extend Inheritance Chain to Six-Layer Deployment Model
+
+**Status**: Reference (Forward-looking; full implementation deferred to Phase 2 post-adoption)
+
+**Location**: `values-encoding.md` §5 or new appendix; `AGENTS.md` §Encoding Chain
+
+**Content**: When the methodology is adopted by external teams or products, the five-layer encoding chain extends to six layers with explicit conflict-resolution rules governing value priority when Core-layer axioms, Deployment-layer policies, Client-specific values, and Session-scoped constraints diverge.
+
+**Hierarchy**: Core (MANIFESTO.md) > Deployment (Deployment Layer) > Client (Client Layer) > Session (Session-scoped constraints)
+
+**Rationale**: The single-principal model assumes EndogenAI controls the entire stack. Multi-principal scenarios occur in product deployment, client-facing services, and cross-organizational collaborations. A formal specification of the inheritance chain in multi-principal contexts prevents value decay from tier confusion and explicit ambiguity about which layer has authority in edge cases.
+
+**Reference**: [external-value-architecture.md](external-value-architecture.md) provides the formal six-layer specification and Supremacy constraints.
 
 ---
 
@@ -345,7 +363,7 @@ These questions require a further research pass or empirical investigation withi
 
    **Cites**: Pattern 5 §3 — *"Implement governance constraints as executable code that
    runs automatically… The code layer is the epigenetic layer."* The lookup table is a
-   first-approximation epigenetic layer; the script is its programmatic completion.
+   first-approximation epigenetic layer; the script is its programmatic completion. Full formalization: [epigenetic-tagging.md](epigenetic-tagging.md) Phase 1 specifies the lookup table mechanism; Phase 2 script will automate retrieval.
 
 3. **[4,1] code coverage audit**: A full audit of which values currently have all four encoding forms (principle + example + anti-pattern + gate) and which have only 1–2. This would produce a priority list for the encode-in-four-forms work (R2).
 
@@ -376,6 +394,27 @@ These questions require a further research pass or empirical investigation withi
    **Full back-propagation protocol**: `docs/research/dogma-neuroplasticity.md` §Pattern Catalog → Pattern C2.
 
    **Closes**: [issue #75](https://github.com/EndogenAI/Workflows/issues/75) — empirical handoff drift audit complete.
+
+---
+
+## 5. Back-Propagation: Session Evidence to Substrate
+
+The inheritance-chain model describes value transmission in one direction: MANIFESTO.md → AGENTS.md → agent files → session behavior (top-down). This section documents the complementary reverse flow: session evidence → substrate mutations (bottom-up feedback).
+
+**Mechanism**: When a session produces evidence of value drift, substrate mutations (edits to MANIFESTO.md, AGENTS.md, or SKILL.md files) must propagate that evidence back to the foundational layer. The back-propagation protocol ensures that no session produces evidence of a value decay without the opportunity for that evidence to reshape the substrate.
+
+**Stability Tiers and Mutation Thresholds**: Different substrate layers have different mutation rates:
+- **T1 (MANIFESTO.md axioms)**: Changes require 3+ independent session signals converging on the same gap, plus formal ADR. Mutation threshold is highest.
+- **T2 (AGENTS.md constraints)**: Changes can be made after 2 sessions signal a constraint gap, with documentation. Mutation threshold is moderate.
+- **T3 (Agent files)**: Changes can be made when evidence of role-function mismatch appears, with commit note.
+- **T4 (Scripts)**: Changes can be automated without prior evidence if they fix broken behavior.
+- **T5 (Session-scoped)**: Changes are expected and normal as contexts vary.
+
+**Feedback Cycle Example**: A Scout session identifies that cross-reference density to MANIFESTO.md is below 0.5. The Scout notes isolation risk in the scratchpad. The Synthesizer decides: is this systemic drift? Does the constraint need updating at T2? Does an agent file need rewriting at T3? Back-propagation closes the loop: session evidence → substrate decision → next session operates under updated constraints.
+
+**Substrate Openness Under Pressure**: Back-propagation enables the substrate to remain "open to learning" without collapsing into chaos. Without it, session evidence dies with the session. With it, evidence accumulates and triggers orderly substrate evolution. The three-signal threshold for T1 mutations ensures novel evidence is not noise, but persistent patterns are recognized and integrated.
+
+**Corpus Reference**: [dogma-neuroplasticity.md](dogma-neuroplasticity.md) §Pattern Catalog (Patterns C1-C3) provides the formal back-propagation protocol, detailing stability tiers, mutation thresholds, and evidence weight calculations governing substrate change.
 
 ---
 
