@@ -57,7 +57,7 @@ Execute the remaining open research issues in Milestone 7, anchored on the **bub
 
 ---
 
-### Phase A — Anchor: Bubble Clusters + Neuroanatomy ⬜
+### Phase A — Anchor: Bubble Clusters + Neuroanatomy 🔄
 
 **Issues**:
 
@@ -77,6 +77,13 @@ Execute the remaining open research issues in Milestone 7, anchored on the **bub
 - [ ] CI passes on PR
 
 **Review gate**: Research Reviewer validates that the boundary-membrane framing is clearly distinguished from the existing biological-homology framing in `docs/research/values-encoding.md`, and that the Pattern Catalog contains concrete actionable implications for encoding methodology.
+
+**Session notes (2026-03-09)**:
+- Governing axiom confirmed: **Endogenous-First** — primary endogenous source: `docs/research/values-encoding.md`
+- Bubble cluster model identified as conceptual evolution of §3 biological-homology framing in `values-encoding.md`
+- Scout scaffolding sources: `values-encoding.md` §3 (Patterns 1–6, §H5), `docs/research/dogma-neuroplasticity.md`, `docs/research/skills-as-decision-logic.md`
+- Phase A status updated: ⬜ → 🔄 (in progress)
+- Branch: `research/bubble-clusters-phase-a-neuroanatomy`
 
 ---
 
