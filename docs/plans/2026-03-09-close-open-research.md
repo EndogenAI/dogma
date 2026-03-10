@@ -80,7 +80,7 @@ Close all currently open `type:research` GitHub issues by either:
 **Deliverables**: `## Review Output` in scratchpad, verdict: APPROVED
 **Depends on**: Phase 1 commits
 **Gate**: Phase 2 does not start until APPROVED
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED (2026-03-10)
 
 ---
 
@@ -94,7 +94,7 @@ Close all currently open `type:research` GitHub issues by either:
 
 **Depends on**: Phase 1 APPROVED
 **Gate**: Phase 2 Review does not start until research doc committed and OQ entries updated
-**Status**: ⬜ Not started
+**Status**: ✅ Complete (2026-03-10, commit 5bbfbbe)
 
 **Per-OQ scope:**
 
@@ -119,7 +119,7 @@ Close all currently open `type:research` GitHub issues by either:
 **Deliverables**: `## Review Output` in scratchpad, verdict: APPROVED
 **Depends on**: Phase 2 deliverables committed
 **Gate**: Phase 3 does not start until APPROVED
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED (2026-03-10)
 
 ---
 
