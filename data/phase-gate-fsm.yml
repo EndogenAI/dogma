@@ -42,7 +42,7 @@ fsm:
           guard: "verdict_equals_APPROVED AND review_section_in_scratchpad"
           next_state: COMPACT_CHECK
         - event: review_rejected
-          guard: "verdict_equals_REQUEST_CHANGES"  # canonical verdict string: "REQUEST CHANGES" (space, not underscore)
+          guard: "verdict == 'REQUEST CHANGES'"  # canonical verdict string per AGENTS.md review gate
           next_state: PHASE_RUNNING
 
     COMPACT_CHECK:

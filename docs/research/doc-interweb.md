@@ -78,7 +78,7 @@ tool follows this pattern with `data/link_registry.yml`.
 
 **The idempotency risk**: Running `weave_links.py` twice should produce no diff on the second
 run. Without a guard, repeated injection wraps already-linked text in additional link syntax,
-producing `[[text](url)](url)` nesting.
+producing `[[text](URL)](URL)` nesting.
 
 **Proposed mechanism**: Before injecting a link for concept `C` pointing to target `T`,
 scan the surrounding context for the regex pattern `\[([^\]]*)\]\([^)]*\)`. If the target

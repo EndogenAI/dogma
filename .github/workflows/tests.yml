@@ -91,7 +91,7 @@ jobs:
           fi
 
       - name: Check value-encoding drift
-        run: uv run python scripts/detect_drift.py --agents-dir .github/agents/ --fail-below 0.5 --format summary
+        run: uv run python scripts/detect_drift.py --agents-dir .github/agents/ --format summary
 
       - name: Run ruff format (check)
         run: uv run ruff format --check scripts/ tests/

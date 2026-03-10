@@ -23,7 +23,7 @@ This skill enacts the *Algorithms-Before-Tokens* axiom from [`MANIFESTO.md`](../
 
 ## Endogenous Sources
 
-- **Governing axiom**: Axiom 3 — *Algorithms-Before-Tokens* — deterministic lookup over interactive re-derivation
+- **Governing axiom**: Axiom 2 — *Algorithms Before Tokens* — deterministic lookup over interactive re-derivation
 - **GitHub issue**: [#79 — Skills as Decision Codifiers](https://github.com/EndogenAI/Workflows/issues/79)
 - **Agents that use this skill**: Executive Orchestrator, Executive Researcher, Executive Planner
 - **Foundation docs**:

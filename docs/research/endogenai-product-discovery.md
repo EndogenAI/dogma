@@ -3,13 +3,13 @@ title: EndogenAI Ecosystem Product Discovery
 status: draft
 ---
 
-## Executive Summary
+## 1. Executive Summary
 
 EndogenAI is evolving from a single-repository foundational knowledge system (`/workflows` → `@endogenai/dogma`) into a multi-repository open-source ecosystem designed to enable enterprises and practitioners to build, deploy, and scale agentic workflows following three core axioms: Endogenous-First (self-justifying knowledge), Algorithms Before Tokens (encoded solutions over interactive work), and Local Compute-First (no cloud lock-in). The ecosystem comprises seven planned repositories addressing different stages of adoption: dogma (foundational knowledge), init (greenfield setup), adopt (integration into existing projects), web (public-facing education and commercial engagement), scratchpad (session-management tooling), library (curated resources), and long-term specialized libraries (skills, workflows, characters). Revenue flows through consulting services and training/certification programs, with Conor and Sheela as founders, supported by specialist business agents (Business Lead, Comms Strategist, Public Engagement Officer) who bridge product discovery with market realities. Timeline: product discovery and roadmap planning (months 1–3), repo setup and wizard launch (months 1–3 concurrent), mid-term extraction and training development (months 4–6), long-term library build and revenue scaling (months 7+).
 
 ---
 
-## Vision & Alignment with MANIFESTO.md
+## 2. Hypothesis Validation — Vision & Alignment with MANIFESTO.md
 
 ### Endogenous-First Implementation
 The multi-repository structure embodies the Endogenous-First axiom by ensuring each repository contains its own foundational knowledge, decision records, and self-justifying principles. Rather than centralizing all knowledge in a single repo and forcing downstream projects to reach back into a monolith, each ecosystem repository (`init`, `adopt`, `web`, `library`, `scratchpad`) carries enough context-scaffolding that practitioners can understand *why* decisions were made and *how* to extend or modify them locally. The `dogma` repo serves as the root axiom source, but `init` and `adopt` explicitly reference and instantiate dogma principles in their own scaffolds rather than treating them as remote dependencies. This design prevents knowledge loss and enables practitioners to fork and customize without forfeiting clarity.
@@ -22,7 +22,7 @@ Every ecosystem repository is designed to run entirely on local infrastructure. 
 
 ---
 
-## Org Structure — 7 Repos
+## 3. Pattern Catalog — Org Structure & Ecosystem Design
 
 ### @endogenai/dogma
 The foundational knowledge repository containing MANIFESTO.md, core axioms, workflow guides, agent definitions, decision records (ADR suite), CI/CD templates, and the scripts that enforce these principles across the ecosystem. This repo serves as the root-of-trust for EndogenAI values and is the primary home for research, standards, and meta-processes (e.g., how agents themselves are authored). Currently equivalent to the `/workflows` repository; renaming preserves history while signaling the repo's role as the organization-level dogma container.

@@ -676,7 +676,7 @@ Depends on: Phase 3 (PR #89) merged to feat/value-encoding-fidelity
 
 - [x] **D27.** Source cache check: for planned linking/interweb strategy URLs, run `uv run python scripts/fetch_source.py <url> --check` before fetching.
 - [x] **D28.** Scout: read `scripts/audit_provenance.py` fully. Identify: what concept mentions and cross-references it already detects. Document reuse opportunities for `weave_links.py`.
-- [x] **D29.** Scout: survey bidirectional linking strategies for Markdown corpora — inline `[term](canonical.md)` injection, footnote-style refs, YAML-registry-driven weaving. Evaluate idempotency guarantees for each.
+- [x] **D29.** Scout: survey bidirectional linking strategies for Markdown corpora — inline `[term](<canonical.md>)` injection, footnote-style refs, YAML-registry-driven weaving. Evaluate idempotency guarantees for each.
 - [x] **D30.** Scout: design `link_registry.yml` schema: `{concept: str, canonical_source: str, applications: [str], aliases: [str]}`. Verify schema handles multi-word concepts and path-relative sources. Propose 3–5 seed entries from existing concepts (Endogenous-First, Algorithms Before Tokens, programmatic-first).
 - [x] **D31.** Scout: define idempotency contract for `weave_links.py` — if inline link already present for a concept, skip it (no double-wrapping). Specify regex or marker strategy for detecting existing links.
 - [x] **D32.** Scout: scope `--scope <path>` design — accepts a file path or directory; defaults to `docs/` if omitted; `--dry-run` prints diffs without writing.
