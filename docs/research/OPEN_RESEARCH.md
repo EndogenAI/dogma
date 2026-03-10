@@ -140,7 +140,11 @@ Open follow-up questions are tracked in the **Issue #10 Follow-Up Open Questions
 
 ## 7. Episodic and Experiential Memory for Agent Sessions
 
-**Priority: Low** (deferred until scratchpad accumulation is confirmed as a bottleneck)
+**Status**: ✅ Research resolved 2026-03-10
+**Deliverable**: [`docs/research/episodic-memory-agents.md`](episodic-memory-agents.md)
+**Closes**: [#13](https://github.com/EndogenAI/Workflows/issues/13)
+
+Cognee adoption follow-up tracked in [#131](https://github.com/EndogenAI/Workflows/issues/131) — **deferred** pending local compute baseline (OPEN_RESEARCH.md #1).
 
 ### Research Question
 How should agents store and query *episodic* memory (past session events) and *experiential* memory (heuristics derived from outcomes) without cloud dependency?
@@ -263,6 +267,8 @@ _Items below are resolved. Open follow-up questions are still tracked in the mai
 | [#2](https://github.com/EndogenAI/Workflows/issues/2) | Research and document detailed agent workflows | [`agentic-research-flows.md`](agentic-research-flows.md) | 2026-03-07 |
 | [#10](https://github.com/EndogenAI/Workflows/issues/10) | Agent Fleet Design Patterns | [`agent-fleet-design-patterns.md`](agent-fleet-design-patterns.md) | 2026-03-06 |
 | [#12](https://github.com/EndogenAI/Workflows/issues/12) | XML-Tagged Agent Instruction Format _(implementation in progress)_ | [`xml-agent-instruction-format.md`](xml-agent-instruction-format.md) | 2026-03-06 |
+| [#13](https://github.com/EndogenAI/Workflows/issues/13) | Episodic and Experiential Memory for Agent Sessions | [`episodic-memory-agents.md`](episodic-memory-agents.md) | 2026-03-10 |
+| [#14](https://github.com/EndogenAI/Workflows/issues/14) | AIGNE AFS Context Governance Layer Evaluation | [`aigne-afs-evaluation.md`](aigne-afs-evaluation.md) | 2026-03-10 |
 | [#16](https://github.com/EndogenAI/Workflows/issues/16) | Testing Tools & Frameworks | [`testing-tools-and-frameworks.md`](testing-tools-and-frameworks.md) | 2026-03-07 |
 | [#17](https://github.com/EndogenAI/Workflows/issues/17) | Development Workflow Automations | [`dev-workflow-automations.md`](dev-workflow-automations.md) | 2026-03-07 |
 | [#18](https://github.com/EndogenAI/Workflows/issues/18) | OSS Documentation Best Practices | [`oss-documentation-best-practices.md`](oss-documentation-best-practices.md) | 2026-03-07 |
@@ -271,3 +277,7 @@ _Items below are resolved. Open follow-up questions are still tracked in the mai
 | [#21](https://github.com/EndogenAI/Workflows/issues/21) | Comms, Marketing & Bizdev _(seed)_ | [`comms-marketing-bizdev.md`](comms-marketing-bizdev.md) | 2026-03-07 |
 | [#22](https://github.com/EndogenAI/Workflows/issues/22) | GitHub Project Management & Automation | [`github-project-management.md`](github-project-management.md) | 2026-03-07 |
 | [#24](https://github.com/EndogenAI/Workflows/issues/24) | Context Compaction Best Practices | [`session-management.md#context-compaction`](../guides/session-management.md) | 2026-03-07 |
+| [#72](https://github.com/EndogenAI/Workflows/issues/72) | Context-sensitive axiom amplification (OQ-VE-2) | [`epigenetic-tagging.md`](epigenetic-tagging.md) | 2026-03-10 |
+| [#74](https://github.com/EndogenAI/Workflows/issues/74) | LLM behavioral testing for value fidelity (OQ-VE-4) | [`llm-behavioral-testing.md`](llm-behavioral-testing.md) | 2026-03-10 |
+| [#76](https://github.com/EndogenAI/Workflows/issues/76) | XML structuring in `handoffs.prompt` fields (OQ-12-4) | [`xml-agent-instruction-format.md`](xml-agent-instruction-format.md) §11 | 2026-03-10 |
+| [#83](https://github.com/EndogenAI/Workflows/issues/83) | Encoding external product/client values — layered value architecture | [`external-value-architecture.md`](external-value-architecture.md) | 2026-03-10 |
