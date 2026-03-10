@@ -84,6 +84,8 @@ The scratchpad auto-annotator (`scripts/watch_scratchpad.py`) exemplifies this p
 - The result (line-range annotations in heading text) is durable even if links break.
 - Run `uv run python scripts/watch_scratchpad.py` or start the VS Code task **Watch Scratchpad**.
 
+The terminal file I/O redirection rule (`no-terminal-file-io-redirect` pre-commit hook) exemplifies this principle: agents' text-level instructions to avoid terminal I/O are shifted into a deterministic T2 (static linting) layer. See [docs/research/shifting-constraints-from-tokens.md](docs/research/shifting-constraints-from-tokens.md) § Recommendations for the theoretical foundation.
+
 ---
 
 ## Toolchain Reference
@@ -521,6 +523,7 @@ Pre-commit hooks (`uv run pre-commit install` once per clone) automate ruff, val
 - `git push --force` to `main`
 - Delete or rename committed script or agent files without a migration plan
 - Use heredocs (`cat >> file << 'EOF'` or Python inline `<< 'PYEOF'`) to write Markdown content — backticks, triple-backtick fences, and special characters silently corrupt or truncate output through the terminal tool. **Always use `replace_string_in_file` or `create_file` (the built-in VS Code tools) for any file write that contains Markdown, code blocks, or backtick-containing content.**
+- Use terminal file I/O redirection (`> file`, `>> file`, `| tee file`, `| cat >> file`) in scripts — shell quoting causes interleaving and corruption. **Always use `create_file` or `replace_string_in_file` (the built-in VS Code tools).** Enforced via pre-commit hook `no-terminal-file-io-redirect` (Programmatic-First principle; §75–76).
 - Pass multi-line `gh issue` bodies via `--body "..."` on the command line — shell quoting and backtick interpolation cause `gh` to hang or silently corrupt content. **Always write the body to a temp file and use `--body-file <path>`, or use Python `subprocess` with a list of args.**
 
 **Prefer caution over assumption for:**
