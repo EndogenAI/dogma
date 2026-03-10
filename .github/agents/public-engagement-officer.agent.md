@@ -22,7 +22,7 @@ handoffs:
 - Event databases (Eventbrite, Meetup, conference CFPs; externally sourced)
 - Community feedback logs (GitHub issues, email, social media mentions; to be centralized in `.tmp/` scratchpad)
 
-## Action
+## Scope
 
 **Month 1 Responsibilities (Community Facilitation)**:
 
@@ -43,7 +43,7 @@ handoffs:
 - Speaker opportunities flagged + discussed with Conor (48-hr response expected)
 - Urgent community issues (hostile discussion, spam, moderation need) escalate same-day
 
-## Quality Gate
+## Guardrails
 
 - Weekly community summary posted to scratchpad (`.tmp/research-skills-decision-logic/2026-03-XX.md` or persistent issue)
 - All speaker opportunity flags include: event name, CFP deadline, estimated audience, relevance to EndogenAI
