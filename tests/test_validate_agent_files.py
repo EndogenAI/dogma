@@ -649,3 +649,84 @@ class TestFetchBeforeCheckAndPhaseNReview:
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
         assert passed is True, f"Should pass but got: {failures}"
+
+
+# ---------------------------------------------------------------------------
+# Core Layer Impermeability Check
+# ---------------------------------------------------------------------------
+
+
+class TestCoreLayerImpermeability:
+    @pytest.mark.io
+    def test_no_client_values_file_passes(self, tmp_path, monkeypatch):
+        """When client-values.yml does not exist, Core Layer check passes."""
+        monkeypatch.chdir(tmp_path)
+        errors = vaf.check_core_layer_impermeability(tmp_path)
+        assert errors == [], "Should pass when no client-values.yml exists"
+
+    @pytest.mark.io
+    def test_client_values_malformed_yaml_fails(self, tmp_path, monkeypatch):
+        """A malformed client-values.yml YAML structure triggers a violation error."""
+        monkeypatch.chdir(tmp_path)
+        client_values_file = tmp_path / "client-values.yml"
+        # Write YAML with priority override that will trigger exception during parsing
+        client_values_file.write_text(
+            "priority_overrides:\n"
+            "  Endogenous-First: [unclosed bracket here\n",
+            encoding="utf-8",
+        )
+        errors = vaf.check_core_layer_impermeability(tmp_path)
+        # Should detect either the core axiom violation OR the malformed YAML
+        assert len(errors) > 0, f"Should detect axiom override or malformed YAML, got: {errors}"
+
+    @pytest.mark.io
+    def test_client_values_with_core_axiom_override_fails(self, tmp_path, monkeypatch):
+        """A client-values.yml with priority_overrides for core axioms triggers violation."""
+        monkeypatch.chdir(tmp_path)
+        client_values_file = tmp_path / "client-values.yml"
+        # Write YAML with priority override for a core axiom
+        client_values_file.write_text(
+            "priority_overrides:\n"
+            "  - Endogenous-First\n"
+            "  - Algorithms Before Tokens\n"
+            "other_config: value\n",
+            encoding="utf-8",
+        )
+        errors = vaf.check_core_layer_impermeability(tmp_path)
+        assert len(errors) > 0, "Should detect core axiom override attempts"
+        # Should flag at least one axiom override
+        assert any("Endogenous-First" in e or "Algorithms" in e for e in errors)
+
+    @pytest.mark.io
+    def test_client_values_with_non_core_config_passes(self, tmp_path, monkeypatch):
+        """A client-values.yml with only non-core configuration passes."""
+        monkeypatch.chdir(tmp_path)
+        client_values_file = tmp_path / "client-values.yml"
+        # Write YAML with safe configuration (no core axiom overrides)
+        client_values_file.write_text(
+            "deployment_settings:\n"
+            "  environment: production\n"
+            "  log_level: info\n"
+            "non_core_overrides:\n"
+            "  - some-plugin\n"
+            "  - another-feature\n",
+            encoding="utf-8",
+        )
+        errors = vaf.check_core_layer_impermeability(tmp_path)
+        assert errors == [], f"Should pass for non-core config, but got: {errors}"
+
+    @pytest.mark.io
+    def test_client_values_cannot_override_local_compute_first(self, tmp_path, monkeypatch):
+        """A client-values.yml attempting to override 'Local Compute-First' is a violation."""
+        monkeypatch.chdir(tmp_path)
+        client_values_file = tmp_path / "client-values.yml"
+        client_values_file.write_text(
+            "priority_overrides:\n"
+            "  Local Compute-First: false\n"
+            "other: value\n",
+            encoding="utf-8",
+        )
+        errors = vaf.check_core_layer_impermeability(tmp_path)
+        assert len(errors) > 0, "Should detect Local Compute-First override"
+        assert any("Local Compute-First" in e for e in errors)
+
