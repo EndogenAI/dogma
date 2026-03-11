@@ -30,6 +30,8 @@ The VS Code Copilot agent tool set provides three primitives for terminal intera
 `await_terminal` (blocking wait with timeout). Used correctly these three tools cover all
 four async handling patterns documented in §3.
 
+See [`docs/research/values-encoding.md`](values-encoding.md) for related signal-preservation patterns in research synthesis that complement the timeout and abort policies encoded in this document.
+
 **Key finding**: No async handling guidelines currently exist in `AGENTS.md`. Absent
 explicit policy, agents default to indefinite blocking, which produces hung sessions on
 operations with unpredictable runtime (model downloads, container health checks). Concrete
@@ -146,6 +148,8 @@ that the launch command exited zero).
 | Local HTTP service | `curl -sf http://localhost:<port>/health` | exit 0 |
 | PostgreSQL | `pg_isready -h localhost -p 5432` | `accepting connections` |
 | Redis | `redis-cli ping` | `PONG` |
+
+<!-- L: Local health-check patterns (no remote dependencies) -->
 
 **Poll wrapper** (pseudo-code for agent reasoning):
 ```
@@ -279,6 +283,8 @@ synchronously, use Pattern 1 and set `timeout` to the ceiling value in milliseco
 (`seconds × 1000`). If the runtime is unbounded or highly variable, use Pattern 2.
 
 ---
+
+<!-- D: Deterministic decision tree for abort logic -->
 
 ## 6. Retry and Abort Policy
 
