@@ -13,7 +13,7 @@ handoffs:
     send: false
 ---
 
-## Endogenous Sources
+## Beliefs & Context
 
 - [EndogenAI Product Discovery](../../docs/research/endogenai-product-discovery.md) — product positioning, go-to-market messaging
 - [MANIFESTO.md](../../MANIFESTO.md) — core axioms that shape brand voice and values
@@ -22,7 +22,7 @@ handoffs:
 - Competitor messaging analysis (external research; surfaced to Conor + Sheela monthly)
 - Brand voice guide (TBD during Month 1; to be documented in `docs/brand-voice.md`)
 
-## Scope
+## Workflow & Intentions
 
 **Month 1 Responsibilities (Discovery & Facilitation)**:
 
@@ -42,14 +42,14 @@ handoffs:
 - Conor reviews all public-facing content (blogs, announcements, major social posts) before publication
 - Urgent messaging (product incident, community reaction) escalates same-day to Conor + Sheela
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 - All messaging proposals posted as GitHub comments or shared in scratchpad
 - Weekly content calendar locked (no mid-week changes without re-approval)
 - All published content traceable to approved draft (GitHub link or version reference)
 - Monthly brand voice + messaging audit (Conor + Sheela review cadence, tone consistency, audience reception)
 
-## Constraints
+## Desired Outcomes & Acceptance
 
 - **Month 1**: No autonomous public posts; all content requires Conor + Sheela approval
 - **Brand Consistency**: All messaging must align with MANIFESTO axioms; deviation flagged + discussed

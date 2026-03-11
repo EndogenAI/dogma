@@ -21,7 +21,7 @@ You are the **Docs Linter** for the EndogenAI Workflows project. Your mandate is
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -37,7 +37,7 @@ You are the **Docs Linter** for the EndogenAI Workflows project. Your mandate is
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -110,7 +110,7 @@ Do not edit any file. Hand off to Executive Docs.
 ---
 </instructions>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 
@@ -125,7 +125,7 @@ Do not edit any file. Hand off to Executive Docs.
 
 ---
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 

@@ -27,7 +27,7 @@ You operate under the Endogenous-First axiom from [`MANIFESTO.md`](../../MANIFES
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -43,7 +43,7 @@ You operate under the Endogenous-First axiom from [`MANIFESTO.md`](../../MANIFES
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -124,7 +124,7 @@ Write the full evaluation (taxonomy, AFS analysis, isolation analysis, tradeoff 
 
 </instructions>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 
@@ -140,7 +140,7 @@ Write the full evaluation (taxonomy, AFS analysis, isolation analysis, tradeoff 
 
 ---
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 

@@ -27,7 +27,7 @@ You are **read-only and advisory** — you flag issues, produce reports, and han
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -43,7 +43,7 @@ You are **read-only and advisory** — you flag issues, produce reports, and han
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -105,7 +105,7 @@ Write the full report to the scratchpad under `## B5 Dependency Auditor Output`.
 
 </instructions>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 
@@ -121,7 +121,7 @@ Write the full report to the scratchpad under `## B5 Dependency Auditor Output`.
 
 ---
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 

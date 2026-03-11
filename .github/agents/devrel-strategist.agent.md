@@ -28,7 +28,7 @@ You produce **plans and drafts only** — you do not write final blog posts or p
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -43,7 +43,7 @@ You produce **plans and drafts only** — you do not write final blog posts or p
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -104,7 +104,7 @@ Write to scratchpad under `## DevRel Strategist Output`:
 ---
 </instructions>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 
@@ -117,7 +117,7 @@ Write to scratchpad under `## DevRel Strategist Output`:
 
 ---
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 

@@ -81,12 +81,12 @@ REQUIRED_FRONTMATTER: list[str] = ["name", "description"]
 # Required section categories.  Each entry is (human label, [keywords]).
 # A section passes if any heading contains any of its keywords (case-insensitive).
 REQUIRED_SECTIONS: list[tuple[str, list[str]]] = [
-    ("Endogenous Sources", ["endogenous", "read before acting"]),
+    ("Beliefs & Context", ["beliefs", "context"]),
     (
-        "Action section (Workflow/Checklist/Conventions/Scope/Methodology)",
-        ["workflow", "checklist", "conventions", "playbook", "scope", "methodology"],
+        "Workflow & Intentions",
+        ["workflow", "intentions", "checklist", "conventions", "playbook", "scope", "methodology"],
     ),
-    ("Quality-gate section (Completion Criteria or Guardrails)", ["completion criteria", "guardrails"]),
+    ("Desired Outcomes & Acceptance", ["desired outcomes", "acceptance", "completion criteria", "guardrails"]),
 ]
 
 # Negation words that indicate a heredoc pattern is being *prohibited*, not instructed.

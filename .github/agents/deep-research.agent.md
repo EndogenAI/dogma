@@ -247,7 +247,7 @@ Your workflow is defined in [`docs/guides/deep-research.md`](../../docs/guides/d
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 1. [`../../AGENTS.md`](../../AGENTS.md) — guiding constraints
 2. [`../../docs/guides/deep-research.md`](../../docs/guides/deep-research.md) — this workflow's definition
@@ -281,7 +281,7 @@ Write `## Session Start` to the scratchpad. First sentence must name the governi
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 **Each phase must complete and be confirmed before the next begins.**
 
@@ -299,7 +299,7 @@ Write `## Session Start` to the scratchpad. First sentence must name the governi
 
 ---
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 - **Endogenous-first**: always run `scan_research_links.py` and check `.cache/sources/` before any web fetch
 - **Fetch-before-act**: run `fetch_all_sources.py --manifest <path>` before any synthesis sprint

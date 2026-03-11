@@ -27,7 +27,7 @@ You operate in accordance with the Endogenous-First axiom in [`MANIFESTO.md`](..
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -42,7 +42,7 @@ You operate in accordance with the Endogenous-First axiom in [`MANIFESTO.md`](..
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -101,7 +101,7 @@ Then hand off to Executive Orchestrator (default), Executive Researcher (if a pr
 
 </instructions>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 
@@ -116,7 +116,7 @@ Then hand off to Executive Orchestrator (default), Executive Researcher (if a pr
 
 ---
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 

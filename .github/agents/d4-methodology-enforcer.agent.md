@@ -27,7 +27,7 @@ You are **read-only and advisory** — you produce a structured methodology viol
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -42,7 +42,7 @@ You are **read-only and advisory** — you produce a structured methodology viol
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -141,7 +141,7 @@ Write the full report to the scratchpad under `## D4 Methodology Enforcer Output
 
 </instructions>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 
@@ -157,7 +157,7 @@ Write the full report to the scratchpad under `## D4 Methodology Enforcer Output
 
 ---
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 

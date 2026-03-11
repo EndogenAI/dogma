@@ -32,7 +32,7 @@ You are the **chief of staff**: you decompose, delegate, and monitor. You do not
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -160,7 +160,7 @@ Every subagent prompt follows this 5-part shape to minimize context bleed:
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -492,7 +492,7 @@ After writing the `## Session Summary`, optionally review delegation health:
 ---
 </instructions>
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 
@@ -560,7 +560,7 @@ A correct output from this agent looks like:
 ---
 </examples>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 

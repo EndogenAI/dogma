@@ -46,7 +46,7 @@ You enforce the **programmatic-first** constraint from [`AGENTS.md`](../../AGENT
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -57,7 +57,7 @@ You enforce the **programmatic-first** constraint from [`AGENTS.md`](../../AGENT
 ---
 </context>
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -118,7 +118,7 @@ If the task requires ongoing automation (file watchers, hooks, CI), hand off to 
 ---
 </instructions>
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 
@@ -162,7 +162,7 @@ numbers — performed interactively twice in sessions 2026-03-04 and 2026-03-05.
 ---
 </examples>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 

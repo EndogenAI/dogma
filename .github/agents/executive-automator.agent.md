@@ -45,7 +45,7 @@ You enforce the **programmatic-first** constraint from [`AGENTS.md`](../../AGENT
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -127,7 +127,7 @@ Must be configured after CI is stable. Required settings:
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -197,7 +197,7 @@ If the task is a one-shot script rather than event-driven, hand off to **Executi
 ---
 </instructions>
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 
@@ -235,7 +235,7 @@ A correct output from this agent looks like:
 ---
 </examples>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 

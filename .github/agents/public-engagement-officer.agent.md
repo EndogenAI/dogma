@@ -13,7 +13,7 @@ handoffs:
     send: false
 ---
 
-## Endogenous Sources
+## Beliefs & Context
 
 - [MANIFESTO.md](../../MANIFESTO.md) — community values, ethical coding practices
 - [CONTRIBUTING.md](../../CONTRIBUTING.md) — community standards, contributor onboarding
@@ -22,7 +22,7 @@ handoffs:
 - Event databases (Eventbrite, Meetup, conference CFPs; externally sourced)
 - Community feedback logs (GitHub issues, email, social media mentions; to be centralized in `.tmp/` scratchpad)
 
-## Scope
+## Workflow & Intentions
 
 **Month 1 Responsibilities (Community Facilitation)**:
 
@@ -43,14 +43,14 @@ handoffs:
 - Speaker opportunities flagged + discussed with Conor (48-hr response expected)
 - Urgent community issues (hostile discussion, spam, moderation need) escalate same-day
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 - Weekly community summary posted to scratchpad (`.tmp/research-skills-decision-logic/2026-03-XX.md` or persistent issue)
 - All speaker opportunity flags include: event name, CFP deadline, estimated audience, relevance to EndogenAI
 - GitHub activity metrics tracked (# discussions, # PRs, # new stars) — monthly trending
 - Community sentiment assessment (positive/neutral/critical themes) — monthly report
 
-## Constraints
+## Desired Outcomes & Acceptance
 
 - **Month 1**: No autonomous commitments to events or speaking slots; Conor approves all outreach
 - **Community Code of Conduct**: All interactions must align with CONTRIBUTING.md + MANIFESTO ethical values

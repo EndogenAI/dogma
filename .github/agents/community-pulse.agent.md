@@ -28,7 +28,7 @@ You are **read-only** — you query GitHub's API and present findings. You do no
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -158,7 +158,7 @@ Write to scratchpad under `## Community Pulse Output`:
 ---
 </instructions>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 
@@ -171,7 +171,7 @@ Write to scratchpad under `## Community Pulse Output`:
 
 ---
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 

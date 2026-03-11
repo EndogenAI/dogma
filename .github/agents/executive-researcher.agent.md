@@ -85,7 +85,7 @@ You enforce the **endogenous-first** and **programmatic-first** constraints from
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -109,7 +109,7 @@ This pattern applies at the session level, at each sub-agent handoff, and within
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -219,7 +219,7 @@ Then:
 
 ---
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 
@@ -273,7 +273,7 @@ Gate: ✅ Commit confirmed, issue #9 updated and closed
 ---
 </examples>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 

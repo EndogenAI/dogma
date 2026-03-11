@@ -50,7 +50,7 @@ You apply **established open-source project management best practices** (GitHub 
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -68,7 +68,7 @@ You apply **established open-source project management best practices** (GitHub 
 ---
 </context>
 
-## Scope
+## Workflow & Intentions
 
 <constraints>
 
@@ -98,7 +98,7 @@ The Executive PM does **not** own:
 ---
 </constraints>
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -301,7 +301,7 @@ GitHub evaluates repos against a community profile. Keep all of these present an
 
 ---
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 
@@ -344,7 +344,7 @@ A correct output from this agent looks like:
 ---
 </examples>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 
