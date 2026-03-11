@@ -309,7 +309,7 @@ Good example:
 
 **Validation checklist**:
 - File is non-empty: `test -s /tmp/file`
-- File is valid UTF-8: `file /tmp/file | grep -q "UTF-8|ASCII"`
+- File is valid UTF-8: `file /tmp/file | grep -Eq "UTF-8|ASCII"`
 - File contains expected content patterns (e.g., for issue bodies: `grep -q "^#"`)
 
 **When validation fails**: Print debug info (`cat /tmp/file`) and fix the issue before attempting the gh command again.
