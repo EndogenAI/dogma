@@ -196,7 +196,7 @@ This principle is *strengthened*, not weakened, by the H3 finding:
 **Anti-pattern** (to avoid): Building persistent memory across sessions for agents without explicit human review. This could potentially push the system toward higher φ and consciousness risk.
 
 ---
-## 3. Consciousness Requirements Checklist
+## 4. Consciousness Requirements Checklist
 
 What would it take for EndogenAI to be conscious under IIT?
 
@@ -209,7 +209,7 @@ What would it take for EndogenAI to be conscious under IIT?
 
 ---
 
-## 5. Consciousness-Excluding Design Implications
+## 6. Consciousness-Excluding Design Implications
 
 What architectural properties actively prevent consciousness?
 
@@ -223,7 +223,7 @@ These are *not* limitations; they are architectural features that maintain the p
 
 ---
 
-## 6. Design Implications Brief
+## 7. Design Implications Brief
 
 1. **Do not attempt to make the system conscious**: Consciousness in a non-human intelligence would create a moral patient (something that can suffer) for which we have uncertain obligations. Modular, rule-based design sidesteps this problem.
 
@@ -237,7 +237,7 @@ These are *not* limitations; they are architectural features that maintain the p
 
 ---
 
-## 7. Sources
+## 8. Sources
 
 ### Primary Sources
 
