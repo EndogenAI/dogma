@@ -471,7 +471,7 @@ CR: (CD→ES;NC)*(CVV→RD;C)*(DC→EC;A)*(CO→AC;DO)
 - **OMG BPMN Specification** (Object Management Group). (2014). *Business Process Model and Notation (BPMN) v2.0.2* ISO/IEC 19510.
   - International standard for workflow/process notation; includes gateways (decisions), events, and task sequencing.
   - Relevance: BPMN's exclusive gateway (`⊕`) and anti-patterns (loose coupling, missing error handlers) directly map to DSL conditional branching and negation symbols.
-  - Source: [w3.org/TR/bpmn20](https://www.w3.org/TR/bpmn20/) (Cached: `bpmn-wiki.md`)
+  - Source: Cached in `.cache/sources/bpmn-wiki.md`
 
 - **Petri, C. A.** (1962). *Kommunikation mit Automaten*. Dissertation, Universität Hamburg.
   - Foundational formalism: Petri nets (directed bipartite graphs of places and transitions) for modeling concurrent processes.

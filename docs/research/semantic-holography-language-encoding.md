@@ -221,7 +221,7 @@ $$\text{Holographic Density}_\text{doc} = \frac{\text{# unique foundational docu
   - Relevance: Information-theoretic framework for measuring semantic fidelity loss during encoding/compression
 
 - **Shannon, C. E.** (1948). "A mathematical theory of communication." *Bell System Technical Journal*, 27(3), 379–423.
-  - URL: https://people.math.harvard.edu/~ctm/home/text/others/shannon/shannon1948.pdf
+  - URL: https://archive.org/details/bstj27-3-379 (Internet Archive; PDF directly accessible)
   - Relevance: Channel coding theorem; error-correcting codes; redundancy as defense against information loss
 
 ### Supporting Sources
