@@ -305,7 +305,7 @@ def adopt_new_client(client_name, industry, repo_path):
 
 ### R2 — Add Mandatory Deployment-Layer Read to Session-Start Ritual
 
-**Target**: [AGENTS.md](../AGENTS.md) § Session Start Ritual; [`docs/guides/session-management.md`](../guides/session-management.md)
+**Target**: [AGENTS.md](../../AGENTS.md) § Session Start Ritual; `docs/guides/session-management.md` (planned)
 
 **Action**: Insert a conditional step into the session-start checklist:
 ```markdown
@@ -366,7 +366,7 @@ def perform_session_start_ritual():
 
 ### R3 — Implement Topology-Aware Agent-Manifest Generation
 
-**Target**: [`scripts/generate_agent_manifest.py`](../scripts/generate_agent_manifest.py); extend to output layer membership and inter-layer dependencies
+**Target**: [`scripts/generate_agent_manifest.py`](../../scripts/generate_agent_manifest.py); extend to output layer membership and inter-layer dependencies
 
 **Action**: 
 1. Extend agent file frontmatter to include `layer: [core|deployment|client|session]` and `depends_on: [manifesto, agents-md, core-layer, deployment-layer]`
@@ -455,7 +455,7 @@ isolation_summary: "1 at-risk agent; 2 missing dependencies"
 
 ### R4 — Add Core-Layer Impermeability Check to CI Validation
 
-**Target**: [`scripts/validate_agent_files.py`](../scripts/validate_agent_files.py); extend with Pattern E2 check
+**Target**: [`scripts/validate_agent_files.py`](../../scripts/validate_agent_files.py); extend with Pattern E2 check
 
 **Action**: Add a validation rule that flags any agent file citing `client-values.yml` as a higher-priority source than `MANIFESTO.md` or `AGENTS.md`:
 ```python
@@ -649,7 +649,7 @@ This section details the phased rollout of the six-layer topological model, from
 - `scripts/adopt_wizard.py` with stub generation for new client deployments
 - `client-values.yml` template (frontmatter YAML with compliance + convention sections)
 - `.client.agent.md` template (agent file scaffold for Deployment-Layer agents)
-- Documentation: [`docs/guides/adopt-wizard.md`](../guides/adopt-wizard.md)
+- Documentation: `docs/guides/adopt-wizard.md` (planned)
 
 **Team responsibilities**:
 - **Executive Scripter**: Author `adopt_wizard.py` with unit tests
@@ -699,7 +699,7 @@ This section details the phased rollout of the six-layer topological model, from
 - Extended `scripts/validate_agent_files.py` with supremacy rule checker (from R4)
 - GitHub Actions job: `validate-core-impermeability.yml`
 - Pre-commit hook integration for local validation
-- Documentation: [`docs/guides/ci-gates.md`](../guides/ci-gates.md)
+- Documentation: `docs/guides/ci-gates.md` (planned)
 
 **Team responsibilities**:
 - **Executive Scripter**: Implement citation-order validation and integrate into validate_agent_files.py
@@ -725,7 +725,7 @@ This section details the phased rollout of the six-layer topological model, from
 - Metrics script: `scripts/measure_supremacy_adherence.py` (counts Supremacy Rule violations at runtime)
 - Dashboard: Grafana/Prometheus integration showing supremacy adherence per client over time
 - Case study report: Internal healthcare client (Phase 1 pilot) results and lessons learned
-- Documentation: [`docs/research/supremacy-rule-empirical-validation.md`](../research/supremacy-rule-empirical-validation.md)
+- Documentation: `docs/research/supremacy-rule-empirical-validation.md` (planned)
 
 **Team responsibilities**:
 - **Executive Researcher**: Run empirical validation; produce case study report
@@ -748,9 +748,9 @@ This section details the phased rollout of the six-layer topological model, from
 
 **Deliverables**:
 - Case studies: ≥ 3 external organizations (healthcare, finance, education sectors)
-- Deployment runbooks: [docs/guides/multi-tenant-deployment.md](../guides/multi-tenant-deployment.md)
+- Deployment runbooks: `docs/guides/multi-tenant-deployment.md` (planned)
 - Scaling assessment: How many concurrent clients can a single Adopt Wizard instance handle?
-- Final research synthesis: [`docs/research/six-layer-topological-extension-synthesis.md`](../research/six-layer-topological-extension-synthesis.md) with recommendations for production deployment
+- Final research synthesis: `docs/research/six-layer-topological-extension-synthesis.md` (planned) with recommendations for production deployment
 
 **Team responsibilities**:
 - **Executive Researcher**: Coordinate case studies; synthesize findings
