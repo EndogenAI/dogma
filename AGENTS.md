@@ -451,6 +451,8 @@ Any command that creates or modifies a remote side effect must be immediately pr
 | milestone create via API | N/A (JSON payload) | `gh api repos/:owner/:repo/milestones` |
 | `gh issue comment` (session-end update) | `test -s /tmp/file && file /tmp/file \| grep -q "UTF-8"` | `gh issue view <num> --json comments -q '.comments[-1].body[:80]'` |
 
+**Issue auto-close via PR body**: For any issue that will be resolved by a PR merge, **do not run `gh issue close` manually**. Instead add `Closes #NNN` lines to the PR body as each phase completes. GitHub closes them automatically on merge. Manual pre-merge closes break the PR→issue traceability link. See [`docs/guides/github-workflow.md` § Issue Auto-Close via PR Body](docs/guides/github-workflow.md#issue-auto-close-via-pr-body).
+
 **Zero error output is not confirmation of success.** Output truncation, network timeouts, and silent API failures all produce clean exits. Always verify.
 
 **CI must pass before requesting review.** After every `git push` to a PR branch: check CI status with `gh run list --limit 3` before requesting or re-requesting Copilot review. A passing push with failing CI is a broken PR — fix CI before doing anything else. Common CI failure modes: lychee dead link (add to `.lycheeignore`), ruff format (run `uv run ruff format scripts/ tests/`), validate_synthesis missing headings.

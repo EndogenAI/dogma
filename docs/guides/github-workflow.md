@@ -168,7 +168,45 @@ Zero error output is **not** confirmation of success. Always verify.
 
 ---
 
-## 9. PR Merge Strategy
+## 9. Issue Auto-Close via PR Body
+
+**Rule**: For any issue that will be resolved by a PR merge, **do not run `gh issue close` manually before the PR merges**. Use GitHub's automatic close syntax in the PR body instead.
+
+### Why
+
+Manual pre-merge closes break the PR→issue traceability link: the issue closes before the PR merges, so the GitHub UI cannot link "closed by PR #NNN". This breaks audit trails, makes milestone tracking unreliable, and prevents GitHub from displaying the resolving PR on the closed issue.
+
+### How
+
+Add `Closes #NNN` lines to the PR body — one per resolved issue. **Update the PR body as phases complete during the PR lifecycle** (not just at PR creation):
+
+```
+Closes #115
+Closes #116
+Closes #117
+```
+
+GitHub recognises: `Closes`, `Fixes`, `Resolves` (case-insensitive). All three auto-close the issue when the PR merges into the default branch.
+
+**To update the PR body after creation:**
+
+```bash
+gh pr edit --body-file /tmp/updated_body.md
+```
+
+Always validate the file first: `test -s /tmp/updated_body.md && file /tmp/updated_body.md | grep -q "UTF-8"`.
+
+### When `gh issue close` is still correct
+
+Use `gh issue close` directly **only** for issues that are resolved without a PR (e.g., a decision was reversed, a duplicate was identified, or the work was done directly on `main`). If there is a PR in flight, always use `Closes #NNN` in the PR body.
+
+### PR Template Reminder
+
+The [PR template](../../.github/pull_request_template.md) includes a `## Closes` section at the bottom. Populate it as you commit phases — do not leave it blank.
+
+---
+
+## 10. PR Merge Strategy
 
 This repo enforces **rebase and merge** only. Squash merge is disabled in repository settings.
 
@@ -184,7 +222,7 @@ This repo enforces **rebase and merge** only. Squash merge is disabled in reposi
 
 ---
 
-## 10. Setup Checklist (New Contributor / New Machine)
+## 11. Setup Checklist (New Contributor / New Machine)
 
 - [ ] `gh auth login` — authenticate with GitHub
 - [ ] `gh auth refresh -s project` — add Projects v2 scope (required once per machine)
@@ -194,7 +232,7 @@ This repo enforces **rebase and merge** only. Squash merge is disabled in reposi
 
 ---
 
-## 10. Further Reading
+## 12. Further Reading
 
 - Full synthesis with hypothesis analysis: [`docs/research/github-project-management.md`](../research/github-project-management.md)
 - OSS documentation patterns: [`docs/research/oss-documentation-best-practices.md`](../research/oss-documentation-best-practices.md)

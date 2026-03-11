@@ -26,3 +26,11 @@
 - [ ] New scripts have a module docstring and are listed in [`scripts/README.md`](../scripts/README.md)
 - [ ] New docs are linked from the relevant index or guide
 - [ ] No secrets, credentials, or personal data included
+
+## Closes
+
+<!-- List all issues resolved by this PR using GitHub's auto-close syntax.
+     These are closed automatically when this PR merges — do NOT close them manually.
+     Add lines as phases complete during the PR lifecycle. -->
+
+<!-- Closes #NNN -->
