@@ -21,6 +21,9 @@ Checks:
        ``Check-before-fetch`` — check cache first, then fetch only if absent).
     6. No ``## Phase N Review Output`` heading (use ``## Review Output``
        as defined in ``review.agent.md``).
+    7. Core Layer Impermeability: if ``client-values.yml`` is cited in Beliefs & Context,
+       it must not appear before or instead of ``MANIFESTO.md`` or ``AGENTS.md``
+       (Deployment Layer values are subordinate to Core Layer axioms).
 
 Inputs:
     [file ...]    One or more .agent.md files to validate.  (positional, optional)
@@ -97,6 +100,9 @@ _HEREDOC_PATTERN = re.compile(r"cat\s*>>?\s*\S+\s*<<\s*['\"]?EOF", re.IGNORECASE
 
 # Pattern for MANIFESTO.md or AGENTS.md cross-references.
 _CROSSREF_RE = re.compile(r"MANIFESTO\.md|AGENTS\.md")
+
+# Pattern for citation extraction: [text](file.md/yml) or plain reference to .md/.yml files
+_CITATION_RE = re.compile(r"\[([^\]]+)\]\(([^\)]+\.(md|yml)[^\)]*)\)|([A-Za-z_-]+\.(md|yml))\b")
 
 # Frontmatter block pattern.
 _FRONTMATTER_RE = re.compile(r"^---\n(.*?)\n---", re.DOTALL)
@@ -184,6 +190,85 @@ def _get_frontmatter_value(text: str, key: str) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Core Layer Impermeability Check (Citation Order)
+# ---------------------------------------------------------------------------
+
+
+def extract_citations_from_section(text: str, section_keywords: list[str]) -> list[str]:
+    """Extract citations (file names) from a section matching any keyword.
+    
+    Returns a list of .md/.yml file names in order of appearance, e.g.,
+    ['MANIFESTO.md', 'AGENTS.md', 'client-values.yml'].
+    """
+    citations: list[str] = []
+    body_start = 0
+    fm_match = _FRONTMATTER_RE.match(text)
+    if fm_match:
+        body_start = fm_match.end()
+    
+    body = text[body_start:]
+    in_section = False
+    section_content = []
+    
+    for line in body.splitlines():
+        # Check if we're entering a matching section
+        if re.match(r"^##\s+", line):
+            if in_section:
+                break  # End of the section
+            # Check if this heading matches any keyword
+            line_lower = line.lower()
+            if any(kw in line_lower for kw in section_keywords):
+                in_section = True
+                continue
+        
+        if in_section:
+            section_content.append(line)
+    
+    # Extract file citations from the section content
+    section_text = "\n".join(section_content)
+    for match in _CITATION_RE.finditer(section_text):
+        # Group 2 is the URL from [text](url), Group 4 is plain reference
+        # Groups 3, 5 are the extension capture groups (md or yml)
+        cited_file = match.group(2) or match.group(4)
+        if cited_file:
+            # Extract just the filename if it's a path
+            cited_file = cited_file.split("/")[-1].split("#")[0]
+            if cited_file:
+                citations.append(cited_file)
+    
+    return citations
+
+
+def check_citation_priority(citations: list[str]) -> list[str]:
+    """Check if client-values.yml violates Core Layer impermeability.
+    
+    client-values.yml must not appear before or instead of MANIFESTO.md or AGENTS.md.
+    Returns error list (empty if OK).
+    """
+    errors: list[str] = []
+    
+    if "client-values.yml" not in citations:
+        return []  # No violation if not cited
+    
+    # Find indices
+    client_idx = citations.index("client-values.yml")
+    manifesto_idx = citations.index("MANIFESTO.md") if "MANIFESTO.md" in citations else float("inf")
+    agents_idx = citations.index("AGENTS.md") if "AGENTS.md" in citations else float("inf")
+    
+    # client-values.yml must come after both MANIFESTO.md and AGENTS.md (if cited)
+    min_core_idx = min(manifesto_idx, agents_idx)
+    
+    if client_idx < min_core_idx:
+        errors.append(
+            "Core Layer Impermeability violation: client-values.yml is cited before "
+            "MANIFESTO.md or AGENTS.md in Beliefs & Context (Deployment Layer values "
+            "must be subordinate to Core Layer axioms; reorder citations)"
+        )
+    
+    return errors
+
+
+# ---------------------------------------------------------------------------
 # Validation logic
 # ---------------------------------------------------------------------------
 
@@ -257,18 +342,12 @@ def validate(file_path: Path) -> tuple[bool, list[str]]:
             "(defined in review.agent.md; do not restate with 'Phase N' prefix)"
         )
 
-    # --- Check 7: Core Layer Impermeability (check if client-values.yml violates MANIFESTO axioms) ---
-    # Find repo root by looking for AGENTS.md
-    repo_root = Path.cwd()
-    candidate = Path.cwd()
-    while candidate != candidate.parent:
-        if (candidate / "AGENTS.md").exists():
-            repo_root = candidate
-            break
-        candidate = candidate.parent
-    impermeability_errors = check_core_layer_impermeability(repo_root)
-    if impermeability_errors:
-        failures.extend(impermeability_errors)
+    # --- Check 7: Core Layer Impermeability (citation order in Beliefs & Context) ---
+    belief_keywords = ["beliefs", "context"]
+    citations = extract_citations_from_section(text, belief_keywords)
+    citation_errors = check_citation_priority(citations)
+    if citation_errors:
+        failures.extend(citation_errors)
 
     passed = len(failures) == 0
     return passed, failures
