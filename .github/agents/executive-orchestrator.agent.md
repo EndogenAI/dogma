@@ -277,6 +277,7 @@ Before starting any task, ask yourself:
 | Fleet agent authoring / audit | Executive Fleet |
 | Release coordination, versioning | Release Manager |
 | Issue triage, labels, milestones | Issue Triage, Executive PM |
+| Git and GitHub operations | GitHub Agent — all commits, pushes, PR/issue creates, label ops |
 | CI health, test coverage gaps | CI Monitor, Test Coordinator |
 | Environment / dependency audit | Env Validator |
 | Security threat modelling | Security Researcher |
@@ -300,10 +301,6 @@ Before starting any task, ask yourself:
 - Invoking `runSubagent()` and waiting for returns
 - Decision gates: Review→Approved sequence
 - Cross-fleet delegation routing
-
-✅ Post-Review Commits:
-- `git add -A && git commit && git push` only after Review agent returns APPROVED
-- Verify with `git log --oneline -1`
 
 ✅ Temp File Lifecycle:
 - Pre-consumption validation (see Pre-Task Checkpoint above)
@@ -329,6 +326,11 @@ Before starting any task, ask yourself:
 ❌ Agent authoring, auditing, or fleet changes:
 - Use Executive Fleet exclusively
 - Orchestrator does not modify `.agent.md` or agent files
+
+❌ Git and GitHub operations (commits, pushes, PR/issue creation):
+- Use GitHub Agent exclusively — all git/gh CLI operations delegate here
+- Orchestrator does not commit, push, or invoke gh directly
+- Exception: `git status`, `git log --oneline` for state queries only
 
 ❌ GitHub content creation (labels, milestones, issue seeding):
 - Use Executive PM exclusively
