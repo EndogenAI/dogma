@@ -573,24 +573,24 @@ Phase 6 assesses how Phase 1–4 research corpus supports, challenges, or fills 
 3. `docs/research/bubble-clusters-substrate.md`
 
 **Deliverables**:
-- [ ] Gap analysis doc: `docs/research/gap-analysis-endogenic-design.md` (D4 format)
-- [ ] Gap analysis doc: `docs/research/gap-analysis-values-encoding.md` (D4 format)
-- [ ] Gap analysis doc: `docs/research/gap-analysis-bubble-clusters.md` (D4 format)
-- [ ] Updated primary papers with forward references to Phase 1–4 research docs
+- [x] Gap analysis doc: `docs/research/gap-analysis-endogenic-design.md` (D4 format)
+- [x] Gap analysis doc: `docs/research/gap-analysis-values-encoding.md` (D4 format)
+- [x] Gap analysis doc: `docs/research/gap-analysis-bubble-clusters.md` (D4 format)
+- [x] Updated primary papers with forward references to Phase 1–4 research docs
 
 **Estimated effort**: 40–50 hours  
 **Depends on**: Phase 5 Review APPROVED  
-**Status**: ⏳ Queued (ready to execute, awaiting user decision)
+**Status**: ✅ Complete — commit `c2b0814`
 
 ---
 
-#### Phase 6 Review — Validation Verification Gate
+#### Phase 6 Review — Validation Verification Gate ✅
 
 **Agent**: Review  
 **Deliverables**: `## Phase 6 Review Output` in scratchpad; verdict: APPROVED  
-**Depends on**: Phase 6a deliverables committed  
+**Depends on**: Phase 6a deliverables committed (commit `c2b0814`)  
 **Gate**: Phase 7 begins only after Phase 6 Review returns APPROVED  
-**Status**: ⬜ Queued
+**Status**: ✅ Complete — APPROVED (commit `c2b0814`)
 
 ---
 
@@ -604,7 +604,7 @@ Phase 7 synthesizes Phase 1–6 research into a unified conceptual framework. Is
 
 ---
 
-#### Phase 7a: Synthesis & Framework Integration
+#### Phase 7a: Synthesis & Framework Integration ✅
 
 **Agent**: Executive Researcher  
 **Scope**: Synthesize values-encoding and bubble-clusters papers; assess endogenic design alignment; evaluate MANIFESTO.md consistency
@@ -616,23 +616,23 @@ Phase 7 synthesizes Phase 1–6 research into a unified conceptual framework. Is
 4. How do values-encoding, bubble-clusters, and endogenic design support or challenge MANIFESTO.md axioms?
 
 **Deliverables**:
-- [ ] `docs/research/values-substrate-relationship.md` (D4 format; relationship analysis + synthesis decision + dogma assessment)
-- [ ] If synthesis warranted: `docs/research/values-substrate-synthesis.md` (unified synthesis paper combining both inputs)
-- [ ] Dogma assessment: Section documenting MANIFESTO.md alignment + proposed amendments (if any)
+- [x] `docs/research/values-substrate-relationship.md` (D4 format; relationship analysis + orthogonal-model decision)
+- [⊘] `docs/research/values-substrate-synthesis.md` (not warranted — synthesis decision is to maintain orthogonality)
+- [x] Dogma assessment: MANIFESTO.md alignment (all 5 axioms operationalized; no amendments proposed)
 
 **Estimated effort**: 25–35 hours  
 **Depends on**: Phase 6 Review APPROVED  
-**Status**: ⏳ Queued (blocked on Phase 6 completion)
+**Status**: ✅ Complete — commit `503e38f` (remediation: D4 format fixes + sources augmentation)
 
 ---
 
-#### Phase 7 Review — Review Gate ⬜
+#### Phase 7 Review — Review Gate ✅
 
 **Agent**: Review  
 **Deliverables**: `## Phase 7 Review Output` in scratchpad; verdict: APPROVED  
-**Depends on**: Phase 7a deliverables committed  
-**Gate**: Sprint Wrapup begins only after Phase 7 Review returns APPROVED  
-**Status**: ⬜ Queued
+**Depends on**: Phase 7a deliverables committed (commit `503e38f`)  
+**Gate**: Phase 8 begins only after Phase 7 Review returns APPROVED  
+**Status**: ✅ Complete — APPROVED (commit `503e38f`; D4 format compliance all checks pass)
 
 ---
 
