@@ -6,17 +6,13 @@ report generation. Validates risk levels (green/yellow/red) based on axiom citat
 and test coverage metrics.
 """
 
-import json
 import pytest
-from pathlib import Path
+
 from scripts.parse_audit_result import (
-    parse_audit_result,
     assess_agent_risk,
     generate_recommendations,
-    OverallRiskAssessment,
-    AgentRiskAssessment,
+    parse_audit_result,
 )
-
 
 # ===========================================================================
 # Fixtures: Sample Audit JSON Payloads

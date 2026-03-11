@@ -71,7 +71,6 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
-
 # ===========================================================================
 # Data Classes & Risk Assessment
 # ===========================================================================
@@ -131,8 +130,8 @@ def assess_agent_risk(
     if orphaned:
         return (
             "red",
-            f"Orphaned: no 'governs:' field in agent spec. "
-            f"Cannot verify grounding in MANIFESTO.md."
+            "Orphaned: no 'governs:' field in agent spec. "
+            "Cannot verify grounding in MANIFESTO.md."
         )
 
     if unverifiable:
@@ -156,10 +155,14 @@ def assess_agent_risk(
     # Green: strong citation intensity AND high coverage
     if axiom_cites > cite_threshold_high:
         if test_coverage is None or test_coverage > coverage_high:
+            coverage_msg = (
+                "High test coverage."
+                if test_coverage and test_coverage > coverage_high
+                else "No test data available."
+            )
             return (
                 "green",
-                f"Strong axiom grounding ({axiom_cites} cite(s), {cite_intensity:.1%} intensity). "
-                f"{'High test coverage.' if test_coverage and test_coverage > coverage_high else 'No test data available.'}"
+                f"Strong axiom grounding ({axiom_cites} cite(s), {cite_intensity:.1%} intensity). {coverage_msg}"
             )
 
     # Red: weak citation intensity AND low coverage

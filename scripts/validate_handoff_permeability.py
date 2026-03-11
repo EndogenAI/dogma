@@ -57,10 +57,9 @@ import argparse
 import json
 import re
 import sys
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Callable, Optional
-
 
 # ===========================================================================
 # Signal Detection Definitions
@@ -122,7 +121,8 @@ SIGNAL_PATTERNS = {
     ),
     "axiom_citation": SignalPattern(
         name="axiom_citation",
-        regex=r"(MANIFESTO\.md|Endogenous-First|Algorithms Before Tokens|Local Compute-First|Documentation-First|Minimal Posture|Programmatic-First)",
+        regex=r"(MANIFESTO\.md|Endogenous-First|Algorithms Before Tokens|Local Compute-First|"
+        r"Documentation-First|Minimal Posture|Programmatic-First)",
         description="Explicit mention of foundational MANIFESTO.md axioms or principles",
         specificity_check=None,
     ),
@@ -134,7 +134,11 @@ SIGNAL_PATTERNS = {
     ),
     "verdict": SignalPattern(
         name="verdict",
-        regex=r"(?:(?:^|\n\n)\s*(?:APPROVED|REQUEST CHANGES|approved|request changes)(?:\s|$))|(?:(?:\*{0,2}Status\*{0,2}|\*{0,2}Verdict\*{0,2}|\*{0,2}Decision\*{0,2})\s*:\s*(?:APPROVED|REQUEST CHANGES|approved|request changes))",
+        regex=(
+            r"(?:(?:^|\n\n)\s*(?:APPROVED|REQUEST CHANGES|approved|request changes)(?:\s|$))|(?:"
+            r"{2}Status\*{0,2}|\*{0,2}Verdict\*{0,2}|\*{0,2}Decision\*{0,2})\s*:\s*(?:APPROVED|"
+            r"REQUEST CHANGES|approved|request changes))"
+        ),
         description="Explicit verdict from review gate (for reviewer-to-archivist membrane)",
         specificity_check=None,
     ),
@@ -337,25 +341,25 @@ def generate_permeability_report(
     spec = MEMBRANE_SPECS[membrane_type]
 
     lines = [
-        f"# Handoff Permeability Validation Report",
-        f"",
+        "# Handoff Permeability Validation Report",
+        "",
         f"**Membrane**: {spec.name} ({membrane_type})",
         f"**Status**: `{status.upper()}`",
-        f"",
-        f"## Summary",
-        f"",
-        f"| Metric | Value |",
-        f"|--------|-------|",
+        "",
+        "## Summary",
+        "",
+        "| Metric | Value |",
+        "|--------|-------|",
         f"| Required signals | {len(spec.required_signals)} |",
         f"| Signals found | {len(found_signals)} |",
         f"| Signals missing | {len(missing_signals)} |",
-        f"",
+        "",
     ]
 
     if found_signals:
         lines.extend([
-            f"## ✅ Preserved Signals",
-            f"",
+            "## ✅ Preserved Signals",
+            "",
         ])
         for signal_type in found_signals:
             count = signal_counts.get(signal_type, 0)
@@ -366,8 +370,8 @@ def generate_permeability_report(
 
     if missing_signals:
         lines.extend([
-            f"## ❌ Missing Signals (Required)",
-            f"",
+            "## ❌ Missing Signals (Required)",
+            "",
         ])
         for signal_type in missing_signals:
             pattern_spec = SIGNAL_PATTERNS.get(signal_type)
@@ -377,16 +381,16 @@ def generate_permeability_report(
 
     if warnings:
         lines.extend([
-            f"## ⚠️ Warnings",
-            f"",
+            "## ⚠️ Warnings",
+            "",
         ])
         for warning in warnings:
             lines.append(f"- {warning}")
         lines.append("")
 
     lines.extend([
-        f"## Interpretation",
-        f"",
+        "## Interpretation",
+        "",
     ])
 
     if status == "pass":
@@ -404,13 +408,13 @@ def generate_permeability_report(
 
     lines.append("")
     lines.extend([
-        f"## Reference: AGENTS.md Signal Preservation Rules",
-        f"",
-        f"From [`AGENTS.md`](../../AGENTS.md) § Agent Communication → Focus-on-Descent / Compression-on-Ascent:",
-        f"",
-        f"> When compressing findings, preserve all labeled `**Canonical example**:` and `**Anti-pattern**:` ",
-        f"> instances verbatim — compress surrounding context, not concrete illustrations. Retain at least 2 ",
-        f"> explicit MANIFESTO.md axiom citations (by name + section reference) as anchors.",
+        "## Reference: AGENTS.md Signal Preservation Rules",
+        "",
+        "From [`AGENTS.md`](../../AGENTS.md) § Agent Communication → Focus-on-Descent / Compression-on-Ascent:",
+        "",
+        "> When compressing findings, preserve all labeled `**Canonical example**:` and `**Anti-pattern**:` ",
+        "> instances verbatim — compress surrounding context, not concrete illustrations. Retain at least 2 ",
+        "> explicit MANIFESTO.md axiom citations (by name + section reference) as anchors.",
     ])
 
     return "\n".join(lines)

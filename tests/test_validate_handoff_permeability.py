@@ -7,13 +7,12 @@ Anti-patterns, Axiom citations, Source URLs) are preserved across delegations.
 """
 
 import pytest
+
 from scripts.validate_handoff_permeability import (
-    validate_handoff_permeability,
-    ValidationResult,
     MEMBRANE_SPECS,
     SIGNAL_PATTERNS,
+    validate_handoff_permeability,
 )
-
 
 # ===========================================================================
 # Fixtures: Sample Handoff Text
@@ -36,7 +35,7 @@ the Compression-on-Ascent rule and uses 10x more context than compressed handoff
 
 Key findings summary:
 - 12 atomic principles identified
-- 3 cross-sectoral convergences detected  
+- 3 cross-sectoral convergences detected
 - 8 recommendation gaps identified
 
 See AGENTS.md § Focus-on-Descent / Compression-on-Ascent for the governing constraints.
