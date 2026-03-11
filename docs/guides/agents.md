@@ -292,13 +292,27 @@ session behaviour         ← enacted output
 
 Every `SKILL.md` body **must reference [`AGENTS.md`](../../AGENTS.md) as its governing constraint**. This anchors skills to the encoding inheritance chain and makes fidelity auditable via CI. The governing axiom citation must appear in the first substantive section of the body.
 
-### Existing Skills
+### Tier 1/T2 Agent Skills Status
 
-| Skill | Description |
-|-------|-------------|
-| [`session-management`](../../.github/skills/session-management/SKILL.md) | Full session lifecycle: scratchpad init/close, encoding checkpoints, session-start/end procedure |
-| [`deep-research-sprint`](../../.github/skills/deep-research-sprint/SKILL.md) | Research sprint orchestration: Scout → Synthesizer → Reviewer → Archivist pipeline |
-| [`conventional-commit`](../../.github/skills/conventional-commit/SKILL.md) | Conventional Commits format + endogenic commit discipline for this repository |
+All agent skills are committed, pass CI validation (`validate_agent_files.py --skills`), and are required for Foundation and Wave 1 milestone agent execution.
+
+| Skill | Tier | Purpose | Status | CI Validation |
+|-------|------|---------|--------|---------------|
+| [`session-management`](../../.github/skills/session-management/SKILL.md) | Foundation | Full session lifecycle: scratchpad init/close, encoding checkpoints, session-start/end procedure | ✅ Active | PASS |
+| [`conventional-commit`](../../.github/skills/conventional-commit/SKILL.md) | Foundation | Conventional Commits format + endogenic commit discipline for this repository | ✅ Active | PASS |
+| [`deep-research-sprint`](../../.github/skills/deep-research-sprint/SKILL.md) | Foundation | Research sprint orchestration: Scout → Synthesizer → Reviewer → Archivist pipeline | ✅ Active | PASS |
+| [`delegation-routing`](../../.github/skills/delegation-routing/SKILL.md) | Foundation | Delegation Decision Gate routing table for executive-tier agents | ✅ Active | PASS |
+| [`phase-gate-sequence`](../../.github/skills/phase-gate-sequence/SKILL.md) | Foundation | Mandatory 6-step inter-phase checkpoint sequence | ✅ Active | PASS |
+| [`validate-before-commit`](../../.github/skills/validate-before-commit/SKILL.md) | Foundation | Pre-commit guardrail sequence: lint, format, tests, compliance | ✅ Active | PASS |
+| [`agent-file-authoring`](../../.github/skills/agent-file-authoring/SKILL.md) | Wave 1 | Authoring conventions for `.agent.md` role files (frontmatter, sections, CI validation) | ✅ Active | PASS |
+| [`skill-authoring`](../../.github/skills/skill-authoring/SKILL.md) | Wave 1 | Authoring conventions for `SKILL.md` reusable domain-specific skills | ✅ Active | PASS |
+| [`research-epic-planning`](../../.github/skills/research-epic-planning/SKILL.md) | Wave 1 | Orchestrates full research epic planning: scope, dependency mapping, phased workplan | ✅ Active | PASS |
+| [`pr-review-reply`](../../.github/skills/pr-review-reply/SKILL.md) | Wave 1 | Post-review response loop: reply to inline PR comments, then resolve threads | ✅ Active | PASS |
+| [`source-caching`](../../.github/skills/source-caching/SKILL.md) | Wave 1 | Fetch-before-act protocol: check cache before fetching, distill external pages as Markdown | ✅ Active | PASS |
+| [`workplan-scaffold`](../../.github/skills/workplan-scaffold/SKILL.md) | Wave 1 | Pre-planning protocol: create workplan doc before multi-phase session, scaffold with script | ✅ Active | PASS |
+| [`session-retrospective`](../../.github/skills/session-retrospective/SKILL.md) | Wave 1 | Post-phase insight harvest: articulate lessons, encode into AGENTS.md/guides/skills | ✅ Active | PASS |
+
+**Summary**: All 13 Tier 1/T2 skills are committed, active, and pass CI validation. All Foundation and Wave 1 agent dependencies are available. No T1/T2 skills are missing or blocked.
 
 ### CI Validation
 
