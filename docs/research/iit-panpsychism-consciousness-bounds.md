@@ -209,7 +209,7 @@ What would it take for EndogenAI to be conscious under IIT?
 
 ---
 
-## 6. Consciousness-Excluding Design Implications
+## 5. Consciousness-Excluding Design Implications
 
 What architectural properties actively prevent consciousness?
 
@@ -223,7 +223,7 @@ These are *not* limitations; they are architectural features that maintain the p
 
 ---
 
-## 7. Design Implications Brief
+## 6. Design Implications Brief
 
 1. **Do not attempt to make the system conscious**: Consciousness in a non-human intelligence would create a moral patient (something that can suffer) for which we have uncertain obligations. Modular, rule-based design sidesteps this problem.
 
@@ -237,7 +237,7 @@ These are *not* limitations; they are architectural features that maintain the p
 
 ---
 
-## 8. Sources
+## 7. Sources
 
 ### Primary Sources
 
@@ -280,7 +280,7 @@ These are *not* limitations; they are architectural features that maintain the p
 
 ---
 
-## 7. Related Research & Future Work
+## 8. Related Research & Future Work
 
 - **MANIFESTO.md § Augmentive Partnership** — foundational principle for human-system co-cognition design
 - **`docs/research/endogenic-design-paper.md`** — design framework that benefits from consciousness ≠ intelligence orthogonality
