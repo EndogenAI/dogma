@@ -404,6 +404,56 @@ Any change to an existing agent should be reviewed by a peer before committing. 
 
 ---
 
+## Fleet Behavioral Testing: Evolutionary Pressure Protocol
+
+**Essence**: The agent fleet must maintain encoding fidelity — that is, project values and constraints must flow through the system without degradation. As the fleet grows and receives more delegations, drift can accumulate. Evolutionary pressure tests detect drift before it becomes unrecoverable behavior.
+
+### Detection Framework
+
+The **Value Fidelity Test Taxonomy** (from [`AGENTS.md`](../../AGENTS.md#value-fidelity-test-taxonomy)) defines four encoding layers and how to test them:
+
+| Signal Type | Encoding Layer | Test Method | Red Flag (Signal Loss) | Recovery |
+|-------------|----------------|------------|----------------------|----------|
+| MANIFESTO.md axiom | T1 (verbal, principles) | Citation density: axiom appears ≥2 times per 1000-word doc | Axiom mentioned <2 times, or citation has no §reference | Add explicit citations back to axiom (name + section) |
+| AGENTS.md constraint | T2 (text constraints, decision gates) | Keyword match: constraint name appears in agent body or skill body | Constraint not cited in implementing code/agent (drift) | Tag constraint location in AGENTS.md, cross-ref from agent/skill |
+| Agent posture (tool scope) | T3 (static linting, pre-commit) | `validate_agent_files.py` check: tools field matches posture category (readonly/creator/full) | Agent tools mismatch posture (e.g., terminal access marked "readonly") | Fix tools field; run validator before commit |
+| Session behavior encoding | T4 (runtime gates, policy enforcement) | Deputy/governor check: pre-commit gate or runtime wrapper enforces policy dynamically | Governor policy ignored (e.g., heredoc written despite pre-commit gate) | Audit recent `git log` for policy violations; escalate to Executive Scripter |
+
+### Running a Behavioral Audit
+
+When an agent's output appears inconsistent or when a multi-session initiative concludes, run an evolutionary pressure audit:
+
+1. **T1 check** — Read all agent-generated documentation and research outputs from the last 5 sessions. Count: How many times do MANIFESTO.md axioms appear by name? Target: ≥2 citations per 1000 words. Flag if below target.
+   
+2. **T2 check** — Sample 3 agent files that executed in the last session. Search: Do they reference `AGENTS.md` constraints by name (not paraphrase)? Search: Do they mention the specific decision gates that apply to them? Flag if zero citations.
+
+3. **T3 check** — Run `uv run python scripts/validate_agent_files.py --all` and inspect failures. Each failure is a posture-layer signal loss. Fix before next agent deployment.
+
+4. **T4 check** — Run `git log --oneline --all -50` and look for commits that violate a documented policy (e.g., terminal file I/O redirection, heredoc writes, uv sync skipped). One violation every 50 commits is within tolerance; two or more suggests a governor is offline or being bypassed.
+
+### Example Scenario
+
+**Symptom**: A sub-agent's output has lost citation depth. Its research findings reference sources but not MANIFESTO.md axioms.
+
+**Diagnosis**: T1 check shows axiom cite count = 0.5 per 1000 words (target 2.0). The agent was likely instantiated without giving it a `docs/research/` context file, so it had zero access to how axioms shape research methodology.
+
+**Recovery**: 
+- Add the governing axiom to the agent's Beliefs & Context section (`.agent.md` or session prompt).
+- Re-run the agent on a sample output.
+- Audit its next 3 delegations for cite density.
+- If cite density improves, the issue was context starvation. If it persists, the agent may need an explicit "cite MANIFESTO axioms" instruction in its task brief.
+
+### Prevention: Spot Checks During Session
+
+Ask these questions at every phase gate:
+
+1. **Axiom alignment**: Did this phase produce output that names and cites MANIFESTO.md axioms by section? (If no, note as a gap for session summary retrospective.)
+2. **Constraint fidelity**: Did the agent read the relevant AGENTS.md section or sub-agent documentation before acting? (If unsure, check the agent's output against its Beliefs & Context section.)
+3. **Tool posture match**: Did the agent only use tools within its defined posture? (Run `validate_agent_files.py` on any new agent files.)
+4. **Policy compliance**: Did the agent follow gate policies (no heredocs, check-before-fetch, etc.)? (Quick spot-check: `git log --oneline -5 | grep "does not verify policy"`.)
+
+---
+
 ## Fleet Design Patterns
 
 Eight patterns distilled from production multi-agent systems research. For the full academic treatment (Context / Forces / Solution / Consequences / Evidence), see [`docs/research/agent-fleet-design-patterns.md`](../../docs/research/agent-fleet-design-patterns.md).
