@@ -8,7 +8,7 @@ on:
         required: false
         default: ''
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [review_requested]
 
 jobs:
   audit-provenance:
