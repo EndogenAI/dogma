@@ -45,25 +45,21 @@ name: Test Agent
 description: A minimal passing agent file.
 ---
 
-## Endogenous Sources \u2014 Read Before Acting
+## Beliefs & Context — Read Before Acting
 
-<context>
-
-1. [`AGENTS.md`](../../AGENTS.md) \u2014 guiding constraints.
-
-</context>
+1. [`AGENTS.md`](../../AGENTS.md) — guiding constraints.
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 Do some work.
 
 ---
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
-- All tasks done.
+All tasks done.
 """
 
 
@@ -188,35 +184,35 @@ class TestValidateFailureCases:
 
     @pytest.mark.io
     def test_missing_endogenous_sources_section(self, tmp_path):
-        content = "---\nname: A\ndescription: B\n---\n\n## Workflow\n\n## Completion Criteria\n\nReferences AGENTS.md."
+        content = "---\nname: A\ndescription: B\n---\n\n## Workflow & Intentions\n\n## Desired Outcomes & Acceptance\n\nReferences AGENTS.md."
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
         assert passed is False
-        assert any("Endogenous Sources" in msg for msg in failures)
+        assert any("Beliefs & Context" in msg for msg in failures)
 
     @pytest.mark.io
     def test_missing_action_section(self, tmp_path):
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Endogenous Sources\n\n## Completion Criteria\n\nReferences AGENTS.md."
+            "## Beliefs & Context\n\n## Desired Outcomes & Acceptance\n\nReferences AGENTS.md."
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
         assert passed is False
-        assert any("Action section" in msg for msg in failures)
+        assert any("Workflow & Intentions" in msg for msg in failures)
 
     @pytest.mark.io
     def test_missing_quality_gate_section(self, tmp_path):
-        content = "---\nname: A\ndescription: B\n---\n\n## Endogenous Sources\n\n## Workflow\n\nReferences AGENTS.md."
+        content = "---\nname: A\ndescription: B\n---\n\n## Beliefs & Context\n\n## Workflow & Intentions\n\nReferences AGENTS.md."
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
         assert passed is False
-        assert any("Quality-gate" in msg for msg in failures)
+        assert any("Desired Outcomes & Acceptance" in msg for msg in failures)
 
     @pytest.mark.io
     def test_missing_cross_reference(self, tmp_path):
         content = (
-            "---\nname: A\ndescription: B\n---\n\n## Endogenous Sources\n\n## Workflow\n\n## Completion Criteria\n"
+            "---\nname: A\ndescription: B\n---\n\n## Beliefs & Context\n\n## Workflow & Intentions\n\n## Desired Outcomes & Acceptance\n"
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
@@ -235,10 +231,10 @@ class TestHeredocDetection:
         """An agent file that instructs using heredoc must be flagged."""
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Endogenous Sources\n\n## Workflow\n\n"
+            "## Beliefs & Context\n\n## Workflow & Intentions\n\n"
             "Run: `cat >> output.md << 'EOF'`\n"
             "write stuff\nEOF\n\n"
-            "## Completion Criteria\n\nReferences AGENTS.md."
+            "## Desired Outcomes & Acceptance\n\nReferences AGENTS.md."
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
@@ -250,10 +246,10 @@ class TestHeredocDetection:
         """A guardrail saying 'never use cat >> ... << EOF' must NOT be flagged."""
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Endogenous Sources\n\n## Workflow\n\n"
-            "## Completion Criteria\n\nReferences AGENTS.md.\n\n"
+            "## Beliefs & Context\n\n## Workflow & Intentions\n\n"
+            "## Desired Outcomes & Acceptance\n\nReferences AGENTS.md.\n\n"
             "## Guardrails\n\n"
-            "- **Never use heredocs** (`cat >> file << 'EOF'`) \u2014 use built-in file tools.\n"
+            "- **Never use heredocs** (`cat >> file << 'EOF'`) — use built-in file tools.\n"
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
@@ -264,10 +260,10 @@ class TestHeredocDetection:
         """Line with 'avoid' + heredoc pattern must NOT be flagged."""
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Endogenous Sources\n\n## Workflow\n\n"
-            "## Completion Criteria\n\nReferences AGENTS.md.\n\n"
+            "## Beliefs & Context\n\n## Workflow & Intentions\n\n"
+            "## Desired Outcomes & Acceptance\n\nReferences AGENTS.md.\n\n"
             "## Guardrails\n\n"
-            "Avoid `cat >> file << 'EOF'` \u2014 it corrupts Markdown.\n"
+            "Avoid `cat >> file << 'EOF'` — it corrupts Markdown.\n"
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
@@ -284,8 +280,8 @@ class TestActionSectionVariants:
     def test_checklist_satisfies_action_section(self, tmp_path):
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Endogenous Sources\n\n## Validation Checklist\n\n"
-            "## Completion Criteria\n\nReferences AGENTS.md."
+            "## Beliefs & Context\n\n## Validation Checklist\n\n"
+            "## Desired Outcomes & Acceptance\n\nReferences AGENTS.md."
         )
         f = _make_agent_file(tmp_path, content)
         passed, _ = vaf.validate(f)
@@ -295,8 +291,8 @@ class TestActionSectionVariants:
     def test_scope_satisfies_action_section(self, tmp_path):
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Endogenous Sources\n\n## Threat Model Scope\n\n"
-            "## Completion Criteria\n\nReferences AGENTS.md."
+            "## Beliefs & Context\n\n## Threat Model Scope\n\n"
+            "## Desired Outcomes & Acceptance\n\nReferences AGENTS.md."
         )
         f = _make_agent_file(tmp_path, content)
         passed, _ = vaf.validate(f)
@@ -306,8 +302,8 @@ class TestActionSectionVariants:
     def test_playbook_satisfies_action_section(self, tmp_path):
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Endogenous Sources\n\n## Metrics Playbook\n\n"
-            "## Completion Criteria\n\nReferences AGENTS.md."
+            "## Beliefs & Context\n\n## Metrics Playbook\n\n"
+            "## Desired Outcomes & Acceptance\n\nReferences AGENTS.md."
         )
         f = _make_agent_file(tmp_path, content)
         passed, _ = vaf.validate(f)
@@ -333,7 +329,7 @@ class TestCLI:
 
     @pytest.mark.io
     def test_single_file_fail_exit_1(self, tmp_path):
-        bad_content = "---\nname: A\ndescription: B\n---\n\n## Workflow\n\n## Completion Criteria\n"
+        bad_content = "---\nname: A\ndescription: B\n---\n\n## Workflow & Intentions\n\n## Desired Outcomes & Acceptance\n"
         f = _make_agent_file(tmp_path, bad_content)
         result = subprocess.run(
             [sys.executable, "scripts/validate_agent_files.py", str(f)],
@@ -584,10 +580,10 @@ class TestFetchBeforeCheckAndPhaseNReview:
         """A line prohibiting 'Fetch-before-check' must NOT be flagged."""
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Endogenous Sources\n\n## Workflow\n\n"
-            "## Completion Criteria\n\nReferences AGENTS.md.\n\n"
+            "## Beliefs & Context\n\n## Workflow & Intentions\n\n"
+            "## Desired Outcomes & Acceptance\n\nReferences AGENTS.md.\n\n"
             "## Guardrails\n\n"
-            "- Never label a guardrail `Fetch-before-check` \u2014 correct is `Check-before-fetch`.\n"
+            "- Never label a guardrail `Fetch-before-check` — correct is `Check-before-fetch`.\n"
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
@@ -598,8 +594,8 @@ class TestFetchBeforeCheckAndPhaseNReview:
         """An agent file with '## Phase N Review Output' heading is flagged."""
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Endogenous Sources\n\n## Workflow\n\n"
-            "## Completion Criteria\n\nReferences AGENTS.md.\n\n"
+            "## Beliefs & Context\n\n## Workflow & Intentions\n\n"
+            "## Desired Outcomes & Acceptance\n\nReferences AGENTS.md.\n\n"
             "## Phase N Review Output\n\nReview notes here.\n"
         )
         f = _make_agent_file(tmp_path, content)
@@ -628,8 +624,8 @@ class TestFetchBeforeCheckAndPhaseNReview:
         """A line using grep to *detect* 'Fetch-before-check' must NOT be flagged."""
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Endogenous Sources\n\n## Workflow\n\n"
-            "## Completion Criteria\n\nReferences AGENTS.md.\n\n"
+            "## Beliefs & Context\n\n## Workflow & Intentions\n\n"
+            "## Desired Outcomes & Acceptance\n\nReferences AGENTS.md.\n\n"
             "## Guardrails\n\n"
             '- Run: `grep -r "Fetch-before-check" .github/` to detect violations.\n'
         )
@@ -642,9 +638,9 @@ class TestFetchBeforeCheckAndPhaseNReview:
         """Inline prose mentioning '## Phase N Review Output' (not an actual heading) must NOT be flagged."""
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Endogenous Sources\n\n## Workflow\n\n"
+            "## Beliefs & Context\n\n## Workflow & Intentions\n\n"
             "Do not use `## Phase N Review Output` — use `## Review Output` instead.\n\n"
-            "## Completion Criteria\n\nReferences AGENTS.md."
+            "## Desired Outcomes & Acceptance\n\nReferences AGENTS.md."
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
@@ -729,4 +725,95 @@ class TestCoreLayerImpermeability:
         errors = vaf.check_core_layer_impermeability(tmp_path)
         assert len(errors) > 0, "Should detect Local Compute-First override"
         assert any("Local Compute-First" in e for e in errors)
+
+
+# ---------------------------------------------------------------------------
+# Core Layer Impermeability — Citation Order in Agent Files
+# ---------------------------------------------------------------------------
+
+
+class TestCitationOrderImpermeability:
+    def test_extract_citations_from_beliefs_context(self):
+        """Extract citations from Beliefs & Context section."""
+        content = (
+            "---\nname: A\ndescription: B\n---\n\n"
+            "## Beliefs & Context\n\n"
+            "Read [`MANIFESTO.md`](../../MANIFESTO.md) first.\n"
+            "Then [`AGENTS.md`](../../AGENTS.md).\n"
+            "Finally [`client-values.yml`](client-values.yml).\n\n"
+            "## Workflow\n\nDo work."
+        )
+        citations = vaf.extract_citations_from_section(content, ["beliefs", "context"])
+        assert citations == ["MANIFESTO.md", "AGENTS.md", "client-values.yml"]
+
+    def test_extract_citations_plain_reference(self):
+        """Extract plain .md references without Markdown links."""
+        content = (
+            "---\nname: A\ndescription: B\n---\n\n"
+            "## Beliefs & Context\n\n"
+            "See MANIFESTO.md and AGENTS.md.\n\n"
+            "## Workflow\n\nDo work."
+        )
+        citations = vaf.extract_citations_from_section(content, ["beliefs", "context"])
+        assert "MANIFESTO.md" in citations
+        assert "AGENTS.md" in citations
+
+    def test_citation_priority_correct_order_passes(self):
+        """client-values.yml after MANIFESTO/AGENTS passes."""
+        citations = ["MANIFESTO.md", "AGENTS.md", "client-values.yml"]
+        errors = vaf.check_citation_priority(citations)
+        assert errors == []
+
+    def test_citation_priority_client_first_fails(self):
+        """client-values.yml before MANIFESTO/AGENTS fails."""
+        citations = ["client-values.yml", "MANIFESTO.md", "AGENTS.md"]
+        errors = vaf.check_citation_priority(citations)
+        assert len(errors) > 0
+        assert any("Core Layer Impermeability" in e for e in errors)
+
+    def test_citation_priority_client_instead_of_manifesto_fails(self):
+        """client-values.yml cited instead of MANIFESTO.md fails."""
+        citations = ["client-values.yml", "AGENTS.md"]
+        errors = vaf.check_citation_priority(citations)
+        assert len(errors) > 0
+        assert any("Core Layer Impermeability" in e for e in errors)
+
+    def test_citation_priority_no_client_values_passes(self):
+        """No client-values.yml in citations passes."""
+        citations = ["MANIFESTO.md", "AGENTS.md"]
+        errors = vaf.check_citation_priority(citations)
+        assert errors == []
+
+    @pytest.mark.io
+    def test_agent_file_citation_order_violation(self, tmp_path):
+        """Full validate() detects citation order violation in Beliefs & Context."""
+        content = (
+            "---\nname: Test Agent\ndescription: Violates priority.\n---\n\n"
+            "## Beliefs & Context\n\n"
+            "Read [`client-values.yml`](client-values.yml) first.\n"
+            "Then [`MANIFESTO.md`](../../MANIFESTO.md).\n\n"
+            "## Workflow\n\nDo work.\n\n"
+            "## Completion Criteria\n\nAll done."
+        )
+        f = _make_agent_file(tmp_path, content)
+        passed, failures = vaf.validate(f)
+        assert passed is False
+        assert any("Core Layer Impermeability" in msg for msg in failures)
+
+    @pytest.mark.io
+    def test_agent_file_citation_order_correct(self, tmp_path):
+        """Correct citation order in Beliefs & Context passes."""
+        content = (
+            "---\nname: Test Agent\ndescription: Correct priority.\n---\n\n"
+            "## Beliefs & Context\n\n"
+            "Read [`MANIFESTO.md`](../../MANIFESTO.md) first.\n"
+            "Then [`AGENTS.md`](../../AGENTS.md).\n"
+            "Then [`client-values.yml`](client-values.yml).\n\n"
+            "## Workflow\n\nDo work.\n\n"
+            "## Completion Criteria\n\nAll done."
+        )
+        f = _make_agent_file(tmp_path, content)
+        passed, failures = vaf.validate(f)
+        assert passed is True, f"Expected pass but got: {failures}"
+
 
