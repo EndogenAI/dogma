@@ -336,3 +336,29 @@ The 32 edges of the nested-cube topology (where two faces share a border) have n
 ### Algorithms Before Tokens — The Governing Argument
 
 The decision to treat vertices as junction specifications rather than substrates is the Algorithms Before Tokens axiom enacted: a junction spec is algorithmically validatable via a `--junctions` flag in `scripts/validate_agent_files.py`. An inflated vertex substrate requires human inspection of a new artifact class. The 0D constraint approach delivers the full operational benefit — enforced multi-citation ordering at convergence points — at the cost of a single script extension rather than 16 new substrate files.
+
+---
+
+## 6. Gap Analysis & Follow-Up Research
+
+The Phase 5 research recommendations audit identified 15 follow-up research topics to strengthen and operationalize this framework. See [gap-analysis-bubble-clusters.md](gap-analysis-bubble-clusters.md) for detailed validation, gap-analysis findings, and prioritized recommendations.
+
+**Key Gaps Identified**:
+
+- **Temporal Stability Tier Integration**: The bubble-cluster model is purely topological; the temporal dimension (stability tiers, mutation rates, back-propagation cycles) is addressed in parallel by [dogma-neuroplasticity.md](dogma-neuroplasticity.md). Joint specification clarifies that substrates must satisfy both topological and temporal coherence constraints.
+
+- **Deployment-Layer Extended Topologies**: The three-nested-cubes model is correct for single-principal EndogenAI. When adopted by external teams, a sixth layer (Deployment Layer) is inserted, creating new junctions and membranes. [external-value-architecture.md](external-value-architecture.md) specifies the six-layer architecture; topological extension remains future work.
+
+- **Programmatic Enforcement of Membrane Permeability** (Pattern B1): Boundary specifications exist in prose form (AGENTS.md); no CI script validates adherence. [scripts/validate_handoff_permeability.py](../../scripts/validate_handoff_permeability.py) design complete; implementation deferred to Phase 2.
+
+- **Provenance Audit Operationalization** (Pattern B4): [scripts/audit_provenance.py](../../scripts/audit_provenance.py) exists but is not in CI pipeline. Integration as a weekly or per-commit lint job remains deferred to Phase 2 automation sprint.
+
+- **Neuroanatomical Mapping Rigor** (H2): The mapping from neuroanatomy to substrate permeability is analogical, relying on Allen Institute data as illustrative grounding but not primary source. Strengthening requires direct homology rather than analogy-from-analogy.
+
+**Forward References to Phase 1–4 Research**:
+
+- See [dogma-neuroplasticity.md](dogma-neuroplasticity.md) for temporal stability integration and back-propagation protocol
+- See [external-value-architecture.md](external-value-architecture.md) for deployment-layer topology specifications
+- See [values-encoding.md](values-encoding.md) for the complementary inheritance-chain model
+- See [AGENTS.md](../../AGENTS.md) for Focus-on-Descent / Compression-on-Ascent boundary specifications
+- See [security-threat-model.md](../../docs/research/security-threat-model.md) for related threat surface analysis

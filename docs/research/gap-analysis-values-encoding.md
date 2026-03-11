@@ -142,6 +142,30 @@ Topics to be seeded as new issues for the Corpus Research Roadmap (#160):
 
 ---
 
+## Sources
+
+### Primary Papers Analyzed
+
+- [values-encoding.md](values-encoding.md)
+
+### Phase 1–4 Corpus Documents Referenced
+
+- [dogma-neuroplasticity.md](dogma-neuroplasticity.md) — Back-Propagation Cycle and Stability Tiers; H2 Back-Propagation Protocol
+- [bubble-clusters-substrate.md](bubble-clusters-substrate.md) — Topological Dimension and Bubble-Cluster Model
+- [epigenetic-tagging.md](epigenetic-tagging.md) — Epigenetic Regulation and Context-Sensitive Amplification
+- [external-value-architecture.md](external-value-architecture.md) — Deployment-Layer Extension to Six-Layer Inheritance Chain
+- [shifting-constraints-from-tokens.md](shifting-constraints-from-tokens.md) — Enforcement-Tier Stack and Programmatic Constraints
+
+### Secondary References
+
+- Crick, F. (1970). "Central Dogma of Molecular Biology." *Nature*, 227(5258), 561–563.
+- Shannon, C. E. (1948). "A Mathematical Theory of Communication." *Bell System Technical Journal*, 27(3), 379–423.
+- Derrida, J. (1967). *De la grammatologie*. Éditions de Minuit. [*Of Grammatology*, trans. Gayatri Spivak, 1976]
+- Hamming, R. W. (1950). "Error Detecting and Error Correcting Codes." *Bell System Technical Journal*, 29(2), 147–160.
+- Rosch, E. (1975). "Cognitive Reference Points." *Cognitive Psychology*, 7(4), 532–547.
+
+---
+
 ### Research Topic 2: Hermeneutics Implementation Completion
 
 **Title**: Finish MANIFESTO.md Interpretation Framework — Add Examples and Test Coverage

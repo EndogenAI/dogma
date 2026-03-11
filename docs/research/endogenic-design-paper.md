@@ -479,6 +479,30 @@ The encode-before-act discipline is the mechanism by which an AI agent fleet mai
 coherence, contributes to rather than consuming its knowledge substrate, and produces outputs
 whose value compounds across sessions rather than resetting at each session boundary.
 
+## 7. Gap Analysis & Follow-Up Research
+
+The Phase 5 research recommendations audit identified 15 follow-up research topics to strengthen and operationalize this framework. See [gap-analysis-endogenic-design.md](gap-analysis-endogenic-design.md) for detailed validation, gap-analysis findings, and prioritized recommendations.
+
+**Key Gaps Identified**:
+
+- **Deployment-Layer Extension**: The five-layer encoding chain assumes single-principal ownership. Multi-principal scenarios (external team adoption, product deployment) require extension to six layers with explicit conflict-resolution rules. [external-value-architecture.md](external-value-architecture.md) provides the formal specification; integration into operational policy remains future work.
+
+- **Epigenetic Regulation**: Different task contexts should amplify different axioms (Research → Endogenous-First; commit → Documentation-First). Context-sensitive amplification is specified in [epigenetic-tagging.md](epigenetic-tagging.md) (Phase 1 implementation); full operationalization deferred to Phase 2.
+
+- **Programmatic Governance Tier Stack**: The paper cites validate_synthesis.py but does not articulate the full enforcement-tier hierarchy (T1–T5). [shifting-constraints-from-tokens.md](shifting-constraints-from-tokens.md) formalizes this stack; integration into methodology design guidance remains future work.
+
+- **Security Threat Model**: Agent-driven workflows introduce new threat surfaces (fetch-source SSRF, prompt injection, session context credential exposure). These are operational security concerns requiring complementary governance. [security-threat-model.md](security-threat-model.md) provides formal threat catalog and mitigation strategies.
+
+- **Morphogenetic System Design Operationalization**: H2 (morphogenetic design) is grounded in Turing's morphogenesis and autopoietic theory but lacks explicit mapping to fleet emergence mechanisms. [dogma-neuroplasticity.md](dogma-neuroplasticity.md) provides the formal specification of the back-propagation cycle operationalizing the morphogenetic feedback loop.
+
+**Forward References to Phase 1–4 Research**:
+
+- See [external-value-architecture.md](external-value-architecture.md) for Deployment-Layer architecture specification and Supremacy constraints
+- See [epigenetic-tagging.md](epigenetic-tagging.md) for context-sensitive axiom amplification (OQ-VE-2)
+- See [dogma-neuroplasticity.md](dogma-neuroplasticity.md) for H2 Back-Propagation Protocol and morphogenetic operationalization
+- See [shifting-constraints-from-tokens.md](shifting-constraints-from-tokens.md) for enforcement-tier stack formalization
+- See [security-threat-model.md](security-threat-model.md) for comprehensive threat catalog and mitigation strategies
+
 ## References
 
 1. Bush, V. (1945). As We May Think. *The Atlantic Monthly*, 176(1), 101–108.

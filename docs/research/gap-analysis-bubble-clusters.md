@@ -205,3 +205,27 @@ Topics to be seeded as new issues for the Corpus Research Roadmap (#160):
 ## Path Forward
 
 The six research topics constitute the critical path for Phase 2 corpus work (post-gap-analysis). Topics 2–3 (validation script implementation and CI integration) are the highest-priority operationalization blockers. Topic 1 (complete topological audit) is prerequisite for Topics 2–3. Topics 4–6 provide empirical grounding and extension scenarios without blocking immediate adoption. Topic 4 (Laplace pressure validation) unblocks publication of H3 empirical claims.
+
+---
+
+## Sources
+
+### Primary Papers Analyzed
+
+- [bubble-clusters-substrate.md](bubble-clusters-substrate.md)
+
+### Phase 1–4 Corpus Documents Referenced
+
+- [dogma-neuroplasticity.md](dogma-neuroplasticity.md) — Temporal Stability Tier Integration; Back-Propagation Protocol
+- [external-value-architecture.md](external-value-architecture.md) — Deployment-Layer Extended Topologies
+- [values-encoding.md](values-encoding.md) — Inheritance-Chain Model and Biological-Homology Framework
+- [agent-fleet-design-patterns.md](agent-fleet-design-patterns.md) — membrane permeability and scout→synthesizer→reviewer→archivist boundary specifications
+- [AGENTS.md](../../AGENTS.md) — Membrane Permeability Specifications and Focus-on-Descent / Compression-on-Ascent Protocol
+
+### Secondary References
+
+- Allen Brain Atlas (Allen Institute for Brain Science) — Neuroanatomical connectivity mapping
+- Pariser, E. (2011). *The Filter Bubble: What the Internet Is Hiding from You*. Penguin Press.
+- Sunstein, C. R. (2009). *Republic.com 2.0*. Princeton University Press.
+- Plateau, J. A. F. (1873). *Statique expérimentale et théorique des liquides*. Ghent.
+- Laplace, P. S. (1805). *Mécanique céleste*, Book 10. (Surface tension formulation in context of fluid mechanics)

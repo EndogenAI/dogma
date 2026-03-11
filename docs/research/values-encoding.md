@@ -531,6 +531,32 @@ OQ-VE-1 ("Is the watermark-phrase approach sufficient, or does it only detect su
 
 ---
 
+## 7. Gap Analysis & Follow-Up Research
+
+The Phase 5 research recommendations audit identified 15 follow-up research topics to strengthen and operationalize this framework. See [gap-analysis-values-encoding.md](gap-analysis-values-encoding.md) for detailed validation, gap-analysis findings, and prioritized recommendations.
+
+**Key Gaps Identified**:
+
+- **Back-Propagation Cycle and Stability Tiers**: The inheritance-chain model describes top-down value propagation but does not address bottom-up feedback. How does session evidence feed back to substrate mutations, and what stability tiers govern mutation rates? [dogma-neuroplasticity.md](dogma-neuroplasticity.md) provides the formal specification.
+
+- **Topological Dimension — Bubble-Cluster Model**: The vertical inheritance-chain model is complemented by the spatial/topological dimension. [bubble-clusters-substrate.md](bubble-clusters-substrate.md) models substrates as discrete bubbles with active filtering membranes affecting value fidelity across boundaries.
+
+- **Epigenetic Regulation and Context-Sensitive Amplification**: Different axioms should be amplified for different task types. [epigenetic-tagging.md](epigenetic-tagging.md) specifies the task-type lookup table (Phase 1 operational); full threshold calibration deferred to Phase 2.
+
+- **Deployment-Layer Extension to Six-Layer Inheritance Chain**: The five-layer model assumes single-principal ownership. External adoption requires insertion of a Deployment Layer with explicit conflict-resolution rules. [external-value-architecture.md](external-value-architecture.md) provides formal specification.
+
+- **Enforcement-Tier Stack and Programmatic Constraints**: H3 claims programmatic encoding is immune to semantic drift but does not articulate the full enforcement-tier hierarchy (T1–T5). [shifting-constraints-from-tokens.md](shifting-constraints-from-tokens.md) formalizes the tier structure and arguments for programmatic governance.
+
+**Forward References to Phase 1–4 Research**:
+
+- See [dogma-neuroplasticity.md](dogma-neuroplasticity.md) for back-propagation protocol and stability-tier definitions
+- See [bubble-clusters-substrate.md](bubble-clusters-substrate.md) for topological dimension and membrane permeability model
+- See [epigenetic-tagging.md](epigenetic-tagging.md) for context-sensitive amplification (OQ-VE-2)
+- See [external-value-architecture.md](external-value-architecture.md) for six-layer inheritance chain and Supremacy constraints
+- See [shifting-constraints-from-tokens.md](shifting-constraints-from-tokens.md) for enforcement-tier stack formalization
+
+---
+
 ## Related
 
 - [bubble-clusters-substrate.md](bubble-clusters-substrate.md) (bubble-cluster topology — additive model extending §3 biological-homology framing)

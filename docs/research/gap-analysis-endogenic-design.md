@@ -212,3 +212,30 @@ Topics to be seeded as new issues for the Corpus Research Roadmap (#160):
 ## Path Forward
 
 These five research topics constitute the critical path for Phase 2 corpus work (post-gap-analysis). Topic 1 (external team case study) is the highest-priority blocker for C4 breadth claims. Topic 3 (H4 peer review) is the publication-readiness gate. The others strengthen the methodology without blocking publication but are important for long-term adoption viability.
+
+---
+
+## Sources
+
+### Primary Papers Analyzed
+
+- [endogenic-design-paper.md](endogenic-design-paper.md)
+
+### Phase 1–4 Corpus Documents Referenced
+
+- [external-value-architecture.md](external-value-architecture.md) — Deployment-Layer Extension and Supremacy constraints
+- [epigenetic-tagging.md](epigenetic-tagging.md) — Context-Sensitive Axiom Amplification (OQ-VE-2)
+- [shifting-constraints-from-tokens.md](shifting-constraints-from-tokens.md) — Programmatic Governance Tier Stack
+- [security-threat-model.md](security-threat-model.md) — Security Threat Surface for Agent-Driven Workflows
+- [dogma-neuroplasticity.md](dogma-neuroplasticity.md) — Morphogenetic System Design Operationalization (H2 Back-Propagation Protocol)
+- [agent-fleet-design-patterns.md](agent-fleet-design-patterns.md) — Four-Hypothesis Dependency Chain Validation
+- [methodology-review.md](methodology-review.md) — CS Design Lineage and Novelty Assessment
+
+### Secondary References
+
+- Knuth, D. E. (1984). Literate Programming. *The Computer Journal*, 27(2), 97–111.
+- Nygard, M. (2011). Documenting Architecture Decisions. Cognitect blog.
+- Martraire, C. (2019). *Living Documentation: Continuous Knowledge Sharing by Design*. Addison-Wesley.
+- Kauffman, S. A. (1993). *The Origins of Order: Self-Organization and Selection in Evolution*. Oxford University Press.
+- Turing, A. M. (1952). The Chemical Basis of Morphogenesis. *Philosophical Transactions of the Royal Society B*, 237(641), 37–72.
+- Maturana, H. R., & Varela, F. J. (1980). *Autopoiesis and Cognition: The Realization of the Living*. D. Reidel Publishing.
