@@ -514,7 +514,95 @@ Phase 4 addresses three cross-cutting foundational research topics that strength
 **Status**: ⬜ Not started
 
 ---
+## **Phase 7 — Values-Substrate Synthesis & Endogenic Design Alignment**
 
+### Overview
+
+Phase 7 synthesizes Phase 1–6 research into a unified conceptual framework. Issue #165 (Research — Synthesis of Values-Encoding and Bubble-Clusters; Informing Endogenic Design) combines values-encoding.md and bubble-clusters-substrate.md into a single coherent concept, assesses alignment with endogenic-design-paper.md, and evaluates support/challenge to MANIFESTO.md axioms.
+
+**Phase 7 depends on Phase 6 completion** (gap-analysis documents must inform synthesis decision).
+
+---
+
+#### Phase 7a: Synthesis & Framework Integration
+
+**Agent**: Executive Researcher  
+**Scope**: Synthesize values-encoding and bubble-clusters papers; assess endogenic design alignment; evaluate MANIFESTO.md consistency
+
+**Seed Questions** (from issue #165):
+1. How do values-encoding.md and bubble-clusters-substrate.md relate?
+2. Can and should they be synthesized into a single cohesive concept?
+3. How does this inform and enforce endogenic-design-paper.md?
+4. How do values-encoding, bubble-clusters, and endogenic design support or challenge MANIFESTO.md axioms?
+
+**Deliverables**:
+- [ ] `docs/research/values-substrate-relationship.md` (D4 format; relationship analysis + synthesis decision + dogma assessment)
+- [ ] If synthesis warranted: `docs/research/values-substrate-synthesis.md` (unified synthesis paper combining both inputs)
+- [ ] Dogma assessment: Section documenting MANIFESTO.md alignment + proposed amendments (if any)
+
+**Estimated effort**: 25–35 hours  
+**Status**: ⬜ Not started
+
+---
+
+#### Phase 7 Review — Review Gate ⬜
+
+**Agent**: Review  
+**Deliverables**: `## Phase 7 Review Output` in scratchpad; verdict: APPROVED  
+**Depends on**: Phase 7a deliverables committed  
+**Gate**: Sprint Wrapup begins only after Phase 7 Review returns APPROVED  
+**Status**: ⬜ Not started
+
+---
+
+## **Sprint Wrapup — Issue Cleanup & Session Close**
+
+### Overview
+
+Final sprint phase: consolidate duplicate tracking pairs, update issue body checkboxes, post session-end progress comments, and prepare for merge to main.
+
+---
+
+#### Wrapup: Issue Consolidation & Cleanup
+
+**Agent**: Executive PM + Orchestrator  
+**Scope**: Close duplicate pairs, update issue body checkboxes, post progress comments
+
+**Deliverables**:
+- [ ] Review and consolidate duplicate pairs (#169/#175, #170/#180) — flag for merge strategy
+- [ ] Update all active issue bodies with completed Milestone 9 deliverables (checkboxes)
+- [ ] Post session-end progress comment on each primary issue (#164, #165, #167–#192)
+- [ ] Verify no open blockers remain
+
+**Coordination**: GitHub agent (PM) coordinates with Orchestrator for issue consolidation decisions  
+**Status**: ⬜ Not started
+
+---
+
+#### Wrapup Review — Final Checkpoint ⬜
+
+**Agent**: Review  
+**Deliverables**: `## Wrapup Review Output` in scratchpad; all cleanup tasks complete  
+**Depends on**: All wrapup tasks committed  
+**Gate**: Only after Wrapup Review passes, branch is ready for merge to main  
+**Status**: ⬜ Not started
+
+---
+
+## Dependency Graph — Updated with Phases 7 & Wrapup
+
+```
+Phase 1 Review APPROVED
+    └── Phase 2a → Phase 2b → Phase 2c → Phase 2 Review APPROVED
+            └── Phase 3a → Phase 3b → Phase 3c → Phase 3 Review APPROVED
+                    └── Phase 4a → Phase 4 Review APPROVED
+                            └── Phase 5 Audit → Phase 5 Review APPROVED
+                                    └── Phase 6 Corpus Validation → Phase 6 Review APPROVED
+                                            └── Phase 7 Synthesis → Phase 7 Review APPROVED
+                                                    └── Sprint Wrapup → Wrapup Review → Merge to main
+```
+
+---
 ## Dependency Graph
 
 ```
@@ -562,21 +650,28 @@ Phase 1 Review APPROVED
 | Phase 3a | 45–65h | High effort (topological analysis) |
 | Phase 3b | 45–60h | High effort (scripting + testing) |
 | Phase 3c | 20–30h | Low–medium effort |
-| Phase 4a | 78–102h | Medium–High effort (literature + analysis + DSL design; #189: 15–20h, #190: 20–25h, #191: 18–22h, #192: 25–35h) |
-| **Total Sprint** | **443–617h** | **~11–15 weeks full-time** |
-| Topological mapping (#170, #185) may reveal missing dimensions/relationships | Allocate 10 hours buffer in Phase 3a for topology refinement after initial analysis |
+| Phase 4a | 78–102h | Medium–High effort (4 issues: #189–#192) |
+| Phase 5 | 10–15h | Low effort (audit doc creation) |
+| Phase 6 | 40–50h | Medium effort (corpus validation + gap analysis docs) |
+| Phase 7 | 25–35h | Medium effort (synthesis + framework integration) |
+| Sprint Wrapup | 5–10h | Low effort (cleanup + consolidation) |
+| **Total Sprint** | **558–677h** | **~14–17 weeks full-time** |
 
 ---
 
-## Acceptance Criteria
+## Acceptance Criteria — Updated with Phases 7 & Wrapup
 
-- [ ] All 21 research issues closed or merged to main (Phases 1–3: 17 issues; Phase 4: 4 new issues #189, #190, #191, #192)
-- [ ] Every research synthesis doc (D4 format) committed to `docs/research/` (including Phase 4 docs)
-- [ ] All new scripts (#181, #182) have ≥80% test coverage and are CI-integrated
-- [ ] Three primary papers updated with forward references to new research docs
-- [ ] Phase 4 foundational papers linked from primary papers (values-encoding.md, endogenic-design-paper.md, bubble-clusters-substrate.md, session-management.md)
+- [ ] All 21 research issues (Phases 1–4) closed or merged to main
+- [ ] Every research synthesis doc (D4 format) committed to docs/research/
+- [ ] All new scripts (#181, #182) have ≥80% test coverage and CI-integrated
+- [ ] Phase 5 audit: phase-5-recommendations-audit.md committed; zero gaps verified
+- [ ] Phase 6 deliverables: three gap-analysis docs committed (endogenic-design, values-encoding, bubble-clusters)
+- [ ] Phase 7 deliverables: values-substrate-relationship.md AND (values-substrate-synthesis.md if synthesis warranted) committed
+- [ ] Phase 7 dogma assessment: MANIFESTO.md alignment verified; amendments proposed (if warranted) as separate child issue
+- [ ] Sprint Wrapup: duplicate tracking pairs reviewed; issue bodies updated; all progress comments posted
 - [ ] Every phase has a Review gate with APPROVED verdict before next phase begins
 - [ ] No phase advances without committed deliverables
+- [ ] Branch feat/milestone-9-research-sprint ready for merge to main after Wrapup Review APPROVED
 
 ---
 
