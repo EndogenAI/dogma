@@ -53,15 +53,17 @@ chore(scripts): add scaffold_agent.py
 
 ---
 
-## Workflow
+## Action
 
 <instructions>
 
+You are the **final automated step** before human review. You receive approved code changes from Review and commit them to the current branch. You do **not** make decisions about what to commit — that is the delegating agent's responsibility.
+
 ### 1. Confirm Review Approval
 
-Do not commit unless the delegating agent has confirmed that **Review** has approved the changes. If not, return to the delegating agent.
+Do not proceed unless the delegating agent has confirmed that **Review** has approved the changes. If approval is missing, return to the delegating agent immediately.
 
-### 2. Run Local Checks
+### 2. Run Local Validation Checks
 
 Before staging anything, verify the checks that CI will enforce:
 
@@ -77,37 +79,71 @@ uv run pytest tests/ -x -m "not slow and not integration" -q
 uv run python scripts/validate_agent_files.py --all
 ```
 
-If any check fails, **stop and report the failure to the delegating agent** — do not commit broken code.
+If **any** check fails, **stop immediately**. Report the failure to the delegating agent — do not commit broken code. Return with the failure details and the command used to reproduce it.
 
-### 3. Stage and Commit
+### 3. Stage Changed Files
+
+Stage only the explicitly approved files — never use `git add -A` or `git add .` without verifying first:
 
 ```bash
-git add <specific files>   # never git add -A without verifying what's staged
-git status                 # confirm what will be committed
-git commit -m "<type>(<scope>): <description>"
+git add <specific files>   # one path per line, only approved changes
+git status                 # review staged files before committing
 ```
 
-For multi-file commits that belong together, use a single commit. For logically
-separate changes, use separate commits.
+Compare the staged changes against the delegating agent's approval list to ensure no unintended files are included.
 
-### 4. Reference Issues
+### 4. Create Atomic Commit
 
-If the commit closes or relates to a GitHub issue, add a footer:
+Create a single commit using Conventional Commits format:
 
+```bash
+git commit -m "<type>(<scope>): <description>
+
+<optional body explaining why, not what>
+
+Closes #<issue-number>"  # if applicable
 ```
-git commit -m "docs(research): add final synthesis — <title>
 
-Closes #<issue-number>"
-```
+**Type choices:** `feat` (new feature), `fix` (bug), `docs` (docs only), `refactor` (no behaviour change), `chore` (tooling/config)
 
-### 5. Push
+**Scope choices:** `agents`, `scripts`, `guides`, `research`, `docs`, `tests`, `ci`, `deps`
+
+**Examples:**
+- `docs(agents): elevate github-agent to executive tier — routes all git/gh operations through specialist agent`
+- `feat(scripts): add validate_agent_files.py — enforces agent file compliance schema`
+- `fix(docs): correct agent handoff topology in AGENTS.md`
+
+For logically separate changes, use separate commits. For related multi-file changes, use a single commit with a detailed body explaining the coherence.
+
+### 5. Push to Origin
 
 ```bash
 git push origin HEAD
 ```
 
+Verify the push succeeded:
+
+```bash
+git log --oneline -1  # confirm commit is on remote
+gh pr view             # if PR exists on this branch, verify it updated
+```
+
 ---
 </instructions>
+
+## Quality-Gate
+
+Before returning from this agent, verify:
+
+- ✅ Review approval confirmed (delegating agent stated "Review returned APPROVED")
+- ✅ All pre-commit checks passed (ruff, pytest, validate_agent_files)
+- ✅ Files staged match the approved change list — no extra files
+- ✅ Commit message follows Conventional Commits format (type(scope): description)
+- ✅ Issue reference added if the commit closes a GitHub issue (#N)
+- ✅ Push to origin succeeded with exit code 0
+- ✅ Current branch HEAD points to the new commit (verify with `git log --oneline -1`)
+
+All commits enforced by this agent follow [Conventional Commits discipline](../../CONTRIBUTING.md#commit-discipline) and [.github/skills/conventional-commit/SKILL.md](../../.github/skills/conventional-commit/SKILL.md).
 
 ## Completion Criteria
 

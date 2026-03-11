@@ -468,7 +468,8 @@ Only **Executive Orchestrator** and **Executive Docs** agents commit to the repo
 
 | Executive | Terminal Access Scope | Functions |
 |-----------|----------------------|----------| 
-| **Orchestrator** | `git`, `gh` CLI, `uv run` scripts | Commit, push, issue updates, script execution, multi-agent coordination |
+| **Orchestrator** | `uv run` scripts | Script execution, multi-agent coordination, state queries |  
+| **GitHub** | `git`, `gh` CLI | Commits, pushes, PR/issue operations, labels, review comments |
 | **Docs** | `uv run` scripts, file tools | Documentation builds, validation checks, research doc synthesis |
 | **Researcher** | `uv run` scripts, fetch operations | Source caching, web discovery, research synthesis |
 | **Scripter** | Full execution: `uv run`, tests, source control | Script authoring, testing, debugging, CI inspection |
