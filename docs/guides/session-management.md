@@ -86,6 +86,8 @@ uv run python scripts/fetch_all_sources.py
 This implements the **fetch-before-act** posture: scouts read cached `.md` files with `read_file`
 rather than re-fetching pages through the context window, saving tokens every session.
 
+**Deployment Layer check**: If `client-values.yml` exists in the workspace root, read it now and note any Deployment Layer constraints that will affect session decisions.
+
 ### Session-Start Encoding Checkpoint
 
 At the start of every session, before taking any first action, write which axiom governs the work and name one endogenous source you will consult first. This is the **first sentence** of the `## Session Start` scratchpad entry — before any tool calls.
@@ -95,8 +97,13 @@ Include a `## Session History` table to track multi-session continuity:
 ```markdown
 ## Session History
 
-Include a `## Session History` table to track multi-session continuity. Use the canonical table schema defined in the **Cross-Session Continuity (Pattern M1 — Scratchpad-as-Episodic-Index)** section below. Do not redefine an alternative schema here — keep all multi-session tracking to that single, authoritative definition.
+| Date | Phase | Deliverable | Status |
+|------|-------|-------------|--------|
+| 2026-03-09 | Phase 1 | Documentation win — 5 edits | ✅ Complete |
+| 2026-03-10 | Phase 2 | Feature implementation | ⬜ Pending |
 ```
+
+Use this canonical schema for all multi-session tracking. Columns are: Date (session day), Phase (workplan phase name), Deliverable (what was delivered or is in progress), Status (✅ Complete, ⬜ Pending, 🔴 Blocked).
 
 **Format:**
 
