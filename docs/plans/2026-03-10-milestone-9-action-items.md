@@ -28,9 +28,9 @@ Execute all actionable items from the research sprint (Issues #112–#147). Mile
 | `type:chore` | 6 |
 | `type:research` | 2 |
 | Blocked by external issue | 10 |
-| Actionable immediately | 25 |
+| Actionable immediately | 23 |
 
-**6 new issues added 2026-03-10** — #150, #151, #152, #156, #157, #158 (derived from programmatic governors session insight; see parallel track below).
+**Note (2026-03-11)**: Count reconciled — 33 total open issues; 23 phase-assigned (Phases 1–5); 10 blocked/deferred. Issues #150, #151 are now CLOSED (were listed as Parallel Track on 2026-03-10).
 
 ### Priority:High Issues (resolve first)
 
@@ -45,15 +45,10 @@ Execute all actionable items from the research sprint (Issues #112–#147). Mile
 | #138 | Deterministic Components: YAML FSM Specifications & Validators | feature | scripts |
 | #151 | Deep Research: Shifting AI behavioral constraints from tokens to code | research | docs/CI |
 
-### Parallel Track — Programmatic Governors (tracked in separate workplan)
+### Parallel Track Status (Archived)
 
-Issues #150, #151, #152 are being executed under [`docs/plans/2026-03-10-programmatic-governors.md`](2026-03-10-programmatic-governors.md). They live in milestone 9 but their phase sequencing is governed by that workplan, not this one. Issues #156, #157, #158 are blocked by #151 and are tracked in Phase 6 below.
-
-| # | Title | Status in this workplan |
-|---|---|---|
-| [#150](https://github.com/EndogenAI/Workflows/issues/150) | Research: Shell PREEXEC hook as project-scoped command governor | Parallel track |
-| [#151](https://github.com/EndogenAI/Workflows/issues/151) | Deep Research: Shifting AI behavioral constraints from tokens to code | Parallel track |
-| [#152](https://github.com/EndogenAI/Workflows/issues/152) | Audit fleet guardrails for programmatic enforcement | Parallel track (blocked by #151) |
+**CLOSED**: Issues #150, #151 were executed under the programmatic-governors workplan (now complete).
+**DEFERRED TO PHASE 6**: Issue #152 (Audit fleet guardrails) — blocked by #151, now ready for scheduling after #151 closure.
 
 ### Blocked Issues (defer — do not schedule)
 
@@ -112,7 +107,8 @@ Issues #150, #151, #152 are being executed under [`docs/plans/2026-03-10-program
 
 ### Phase 2 — Substantive Documentation Updates ⬜
 
-**Agent**: Executive Docs
+**Agent**: Executive Docs  
+**Estimated effort**: M (membrane specs tables, Engelbart substance/substrate distinction, BDI framing, election-pressure test protocol)
 **Deliverables**:
 - [ ] #115 — Add Membrane Permeability Specifications (Boundary Spec tables for Scout→Synthesizer, Synthesizer→Reviewer, Reviewer→Archivist handoffs) to `AGENTS.md`
 - [ ] #114 — Add Value Fidelity Test Taxonomy table to `AGENTS.md §Validate & Gate` section
@@ -139,7 +135,8 @@ Issues #150, #151, #152 are being executed under [`docs/plans/2026-03-10-program
 
 ### Phase 3 — Core Script Tooling (priority:high) ⬜
 
-**Agent**: Executive Scripter
+**Agent**: Executive Scripter  
+**Estimated effort**: M (5 scripts + validators + ≥80% test coverage per script)
 **Deliverables**:
 - [ ] #112 — Implement `scripts/validate_session.py` (7-check Tier 1 post-commit scratchpad audit; ≥80% test coverage)
 - [ ] #121 — Audit/extend `scripts/propose_dogma_edit.py` to match spec (inputs, tier enforcement, ADR output, exit codes); add/complete tests ≥80%
@@ -165,7 +162,8 @@ Issues #150, #151, #152 are being executed under [`docs/plans/2026-03-10-program
 
 ### Phase 4 — Medium Priority Scripts ⬜
 
-**Agent**: Executive Scripter
+**Agent**: Executive Scripter  
+**Estimated effort**: S (script enhancements, moderate scope)
 **Deliverables**:
 - [ ] #127 — Extend `scripts/validate_agent_files.py` with Core Layer Impermeability check (flag `client-values.yml` cited at higher priority than `MANIFESTO.md`/`AGENTS.md`)
 - [ ] #119 — Extend `scripts/query_docs.py` to include `toolchain` and `skills` scopes; add tests (≥80% coverage)
@@ -190,7 +188,8 @@ Issues #150, #151, #152 are being executed under [`docs/plans/2026-03-10-program
 
 ### Phase 5 — Documentation Site & GitHub/PM ⬜
 
-**Agent**: Executive Docs (docs sub-tasks) + Executive PM (GitHub/PM sub-tasks)
+**Agent**: Executive Docs (docs sub-tasks) + Executive PM (GitHub/PM sub-tasks)  
+**Estimated effort**: M–L (R4 MkDocs setup defers to child issue if >2 hrs; #133 is overflow risk)
 **Deliverables**:
 - [ ] #133 — Complete remaining Documentation Site subtasks:
   - R2: Add CI badge + TOC to `README.md`
@@ -274,7 +273,7 @@ Parallel Track (programmatic-governors workplan):
 
 ## Acceptance Criteria
 
-- [ ] All 25 actionable issues closed or in a PR targeting `main`
+- [ ] All 23 actionable issues (Phases 1–5) closed or in a PR targeting `main`
 - [ ] 10 blocked issues have `status:blocked` label and dependency comment
 - [ ] #150, #151, #152 closed per the programmatic-governors workplan
 - [ ] Every new script has ≥80% test coverage and a docstring
@@ -283,6 +282,7 @@ Parallel Track (programmatic-governors workplan):
 - [ ] `validate_skill_files.py` added to CI lint job (#122)
 - [ ] Manifest validation step added to CI for `.github/agents/` PRs (#118)
 - [ ] No phase advances without a committed Review gate verdict of APPROVED
+- [ ] #151 research completion reviewed for rework impact on Phases 2–3 (membrane specs, delegation validators)
 
 ---
 
