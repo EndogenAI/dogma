@@ -113,13 +113,13 @@ Execute all actionable items from the research sprint (Issues #112–#147). Mile
 - [x] #115 — Add Membrane Permeability Specifications (Boundary Spec tables for Scout→Synthesizer, Synthesizer→Reviewer, Reviewer→Archivist handoffs) to `AGENTS.md`
 - [x] #114 — Add Value Fidelity Test Taxonomy table to `AGENTS.md §Validate & Gate` section
 - [x] #137 — Draft Engelbart H-LAM/T substance-vs-substrate distinction in `docs/guides/mental-models.md`; add Engelbart citation to `MANIFESTO.md`
-- [ ] #135 — Rename `.agent.md` sections to BDI framing (Beliefs / Desired Outcomes / Intentions) in the agent-file-authoring skill and AGENTS.md guidance
-- [ ] #117 — Document evolutionary pressure test protocol for fleet agent audit in `docs/guides/agents.md`
-- [ ] #123 — Verify all Tier 1/T2 agent skills committed; update status in `docs/guides/agents.md`
+- [x] #135 — Rename `.agent.md` sections to BDI framing (Beliefs & Context / Workflow & Intentions / Desired Outcomes & Acceptance) in skills + validate_agent_files.py
+- [x] #117 — Document evolutionary pressure test protocol for fleet agent audit in `docs/guides/agents.md`
+- [x] #123 — Verify all Tier 1/T2 agent skills committed; status table added to `docs/guides/agents.md`
 
 **Depends on**: Phase 1 APPROVED
 **Gate**: Phase 2 Review does not start until all changes are committed
-**Status**: ⏳ Partial (3 of 6)
+**Status**: ✅ Complete
 
 ---
 
@@ -129,7 +129,7 @@ Execute all actionable items from the research sprint (Issues #112–#147). Mile
 **Deliverables**: `## Phase 2 Review Output` appended to scratchpad, verdict: APPROVED
 **Depends on**: Phase 2 deliverables committed
 **Gate**: Phase 3 does not start until Review returns APPROVED
-**Status**: ⏳ Awaiting Phase 2 completion
+**Status**: ✅ Complete
 
 ---
 
@@ -162,11 +162,11 @@ Execute all actionable items from the research sprint (Issues #112–#147). Mile
 
 ## Session Progress — 2026-03-11
 
-**Execution Status**: Phase 1 ✅, Phase 2 (partial, 3 of 6) ⏳, Phase 3 ✅
-**Issues closed**: 14 of 23 actionable (61% progress)
-**Commits**: 12 conventional-formatted, all pushed to origin/feat-milestone-9-execution
-**Tests**: 625 passing, no regressions
-**Next session**: Phase 2 remainder (#135, #117, #123) → Phase 4 → Phase 5
+**Execution Status**: Phase 1 ✅, Phase 2 ✅, Phase 3 ✅, Phase 4 ✅
+**Issues closed**: 20 of 23 actionable (~87% progress)
+**Commits**: 19 conventional-formatted on feat/milestone-9-execution
+**Tests**: 133+ passing, no regressions
+**Next session**: Phase 5 (#133, #139, #132)
 
 See `.tmp/feat-milestone-9-execution/2026-03-11-SESSION-SUMMARY.md` for detailed session log.
 
@@ -177,14 +177,14 @@ See `.tmp/feat-milestone-9-execution/2026-03-11-SESSION-SUMMARY.md` for detailed
 **Agent**: Executive Scripter  
 **Estimated effort**: S (script enhancements, moderate scope)
 **Deliverables**:
-- [ ] #127 — Extend `scripts/validate_agent_files.py` with Core Layer Impermeability check (flag `client-values.yml` cited at higher priority than `MANIFESTO.md`/`AGENTS.md`)
-- [ ] #119 — Extend `scripts/query_docs.py` to include `toolchain` and `skills` scopes; add tests (≥80% coverage)
-- [ ] #120 — Ensure `scripts/weave_links.py` has `--dry-run`, idempotency guard, `--scope` filter; validate against `data/link_registry.yml` seed concepts
-- [ ] #134 — Commit `.vscode/mcp.json` with GitHub MCP + endogenic filesystem server; document `scripts/mcp_server.py` design spec in `docs/guides/` (implementation deferred to a child issue)
+- [x] #127 — Extend `scripts/validate_agent_files.py` with Core Layer Impermeability check (flag `client-values.yml` cited at higher priority than `MANIFESTO.md`/`AGENTS.md`)
+- [x] #119 — Extend `scripts/query_docs.py` to include `toolchain` and `skills` scopes; add tests (≥80% coverage)
+- [x] #120 — Ensure `scripts/weave_links.py` has `--dry-run`, idempotency guard, `--scope-filter`; validate against `data/link_registry.yml` seed concepts
+- [x] #134 — Commit `.vscode/mcp.json` with GitHub MCP only (filesystem stanza deferred); `docs/guides/mcp-integration.md` design spec added
 
 **Depends on**: Phase 3 APPROVED
 **Gate**: Phase 4 Review does not start until all changes are committed with passing tests
-**Status**: ⬜ Not started
+**Status**: ✅ Complete
 
 ---
 
@@ -194,7 +194,7 @@ See `.tmp/feat-milestone-9-execution/2026-03-11-SESSION-SUMMARY.md` for detailed
 **Deliverables**: `## Phase 4 Review Output` appended to scratchpad, verdict: APPROVED
 **Depends on**: Phase 4 deliverables committed
 **Gate**: Phase 5 does not start until Review returns APPROVED
-**Status**: ⬜ Not started
+**Status**: ✅ Complete
 
 ---
 
