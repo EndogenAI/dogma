@@ -69,14 +69,13 @@ Team capacity: ~210 person-hours for Month 1 across full workload
 ### Primary Deliverables
 
 1. **Scratchpad Standalone** (`@endogenai/scratchpad`) — Extracted from dogma into reusable package
-2. **Library Resources** (`@endoHybrid format (self-paced foundational content + async cohort, 20–30 learners, 70%+ completion target)
-4. **First Consulting Engagement** — Signed engagement letter ($10K–$15K), 4-week proof-of-concept projeched
-4. **First Consulting Engagement** — 1 customer, 4-week project, proof-of-concept
+2. **Curator Library** (`@endogenai/library`) — Hybrid format (self-paced foundational content + async cohort, 20–30 learners, 70%+ completion target)
+3. **First Consulting Engagement** — Signed engagement letter ($10K–$15K), 4-week proof-of-concept project
 
 ### Success Criteria
 
 - ✅ Scratchpad repo live with documentation and package installation test
-- ✅ Library repo live with sear (hybrid format with self-paced foundation); first cohort enrolled; 70%+ completion target
+- ✅ Library repo live with comprehensive documentation (hybrid format with self-paced foundation); first cohort enrolled; 70%+ completion target
 - ✅ First consulting contract signed and payment terms agreed ($10K–$15K minimum)
 - ✅ Specialist Characters fully autonomous; integrated into dogma decision workflows with defined escalation paths
 - ✅ Business Lead tracking pipeline value separately from booked revenue
