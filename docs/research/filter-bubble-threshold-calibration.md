@@ -53,7 +53,7 @@ This research operationalizes **cross-reference density (CRD)** — the fraction
 
 ---
 
-## 2. Filter-Bubble Metaphor and Isolation Risk
+## 2. Hypothesis Validation: Filter-Bubble Metaphor and Isolation Risk
 
 ### Information Isolation in Endogenic Substrates
 
