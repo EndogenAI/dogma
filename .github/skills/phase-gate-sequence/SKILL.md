@@ -22,7 +22,7 @@ This skill enacts the *Algorithms-Before-Tokens* axiom from [`MANIFESTO.md`](../
 
 ---
 
-## Endogenous Sources
+## Beliefs & Context
 
 - **Governing axiom**: Axiom 2 — *Algorithms Before Tokens* — deterministic procedure over repeated instruction
 - **GitHub issue**: [#79 — Skills as Decision Codifiers](https://github.com/EndogenAI/Workflows/issues/79)

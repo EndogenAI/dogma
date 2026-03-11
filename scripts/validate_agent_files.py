@@ -10,9 +10,9 @@ Purpose:
 Checks:
     1. Valid YAML frontmatter with required fields: ``name``, ``description``.
     2. Required section headings present (fuzzy keyword matching):
-       - Endogenous Sources section (confirms the agent reads before acting)
-       - Action section (Workflow, Checklist, Conventions, or equivalent)
-       - Quality-gate section (Completion Criteria or Guardrails)
+       - Beliefs & Context section (confirms the agent reads before acting)
+       - Workflow & Intentions section (Workflow, Checklist, Conventions, or equivalent)
+       - Desired Outcomes & Acceptance section (Completion Criteria or Guardrails)
     3. At least one back-reference to MANIFESTO.md or AGENTS.md (cross-reference
        density ≥ 1).  Low density signals likely encoding drift.
     4. No heredoc-based file writes (``cat >> ... << 'EOF'`` patterns), which

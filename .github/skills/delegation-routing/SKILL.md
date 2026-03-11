@@ -21,7 +21,7 @@ This skill enacts the *Algorithms-Before-Tokens* axiom from [`MANIFESTO.md`](../
 
 ---
 
-## Endogenous Sources
+## Beliefs & Context
 
 - **Governing axiom**: Axiom 2 — *Algorithms Before Tokens* — deterministic lookup over interactive re-derivation
 - **GitHub issue**: [#79 — Skills as Decision Codifiers](https://github.com/EndogenAI/Workflows/issues/79)

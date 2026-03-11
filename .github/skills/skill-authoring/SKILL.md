@@ -93,10 +93,10 @@ Every skill file must contain at least one of each:
 3. Which agents and tools depend on this skill
 4. Citation chain to foundational documents
 
-**Example Endogenous Sources**:
+**Example Beliefs & Context**:
 
 ```markdown
-## Endogenous Sources
+## Beliefs & Context
 
 This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md) by encoding the complete research sprint workflow as a reusable procedure.
 
@@ -180,7 +180,7 @@ It is governed by [`AGENTS.md`](../../../AGENTS.md) and associated procedural gu
 The skill's first substantive section must ground it in the encoding chain:
 
 ```markdown
-## Endogenous Sources
+## Beliefs & Context
 
 This skill enacts the *<Axiom>* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md).
 
@@ -228,7 +228,7 @@ status: active
 
 # <Skill Title>
 
-## Endogenous Sources
+## Beliefs & Context
 
 [Declare axioms, pattern, dependent agents, foundational docs]
 

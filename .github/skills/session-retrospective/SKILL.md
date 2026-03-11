@@ -13,7 +13,7 @@ Read [`docs/guides/session-management.md`](../../../docs/guides/session-manageme
 
 ---
 
-## Endogenous Sources
+## Beliefs & Context
 
 This skill implements the back-propagation protocol: new patterns discovered interactively must be encoded durably before they can influence future sessions.
 
