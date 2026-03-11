@@ -1,0 +1,9 @@
+# Delegation Gates and Governance Boundaries
+# 
+# This file encodes the routing table for executive-tier agent delegations
+# and Core Layer impermeability rules. Populated by Phase 2b validators.
+# Reference: docs/skills/delegation-routing/SKILL.md
+
+delegation_routes: {}
+
+governance_boundaries: {}
