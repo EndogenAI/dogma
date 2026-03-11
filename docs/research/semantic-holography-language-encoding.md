@@ -10,7 +10,7 @@ closes_issue: 189
 > **Status**: Draft
 > **Research Question**: Words are holographically encoded with definition, cultural, personal, and neurological interpretations. Does [4,1] multi-level encoding (principle + example + anti-pattern + programmatic gate) preserve semantic meaning across reinterpretation layers? What metrics measure semantic fidelity degradation?
 > **Date**: 2026-03-10
-> **Related**: [`docs/research/values-encoding.md`](values-encoding.md) (structural redundancy via [4,1] repetition code); [`MANIFESTO.md`](../MANIFESTO.md) (axioms as case study in semantic preservation)
+> **Related**: [`docs/research/values-encoding.md`](values-encoding.md) (structural redundancy via [4,1] repetition code); [`MANIFESTO.md`](../../MANIFESTO.md) (axioms as case study in semantic preservation)
 
 ---
 
