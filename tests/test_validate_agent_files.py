@@ -184,7 +184,11 @@ class TestValidateFailureCases:
 
     @pytest.mark.io
     def test_missing_endogenous_sources_section(self, tmp_path):
-        content = "---\nname: A\ndescription: B\n---\n\n## Workflow & Intentions\n\n## Desired Outcomes & Acceptance\n\nReferences AGENTS.md."
+        content = (
+            "---\nname: A\ndescription: B\n---\n\n"
+            "## Workflow & Intentions\n\n## Desired Outcomes & Acceptance"
+            "\n\nReferences AGENTS.md."
+        )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
         assert passed is False
@@ -203,7 +207,10 @@ class TestValidateFailureCases:
 
     @pytest.mark.io
     def test_missing_quality_gate_section(self, tmp_path):
-        content = "---\nname: A\ndescription: B\n---\n\n## Beliefs & Context\n\n## Workflow & Intentions\n\nReferences AGENTS.md."
+        content = (
+            "---\nname: A\ndescription: B\n---\n\n## Beliefs & Context\n\n"
+            "## Workflow & Intentions\n\nReferences AGENTS.md."
+        )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
         assert passed is False
@@ -212,7 +219,8 @@ class TestValidateFailureCases:
     @pytest.mark.io
     def test_missing_cross_reference(self, tmp_path):
         content = (
-            "---\nname: A\ndescription: B\n---\n\n## Beliefs & Context\n\n## Workflow & Intentions\n\n## Desired Outcomes & Acceptance\n"
+            "---\nname: A\ndescription: B\n---\n\n## Beliefs & Context\n\n## Workflow & Intentions"
+            "\n\n## Desired Outcomes & Acceptance\n"
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
@@ -329,7 +337,10 @@ class TestCLI:
 
     @pytest.mark.io
     def test_single_file_fail_exit_1(self, tmp_path):
-        bad_content = "---\nname: A\ndescription: B\n---\n\n## Workflow & Intentions\n\n## Desired Outcomes & Acceptance\n"
+        bad_content = (
+            "---\nname: A\ndescription: B\n---\n\n"
+            "## Workflow & Intentions\n\n## Desired Outcomes & Acceptance\n"
+        )
         f = _make_agent_file(tmp_path, bad_content)
         result = subprocess.run(
             [sys.executable, "scripts/validate_agent_files.py", str(f)],

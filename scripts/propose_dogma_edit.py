@@ -179,7 +179,7 @@ def enforce_tier_boundaries(tier: str, affected_axiom: str, tiers: dict) -> tupl
         False otherwise with an explanation.
     """
     tier_meta = tiers[tier]
-    substrate = tier_meta["substrate"]
+    tier_meta["substrate"]
 
     # T1 edits must target MANIFESTO.md axiom sections only
     if tier == "T1":

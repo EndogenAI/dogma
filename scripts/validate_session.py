@@ -13,7 +13,7 @@ Checks (7-point audit):
     3. ## Session Start contains endogenous source citation (checks for MANIFESTO.md, AGENTS.md,
        docs/, or scripts/ references).
     4. ## Orchestration Plan present (tracks phases scheduled for this session).
-    5. Phase records tracked (all planned phases have ## Phase N headings).
+    5. Phase records tracked (all planned phases have ### Phase N headings).
     6. Pre-Compact Checkpoint present (mandatory pre-compaction marker).
     7. ## Session Summary present (mandatory session close marker).
 

@@ -12,7 +12,6 @@ Patterns checked:
     2. Terminal file I/O redirection (> file, >> file, | tee file)
     3. Fetch-before-check guardrail label reversals
     4. Direct Python file operations without File tools
-    5. Missing docstrings in new scripts
 
 Inputs:
     --changed-files <file>  File containing list of changed paths (one per line)
@@ -40,7 +39,6 @@ import re
 import subprocess
 import sys
 from pathlib import Path
-
 
 # Known bad patterns (pattern_name, regex, file_extensions)
 BAD_PATTERNS = [

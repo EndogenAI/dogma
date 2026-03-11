@@ -5,10 +5,7 @@ Tests for scripts/validate_session.py
 
 from __future__ import annotations
 
-import tempfile
 from pathlib import Path
-
-import pytest
 
 from scripts.validate_session import validate_session_file
 

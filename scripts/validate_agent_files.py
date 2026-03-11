@@ -196,7 +196,7 @@ def _get_frontmatter_value(text: str, key: str) -> str:
 
 def extract_citations_from_section(text: str, section_keywords: list[str]) -> list[str]:
     """Extract citations (file names) from a section matching any keyword.
-    
+
     Returns a list of .md/.yml file names in order of appearance, e.g.,
     ['MANIFESTO.md', 'AGENTS.md', 'client-values.yml'].
     """
@@ -205,11 +205,11 @@ def extract_citations_from_section(text: str, section_keywords: list[str]) -> li
     fm_match = _FRONTMATTER_RE.match(text)
     if fm_match:
         body_start = fm_match.end()
-    
+
     body = text[body_start:]
     in_section = False
     section_content = []
-    
+
     for line in body.splitlines():
         # Check if we're entering a matching section
         if re.match(r"^##\s+", line):
@@ -220,10 +220,10 @@ def extract_citations_from_section(text: str, section_keywords: list[str]) -> li
             if any(kw in line_lower for kw in section_keywords):
                 in_section = True
                 continue
-        
+
         if in_section:
             section_content.append(line)
-    
+
     # Extract file citations from the section content
     section_text = "\n".join(section_content)
     for match in _CITATION_RE.finditer(section_text):
@@ -235,36 +235,37 @@ def extract_citations_from_section(text: str, section_keywords: list[str]) -> li
             cited_file = cited_file.split("/")[-1].split("#")[0]
             if cited_file:
                 citations.append(cited_file)
-    
+
     return citations
 
 
 def check_citation_priority(citations: list[str]) -> list[str]:
     """Check if client-values.yml violates Core Layer impermeability.
-    
+
     client-values.yml must not appear before or instead of MANIFESTO.md or AGENTS.md.
     Returns error list (empty if OK).
     """
     errors: list[str] = []
-    
+
     if "client-values.yml" not in citations:
         return []  # No violation if not cited
-    
+
     # Find indices
     client_idx = citations.index("client-values.yml")
     manifesto_idx = citations.index("MANIFESTO.md") if "MANIFESTO.md" in citations else float("inf")
     agents_idx = citations.index("AGENTS.md") if "AGENTS.md" in citations else float("inf")
-    
+
     # client-values.yml must come after both MANIFESTO.md and AGENTS.md (if cited)
-    min_core_idx = min(manifesto_idx, agents_idx)
-    
-    if client_idx < min_core_idx:
+    # Use max so that client-values must follow the LAST core citation, not just the first.
+    max_core_idx = max(manifesto_idx, agents_idx)
+
+    if client_idx < max_core_idx:
         errors.append(
             "Core Layer Impermeability violation: client-values.yml is cited before "
-            "MANIFESTO.md or AGENTS.md in Beliefs & Context (Deployment Layer values "
-            "must be subordinate to Core Layer axioms; reorder citations)"
+            "both MANIFESTO.md and AGENTS.md in Beliefs & Context (Deployment Layer "
+            "values must be subordinate to Core Layer axioms; reorder citations)"
         )
-    
+
     return errors
 
 
@@ -474,7 +475,6 @@ def check_core_layer_impermeability(repo_root: Path = None) -> list[str]:
         return [f"ERROR: client-values.yml priority violation detected — cannot read file: {exc}"]
 
     # Parse YAML priority_overrides if present
-    imports: list[str] = []
     try:
         # Simple regex-based check for priority_overrides section
         priority_match = re.search(r"priority_overrides:\s*(.+?)(?=\n[a-z_]+:|$)", text, re.DOTALL)

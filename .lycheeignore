@@ -38,3 +38,8 @@ https://www.conventionalcommits.org/en/v1.0.0/
 # referenced in docs/research/six-layer-topological-extension.md.
 # May be due to firewall/proxy rules in GitHub's CI environment.
 https://istio.io/latest/docs/concepts/traffic-management/
+
+# spec.modelcontextprotocol.io — TLS handshake failures from GitHub Actions runners.
+# Site is live; referenced in docs/guides/mcp-integration.md.
+# CI environment SSL/TLS configuration issue, not a dead link.
+https://spec.modelcontextprotocol.io/

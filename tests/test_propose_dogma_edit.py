@@ -612,7 +612,7 @@ def test_main_output_adr_flag(tmp_path):
     session_file = tmp_path / "session.md"
     session_file.write_text("## Session Start\nGoverning axiom test\n", encoding="utf-8")
     adr_file = tmp_path / "adr.md"
-    
+
     ret = main([
         "--input", str(session_file),
         "--tier", "T2",
@@ -620,7 +620,7 @@ def test_main_output_adr_flag(tmp_path):
         "--proposed-delta", "Add clarification",
         "--output-adr", str(adr_file),
     ])
-    
+
     assert ret == 0
     assert adr_file.exists()
     adr_content = adr_file.read_text()
@@ -635,7 +635,7 @@ def test_main_output_and_adr_together(tmp_path):
     session_file.write_text("## Session Start\nGoverning axiom test\n", encoding="utf-8")
     proposal_file = tmp_path / "proposal.md"
     adr_file = tmp_path / "adr.md"
-    
+
     ret = main([
         "--input", str(session_file),
         "--tier", "T1",
@@ -644,7 +644,7 @@ def test_main_output_and_adr_together(tmp_path):
         "--output", str(proposal_file),
         "--output-adr", str(adr_file),
     ])
-    
+
     assert ret == 0
     assert proposal_file.exists()
     assert adr_file.exists()
@@ -661,14 +661,14 @@ def test_main_tier_violation_returns_1(tmp_path):
     """main() returns 1 when tier boundary is violated."""
     session_file = tmp_path / "session.md"
     session_file.write_text("test", encoding="utf-8")
-    
+
     ret = main([
         "--input", str(session_file),
         "--tier", "T1",
         "--affected-axiom", "Operational constraint",
         "--proposed-delta", "Change",
     ])
-    
+
     assert ret == 1
 
 
@@ -676,7 +676,7 @@ def test_main_parse_error_returns_2(tmp_path):
     """main() returns 2 on argument parse error."""
     session_file = tmp_path / "session.md"
     session_file.write_text("test", encoding="utf-8")
-    
+
     # Invalid tier value
     ret = main([
         "--input", str(session_file),
@@ -684,7 +684,7 @@ def test_main_parse_error_returns_2(tmp_path):
         "--affected-axiom", "Test",
         "--proposed-delta", "Change",
     ])
-    
+
     assert ret == 2
 
 
@@ -696,5 +696,5 @@ def test_main_missing_input_file_returns_2():
         "--affected-axiom", "Endogenous-First",
         "--proposed-delta", "Change",
     ])
-    
+
     assert ret == 1

@@ -29,9 +29,8 @@ Idempotency guarantee:
     existing Markdown link before each injection.
 
 Exit codes:
-    0: success
+    0: success (files woven or skipped)
     1: registry not found or schema error
-    2: file already woven (idempotency guard) — use --force to override
 
 Usage examples:
     uv run python scripts/weave_links.py --dry-run
@@ -149,18 +148,18 @@ def add_woven_marker(text: str) -> str:
 
 def filter_sections(text: str, section_filter: str | None) -> tuple[str, bool]:
     """Extract only specified sections if section_filter is set.
-    
+
     Returns (filtered_text, was_filtered) where:
     - filtered_text is the full text if no filter, or section content if filter matches
     - was_filtered indicates if filtering was applied
     """
     if not section_filter:
         return text, False
-    
+
     lines = text.splitlines(keepends=True)
     section_lines: list[str] = []
     in_section = False
-    
+
     for line in lines:
         # Check for heading
         if line.strip().startswith("#"):
@@ -173,7 +172,7 @@ def filter_sections(text: str, section_filter: str | None) -> tuple[str, bool]:
                 section_lines.append(line)
         elif in_section:
             section_lines.append(line)
-    
+
     if in_section:
         return "".join(section_lines), True
     return text, False
@@ -380,16 +379,19 @@ def main() -> None:
         if is_file_already_woven(md_file) and not args.force:
             files_already_woven += 1
             if not args.dry_run:
-                print(f"[SKIP] {md_file.relative_to(repo_root)}: already woven (use --force to override)", file=sys.stderr)
-            continue
+                print(
+                    f"[SKIP] {md_file.relative_to(repo_root)}: already woven"
+                    " (use --force to override)",
+                    file=sys.stderr,
+                )
 
         if args.dry_run:
             # Apply entries sequentially (mirroring non-dry-run) to get accurate diffs
             text = md_file.read_text(encoding="utf-8")
-            
+
             # Apply section filter if specified
             section_text, was_filtered = filter_sections(text, args.scope_filter)
-            
+
             diffs_all: list[str] = []
             for entry in registry:
                 scopes = entry.get("scopes")
@@ -407,7 +409,7 @@ def main() -> None:
                 new_text, diffs = inject_link(section_text, resolved_entry, dry_run=False)
                 diffs_all.extend(diffs)
                 section_text = new_text  # apply sequentially to mirror actual run
-            
+
             if diffs_all:
                 print(f"--- {md_file.relative_to(repo_root)}")
                 if was_filtered:
@@ -418,12 +420,20 @@ def main() -> None:
                 files_modified += 1
         else:
             # Non-dry-run: actually write the file
-            injections = weave_file(md_file, registry, dry_run=False, repo_root=repo_root)
+            # When scope-filter is active, use dry-run for the full-file pass so
+            # links are not injected outside the requested section; the
+            # section-filter path below handles the actual write.
+            injections = weave_file(
+                md_file,
+                registry,
+                dry_run=(args.scope_filter is not None),
+                repo_root=repo_root,
+            )
             if injections > 0 or args.scope_filter:
                 # Apply section filter if specified
                 text = md_file.read_text(encoding="utf-8")
                 section_text, was_filtered = filter_sections(text, args.scope_filter)
-                
+
                 # Reweave with section filter if needed
                 if was_filtered:
                     for entry in registry:
@@ -440,7 +450,7 @@ def main() -> None:
                             "canonical_source": resolve_canonical_source(entry["canonical_source"], md_file, repo_root),
                         }
                         section_text, _ = inject_link(section_text, resolved_entry, dry_run=False)
-                    
+
                     # Reconstruct full file with modified section
                     full_text = re.sub(
                         rf"(^#+\s+.*{re.escape(args.scope_filter)}.*?(?=^#+|\Z))",
@@ -450,24 +460,17 @@ def main() -> None:
                         count=1
                     )
                     text = full_text
-                
+
                 # Add idempotency marker
                 if injections > 0:
                     text = add_woven_marker(text)
                     md_file.write_text(text, encoding="utf-8")
                     total_injections += injections
                     files_modified += 1
-            elif injections > 0:
-                # Add marker even for zero injections if forced
-                text = md_file.read_text(encoding="utf-8")
-                text = add_woven_marker(text)
-                md_file.write_text(text, encoding="utf-8")
-                total_injections += injections
-                files_modified += 1
 
     if files_already_woven > 0 and not args.force:
         print(f"[INFO] Skipped {files_already_woven} already-woven file(s); use --force to override", file=sys.stderr)
-    
+
     print(f"{total_injections} injections in {files_modified} files")
     sys.exit(0)
 

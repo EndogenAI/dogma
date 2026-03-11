@@ -10,11 +10,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
-
+from scripts.pre_review_sweep import scan_file
 from scripts.validate_delegation_routing import validate as validate_delegation
 from scripts.validate_session_state import validate as validate_session_state
-from scripts.pre_review_sweep import scan_file
 
 
 class TestValidateDelegationRouting:
@@ -205,7 +203,12 @@ Content (skipped Phase 2).
 
         passed, messages = validate_session_state(session_file)
         assert passed is False
-        assert any("sequence" in str(m).lower() or "skipped" in str(m).lower() or "missing" in str(m).lower() for m in messages)
+        assert any(
+            "sequence" in str(m).lower()
+            or "skipped" in str(m).lower()
+            or "missing" in str(m).lower()
+            for m in messages
+        )
 
     def test_phase_does_not_start_at_1(self, tmp_path: Path) -> None:
         """Test detection when phases don't start at Phase 1."""
@@ -259,7 +262,7 @@ class TestPreReviewSweep:
         """Test detection of heredoc pattern."""
         script_file = tmp_path / "test.sh"
         script_file.write_text("cat >> file << 'EOF'\nContent\nEOF")
-        
+
         findings = scan_file(script_file)
         assert len(findings) > 0
         assert any("heredoc" in name for name, _, _ in findings)
@@ -268,7 +271,7 @@ class TestPreReviewSweep:
         """Test that heredoc in negation context is ignored."""
         script_file = tmp_path / "test.sh"
         script_file.write_text("# Never use: cat >> file << 'EOF'")
-        
+
         findings = scan_file(script_file)
         assert len(findings) == 0
 
@@ -276,7 +279,7 @@ class TestPreReviewSweep:
         """Test detection of fetch-before-check pattern."""
         doc_file = tmp_path / "test.md"
         doc_file.write_text("Fetch-before-check is wrong; use check-before-fetch.")
-        
+
         findings = scan_file(doc_file)
         assert len(findings) > 0
         assert any("fetch-before-check" in name for name, _, _ in findings)
@@ -285,7 +288,7 @@ class TestPreReviewSweep:
         """Test detection of terminal redirection patterns."""
         bash_file = tmp_path / "test.sh"
         bash_file.write_text("echo hello > output.txt")
-        
+
         findings = scan_file(bash_file)
         assert len(findings) > 0
         assert any("terminal" in name or "redirection" in name for name, _, _ in findings)
@@ -294,7 +297,7 @@ class TestPreReviewSweep:
         """Test file with no bad patterns."""
         clean_file = tmp_path / "clean.py"
         clean_file.write_text("print('Hello')\n")
-        
+
         findings = scan_file(clean_file)
         assert len(findings) == 0
 
@@ -302,7 +305,7 @@ class TestPreReviewSweep:
         """Test that reported line numbers are correct."""
         bash_file = tmp_path / "test.sh"
         bash_file.write_text("#!/bin/bash\necho start\necho test > output.txt\necho end\n")
-        
+
         findings = scan_file(bash_file)
         assert len(findings) > 0
         # Pattern should be on line 3
@@ -313,7 +316,7 @@ class TestPreReviewSweep:
         # .txt file with heredoc - should not be checked
         txt_file = tmp_path / "text.txt"
         txt_file.write_text("cat >> file << 'EOF'")
-        
+
         findings = scan_file(txt_file)
         assert len(findings) == 0  # .txt is not in extensions list
 
@@ -321,12 +324,12 @@ class TestPreReviewSweep:
         """Test that unreadable files are gracefully ignored."""
         script_file = tmp_path / "test.py"
         script_file.write_text("valid content")
-        
+
         # Make file unreadable (on systems that support chmod)
         try:
             import os
             os.chmod(script_file, 0o000)
-            
+
             findings = scan_file(script_file)
             assert len(findings) == 0  # Should not crash, just return empty
         finally:

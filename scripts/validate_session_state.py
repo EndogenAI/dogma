@@ -50,6 +50,15 @@ def validate(file_path: Path) -> tuple[bool, list[str]]:
 
     # --- Check 1: Extract all phase numbers ---
     phase_pattern = re.compile(r"^###\s+Phase\s+(\d+)", re.MULTILINE)
+    # Domain-only phases: exclude headings that contain "Review" after the number.
+    domain_pattern = re.compile(r"^###\s+Phase\s+(\d+)(?!.*\bReview\b)", re.MULTILINE)
+    domain_phase_nums = [int(m) for m in domain_pattern.findall(text)]
+    # Check for duplicates among domain phases before de-duplicating
+    seen: set[int] = set()
+    for num in domain_phase_nums:
+        if num in seen:
+            failures.append(f"Duplicate Phase {num} heading found")
+        seen.add(num)
     phases = sorted(set(int(m) for m in phase_pattern.findall(text)))
 
     if not phases:
@@ -70,7 +79,10 @@ def validate(file_path: Path) -> tuple[bool, list[str]]:
     for phase_num in phases:
         review_pattern = re.compile(rf"^###\s+Phase\s+{phase_num}\s+.*?Review", re.MULTILINE | re.IGNORECASE)
         if not review_pattern.search(text):
-            failures.append(f"Missing review gate marker for Phase {phase_num} (expected '### Phase {phase_num} — ... Review' or similar)")
+            failures.append(
+                f"Missing review gate marker for Phase {phase_num} "
+                f"(expected '### Phase {phase_num} — ... Review' or similar)"
+            )
 
     return len(failures) == 0, failures
 

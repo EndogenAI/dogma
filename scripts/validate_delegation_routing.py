@@ -89,12 +89,13 @@ def validate(file_path: Path) -> tuple[bool, list[str]]:
 
     # --- Check 3: delegation_routes structure ---
     routes = data.get("delegation_routes", {})
+    # Initialise before the type-guard so Check 5 is always safe to reference
+    delegators: set[str] = set()
+    delegatees: set[str] = set()
     if not isinstance(routes, dict):
         failures.append("'delegation_routes' must be a dictionary")
     else:
         # Collect all delegators and delegatees
-        delegators = set()
-        delegatees = set()
 
         for delegator, targets in routes.items():
             delegators.add(delegator)
