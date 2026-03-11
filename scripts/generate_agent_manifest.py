@@ -28,6 +28,13 @@ Outputs:
     Fleet average: avg_cross_ref_density included in manifest root.
     Warnings to stderr: agents with cross_ref_density < 1 are flagged.
 
+Connectivity Atlas Output:
+    The manifest serves as a connectivity atlas for the agent fleet, enabling:
+    - Lazy-loading of agent metadata (~100 tokens vs ~5K for full agents)
+    - Fleet capability discovery and cross-delegation routing
+    - Governance enforcement via cross-reference density signals
+    - Automated handoff validation against actual downstream capabilities
+
 Usage examples:
     # Print JSON manifest to stdout
     uv run python scripts/generate_agent_manifest.py
@@ -533,6 +540,7 @@ def main() -> int:
         return 0
 
     # Parse each agent file
+    # CI validation: manifest output will be validated against validate_agent_files.py schema
     had_errors = False
     entries: list[dict] = []
     for path in agent_files:
