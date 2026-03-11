@@ -18,6 +18,7 @@
         "test": true,
         "awk": true,
         "git fetch": true,
-        "uniq": true
+        "uniq": true,
+        "git check-ignore": true
     }
 }
