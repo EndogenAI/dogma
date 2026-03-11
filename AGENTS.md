@@ -267,6 +267,8 @@ Before invoking **any** subagent, verify all three:
 
 If **any** check fails → rewrite the prompt before delegating.
 
+**Broad-scope irreversible changes require a blocking question gate**: before delegating any task that would modify many files in bulk (e.g., renaming sections across all `.agent.md` files, restructuring a widely-referenced subsystem), surface the design decision to the user via an interactive question prompt and block delegation until confirmed. Do not guess the mapping and delegate speculatively — one wrong assumption propagates to every affected file.
+
 **Canonical Session Examples** (2026-03-11 Milestone 9 review):
 - ✅ Planner delegation: "Review workplan.md, flag gaps [5 bullets], return: bullets only, ≤2000 tokens" → 1,800 tokens, structured findings
 - ✅ Docs delegation: "Apply 3 updates [specific list]; commit [msg]; return: 'Updated — [item 1], [item 2], [item 3]'" → 1-line confirmation
@@ -304,7 +306,7 @@ Mandatory checks after every subagent returns (before acting on output):
 | **Token count** | Rough estimate: (word count ÷ 4) | >2000 tokens |
 | **Format match** | Did they follow your specified format? | Mismatch (e.g., prose instead of bullets) |
 | **Signal preservation** | For research/synthesis: are canonical examples + citations intact? | Lost examples or citations |
-
+| **Commit verification** | If the agent reports commits were made, run `git log --oneline -N` to confirm the commits exist on the branch before treating the task as complete. Narrative completion ≠ committed changes. | Expected commit hash absent from log |
 **Loop-backs**: Request compression immediately: "Return **only**: [specific fields]. Drop explanations. Stay <2000 tokens."
 
 **When to accept overflow**: Only if subagent explicitly notes "compression unavoidable" + documents rationale. Rare.
