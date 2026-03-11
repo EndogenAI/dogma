@@ -74,6 +74,8 @@ The optimal policy per substrate balances:
 - Context + Regenerable: IMPOSSIBLE — regenerable provenance is recovered, context is discarded
 - Hybrid + Regenerable: IMPOSSIBLE (almost) — hybrid is reconstructed with cost, regenerable is deterministic
 
+**Endogenic alignment**: This four-category taxonomy directly reflects [MANIFESTO.md § 1 Endogenous-First](../MANIFESTO.md#1-endogenous-first) — encoding knowledge of the substrate's structure for durability and reuse. Rather than applying a one-size-fits-all compaction policy, we scaffold the retention strategy from the substrate's intrinsic properties (permanence, regenerability, loss impact). Content categories that require different preservation policies get explicit encoding; agents executing the preservation gate read this taxonomy to apply the right policy.
+
 ---
 
 ### H2 — Compaction/Restoration Policies are Substrate-Specific
@@ -141,6 +143,8 @@ Where:
 - Regenerability < 0.50 → Aggressive compaction (Context)
 
 The metric explains why we do not compact scripts (regenerability = 1.0, worth every byte) but do aggressively compact scratchpad context (regenerability = 0.5, easy to lose).
+
+**Algorithmic alignment**: The regenerability metric embodies [MANIFESTO.md § 2 Algorithms Before Tokens](../MANIFESTO.md#2-algorithms-before-tokens) — deterministic cost models (fidelity, determinism, latency) that are reusable across sessions, rather than subjective token-burn estimates that change each time a substrate is accessed. By encoding the metric once, every agent that encounters the substrate applies the same compaction decision without re-debating the trade-off.
 
 ---
 
@@ -397,12 +401,34 @@ If substrate ∈ Regenerable:
 - **docs/guides/session-management.md** — Scratchpad compaction protocol; prune_scratchpad.py documentation
 - **docs/research/bubble-clusters-substrate.md** — Topological model of substrate as nested cubes
 
-### Substrate Inventory
+### Substrate Inventory — Comprehensive Table
 
-- **Content**: MANIFESTO.md (20 KB), AGENTS.md (35 KB), docs/research/ (2.9 MB, 66 files), .github/agents/*.agent.md (36 files)
-- **Context**: .tmp/<branch>/ (1.0 MB active), terminal scrollback (ephemeral)
-- **Hybrid**: .cache/sources/ (3.2 MB, 16 cached pages)
-- **Regenerable Provenance**: scripts/ (792 KB, 25+ scripts), tests/ (measured), .github/workflows/ (4 workflows)
+Complete enumeration of all digital substrates in EndogenAI/Workflows with all 7 columns. Regenerability score = (Fidelity + Determinism + Latency) / 3. Two-decimal precision: 1.00 = never compact; 0.50–0.75 = conditional; <0.50 = aggressive compaction.
+
+| Type | Location | Compaction | Restoration | Example | Regenerability | Policy |
+|------|----------|-----------|------------|---------|---|---|
+| **Content** | MANIFESTO.md | Never | git log --follow | Axioms 1–3 | 1.00 | Commit all edits, review all changes |
+| **Content** | AGENTS.md | Never | git show | Operational constraints | 1.00 | Durable, non-negotiable |
+| **Content** | docs/guides/*.md | Never | git checkout | session-management.md | 1.00 | Extend or fix; never delete |
+| **Content** | docs/research/*.md (committed) | Never | git checkout | iit-panpsychism.md | 1.00 | Peer-reviewed synthesis; archive old via versioning |
+| **Content** | .github/agents/*.agent.md | Never | git show | executive-researcher.agent.md | 1.00 | Recover via git; no truncation |
+| **Content** | .github/workflows/*.yml | Never | git log | lint.yml, ci.yml | 1.00 | Audit trail of deployment policy |
+| **Content** | docs/decisions/*.md (ADRs) | Never | git log --follow | ADR-006-agent-skills.md | 1.00 | Decision record; immutable once committed |
+| **Context** | .tmp/<branch>/<date>.md (active) | Aggressive at session end | _index.md stubs in git | feat-milestone-9/*.md | 0.50 | Compress via prune_scratchpad.py --force |
+| **Context** | Terminal state (live) | Never saved | N/A (ephemeral) | `$ uv run pytest` output | 0.43 | Discard; never log to persistent storage |
+| **Context** | VS Code scratch buffers | Never saved | Manually save if needed | Unsaved draft edits | 0.40 | Refresh clears; save before closing |
+| **Context** | PR draft comments (unsaved) | Never saved by default | Reload page to re-fetch | Typed but not submitted | 0.40 | Browser back-button recovers; verify before refresh |
+| **Hybrid** | .cache/sources/*.md (distilled pages) | Conditional; <2 reads/session | scripts/fetch_source.py <url> | cache/sources/arxiv-values.md | 0.65 | Delete if last_access > 7d AND redraft available < 30s |
+| **Hybrid** | test/.artifacts/*.json | Conditional; >7 days old | pytest --cache (regenerate) | .json coverage reports | 0.66 | gzip or delete after test review |
+| **Hybrid** | build/ output (compiled) | Immediate deletion | make clean && make rebuild | *.o, *.so files | 0.60 | Ephemeral; never commit |
+| **Hybrid** | .tmp/<branch>/_archive/ (backups) | Keep last 3 sessions; compress older | git reflog recover if needed | Pruned scratchpad backups | 0.61 | Reduce to 1 MB every 10 sessions |
+| **Regenerable** | scripts/*.py (all 25+ scripts) | Never; keep all versions | git checkout HEAD:scripts/file.py | validate_synthesis.py | 1.00 | Deterministic execution; full history in git |
+| **Regenerable** | tests/*.py (full suite) | Never; keep all revisions | git checkout + uv run pytest | test_validate_synthesis.py | 1.00 | Tests are specification; no deletion |
+| **Regenerable** | .github/agents/*.py (if any) | Never | git show <commit>:agents/file.py | (future agent code) | 1.00 | Executable scripts; preserve all |
+| **Regenerable** | docs/toolchain/*.md (reference) | Never; grow monotonically | git log | docs/toolchain/gh.md | 1.00 | Safe command patterns; archive old versions |
+| **Regenerable** | scripts/README.md | Never | git log --follow | Script index & usage | 1.00 | Durable reference; update, never delete |
+| **Regenerable** | uv.lock (lockfile) | Never delete; update allowed | git show HEAD:uv.lock | Python dependency freeze | 0.95 | Recover prior lock via git; deterministic restore |
+| **Regenerable** | pyproject.toml | Never delete; config only | git checkout HEAD:pyproject.toml | Tool versions, dependencies | 0.98 | Deterministic config; single source of truth |
 
 ### Tools Reference
 
