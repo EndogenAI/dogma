@@ -12,6 +12,43 @@ This guide explains the three core nature metaphors used throughout the project:
 
 ---
 
+## Substance vs. Substrate — The Engelbart Distinction
+
+Before exploring the metaphors, it's important to understand a foundational distinction: **substance** (values, principles, knowledge) versus **substrate** (the encoding that carries and preserves that knowledge).
+
+### The Distinction
+
+**Substance** is *what you believe and know*:
+- The core axioms in MANIFESTO.md (Endogenous-First, Algorithms Before Tokens, Local Compute-First)
+- The principles you want to be true about your system
+- The knowledge you've synthesized from external sources
+- The values you're trying to preserve
+
+**Substrate** is *how you encode and preserve substance*:
+- The documented conventions in AGENTS.md
+- The scripts in `scripts/` that instantiate principles
+- The committed research files in `docs/research/`
+- The agent files that embody roles and responsibilities
+- The version-controlled history that makes all of this durable
+
+### Why This Matters
+
+The **agent fleet is not the substance — it is the substrate**. Agents are tools that read and enact encoded substance. The substance (your values, your axioms) should remain stable even as the substrate (agents, scripts, documentation) evolves.
+
+This distinction comes from Douglas Engelbart's *Augmenting Human Intellect* (1962), where he separated the problem of "augmenting knowledge workers" from the problem of "encoding knowledge tools to support that augmentation." Engelbart's insight: you cannot improve knowledge work by improving the person alone; you must also improve the system (the substrate) that the person works within.
+
+Applied to endogenic systems: You cannot improve AI-assisted development by simply improving the prompts (substance-level instructions); you must encode the substrate (scripts, agents, documented workflows) so that the principles become *enacted policy*, not just good intentions. The substrate is where principles become durable and replicable.
+
+### Signal Fidelity Through Encoding Layers
+
+The journey from substance to substrate is lossy if not carefully managed. That is why this project defines encoding layers (MANIFESTO.md → AGENTS.md → agent files → skills → session behavior) with validation gates at each layer. Each encoding layer re-encodes the substance above it; poor encoding at one layer causes signal loss for layers below it.
+
+**Example**: An axiom in MANIFESTO.md (substance) loses fidelity if it is paraphrased rather than cited by an agent file (substrate). Documentation-First encoding requires explicit back-reference citations. This is why AGENTS.md specifies cross-reference density as a measurement of encoding fidelity — if the axiom is cited fewer than 2 times per 1000 words, it is not being preserved in the substrate.
+
+See [`docs/research/values-encoding.md`](../research/values-encoding.md) for the full encoding fidelity framework.
+
+---
+
 ## DNA: Encoding and Expression
 
 ### The Metaphor
