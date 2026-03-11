@@ -260,7 +260,7 @@ For each issue (#179, #169, #178), conduct web searches to identify additional s
 
 **Depends on**: Phase 2a (empirical validation informs conflict-resolution design)  
 **Gate**: Phase 2b deliverables must be committed before Phase 2c begins  
-**Status**: ✅ Complete — commit `0a372b7`
+**Status**: ✅ APPROVED — commit `0a372b7`
 
 ---
 
@@ -280,7 +280,7 @@ For each issue (#179, #169, #178), conduct web searches to identify additional s
 
 **Depends on**: Phase 2b (operationalization specs finalized)  
 **Gate**: Phase 2c deliverables must be committed before Review Phase 2 gate  
-**Status**: ✅ Complete — commit `75e7db5`
+**Status**: ✅ APPROVED — commit `75e7db5`
 
 ---
 
@@ -408,7 +408,7 @@ For each issue (#170, #183), conduct web searches to identify additional topolog
 
 **Depends on**: Phase 3a (topological audit provides context for membrane/permeability specs)  
 **Gate**: Phase 3b deliverables must be committed before Phase 3c begins (scripts must have passing tests)  
-**Status**: ✅ Complete — commit `cdc440d` (59/59 tests passing)
+**Status**: ✅ APPROVED — commit `cdc440d` (59/59 tests passing)
 
 ---
 
@@ -416,10 +416,6 @@ For each issue (#170, #183), conduct web searches to identify additional topolog
 
 **Agent**: Executive Researcher  
 **Scope**: Extend bubble topology to six-layer deployment model  
-**Web Search Guidance for Phase 3c Scout**: Conduct searches for multi-layer system architectures and deployment topology case studies. Priority topics per issue (#185):
-- Multi-layer software architectures (domain-driven design papers, systems design whitepapers)
-- Deployment model extensions and scaling (Kubernetes documentation, infrastructure-as-code case studies)
-- Cross-layer integration patterns (microservices papers, service mesh architecture documentation)  
 **Deliverables**:
 - [ ] #185 — Deployment-Layer Topological Extension
   - Current topology: nested three-cube model (MANIFESTO.md ↔ AGENTS.md ↔ agent files)
@@ -430,7 +426,7 @@ For each issue (#170, #183), conduct web searches to identify additional topolog
 
 **Depends on**: Phase 3b (scripts provide operationalization foundation; topological audit in 3a provides context)  
 **Gate**: Phase 3c deliverables must be committed before Review Phase 3 gate  
-**Status**: ✅ Complete — commit `455d169` (issue #185 CLOSED)
+**Status**: ✅ APPROVED — commit `455d169` (issue #185 CLOSED)
 
 ---
 
@@ -501,7 +497,7 @@ Phase 4 addresses three cross-cutting foundational research topics that strength
 
 **Depends on**: Phase 2 Review (values-encoding.md context) and Phase 3a data (if needed); **may execute in parallel with Phase 3b–c**  
 **Gate**: All Phase 4 deliverables committed and reviewed before session closes  
-**Status**: ⬜ Not started
+**Status**: ✅ APPROVED — commits `fba89a1`, `6733579`, `1b26f51`, `a090ccc`
 
 ---
 
@@ -510,10 +506,94 @@ Phase 4 addresses three cross-cutting foundational research topics that strength
 **Agent**: Review  
 **Deliverables**: `## Phase 4 Review Output` in scratchpad; verdict: APPROVED  
 **Depends on**: All Phase 4 deliverables committed  
-**Gate**: Session closes after Phase 4 Review returns APPROVED (Phase 4 is terminal)  
-**Status**: ⬜ Not started
+**Gate**: All prior phases must be APPROVED before proceeding  
+**Status**: ✅ APPROVED
 
 ---
+
+## **Phase 5 — Recommendations Audit & Tracking Verification**
+
+### Overview
+
+Phase 5 audits all Phase 1–4 research deliverables to ensure every recommendation is tracked by a GitHub issue. Zero dangling follow-work; 100% tracking discipline verification.
+
+---
+
+#### Phase 5a: Comprehensive Recommendations Audit
+
+**Agent**: Executive Researcher  
+**Scope**: Scan Phase 1–4 research corpus (68 files, 21 research papers); extract all recommendations; cross-reference GitHub issues
+
+**Deliverables**:
+- [x] Comprehensive audit document: `docs/research/phase-5-recommendations-audit.md` (D4 format)
+  - YAML frontmatter with status, dates
+  - Executive Summary (100% tracking, zero gaps)
+  - Audit Scope & Methodology (21 papers, 68 files scanned)
+  - Hypothesis Validation (3 sub-hypotheses: complete tracking, operational scripts, zero gaps)
+  - Pattern Catalog (canonical example: 100% tracking discipline)
+  - Recommendations Inventory (20-item table with issue mappings)
+  - Duplicate Pair Documentation (#169↔#175, #170↔#180)
+  - Gap Analysis (methodology + validation results)
+  - Phase 6 Preconditions (7 checks, all must PASS)
+  - Sources (citations of all 21 Phase 1–4 deliverables)
+- [x] Result: 20 recommendations → 25 GitHub issues; 100% coverage; zero gaps; 0 new issues needed
+
+**Estimated effort**: 10–15 hours  
+**Depends on**: All Phase 4 deliverables committed  
+**Status**: ✅ APPROVED — commit `b48c764`
+
+---
+
+#### Phase 5 Review — Audit Verification Gate
+
+**Agent**: Review  
+**Deliverables**: `## Phase 5 Review Output` in scratchpad; verdict: APPROVED  
+**Depends on**: Phase 5a audit docs committed  
+**Gate**: Phase 6 begins only after Phase 5 Review returns APPROVED  
+**Status**: ✅ APPROVED
+
+---
+
+## **Phase 6 — Corpus Validation Against Primary Papers**
+
+### Overview
+
+Phase 6 assesses how Phase 1–4 research corpus supports, challenges, or fills gaps in three primary synthesis papers. Produces gap-analysis documents and updates primary papers with forward references.
+
+---
+
+#### Phase 6a: Corpus Validation & Gap Analysis
+
+**Agent**: Executive Researcher  
+**Scope**: Assess how Phase 1–4 research corpus (21 issues, all domains) supports three primary papers
+
+**Primary Papers to Validate**:
+1. `docs/research/endogenic-design-paper.md`
+2. `docs/research/values-encoding.md`
+3. `docs/research/bubble-clusters-substrate.md`
+
+**Deliverables**:
+- [ ] Gap analysis doc: `docs/research/gap-analysis-endogenic-design.md` (D4 format)
+- [ ] Gap analysis doc: `docs/research/gap-analysis-values-encoding.md` (D4 format)
+- [ ] Gap analysis doc: `docs/research/gap-analysis-bubble-clusters.md` (D4 format)
+- [ ] Updated primary papers with forward references to Phase 1–4 research docs
+
+**Estimated effort**: 40–50 hours  
+**Depends on**: Phase 5 Review APPROVED  
+**Status**: ⏳ Queued (ready to execute, awaiting user decision)
+
+---
+
+#### Phase 6 Review — Validation Verification Gate
+
+**Agent**: Review  
+**Deliverables**: `## Phase 6 Review Output` in scratchpad; verdict: APPROVED  
+**Depends on**: Phase 6a deliverables committed  
+**Gate**: Phase 7 begins only after Phase 6 Review returns APPROVED  
+**Status**: ⬜ Queued
+
+---
+
 ## **Phase 7 — Values-Substrate Synthesis & Endogenic Design Alignment**
 
 ### Overview
@@ -541,7 +621,8 @@ Phase 7 synthesizes Phase 1–6 research into a unified conceptual framework. Is
 - [ ] Dogma assessment: Section documenting MANIFESTO.md alignment + proposed amendments (if any)
 
 **Estimated effort**: 25–35 hours  
-**Status**: ⬜ Not started
+**Depends on**: Phase 6 Review APPROVED  
+**Status**: ⏳ Queued (blocked on Phase 6 completion)
 
 ---
 
@@ -551,7 +632,7 @@ Phase 7 synthesizes Phase 1–6 research into a unified conceptual framework. Is
 **Deliverables**: `## Phase 7 Review Output` in scratchpad; verdict: APPROVED  
 **Depends on**: Phase 7a deliverables committed  
 **Gate**: Sprint Wrapup begins only after Phase 7 Review returns APPROVED  
-**Status**: ⬜ Not started
+**Status**: ⬜ Queued
 
 ---
 
@@ -575,7 +656,7 @@ Final sprint phase: consolidate duplicate tracking pairs, update issue body chec
 - [ ] Verify no open blockers remain
 
 **Coordination**: GitHub agent (PM) coordinates with Orchestrator for issue consolidation decisions  
-**Status**: ⬜ Not started
+**Status**: ⬜ Queued (scheduled after Phase 7 Review)
 
 ---
 
@@ -585,7 +666,7 @@ Final sprint phase: consolidate duplicate tracking pairs, update issue body chec
 **Deliverables**: `## Wrapup Review Output` in scratchpad; all cleanup tasks complete  
 **Depends on**: All wrapup tasks committed  
 **Gate**: Only after Wrapup Review passes, branch is ready for merge to main  
-**Status**: ⬜ Not started
+**Status**: ⬜ Queued (terminal gate)
 
 ---
 
@@ -664,7 +745,7 @@ Phase 1 Review APPROVED
 - [ ] All 21 research issues (Phases 1–4) closed or merged to main
 - [ ] Every research synthesis doc (D4 format) committed to docs/research/
 - [ ] All new scripts (#181, #182) have ≥80% test coverage and CI-integrated
-- [ ] Phase 5 audit: phase-5-recommendations-audit.md committed; zero gaps verified
+- [x] Phase 5 audit: phase-5-recommendations-audit.md committed; zero gaps verified
 - [ ] Phase 6 deliverables: three gap-analysis docs committed (endogenic-design, values-encoding, bubble-clusters)
 - [ ] Phase 7 deliverables: values-substrate-relationship.md AND (values-substrate-synthesis.md if synthesis warranted) committed
 - [ ] Phase 7 dogma assessment: MANIFESTO.md alignment verified; amendments proposed (if warranted) as separate child issue
