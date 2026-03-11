@@ -405,3 +405,69 @@ class TestMain:
         with pytest.raises(SystemExit) as exc:
             wl.main()
         assert exc.value.code == 1
+
+
+# ---------------------------------------------------------------------------
+# Idempotency Guard
+# ---------------------------------------------------------------------------
+
+
+class TestIdempotencyGuard:
+    def test_is_file_already_woven_returns_false_for_new_file(self, tmp_path):
+        """A file without the marker is not yet woven."""
+        md = tmp_path / "new.md"
+        md.write_text("# Heading\n\nContent here.")
+        assert wl.is_file_already_woven(md) is False
+
+    def test_is_file_already_woven_returns_true_for_marked_file(self, tmp_path):
+        """A file with the idempotency marker is already woven."""
+        md = tmp_path / "woven.md"
+        md.write_text("# Heading\n\nContent here.\n\n<!-- WOVEN_LINK_COMPLETE -->")
+        assert wl.is_file_already_woven(md) is True
+
+    def test_add_woven_marker_appends_marker_to_file(self, tmp_path):
+        """add_woven_marker appends the marker at EOF."""
+        content = "# Heading\n\nContent here."
+        marked = wl.add_woven_marker(content)
+        assert "<!-- WOVEN_LINK_COMPLETE -->" in marked
+        assert marked.endswith("<!-- WOVEN_LINK_COMPLETE -->")
+
+    def test_add_woven_marker_idempotent(self, tmp_path):
+        """Adding the marker twice produces same result."""
+        content = "# Heading\n\nContent here."
+        marked_once = wl.add_woven_marker(content)
+        marked_twice = wl.add_woven_marker(marked_once)
+        assert marked_once == marked_twice
+
+    def test_filter_sections_returns_full_text_when_no_filter(self):
+        """With no section_filter, returns full text and was_filtered=False."""
+        text = "# Heading\n\nContent here."
+        result_text, was_filtered = wl.filter_sections(text, None)
+        assert result_text == text
+        assert was_filtered is False
+
+    def test_filter_sections_extracts_matching_section(self):
+        """With filter='References', extracts only ## References section."""
+        text = (
+            "# Overview\n\nIntro.\n\n"
+            "## References\n\nRef content here.\n\n"
+            "## Notes\n\nOther content."
+        )
+        result_text, was_filtered = wl.filter_sections(text, "References")
+        assert "## References" in result_text
+        assert "## Notes" not in result_text
+        assert was_filtered is True
+
+    def test_filter_sections_case_insensitive_match(self):
+        """Section filter matches case-insensitively."""
+        text = "# Overview\n\n## REFERENCES\n\nRef content.\n\n## Notes\n\nOther."
+        result_text, was_filtered = wl.filter_sections(text, "references")
+        assert "## REFERENCES" in result_text
+        assert was_filtered is True
+
+    def test_filter_sections_returns_full_text_if_no_match(self):
+        """If section not found, returns full text and was_filtered=False."""
+        text = "# Overview\n\nContent.\n\n## Other\n\nMore."
+        result_text, was_filtered = wl.filter_sections(text, "References")
+        assert result_text == text
+        assert was_filtered is False
