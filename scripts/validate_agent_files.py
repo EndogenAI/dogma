@@ -257,6 +257,19 @@ def validate(file_path: Path) -> tuple[bool, list[str]]:
             "(defined in review.agent.md; do not restate with 'Phase N' prefix)"
         )
 
+    # --- Check 7: Core Layer Impermeability (check if client-values.yml violates MANIFESTO axioms) ---
+    # Find repo root by looking for AGENTS.md
+    repo_root = Path.cwd()
+    candidate = Path.cwd()
+    while candidate != candidate.parent:
+        if (candidate / "AGENTS.md").exists():
+            repo_root = candidate
+            break
+        candidate = candidate.parent
+    impermeability_errors = check_core_layer_impermeability(repo_root)
+    if impermeability_errors:
+        failures.extend(impermeability_errors)
+
     passed = len(failures) == 0
     return passed, failures
 
@@ -347,6 +360,58 @@ def validate_skill_file(path: Path) -> list[str]:
             "Heading contract violation: '## Phase N Review Output' found — use '## Review Output' "
             "(defined in review.agent.md; do not restate with 'Phase N' prefix)"
         )
+
+    return errors
+
+
+# ---------------------------------------------------------------------------
+# Core Layer Impermeability Check
+# ---------------------------------------------------------------------------
+
+def check_core_layer_impermeability(repo_root: Path = None) -> list[str]:
+    """
+    Validate Core Layer Impermeability: ensure client-values.yml (if present)
+    does not contain priority_overrides for MANIFESTO.md core axioms.
+
+    Core axioms (inviolable at deployment layer):
+        1. Endogenous-First
+        2. Algorithms Before Tokens
+        3. Local Compute-First
+
+    Returns a list of error strings; empty list = no violations.
+    """
+    if repo_root is None:
+        repo_root = Path.cwd()
+
+    client_values_path = repo_root / "client-values.yml"
+    if not client_values_path.exists():
+        return []  # No client-values.yml — no violation possible
+
+    errors: list[str] = []
+
+    try:
+        text = client_values_path.read_text(encoding="utf-8")
+    except OSError as exc:
+        return [f"ERROR: client-values.yml priority violation detected — cannot read file: {exc}"]
+
+    # Parse YAML priority_overrides if present
+    imports: list[str] = []
+    try:
+        # Simple regex-based check for priority_overrides section
+        priority_match = re.search(r"priority_overrides:\s*(.+?)(?=\n[a-z_]+:|$)", text, re.DOTALL)
+        if priority_match:
+            overrides_text = priority_match.group(1)
+            # Extract axiom names (case-insensitive matching)
+            core_axioms = ["Endogenous-First", "Algorithms Before Tokens", "Local Compute-First"]
+            for axiom in core_axioms:
+                if re.search(rf"\b{re.escape(axiom)}\b", overrides_text, re.IGNORECASE):
+                    errors.append(
+                        f"ERROR: client-values.yml priority violation detected — "
+                        f"core axiom '{axiom}' cannot be overridden at Deployment Layer "
+                        f"(see MANIFESTO.md § How to Read This Document)"
+                    )
+    except Exception as exc:  # noqa: BLE001
+        return [f"ERROR: client-values.yml priority violation detected — malformed YAML: {exc}"]
 
     return errors
 
