@@ -10,7 +10,7 @@ closes_issue: 190
 > **Status**: Draft
 > **Research Question**: The EndogenAI/Workflows system exhibits intelligent behavior (decision-making, adaptation, self-reflection), but is it conscious? What do IIT and panpsychism frameworks say about consciousness requirements? What design implications follow if consciousness and intelligence are orthogonal properties?
 > **Date**: 2026-03-10
-> **Related**: [`docs/research/endogenic-design-paper.md`](endogenic-design-paper.md) (augmentative partnership principle; human-system co-cognition); [`MANIFESTO.md`](../MANIFESTO.md) (how axioms encode human judgment)
+> **Related**: [`docs/research/endogenic-design-paper.md`](endogenic-design-paper.md) (augmentative partnership principle; human-system co-cognition); [`MANIFESTO.md`](../../MANIFESTO.md) (how axioms encode human judgment)
 
 ---
 
