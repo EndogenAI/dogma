@@ -673,6 +673,32 @@ class TestGenerateAgentManifest:
         assert "avg_cross_ref_density" in data
         assert data["agents"][0]["cross_ref_density"] >= 1
 
+    @pytest.mark.io
+    def test_main_exit_0_on_successful_manifest_generation(self, tmp_path, monkeypatch):
+        """main() exits 0 when manifest is successfully generated from valid agents."""
+        import json as jsonmod
+        import sys
+
+        mod = self._load_manifest_mod()
+        agents_dir = tmp_path / ".github" / "agents"
+        agents_dir.mkdir(parents=True)
+        (tmp_path / "AGENTS.md").write_text("# Root\n")
+        (agents_dir / "valid.agent.md").write_text(
+            "---\nname: ValidAgent\ndescription: valid agent\ntools: []\n---\nSee MANIFESTO.md\n"
+        )
+        out_file = tmp_path / "manifest.json"
+        monkeypatch.chdir(tmp_path)
+        monkeypatch.setattr(
+            sys,
+            "argv",
+            ["generate_agent_manifest.py", "--agents-dir", str(agents_dir), "--output", str(out_file)],
+        )
+        ret = mod.main()
+        assert ret == 0, "Exit code should be 0 on successful manifest generation"
+        assert out_file.exists(), "Output file should be created"
+        data = jsonmod.loads(out_file.read_text())
+        assert data["agent_count"] == 1
+
     """Tests for bidirectional source linking."""
 
     @pytest.mark.io
