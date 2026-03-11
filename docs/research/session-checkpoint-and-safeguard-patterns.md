@@ -253,16 +253,16 @@ Tier 3: Post-Use Verification
   - Phase 2 deliverable: Measure delegation health in next session
 
 ### Agent Files
-- [.github/agents/executive-orchestrator.agent.md](../.github/agents/executive-orchestrator.agent.md)
+- [.github/agents/executive-orchestrator.agent.md](../../.github/agents/executive-orchestrator.agent.md)
   - Sections modified: 1.5 (new), 1.6 (new), 3 (expanded), 6 (expanded)
 
-- [.github/skills/session-management/SKILL.md](../.github/skills/session-management/SKILL.md)
+- [.github/skills/session-management/SKILL.md](../../.github/skills/session-management/SKILL.md)
   - Sections modified: 6.2 & 6.3 (validation templates added)
 
 ### Documentation
-- [docs/toolchain/gh.md](./toolchain/gh.md) — Section: "Pre-Use Validation for Temp Files"
-- [AGENTS.md](../AGENTS.md) — Section: "Verify-After-Act for Remote Writes"
-- [docs/AGENTS.md](./AGENTS.md) — Section: "Never use heredocs"
+- [docs/toolchain/gh.md](../toolchain/gh.md) — Section: "Pre-Use Validation for Temp Files"
+- [AGENTS.md](../../AGENTS.md) — Section: "Verify-After-Act for Remote Writes"
+- [docs/AGENTS.md](../AGENTS.md) — Section: "Never use heredocs"
 
 ---
 
