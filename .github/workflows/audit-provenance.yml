@@ -1,9 +1,12 @@
 name: "Provenance Audit — CI Integration"
 
 on:
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to audit (default: current)'
+        required: false
+        default: ''
 
 jobs:
   audit-provenance:
@@ -100,6 +103,19 @@ jobs:
             } else {
               console.log('No PR comment file found; skipping');
             }
+
+      - name: "Display Audit Results in Job Summary (Manual Workflow)"
+        if: always() && github.event_name == 'workflow_dispatch'
+        run: |
+          echo "## ✅ Provenance Audit Complete (Preflight Check)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Run this audit manually before merging to main. Results are in Artifacts." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f /tmp/audit-report.json ]; then
+            UNVERIFIABLE=$(grep -o '"total_unverifiable": [0-9]*' /tmp/audit-report.json | grep -o '[0-9]*' | head -1)
+            if [ -z "$UNVERIFIABLE" ]; then UNVERIFIABLE="0"; fi
+            echo "**Unverifiable Citations**: $UNVERIFIABLE" >> $GITHUB_STEP_SUMMARY
+          fi
 
       - name: "Check for Critical Issues (Non-blocking for Phase 3b)"
         if: always()
