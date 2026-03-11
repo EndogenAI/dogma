@@ -9,7 +9,7 @@
 
 ## Objective
 
-Execute all actionable items from the research sprint (Issues #112–#147). Milestone 9 contains 29 open issues derived directly from completed research syntheses in `docs/research/`. The goal is to systematically close this backlog by grouping related work into coherent execution phases, unblocking high-priority scripting work first, and deferring blocked items with explicit dependency tracking.
+Execute all actionable items from the research sprint (Issues #112–#147). Milestone 9 contains 33 open issues derived directly from completed research syntheses in `docs/research/`. The goal is to systematically close this backlog by grouping related work into coherent execution phases, unblocking high-priority scripting work first, and deferring blocked items with explicit dependency tracking.
 
 ---
 
@@ -19,7 +19,7 @@ Execute all actionable items from the research sprint (Issues #112–#147). Mile
 
 | Category | Count |
 |---|---|
-| Total open | 35 |
+| Total open | 33 |
 | `priority:high` | 8 |
 | `priority:medium` | 18 |
 | `priority:low` | 9 |
