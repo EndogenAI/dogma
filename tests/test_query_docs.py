@@ -116,6 +116,26 @@ class TestBuildCorpus:
         files = {c["file"] for c in corpus}
         assert len(files) > 1
 
+    @pytest.mark.io
+    def test_toolchain_scope_returns_chunks(self):
+        """Verify toolchain scope returns chunks from docs/toolchain/ directory."""
+        repo_root = Path(__file__).parent.parent
+        corpus = qd.build_corpus("toolchain", repo_root)
+        assert len(corpus) > 0, "Should find toolchain files"
+        # All chunks should be from toolchain docs
+        for chunk in corpus:
+            assert "toolchain" in chunk["file"].lower()
+
+    @pytest.mark.io
+    def test_skills_scope_returns_chunks(self):
+        """Verify skills scope returns chunks from .github/skills/*/SKILL.md files."""
+        repo_root = Path(__file__).parent.parent
+        corpus = qd.build_corpus("skills", repo_root)
+        assert len(corpus) > 0, "Should find skill files"
+        # All chunks should be from SKILL.md files in .github/skills/
+        for chunk in corpus:
+            assert "skills" in chunk["file"].lower() and chunk["file"].endswith("SKILL.md")
+
 
 # ---------------------------------------------------------------------------
 # run_query

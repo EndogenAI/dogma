@@ -29,7 +29,7 @@ scripts/
   detect_drift.py              # Detect value-encoding drift in .agent.md files via watermark-phrase analysis (--agents-dir, --threshold, --fail-below, --format, --output)
   audit_provenance.py          # Audit .agent.md files for governs: provenance annotations; report orphaned files and unverifiable axiom citations (--agents-dir, --manifesto, --format, --output)
   propose_dogma_edit.py        # Programmatic enforcer of the back-propagation protocol — generate ADR-style dogma edit proposals from session evidence (--input, --tier, --affected-axiom, --proposed-delta, --output)
-  query_docs.py                # BM25 query CLI over the documentation corpus — scoped retrieval without bulk context loading (query, --scope, --top-n, --output text|json)
+  query_docs.py                # BM25 query CLI over the documentation corpus — scoped retrieval without bulk context loading (query, --scope [manifesto|agents|guides|research|toolchain|skills|all], --top-n, --output text|json)
   weave_links.py               # Inject Markdown cross-reference links across the corpus via a YAML concept registry (--scope, --dry-run, --registry); idempotent
   validate_handoff_permeability.py  # Validate cross-substrate handoff signal preservation (Canonical examples, Anti-patterns, Axiom citations, Source URLs) per membrane type (scout-to-synthesizer, synthesizer-to-reviewer, reviewer-to-archivist); AGENTS.md § Signal Preservation Rules enforcement
   parse_audit_result.py        # Convert JSON provenance audit output to Markdown risk assessment & PR comments; compute risk levels (green/yellow/red) from axiom citation intensity and test coverage
