@@ -210,6 +210,8 @@ Further findings...
 
 **Canonical example**: Example 2 demonstrates YAML frontmatter validation at pre-commit.
 
+**Anti-pattern**: Returning uncompressed raw findings without distillation.
+
 Additional constraint: MANIFESTO.md § Algorithms Before Tokens
 
 Sources:
@@ -223,6 +225,8 @@ def signals_in_code_block_handoff():
     """Handoff with signal-like text in code blocks (should not be counted as signals)."""
     return """
 ## Output
+
+**Canonical example**: The validate_synthesis.py script demonstrates programmatic enforcement at T2 boundary.
 
 Text describing anti-patterns:
 
@@ -462,11 +466,11 @@ class TestCompressionCanonical:
         handoff = """
 ## Output
 
-**Canonical example**: Example
+**Canonical example**: The validate_synthesis.py script demonstrates programmatic enforcement at T2 boundary.
 
-**Anti-pattern**: Pattern
+**Anti-pattern**: Returning raw literature notes without compression or distillation.
 
-MANIFESTO.md
+Key reference: MANIFESTO.md
 
 [source](https://example.com)
 """
@@ -652,7 +656,7 @@ class TestCustomRequiredSignals:
         missing_anti_pattern_handoff = """
 ## Output
 
-**Canonical example**: Example
+**Canonical example**: The validate_synthesis.py script enforces D4 structure at T2 boundary.
 
 MANIFESTO.md
 
