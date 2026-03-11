@@ -373,7 +373,7 @@ For each issue (#170, #183), conduct web searches to identify additional topolog
 
 **Depends on**: Phase 2 Review APPROVED  
 **Gate**: Phase 3a deliverables (#188, #170, #183) must be committed before Phase 3b begins  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — commit `49d73e3`
 
 ---
 
@@ -408,7 +408,7 @@ For each issue (#170, #183), conduct web searches to identify additional topolog
 
 **Depends on**: Phase 3a (topological audit provides context for membrane/permeability specs)  
 **Gate**: Phase 3b deliverables must be committed before Phase 3c begins (scripts must have passing tests)  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — commit `cdc440d` (59/59 tests passing)
 
 ---
 
@@ -430,17 +430,17 @@ For each issue (#170, #183), conduct web searches to identify additional topolog
 
 **Depends on**: Phase 3b (scripts provide operationalization foundation; topological audit in 3a provides context)  
 **Gate**: Phase 3c deliverables must be committed before Review Phase 3 gate  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — commit `455d169` (issue #185 CLOSED)
 
 ---
 
-### Phase 3 Review — Review Gate ⬜
+### Phase 3 Review — Review Gate ✅
 
 **Agent**: Review  
-**Deliverables**: `## Phase 3 Review Output` section in scratchpad; verdict: APPROVED or REQUEST CHANGES  
+**Deliverables**: `## Phase 3 Review Output` section in scratchpad; verdict: APPROVED ✓  
 **Depends on**: All Phase 3a–c deliverables committed (including passing tests for #181, #182)  
 **Gate**: Phase 4 may begin in parallel or after Review returns APPROVED  
-**Status**: ⬜ Not started
+**Status**: ✅ APPROVED — all Phase 3a–c sub-phases validated; Milestone 9 Phase 3 Complete
 
 ---
 
