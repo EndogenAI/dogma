@@ -73,6 +73,20 @@ You are **read-only**. You do not edit files. You flag issues and hand off to ei
 - [ ] **Subprocess mocking**: tests that invoke subprocesses use `pytest-subprocess` or mock `subprocess.run`/`subprocess.check_call` directly — no real subprocess calls in unit tests.
 - [ ] **Marker correctness**: every test that does file I/O has `@pytest.mark.io`; every test with network calls has `@pytest.mark.integration`.
 
+### Skill Files (`.github/skills/*/SKILL.md`)
+
+- [ ] YAML frontmatter present with `name` and `description`.
+- [ ] Run `uv run python scripts/validate_agent_files.py --skills` — confirm zero errors.
+- [ ] At least one MANIFESTO.md axiom cited in the body.
+- [ ] `AGENTS.md` governance constraint cited in the first substantive section.
+
+### Pre-commit Gate Compliance
+
+- [ ] `uv run pre-commit run --all-files` passes without errors (or the agent confirms hooks ran clean on the changed files).
+- [ ] If `.github/agents/*.agent.md` changed: `uv run python scripts/detect_drift.py --agents-dir .github/agents/ --format summary --fail-below 0.33` exits 0.
+- [ ] If `.github/skills/*/SKILL.md` changed: `uv run python scripts/validate_agent_files.py --skills` exits 0.
+- [ ] If `lychee` dead-link CI failure anticipated: confirm the URL is in `.lycheeignore` (with a dated comment) or that the link is genuinely reachable.
+
 ---
 
 ## Quality Gate Protocol

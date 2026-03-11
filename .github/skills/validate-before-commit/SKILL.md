@@ -18,11 +18,13 @@ Run the checks corresponding to which file types were changed:
 | Files changed | Required checks |
 |---------------|----------------|
 | `scripts/` or `tests/` | Lint, format, fast tests |
-| `.github/agents/*.agent.md` | Lint, format, fast tests, agent compliance |
+| `.github/agents/*.agent.md` | Lint, format, fast tests, agent compliance, drift check |
 | `.github/skills/*/SKILL.md` | Lint, format, fast tests, skills compliance |
 | `docs/research/*.md` | Research doc compliance |
 | Any of the above | All applicable checks in the rows above |
 | None of the above (docs, plans, guides) | No code checks required |
+
+> **Pre-commit hook coverage** — the hooks in `.pre-commit-config.yaml` run automatically on `git commit` (and `fast-tests` on `git push`) once installed with `uv run pre-commit install`. They cover every row in this table. If pre-commit is installed, manual checks are needed only for lychee dead links (network-only, no local equivalent).
 
 When in doubt, run all checks. The full sequence takes under 60 seconds on a warm environment.
 
@@ -81,6 +83,24 @@ Run this only when `docs/research/*.md` files were changed:
 uv run python scripts/validate_synthesis.py docs/research/<changed-file>.md
 ```
 
+### 2.6 Value-Encoding Drift Check
+
+Run this when `.github/agents/*.agent.md` files were changed:
+
+```bash
+uv run python scripts/detect_drift.py --agents-dir .github/agents/ --format summary --fail-below 0.33
+```
+
+A drift score below 0.33 means the agent file lacks sufficient MANIFESTO.md axiom references. Fix by adding explicit citations to `Endogenous-First`, `Algorithms Before Tokens`, or `Local Compute-First` in the agent body.
+
+### 2.7 Push-Stage: Full Fast Tests
+
+The `fast-tests` hook is configured as a `push`-stage hook and runs automatically on `git push` once pre-commit is installed. To run manually before pushing:
+
+```bash
+uv run pytest tests/ -x -m "not slow and not integration" -q
+```
+
 ---
 
 ## 3. Pre-Commit Hooks
@@ -111,10 +131,13 @@ Wait for the latest run to show a green `✓` status before requesting or re-req
 
 | Failure | Fix |
 |---------|-----|
-| `ruff` format error | Run `uv run ruff format scripts/ tests/` then re-commit |
-| `validate_synthesis` heading missing | Add the required heading to the research doc |
-| `validate_agent_files` cross-reference missing | Add a `../../MANIFESTO.md` or `../../AGENTS.md` link to the agent body |
-| `lychee` dead link | Add the URL to `.lycheeignore` with a dated comment |
+| `ruff format --check` fails (N files would be reformatted) | Run `uv run ruff format scripts/ tests/` then re-commit. **Root cause**: `pre-commit install` not run — the `ruff-format` hook auto-formats on commit once installed. |
+| `ruff check` fails (N errors) | Run `uv run ruff check --fix scripts/ tests/` then review and re-commit. |
+| `validate_synthesis` heading missing | Add the required heading to the research doc. |
+| `validate_agent_files` cross-reference missing | Add a `../../MANIFESTO.md` or `../../AGENTS.md` link to the agent body. |
+| `validate_agent_files --skills` fails | Run `uv run python scripts/validate_agent_files.py --skills` locally to see which SKILL.md is malformed. |
+| `detect_drift` below threshold | Add explicit axiom citations to the flagged `.agent.md` file. |
+| `lychee` dead link (TLS / 4xx) | Check if the URL is genuinely dead. If it's a transient TLS issue (e.g. `spec.modelcontextprotocol.io`), add to `.lycheeignore` with a dated comment. |
 
 ---
 
