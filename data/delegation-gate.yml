@@ -3,7 +3,54 @@
 # This file encodes the routing table for executive-tier agent delegations
 # and Core Layer impermeability rules. Populated by Phase 2b validators.
 # Reference: docs/skills/delegation-routing/SKILL.md
+# Reference: AGENTS.md §Executive Fleet Privileges
 
-delegation_routes: {}
+delegation_routes:
+  # Orchestrator → all executives (coordination hub)
+  Orchestrator:
+    - Docs
+    - Researcher
+    - Scripter
+    - Automator
+    - PM
+    - Fleet
+    - Planner
+  
+  # Docs ↔ specialists
+  Docs:
+    - Researcher
+    - Scripter
+    - Automator
+  
+  # Researcher specialists
+  Researcher:
+    - Scripter
+  
+  # PM ↔ issue operations
+  PM: []
+  
+  # Review (no outbound delegation)
+  Review: []
+  
+  # GitHub (no outbound delegation)
+  GitHub: []
 
-governance_boundaries: {}
+governance_boundaries:
+  # Orchestrator-exclusive: code commits, multi-agent coordination
+  orchestrator_only:
+    - "git commit"
+    - "git push"
+    - "gh pr create"
+    - "multi-agent coordination"
+  
+  # Docs-exclusive: governance documentation updates
+  docs_only:
+    - "MANIFESTO.md updates"
+    - "AGENTS.md updates"
+    - "guide documentation"
+  
+  # Scripter-exclusive: script testing and validation
+  scripter_only:
+    - "pytest execution"
+    - "script debugging"
+    - "coverage analysis"
