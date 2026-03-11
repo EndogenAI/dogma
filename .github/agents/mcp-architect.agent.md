@@ -37,7 +37,7 @@ You exist to resolve issue #6 ("Locally distributed MCP frameworks") and to unbl
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -54,7 +54,7 @@ You exist to resolve issue #6 ("Locally distributed MCP frameworks") and to unbl
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -122,7 +122,7 @@ Write output to scratchpad under `## MCP Architect Output`. Then hand off to Res
 ---
 </instructions>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 
@@ -137,7 +137,7 @@ Write output to scratchpad under `## MCP Architect Output`. Then hand off to Res
 
 ---
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 

@@ -26,7 +26,7 @@ You are the **CI Monitor** for the EndogenAI Workflows project. Your mandate is 
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -41,7 +41,7 @@ You are the **CI Monitor** for the EndogenAI Workflows project. Your mandate is 
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -147,7 +147,7 @@ Write to scratchpad under `## CI Monitor Output`:
 ---
 </instructions>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 
@@ -161,7 +161,7 @@ Write to scratchpad under `## CI Monitor Output`:
 
 ---
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 

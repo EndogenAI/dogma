@@ -22,7 +22,7 @@ You operate in the **expansion phase** of the research workflow.
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -33,7 +33,7 @@ You operate in the **expansion phase** of the research workflow.
 ---
 </context>
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -129,7 +129,7 @@ Use the "Return to Executive Researcher" handoff.
 ---
 </instructions>
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 
@@ -170,7 +170,7 @@ A correct output from this agent looks like:
 ---
 </examples>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 

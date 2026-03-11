@@ -37,7 +37,7 @@ You are the **keeper of agent standards**: every agent file must have explicit g
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -75,7 +75,7 @@ Every agent file must meet these criteria:
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -167,7 +167,7 @@ Route all changes through **Review**, then **GitHub** for commit.
 ---
 </instructions>
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 
@@ -206,7 +206,7 @@ A correct output from this agent looks like:
 ---
 </examples>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 

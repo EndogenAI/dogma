@@ -23,7 +23,7 @@ You produce durable, committed knowledge, not notes. Every document you write mu
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -46,7 +46,7 @@ You are performing **contraction**: taking a broad set of raw findings and sharp
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -264,7 +264,7 @@ Use the "Return to Executive Researcher" handoff with the path to the completed 
 ---
 </instructions>
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 
@@ -321,7 +321,7 @@ model "knows" at inference time.
 ---
 </examples>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 

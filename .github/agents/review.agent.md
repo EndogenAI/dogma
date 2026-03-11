@@ -24,7 +24,7 @@ You are **read-only**. You do not edit files. You flag issues and hand off to ei
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -81,7 +81,7 @@ You are **read-only**. You do not edit files. You flag issues and hand off to ei
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -93,7 +93,7 @@ You are **read-only**. You do not edit files. You flag issues and hand off to ei
 ---
 </instructions>
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 
@@ -135,7 +135,7 @@ A correct output from this agent looks like:
 ---
 </examples>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 

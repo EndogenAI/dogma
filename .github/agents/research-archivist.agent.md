@@ -25,7 +25,7 @@ You are the final step in the research pipeline before a piece of knowledge beco
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -36,7 +36,7 @@ You are the final step in the research pipeline before a piece of knowledge beco
 ---
 </context>
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -91,7 +91,7 @@ Use the "Return to Executive Researcher" handoff so the executive can update gui
 ---
 </instructions>
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 
@@ -136,7 +136,7 @@ A correct output from this agent looks like:
 ---
 </examples>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 

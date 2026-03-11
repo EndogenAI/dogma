@@ -362,7 +362,7 @@ uv run python scripts/validate_agent_files.py --all
 
 All 4 checks must pass:
 - YAML frontmatter: `name` + `description` present
-- Required sections: Endogenous Sources, Action section (heading containing `workflow`/`checklist`/`conventions`/`playbook`/`scope`/`methodology`), Quality-gate section (heading containing `completion criteria` or `guardrails`)
+- Required sections: Beliefs & Context, Workflow & Intentions, Desired Outcomes & Acceptance (fuzzy keyword matching from accepted variants for backward compatibility during migration)
 - Cross-reference density: ≥1 link to `MANIFESTO.md` or `AGENTS.md`
 - No heredoc writes
 

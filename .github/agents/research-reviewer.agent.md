@@ -20,7 +20,7 @@ You are a **read-only** agent. You do not edit documents. You flag issues and re
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -62,7 +62,7 @@ For each synthesis draft, evaluate the following:
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -104,7 +104,7 @@ Use the "Return to Executive Researcher" handoff. The Executive Researcher decid
 ---
 </instructions>
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 
@@ -147,7 +147,7 @@ A correct output from this agent looks like:
 ---
 </examples>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 

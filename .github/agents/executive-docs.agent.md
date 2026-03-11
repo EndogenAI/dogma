@@ -45,7 +45,7 @@ Documentation is not decoration. In the endogenic methodology, documentation lay
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -129,7 +129,7 @@ Key principles to apply in every document:
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -174,7 +174,7 @@ Route all changes through **Review** before committing. Never self-merge documen
 ---
 </instructions>
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 
@@ -211,7 +211,7 @@ A correct output from this agent looks like:
 ---
 </examples>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 

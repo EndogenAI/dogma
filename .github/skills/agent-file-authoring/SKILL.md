@@ -91,27 +91,27 @@ See [`.github/agents/README.md`](../../agents/README.md) for the milestone struc
 
 ---
 
-## 3. Required Sections
+## 3. Required Sections — BDI Framing
 
-CI fuzzy-matches for three required section types. Every agent file must contain at least one of each:
+CI fuzzy-matches for three required section types using Beliefs-Desires-Intentions (BDI) agent framing. Every agent file must contain at least one of each:
 
-| Category | Accepted heading variants | Purpose |
-|----------|--------------------------|---------|
-| Endogenous Sources | `Endogenous Sources`, `Sources`, `Reference`, `Context` | Declare guiding axioms, link to defining GitHub issue, state acceptance criteria |
-| Action | `Action`, `Workflow`, `Checklist`, `Conventions`, `Instructions`, `Steps` | Define the agent's workflow and execution steps |
-| Quality-gate | `Quality-gate`, `Completion Criteria`, `Guardrails`, `Done When`, `Acceptance` | State what "completed" looks like per the defining issue |
+| BDI Category | Canonical Heading | Accepted variants | Purpose |
+|----------|-------------------|------------------|----------|
+| Beliefs & Context | `## Beliefs & Context` | `Endogenous Sources`, `Sources`, `Reference`, `Context` | Agent's knowledge base and foundational context — guiding axioms, GitHub issue definition, acceptance criteria |
+| Workflow & Intentions | `## Workflow & Intentions` | `Action`, `Workflow`, `Checklist`, `Conventions`, `Instructions`, `Steps`, `Scope`, `Methodology` | Agent's desired goals and planned steps — how the agent acts to achieve those goals |
+| Desired Outcomes & Acceptance | `## Desired Outcomes & Acceptance` | `Quality-gate`, `Completion Criteria`, `Guardrails`, `Done When`, `Acceptance` | Success definition — what "completed" looks like per the defining issue, measurable outcomes |
 
-Use `## Endogenous Sources`, `## Workflow`, and `## Completion Criteria` as the canonical heading names unless you have a specific reason to deviate.
+Use `## Beliefs & Context`, `## Workflow & Intentions`, and `## Desired Outcomes & Acceptance` as the canonical heading names. Accept the listed variants for backward compatibility during migration.
 
-**Discipline rule for Endogenous Sources section**: Always encode:
+**Discipline rule for Beliefs & Context section**: Always encode:
 1. The governing axiom from [`MANIFESTO.md`](../../../MANIFESTO.md) this agent enacts
 2. Link to the GitHub issue number that defines this agent (e.g., `#62 Implement Remaining Agent Skills`)
 3. The milestone this agent targets (from Optional Discipline Fields above)
 4. A reference to the issue's acceptance criteria (see docs/guides/agents.md for example)
 
-**Example Endogenous Sources**:
+**Example Beliefs & Context**:
 ```markdown
-## Endogenous Sources
+## Beliefs & Context
 
 This agent is defined by:
 - **Issue**: [#62 Implement Remaining Agent Skills](https://github.com/EndogenAI/Workflows/issues/62)
@@ -168,10 +168,10 @@ Low cross-reference density is a signal of encoding drift — the agent has been
 
 ## 6. Encoding Inheritance Declaration
 
-The first substantive section of every agent file must name the governing axiom and cite the primary endogenous source. This mirrors the session-start encoding checkpoint pattern:
+The first substantive section (Beliefs & Context) of every agent file must name the governing axiom and cite the primary endogenous source. This mirrors the session-start encoding checkpoint pattern:
 
 ```markdown
-## Endogenous Sources
+## Beliefs & Context
 
 This agent enacts the *<Axiom Name>* axiom from [`MANIFESTO.md`](../../MANIFESTO.md).
 Read [`AGENTS.md`](../../AGENTS.md) before modifying any procedure in this file.

@@ -33,7 +33,7 @@ You exist because issues #5 and #6 ("Running VS Code Copilot locally with local 
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -53,7 +53,7 @@ uv run python scripts/fetch_source.py <url> --check
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -124,7 +124,7 @@ Then hand off to **Research Synthesizer** for formal synthesis.
 ---
 </instructions>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 
@@ -139,7 +139,7 @@ Then hand off to **Research Synthesizer** for formal synthesis.
 
 ---
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 

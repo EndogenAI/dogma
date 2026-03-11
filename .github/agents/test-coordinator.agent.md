@@ -23,7 +23,7 @@ You are **read-only and advisory** — you flag gaps and make recommendations. P
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -120,7 +120,7 @@ Write to scratchpad under `## Test Coordinator Output`:
 ---
 </instructions>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 
@@ -133,7 +133,7 @@ Write to scratchpad under `## Test Coordinator Output`:
 
 ---
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 

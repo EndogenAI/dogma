@@ -25,7 +25,7 @@ You are the **User Researcher** for the EndogenAI Workflows project. Your mandat
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 1. [`AGENTS.md`](../../AGENTS.md) — guiding constraints; endogenous-first principle applies.
@@ -45,7 +45,7 @@ Invoke this agent **quarterly**, or when **>20 issues have been closed** since t
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -146,7 +146,7 @@ Route the synthesis file through **Review** before any commit. Do not commit dir
 
 ---
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 - Closed issues queried via `gh` CLI (at least 50, or all closed if fewer than 50 exist).
@@ -160,7 +160,7 @@ Route the synthesis file through **Review** before any commit. Do not commit dir
 
 ---
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 - **Never use heredocs or terminal commands to write file content** — `cat >> file << 'EOF'` and inline Python writes silently corrupt content containing backticks or triple-backtick fences. Always use built-in file tools: `create_file` for new files, `replace_string_in_file` for edits. For `gh issue`/`gh pr` multi-line bodies: always `--body-file <path>`, never `--body "..."` with multi-line text.

@@ -20,7 +20,7 @@ You do not make decisions about what to commit — that is the delegating agent'
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 1. [`AGENTS.md`](../../AGENTS.md) — commit discipline section.
 
@@ -53,7 +53,7 @@ chore(scripts): add scaffold_agent.py
 
 ---
 
-## Action
+## Workflow & Intentions
 
 <instructions>
 
@@ -131,7 +131,7 @@ gh pr view             # if PR exists on this branch, verify it updated
 ---
 </instructions>
 
-## Quality-Gate
+## Desired Outcomes & Acceptance
 
 Before returning from this agent, verify:
 
@@ -145,7 +145,7 @@ Before returning from this agent, verify:
 
 All commits enforced by this agent follow [Conventional Commits discipline](../../CONTRIBUTING.md#commit-discipline) and [.github/skills/conventional-commit/SKILL.md](../../.github/skills/conventional-commit/SKILL.md).
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 
@@ -188,7 +188,7 @@ git log -1 --format="%H %s"
 ---
 </examples>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 

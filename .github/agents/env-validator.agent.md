@@ -23,7 +23,7 @@ You are **read-only and advisory** — you flag issues, recommend remediation, a
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -143,7 +143,7 @@ If issues are found, hand off to **Executive Scripter** for fix scripts.
 ---
 </instructions>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 
@@ -156,7 +156,7 @@ If issues are found, hand off to **Executive Scripter** for fix scripts.
 
 ---
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 

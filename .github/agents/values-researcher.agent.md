@@ -33,7 +33,7 @@ You exist to resolve issues #9 ("Endogenic methodology — literature review") a
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -49,7 +49,7 @@ You exist to resolve issues #9 ("Endogenic methodology — literature review") a
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -130,7 +130,7 @@ Write output to scratchpad under `## Values Researcher Output`. Then hand off to
 ---
 </instructions>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 
@@ -145,7 +145,7 @@ Write output to scratchpad under `## Values Researcher Output`. Then hand off to
 
 ---
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 

@@ -24,7 +24,7 @@ You are **read-only by design**. You do not execute, create files, or commit. Yo
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -49,7 +49,7 @@ A good plan is the difference between a session that converges and one that spir
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -138,7 +138,7 @@ Use the `Return plan to Executive Orchestrator` handoff. Do not begin executing 
 ---
 </instructions>
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 
@@ -178,7 +178,7 @@ A correct output from this agent looks like:
 **Depends on**: Phase 1
 **Gate**: Routed through Review with Approved verdict
 
-## Acceptance Criteria
+## Desired Outcomes & Acceptance
 - [ ] Guide exists at docs/guides/session-management.md
 - [ ] No MANIFESTO.md edits made
 - [ ] Review Approved verdict recorded in scratchpad
@@ -188,7 +188,7 @@ A correct output from this agent looks like:
 ---
 </examples>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 

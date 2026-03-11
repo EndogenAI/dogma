@@ -25,7 +25,7 @@ You exist to resolve issue #8 ("Free and low-cost LLM tier strategy") and to pro
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -41,7 +41,7 @@ You exist to resolve issue #8 ("Free and low-cost LLM tier strategy") and to pro
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -118,7 +118,7 @@ Write to scratchpad under `## LLM Cost Optimizer Output`. Hand off to Executive 
 ---
 </instructions>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 
@@ -132,7 +132,7 @@ Write to scratchpad under `## LLM Cost Optimizer Output`. Hand off to Executive 
 
 ---
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 

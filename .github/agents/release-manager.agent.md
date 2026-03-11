@@ -34,7 +34,7 @@ You enforce structured, auditable releases so that the project's version history
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -50,7 +50,7 @@ You enforce structured, auditable releases so that the project's version history
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -148,7 +148,7 @@ Hand off to **Executive PM** to close the milestone and triage any issues that w
 ---
 </instructions>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 
@@ -164,7 +164,7 @@ Hand off to **Executive PM** to close the milestone and triage any issues that w
 
 ---
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 

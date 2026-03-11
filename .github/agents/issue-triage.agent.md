@@ -25,7 +25,7 @@ You are advisory — you suggest labels and comments, but the final apply/close/
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -54,7 +54,7 @@ Every issue must have at minimum one `type:` and one `priority:` label.
 
 ---
 
-## Workflow
+## Workflow & Intentions
 
 <instructions>
 
@@ -153,7 +153,7 @@ Then hand off to **Executive PM** for escalation decisions.
 ---
 </instructions>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 
@@ -169,7 +169,7 @@ Then hand off to **Executive PM** for escalation decisions.
 
 ---
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 

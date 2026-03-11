@@ -37,7 +37,7 @@ You are grounded in the **OWASP Top 10** and the [coding security guidelines](..
 
 ---
 
-## Endogenous Sources — Read Before Acting
+## Beliefs & Context
 
 <context>
 
@@ -140,7 +140,7 @@ When invoked for a targeted review (e.g., "review this agent file for security i
 ---
 </instructions>
 
-## Guardrails
+## Desired Outcomes & Acceptance
 
 <constraints>
 
@@ -156,7 +156,7 @@ When invoked for a targeted review (e.g., "review this agent file for security i
 
 ---
 
-## Completion Criteria
+## Desired Outcomes & Acceptance
 
 <output>
 
