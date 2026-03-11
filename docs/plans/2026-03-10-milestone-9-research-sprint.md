@@ -296,6 +296,34 @@ For each issue (#179, #169, #178), conduct web searches to identify additional s
 
 ### **Phase 3 — Bubble Clusters Research Domain**
 
+#### Phase 3 Handoff Prompt (for next session execution)
+
+```
+@Executive Researcher Begin Phase 3c of Milestone 9 research sprint.
+
+**Branch**: feat/milestone-9-research-sprint
+**Workplan**: docs/plans/2026-03-10-milestone-9-research-sprint.md
+**Current Status**: Phase 3b Review APPROVED ✓
+
+**Before delegating Phase 3c execution**:
+1. Audit Phase 2 completion status (issues #177, #176, #179, #169, #178)
+2. If Phase 2 incomplete: Prioritize #177, #179 before Phase 3
+3. If Phase 2 complete: Proceed directly to Phase 3a (Topological Audit, issue #170)
+
+**Phase 3c scope**:
+- Phase 3a: Complete topological audit of bubble-cluster substrate definitions
+- Phase 3b: (Already complete via #181, #182 membrane/provenance scripts)
+- Phase 3c: Execute empirical validation for #183, #184, #185
+
+**Deliverables expected**:
+- Minimum: docs/research/bubble-topological-audit.md (D4 format)
+- If time: docs/research/laplace-pressure-validation.md OR docs/research/deployment-layer-extension.md
+
+**Ready to proceed**?
+```
+
+---
+
 #### Phase 3a: Foundational Theory & Topological Analysis
 
 **Agent**: Executive Researcher  
