@@ -787,8 +787,8 @@ The following external sources informed this synthesis on multi-layer system top
 ### Infrastructure & Microservices Architecture
 - **Kubernetes Documentation** — "Control Plane / Data Plane Separation": https://kubernetes.io/docs/concepts/architecture/ — Control plane (policy declaration) vs. data plane (policy enforcement) separation; ConfigMap patterns for declarative policy.
 - **Istio Service Mesh Architecture** — "Virtual Services and Destination Rules": https://istio.io/latest/docs/concepts/traffic-management/ — Policy declaration via VirtualService manifests; transparent enforcement via Envoy sidecars.
-- **Linkerd: Transparent Mutual TLS & Policy** — "How Linkerd Works": https://linkerd.io/2021/02/04/how-linkerd-works/ — Transparent boundary enforcement without application code changes; micro-proxy architecture for policy distribution.
-- **Envoy Proxy: Service Mesh Data Plane** — "Architecture & Design Patterns": https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/ — Sidecar proxy patterns for separating application logic from infrastructure governance.
+- **Linkerd Service Mesh** — Transparent boundary enforcement without application code changes; micro-proxy architecture for policy distribution. https://linkerd.io/
+- **Envoy Proxy: Service Mesh Data Plane** — Sidecar proxy patterns for separating application logic from infrastructure governance. https://www.envoyproxy.io/
 
 ### Domain-Driven Design & Anti-Corruption Patterns
 - **Evans, Eric (2003)** — *Domain-Driven Design: Tackling Complexity in the Heart of Software*. Addison-Wesley. — Anti-Corruption Layer pattern (pp. 365–370); protecting domain logic from external system pollution.
