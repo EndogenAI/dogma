@@ -136,8 +136,8 @@ SIGNAL_PATTERNS = {
         name="verdict",
         regex=(
             r"(?:(?:^|\n\n)\s*(?:APPROVED|REQUEST CHANGES|approved|request changes)(?:\s|$))|(?:"
-            r"{2}Status\*{0,2}|\*{0,2}Verdict\*{0,2}|\*{0,2}Decision\*{0,2})\s*:\s*(?:APPROVED|"
-            r"REQUEST CHANGES|approved|request changes))"
+            r"\*{0,2}Status\*{0,2}|\*{0,2}Verdict\*{0,2}|\*{0,2}Decision\*{0,2})\s*:\s*(?:APPROVED|"
+            r"REQUEST CHANGES|approved|request changes)"
         ),
         description="Explicit verdict from review gate (for reviewer-to-archivist membrane)",
         specificity_check=None,
