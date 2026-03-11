@@ -316,6 +316,70 @@ Mandatory checks after every subagent returns (before acting on output):
 
 *Amendments grounded in empirical handoff-drift audit (issue #75); degradation table in `docs/research/values-encoding.md` §5 OQ-VE-5. Three-layer encoding formalized session 2026-03-11 (issue #198); implementation in `.github/agents/executive-orchestrator.agent.md` § Pre-Delegation Checklist + Return Validation Gate.*
 
+### Membrane Permeability Specifications
+
+**Essence**: The agent fleet is a pipeline system. Each handoff between agents is bounded by a **membrane** — a specification of what data flows in, what flows out, and what canonical signals must be preserved in transit. Defective membranes cause signal loss. Documenting membranes makes losses visible.
+
+#### Scout → Synthesizer
+
+**Input permeability** (what Scout passes to Synthesizer):
+- Raw findings (bullets, quotes, observations from sources)
+- Full URLs (for citation tracing)
+- Source metadata (title, author, date if available)
+- Canonical examples and anti-patterns (verbatim, labeled)
+- Original MANIFESTO.md citations (with section references)
+
+**Output permeability** (what Synthesizer delivers):
+- Structured synthesis (narrative + tables)
+- Indexed canonical examples (cross-referenced to Pattern Catalog)
+- Deduplicated findings (removes redundancy, preserves signal)
+- Curated bibliography references
+
+**Signal preservation rules**:
+- ❌ Lost: Any raw example without a canonical label
+- ❌ Lost: Citation metadata (author or date) without fallback to URL
+- ✅ Preserved: All labeled `**Canonical example**:` verbatim
+- ✅ Preserved: At least 2 MANIFESTO axiom references by name + section
+
+#### Synthesizer → Reviewer
+
+**Input permeability** (what Reviewer checks):
+- Full draft D4 document (title, status, headings per schema)
+- Pattern Catalog entries (each with evidence + citations)
+- Recommendations section
+- Frontmatter metadata
+
+**Output permeability** (what Reviewer returns):
+- Approval or revision request (single verdict)
+- Specific flagged errors (missing headings, broken citations)
+- Suggested text fixes (optional, brief)
+- Approval metadata (reviewer name, timestamp)
+
+**Signal preservation rules**:
+- ❌ Lost: Reviewer request that references external files not included in the draft
+- ❌ Lost: Approval without documented evidence checks (section count, citation count)
+- ✅ Preserved: All Pattern Catalog examples cited back to sources
+- ✅ Preserved: MANIFESTO.md axiom anchors (≥2) appear in final text
+
+#### Reviewer → Archivist
+
+**Input permeability** (what Archivist commits):
+- Approved D4 document (with all Reviewer flags resolved)
+- Git commit metadata (author, date)
+- Link registry updates (if new URL targets added)
+
+**Output permeability** (what Archivist publishes):
+- Committed research file in `docs/research/`
+- YAML frontmatter with `status: Published`
+- Permanent URL in GitHub / project site
+- Session scratchpad annotation (closes research epic)
+
+**Signal preservation rules**:
+- ❌ Lost: A D4 doc published without at least one canonical example in Pattern Catalog
+- ❌ Lost: Commit message that does not reference the research issue number
+- ✅ Preserved: All citations resolve (no 404s) in committed bibliography
+- ✅ Preserved: Frontmatter matches schema (title, status, closes_issue when applicable)
+
 ### Size Guard and Archive Convention
 
 | Situation | Action |
@@ -615,6 +679,27 @@ The heredoc write anti-pattern is enforced by a two-tier programmatic stack. Tex
 For the full setup guide, pattern details, and acceptance test: [`docs/guides/governor-setup.md`](docs/guides/governor-setup.md)  
 For the bash-preexec adoption decision: [`docs/decisions/ADR-007-bash-preexec.md`](docs/decisions/ADR-007-bash-preexec.md)  
 Research synthesis: [`docs/research/shell-preexec-governor.md`](docs/research/shell-preexec-governor.md)
+
+---
+
+## Value Fidelity Test Taxonomy
+
+**Essence**: Encoding fidelity degrades at every layer (MANIFESTO.md → AGENTS.md → agent files → SKILL.md → session prompts). How do we detect and measure the loss? This taxonomy defines signal types, encoding layers, test methods, and red flags for each layer.
+
+**Signal Type** — the endogenous knowledge being encoded
+
+| Signal Type | Encoding Layer | Test Method | Red Flag (Signal Loss) | Recovery |
+|-------------|----------------|------------|----------------------|----------|
+| MANIFESTO.md axiom | T1 (verbal, principles) | Citation density: axiom appears ≥2 times per 1000-word doc | Axiom mentioned <2 times, or citation has no §reference | Add explicit citations back to axiom (name + section) |
+| AGENTS.md constraint | T2 (text constraints, decision gates) | Keyword match: constraint name appears in agent body or skill body | Constraint not cited in implementing code/agent (drift) | Tag constraint location in AGENTS.md, cross-ref from agent/skill |
+| Agent posture (tool scope) | T3 (static linting, pre-commit) | `validate_agent_files.py` check: tools field matches posture category (readonly/creator/full) | Agent tools mismatch posture (e.g., terminal access marked "readonly") | Fix tools field; run validator before commit |
+| Session behavior encoding | T4 (runtime gates, policy enforcement) | Deputy/governor check: pre-commit gate or runtime wrapper enforces policy dynamically | Governor policy ignored (e.g., heredoc written despite pre-commit gate) | Audit recent `git log` for policy violations; escalate to Executive Scripter |
+
+**How to use this table**:
+- When adding a new agent, verify all four signal layers are intact before committing
+- If an agent fails CI (ruff, validate-agent-files), trace the failure to a specific signal layer using this table
+- If session behavior drifts (e.g., agents not reading AGENTS.md before acting), check the T4 (runtime) layer first — governors may be misconfigured
+- Document any signal loss in a session summary; escalate patterns to Executive Docs for substrate updates
 
 ---
 
