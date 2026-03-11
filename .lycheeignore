@@ -32,3 +32,9 @@ https://www.atlassian.com/agile/kanban/kanban-vs-scrum
 # (/en/v1.0.0/ path). Both variants excluded.
 https://www.conventionalcommits.org/
 https://www.conventionalcommits.org/en/v1.0.0/
+
+# istio.io traffic-management — network errors from GitHub Actions runners
+# (connection refused / DNS failure). Istio site is live and accessible;
+# referenced in docs/research/six-layer-topological-extension.md.
+# May be due to firewall/proxy rules in GitHub's CI environment.
+https://istio.io/latest/docs/concepts/traffic-management/
