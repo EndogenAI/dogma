@@ -221,7 +221,7 @@ The metric explains why we do not compact scripts (regenerability = 1.0, worth e
 
 ---
 
-## 3. Pattern Catalog
+## 4. Pattern Catalog
 
 ### Pattern 1 — Four Orthogonal Substrate Categories
 
@@ -280,7 +280,7 @@ The metric explains why we do not compact scripts (regenerability = 1.0, worth e
 
 ---
 
-## 4. Fourth Category Hypothesis: Regenerable Provenance
+## 5. Fourth Category Hypothesis: Regenerable Provenance
 
 **Verdict**: CONFIRMED — this is a distinct category with zero compaction cost and high audit value
 
@@ -308,7 +308,7 @@ The metric explains why we do not compact scripts (regenerability = 1.0, worth e
 
 ---
 
-## 5. Recommended Compaction Policies by Category
+## 6. Recommended Compaction Policies by Category
 
 ### Policy 1: Content (Never Compact)
 
@@ -375,7 +375,7 @@ If substrate ∈ Regenerable:
 
 ---
 
-## 6. Token-Efficiency Projection: 12-Month Outlook
+## 7. Token-Efficiency Projection: 12-Month Outlook
 
 **Scenario**: Milestone 9 intensive research (4 phases, 3-4 sessions/phase = 12–16 sessions total; avg 90K tokens/session for context overhead)
 
@@ -393,7 +393,7 @@ If substrate ∈ Regenerable:
 
 ---
 
-## 7. Sources
+## 8. Sources
 
 ### Primary Sources
 
