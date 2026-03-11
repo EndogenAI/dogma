@@ -6,11 +6,6 @@
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "${env:GITHUB_TOKEN}"
       }
-    },
-    "filesystem": {
-      "command": "node",
-      "args": ["mcp_server.py"],
-      "env": {}
     }
   }
 }

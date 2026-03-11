@@ -59,18 +59,9 @@ The Endogenous-First principle (MANIFESTO.md § 1) prioritizes **local compute a
 - Search for patterns within files
 - Get file metadata (size, modification time)
 
-**Configuration** (`.vscode/mcp.json`):
-```json
-{
-  "filesystem": {
-    "command": "node",
-    "args": ["mcp_server.py"],
-    "env": {}
-  }
-}
-```
+**Configuration**: Not yet included in `.vscode/mcp.json` — the filesystem stanza has been deferred until `mcp_server.py` is implemented. See child issue for implementation scope.
 
-**Status**: Placeholder configuration. Implementation (`mcp_server.py`) deferred to child issue.
+**Status**: Implementation (`mcp_server.py`) deferred to child issue. Will be added to `.vscode/mcp.json` when ready.
 
 **Design notes**:
 - Server will be a Python subprocess (not Node.js; placeholder arg is a placeholder)
