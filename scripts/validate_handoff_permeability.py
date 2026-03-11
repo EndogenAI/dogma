@@ -59,7 +59,7 @@ import re
 import sys
 from dataclasses import dataclass, asdict
 from pathlib import Path
-from typing import Optional
+from typing import Callable, Optional
 
 
 # ===========================================================================
@@ -99,7 +99,7 @@ class SignalPattern:
     name: str
     regex: str
     description: str
-    specificity_check: Optional[callable] = None  # callable(match_text) -> bool
+    specificity_check: Optional[Callable] = None  # callable(match_text) -> bool
 
 
 SIGNAL_PATTERNS = {
