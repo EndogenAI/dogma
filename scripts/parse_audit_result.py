@@ -75,9 +75,11 @@ from typing import Optional
 # Data Classes & Risk Assessment
 # ===========================================================================
 
+
 @dataclass
 class AgentRiskAssessment:
     """Risk assessment for a single agent."""
+
     name: str
     status: str  # "orphaned" | "unverifiable" | "verified"
     axiom_cites: int
@@ -89,6 +91,7 @@ class AgentRiskAssessment:
 @dataclass
 class OverallRiskAssessment:
     """Aggregate risk assessment across all agents."""
+
     status: str  # "green" | "yellow" | "red"
     agents: list[AgentRiskAssessment]
     green_count: int
@@ -102,6 +105,7 @@ class OverallRiskAssessment:
 # ===========================================================================
 # Risk Computation
 # ===========================================================================
+
 
 def assess_agent_risk(
     name: str,
@@ -128,18 +132,10 @@ def assess_agent_risk(
     """
 
     if orphaned:
-        return (
-            "red",
-            "Orphaned: no 'governs:' field in agent spec. "
-            "Cannot verify grounding in MANIFESTO.md."
-        )
+        return ("red", "Orphaned: no 'governs:' field in agent spec. Cannot verify grounding in MANIFESTO.md.")
 
     if unverifiable:
-        return (
-            "red",
-            f"Unverifiable axiom citations. References {axiom_cites} axiom(s) "
-            f"not found in MANIFESTO.md."
-        )
+        return ("red", f"Unverifiable axiom citations. References {axiom_cites} axiom(s) not found in MANIFESTO.md.")
 
     # Normalize cite counts to a 0–1 intensity scale
     # Assume threshold ~= normal expected cite count
@@ -156,13 +152,11 @@ def assess_agent_risk(
     if axiom_cites > cite_threshold_high:
         if test_coverage is None or test_coverage > coverage_high:
             coverage_msg = (
-                "High test coverage."
-                if test_coverage and test_coverage > coverage_high
-                else "No test data available."
+                "High test coverage." if test_coverage and test_coverage > coverage_high else "No test data available."
             )
             return (
                 "green",
-                f"Strong axiom grounding ({axiom_cites} cite(s), {cite_intensity:.1%} intensity). {coverage_msg}"
+                f"Strong axiom grounding ({axiom_cites} cite(s), {cite_intensity:.1%} intensity). {coverage_msg}",
             )
 
     # Red: weak citation intensity AND low coverage
@@ -171,23 +165,22 @@ def assess_agent_risk(
             "red",
             f"Low axiom grounding ({axiom_cites} cite(s), {cite_intensity:.1%} intensity) and "
             f"{'low test coverage ({:.0f}%)'.format(test_coverage) if test_coverage else 'no test data'}. "
-            f"High drift risk; recommend axiom grounding review."
+            f"High drift risk; recommend axiom grounding review.",
         )
 
     # Yellow: everything else (mixed signals)
-    coverage_note = (
-        f"coverage {test_coverage:.0f}%" if test_coverage else "no test data"
-    )
+    coverage_note = f"coverage {test_coverage:.0f}%" if test_coverage else "no test data"
     return (
         "yellow",
         f"Moderate axiom grounding ({axiom_cites} cite(s), {cite_intensity:.1%} intensity), "
-        f"{coverage_note}. Monitor for drift."
+        f"{coverage_note}. Monitor for drift.",
     )
 
 
 # ===========================================================================
 # Main Parsing Function
 # ===========================================================================
+
 
 def parse_audit_result(
     audit_json: dict,
@@ -250,20 +243,20 @@ def parse_audit_result(
         else:
             red_count += 1
 
-        assessments.append(AgentRiskAssessment(
-            name=name,
-            status="orphaned" if orphaned else ("unverifiable" if unverifiable_list else "verified"),
-            axiom_cites=axiom_cites,
-            test_coverage=test_coverage,
-            risk_level=risk_level,
-            notes=notes,
-        ))
+        assessments.append(
+            AgentRiskAssessment(
+                name=name,
+                status="orphaned" if orphaned else ("unverifiable" if unverifiable_list else "verified"),
+                axiom_cites=axiom_cites,
+                test_coverage=test_coverage,
+                risk_level=risk_level,
+                notes=notes,
+            )
+        )
 
     # Compute aggregate metrics
     total = len(assessments)
-    avg_cite_intensity = (
-        sum(a.axiom_cites for a in assessments) / max(1, total)
-    )
+    avg_cite_intensity = sum(a.axiom_cites for a in assessments) / max(1, total)
 
     # Determine overall risk
     if green_count / max(1, total) > 0.7:
@@ -309,6 +302,7 @@ def parse_audit_result(
 # Recommendation Generation
 # ===========================================================================
 
+
 def generate_recommendations(
     overall_risk: str,
     green_count: int,
@@ -349,6 +343,7 @@ def generate_recommendations(
 # Markdown Report Generation
 # ===========================================================================
 
+
 def generate_markdown_report(
     assessments: list[AgentRiskAssessment],
     overall_risk: str,
@@ -384,20 +379,24 @@ def generate_markdown_report(
     ]
 
     if recommendations:
-        lines.extend([
-            "## Recommendations",
-            "",
-        ])
+        lines.extend(
+            [
+                "## Recommendations",
+                "",
+            ]
+        )
         for rec in recommendations:
             lines.append(f"- {rec}")
         lines.append("")
 
-    lines.extend([
-        "## Agent Risk Assessment",
-        "",
-        "| Agent | Status | Risk | Cites | Notes |",
-        "|-------|--------|------|-------|-------|",
-    ])
+    lines.extend(
+        [
+            "## Agent Risk Assessment",
+            "",
+            "| Agent | Status | Risk | Cites | Notes |",
+            "|-------|--------|------|-------|-------|",
+        ]
+    )
 
     for assessment in sorted(assessments, key=lambda a: ("red", "yellow", "green").index(a.risk_level)):
         emoji = risk_emoji.get(assessment.risk_level, "?")
@@ -408,18 +407,20 @@ def generate_markdown_report(
             f"{emoji} {assessment.risk_level} | {assessment.axiom_cites} | {notes_short} |"
         )
 
-    lines.extend([
-        "",
-        "## Interpretation",
-        "",
-        "- **Green**: Strong axiom grounding; low risk of value-encoding drift",
-        "- **Yellow**: Mixed signals; monitor cite intensity and test coverage trends",
-        "- **Red**: Weak axiom grounding; high drift risk; recommend immediate review",
-        "",
-        "See [`docs/research/values-encoding.md`](../../docs/research/values-encoding.md) "
-        "and [`docs/research/enforcement-tier-mapping.md`](../../docs/research/enforcement-tier-mapping.md) "
-        "for detailed methodology.",
-    ])
+    lines.extend(
+        [
+            "",
+            "## Interpretation",
+            "",
+            "- **Green**: Strong axiom grounding; low risk of value-encoding drift",
+            "- **Yellow**: Mixed signals; monitor cite intensity and test coverage trends",
+            "- **Red**: Weak axiom grounding; high drift risk; recommend immediate review",
+            "",
+            "See [`docs/research/values-encoding.md`](../../docs/research/values-encoding.md) "
+            "and [`docs/research/enforcement-tier-mapping.md`](../../docs/research/enforcement-tier-mapping.md) "
+            "for detailed methodology.",
+        ]
+    )
 
     return "\n".join(lines)
 
@@ -427,6 +428,7 @@ def generate_markdown_report(
 # ===========================================================================
 # CLI Entry Point
 # ===========================================================================
+
 
 def main():
     parser = argparse.ArgumentParser(

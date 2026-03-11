@@ -65,9 +65,11 @@ from typing import Callable, Optional
 # Signal Detection Definitions
 # ===========================================================================
 
+
 @dataclass
 class MembraneSpec:
     """Specification of which signals must be preserved in a given membrane."""
+
     name: str
     required_signals: list[str]  # must be ≥1 match
     compressible_signals: list[str]  # optional; warn if completely absent
@@ -95,6 +97,7 @@ MEMBRANE_SPECS = {
 @dataclass
 class SignalPattern:
     """Regex pattern and validation logic for a signal type."""
+
     name: str
     regex: str
     description: str
@@ -106,18 +109,16 @@ SIGNAL_PATTERNS = {
         name="canonical_example",
         regex=r"\*\*Canonical example\*\*:\s*(.+?)(?=\n\n|\n##|$)",
         description="Labeled canonical example from AGENTS.md signal preservation rules",
-        specificity_check=lambda text: not re.search(
-            r"(this is good|very good|works well|bad|wrong|incorrect)(?:\s|$)",
-            text.lower()
-        ) and len(text) > 20,
+        specificity_check=lambda text: (
+            not re.search(r"(this is good|very good|works well|bad|wrong|incorrect)(?:\s|$)", text.lower())
+            and len(text) > 20
+        ),
     ),
     "anti_pattern": SignalPattern(
         name="anti_pattern",
         regex=r"\*\*Anti-pattern\*\*:\s*(.+?)(?=\n\n|\n##|$)",
         description="Labeled anti-pattern from AGENTS.md signal preservation rules",
-        specificity_check=lambda text: len(text) > 15 and not re.search(
-            r"^(bad|wrong|avoid)$", text.lower().strip()
-        ),
+        specificity_check=lambda text: len(text) > 15 and not re.search(r"^(bad|wrong|avoid)$", text.lower().strip()),
     ),
     "axiom_citation": SignalPattern(
         name="axiom_citation",
@@ -185,9 +186,11 @@ SIGNAL_PATTERNS = {
 # Main Validation Function
 # ===========================================================================
 
+
 @dataclass
 class ValidationResult:
     """Result of handoff permeability validation."""
+
     status: str  # "pass" | "fail"
     membrane_type: str
     missing_signals: list[str]
@@ -236,10 +239,7 @@ def validate_handoff_permeability(
     """
 
     if membrane_type not in MEMBRANE_SPECS:
-        raise ValueError(
-            f"Unknown membrane_type: {membrane_type}. "
-            f"Must be one of: {', '.join(MEMBRANE_SPECS.keys())}"
-        )
+        raise ValueError(f"Unknown membrane_type: {membrane_type}. Must be one of: {', '.join(MEMBRANE_SPECS.keys())}")
 
     spec = MEMBRANE_SPECS[membrane_type]
 
@@ -251,10 +251,7 @@ def validate_handoff_permeability(
         valid_signals = set(SIGNAL_PATTERNS.keys())
         invalid = set(required_signals) - valid_signals
         if invalid:
-            raise ValueError(
-                f"Invalid signal types: {', '.join(invalid)}. "
-                f"Must be one of: {', '.join(valid_signals)}"
-            )
+            raise ValueError(f"Invalid signal types: {', '.join(invalid)}. Must be one of: {', '.join(valid_signals)}")
 
     # Detect signal presence and count
     signal_counts = {}
@@ -269,10 +266,7 @@ def validate_handoff_permeability(
         # Validate specificity if checker provided
         valid_matches = matches
         if pattern_spec.specificity_check:
-            valid_matches = [
-                m for m in matches
-                if pattern_spec.specificity_check(m if isinstance(m, str) else m[0])
-            ]
+            valid_matches = [m for m in matches if pattern_spec.specificity_check(m if isinstance(m, str) else m[0])]
 
         signal_counts[signal_type] = len(valid_matches)
 
@@ -296,9 +290,7 @@ def validate_handoff_permeability(
                     f"Recommend compression per Compression-on-Ascent rule."
                 )
             elif signal_type != "line_by_line_comments" and len(matches) == 0:
-                warnings.append(
-                    f"Compressible signal '{signal_type}' completely absent (not critical, but notable)"
-                )
+                warnings.append(f"Compressible signal '{signal_type}' completely absent (not critical, but notable)")
 
     # Determine pass/fail status: all required signals must be present
     status = "pass" if len(missing_signals) == 0 else "fail"
@@ -327,6 +319,7 @@ def validate_handoff_permeability(
 # ===========================================================================
 # Report Generation
 # ===========================================================================
+
 
 def generate_permeability_report(
     membrane_type: str,
@@ -357,10 +350,12 @@ def generate_permeability_report(
     ]
 
     if found_signals:
-        lines.extend([
-            "## ✅ Preserved Signals",
-            "",
-        ])
+        lines.extend(
+            [
+                "## ✅ Preserved Signals",
+                "",
+            ]
+        )
         for signal_type in found_signals:
             count = signal_counts.get(signal_type, 0)
             pattern_spec = SIGNAL_PATTERNS.get(signal_type)
@@ -369,10 +364,12 @@ def generate_permeability_report(
         lines.append("")
 
     if missing_signals:
-        lines.extend([
-            "## ❌ Missing Signals (Required)",
-            "",
-        ])
+        lines.extend(
+            [
+                "## ❌ Missing Signals (Required)",
+                "",
+            ]
+        )
         for signal_type in missing_signals:
             pattern_spec = SIGNAL_PATTERNS.get(signal_type)
             desc = pattern_spec.description if pattern_spec else ""
@@ -380,18 +377,22 @@ def generate_permeability_report(
         lines.append("")
 
     if warnings:
-        lines.extend([
-            "## ⚠️ Warnings",
-            "",
-        ])
+        lines.extend(
+            [
+                "## ⚠️ Warnings",
+                "",
+            ]
+        )
         for warning in warnings:
             lines.append(f"- {warning}")
         lines.append("")
 
-    lines.extend([
-        "## Interpretation",
-        "",
-    ])
+    lines.extend(
+        [
+            "## Interpretation",
+            "",
+        ]
+    )
 
     if status == "pass":
         lines.append(
@@ -407,15 +408,17 @@ def generate_permeability_report(
         )
 
     lines.append("")
-    lines.extend([
-        "## Reference: AGENTS.md Signal Preservation Rules",
-        "",
-        "From [`AGENTS.md`](../../AGENTS.md) § Agent Communication → Focus-on-Descent / Compression-on-Ascent:",
-        "",
-        "> When compressing findings, preserve all labeled `**Canonical example**:` and `**Anti-pattern**:` ",
-        "> instances verbatim — compress surrounding context, not concrete illustrations. Retain at least 2 ",
-        "> explicit MANIFESTO.md axiom citations (by name + section reference) as anchors.",
-    ])
+    lines.extend(
+        [
+            "## Reference: AGENTS.md Signal Preservation Rules",
+            "",
+            "From [`AGENTS.md`](../../AGENTS.md) § Agent Communication → Focus-on-Descent / Compression-on-Ascent:",
+            "",
+            "> When compressing findings, preserve all labeled `**Canonical example**:` and `**Anti-pattern**:` ",
+            "> instances verbatim — compress surrounding context, not concrete illustrations. Retain at least 2 ",
+            "> explicit MANIFESTO.md axiom citations (by name + section reference) as anchors.",
+        ]
+    )
 
     return "\n".join(lines)
 
@@ -423,6 +426,7 @@ def generate_permeability_report(
 # ===========================================================================
 # CLI Entry Point
 # ===========================================================================
+
 
 def main():
     parser = argparse.ArgumentParser(

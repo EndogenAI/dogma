@@ -26,6 +26,7 @@ from typing import TypedDict
 
 class HealthMetrics(TypedDict):
     """Per-file health metrics."""
+
     filepath: str
     filename: str
     file_type: str
@@ -45,7 +46,10 @@ def count_open_issues(query: str) -> int:
         result = subprocess.run(
             f"cd /Users/conor/Sites/dogma && git log --all --oneline --grep="
             f"{re.escape(Path(query).stem)} -- {query} | wc -l",
-            shell=True, capture_output=True, text=True, timeout=10
+            shell=True,
+            capture_output=True,
+            text=True,
+            timeout=10,
         )
         if result.returncode == 0:
             return int(result.stdout.strip())
@@ -116,7 +120,10 @@ def measure_file_health(filepath: Path, crd_value: float) -> HealthMetrics | Non
     try:
         result = subprocess.run(
             f"cd /Users/conor/Sites/dogma && git log --since='60 days ago' --oneline {filepath} | wc -l",
-            shell=True, capture_output=True, text=True, timeout=5
+            shell=True,
+            capture_output=True,
+            text=True,
+            timeout=5,
         )
         commits_60d = int(result.stdout.strip()) if result.returncode == 0 else 0
     except Exception:
@@ -129,9 +136,11 @@ def measure_file_health(filepath: Path, crd_value: float) -> HealthMetrics | Non
 
     # Citation coherence
     axiom_counts = extract_axiom_citations(content)
-    axiom_cites = [axiom_counts["axiom-1-endogenous-first"],
-                   axiom_counts["axiom-2-algorithms-before"],
-                   axiom_counts["axiom-3-local-compute"]]
+    axiom_cites = [
+        axiom_counts["axiom-1-endogenous-first"],
+        axiom_counts["axiom-2-algorithms-before"],
+        axiom_counts["axiom-3-local-compute"],
+    ]
     axiom_cites_nonzero = [c for c in axiom_cites if c > 0]
 
     if len(axiom_cites_nonzero) > 1:
@@ -225,34 +234,26 @@ def main():
             "crd_vs_task_velocity": {
                 **corr_task,
                 "interpretation": (
-                    "High CRD correlates with task velocity"
-                    if corr_task["r"] > 0.3
-                    else "Weak correlation"
+                    "High CRD correlates with task velocity" if corr_task["r"] > 0.3 else "Weak correlation"
                 ),
             },
             "crd_vs_test_coverage": {
                 **corr_test,
                 "interpretation": (
-                    "High CRD correlates with test coverage"
-                    if corr_test["r"] > 0.3
-                    else "Weak correlation"
+                    "High CRD correlates with test coverage" if corr_test["r"] > 0.3 else "Weak correlation"
                 ),
             },
             "crd_vs_citation_coherence": {
                 **corr_cite,
                 "interpretation": (
-                    "High CRD correlates with consistent axiom citation"
-                    if corr_cite["r"] > 0.3
-                    else "Weak correlation"
+                    "High CRD correlates with consistent axiom citation" if corr_cite["r"] > 0.3 else "Weak correlation"
                 ),
             },
         },
         "per_file_metrics": health_metrics,
     }
 
-    print(
-        json.dumps(output, indent=2)
-    )
+    print(json.dumps(output, indent=2))
     Path("/tmp/health_metrics.json").write_text(json.dumps(output, indent=2))
     print("\nHealth metrics written to /tmp/health_metrics.json", file=sys.stderr)
 

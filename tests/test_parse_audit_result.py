@@ -18,6 +18,7 @@ from scripts.parse_audit_result import (
 # Fixtures: Sample Audit JSON Payloads
 # ===========================================================================
 
+
 @pytest.fixture
 def sample_green_audit():
     """Audit report with all agents having strong axiom grounding."""
@@ -27,17 +28,17 @@ def sample_green_audit():
                 "path": ".github/agents/executive-researcher.agent.md",
                 "citations": ["endogenous-first", "algorithms-before-tokens", "local-compute-first"],
                 "orphaned": False,
-                "unverifiable": []
+                "unverifiable": [],
             },
             {
                 "path": ".github/agents/executive-orchestrator.agent.md",
                 "citations": ["endogenous-first", "programmatic-first"],
                 "orphaned": False,
-                "unverifiable": []
+                "unverifiable": [],
             },
         ],
         "fleet_citation_coverage_pct": 100.0,
-        "total_unverifiable": 0
+        "total_unverifiable": 0,
     }
 
 
@@ -50,23 +51,18 @@ def sample_mixed_audit():
                 "path": ".github/agents/executive-researcher.agent.md",
                 "citations": ["endogenous-first", "algorithms-before-tokens"],
                 "orphaned": False,
-                "unverifiable": []
+                "unverifiable": [],
             },
             {
                 "path": ".github/agents/scout.agent.md",
                 "citations": ["endogenous-first"],
                 "orphaned": False,
-                "unverifiable": []
+                "unverifiable": [],
             },
-            {
-                "path": ".github/agents/latent-agent.agent.md",
-                "citations": [],
-                "orphaned": True,
-                "unverifiable": []
-            },
+            {"path": ".github/agents/latent-agent.agent.md", "citations": [], "orphaned": True, "unverifiable": []},
         ],
         "fleet_citation_coverage_pct": 66.7,
-        "total_unverifiable": 0
+        "total_unverifiable": 0,
     }
 
 
@@ -75,37 +71,29 @@ def sample_red_audit():
     """Audit report with critical issues."""
     return {
         "files": [
-            {
-                "path": ".github/agents/broken-agent.agent.md",
-                "citations": [],
-                "orphaned": True,
-                "unverifiable": []
-            },
+            {"path": ".github/agents/broken-agent.agent.md", "citations": [], "orphaned": True, "unverifiable": []},
             {
                 "path": ".github/agents/unverifiable-agent.agent.md",
                 "citations": ["nonexistent-axiom", "invalid-principle"],
                 "orphaned": False,
-                "unverifiable": ["nonexistent-axiom", "invalid-principle"]
+                "unverifiable": ["nonexistent-axiom", "invalid-principle"],
             },
         ],
         "fleet_citation_coverage_pct": 0.0,
-        "total_unverifiable": 2
+        "total_unverifiable": 2,
     }
 
 
 @pytest.fixture
 def empty_audit():
     """Empty audit report."""
-    return {
-        "files": [],
-        "fleet_citation_coverage_pct": 0.0,
-        "total_unverifiable": 0
-    }
+    return {"files": [], "fleet_citation_coverage_pct": 0.0, "total_unverifiable": 0}
 
 
 # ===========================================================================
 # Unit Tests: Risk Assessment Logic (5 tests)
 # ===========================================================================
+
 
 class TestRiskAssessment:
     """Test suite for agent risk assessment logic."""
@@ -170,6 +158,7 @@ class TestRiskAssessment:
 # Integration Tests: Full Parsing (6 tests)
 # ===========================================================================
 
+
 class TestParseAuditResult:
     """Test suite for full audit result parsing."""
 
@@ -220,6 +209,7 @@ class TestParseAuditResult:
 # Recommendation Generation Tests (3 tests)
 # ===========================================================================
 
+
 class TestRecommendations:
     """Test suite for recommendation generation."""
 
@@ -263,6 +253,7 @@ class TestRecommendations:
 # Markdown Report Generation Tests (2 tests)
 # ===========================================================================
 
+
 class TestMarkdownReport:
     """Test suite for Markdown report generation."""
 
@@ -283,6 +274,7 @@ class TestMarkdownReport:
 # Error Handling Tests (2 tests)
 # ===========================================================================
 
+
 class TestErrorHandling:
     """Test suite for error handling."""
 
@@ -301,6 +293,7 @@ class TestErrorHandling:
 # Edge Cases (3 tests)
 # ===========================================================================
 
+
 class TestEdgeCases:
     """Test edge cases and boundary conditions."""
 
@@ -312,11 +305,11 @@ class TestEdgeCases:
                     "path": ".github/agents/solo-agent.agent.md",
                     "citations": ["endogenous-first"],
                     "orphaned": False,
-                    "unverifiable": []
+                    "unverifiable": [],
                 }
             ],
             "fleet_citation_coverage_pct": 100.0,
-            "total_unverifiable": 0
+            "total_unverifiable": 0,
         }
         result = parse_audit_result(audit_json, threshold=0.5)
         assert len(result.agents) == 1
@@ -330,12 +323,12 @@ class TestEdgeCases:
                     "path": f".github/agents/agent-{i}.agent.md",
                     "citations": ["endogenous-first"] * (i % 3 + 1),
                     "orphaned": i % 10 == 0,  # 10% orphaned
-                    "unverifiable": [] if i % 5 != 0 else ["bad-axiom"]
+                    "unverifiable": [] if i % 5 != 0 else ["bad-axiom"],
                 }
                 for i in range(100)
             ],
             "fleet_citation_coverage_pct": 85.0,
-            "total_unverifiable": 20
+            "total_unverifiable": 20,
         }
         result = parse_audit_result(audit_json, threshold=0.5)
         assert len(result.agents) == 100
@@ -350,11 +343,11 @@ class TestEdgeCases:
                     "path": ".github/agents/test.agent.md",
                     "citations": ["endogenous-first"],
                     "orphaned": False,
-                    "unverifiable": []
+                    "unverifiable": [],
                 }
             ],
             "fleet_citation_coverage_pct": 100.0,
-            "total_unverifiable": 0
+            "total_unverifiable": 0,
         }
         # Should not crash with threshold=0
         result = parse_audit_result(audit_json, threshold=0.001)
@@ -364,6 +357,7 @@ class TestEdgeCases:
 # ===========================================================================
 # Data Integrity Tests (2 tests)
 # ===========================================================================
+
 
 class TestDataIntegrity:
     """Test that parsed data maintains integrity."""
@@ -384,6 +378,7 @@ class TestDataIntegrity:
 # Integration with audit_provenance Output (2 tests)
 # ===========================================================================
 
+
 class TestAuditProvenianceIntegration:
     """Test compatibility with audit_provenance.py output format."""
 
@@ -395,17 +390,12 @@ class TestAuditProvenianceIntegration:
                     "path": ".github/agents/executive-researcher.agent.md",
                     "citations": ["endogenous-first", "algorithms-before-tokens"],
                     "orphaned": False,
-                    "unverifiable": []
+                    "unverifiable": [],
                 },
-                {
-                    "path": ".github/agents/orphan.agent.md",
-                    "citations": [],
-                    "orphaned": True,
-                    "unverifiable": []
-                },
+                {"path": ".github/agents/orphan.agent.md", "citations": [], "orphaned": True, "unverifiable": []},
             ],
             "fleet_citation_coverage_pct": 50.0,
-            "total_unverifiable": 0
+            "total_unverifiable": 0,
         }
         result = parse_audit_result(audit_json, threshold=0.5)
         assert len(result.agents) == 2
@@ -419,11 +409,11 @@ class TestAuditProvenianceIntegration:
                     "path": ".github/agents/bad-citations.agent.md",
                     "citations": ["nonexistent-axiom", "fake-principle"],
                     "orphaned": False,
-                    "unverifiable": ["nonexistent-axiom", "fake-principle"]
+                    "unverifiable": ["nonexistent-axiom", "fake-principle"],
                 }
             ],
             "fleet_citation_coverage_pct": 0.0,
-            "total_unverifiable": 2
+            "total_unverifiable": 2,
         }
         result = parse_audit_result(audit_json, threshold=0.5)
         assert len(result.agents) == 1

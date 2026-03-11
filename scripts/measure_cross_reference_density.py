@@ -22,6 +22,7 @@ from typing import TypedDict
 
 class CRDMetrics(TypedDict):
     """Per-file CRD measurement."""
+
     filepath: str
     filename: str
     file_type: str  # "agent" | "skill" | "guide"
@@ -102,7 +103,7 @@ def classify_reference(ref_text: str, file_layer: str) -> dict:
 def extract_references(content: str, file_layer: str) -> list[dict]:
     """Extract all Markdown link references from content."""
     # Match [text](url) pattern
-    ref_pattern = r'\[([^\]]+)\]\(([^\)]+)\)'
+    ref_pattern = r"\[([^\]]+)\]\(([^\)]+)\)"
     matches = re.finditer(ref_pattern, content)
 
     references = []
@@ -166,7 +167,7 @@ def compute_statistics(metrics: list[CRDMetrics]) -> dict:
 
     # Stdev
     variance = sum((x - mean_crd) ** 2 for x in crd_values) / n if n > 0 else 0
-    stdev = variance ** 0.5
+    stdev = variance**0.5
 
     # Min/Max
     min_crd = min(crd_values) if crd_values else 0
@@ -227,6 +228,7 @@ def main():
 
     # Also write to file if requested
     import argparse
+
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=str, help="Output file path")
     args = parser.parse_args()

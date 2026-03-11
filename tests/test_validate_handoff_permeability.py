@@ -18,6 +18,7 @@ from scripts.validate_handoff_permeability import (
 # Fixtures: Sample Handoff Text
 # ===========================================================================
 
+
 @pytest.fixture
 def valid_scout_to_synthesizer_handoff():
     """Valid handoff with all required signals for Scout→Synthesizer membrane."""
@@ -246,6 +247,7 @@ MANIFESTO.md reference here.
 # Happy Path Tests: Valid Handoffs (4 tests)
 # ===========================================================================
 
+
 class TestValidHandoffs:
     """Test suite for valid handoffs with all required signals."""
 
@@ -296,6 +298,7 @@ class TestValidHandoffs:
 # ===========================================================================
 # Signal Violation Tests: Missing Required Signals (6 tests)
 # ===========================================================================
+
 
 class TestMissingSignals:
     """Test suite for handoffs missing required signals."""
@@ -385,6 +388,7 @@ But no explicit APPROVED/REQUEST CHANGES verdict.
 # Specificity & Genericness Tests (3 tests)
 # ===========================================================================
 
+
 class TestSignalSpecificity:
     """Test that generic examples are rejected while specific examples pass."""
 
@@ -444,6 +448,7 @@ MANIFESTO.md
 # Compression & Uncompressed Content Tests (2 tests)
 # ===========================================================================
 
+
 class TestCompressionCanonical:
     """Test that uncompressed content triggers warnings or failures."""
 
@@ -487,6 +492,7 @@ Key reference: MANIFESTO.md
 # ===========================================================================
 # Edge Cases: Whitespace, Case Insensitivity, Multiple Occurrences (4 tests)
 # ===========================================================================
+
 
 class TestEdgeCases:
     """Test edge cases: empty input, case variants, multiple signals."""
@@ -559,6 +565,7 @@ MANIFESTO.md § Endogenous-First principle governs this constraint.
 # Malformed Markdown Tests (2 tests)
 # ===========================================================================
 
+
 class TestMalformedMarkdown:
     """Test handling of malformed or edge-case Markdown."""
 
@@ -600,11 +607,15 @@ algorithms before tokens, and Local-Compute-First approaches.
 # Parameterized Tests: Multiple Membrane Types
 # ===========================================================================
 
-@pytest.mark.parametrize("membrane_type", [
-    "scout-to-synthesizer",
-    "synthesizer-to-reviewer",
-    "reviewer-to-archivist",
-])
+
+@pytest.mark.parametrize(
+    "membrane_type",
+    [
+        "scout-to-synthesizer",
+        "synthesizer-to-reviewer",
+        "reviewer-to-archivist",
+    ],
+)
 class TestAllMembraneTypes:
     """Test that each membrane type has proper spec definitions."""
 
@@ -619,13 +630,13 @@ class TestAllMembraneTypes:
         """All required signals reference valid SIGNAL_PATTERNS."""
         spec = MEMBRANE_SPECS[membrane_type]
         for signal_type in spec.required_signals:
-            assert signal_type in SIGNAL_PATTERNS, \
-                f"Signal '{signal_type}' in {membrane_type} not in SIGNAL_PATTERNS"
+            assert signal_type in SIGNAL_PATTERNS, f"Signal '{signal_type}' in {membrane_type} not in SIGNAL_PATTERNS"
 
 
 # ===========================================================================
 # Custom Required Signals Tests (3 tests)
 # ===========================================================================
+
 
 class TestCustomRequiredSignals:
     """Test validation with custom required_signals parameter."""
@@ -674,6 +685,7 @@ MANIFESTO.md
 # Report Generation Tests (2 tests)
 # ===========================================================================
 
+
 class TestReportGeneration:
     """Test that reports are properly formatted."""
 
@@ -703,6 +715,7 @@ class TestReportGeneration:
 # ===========================================================================
 # Integration Tests (2 tests)
 # ===========================================================================
+
 
 class TestIntegration:
     """Integration tests with realistic scenarios."""
