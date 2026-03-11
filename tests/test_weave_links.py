@@ -448,11 +448,7 @@ class TestIdempotencyGuard:
 
     def test_filter_sections_extracts_matching_section(self):
         """With filter='References', extracts only ## References section."""
-        text = (
-            "# Overview\n\nIntro.\n\n"
-            "## References\n\nRef content here.\n\n"
-            "## Notes\n\nOther content."
-        )
+        text = "# Overview\n\nIntro.\n\n## References\n\nRef content here.\n\n## Notes\n\nOther content."
         result_text, was_filtered = wl.filter_sections(text, "References")
         assert "## References" in result_text
         assert "## Notes" not in result_text

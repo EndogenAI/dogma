@@ -380,8 +380,7 @@ def main() -> None:
             files_already_woven += 1
             if not args.dry_run:
                 print(
-                    f"[SKIP] {md_file.relative_to(repo_root)}: already woven"
-                    " (use --force to override)",
+                    f"[SKIP] {md_file.relative_to(repo_root)}: already woven (use --force to override)",
                     file=sys.stderr,
                 )
 
@@ -457,7 +456,7 @@ def main() -> None:
                         section_text,
                         text,
                         flags=re.MULTILINE | re.DOTALL,
-                        count=1
+                        count=1,
                     )
                     text = full_text
 

@@ -99,9 +99,7 @@ def scan_file(file_path: Path) -> list[tuple[str, int, str]]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(
-        description="Pre-review sweep for known bad patterns"
-    )
+    parser = argparse.ArgumentParser(description="Pre-review sweep for known bad patterns")
     parser.add_argument(
         "--changed-files",
         type=Path,

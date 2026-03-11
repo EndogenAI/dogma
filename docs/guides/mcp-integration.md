@@ -172,4 +172,4 @@ The following aspects are deferred to child issues:
 - [`AGENTS.md`](../../AGENTS.md) § Executive Fleet Privileges
 - [`MANIFESTO.md`](../../MANIFESTO.md) § Endogenous-First principle
 - [Model Context Protocol Spec](https://spec.modelcontextprotocol.io/) (external)
-- [GitHub MCP Server](https://github.com/modelcontextprotocol/servers/tree/main/src/github) (external)
+- [GitHub MCP Server](https://github.com/github/github-mcp-server) (external)

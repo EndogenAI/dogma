@@ -613,13 +613,20 @@ def test_main_output_adr_flag(tmp_path):
     session_file.write_text("## Session Start\nGoverning axiom test\n", encoding="utf-8")
     adr_file = tmp_path / "adr.md"
 
-    ret = main([
-        "--input", str(session_file),
-        "--tier", "T2",
-        "--affected-axiom", "Test Principle",
-        "--proposed-delta", "Add clarification",
-        "--output-adr", str(adr_file),
-    ])
+    ret = main(
+        [
+            "--input",
+            str(session_file),
+            "--tier",
+            "T2",
+            "--affected-axiom",
+            "Test Principle",
+            "--proposed-delta",
+            "Add clarification",
+            "--output-adr",
+            str(adr_file),
+        ]
+    )
 
     assert ret == 0
     assert adr_file.exists()
@@ -636,14 +643,22 @@ def test_main_output_and_adr_together(tmp_path):
     proposal_file = tmp_path / "proposal.md"
     adr_file = tmp_path / "adr.md"
 
-    ret = main([
-        "--input", str(session_file),
-        "--tier", "T1",
-        "--affected-axiom", "Endogenous-First",
-        "--proposed-delta", "Clarify scope",
-        "--output", str(proposal_file),
-        "--output-adr", str(adr_file),
-    ])
+    ret = main(
+        [
+            "--input",
+            str(session_file),
+            "--tier",
+            "T1",
+            "--affected-axiom",
+            "Endogenous-First",
+            "--proposed-delta",
+            "Clarify scope",
+            "--output",
+            str(proposal_file),
+            "--output-adr",
+            str(adr_file),
+        ]
+    )
 
     assert ret == 0
     assert proposal_file.exists()
@@ -662,12 +677,18 @@ def test_main_tier_violation_returns_1(tmp_path):
     session_file = tmp_path / "session.md"
     session_file.write_text("test", encoding="utf-8")
 
-    ret = main([
-        "--input", str(session_file),
-        "--tier", "T1",
-        "--affected-axiom", "Operational constraint",
-        "--proposed-delta", "Change",
-    ])
+    ret = main(
+        [
+            "--input",
+            str(session_file),
+            "--tier",
+            "T1",
+            "--affected-axiom",
+            "Operational constraint",
+            "--proposed-delta",
+            "Change",
+        ]
+    )
 
     assert ret == 1
 
@@ -678,23 +699,35 @@ def test_main_parse_error_returns_2(tmp_path):
     session_file.write_text("test", encoding="utf-8")
 
     # Invalid tier value
-    ret = main([
-        "--input", str(session_file),
-        "--tier", "INVALID",
-        "--affected-axiom", "Test",
-        "--proposed-delta", "Change",
-    ])
+    ret = main(
+        [
+            "--input",
+            str(session_file),
+            "--tier",
+            "INVALID",
+            "--affected-axiom",
+            "Test",
+            "--proposed-delta",
+            "Change",
+        ]
+    )
 
     assert ret == 2
 
 
 def test_main_missing_input_file_returns_2():
     """main() returns 1 when input file cannot be read (I/O error)."""
-    ret = main([
-        "--input", "/nonexistent/file.md",
-        "--tier", "T1",
-        "--affected-axiom", "Endogenous-First",
-        "--proposed-delta", "Change",
-    ])
+    ret = main(
+        [
+            "--input",
+            "/nonexistent/file.md",
+            "--tier",
+            "T1",
+            "--affected-axiom",
+            "Endogenous-First",
+            "--proposed-delta",
+            "Change",
+        ]
+    )
 
     assert ret == 1

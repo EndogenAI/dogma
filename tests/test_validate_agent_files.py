@@ -338,8 +338,7 @@ class TestCLI:
     @pytest.mark.io
     def test_single_file_fail_exit_1(self, tmp_path):
         bad_content = (
-            "---\nname: A\ndescription: B\n---\n\n"
-            "## Workflow & Intentions\n\n## Desired Outcomes & Acceptance\n"
+            "---\nname: A\ndescription: B\n---\n\n## Workflow & Intentions\n\n## Desired Outcomes & Acceptance\n"
         )
         f = _make_agent_file(tmp_path, bad_content)
         result = subprocess.run(
@@ -678,8 +677,7 @@ class TestCoreLayerImpermeability:
         client_values_file = tmp_path / "client-values.yml"
         # Write YAML with priority override that will trigger exception during parsing
         client_values_file.write_text(
-            "priority_overrides:\n"
-            "  Endogenous-First: [unclosed bracket here\n",
+            "priority_overrides:\n  Endogenous-First: [unclosed bracket here\n",
             encoding="utf-8",
         )
         errors = vaf.check_core_layer_impermeability(tmp_path)
@@ -693,10 +691,7 @@ class TestCoreLayerImpermeability:
         client_values_file = tmp_path / "client-values.yml"
         # Write YAML with priority override for a core axiom
         client_values_file.write_text(
-            "priority_overrides:\n"
-            "  - Endogenous-First\n"
-            "  - Algorithms Before Tokens\n"
-            "other_config: value\n",
+            "priority_overrides:\n  - Endogenous-First\n  - Algorithms Before Tokens\nother_config: value\n",
             encoding="utf-8",
         )
         errors = vaf.check_core_layer_impermeability(tmp_path)
@@ -728,9 +723,7 @@ class TestCoreLayerImpermeability:
         monkeypatch.chdir(tmp_path)
         client_values_file = tmp_path / "client-values.yml"
         client_values_file.write_text(
-            "priority_overrides:\n"
-            "  Local Compute-First: false\n"
-            "other: value\n",
+            "priority_overrides:\n  Local Compute-First: false\nother: value\n",
             encoding="utf-8",
         )
         errors = vaf.check_core_layer_impermeability(tmp_path)
@@ -826,5 +819,3 @@ class TestCitationOrderImpermeability:
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
         assert passed is True, f"Expected pass but got: {failures}"
-
-

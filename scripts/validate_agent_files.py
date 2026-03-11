@@ -448,6 +448,7 @@ def validate_skill_file(path: Path) -> list[str]:
 # Core Layer Impermeability Check
 # ---------------------------------------------------------------------------
 
+
 def check_core_layer_impermeability(repo_root: Path = None) -> list[str]:
     """
     Validate Core Layer Impermeability: ensure client-values.yml (if present)

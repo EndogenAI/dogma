@@ -201,17 +201,11 @@ def validate(file_path: Path) -> tuple[bool, list[str]]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(
-        description="Programmatic encoding-fidelity gate for skill files"
-    )
-    parser.add_argument(
-        "files", nargs="*", help="Skill .md files to validate (optional if --all is used)"
-    )
+    parser = argparse.ArgumentParser(description="Programmatic encoding-fidelity gate for skill files")
+    parser.add_argument("files", nargs="*", help="Skill .md files to validate (optional if --all is used)")
     parser.add_argument("--all", action="store_true", help="Scan all SKILL.md files in .github/skills/*/")
     parser.add_argument(
-        "--check",
-        action="store_true",
-        help="Check-only mode: do not block on failures (always exit 0)"
+        "--check", action="store_true", help="Check-only mode: do not block on failures (always exit 0)"
     )
 
     args = parser.parse_args(argv)

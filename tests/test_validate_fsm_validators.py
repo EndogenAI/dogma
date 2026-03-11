@@ -204,10 +204,7 @@ Content (skipped Phase 2).
         passed, messages = validate_session_state(session_file)
         assert passed is False
         assert any(
-            "sequence" in str(m).lower()
-            or "skipped" in str(m).lower()
-            or "missing" in str(m).lower()
-            for m in messages
+            "sequence" in str(m).lower() or "skipped" in str(m).lower() or "missing" in str(m).lower() for m in messages
         )
 
     def test_phase_does_not_start_at_1(self, tmp_path: Path) -> None:
@@ -328,6 +325,7 @@ class TestPreReviewSweep:
         # Make file unreadable (on systems that support chmod)
         try:
             import os
+
             os.chmod(script_file, 0o000)
 
             findings = scan_file(script_file)
@@ -336,6 +334,7 @@ class TestPreReviewSweep:
             # Restore permissions for cleanup
             try:
                 import os
+
                 os.chmod(script_file, 0o644)
             except Exception:
                 pass

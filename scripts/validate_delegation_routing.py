@@ -149,10 +149,7 @@ def validate(file_path: Path) -> tuple[bool, list[str]]:
 
         has_cycles, cycle_edges = has_cycle(adjacency)
         if has_cycles:
-            failures.append(
-                f"Circular delegation detected: {cycle_edges}. "
-                "Delegation hierarchy must be acyclic."
-            )
+            failures.append(f"Circular delegation detected: {cycle_edges}. Delegation hierarchy must be acyclic.")
 
     # --- Check 5: referenced agents are canonical ---
     all_referenced = delegators | delegatees
@@ -164,9 +161,7 @@ def validate(file_path: Path) -> tuple[bool, list[str]]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(
-        description="Validate delegation-gate.yml structure and sovereignty rules"
-    )
+    parser = argparse.ArgumentParser(description="Validate delegation-gate.yml structure and sovereignty rules")
     parser.add_argument(
         "files",
         nargs="*",

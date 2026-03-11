@@ -75,9 +75,7 @@ def validate_session_file(file_path: Path) -> tuple[int, list[str]]:
 
     # --- Check 2: governing axiom citation in ## Session Start ---
     # Extract content between "## Session Start" and next "##" heading
-    session_match = re.search(
-        r"## Session Start(.+?)(?=\n##|\Z)", text, re.DOTALL
-    )
+    session_match = re.search(r"## Session Start(.+?)(?=\n##|\Z)", text, re.DOTALL)
     session_body = session_match.group(1) if session_match else ""
 
     if session_body:
@@ -117,9 +115,7 @@ def validate_session_file(file_path: Path) -> tuple[int, list[str]]:
 
     # --- Check 6: ## Pre-Compact Checkpoint present ---
     if "## Pre-Compact Checkpoint" not in text and "## Context Window Checkpoint" not in text:
-        structuralFailures.append(
-            "Missing '## Pre-Compact Checkpoint' section (required before compaction)"
-        )
+        structuralFailures.append("Missing '## Pre-Compact Checkpoint' section (required before compaction)")
 
     # --- Check 7: ## Session Summary present ---
     if "## Session Summary" not in text:
@@ -142,12 +138,8 @@ def validate_session_file(file_path: Path) -> tuple[int, list[str]]:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Post-commit scratchpad audit validator for session files"
-    )
-    parser.add_argument(
-        "files", nargs="*", help="Session .md files to validate (optional if --all is used)"
-    )
+    parser = argparse.ArgumentParser(description="Post-commit scratchpad audit validator for session files")
+    parser.add_argument("files", nargs="*", help="Session .md files to validate (optional if --all is used)")
     parser.add_argument("--all", action="store_true", help="Scan all session files in .tmp/*/*.md")
     parser.add_argument("--branch", action="store_true", help="Only scan current branch")
 
@@ -164,9 +156,7 @@ def main() -> int:
         try:
             import subprocess
 
-            branch = subprocess.check_output(
-                ["git", "rev-parse", "--abbrev-ref", "HEAD"], text=True
-            ).strip()
+            branch = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"], text=True).strip()
             branch_dir = Path(f".tmp/{branch}")
             if branch_dir.exists():
                 files_to_check = sorted(branch_dir.glob("*.md"))

@@ -88,9 +88,7 @@ def validate(file_path: Path) -> tuple[bool, list[str]]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(
-        description="Validate Phase/gate transitions in session files"
-    )
+    parser = argparse.ArgumentParser(description="Validate Phase/gate transitions in session files")
     parser.add_argument(
         "files",
         nargs="*",
