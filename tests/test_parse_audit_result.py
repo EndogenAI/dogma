@@ -185,9 +185,10 @@ class TestParseAuditResult:
         assert result.red_count == 0
 
     def test_parse_mixed_audit(self, sample_mixed_audit):
-        """Parse audit with mixed risk levels → overall_risk='yellow'."""
+        """Parse audit with mixed risk levels including orphaned agent → overall_risk='red'."""
         result = parse_audit_result(sample_mixed_audit, threshold=0.5)
-        assert result.status in ("yellow", "green")  # Depends on risk distribution
+        # With an orphaned agent, overall risk is red (1 red out of 3 = 33% > 30% threshold)
+        assert result.status == "red"
         assert len(result.agents) == 3
         # Should have at least one red (orphaned)
         assert any(a.risk_level == "red" for a in result.agents)

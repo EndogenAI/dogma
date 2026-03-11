@@ -134,7 +134,7 @@ SIGNAL_PATTERNS = {
     ),
     "verdict": SignalPattern(
         name="verdict",
-        regex=r"(APPROVED|REQUEST CHANGES|approved|request changes)",
+        regex=r"(?:(?:^|\n\n)\s*(?:APPROVED|REQUEST CHANGES|approved|request changes)(?:\s|$))|(?:(?:\*{0,2}Status\*{0,2}|\*{0,2}Verdict\*{0,2}|\*{0,2}Decision\*{0,2})\s*:\s*(?:APPROVED|REQUEST CHANGES|approved|request changes))",
         description="Explicit verdict from review gate (for reviewer-to-archivist membrane)",
         specificity_check=None,
     ),
@@ -154,6 +154,24 @@ SIGNAL_PATTERNS = {
         name="metrics",
         regex=r"(\d+\%|\d+\.?\d* (?:agents|scripts|findings|hours)|metric|coverage|count)",
         description="Quantitative metrics or measurements",
+        specificity_check=None,
+    ),
+    "line_by_line_comments": SignalPattern(
+        name="line_by_line_comments",
+        regex=r"(?i)(line-by-line|line by line|paragraph.{0,20}?assessment|detailed.{0,20}?comment|^- Line \d+:)",
+        description="Detailed line-by-line or paragraph-by-paragraph review comments (should be compressed)",
+        specificity_check=None,
+    ),
+    "exploratory_notes": SignalPattern(
+        name="exploratory_notes",
+        regex=r"(?i)(exploratory|preliminary|draft|working notes|rough|raw findings)",
+        description="Exploratory notes and raw research material (appropriate for compression)",
+        specificity_check=None,
+    ),
+    "background_prose": SignalPattern(
+        name="background_prose",
+        regex=r"(?i)(background|context|history|literature survey|related work)",
+        description="Background contextual prose (appropriate for compression)",
         specificity_check=None,
     ),
 }
@@ -259,14 +277,21 @@ def validate_handoff_permeability(
         else:
             missing_signals.append(signal_type)
 
-    # Check compressible signals (warn if completely absent, but don't fail)
+    # Check compressible signals (warn based on presence/absence pattern)
     for signal_type in spec.compressible_signals:
         if signal_type in SIGNAL_PATTERNS:
             pattern_spec = SIGNAL_PATTERNS[signal_type]
             matches = re.findall(pattern_spec.regex, handoff_text, re.DOTALL | re.IGNORECASE)
             signal_counts[signal_type] = len(matches)
 
-            if len(matches) == 0:
+            # line_by_line_comments should warn if PRESENT (uncompressed)
+            # exploratory_notes/discussion should warn if ABSENT (missing context)
+            if signal_type == "line_by_line_comments" and len(matches) > 0:
+                warnings.append(
+                    f"⚠️ Uncompressed content detected: {signal_type} at high volume ({len(matches)} matches). "
+                    f"Recommend compression per Compression-on-Ascent rule."
+                )
+            elif signal_type != "line_by_line_comments" and len(matches) == 0:
                 warnings.append(
                     f"Compressible signal '{signal_type}' completely absent (not critical, but notable)"
                 )
