@@ -164,6 +164,45 @@ def check_coherence(tier: str, proposed_delta: str, tiers: dict) -> dict:
 # ---------------------------------------------------------------------------
 
 
+def enforce_tier_boundaries(tier: str, affected_axiom: str, tiers: dict) -> tuple[bool, str]:
+    """
+    Verify that a proposed edit respects tier boundaries (no edits that would
+    violate axioms at the selected tier).
+
+    Args:
+        tier: One of "T1", "T2", "T3".
+        affected_axiom: Name/heading of the affected axiom or section.
+        tiers: Tier metadata dict from load_stability_tiers().
+
+    Returns:
+        (passes, reason) where passes=True if boundaries are respected,
+        False otherwise with an explanation.
+    """
+    tier_meta = tiers[tier]
+    substrate = tier_meta["substrate"]
+
+    # T1 edits must target MANIFESTO.md axiom sections only
+    if tier == "T1":
+        axiom_names = ["Endogenous", "Algorithmic", "Algorithms", "Local Compute"]
+        if not any(axiom_name in affected_axiom for axiom_name in axiom_names):
+            return False, f"T1 edits must target core axioms in MANIFESTO.md, not '{affected_axiom}'"
+
+    # T2 edits must target guiding principles or AGENTS.md §1
+    elif tier == "T2":
+        allowed_sections = ["principle", "value", "ethical", "guideline"]
+        if not any(section in affected_axiom.lower() for section in allowed_sections):
+            return False, f"T2 edits must target guiding principles, not '{affected_axiom}'"
+
+    # T3 edits must target operational constraints in AGENTS.md
+    elif tier == "T3":
+        # T3 is most permissive; check that it's not targeting axiom-level content
+        forbidden_axioms = ["Endogenous-First", "Algorithms Before Tokens", "Local Compute-First"]
+        if any(axiom in affected_axiom for axiom in forbidden_axioms):
+            return False, f"T3 edits cannot target axioms ('{affected_axiom}'). Use T1 instead."
+
+    return True, "Tier boundaries respected"
+
+
 def generate_proposal(
     tier: str,
     affected_axiom: str,
@@ -225,6 +264,40 @@ def generate_proposal(
     )
 
 
+def generate_adr_skeleton(tier: str, affected_axiom: str, tiers: dict) -> str:
+    """
+    Generate an ADR skeleton for formal decision recording in docs/decisions/.
+
+    Args:
+        tier: One of "T1", "T2", "T3".
+        affected_axiom: Name/heading of the affected axiom or section.
+        tiers: Tier metadata dict from load_stability_tiers().
+
+    Returns:
+        Complete ADR Markdown skeleton ready for human editing.
+    """
+    today = datetime.date.today().isoformat()
+    tier_meta = tiers[tier]
+
+    return (
+        f"# ADR-NNN: {affected_axiom}\n\n"
+        f"**Date**: {today}\n"
+        f"**Status**: Proposed\n"
+        f"**Tier**: {tier} — {tier_meta['name']}\n\n"
+        f"## Context\n\n"
+        f"Describe the context and problem statement for this decision.\n\n"
+        f"## Decision\n\n"
+        f"Describe the selected option and rationale.\n\n"
+        f"## Consequences\n\n"
+        f"Document foreseeable consequences for downstream layers:\n"
+        f"- Inheritors: {tier_meta['substrate']}\n"
+        f"- Session threshold: {tier_meta['session_threshold']} signals\n"
+        f"- Requires ADR: {tier_meta['requires_adr']}\n\n"
+        f"## References\n\n"
+        f"- [Affected section]: {affected_axiom}\n"
+    )
+
+
 # ---------------------------------------------------------------------------
 # CLI entry point
 # ---------------------------------------------------------------------------
@@ -235,9 +308,9 @@ def main(argv: list[str] | None = None) -> int:
     CLI entry point for propose_dogma_edit.py.
 
     Returns:
-        0 on success, or when coherence fails for a non-T1 tier.
-        1 if coherence check fails and tier is T1 (blocking).
-        1 if the session file cannot be read.
+        0 on success (proposal generated, no blocking failures).
+        1 if coherence check fails and tier is T1 (blocking), or tier boundary enforced.
+        2 if parse error or input parsing fails.
     """
     parser = argparse.ArgumentParser(
         description=("Propose a dogma edit to the endogenic substrate using the back-propagation protocol.")
@@ -268,14 +341,28 @@ def main(argv: list[str] | None = None) -> int:
         "--output",
         type=Path,
         default=None,
-        help="Output path for the ADR-style Markdown proposal (default: stdout).",
+        help="Output path for the proposal Markdown (default: stdout).",
+    )
+    parser.add_argument(
+        "--output-adr",
+        type=Path,
+        default=None,
+        help="Output path for ADR skeleton in docs/decisions/ (optional).",
     )
 
-    args = parser.parse_args(argv)
+    try:
+        args = parser.parse_args(argv)
+    except SystemExit as e:
+        # argparse calls sys.exit() on parse error; catch and convert to exit code 2
+        return 2 if e.code != 0 else 0
 
     # Read proposed delta (stdin if "-")
     if args.proposed_delta == "-":
-        proposed_delta = sys.stdin.read().strip()
+        try:
+            proposed_delta = sys.stdin.read().strip()
+        except EOFError:
+            print("ERROR: Failed to read proposed delta from stdin", file=sys.stderr)
+            return 2
     else:
         proposed_delta = args.proposed_delta
 
@@ -287,6 +374,12 @@ def main(argv: list[str] | None = None) -> int:
         session_text = args.input.read_text(encoding="utf-8")
     except OSError as exc:
         print(f"ERROR: Cannot read session file {args.input}: {exc}", file=sys.stderr)
+        return 1
+
+    # Enforce tier boundaries
+    boundaries_pass, boundary_reason = enforce_tier_boundaries(args.tier, args.affected_axiom, tiers)
+    if not boundaries_pass:
+        print(f"ERROR: Tier boundary violation: {boundary_reason}", file=sys.stderr)
         return 1
 
     # Extract evidence, check coherence, generate proposal
@@ -301,16 +394,26 @@ def main(argv: list[str] | None = None) -> int:
         tiers=tiers,
     )
 
-    # Write output
+    # Write proposal output
     if args.output:
         try:
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_text(proposal, encoding="utf-8")
         except OSError as exc:
             print(f"ERROR: Cannot write output {args.output}: {exc}", file=sys.stderr)
-            return 1
+            return 2
     else:
         print(proposal)
+
+    # Write ADR skeleton if requested
+    if args.output_adr:
+        adr_skeleton = generate_adr_skeleton(args.tier, args.affected_axiom, tiers)
+        try:
+            args.output_adr.parent.mkdir(parents=True, exist_ok=True)
+            args.output_adr.write_text(adr_skeleton, encoding="utf-8")
+        except OSError as exc:
+            print(f"ERROR: Cannot write ADR skeleton {args.output_adr}: {exc}", file=sys.stderr)
+            return 2
 
     # T1 coherence failure is blocking (exit 1)
     if not coherence["passes"] and args.tier == "T1":
