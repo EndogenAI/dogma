@@ -198,38 +198,29 @@ See `.tmp/feat-milestone-9-execution/2026-03-11-SESSION-SUMMARY.md` for detailed
 
 ---
 
-### Phase 5 — Documentation Site & GitHub/PM ⬜
+### Phase 5 — Documentation Site & GitHub/PM ✅
 
-**Agent**: Executive Docs (docs sub-tasks) + Executive PM (GitHub/PM sub-tasks)  
-**Estimated effort**: M–L (R4 MkDocs setup defers to child issue if >2 hrs; #133 is overflow risk)
+**Agent**: Executive PM  
+**Estimated effort**: M–L (R4 MkDocs setup deferred to child issue #202)
 **Deliverables**:
-- [ ] #133 — Complete remaining Documentation Site subtasks:
-  - R2: Add CI badge + TOC to `README.md`
-  - R3: Add dev environment setup to `CONTRIBUTING.md`
-  - R4: Add MkDocs Material docsite (or open a scoped child issue if >2 hrs)
-  - R5: Add lychee link-checker to CI
-  - R6: Confirm `validate_synthesis.py` runs in CI lint job
-- [ ] #139 — Extend GitHub Project Management:
-  - R2: Create GitHub Project with Priority field + Board view
-  - R3: Migrate issue templates to YAML forms
-  - R4: Add `area:` auto-label workflow via `.github/labeler.yml`
-  - R5: Add stale bot
-  - R6: Document `gh auth refresh -s project` in `CONTRIBUTING.md`
-- [ ] #132 — Confirm child issues #142–#147 each have correct milestone + labels; close parent #132 when all 6 children are closed or scheduled
+- [x] #133 — CLOSED. R1–R3, R5–R6 confirmed done; R4 deferred to child issue #202
+- [x] #139 — CLOSED. All R1–R6 confirmed done (labels, project, templates, labeler, stale, gh auth doc)
+- [x] #132 — CLOSED. Children #142–#147 all assigned to milestone "Action Items from Research"
+- [x] #202 — Created: "Add MkDocs Material docsite" (deferred R4 child issue)
 
 **Depends on**: Phase 4 APPROVED
 **Gate**: Phase 5 Review does not start until all changes are committed
-**Status**: ⬜ Not started
+**Status**: ✅ Complete
 
 ---
 
-### Phase 5 Review — Review Gate ⬜
+### Phase 5 Review — Review Gate ✅
 
 **Agent**: Review
 **Deliverables**: `## Phase 5 Review Output` appended to scratchpad, verdict: APPROVED
 **Depends on**: Phase 5 deliverables committed
 **Gate**: Milestone 9 closure assessment follows
-**Status**: ⬜ Not started
+**Status**: ✅ APPROVED
 
 ---
 
