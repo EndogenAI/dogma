@@ -26,7 +26,9 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 from propose_dogma_edit import (  # noqa: E402
     check_coherence,
+    enforce_tier_boundaries,
     extract_evidence,
+    generate_adr_skeleton,
     generate_proposal,
     load_stability_tiers,
     main,
@@ -486,3 +488,213 @@ def test_main_returns_0_on_successful_run(tmp_path):
     )
     assert ret == 0
     assert out_file.exists()
+
+
+# ===========================================================================
+# Tests for enforce_tier_boundaries() — NEW in #121
+# ===========================================================================
+
+
+def test_enforce_tier_boundaries_t1_valid_axiom():
+    """T1 accepts edits to core axioms (Endogenous-First, etc)."""
+    tiers = load_stability_tiers()
+    passes, reason = enforce_tier_boundaries("T1", "Endogenous-First", tiers)
+    assert passes is True
+    assert "respected" in reason.lower()
+
+
+def test_enforce_tier_boundaries_t1_invalid_operational():
+    """T1 rejects edits to non-axiom sections."""
+    tiers = load_stability_tiers()
+    passes, reason = enforce_tier_boundaries("T1", "Operational constraint", tiers)
+    assert passes is False
+    assert "axioms" in reason.lower()
+
+
+def test_enforce_tier_boundaries_t1_algorithms_before_tokens():
+    """T1 accepts 'Algorithms Before Tokens' axiom."""
+    tiers = load_stability_tiers()
+    passes, reason = enforce_tier_boundaries("T1", "Algorithms Before Tokens", tiers)
+    assert passes is True
+
+
+def test_enforce_tier_boundaries_t2_valid_principle():
+    """T2 accepts edits to guiding principles."""
+    tiers = load_stability_tiers()
+    passes, reason = enforce_tier_boundaries("T2", "Guiding principle: Documentation first", tiers)
+    assert passes is True
+
+
+def test_enforce_tier_boundaries_t2_rejects_axiom():
+    """T2 rejects edits to axioms."""
+    tiers = load_stability_tiers()
+    passes, reason = enforce_tier_boundaries("T2", "Endogenous-First", tiers)
+    assert passes is False
+
+
+def test_enforce_tier_boundaries_t3_valid_operational():
+    """T3 accepts operational constraints."""
+    tiers = load_stability_tiers()
+    passes, reason = enforce_tier_boundaries("T3", "Phase-Gate-Sequence", tiers)
+    assert passes is True
+
+
+def test_enforce_tier_boundaries_t3_rejects_axiom():
+    """T3 rejects axiom edits."""
+    tiers = load_stability_tiers()
+    passes, reason = enforce_tier_boundaries("T3", "Local Compute-First", tiers)
+    assert passes is False
+    assert "axioms" in reason.lower()
+
+
+def test_enforce_tier_boundaries_t3_rejects_algorithms_axiom():
+    """T3 rejects Algorithms Before Tokens axiom."""
+    tiers = load_stability_tiers()
+    passes, reason = enforce_tier_boundaries("T3", "Algorithms Before Tokens", tiers)
+    assert passes is False
+
+
+# ===========================================================================
+# Tests for generate_adr_skeleton() — NEW in #121
+# ===========================================================================
+
+
+def test_generate_adr_skeleton_has_required_sections():
+    """ADR skeleton contains all required sections."""
+    tiers = load_stability_tiers()
+    adr = generate_adr_skeleton("T1", "Endogenous-First", tiers)
+    assert "# ADR-NNN:" in adr
+    assert "## Context" in adr
+    assert "## Decision" in adr
+    assert "## Consequences" in adr
+    assert "## References" in adr
+
+
+def test_generate_adr_skeleton_includes_tier_info():
+    """ADR skeleton includes tier level and name."""
+    tiers = load_stability_tiers()
+    adr = generate_adr_skeleton("T2", "My Principle", tiers)
+    assert "T2" in adr
+    assert "Guiding Principles" in adr
+
+
+def test_generate_adr_skeleton_t1_metadata():
+    """T1 ADR skeleton includes T1-specific metadata."""
+    tiers = load_stability_tiers()
+    adr = generate_adr_skeleton("T1", "Endogenous-First", tiers)
+    assert "Axioms" in adr
+    assert "3" in adr  # T1 session threshold
+
+
+def test_generate_adr_skeleton_t3_metadata():
+    """T3 ADR skeleton includes T3-specific metadata."""
+    tiers = load_stability_tiers()
+    adr = generate_adr_skeleton("T3", "Operation", tiers)
+    assert "Operational Constraints" in adr
+    assert "2" in adr  # T3 session threshold
+
+
+def test_generate_adr_skeleton_requires_adr_field():
+    """ADR skeleton mentions the requires_adr tier field."""
+    tiers = load_stability_tiers()
+    adr = generate_adr_skeleton("T1", "Test", tiers)
+    assert "requires adr" in adr.lower()  # Note: with space, not underscore
+
+
+# ===========================================================================
+# Tests for main() with --output-adr — NEW in #121
+# ===========================================================================
+
+
+@pytest.mark.io
+def test_main_output_adr_flag(tmp_path):
+    """main() with --output-adr creates an ADR skeleton file."""
+    session_file = tmp_path / "session.md"
+    session_file.write_text("## Session Start\nGoverning axiom test\n", encoding="utf-8")
+    adr_file = tmp_path / "adr.md"
+    
+    ret = main([
+        "--input", str(session_file),
+        "--tier", "T2",
+        "--affected-axiom", "Test Principle",
+        "--proposed-delta", "Add clarification",
+        "--output-adr", str(adr_file),
+    ])
+    
+    assert ret == 0
+    assert adr_file.exists()
+    adr_content = adr_file.read_text()
+    assert "ADR-NNN" in adr_content
+    assert "## Consequences" in adr_content
+
+
+@pytest.mark.io
+def test_main_output_and_adr_together(tmp_path):
+    """main() creates both proposal and ADR when both flags are used."""
+    session_file = tmp_path / "session.md"
+    session_file.write_text("## Session Start\nGoverning axiom test\n", encoding="utf-8")
+    proposal_file = tmp_path / "proposal.md"
+    adr_file = tmp_path / "adr.md"
+    
+    ret = main([
+        "--input", str(session_file),
+        "--tier", "T1",
+        "--affected-axiom", "Endogenous-First",
+        "--proposed-delta", "Clarify scope",
+        "--output", str(proposal_file),
+        "--output-adr", str(adr_file),
+    ])
+    
+    assert ret == 0
+    assert proposal_file.exists()
+    assert adr_file.exists()
+    assert "DEP-DRAFT" in proposal_file.read_text()
+    assert "ADR-NNN" in adr_file.read_text()
+
+
+# ===========================================================================
+# Tests for tier boundary enforcement in main() — NEW in #121
+# ===========================================================================
+
+
+def test_main_tier_violation_returns_1(tmp_path):
+    """main() returns 1 when tier boundary is violated."""
+    session_file = tmp_path / "session.md"
+    session_file.write_text("test", encoding="utf-8")
+    
+    ret = main([
+        "--input", str(session_file),
+        "--tier", "T1",
+        "--affected-axiom", "Operational constraint",
+        "--proposed-delta", "Change",
+    ])
+    
+    assert ret == 1
+
+
+def test_main_parse_error_returns_2(tmp_path):
+    """main() returns 2 on argument parse error."""
+    session_file = tmp_path / "session.md"
+    session_file.write_text("test", encoding="utf-8")
+    
+    # Invalid tier value
+    ret = main([
+        "--input", str(session_file),
+        "--tier", "INVALID",
+        "--affected-axiom", "Test",
+        "--proposed-delta", "Change",
+    ])
+    
+    assert ret == 2
+
+
+def test_main_missing_input_file_returns_2():
+    """main() returns 1 when input file cannot be read (I/O error)."""
+    ret = main([
+        "--input", "/nonexistent/file.md",
+        "--tier", "T1",
+        "--affected-axiom", "Endogenous-First",
+        "--proposed-delta", "Change",
+    ])
+    
+    assert ret == 1
