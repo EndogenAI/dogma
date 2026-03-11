@@ -1,10 +1,6 @@
 name: "Provenance Audit — CI Integration"
 
 on:
-  push:
-    branches:
-      - main
-      - feat/**
   pull_request:
     branches:
       - main
