@@ -636,37 +636,188 @@ Phase 7 synthesizes Phase 1–6 research into a unified conceptual framework. Is
 
 ---
 
-## **Sprint Wrapup — Issue Cleanup & Session Close**
+## **Phase 8 — Wrapup Corpus Scan for Issue Comments**
 
 ### Overview
 
-Final sprint phase: consolidate duplicate tracking pairs, update issue body checkboxes, post session-end progress comments, and prepare for merge to main.
+Before consolidating issues, scan all Phase 1–6 research deliverables (and Phase 7 if complete) to identify which Milestone 9 issues need progress comments. Generate organized, specific comments that summarize phase deliverables, commit SHAs, and next steps for each issue.
 
 ---
 
-#### Wrapup: Issue Consolidation & Cleanup
+#### Phase 8a: Corpus Scan for Issue Comment Generation & Milestone 8 Cross-Reference Discovery
 
-**Agent**: Executive PM + Orchestrator  
-**Scope**: Close duplicate pairs, update issue body checkboxes, post progress comments
+**Agent**: Executive Researcher (with Orchestrator scanning support)  
+**Scope**: Analyze Phase 1–6 (and Phase 7) deliverables to determine which Milestone 9 issues need progress comments; **AND** scan Milestone 8 open issues for cross-references to new Milestone 9 research/synthesis/primary papers
+
+**Methodology**:
+
+##### 1. Milestone 9 Deliverables-to-Issues Mapping
+
+**Comprehensive Mapping Methodology**:
+
+1. **Inventory all Phase 1–7 deliverables** (commits, research docs, scripts, tests):
+   - Phase 1–5 deliverables: COMPLETE (commits referenced in phase gate records)
+   - Phase 6–7 deliverables: IN PROGRESS OR QUEUED
+   - Per issue (#167–#192), list all artifacts:
+     - Commit SHAs and commit messages (confirm with `git log --oneline` per issue)
+     - Research document files produced (e.g., `semantic-holography-language-encoding.md` → #189)
+     - Test files / validation scripts (e.g., `validate_handoff_permeability.py` → #181)
+     - Links to source/data commits (e.g., corpus files referenced in research docs)
+
+2. **Map deliverables to Milestone 9 issues** using three correlation sources:
+   - **Issue body**: Explicit mention in issue description (e.g., "#189 — Semantic holography...", "Deliverable: semantic-holography-language-encoding.md")
+   - **Commit messages**: Conventional Commits format `feat(#189): Semantic holography...` or issue references in body
+   - **Research doc frontmatter / YAML**: Cross-reference fields in D4 docs linking to issue numbers
+   - **Execution checklist mapping**: Phase deliverables listed above map to specific issues (e.g., Phase 1a ends with #167, #168, #172, #173, #174)
+
+3. **Group by issue** (organization strategy):
+   - Create a mapping table: Issue # → [Phase(s), Commit SHA(s), Research Docs, Test Files, Status (Complete/In Progress)]
+   - Include: effort estimate, issue title, primary research domain
+   - Example:
+     ```
+     | Issue # | Title | Domain | Phase | Commit SHA | Deliverable Files | Status |
+     |---------|-------|--------|-------|-----------|------------------|--------|
+     | #189 | Semantic Holography | Foundational | 4a | fba89a1 | semantic-holography-language-encoding.md | ✅ Complete |
+     | #190 | IIT + Panpsychism | Foundational | 4a | 6733579 | iit-panpsychism-consciousness-bounds.md | ✅ Complete |
+     | #167 | External Team Case Study | Endogenic | 1 | (Phase 1 commits) | external-team-application-csm.md | ⏳ In Progress |
+     ```
+
+4. **Draft progress comments** (for each issue with ≥1 deliverable):
+   - **Issue header**: Issue # + title
+   - **Completion status**: ✅ Complete / ⏳ In Progress / ⬜ Queued
+   - **Phase breakdown**: Which phase(s) delivered to this issue, in order
+   - **Deliverables inventory**:
+     - Research documents (with direct links to `/docs/research/filename.md` on branch)
+     - Test/validation files (links to `/scripts/` or `/tests/`)
+     - Commit SHAs (links to commit diffs)
+   - **Summary statement**: 1–2 sentences describing what this issue accomplished
+   - **Next steps**: If in-progress or blocked, describe the next phase that will unblock
+   - **Dependencies**: Any other issues this issue depends on, or issues that depend on this one
+
+5. **Quality assurance** (before posting):
+   - Verify all links resolve (test locally: `echo "[research docs](docs/research/file.md)" | mdlink-checker`)
+   - Confirm commit SHAs exist: `git show <sha> --oneline`
+   - Validate no duplicate comments on same issue
+   - Ensure comment prose is clear and specific (no vague summaries)
+
+##### 2. Milestone 8 Cross-Reference Scan (NEW)
+
+**Objective**: Identify which Milestone 8 issues mention, cite, or should cross-reference the new Milestone 9 research papers, gap-analysis documents, or foundational theory syntheses.
+
+**Research Questions**:
+- Which Milestone 8 issues have comments/descriptions that already reference or anticipate the Milestone 9 research?
+- Are there Milestone 8 issues that directly depend on Milestone 9 outputs?
+- Which Milestone 8 issues should be updated with links to Milestone 9 deliverables for continuity/context?
+
+**Scanning Methodology**:
+1. **Fetch all Milestone 8 open issues** via `gh issue list --milestone 8 --state open --json number,title,body,comments`
+2. **Deep comment scan** (for each Milestone 8 issue):
+   - Extract all issue comments and body text
+   - Search for keyword patterns:
+     - "research", "synthesis", "values", "encoding", "endogenic", "bubble", "clusters", "substrate", "topology", "membrane", "pressure", "holography", "consciousness", "axiom", "MANIFESTO"
+     - References to Milestone 9 issues (#167–#192)
+     - References to planned/proposed Milestone 9 research topics (#189, #190, #191, #192)
+   - Classify mentions as: (A) **Already aware/anticipating** (past comment), (B) **Blocked waiting for Milestone 9**, (C) **Could benefit from Milestone 9 context**, (D) **No apparent connection**
+3. **Author-level scan** (optional if time permits):
+   - Identify which Milestone 8 authors have open issues
+   - Flag issues with potential author-interest in Milestone 9 deliverables
+   - Note for potential cross-issue notification
+4. **Cross-reference report**:
+   - Produce: `analysis/milestone-8-cross-reference-scan.md` (not committed; working document)
+   - Include: issues table with classification (A/B/C/D), comment snippets, proposed action items
+
+**Proposed Actions from Scan**:
+- **Type A issues (Already aware)**: Consider posting a progress comment linking to Milestone 9 deliverables (if relevant)
+- **Type B issues (Blocked)**: Note the blocker and reference specific Milestone 9 phase expected to unblock
+- **Type C issues (Could benefit)**: Consider commenting with Milestone 9 research context to inform ongoing work
+- **Type D issues (No connection)**: No action needed
 
 **Deliverables**:
-- [ ] Review and consolidate duplicate pairs (#169/#175, #170/#180) — flag for merge strategy
-- [ ] Update all active issue bodies with completed Milestone 9 deliverables (checkboxes)
-- [ ] Post session-end progress comment on each primary issue (#164, #165, #167–#192)
-- [ ] Verify no open blockers remain
+- [ ] Milestone 9 scan report (internal): Map of Milestone 9 issues → phase deliverables
+- [ ] Milestone 9 comment templates (1 per active issue): Organized, specific progress comments ready for posting
+- [ ] Milestone 9 comment posting queue: CSV/table format (issue #, comment text) ready for batch posting by GitHub agent
+- [ ] Milestone 8 cross-reference scan report: Open issues classification, recommendations for cross-linking
+- [ ] Updated wrapup plan (optional): Proposed additional comments to Milestone 8 issues if high-value cross-references identified
 
-**Coordination**: GitHub agent (PM) coordinates with Orchestrator for issue consolidation decisions  
-**Status**: ⬜ Queued (scheduled after Phase 7 Review)
+**Estimated effort**: 5–8 hours (Milestone 9 mapping 3–5h + Milestone 8 cross-reference scan 2–3h)  
+**Depends on**: Phase 7 completion (or Phase 6 Review APPROVED if Phase 7 is deferred)  
+**Status**: ⏳ Queued (scheduled after Phase 7 Review or immediately after Phase 6 Review APPROVED)
 
 ---
 
-#### Wrapup Review — Final Checkpoint ⬜
+#### Phase 8 Review — Comment Quality Verification Gate
 
 **Agent**: Review  
-**Deliverables**: `## Wrapup Review Output` in scratchpad; all cleanup tasks complete  
-**Depends on**: All wrapup tasks committed  
-**Gate**: Only after Wrapup Review passes, branch is ready for merge to main  
-**Status**: ⬜ Queued (terminal gate)
+**Deliverables**: `## Phase 8 Review Output` in scratchpad; verdict: APPROVED  
+**Verification Criteria**:
+- ✅ All active Milestone 9 issues (with deliverables) have comment templates
+- ✅ Comment templates include specific commit SHAs and file references
+- ✅ Comments are clear and navigable (not overly verbose)
+- ✅ No duplicate or overlapping comments (one per issue)
+
+**Depends on**: Phase 8a deliverables  
+**Gate**: Phase 9 Issue Consolidation does not begin until Phase 8 Review returns APPROVED  
+**Status**: ⏳ Queued
+
+---
+
+## **Phase 9 — Sprint Wrapup — Issue Cleanup & Session Close**
+
+### Overview
+
+Final sprint phase: post progress comments, consolidate duplicate tracking pairs, update issue body checkboxes, and prepare for merge to main.
+
+---
+
+#### Phase 9a: Wrapup — Issue Consolidation, Comment Posting & Milestone 8 Cross-Linking
+
+**Agent**: Executive PM + Orchestrator + GitHub agent  
+**Scope**: Post Milestone 9 progress comments, post Milestone 8 cross-references, close duplicate pairs, update issue body checkboxes
+
+**Deliverables**:
+- [ ] **Milestone 9 progress comments**: Post to all active Milestone 9 issues (from Phase 8 comment queue via `gh issue comment`)
+  - For each issue (#167–#192 with deliverables), post structured progress comment with commit SHAs, research docs, next steps
+  - Verify posts with `gh issue view <#> --json comments -q '.comments[-1].body[:100]'`
+  
+- [ ] **Milestone 8 cross-reference integration**: Route Phase 8 Milestone 8 scan findings to Executive PM
+  - For each Milestone 8 issue classified as Type A/B/C (has connection to Milestone 9 research):
+    - Draft targeted comment linking relevant Milestone 9 research deliverables
+    - Comment template includes: (1) what Milestone 9 research applies, (2) how it informs/unblocks/contextualizes the work, (3) link to specific research doc(s)
+    - Post via `gh issue comment <milestone-8-#> --body-file <path/to/comment.md>`
+    - Verify with `gh issue view <milestone-8-#> --json comments -q '.comments[-1].body[:100]'`
+  - Estimated Milestone 8 comments: 3–8 (Type A/B/C issues only)
+  - Maintain traceability CSV logging which Milestone 9 research was linked to which Milestone 8 issues
+
+- [ ] **Duplicate pair review & consolidation strategy** (#169/#175, #170/#180)
+  - Flag for merge strategy discussion (defer final decision if not clear)
+  - Document decision rationale in scratchpad
+  
+- [ ] **Update all active issue bodies** with completed Milestone 9 deliverables (checkboxes)
+  - For each Milestone 9 issue with deliverables, update body with `[x]` checkboxes for completed tasks
+  - Use `gh issue edit <#> --body-file <path/to/body.md>` for multi-line body updates
+  - Verify with `gh issue view <#> --json body -q '.body' | grep -E '\[x\]|\[ \]'`
+
+- [ ] **Verify no open blockers remain**
+  - Final triage: Any Milestone 9 issues that remain open after Phase 9a POST issues?
+  - Any Milestone 8 issues newly identified as dependent on Milestone 9 research that is missing/incomplete?
+  - Document blockers or confirm clean state
+
+**Coordination**: 
+- Executive PM routes Milestone 8 findings to appropriate issue owners (via cross-reference comments)
+- GitHub agent executes all comment posting and body updates
+- Orchestrator validates all posts succeeded
+
+**Status**: ⏳ Queued (scheduled after Phase 8 Review APPROVED)
+
+---
+
+#### Phase 9 Review — Final Checkpoint ⏳
+
+**Agent**: Review  
+**Deliverables**: `## Phase 9 Review Output` in scratchpad; all cleanup tasks complete  
+**Depends on**: All Phase 9a deliverables committed (comments posted, issues consolidated, bodies updated)  
+**Gate**: Only after Phase 9 Review passes, branch is ready for merge to main  
+**Status**: ⏳ Queued (terminal gate)
 
 ---
 
@@ -735,8 +886,9 @@ Phase 1 Review APPROVED
 | Phase 5 | 10–15h | Low effort (audit doc creation) |
 | Phase 6 | 40–50h | Medium effort (corpus validation + gap analysis docs) |
 | Phase 7 | 25–35h | Medium effort (synthesis + framework integration) |
-| Sprint Wrapup | 5–10h | Low effort (cleanup + consolidation) |
-| **Total Sprint** | **558–677h** | **~14–17 weeks full-time** |
+| Phase 8 | 3–5h | Low effort (corpus scan + comment generation) |
+| Phase 9 | 5–10h | Low effort (comment posting + issue cleanup + consolidation) |
+| **Total Sprint** | **561–682h** | **~14–17 weeks full-time** |
 
 ---
 
