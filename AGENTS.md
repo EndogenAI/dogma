@@ -251,14 +251,70 @@ Rules:
 
 ### Focus-on-Descent / Compression-on-Ascent
 
-**Outbound delegation prompts should be narrow and task-scoped** — dispatch the minimum necessary context to complete the subagent's task. **Returned results should target ≤ 2,000 tokens** — subagents compress extensive exploration into a dense handoff; they do not return raw search histories or intermediate reasoning. Both constraints serve the same purpose: preserving the main-session context window across a full multi-phase session — a broad outbound prompt and verbose return each consume context as if the work were done directly.
+**Essence**: Outbound delegation prompts must be scoped narrowly and explicitly. Returned results must be compressed to ≤ 2,000 tokens. Both together preserve context window budget across multi-phase sessions.
 
-**Signal preservation rules (additive — do not override tone above):**
+**Three-layer encoding** (prescriptive — not advisory):
+
+#### Layer 1: Pre-Delegation Checklist (Before You Invoke)
+
+Before invoking **any** subagent, verify all three:
+
+| Check | Definition | Red Flag | Fix |
+|-------|-----------|----------|-----|
+| **Scope Clarity** | Can you state the task in one sentence, imperative voice (≤15 words)? | "Review the workplan" | "Review workplan.md v2.1; flag gaps in issue count/effort/blockers; return bullets with issue #s" |
+| **Output Format** | Does your prompt explicitly name format (bullets/table/line) + token ceiling? | "Return your findings" | "Return only: bullets (issue# — gap), ≤2000 tokens. No prose, no preamble." |
+| **Success Criteria** | Would the agent immediately recognize success without guessing? | "Fix the workplan" | "Reconcile count 25→23. Add effort (XS/S/M/L) to Phases 2–5. Flag #151 dependency. Commit: 'docs: workplan...'" |
+
+If **any** check fails → rewrite the prompt before delegating.
+
+**Canonical Session Examples** (2026-03-11 Milestone 9 review):
+- ✅ Planner delegation: "Review workplan.md, flag gaps [5 bullets], return: bullets only, ≤2000 tokens" → 1,800 tokens, structured findings
+- ✅ Docs delegation: "Apply 3 updates [specific list]; commit [msg]; return: 'Updated — [item 1], [item 2], [item 3]'" → 1-line confirmation
+- ✅ Review delegation: "Validate 4 checkpoints [list]; return: single line 'APPROVED' or 'REQUEST CHANGES — [issue]'" → 1-line verdict
+
+#### Layer 2: Delegation Prompt Structure (Template)
+
+Every subagent prompt follows this 5-part shape:
+
+```
+**1. Goal** (imperative, one sentence)
+**2. Scope** (what file/section? what NOT to do?)
+**3. Tasks** (numbered list, specific actions)
+**4. Output Format** (table/bullets/single line? ≤N tokens?)
+**5. Return Statement** (verb: "Return only: X, Y, Z")
+```
+
+Example:
+> Apply these 3 updates to `docs/plans/file.md`:
+> 1. Change line 42 from "25" to "23"
+> 2. Add effort row to Phase 2 section
+> 3. Add #151 note to acceptance criteria
+>
+> Output format: Single line — "Updated — [item 1], [item 2], [item 3]"
+> Return only that line, nothing else.
+
+**Why**: Explicit constraints eliminate ambiguity. Compressed output preserves context budget.
+
+#### Layer 3: Return Validation Gate (After You Receive)
+
+Mandatory checks after every subagent returns (before acting on output):
+
+| Check | Action | Loop Back If |
+|-------|--------|--------------|
+| **Token count** | Rough estimate: (word count ÷ 4) | >2000 tokens |
+| **Format match** | Did they follow your specified format? | Mismatch (e.g., prose instead of bullets) |
+| **Signal preservation** | For research/synthesis: are canonical examples + citations intact? | Lost examples or citations |
+
+**Loop-backs**: Request compression immediately: "Return **only**: [specific fields]. Drop explanations. Stay <2000 tokens."
+
+**When to accept overflow**: Only if subagent explicitly notes "compression unavoidable" + documents rationale. Rare.
+
+**Signal preservation rules (additive — do not override above):**
 - When compressing Scout findings, preserve all labeled `**Canonical example**:` and `**Anti-pattern**:` instances verbatim — compress surrounding context, not concrete illustrations.
 - When compressing Scout findings, retain at least 2 explicit `MANIFESTO.md` axiom citations (by name + section reference) as anchors — paraphrased prose without citation does not preserve the signal.
 - Synthesizer drafts of D4 research documents must include at least one `**Canonical example**:` and one `**Anti-pattern**:` in the Pattern Catalog section; if Scout notes contained none, note the gap explicitly.
 
-*Amendments grounded in empirical handoff-drift audit (issue #75); degradation table in `docs/research/values-encoding.md` §5 OQ-VE-5.*
+*Amendments grounded in empirical handoff-drift audit (issue #75); degradation table in `docs/research/values-encoding.md` §5 OQ-VE-5. Three-layer encoding formalized session 2026-03-11 (issue #198); implementation in `.github/agents/executive-orchestrator.agent.md` § Pre-Delegation Checklist + Return Validation Gate.*
 
 ### Size Guard and Archive Convention
 

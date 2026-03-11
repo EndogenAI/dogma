@@ -111,6 +111,53 @@ Delegation is default, but edge cases are real (e.g., "fix this one typo in docs
 
 **Rule of Thumb**: When in doubt, ask "Would the specialist produce *meaningfully* better output?" If yes, delegate.
 
+### Pre-Delegation Checklist (Mandatory Before Every Subagent Invocation)
+
+Before invoking any subagent, verify **all three** checkpoints. If any fails, rewrite the prompt before delegating.
+
+- [ ] **Scope Clarity**: Can you state the task in one sentence, imperative voice?
+  - ❌ Bad: "Review the workplan"
+  - ✅ Good: "Review workplan.md v2.1, identify gaps in issue count / effort / blockers, return bullets with issue numbers"
+  - **Check**: If you can't phrase it in 15 words, the scope is too broad. Narrow it.
+
+- [ ] **Output Format Specified**: Does the prompt explicitly state format + token ceiling?
+  - ❌ Bad: "Return your findings"
+  - ✅ Good: "Return only: bullets (issue# — gap description), ≤2000 tokens. No prose, no preamble."
+  - **Check**: Every prompt must name format (table / bullets / single line) and ceiling. Compress first, then delegate.
+
+- [ ] **Success Criteria Clear**: Would the agent immediately recognize success?
+  - ❌ Bad: "Fix the workplan"
+  - ✅ Good: "Reconcile count from 25 to 23. Add effort (XS/S/M/L) to Phases 2–5. Flag #151 dependency in acceptance criteria. Commit with msg: 'docs: workplan updates'."
+  - **Check**: If your success criteria have "and then see what they do with it," you're not done. Be prescriptive.
+
+**Canonical Examples from Session 2026-03-11**:
+- **Planner review** (scoped): "Review workplan.md, flag gaps [5 bullets], return: bullets only, ≤2000 tokens" → Result: 1,800 tokens, structured findings ✅
+- **Docs update** (scoped): "Apply 3 updates [list them], commit with [message], return: 'Updated — [item 1], [item 2], [item 3]'" → Result: 1-line confirmation ✅
+- **Review gate** (scoped): "Validate 4 checkpoints [list them], return: single line 'APPROVED' or 'REQUEST CHANGES — [issue]'" → Result: 1-line verdict ✅
+
+### Delegation Prompt Template (Layer 2 — Prescriptive Structure)
+
+Every subagent prompt follows this 5-part shape to minimize context bleed:
+
+```
+**1. Goal** (imperative verb, one sentence)
+**2. Scope** (what file/section? what NOT to do?)
+**3. Tasks** (numbered list, specific concrete actions)
+**4. Output Format** (table/bullets/single line? max N tokens?)
+**5. Return Statement** (explicit verb: "Return only: X, Y, Z")
+```
+
+**Example**:
+> Apply these 3 updates to `docs/plans/file.md`:
+> 1. Change line 42 from "25" to "23"
+> 2. Add effort row to Phase 2 section
+> 3. Add #151 note to acceptance criteria
+>
+> Output format: Single line — "Updated — [item 1], [item 2], [item 3]"
+> Return only that line, nothing else.
+
+**Why this structure**: Explicit constraints eliminate interpretation drift. Small return format preserves context window. See [AGENTS.md § Focus-on-Descent / Compression-on-Ascent](../../AGENTS.md#focus-on-descent--compression-on-ascent) for full encoding (issue #198).
+
 ---
 
 ## Workflow
@@ -331,6 +378,18 @@ Do not batch delegations. One phase at a time.
    ```
    If any matches are found, fix them before invoking the Review agent. This prevents multi-round review cycles caused by residual heading-contract or label-ordering violations.
 5. Invoke **Review** agent: pass the changed file list and the scratchpad location. Wait for APPROVED verdict.
+
+5.5. **Return Validation Gate** (Mandatory After Every Subagent Returns)
+   - **Token check**: Estimate subagent output (~divide by 4). If >2000 tokens:
+     - Request compression: "Return **only**: [specific fields]. Drop explanations. Stay <2000 tokens."
+     - Loop back to agent unless compression is physically impossible (rare)
+   - **Format check**: Did they match your specified format (bullets / table / line)?
+     - If not: "Return in [format]. Reformat and resubmit." (1-line re-request)
+   - **Signal preservation** (for research/synthesis only): Are canonical examples + citations intact?
+     - If synthesis lost examples: "Restore [example name] to Pattern Catalog section."
+   
+   **When to bypass**: Pragma: only if subagent explicitly noted compression was lossy and necessary. Document in scratchpad.
+
 6. If the completed phase was a long research, synthesis, or multi-file editing delegation — recommend running `/compact` before delegating the next phase.
 
 After any `/compact` event: always re-read the scratchpad and workplan from disk before continuing (see Step 1).
