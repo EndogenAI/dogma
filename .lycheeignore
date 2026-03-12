@@ -43,3 +43,8 @@ https://istio.io/latest/docs/concepts/traffic-management/
 # Site is live; referenced in docs/guides/mcp-integration.md.
 # CI environment SSL/TLS configuration issue, not a dead link.
 https://spec.modelcontextprotocol.io/
+
+# AccessiTech/EndogenAI issue #35 — original repo issue that inspired this project.
+# The AccessiTech/EndogenAI repository no longer exists; issue is permanently 404.
+# Referenced in README.md as historical context.
+https://github.com/AccessiTech/EndogenAI/issues/35
