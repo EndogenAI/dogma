@@ -445,6 +445,8 @@ Form definitions (from Pattern 1, §3):
 
 **F4 gap — Local Compute-First**: Soft gate only — `docs/guides/local-compute.md` + `LLM Cost Optimizer` agent. No CI-enforced script. Note in MANIFESTO.md explicitly states "No hard CI gate exists for this axiom — it requires human judgment." This should either be formalised as an intentional human-judgment gate or addressed by a future `scripts/check_model_usage.py`.
 
+*Addressed by*: [`docs/research/lcf-programmatic-enforcement.md`](./lcf-programmatic-enforcement.md) (observable-proxy gate design) and [`docs/research/lcf-oversight-infrastructure.md`](./lcf-oversight-infrastructure.md) (structural-enabler framing).
+
 ### Guiding Principle Coverage
 
 | Principle | F1 Principle | F2 Example | F3 Anti-pattern | F4 Gate |

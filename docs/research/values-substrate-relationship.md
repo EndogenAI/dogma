@@ -99,6 +99,8 @@ The two models are empirically integrated through the **B8 Degradation Table** (
 | Synthesizer → Reviewer | bubble-clusters.md (horizontal) | Synthesizer | Pattern B1: draft must retain all canonically labeled examples from Scout output |
 | Reviewer → Archive | values-encoding.md (vertical) | Archivist | H3 programmatic immunity: `validate_synthesis.py` enforces structural compliance at archive boundary |
 
+*See also*: [`vocabulary-bridge-encoding-models.md`](./vocabulary-bridge-encoding-models.md) for the shared vocabulary bridging the vertical and horizontal encoding models.
+
 ---
 
 ## 3. Pattern Catalog
@@ -199,6 +201,8 @@ All five core axioms are operationalized by the values-encoding, bubble-clusters
 | Local Compute-First in primary papers | values-encoding.md, bubble-clusters-substrate.md, endogenic-design-paper.md | No compute-cost tradeoff framing appears in any of the three primary papers | ⚪ SILENT |
 
 **Verdict**: Axiom 3 is **Silent** in all three primary papers (values-encoding.md, bubble-clusters-substrate.md, endogenic-design-paper.md). None addresses compute-cost tradeoffs or local-vs-cloud inference economics directly. The principle is operationally enacted in the system (watch_scratchpad.py runs locally; MANIFESTO.md read at session-start) through AGENTS.md operational protocols, not through primary research claims. **No contradiction identified — this is an open gap for future research**, not a challenge to the axiom.
+
+*See also*: [`vocabulary-bridge-encoding-models.md`](./vocabulary-bridge-encoding-models.md) for the shared vocabulary bridging the vertical and horizontal encoding models.
 
 ### 4.4 Axiom 4 — Minimal Posture
 
