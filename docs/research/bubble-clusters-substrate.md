@@ -171,6 +171,8 @@ Used together: the biological-homology model governs vertical design (how to enc
 
 **Actionable implication**: For every new agent-to-agent boundary introduced in the fleet, write a named membrane permeability specification into `AGENTS.md` under §Agent Communication or into the receiving agent's `Intentions` section. The specification is the surfactant that keeps the boundary stable.
 
+**Vocabulary note**: [`vocabulary-bridge-encoding-models.md`](vocabulary-bridge-encoding-models.md) formalises shared vocabulary for membrane boundary events, bridging this model with `values-encoding.md`. The three Pattern B1-relevant terms (*Signal Boundary*, *Preservation Unit*, *Boundary Specification*) are formally defined in [`docs/glossary.md`](../../docs/glossary.md).
+
 ---
 
 ### Pattern B2 — Connectivity Atlas as Substrate Health Metric
@@ -180,6 +182,8 @@ Used together: the biological-homology model governs vertical design (how to enc
 **Pattern**: Measure inter-substrate connectivity algorithmically, not by inspection. The cross-reference density score (number of back-references from agent files to `MANIFESTO.md` and `AGENTS.md`) is the endogenic connectivity atlas. A fleet with low cross-reference density is a collection of isolated bubbles, not a coherent substrate system.
 
 **Actionable implication**: `scripts/generate_agent_manifest.py` already outputs a per-agent `cross_ref_density` score, fleet-wide average, and a warning flag for agents with density < 1. Operationalize this existing output: run the manifest script as part of the CI report (or a standing fleet health check) and establish a concrete threshold policy (e.g., density < 1 = PR warning) in `AGENTS.md`. This closes the gap identified in `values-encoding.md` §4 R6 and makes the algorithmic connectivity atlas actionable, not just present.
+
+**Glossary note**: *Substrate Coherence* is formally defined in [`docs/glossary.md`](../../docs/glossary.md).
 
 ---
 
@@ -364,3 +368,5 @@ The Phase 5 research recommendations audit identified 15 follow-up research topi
 - See [values-encoding.md](values-encoding.md) for the complementary inheritance-chain model
 - See [AGENTS.md](../../AGENTS.md) for Focus-on-Descent / Compression-on-Ascent boundary specifications
 - See [security-threat-model.md](../../docs/research/security-threat-model.md) for related threat surface analysis
+- See [vocabulary-bridge-encoding-models.md](vocabulary-bridge-encoding-models.md) — provides shared vocabulary (Signal Boundary, Transit Loss, Preservation Unit, Boundary Specification, Substrate Coherence) bridging membrane model concepts in this document to the inheritance-chain model in `values-encoding.md`
+- See [values-substrate-relationship.md](values-substrate-relationship.md) — formal dimensional orthogonality analysis establishing that bubble-clusters (horizontal/topological) and values-encoding (vertical/inheritance) are complementary, non-competing models

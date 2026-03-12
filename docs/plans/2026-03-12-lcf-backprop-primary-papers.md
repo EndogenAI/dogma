@@ -19,6 +19,15 @@ Only after Phase B is complete is MANIFESTO §3 back-propagation considered comp
 
 ---
 
+## Methodology
+
+Back-propagation into primary papers follows three rules (encoded in `values-encoding.md` §5):
+1. **Weave** — integrate findings into the paper's existing argument structure; do not append standalone paragraphs
+2. **Link-out** — reference definitions and elaborations in source documents via cross-reference link; do not reproduce them in-place
+3. **Consolidate** — the paper should be more coherent after the pass, not longer; annotation proliferation is a failure mode
+
+---
+
 ## Endogenous Sources (read before any delegation)
 
 1. `docs/research/vocabulary-bridge-encoding-models.md` — 5 bridge terms; orthogonality preservation verdict (primary source for A1+A2)

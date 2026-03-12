@@ -416,6 +416,10 @@ The inheritance-chain model describes value transmission in one direction: MANIF
 
 **Corpus Reference**: [dogma-neuroplasticity.md](dogma-neuroplasticity.md) §Pattern Catalog (Patterns C1-C3) provides the formal back-propagation protocol, detailing stability tiers, mutation thresholds, and evidence weight calculations governing substrate change.
 
+**Concrete back-propagation event (2026-03-12)**: The LCF Research Sprint (issues #209/#210/#211) is a direct instantiation of this cycle. F4 gap evidence documented in §6 of this paper propagated upward through three independent research documents (`lcf-oversight-infrastructure.md`, `lcf-programmatic-enforcement.md`, `vocabulary-bridge-encoding-models.md`) and resulted in a user-approved amendment to MANIFESTO.md §3 on 2026-03-12 — a T1 mutation triggered by converging session evidence exactly as the back-propagation protocol specifies.
+
+**Cross-document back-propagation discipline**: When back-propagating sprint findings into primary synthesis papers, three rules apply: (1) *Weave* — integrate new content into the paper's existing argument structure, not as appended standalone paragraphs; (2) *Link-out* — definitions, patterns, and elaborations from source research documents are referenced by cross-reference link, not reproduced in-place; the source document retains the full content for lossless access; (3) *Consolidate* — each back-propagation pass should leave the receiving paper more coherent, not longer. The failure mode is **annotation proliferation**: blocks of explanatory text added below existing paragraphs that restate what a linked document already says. A correct back-propagation pass updates existing sentences and adds compact forward references; an incorrect one visibly inflates the paper with content that duplicates its sources.
+
 ---
 
 ## 6. Appendix — [4,1] Encoding Coverage Audit
@@ -443,7 +447,7 @@ Form definitions (from Pattern 1, §3):
 
 **F4 gap — Endogenous-First**: `scripts/fetch_all_sources.py` and `scripts/generate_agent_manifest.py` are named as programmatic gates in MANIFESTO.md (added in ce8ee48 / PR #53). However, these are *invocation-time* session-start scripts — no automated CI check runs them at push time. This places EF-F4 in the same partial-gate status as LCF-F4. §4 R2 predates PR #53 and asked for this gate to be added; the behavioural gate was added but a hard CI check still does not exist.
 
-**F4 gap — Local Compute-First**: Soft gate only — `docs/guides/local-compute.md` + `LLM Cost Optimizer` agent. No CI-enforced script. Note in MANIFESTO.md explicitly states "No hard CI gate exists for this axiom — it requires human judgment." This should either be formalised as an intentional human-judgment gate or addressed by a future `scripts/check_model_usage.py`.
+**F4 gap — Local Compute-First**: **Partially addressed** — two enforcement surfaces are now distinguished. (1) *Semantic-intent surface*: MANIFESTO.md §3 was amended 2026-03-12 to make the human-judgment gate explicitly intentional design, not a placeholder. Static linting cannot detect the intent behind a cloud-model API call; human review remains the correct final arbiter for semantic compliance. (2) *Observable-proxy surface*: `scripts/check_model_usage.py` (a WARN-only pre-commit gate detecting model-name strings in config files, API endpoint declarations, and environment variable keys) is now recommended — not deferred. Implementation is blocked on issue #131 (Cognee/Local Compute Baseline) for signal-to-noise calibration before FAIL-blocking is enabled. The two surfaces address independent failure modes and are resolved without contradiction.
 
 *Addressed by*: [`docs/research/lcf-programmatic-enforcement.md`](./lcf-programmatic-enforcement.md) (observable-proxy gate design) and [`docs/research/lcf-oversight-infrastructure.md`](./lcf-oversight-infrastructure.md) (structural-enabler framing).
 
@@ -469,7 +473,7 @@ Ordered by encoding fidelity risk × breadth of impact:
 
 1. **Endogenous-First F2 (canonical example)** — The primary axiom is missing its prototype anchor. Without a concrete session example, the principle is vulnerable to semantic drift through paraphrase. Highest-risk single gap in the [4,1] code. *→ Phase 3 (issue #70), first addition.*
 
-2. **Local Compute-First F4 (candidate hard programmatic gate)** — Currently the only axiom without any programmatic enforcement (no CI or session-start script). The current soft gate (human judgment + agent guidance) is the weakest encoding form. Either formalise the human-judgment gate as intentional design, or create `scripts/check_model_usage.py`. *→ Phase 3 (issue #70), follow-on.*
+2. **Local Compute-First F4 (partially addressed — dual enforcement surface)** — The gap is now resolved into two distinct surfaces: (a) the semantic-intent surface is formally assigned to the human-judgment tier — MANIFESTO.md §3 was updated 2026-03-12 to make this intentional, not a placeholder; (b) the observable-proxy surface has a recommended WARN gate (`scripts/check_model_usage.py`), deferred to issue #131 (Cognee/Local Compute Baseline) for calibration before FAIL-blocking. The combined design narrows the no-CI-gate rationale to semantic enforcement only, where it remains correct. *→ LCF Research Sprint (2026-03-12, issues #209/#210/#211); FAIL-blocking calibration → issue #131.*
 
 3. **Guiding Principles F3 (anti-patterns) — Programmatic-First, Documentation-First, Minimal Posture** — Three most-cited principles with zero anti-patterns. Anti-patterns are the most resilient encoding form (survive paraphrasing); their absence is a compounding drift risk. *→ Phase 3 (issue #70), second pass on principles.*
 
@@ -556,6 +560,8 @@ The Phase 5 research recommendations audit identified 15 follow-up research topi
 - See [epigenetic-tagging.md](epigenetic-tagging.md) for context-sensitive amplification (OQ-VE-2)
 - See [external-value-architecture.md](external-value-architecture.md) for six-layer inheritance chain and Supremacy constraints
 - See [shifting-constraints-from-tokens.md](shifting-constraints-from-tokens.md) for enforcement-tier stack formalization
+- See [vocabulary-bridge-encoding-models.md](vocabulary-bridge-encoding-models.md) — proposes 5 bridge terms (Signal Boundary, Transit Loss, Preservation Unit, Substrate Coherence, Boundary Specification) that operationalize the interface between this paper's [4,1] vertical model and the bubble-clusters horizontal model, enabling cross-model navigation without collapsing orthogonality
+- See [values-substrate-relationship.md](values-substrate-relationship.md) — formal dimensional orthogonality analysis establishing that the vertical ([4,1] inheritance) and horizontal (topological/membrane) models are complementary and non-competing
 
 ---
 
