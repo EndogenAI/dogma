@@ -109,7 +109,7 @@ Scout and synthesize a D4 research document arguing the enabling-infrastructure 
 
 **Agent**: Review
 **Depends on**: Phase 3 (D1 committed, D2 in scratchpad)
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED
 
 **Deliverables**:
 - D1: Verdict for `docs/research/lcf-oversight-infrastructure.md` — APPROVED or REQUEST CHANGES
@@ -122,7 +122,7 @@ Scout and synthesize a D4 research document arguing the enabling-infrastructure 
 
 **Agent**: Executive Orchestrator (surfaces to user; no autonomous edits)
 **Depends on**: Phase 4 (APPROVED verdict); Phase 3 D2 (assessment in scratchpad)
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED (user 2026-03-12); Block 1 + revised Block 2 applied to MANIFESTO.md §3
 
 Read `## Phase 3 — MANIFESTO §3 Assessment` from scratchpad. If assessment = **Y**: surface the proposed amendment text to the user verbatim and block all further execution until explicit written approval is received. Record `## MANIFESTO §3 Gate — APPROVED` (with user confirmation) or `## MANIFESTO §3 Gate — HOLD` (if N or if user declines) in scratchpad. Do not proceed to Phase 6 until this entry exists.
 
@@ -137,7 +137,7 @@ Read `## Phase 3 — MANIFESTO §3 Assessment` from scratchpad. If assessment = 
 
 **Agent**: Executive Docs
 **Depends on**: Phase 4 (all three docs APPROVED); Phase 5 (gate resolved)
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — all 6 deliverables applied; validate_synthesis ALL PASS
 
 Add inter-doc references across all three new research docs. Apply the ≥ 3 bridge terms staged in Phase 1B to `docs/glossary.md`. Back-reference the F4 gap closure in `docs/research/values-encoding.md` and add §2/§4.3 forward links in `docs/research/values-substrate-relationship.md`. If Phase 5 returned APPROVED, apply the MANIFESTO §3 amendment in this phase.
 
@@ -156,7 +156,7 @@ Add inter-doc references across all three new research docs. Apply the ≥ 3 bri
 
 **Agent**: Executive Orchestrator (GitHub operations via GitHub agent)
 **Depends on**: Phase 6 (all cross-linking committed)
-**Status**: ⬜ Not started
+**Status**: ⏳ In progress
 
 Check `gh pr view 208` status first. If open: add `Closes #209`, `Closes #210`, `Closes #211` to PR body via `--body-file`. If merged: open a new PR from the branch with the same closes lines. Post session-end comments on #209, #210, #211. Update this workplan: mark all completed phases ✅ Complete. Write `## Session Summary` to scratchpad and run `uv run python scripts/prune_scratchpad.py --force`.
 

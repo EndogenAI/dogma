@@ -141,6 +141,11 @@ The theoretical justification is drawn from three complementary frameworks:
 
 - **Cross-reference updates to primary research documents (R4)**: Each primary research document should add a brief "Cross-Model Navigation" note — a single paragraph pointing from its domain vocabulary to the bridge terms in this glossary. `values-encoding.md` should note that "signal boundary," "transit loss," and "preservation unit" serve as bridge vocabulary connecting its layer-transition concepts to the topological model. `bubble-clusters-substrate.md` should note that "signal boundary," "boundary specification," and "substrate coherence" bridge its membrane and connectivity concepts to the inheritance-chain model. These notes keep the bridge terms visible to readers arriving at either primary document without requiring those documents to import each other's vocabulary.
 
+## See Also
+
+- [LCF Programmatic Enforcement](./lcf-programmatic-enforcement.md) — observable-proxy gate design for the Local Compute-First axiom; illustrates how bridge vocabulary applies to a concrete enforcement problem
+- [LCF Oversight Infrastructure](./lcf-oversight-infrastructure.md) — structural-enabler framing that complements the enforcement surface; uses bridge terms to describe enabling relationships
+
 ---
 
 ## 5. Sources

@@ -342,6 +342,11 @@ a false sense of automated coverage.
   should explain: what the script checks, what WARN output means, how to respond to a
   flagged signal, and where the tier-1 semantic review gate sits.
 
+## See Also
+
+- [LCF Oversight Infrastructure](./lcf-oversight-infrastructure.md) — structural-enabler framing of LCF; four enabling relationships (audit logging, cost observability, rollback/parity, access controls) that make LCF operationally viable
+- [Vocabulary Bridge: Encoding Models](./vocabulary-bridge-encoding-models.md) — shared vocabulary bridging the vertical (values-encoding) and horizontal (bubble-clusters-substrate) encoding models; bridge terms relevant to LCF enforcement design
+
 ---
 
 ## 5. Sources

@@ -430,6 +430,11 @@ enabling relationships, with a backlink to this document. This propagates the st
 through the encoding inheritance chain (MANIFESTO.md → AGENTS.md → agent files → session
 behavior) rather than leaving it visible only in a research doc.
 
+## See Also
+
+- [LCF Programmatic Enforcement](./lcf-programmatic-enforcement.md) — observable-proxy gate design for the Local Compute-First axiom; the enforcement surface this infrastructure is designed to enable
+- [Vocabulary Bridge: Encoding Models](./vocabulary-bridge-encoding-models.md) — shared vocabulary bridging the vertical and horizontal encoding models; bridge terms used throughout this document's structural framing
+
 ---
 
 ## 5. Sources

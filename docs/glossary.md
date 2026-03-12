@@ -522,6 +522,56 @@ The computational, financial, and environmental cost of interactive LLM inferenc
 
 ---
 
+### Signal Boundary
+
+Any point in the substrate system at which information undergoes a transformation as it moves from one bounded context to another, regardless of whether that transition is vertical (layer-to-layer in the inheritance chain) or horizontal (substrate-to-substrate at a membrane). The signal boundary is the shared abstraction that both "encoding layer transition" (values-encoding.md) and "membrane" (bubble-clusters-substrate.md) instantiate.
+
+**Related terms**: [Encoding Inheritance Chain](#encoding-inheritance-chain), [Transit Loss](#transit-loss), [Boundary Specification](#boundary-specification)
+
+*Source: [`docs/research/vocabulary-bridge-encoding-models.md`](../docs/research/vocabulary-bridge-encoding-models.md)*
+
+---
+
+### Transit Loss
+
+The degradation or complete absence of a signal after it has crossed a signal boundary, quantified relative to the signal's state before the boundary event. Transit loss is boundary-scoped — it measures what was present before and absent after the crossing, not degradation that occurs within a single substrate. Bridges "lossy re-encoding" (values-encoding.md) and "membrane rejection/attenuation" (bubble-clusters-substrate.md).
+
+**Related terms**: [Signal Boundary](#signal-boundary), [Encoding Fidelity](#encoding-fidelity), [Preservation Unit](#preservation-unit)
+
+*Source: [`docs/research/vocabulary-bridge-encoding-models.md`](../docs/research/vocabulary-bridge-encoding-models.md)*
+
+---
+
+### Preservation Unit
+
+A discrete element of content explicitly designated — through labeling, structural encoding, or formal specification — as requiring intact transit through a signal boundary. In values-encoding.md, preservation units are the four [4,1]-encoded content forms (canonical examples, anti-patterns, axiom citations, programmatic hooks); in bubble-clusters-substrate.md, they are the signal types named in a membrane permeability specification.
+
+**Related terms**: [Canonical Example](#canonical-example), [Anti-pattern](#anti-pattern), [Signal Boundary](#signal-boundary), [Boundary Specification](#boundary-specification)
+
+*Source: [`docs/research/vocabulary-bridge-encoding-models.md`](../docs/research/vocabulary-bridge-encoding-models.md)*
+
+---
+
+### Substrate Coherence
+
+The compound health property of a substrate measuring both (a) its fidelity to inherited values from upstream sources and (b) its calibrated connectivity to adjacent substrates. A substrate can fail on either dimension independently: high fidelity with low connectivity is "isolated coherence"; high connectivity with low fidelity is "connected confusion." Full substrate health requires both, operationalized by values-encoding.md (fidelity dimension) and bubble-clusters-substrate.md (connectivity dimension).
+
+**Related terms**: [Encoding Fidelity](#encoding-fidelity), [Cross-Reference Density](#cross-reference-density), [Encoding Inheritance Chain](#encoding-inheritance-chain)
+
+*Source: [`docs/research/vocabulary-bridge-encoding-models.md`](../docs/research/vocabulary-bridge-encoding-models.md)*
+
+---
+
+### Boundary Specification
+
+The declarative act of stating, before a signal boundary event occurs, which preservation units must survive the crossing intact and under what conditions. In values-encoding.md, boundary specification is the source-side labeling that enables [4,1] redundancy encoding; in bubble-clusters-substrate.md, it is the membrane permeability policy that governs what the membrane must admit. Both models require this artifact be produced before the boundary event — they differ only in how the specification is enacted.
+
+**Related terms**: [Signal Boundary](#signal-boundary), [Preservation Unit](#preservation-unit), [Encoding Inheritance Chain](#encoding-inheritance-chain)
+
+*Source: [`docs/research/vocabulary-bridge-encoding-models.md`](../docs/research/vocabulary-bridge-encoding-models.md)*
+
+---
+
 ## Agent Fleet Concepts
 
 ---
