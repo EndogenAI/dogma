@@ -9,7 +9,7 @@ status: "Final"
 > **Research Question**: How does the bubble-cluster metaphor — discrete substrates bounded by lower-dimensional membranes — inform the relationships, interconnectivity, signal fidelity, and encoding methodology of the endogenic inheritance chain?
 > **Date**: 2026-03-09
 > **Issue**: [#88](https://github.com/EndogenAI/Workflows/issues/88)
-> **Related**: [`docs/research/values-encoding.md`](values-encoding.md) (biological-homology predecessor model); [`docs/research/dogma-neuroplasticity.md`](dogma-neuroplasticity.md) (back-propagation protocol)
+> **Related**: [`docs/research/values-encoding.md`](values-encoding.md) (biological-homology predecessor model); [`docs/research/dogma-neuroplasticity.md`](dogma-neuroplasticity.md) (back-propagation protocol); [`docs/research/values-substrate-relationship.md`](values-substrate-relationship.md) (orthogonality synthesis — horizontal topological model combined with vertical inheritance-chain model)
 
 ---
 
@@ -31,6 +31,8 @@ The bubble-cluster model adds a complementary spatial and topological dimension:
 | The AI agent fleet | The **air inside the bubbles** — the invisible pressurizing medium that gives each substrate its shape and internal structure; without it the membrane collapses; with it the substrate holds form and resists deformation. AI is not the container (user), not the medium (data), and not the membrane — it is the pressurizing intelligence that keeps each substrate coherent under load. |
 
 **Key insight**: The bubble-cluster model reframes the central challenge of the Milestone 7 research arc. Value fidelity is not only a question of faithful re-encoding at each layer (the inheritance-chain view) — it is equally a question of **membrane permeability and connectivity geometry**. A substrate that is too isolated (low permeability membrane) drifts from the rest of the system. A substrate with no membrane at all (fully permeable) loses its distinct identity and collapses into the adjacent substrate. Optimal signal fidelity requires calibrated membrane dynamics.
+
+> **Forward reference**: See `docs/research/values-substrate-relationship.md` for the full orthogonality analysis demonstrating how this model and `values-encoding.md` address independent failure modes and together form a complete specification.
 
 **Hypotheses submitted for validation:**
 

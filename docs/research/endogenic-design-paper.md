@@ -385,6 +385,8 @@ claim is currently conceptual.
 
 **Operationalization checkpoint**: The [4,1] repetition code ensures this dependency structure is preserved across encoding layers. Cross-reference density measurement provides an algorithmic check that the chain remains intact.
 
+> **Cross-reference**: The orthogonality relationship between `values-encoding.md` and `bubble-clusters-substrate.md` is formally characterized in `docs/research/values-substrate-relationship.md`, which maps each hypothesis (H1–H4) to the encoding model(s) that operationalize it and identifies the C4 partial-implementation gap.
+
 ## 5. Discussion
 
 ### 5.1 Novelty Assessment and H4 Verdict Qualification
