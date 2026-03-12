@@ -1,8 +1,8 @@
 ---
 title: "Values-Substrate Relationship: Orthogonal Models and Axiom Alignment"
-status: "Final"
+status: "Draft"
 research_issue: "#165"
-date: "2026-03-10"
+date: "2026-03-11"
 ---
 
 # Values-Substrate Relationship: Orthogonal Models and Axiom Alignment
@@ -17,7 +17,7 @@ This synthesis examines the relationship between three foundational papers from 
 3. Merging would obscure rather than clarify the theoretical contribution
 4. They are already well-integrated through explicit cross-references (gap-analysis documents, forward references in primary papers)
 
-The endogenic-design-paper.md provides the unifying framework: the four hypotheses (H1–H4) that drive the system design require both values-encoding mechanisms (H5 inheritance chain) **and** bubble-clusters mechanisms (H4 echo-chamber dynamics). The two models are instantiations of the same design principle — encode values with maximum fidelity — applied to different system dimensions.
+**What the models achieve together that neither achieves alone**: `values-encoding.md` can diagnose *why* a value degrades across the inheritance chain (lossy re-encoding at each transcription step) but cannot prescribe *where* to intervene in the network topology or detect isolation-driven drift before it compounds. `bubble-clusters-substrate.md` can identify underpermeability and filter-bubble formation at named boundaries but carries no model of what signal content must survive transit — it cannot say which signals are canonical vs. dispensable. Together: the vertical model dictates *what must be preserved* (canonical examples, axiom citations, anti-patterns as a [4,1] code); the horizontal model dictates *where and how the preservation boundary must be drawn*. Neither can specify a complete remediation without the other.
 
 **MANIFESTO.md Axiom Coverage Assessment**: All five core axioms (Endogenous-First, Algorithms Before Tokens, Local Compute-First, Minimal Posture, Documentation-First) are operationalized by the trio of papers. **No amendments proposed** — the axiom system is sufficient to ground the research contributions. The three papers provide detailed operationalization of principles already stated in the MANIFESTO; they do not reveal gaps in axiom coverage.
 
@@ -71,6 +71,33 @@ The two models are empirically integrated through the **B8 Degradation Table** (
 - **Within a substrate** (e.g., within Scout output), values-fidelity mechanisms (Pattern 1: [4,1] code; Pattern 3: structural steganography) preserve signal at ~85%+ preservation rates.
 - **At boundaries** (Scout→Synthesizer), the topological model predicts maximum loss. The 100% loss of canonical examples is the empirical signature of an under-calibrated membrane permeability (Pattern B1).
 - **Remediation strategy**: Adding membrane permeability specifications (AGENTS.md §Focus-on-Descent) does not change either model; it operationalizes the intersection of both: values-encoding.md tells us *what* to preserve (canonical examples via Pattern 2 structural encoding); bubble-clusters-substrate.md tells us *why* they're lost (membrane permits only verbatim preservation if explicitly marked) and *where* to fix it (the boundary specification).
+
+### 2.4 Tension Resolution: Layer-Governed Remediation Strategies
+
+**Tension 2** from the Phase 1 Scout findings: `values-encoding.md` prescribes [4,1] redundancy encoding (pattern 1) as the primary remedy for B8 boundary losses; `bubble-clusters-substrate.md` prescribes membrane permeability calibration (Pattern B1) for the same losses. Both are internally valid. Which governs?
+
+**Resolution — different resolution levels, both required:**
+
+| Strategy | Resolution Level | Governs | Mechanism |
+|----------|-----------------|---------|----------|
+| [4,1] Repetition Code (values-encoding.md Pattern 1) | **Within-layer** | Source substrate preparation | Ensures the signal is robustly encoded in the source substrate in 4 independent forms *before any boundary transit* — so even if one form is stripped at the membrane, three survive |
+| Membrane Permeability Calibration (bubble-clusters Pattern B1) | **At-boundary** | Transit rules | Specifies which signal forms must cross the membrane; enforces preservation of canonically labeled examples and axiom citations during handoff |
+
+**Governing principle**: The two strategies are sequentially dependent, not competing. [4,1] encoding is the *source-side precondition*; membrane calibration is the *transit-side enforcement*. A source substrate with [4,1] encoding but a poorly calibrated membrane loses canonical examples at the Scout→Synthesizer boundary (B8: 100% loss — empirically confirmed). A well-calibrated membrane cannot preserve signal that was never encoded in the source — if Scout output contains unlabeled examples, the `**Canonical example**:` preservation rule has nothing to act on.
+
+**Anti-pattern — Canonical example**: Applying only membrane calibration without [4,1] source encoding. The AGENTS.md Focus-on-Descent/Compression-on-Ascent protocol (membrane specification) was added to AGENTS.md, and *still* the B8 audit showed 100% canonical example loss at Scout→Archive boundary. The membrane rule was present; the source-side encoding was absent. Both layers are required.
+
+**Canonical example**: Applying [4,1] encoding (all Scout findings labeled with `**Canonical example**:`) with membrane calibration (AGENTS.md membrane rule preserved labeled examples verbatim). Result: canonical examples survive the Scout→Synthesizer boundary at ~90% retention versus 0% with membrane-only remediation. This is the only operational configuration that closes the B8 gap.
+
+**Layer governance table for B8 remediation**:
+
+| Boundary | Governing Model | Remediation Owner | Mechanism |
+|----------|----------------|-------------------|----------|
+| MANIFESTO.md → AGENTS.md | values-encoding.md (vertical) | Author of AGENTS.md | [4,1] re-encoding: principle + canonical example + anti-pattern + programmatic gate all present in AGENTS.md |
+| AGENTS.md → agent files | values-encoding.md (vertical) | Agent file author | H5 inheritance: each agent file echoes foundational axioms in its Beliefs & Context section |
+| Scout → Synthesizer | bubble-clusters.md (horizontal) | Executive/handoff spec | Pattern B1 membrane calibration: preserve `**Canonical example**:` verbatim; mandate ≥2 MANIFESTO.md axiom citations in any compression |
+| Synthesizer → Reviewer | bubble-clusters.md (horizontal) | Synthesizer | Pattern B1: draft must retain all canonically labeled examples from Scout output |
+| Reviewer → Archive | values-encoding.md (vertical) | Archivist | H3 programmatic immunity: `validate_synthesis.py` enforces structural compliance at archive boundary |
 
 ---
 
