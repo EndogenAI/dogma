@@ -62,7 +62,7 @@ Four Core Questions govern the sprint:
 **Agent**: Research Scout
 **Effort**: M (15–20h)
 **Depends on**: Nothing
-**Status**: ⬜ Not started
+**Status**: ✅ Complete
 
 Map all cross-references between the three primary papers and all three gap analyses.
 Document dimensional-relationship evidence without interpretation. Flag any conflicting
@@ -85,7 +85,7 @@ before Phase 2 begins.
 **Agent**: Review
 **Effort**: XS
 **Depends on**: Phase 1 deliverables logged to scratchpad
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED
 
 **Gate**: APPROVED verdict recorded before Phase 2 begins.
 
@@ -96,7 +96,7 @@ before Phase 2 begins.
 **Agent**: Executive Researcher
 **Effort**: M (15–20h)
 **Depends on**: Phase 1 Review APPROVED
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — commit `7479258`
 
 Using Scout findings, analyze the dimensional structure of the two encoding models.
 Determine the synthesis decision with ≥3 justifications. Produce D4 doc §1–§2.
@@ -118,7 +118,7 @@ Determine the synthesis decision with ≥3 justifications. Produce D4 doc §1–
 **Agent**: Review
 **Effort**: XS
 **Depends on**: Phase 2 deliverables committed
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED
 
 **Gate**: APPROVED verdict recorded before Phase 3 begins.
 
@@ -129,7 +129,7 @@ Determine the synthesis decision with ≥3 justifications. Produce D4 doc §1–
 **Agent**: Executive Researcher
 **Effort**: S (8–12h)
 **Depends on**: Phase 2 Review APPROVED
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — commit `1b5b234`
 
 Map the Phase 2 relationship finding onto endogenic-design-paper.md's four hypotheses
 (H1–H4) and four contributions (C1–C4).
@@ -148,7 +148,7 @@ Map the Phase 2 relationship finding onto endogenic-design-paper.md's four hypot
 **Agent**: Review
 **Effort**: XS
 **Depends on**: Phase 3 deliverables committed
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED
 
 **Gate**: APPROVED verdict recorded before Phase 4 begins.
 
@@ -159,7 +159,7 @@ Map the Phase 2 relationship finding onto endogenic-design-paper.md's four hypot
 **Agent**: Executive Researcher
 **Effort**: S (8–12h)
 **Depends on**: Phase 3 Review APPROVED
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — commit `1b5b234`
 
 Map all 5 MANIFESTO.md axioms against the three-paper synthesis. Classify each:
 fully operationalized / partially operationalized / challenged / not addressed.
@@ -183,7 +183,7 @@ bibliography ≥5 entries. If axiom amendment proposed: gate on explicit user ap
 **Agent**: Review
 **Effort**: XS
 **Depends on**: Phase 4 deliverables committed
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED
 
 **Full review checklist**:
 - [ ] `validate_synthesis.py` exits 0 on `values-substrate-relationship.md`
@@ -201,7 +201,7 @@ bibliography ≥5 entries. If axiom amendment proposed: gate on explicit user ap
 **Agent**: Executive Docs
 **Effort**: XS (2–4h)
 **Depends on**: Phase 4 Review APPROVED
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — commit `2ae1b1d`
 
 Add forward references from the three primary papers to `values-substrate-relationship.md`.
 No structural changes — forward-reference additions only. Run `validate_synthesis.py`
@@ -222,7 +222,7 @@ on each modified file individually.
 **Agent**: Review
 **Effort**: XS
 **Depends on**: Phase 5 deliverables committed
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED
 
 **Final checklist** (adds to Phase 4 Review checklist):
 - [ ] Forward references present in all 3 primary papers
@@ -237,7 +237,7 @@ on each modified file individually.
 **Agent**: GitHub
 **Effort**: XS (1h)
 **Depends on**: Phase 5 Review APPROVED
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — PR #208 open; CI fix commit `e1d62ef`
 
 **Deliverables**:
 - D1: PR created/updated with `Closes #165` in body
