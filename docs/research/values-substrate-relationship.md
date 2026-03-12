@@ -1,6 +1,6 @@
 ---
 title: "Values-Substrate Relationship: Orthogonal Models and Axiom Alignment"
-status: "Draft"
+status: "Final"
 research_issue: "#165"
 date: "2026-03-11"
 ---
@@ -145,6 +145,23 @@ The endogenic-design-paper.md presents four hypotheses in a mutually reinforcing
 | operational implementation (agents/, scripts/, CI gates) | Demonstrates H4 claim by showing working H1–H3 deployment grounded in the lineage | CONFIRMED: endogenic-design-paper.md §4 operational validation |
 | External peer review (issue #172, Phase 1c) | H4 novelty verdict externally validated by CS community reviewers | CONFIRMED (with caveat): Qualified as "Novel (Self-Report, Pending External Peer Review)" — community validation deferred to publication phase |
 
+### 3.5 Cross-Reference Summary: H1–H4 and C1–C4 Mapping
+
+The four hypotheses (H1–H4) and four claimed contributions (C1–C4) of endogenic-design-paper.md are operationalized by the two encoding models as follows. Each row maps to the Scout CQ3 evidence table (`.tmp/feat-issue-165-values-synthesis/2026-03-11.md`):
+
+| Claim | Values-Encoding operationalization | Bubble-Clusters operationalization | Status |
+|---|---|---|---|
+| H1 (encode-before-act) | H5: inheritance chain initialized by reading MANIFESTO.md | H1: "Endogenous-First is a membrane-permeability instruction" | ✅ No gap — both models cover H1 |
+| H2 (morphogenetic design) | Pattern 5: programmatic governance as epigenetic layer | Pattern B3: evolutionary pressure test for substrate differentiation | ⚠️ Gap 5 (gap-analysis-endogenic-design): H2 not connected to back-propagation protocol |
+| H3 (augmentive partnership) | Pattern 4: performative encoding; agents co-author LAM/T layer | H4: echo-chamber/filter-bubble risk for isolated-substrate agents | ⚠️ Gap 2 (gap-analysis-endogenic-design): context-sensitive amplification absent from H3 |
+| H4 (CS design lineage) | H5: 5-layer cascade IS the living-documentation model (Knuth→AGENTS.md chain) | Pattern B2: connectivity atlas as substrate health metric | ✅ No direct gap — B2 operationalizes the latent health metric implied by H4 |
+| C1 (CS lineage) | Provides theoretical grounding for why the chain works (redundancy, degradation) | Silent | ✅ C1 is descriptive; values-encoding explains *why* the chain is effective |
+| C2 (mutual reinforcement H4→H1→H3→H2) | Each encoding layer provides [4,1] redundancy for the next | Membrane specifications at each handoff enforce the layering (Pattern B1) | ✅ WSA 1 (gap-analysis-endogenic-design): chain validated via Phase 2 edits |
+| C3 (cross-hypothesis patterns) | Pattern 1 ([4,1] repetition code), Pattern 5 (programmatic governance) | Pattern B1 (calibrated membrane permeability), Pattern B4 (provenance transparency) | ⚠️ Neither pattern catalog explicitly cited in endogenic-design-paper.md §3.4 |
+| C4 (operational implementation) | Pattern 5 (CI gates, validate_synthesis.py operational) | Gap 3 (gap-analysis-bubble-clusters): membrane permeability specs prose-only, NOT CI-enforced | ❌ **PARTIALLY ADDRESSED** |
+
+**Critical gap — C4**: C4 claims full CI enforcement; bubble-cluster boundary specs remain **PARTIALLY ADDRESSED** (prose-only membrane permeability — `validate_handoff_permeability.py` not yet implemented). This is the most significant operationalization gap in the three-paper synthesis and the primary open issue for Phase 3b (issue #181).
+
 ---
 
 ## 4. MANIFESTO.md Axiom Coverage Assessment
@@ -177,11 +194,11 @@ All five core axioms are operationalized by the values-encoding, bubble-clusters
 
 | How operationalized | Model(s) | Mechanism | Validation Status |
 |---|---|---|---|
-| Pre-warm source cache before fetching external URLs (fetch-before-act analogue) | values-encoding.md H1 encode-before-act | Initialization from pre-computed knowledge layers (MANIFESTO.md, prior session scratchpad) is cheaper than interactive derivation | CONFIRMED |
-| Scratchpad watcher (watch_scratchpad.py) runs locally, not in cloud pipeline | endogenic-design-paper.md operational implementation | File watcher pattern replaces cloud-based automation with local agent-driven automation | CONFIRMED |
-| Session start capital (reading 3–5 source docs) is preferred over session-length token burn | AGENTS.md session-management.md + values-encoding.md | Encode-before-act loads context unconditionally; interactive derivation is not the default. This reduces per-session token cost | CONFIRMED (implicitly; not empirically measured) |
+| Pre-warm source cache before fetching external URLs (fetch-before-act analogue) | AGENTS.md session protocol (not a primary paper) | Initialization from pre-computed knowledge layers (MANIFESTO.md, prior session scratchpad) is operationally enacted | ENACTED (AGENTS.md only — not addressed in primary papers) |
+| Scratchpad watcher (watch_scratchpad.py) runs locally, not in cloud pipeline | Operational implementation (not a primary paper) | File watcher pattern replaces cloud-based automation with local agent-driven automation | ENACTED (not a primary paper claim) |
+| Local Compute-First in primary papers | values-encoding.md, bubble-clusters-substrate.md, endogenic-design-paper.md | No compute-cost tradeoff framing appears in any of the three primary papers | ⚪ SILENT |
 
-**Verdict**: Axiom 3 is **operationalized with low empirical grounding**. The principle is enacted (watch_scratchpad.py runs locally), but cost-benefit comparison (startup cost of reading MANIFESTO.md vs. per-session token savings) has not been empirically quantified.
+**Verdict**: Axiom 3 is **Silent** in all three primary papers (values-encoding.md, bubble-clusters-substrate.md, endogenic-design-paper.md). None addresses compute-cost tradeoffs or local-vs-cloud inference economics directly. The principle is operationally enacted in the system (watch_scratchpad.py runs locally; MANIFESTO.md read at session-start) through AGENTS.md operational protocols, not through primary research claims. **No contradiction identified — this is an open gap for future research**, not a challenge to the axiom.
 
 ### 4.4 Axiom 4 — Minimal Posture
 
@@ -204,13 +221,13 @@ All five core axioms are operationalized by the values-encoding, bubble-clusters
 
 **Verdict**: Axiom 5 is **fully operationalized**. The three papers provide multiple mechanisms instantiating the principle.
 
-### 4.2 Summary Table — Axiom Coverage
+### 4.6 Summary Table — Axiom Coverage
 
 | Axiom | Operationalization Status | Evidence Source | Gaps or Weaknesses |
 |-------|-------------------------|-----------------|-------------------|
 | 1. Endogenous-First | ✅ Fully operationalized | values-encoding.md H1 + H5; bubble-clusters Pattern B4 | None—principle is concrete and measurable |
 | 2. Algorithms Before Tokens | ⚠️ Substantially operationalized | values-encoding.md H3; endogenic-design-paper.md C4 | (1) T1–T2 prose constraints harder to enforce; (2) Connectivity atlas + membrane validation scripts lack CI integration |
-| 3. Local Compute-First | ✅ Operationalized (low empirical grounding) | endogenic-design-paper.md §4 + AGENTS.md; watch_scratchpad.py | Cost-benefit analysis (startup cost vs. per-session tokens) not empirically measured |
+| 3. Local Compute-First | ⚪ Silent (open gap) | Not addressed in any of the three primary papers | No contradiction — enacted operationally (watch_scratchpad.py, session-start protocol) but absent from primary literature; open gap for future research |
 | 4. Minimal Posture | ✅ Fully operationalized | endogenic-design-paper.md C4 role model; bubble-clusters Pattern B3 | None—principle is concrete and measurable |
 | 5. Documentation-First | ✅ Fully operationalized | endogenic-design-paper.md §2 + C2; validate_synthesis.py in CI | None—principle is concrete and measurable |
 
