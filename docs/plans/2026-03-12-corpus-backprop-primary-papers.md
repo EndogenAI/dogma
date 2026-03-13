@@ -292,7 +292,7 @@ After user approval:
 **Agent**: Executive Docs
 **Effort**: M
 **Depends on**: Phase 3 Review (user approval) — can be parallelised with Phase 3 at Orchestrator's discretion since target files differ
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — committed `07a911f` (2026-03-12)
 **Issues**: [#225](https://github.com/EndogenAI/dogma/issues/225), [#227](https://github.com/EndogenAI/dogma/issues/227)
 
 **Task**: Apply both issues' changes to `docs/guides/workflows.md` in one pass:
@@ -311,7 +311,7 @@ After user approval:
 **Agent**: Executive Docs
 **Effort**: S
 **Depends on**: Phase 3 Review (user approval) — can be run in parallel with Phase 4A since different target file
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — committed `1f695e5` (2026-03-12)
 **Issues**: [#226](https://github.com/EndogenAI/dogma/issues/226)
 
 **Task**: Add explicit binary acceptance criteria requirement to `AGENTS.md` § Agent Communication → Review delegation guidance:
@@ -329,7 +329,7 @@ After user approval:
 
 **Agent**: Review
 **Depends on**: Phase 4A + Phase 4B both committed
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED (2026-03-12)
 
 **Check**:
 1. `docs/guides/workflows.md` — doc-type taxonomy present in org-sweep section; back-prop methodology section present with weave/link/consolidate rules, proposal-doc pattern, and manual stop gate; no in-place definition reproduction (link-out discipline applies here too)
@@ -348,6 +348,6 @@ After user approval:
 - [x] All proposal entries follow weave/link/consolidate discipline
 - [x] All three primary papers validate_synthesis PASS after edits
 - [x] User has reviewed and approved diffs before commit
-- [ ] workflows.md updated with doc-type taxonomy + back-prop methodology section (#225, #227)
-- [ ] AGENTS.md updated with explicit Review acceptance criteria guidance (#226)
-- [ ] Phase 4 Review APPROVED
+- [x] workflows.md updated with doc-type taxonomy + back-prop methodology section (#225, #227)
+- [x] AGENTS.md updated with explicit Review acceptance criteria guidance (#226)
+- [x] Phase 4 Review APPROVED
