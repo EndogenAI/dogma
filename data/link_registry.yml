@@ -14,24 +14,28 @@ concepts:
     aliases: ["endogenous-first", "endogenous first"]
     applications: ["AGENTS.md", "docs/guides/workflows.md"]
     scopes: ["docs/", ".github/agents/"]  # never inject into MANIFESTO.md itself
+    governs_source: "MANIFESTO.md"
 
   - concept: "Algorithms Before Tokens"
     canonical_source: "MANIFESTO.md"
     aliases: ["algorithms-before-tokens", "algorithms before tokens"]
     applications: ["AGENTS.md"]
     scopes: ["docs/", ".github/agents/"]
+    governs_source: "MANIFESTO.md"
 
   - concept: "Programmatic-First"
     canonical_source: "AGENTS.md"
     aliases: ["programmatic-first", "programmatic first"]
     applications: ["docs/guides/workflows.md", "docs/guides/programmatic-first.md"]
     scopes: ["docs/", ".github/agents/"]
+    governs_source: "AGENTS.md"
 
   - concept: "Local Compute-First"
     canonical_source: "MANIFESTO.md"
     aliases: ["local compute-first", "local-compute-first"]
     applications: ["docs/guides/local-compute.md"]
     scopes: ["docs/", ".github/agents/"]
+    governs_source: "MANIFESTO.md"
 
   - concept: "D4 synthesis"
     canonical_source: "docs/guides/agents.md"
@@ -44,3 +48,30 @@ concepts:
     aliases: ["documentation-first", "documentation first"]
     applications: ["docs/guides/agents.md"]
     scopes: ["docs/", ".github/agents/"]
+    governs_source: "AGENTS.md"
+
+  - concept: "Minimal Posture"
+    canonical_source: "MANIFESTO.md"
+    aliases: ["minimal-posture", "minimal posture"]
+    applications: ["AGENTS.md", ".github/agents/"]
+    scopes: ["docs/", ".github/agents/"]
+    governs_source: "MANIFESTO.md"
+
+  - concept: "Commit Discipline"
+    canonical_source: "CONTRIBUTING.md"
+    aliases: ["commit-discipline", "commit discipline"]
+    applications: ["AGENTS.md"]
+    scopes: ["docs/", ".github/agents/"]
+
+  - concept: "Enforcement-Proximity"
+    canonical_source: "AGENTS.md"
+    aliases: ["enforcement-proximity", "enforcement proximity"]
+    applications: ["AGENTS.md"]
+    scopes: ["docs/", ".github/agents/"]
+
+  - concept: "Testing-First"
+    canonical_source: "MANIFESTO.md"
+    aliases: ["testing-first", "testing first"]
+    applications: ["AGENTS.md", "docs/guides/testing.md"]
+    scopes: ["docs/", ".github/agents/"]
+    governs_source: "MANIFESTO.md"

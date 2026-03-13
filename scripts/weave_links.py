@@ -255,6 +255,83 @@ def inject_link(text: str, entry: dict, dry_run: bool) -> tuple[str, list[str]]:
 
 
 # ---------------------------------------------------------------------------
+# Governs annotation candidate detection (governs_annotation entry type)
+# ---------------------------------------------------------------------------
+
+
+def _normalise_concept_name(name: str) -> str:
+    """Normalize a concept name to lowercase-hyphenated for comparison."""
+    return re.sub(r"\s+", "-", name.strip()).lower()
+
+
+def parse_frontmatter_governs(text: str) -> list[str]:
+    """Extract governs: list values from YAML frontmatter.
+
+    Handles list form (- item), scalar, and inline [a, b] forms.
+    Returns plain string values; does not parse Markdown link syntax.
+    """
+    match = re.match(r"^---\r?\n(.*?)\r?\n---", text, re.DOTALL)
+    if not match:
+        return []
+    fm = match.group(1)
+
+    # List form: governs:\n  - value
+    block_match = re.search(r"^governs\s*:\s*$", fm, re.MULTILINE)
+    if block_match:
+        after = fm[block_match.end() :]
+        return [m.group(1).strip().strip("\"'") for m in re.finditer(r"^\s+-\s+(.+)$", after, re.MULTILINE)]
+
+    # Inline list: governs: [val1, val2]
+    inline_match = re.search(r"^governs\s*:\s*\[(.+)\]", fm, re.MULTILINE)
+    if inline_match:
+        return [v.strip().strip("\"'") for v in inline_match.group(1).split(",")]
+
+    # Scalar: governs: value
+    scalar_match = re.search(r"^governs\s*:\s*(\S.+)$", fm, re.MULTILINE)
+    if scalar_match:
+        return [scalar_match.group(1).strip().strip("\"'")]
+
+    return []
+
+
+def find_governs_annotation_candidates(
+    text: str, registry: list[dict], filepath: Path, repo_root: Path
+) -> list[tuple[str, str]]:
+    """Scan frontmatter governs: values for registry concepts marked with governs_source.
+
+    Returns list of (governs_value, candidate_link) tuples for any governs value
+    that matches a registry entry with a 'governs_source' key and is not already
+    written as a Markdown link [name](url).
+
+    Only active in --dry-run mode (caller responsibility to gate this call).
+    """
+    governs_values = parse_frontmatter_governs(text)
+    if not governs_values:
+        return []
+
+    # Build lookup: norm_concept_name -> registry entry (only governs_source entries)
+    governs_concepts: dict[str, dict] = {}
+    for entry in registry:
+        if "governs_source" not in entry:
+            continue
+        norm = _normalise_concept_name(entry["concept"])
+        governs_concepts[norm] = entry
+
+    candidates: list[tuple[str, str]] = []
+    for value in governs_values:
+        # Skip already-linked values of the form [name](url)
+        if re.match(r"^\[.+\]\(.+\)$", value.strip()):
+            continue
+        norm_value = _normalise_concept_name(value)
+        if norm_value in governs_concepts:
+            entry = governs_concepts[norm_value]
+            resolved_source = resolve_canonical_source(entry["canonical_source"], filepath, repo_root)
+            candidates.append((value, f"[{value}]({resolved_source})"))
+
+    return candidates
+
+
+# ---------------------------------------------------------------------------
 # Canonical source path resolution
 # ---------------------------------------------------------------------------
 
@@ -417,6 +494,13 @@ def main() -> None:
                     print(line)
                 total_injections += len(diffs_all) // 2
                 files_modified += 1
+
+            # Governs annotation candidates (governs_annotation entry type)
+            governs_candidates = find_governs_annotation_candidates(text, registry, md_file, repo_root)
+            for governs_val, suggested_link in governs_candidates:
+                print(
+                    f"[GOVERNS CANDIDATE] {md_file.relative_to(repo_root)}: governs: '{governs_val}' → {suggested_link}"
+                )
         else:
             # Non-dry-run: actually write the file
             # When scope-filter is active, use dry-run for the full-file pass so
