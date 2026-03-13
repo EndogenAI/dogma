@@ -1,0 +1,41 @@
+name-template: 'v$RESOLVED_VERSION 🚀'
+tag-template: 'v$RESOLVED_VERSION'
+categories:
+  - title: '🚀 Features'
+    labels:
+      - 'type:feature'
+  - title: '🐛 Bug Fixes'
+    labels:
+      - 'type:bug'
+  - title: '📚 Documentation'
+    labels:
+      - 'type:docs'
+  - title: '🔧 Maintenance'
+    labels:
+      - 'type:chore'
+  - title: '🧪 Tests'
+    labels:
+      - 'type:test'
+  - title: '⚡ Performance'
+    labels:
+      - 'type:perf'
+change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+version-resolver:
+  major:
+    labels:
+      - 'major'
+  minor:
+    labels:
+      - 'type:feature'
+  patch:
+    labels:
+      - 'type:bug'
+      - 'type:docs'
+      - 'type:chore'
+      - 'type:test'
+      - 'type:perf'
+  default: patch
+template: |
+  ## Changes
+
+  $CHANGES

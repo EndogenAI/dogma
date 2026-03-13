@@ -1,0 +1,25 @@
+name: Label Sync
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'data/labels.yml'
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  label-sync:
+    name: Sync labels from data/labels.yml
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: EndBug/label-sync@v2
+        with:
+          config-file: data/labels.yml
+          delete-other-labels: false  # conservative: do not delete unrecognised labels; set true once stable
+          token: ${{ secrets.GITHUB_TOKEN }}

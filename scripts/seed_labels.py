@@ -10,6 +10,11 @@ deletes legacy GitHub default labels listed in the ``legacy_labels`` section.
 Run this script whenever the label manifest changes or when bootstrapping a fresh
 fork of the repository.
 
+In production, label enforcement is handled automatically by `.github/workflows/label-sync.yml`
+(runs on every push to `main` when `data/labels.yml` changes). This script serves as the
+bootstrap tool for fresh forks or for manual ad-hoc enforcement when the CI workflow is
+not yet active.
+
 Inputs
 ------
 - data/labels.yml (or path supplied via --labels-file)

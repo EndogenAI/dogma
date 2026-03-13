@@ -75,7 +75,7 @@ This repo uses colon-prefixed label namespaces. All four namespaces are used tog
 
 **Rule**: Every issue should have at minimum one `type:` label and one `priority:` label. `area:` labels are auto-applied via the labeler workflow. `status:` labels are applied manually as issues move through the workflow.
 
-To seed the full label taxonomy, run `uv run python scripts/seed_labels.py` (creates all labels idempotently from `data/labels.yml`). Pass `--delete-legacy` to also remove GitHub's default flat labels.
+Label enforcement is automated via `.github/workflows/label-sync.yml` (runs `EndBug/label-sync@v2` on every push to `main` when `data/labels.yml` changes). To bootstrap labels when setting up a fresh fork or when `label-sync.yml` is not yet active, run `uv run python scripts/seed_labels.py` (creates all labels idempotently from `data/labels.yml`). Pass `--delete-legacy` to also remove GitHub's default flat labels.
 
 ---
 

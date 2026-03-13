@@ -22,9 +22,11 @@ jobs:
           close-issue-message: "This issue has been automatically closed after 90 days of inactivity. Please reopen if still needed."
           close-pr-message: "This PR has been automatically closed after 90 days of inactivity. Please reopen if still needed."
           days-before-stale: 60
-          days-before-close: 30
+          days-before-close: 14
+          days-before-pr-stale: 30
+          days-before-pr-close: 7
           exempt-issue-labels: "priority:critical,priority:high,status:blocked"
-          exempt-pr-labels: "priority:critical,priority:high,status:blocked"
+          exempt-pr-labels: "priority:critical,priority:high,status:blocked,status:needs-review"
           # NOTE: The stale-issue-label and stale-pr-label below use "status:stale".
           # This label must be present in data/labels.yml before this workflow is merged.
           stale-issue-label: "status:stale"

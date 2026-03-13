@@ -185,13 +185,13 @@ The five work streams below have a recommended sequencing, but some can run part
 
 **Agent**: Executive Researcher → Research Scout
 **Deliverables**:
-- [ ] `docs/research/issue-to-markdown-action.md` (D4, Status: Final) — trigger model, output format, Orchestrator orientation use-case, PM efficiency, cache location tradeoff, security; adopt/defer/reject recommendation
-- [ ] `docs/research/issue-metrics-action.md` (D4, Status: Final) — action mechanics, scheduled-trigger design, commit-step, `docs/issues/` untrusted classification; adopt/defer/reject recommendation
-- [ ] Both docs pass `validate_synthesis.py`
+- [x] `docs/research/issue-to-markdown-action.md` (D4, Status: Final) — **REJECT** — export_project_state.py already covers orient-step; no marketplace Action needed
+- [x] `docs/research/issue-metrics-action.md` (D4, Status: Final) — **DEFER** — JSON snapshot sufficient; adopt github/issue-metrics only at >100 issues
+- [x] Both docs pass `validate_synthesis.py`
 
 **Depends on**: Phase 4 Review APPROVED ✅
 **Gate**: Phase 5A Review APPROVED before any 5B phase starts
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — commit ecef91d
 
 ### Phase 5A Review — Review Gate
 
@@ -199,7 +199,7 @@ The five work streams below have a recommended sequencing, but some can run part
 **Deliverables**: `## Phase 5A Review Output` in scratchpad, verdict: APPROVED
 **Depends on**: Phase 5A committed
 **Gate**: Phases 5B-Scripts and 5B-Docs do not start until APPROVED
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED (clean first pass, all 7 criteria)
 
 ---
 

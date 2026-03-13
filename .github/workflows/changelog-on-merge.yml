@@ -1,6 +1,4 @@
-# Stub — see issues #216 and #217 for full implementation
-
-name: Changelog on Merge (stub)
+name: Changelog on Merge
 
 on:
   push:
@@ -8,15 +6,26 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   changelog:
-    name: Update changelog on merge (stub)
+    name: Update CHANGELOG.md on merge to main
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Placeholder — full implementation pending
-        run: echo "CHANGELOG update — implement with towncrier or git-cliff in follow-up #216 #217"
+      - name: Update CHANGELOG.md
+        uses: TriPSs/conventional-changelog-action@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          output-file: CHANGELOG.md
+          skip-version-file: true
+          skip-on-empty: true
+          tag-prefix: 'v'
+          release-count: 0
+          git-user-name: 'github-actions[bot]'
+          git-user-email: 'github-actions[bot]@users.noreply.github.com'
