@@ -563,6 +563,7 @@ Ask when:
 - Requirements or acceptance criteria are unclear
 - A change would delete, rename, or restructure existing files
 - The correct approach involves a genuine trade-off the user should decide
+- A workflow phase writes edits to authoritative synthesis papers (`docs/research/` docs with `status: Final` or designated primary papers) — surface the diff for human review before committing, even if Review agent has approved
 
 Proceed when:
 - The task is unambiguous and reversible

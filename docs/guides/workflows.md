@@ -327,6 +327,22 @@ Write a concise research frame:
 - [ ] URL or reference
 ```
 
+#### Large-Corpus Sweep (when corpus > 20 documents)
+
+When scouting a corpus of more than ~20 documents, insert a **sweep step** before full scouting to allocate Scout depth proportionally:
+
+1. **Organizational Sweep** — delegate to Explore agent: produce a triage table with one row per document:
+   - *Recency tier*: Old (> 6 months) / Mid / Recent (< 4 weeks)
+   - *Relevance to each target* (H / M / L / None) + one-line rationale
+   - *Already cited in target papers?* (Yes / Partial / No)
+   - *Recommended scout depth*: Thorough / Skim / Skip
+
+2. **Depth allocation rule**: Thorough = full read; Skim = headings + key findings only; Skip = no scouting. Prioritize: high relevance + not yet cited + older (less likely to have been backpropagated).
+
+3. **Recency + citation signal**: Older documents are *more likely* to contain uncited findings — primary papers are authored early and updated sporadically. Combine recency tier with citation status (not just relevance) to identify the highest-value targets.
+
+The sweep table is the Scout's guide. Commit it to `docs/plans/` before delegating Scout work so the depth allocations are reviewable.
+
 **Gate before advancing**: at least 3–5 relevant sources catalogued; no synthesis present in Scout output; Scout has returned control to Executive Researcher via takeback handoff.
 
 ---
