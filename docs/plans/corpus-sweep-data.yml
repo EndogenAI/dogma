@@ -1,0 +1,1135 @@
+# corpus-sweep-data.yml
+#
+# Manually-curated fields for the corpus sweep table.
+# Auto-detected fields (recency, already_cited) are computed at runtime
+# by scripts/generate_sweep_table.py.
+#
+# status values:  ⬜ Not read | ⏳ In progress | ✅ Read
+# rating values:  H | M | L | None
+# doc_type:       Synthesis | Raw Research | Bridge/Integration | Operational
+# scout_depth:    Thorough | Skim | Skip
+#
+# To mark a doc as read:
+#   uv run python scripts/generate_sweep_table.py --mark-read DOCNAME
+
+docs:
+  - name: agent-fleet-design-patterns.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: M
+      rationale: "agent roles framework"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "fleet topology; roles as vertices"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "orchestrator/specialist architecture"
+    scout_depth: Skim
+    scout_depth_reason: "fully cited in endogenic; M elsewhere"
+    status: "⬜"
+
+  - name: agent-skills-integration.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: M
+      rationale: "tactical skill encoding layer"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "skills as boundary modules"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "composition rule for encode-before-act"
+    scout_depth: Thorough
+    scout_depth_reason: "M/M/H not cited — corrected from Skim"
+    status: "⬜"
+
+  - name: agent-taxonomy.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: M
+      rationale: "three-primitives taxonomy parallels encoding layers"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "roles vs skills vs constraints divide boundaries"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "design-time layer clarity"
+    scout_depth: Thorough
+    scout_depth_reason: "M/M/H not cited — corrected from Skim"
+    status: "⬜"
+
+  - name: agentic-research-flows.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: L
+      rationale: "research methodologies; not values encoding"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "flow topology; coordination patterns"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "workflow orchestration exemplar"
+    scout_depth: Skim
+    scout_depth_reason: "M relevance; research flow patterns"
+    status: "⬜"
+
+  - name: aigne-afs-evaluation.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: L
+      rationale: "episodic memory evaluation"
+    relevance_bubble_clusters:
+      rating: L
+      rationale: "context governance layer; not substrate topology"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "local-compute-first prerequisite gap"
+    scout_depth: Skim
+    scout_depth_reason: "M relevance; governance gap analysis"
+    status: "⬜"
+
+  - name: async-process-handling.md
+    doc_type: Operational
+    synthesises: []
+    relevance_values_encoding:
+      rating: L
+      rationale: "operational process handling; not value encoding"
+    relevance_bubble_clusters:
+      rating: L
+      rationale: "terminal/subprocess mechanics; not topological"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "async as governance requirement"
+    scout_depth: Skim
+    scout_depth_reason: "operational pattern; M endogenic relevance"
+    status: "⬜"
+
+  - name: comms-marketing-bizdev.md
+    doc_type: Operational
+    synthesises: []
+    relevance_values_encoding:
+      rating: None
+      rationale: "business/marketing domain"
+    relevance_bubble_clusters:
+      rating: None
+      rationale: "OSS community patterns"
+    relevance_endogenic_design:
+      rating: L
+      rationale: "ecosystem adoption messaging"
+    scout_depth: Skip
+    scout_depth_reason: "domain-specific; low strategic overlap"
+    status: "⬜"
+
+  - name: context-amplification-calibration.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "empirical calibration of epigenetic tagging; validates axiom amplification"
+    relevance_bubble_clusters:
+      rating: L
+      rationale: "context amplification not topological"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "phase 1 axiom amplification validation"
+    scout_depth: Thorough
+    scout_depth_reason: "H validates encoding mechanism in VE"
+    status: "⬜"
+
+  - name: context-budget-balance.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "addresses context-window fidelity-volume paradox identified in VE"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "token efficiency reduces membrane permeability demand"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "Algorithms Before Tokens operationalization"
+    scout_depth: Thorough
+    scout_depth_reason: "H relevance to constraint stacking"
+    status: "⬜"
+
+  - name: copilot-pr-review-automation.md
+    doc_type: Operational
+    synthesises: []
+    relevance_values_encoding:
+      rating: None
+      rationale: "GitHub Actions automation framework"
+    relevance_bubble_clusters:
+      rating: None
+      rationale: "CI mechanics; not substrate dynamics"
+    relevance_endogenic_design:
+      rating: L
+      rationale: "PR review as enforcement gate"
+    scout_depth: Skip
+    scout_depth_reason: "tactical automation; not strategic"
+    status: "⬜"
+
+  - name: deterministic-agent-components.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: M
+      rationale: "deterministic routing as programmatic enforcement layer"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "routing logic as substrate coherence mechanism"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "exemplifies Algorithms Before Tokens axiom"
+    scout_depth: Thorough
+    scout_depth_reason: "M/M/H profile not cited; same profile as sprint-C — corrected from Skim"
+    status: "⬜"
+
+  - name: dev-workflow-automations.md
+    doc_type: Operational
+    synthesises: []
+    relevance_values_encoding:
+      rating: L
+      rationale: "CI/CD pipeline patterns"
+    relevance_bubble_clusters:
+      rating: L
+      rationale: "automation topology; pre-commit as membrane gate"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "workflow automation as enforcement tier"
+    scout_depth: Skim
+    scout_depth_reason: "operational patterns; M endogenic relevance"
+    status: "⬜"
+
+  - name: doc-interweb.md
+    doc_type: Bridge/Integration
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "programmatic cross-linking as signal preservation mechanism"
+    relevance_bubble_clusters:
+      rating: H
+      rationale: "bidirectional links enforce connectivity; reduce isolation"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "Documentation-First operationalization"
+    scout_depth: Thorough
+    scout_depth_reason: "H for encoding signal fidelity graph"
+    status: "⬜"
+
+  - name: dogma-neuroplasticity.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "primary integration target"
+    relevance_bubble_clusters:
+      rating: H
+      rationale: "temporal dimension of bubble stability; mutation rates"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "neuroplasticity as substrate feedback loop"
+    scout_depth: Skip
+    scout_depth_reason: "already fully integrated"
+    status: "⬜"
+
+  - name: endogenai-product-discovery.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: M
+      rationale: "ecosystem value propagation; endogenous-first in product"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "ecosystem as multi-bubble topology"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "product positioning as Endogenous-First"
+    scout_depth: Skim
+    scout_depth_reason: "M relevance to values propagation"
+    status: "⬜"
+
+  - name: enforcement-tier-mapping.md
+    doc_type: Synthesis
+    synthesises:
+      - programmatic-governors.md
+      - shell-preexec-governor.md
+      - shifting-constraints-from-tokens.md
+    relevance_values_encoding:
+      rating: H
+      rationale: "T0–T5 tier stack operationalizes programmatic encoding"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "tier distribution shows substrate coherence gaps"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "comprehensive constraint audit per paper specs"
+    scout_depth: Thorough
+    scout_depth_reason: "H for governance completeness audit"
+    status: "⬜"
+
+  - name: epigenetic-tagging.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "directly resolves OQ-VE-2; regulatory region mechanism"
+    relevance_bubble_clusters:
+      rating: L
+      rationale: "context-sensitive tagging; not topological"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "axiom amplification via task-type lookup"
+    scout_depth: Skip
+    scout_depth_reason: "already fully cited in targets"
+    status: "⬜"
+
+  - name: episodic-memory-agents.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: M
+      rationale: "session memory as encoding persistence layer"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "multi-session boundary dynamics; coherence decay"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "local-compute-first prerequisite for memory backends"
+    scout_depth: Skim
+    scout_depth_reason: "M relevance; prerequisite gap analysis"
+    status: "⬜"
+
+  - name: external-team-case-study.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "empirical proxy for learnability; validates encoding fidelity"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "external adoption tests boundary stability"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "methodology operability case study"
+    scout_depth: Thorough
+    scout_depth_reason: "H proxy evidence for methodology adoption"
+    status: "⬜"
+
+  - name: external-value-architecture.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "extends inheritance chain to six layers; conflict resolution"
+    relevance_bubble_clusters:
+      rating: H
+      rationale: "Deployment Layer as new topological membrane"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "multi-principal value supremacy rules"
+    scout_depth: Skip
+    scout_depth_reason: "already fully cited in targets"
+    status: "⬜"
+
+  - name: external-values-decision-framework.md
+    doc_type: Synthesis
+    synthesises:
+      - external-value-architecture.md
+      - multi-principal-deployment-scenarios.md
+    relevance_values_encoding:
+      rating: H
+      rationale: "formalizes value conflict resolution; supremacy constraints"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "conflict resolution at layer boundaries"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "supremacy as structural encoding guarantee"
+    scout_depth: Thorough
+    scout_depth_reason: "H for conflict resolution completeness"
+    status: "⬜"
+
+  - name: filter-bubble-threshold-calibration.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "cross-reference density as encoding echo; holographic test"
+    relevance_bubble_clusters:
+      rating: H
+      rationale: "isolation risk metric operationalizes membrane health"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "coherence threshold calibration"
+    scout_depth: Thorough
+    scout_depth_reason: "H for topological coherence measurement"
+    status: "⬜"
+
+  - name: fleet-emergence-operationalization.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: M
+      rationale: "substrate change drives emergent behavior"
+    relevance_bubble_clusters:
+      rating: H
+      rationale: "emergence as topological reorganization"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "morphogenetic operationalization (H2 hypothesis)"
+    scout_depth: Thorough
+    scout_depth_reason: "H for emergence measurement validation"
+    status: "⬜"
+
+  - name: gap-analysis-bubble-clusters.md
+    doc_type: Bridge/Integration
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "identifies integration gaps with values-encoding"
+    relevance_bubble_clusters:
+      rating: H
+      rationale: "primary integration target"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "integration gaps with endogenic-design methodology"
+    scout_depth: Skip
+    scout_depth_reason: "already fully integrated as gap analysis"
+    status: "⬜"
+
+  - name: gap-analysis-endogenic-design.md
+    doc_type: Bridge/Integration
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "identifies integration gaps with values-encoding and epigenetic-tagging"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "topological extension gaps noted"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "primary integration target"
+    scout_depth: Skip
+    scout_depth_reason: "already fully integrated as gap analysis"
+    status: "⬜"
+
+  - name: gap-analysis-values-encoding.md
+    doc_type: Bridge/Integration
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "primary integration target"
+    relevance_bubble_clusters:
+      rating: H
+      rationale: "identifies topological/membrane gap; references bubble-clusters"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "identifies deployment/epigenetic gaps"
+    scout_depth: Skip
+    scout_depth_reason: "already fully integrated"
+    status: "⬜"
+
+  - name: github-as-memory-substrate.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: M
+      rationale: "episodic memory encoding via GitHub record"
+    relevance_bubble_clusters:
+      rating: L
+      rationale: "GitHub as coordination substrate; not topological model"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "GitHub as enforcement record and audit trail"
+    scout_depth: Skim
+    scout_depth_reason: "M relevance; memory architecture"
+    status: "⬜"
+
+  - name: github-project-management.md
+    doc_type: Operational
+    synthesises: []
+    relevance_values_encoding:
+      rating: L
+      rationale: "PM infrastructure patterns"
+    relevance_bubble_clusters:
+      rating: L
+      rationale: "coordination topology; project.json as substrate"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "automation as enforcement gate"
+    scout_depth: Skim
+    scout_depth_reason: "operational coordination; low strategic depth"
+    status: "⬜"
+
+  - name: h4-peer-review-synthesis.md
+    doc_type: Synthesis
+    synthesises:
+      - sprint-DE-h4-cs-lineage.md
+      - methodology-review.md
+    relevance_values_encoding:
+      rating: H
+      rationale: "validates novelty of encoding lineage via peer evidence"
+    relevance_bubble_clusters:
+      rating: L
+      rationale: "novelty assessment; not topological"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "CS legitimation of encode-before-act principle"
+    scout_depth: Thorough
+    scout_depth_reason: "H for H4 novelty validation evidence"
+    status: "⬜"
+
+  - name: holographic-encoding-empirics.md
+    doc_type: Synthesis
+    synthesises:
+      - semantic-holography-language-encoding.md
+      - holonomic-brain-theory-application.md
+    relevance_values_encoding:
+      rating: H
+      rationale: "empirical fleet-wide holographic encoding measurement"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "holographic distribution maps membrane coherence"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "citation density as encoding integrity metric"
+    scout_depth: Thorough
+    scout_depth_reason: "H for holographic encoding validation"
+    status: "⬜"
+
+  - name: holonomic-brain-theory-application.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "formalizes HBT analogy; validates [4,1] redundancy code claim"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "dendritic topology parallels substrate connectivity"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "consciousness orthogonal to intelligence claim"
+    scout_depth: Thorough
+    scout_depth_reason: "H for redundancy code mathematical foundation"
+    status: "⬜"
+
+  - name: iit-panpsychism-consciousness-bounds.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: M
+      rationale: "consciousness as distinct from intelligence; value alignment"
+    relevance_bubble_clusters:
+      rating: L
+      rationale: "panpsychism and substrate consciousness; tangential"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "augmentive partnership implication; system not conscious"
+    scout_depth: Skim
+    scout_depth_reason: "M relevance; consciousness/intelligence orthogonality"
+    status: "⬜"
+
+  - name: laplace-pressure-empirical-validation.md
+    doc_type: Synthesis
+    synthesises:
+      - filter-bubble-threshold-calibration.md
+    relevance_values_encoding:
+      rating: H
+      rationale: "governance pressure metrics validate encoding fidelity"
+    relevance_bubble_clusters:
+      rating: H
+      rationale: "Laplace pressure as membrane stability metric; empirical validation"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "substrate health metrics operationalization"
+    scout_depth: Thorough
+    scout_depth_reason: "H for topological health measurement"
+    status: "⬜"
+
+  - name: lcf-oversight-infrastructure.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: M
+      rationale: "LCF axiom as fidelity/oversight enabler"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "local compute enables oversight proximity"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "reframes LCF as structural oversight requirement"
+    scout_depth: Skip
+    scout_depth_reason: "already fully cited in targets"
+    status: "⬜"
+
+  - name: lcf-programmatic-enforcement.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "F4 gap closure; observable-proxy gate design"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "enforcement at substrate execution boundary"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "local-compute enforcement tier specification"
+    scout_depth: Skip
+    scout_depth_reason: "already fully cited in targets"
+    status: "⬜"
+
+  - name: llm-behavioral-testing.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "Constitutional AI testing for axiom alignment; behavioral validation"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "tier-2 semantic testing at boundary crossing"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "testing framework for constraint fidelity"
+    scout_depth: Thorough
+    scout_depth_reason: "H for behavioral value alignment testing"
+    status: "⬜"
+
+  - name: llm-tier-strategy.md
+    doc_type: Operational
+    synthesises: []
+    relevance_values_encoding:
+      rating: None
+      rationale: "model selection optimization"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "task-tier routing as substrate specialization"
+    relevance_endogenic_design:
+      rating: L
+      rationale: "cost optimization; not core methodology"
+    scout_depth: Skip
+    scout_depth_reason: "cost/performance trade-off; tangential"
+    status: "⬜"
+
+  - name: local-copilot-models.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: L
+      rationale: "local model configuration; not encoding"
+    relevance_bubble_clusters:
+      rating: L
+      rationale: "local compute infrastructure; not topological"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "enables Local-Compute-First axiom operationalization"
+    scout_depth: Thorough
+    scout_depth_reason: "H for LCF infrastructure gap — corrected from Skim"
+    status: "⬜"
+
+  - name: local-mcp-frameworks.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: L
+      rationale: "MCP server distribution; not encoding"
+    relevance_bubble_clusters:
+      rating: L
+      rationale: "local network topology; distinct from substrate model"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "local tool infrastructure enabling LCF axiom"
+    scout_depth: Thorough
+    scout_depth_reason: "H for LCF distributed tool deployment — corrected from Skim"
+    status: "⬜"
+
+  - name: methodology-review.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "prior art foundation for encoding principles"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "prior art survey includes topological/network systems"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "50-year CS lineage for encode-before-act (H4)"
+    scout_depth: Skip
+    scout_depth_reason: "already fully cited in targets"
+    status: "⬜"
+
+  - name: methodology-synthesis.md
+    doc_type: Synthesis
+    synthesises:
+      - sprint-A-h1-novelty.md
+      - sprint-B-h2-morphogenetic.md
+      - sprint-C-h3-augmentive.md
+      - sprint-DE-h4-cs-lineage.md
+      - methodology-review.md
+    relevance_values_encoding:
+      rating: H
+      rationale: "mutual reinforcement of H1–H4 implies unified encoding model"
+    relevance_bubble_clusters:
+      rating: H
+      rationale: "emergence from interconnected hypothesis set"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "composite novelty of four-hypothesis architecture"
+    scout_depth: Thorough
+    scout_depth_reason: "H for methodology coherence synthesis"
+    status: "⬜"
+
+  - name: multi-principal-deployment-scenarios.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "six-layer conflict resolution operationalization"
+    relevance_bubble_clusters:
+      rating: H
+      rationale: "six-layer topological extension case studies"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "principal hierarchy and supremacy constraint validation"
+    scout_depth: Thorough
+    scout_depth_reason: "H for deployment model case studies"
+    status: "⬜"
+
+  - name: onboarding-wizard-patterns.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: M
+      rationale: "adoption pathways; endogenous-first in setup"
+    relevance_bubble_clusters:
+      rating: L
+      rationale: "wizard UX patterns; not substrate topology"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "adoption as methodology operationalization"
+    scout_depth: Skim
+    scout_depth_reason: "M relevance; product adoption patterns"
+    status: "⬜"
+
+  - name: oss-documentation-best-practices.md
+    doc_type: Operational
+    synthesises: []
+    relevance_values_encoding:
+      rating: L
+      rationale: "OSS readme/changelog patterns"
+    relevance_bubble_clusters:
+      rating: L
+      rationale: "documentation topology; conventions not model"
+    relevance_endogenic_design:
+      rating: L
+      rationale: "Documentation-First axiom instantiation"
+    scout_depth: Skip
+    scout_depth_reason: "operational conventions; low strategic overlap"
+    status: "⬜"
+
+  - name: phase-5-recommendations-audit.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "validates 100% recommendation tracking; phase completeness"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "audit confirms gap closure across research"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "Phase 5 completion checkpoint for methodology"
+    scout_depth: Thorough
+    scout_depth_reason: "H for research roadmap validation"
+    status: "⬜"
+
+  - name: pm-and-team-structures.md
+    doc_type: Operational
+    synthesises: []
+    relevance_values_encoding:
+      rating: L
+      rationale: "team topology and governance"
+    relevance_bubble_clusters:
+      rating: L
+      rationale: "Kanban flow patterns; not substrate model"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "team topology as execution governance"
+    scout_depth: Skip
+    scout_depth_reason: "organizational structure; tangential to encoding"
+    status: "⬜"
+
+  - name: product-research-and-design.md
+    doc_type: Operational
+    synthesises: []
+    relevance_values_encoding:
+      rating: L
+      rationale: "design thinking and JTBD; not value encoding"
+    relevance_bubble_clusters:
+      rating: L
+      rationale: "prototyping patterns; not substrate dynamics"
+    relevance_endogenic_design:
+      rating: L
+      rationale: "product discovery methodology integration"
+    scout_depth: Skip
+    scout_depth_reason: "product methodology; domain specific"
+    status: "⬜"
+
+  - name: programmatic-governors.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "enforcement-stack taxonomy; T0–T5 tier mapping"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "governors at substrate boundaries"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "Governor A/B/C placement in execution stack"
+    scout_depth: Thorough
+    scout_depth_reason: "H for governance layer operationalization"
+    status: "⬜"
+
+  - name: queryable-substrate.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "BM25 retrieval as Pattern 7 (Retrieval-Augmented Governance)"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "query interface reduces per-layer isolation"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "Algorithms Before Tokens; deterministic retrieval layer"
+    scout_depth: Thorough
+    scout_depth_reason: "H for token-efficient governance access"
+    status: "⬜"
+
+  - name: security-threat-model.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: M
+      rationale: "threat model as guardrail encoding gap analysis"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "security as boundary membrane concern"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "agent-driven workflow threat catalog; deployment risk"
+    scout_depth: Skip
+    scout_depth_reason: "already cited; operational security threat model"
+    status: "⬜"
+
+  - name: semantic-holography-language-encoding.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "multi-level meaning encoding; semantic [4,1] code validation"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "holography as distributed substrate encoding"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "semantic fidelity across interpretation layers"
+    scout_depth: Thorough
+    scout_depth_reason: "H for holographic encoding theory validation"
+    status: "⬜"
+
+  - name: session-checkpoint-and-safeguard-patterns.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "three-tier safeguard (Tier 0/1/3) operationalizes encoding rigor"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "safeguard tiers at inter-session boundaries"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "checkpoint patterns enforce substrate state transitions"
+    scout_depth: Thorough
+    scout_depth_reason: "H for session-level encoding enforcement"
+    status: "⬜"
+
+  - name: shell-preexec-governor.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "runtime governor exemplifies programmatic constraint enforcement"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "preexec as membrane gate at terminal boundary"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "Governor B placement in enforcement stack"
+    scout_depth: Thorough
+    scout_depth_reason: "H for final enforcement-tier implementation"
+    status: "⬜"
+
+  - name: shifting-constraints-from-tokens.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "synthesizes T0–T5 tier architecture; token→code shift formalization"
+    relevance_bubble_clusters:
+      rating: H
+      rationale: "tier distribution reveals substrate enforcement coverage"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "complete enforcement-stack taxonomy; Algorithms Before Tokens"
+    scout_depth: Skip
+    scout_depth_reason: "already fully cited in targets"
+    status: "⬜"
+
+  - name: six-layer-topological-extension.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: M
+      rationale: "six-layer inheritance chain extension"
+    relevance_bubble_clusters:
+      rating: H
+      rationale: "topological extension via Deployment Layer insertion"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "membrane dynamics under six-layer topology"
+    scout_depth: Thorough
+    scout_depth_reason: "H for extended topological model"
+    status: "⬜"
+
+  - name: skills-as-decision-logic.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: M
+      rationale: "skill extraction operationalizes Programmatic-First"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "skills as tactical layer; boundary enforcement modules"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "skill composition pattern reduces agent body bloat"
+    scout_depth: Skim
+    scout_depth_reason: "M relevance; procedural extraction pattern"
+    status: "⬜"
+
+  - name: sprint-A-h1-novelty.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "encode-before-act novelty validation; partially novel verdict"
+    relevance_bubble_clusters:
+      rating: L
+      rationale: "H1 orthogonal to topological claims"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "session-initialization principle contribution"
+    scout_depth: Thorough
+    scout_depth_reason: "H for H1 novelty evidence synthesis"
+    status: "⬜"
+
+  - name: sprint-B-h2-morphogenetic.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: M
+      rationale: "morphogenesis and substrate mutation"
+    relevance_bubble_clusters:
+      rating: H
+      rationale: "morphogenetic emergence in topological dynamics"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "H2 novelty; autopoietic design operationalization"
+    scout_depth: Thorough
+    scout_depth_reason: "H for H2 novelty synthesis"
+    status: "⬜"
+
+  - name: sprint-C-h3-augmentive.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: M
+      rationale: "augmentive partnership as encoding co-authorship"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "partnership topology; substrate-creation emphasis"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "H3 novelty; substrate as partnership artifact"
+    scout_depth: Thorough
+    scout_depth_reason: "H for H3 novelty synthesis"
+    status: "⬜"
+
+  - name: sprint-DE-h4-cs-lineage.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "H4 novelty; 50-year lineage chain (Knuth→Nygard→Martraire)"
+    relevance_bubble_clusters:
+      rating: L
+      rationale: "H4 orthogonal to topological model"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "H4 strongest novelty claim; CS legitimation"
+    scout_depth: Thorough
+    scout_depth_reason: "H for H4 CS lineage novelty evidence"
+    status: "⬜"
+
+  - name: substrate-taxonomy-content-context.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "content/context/hybrid/regenerable substrate classification"
+    relevance_bubble_clusters:
+      rating: H
+      rationale: "compaction policies per substrate type"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "substrate lifecycle management operationalization"
+    scout_depth: Thorough
+    scout_depth_reason: "H for substrate lifecycle model"
+    status: "⬜"
+
+  - name: testing-tools-and-frameworks.md
+    doc_type: Operational
+    synthesises: []
+    relevance_values_encoding:
+      rating: L
+      rationale: "pytest/coverage patterns; not encoding"
+    relevance_bubble_clusters:
+      rating: L
+      rationale: "test topology and execution; not substrate model"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "testing tier as enforcement layer"
+    scout_depth: Skip
+    scout_depth_reason: "testing infrastructure; operational"
+    status: "⬜"
+
+  - name: topological-audit-substrate.md
+    doc_type: Bridge/Integration
+    synthesises: []
+    relevance_values_encoding:
+      rating: M
+      rationale: "vertex/edge inventory as encoding propagation audit"
+    relevance_bubble_clusters:
+      rating: H
+      rationale: "complete topological structure (75 vertices, 52 edges, 15 faces)"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "coherence metrics; subsystem boundary validation"
+    scout_depth: Thorough
+    scout_depth_reason: "H for complete topology measurement"
+    status: "⬜"
+
+  - name: value-provenance.md
+    doc_type: Bridge/Integration
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "chain-of-custody linking agent files to axioms"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "provenance at substrate boundaries; cross-layer tracing"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "orphaned-file detection operationalization"
+    scout_depth: Thorough
+    scout_depth_reason: "H for provenance-tracking mechanism"
+    status: "⬜"
+
+  - name: values-enforcement-tier-mapping.md
+    doc_type: Synthesis
+    synthesises:
+      - enforcement-tier-mapping.md
+      - values-encoding.md
+    relevance_values_encoding:
+      rating: H
+      rationale: "112 constraints; 40 are T5 (unenforceable prose)"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "values constraints at layer boundaries"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "axiom-carrying constraints inventory"
+    scout_depth: Thorough
+    scout_depth_reason: "H for comprehensive values constraint audit"
+    status: "⬜"
+
+  - name: values-substrate-relationship.md
+    doc_type: Bridge/Integration
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "orthogonality synthesis of encoding and bubble-clusters models"
+    relevance_bubble_clusters:
+      rating: H
+      rationale: "vertical/horizontal dimension decomposition; bridge vocabulary"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "complete substrate specification from two models"
+    scout_depth: Skip
+    scout_depth_reason: "already fully integrated as synthesis"
+    status: "⬜"
+
+  - name: vocabulary-bridge-encoding-models.md
+    doc_type: Bridge/Integration
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "shared vocabulary bridges encoding↔topological models"
+    relevance_bubble_clusters:
+      rating: H
+      rationale: "signal boundary, preservation unit, substrate coherence defined"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "bridge terms enable cross-model navigation"
+    scout_depth: Skip
+    scout_depth_reason: "already cited; integration bridge"
+    status: "⬜"
+
+  - name: workflow-formula-encoding-dsl.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: H
+      rationale: "ultra-compact workflow notation; semantic fidelity via holography"
+    relevance_bubble_clusters:
+      rating: M
+      rationale: "formula as protocol-layer substrate encoding"
+    relevance_endogenic_design:
+      rating: H
+      rationale: "81% token reduction; deterministic protocol execution"
+    scout_depth: Thorough
+    scout_depth_reason: "H for DSL-based workflow encoding"
+    status: "⬜"
+
+  - name: xml-agent-instruction-format.md
+    doc_type: Raw Research
+    synthesises: []
+    relevance_values_encoding:
+      rating: M
+      rationale: "XML as instruction parsing layer; hybrid Markdown+XML schema"
+    relevance_bubble_clusters:
+      rating: L
+      rationale: "XML not topological concern"
+    relevance_endogenic_design:
+      rating: M
+      rationale: "instruction format as encoding operationalization"
+    scout_depth: Skim
+    scout_depth_reason: "M relevance; format specification"
+    status: "⬜"
