@@ -116,7 +116,7 @@ The five work streams below have a recommended sequencing, but some can run part
 
 **Depends on**: Phase 1B Review APPROVED
 **Gate**: Phase 2 Review does not start until deliverable committed
-**Status**: ⏳ In progress — Session 2 (2026-03-13)
+**Status**: ✅ Complete — committed d9f7228
 
 ### Phase 2 Review — Review Gate
 
@@ -124,7 +124,7 @@ The five work streams below have a recommended sequencing, but some can run part
 **Deliverables**: `## Phase 2 Review Output` in scratchpad, verdict: APPROVED
 **Depends on**: Phase 2 committed
 **Gate**: Phase 3 does not start until APPROVED
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED (commits d9f7228 + 1f6f429)
 
 ---
 
@@ -211,7 +211,7 @@ The five work streams below have a recommended sequencing, but some can run part
 
 - [ ] Issue #212: MANIFESTO §3 re-reviewed and full dogma propagation complete
 - [ ] Issue #221: GitHub automation implemented; local state representation auto-generated; AGENTS.md orient step uses cached artifacts
-- [ ] Issue #239: Substrate mapping table + rebalancing recommendations produced and committed
+- [x] Issue #239: Substrate mapping table + rebalancing recommendations produced and committed
 - [ ] Issue #240: Top consolidation moves implemented; token + signal metrics documented
 - [ ] Issue #243: `governs:` annotation tooling implemented; fleet adoption begun
 - [ ] All PRs green CI; all issues closed via PR body `Closes #N`
