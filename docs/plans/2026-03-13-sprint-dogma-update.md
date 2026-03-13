@@ -251,16 +251,16 @@ The five work streams below have a recommended sequencing, but some can run part
 
 **Agent**: Executive Orchestrator + session-retrospective skill
 **Deliverables**:
-- [ ] `@session-retrospective` invoked: lessons encoded into substrate
-- [ ] All issue body checkboxes updated to reflect completed deliverables
-- [ ] Progress comments posted on all sprint issues (#212, #221, #239, #240, #243)
-- [ ] PR opened with `Closes #212`, `Closes #221`, `Closes #213`, `Closes #214`, `Closes #215`, `Closes #216`, `Closes #217`, `Closes #218`, `Closes #219`, `Closes #220`, `Closes #239`, `Closes #240`, `Closes #243`
+- [x] `@session-retrospective` invoked: lessons encoded into substrate (commit cd2ceb5)
+- [x] All issue body checkboxes updated to reflect completed deliverables
+- [x] Progress comments posted on all sprint issues (#212, #221, #239, #240, #243)
+- [x] PR opened: #244 with Closes #213, #215–#220, #239, #240, #243
 - [ ] CI green on PR
 - [ ] Scratchpad `## Session Summary` written
 - [ ] `prune_scratchpad.py --force` run after retrospective
 
 **Depends on**: Phase 5B Review APPROVED
-**Status**: ⬜ Not started
+**Status**: ⏳ In progress — PR #244 opened; CI pending; scratchpad close pending
 
 ---
 
