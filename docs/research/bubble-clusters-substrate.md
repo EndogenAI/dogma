@@ -54,6 +54,7 @@ The bubble-cluster model adds a complementary spatial and topological dimension:
 - MANIFESTO.md axiom citation density: ~85–90% loss at the Scout→Synthesizer boundary, recovering at Synthesizer→Archive
 - Labeled `**Canonical example**:` instances: 100% loss at archive stage
 - Labeled `**Anti-pattern**:` instances: 100% loss at archive stage
+- [fleet-emergence-operationalization.md](fleet-emergence-operationalization.md) § Case Study Results and § Formal Emergence Model provide convergent evidence from an orthogonal measurement angle: the formal emergence criterion `E(M) = 1 iff ≥3/4 substrate metrics exceed threshold`, 157% fleet growth in 4 days, and two independently confirmed emergence events — operationalizing "substrate differentiation under evolutionary pressure" (H2) via morphogenetic detection independent of boundary-loss data.
 
 These losses occur **at boundaries**, not within substrates. A scratchpad section written by the Scout retains canonical examples; the same information, once passed through the Synthesizer boundary, loses them. This is precisely what the bubble-cluster model predicts: the boundary membrane applies lossy compression even when both sides of the membrane intend to transmit faithfully.
 
@@ -108,6 +109,8 @@ The Allen Institute's connectivity atlas measures the *density and directionalit
 | 120° meeting angle (Plateau's Law 2) | When three substrate regions share a boundary (e.g., MANIFESTO.md ↔ AGENTS.md ↔ agent file), the shared context must be balanced — no single substrate should dominate the junction. If MANIFESTO.md is the only substrate writing to the junction, the bubble geometry is unstable. |
 | Laplace pressure (small bubbles merge) | Small, highly specialized agent files with high internal pressure will tend to merge or collapse unless stabilized by clear functional differentiation (the surfactant analogy). This is why the agent fleet needs clear role separation — without it, agents collapse into general-purpose tools and lose boundary integrity. |
 | Surface tension (γ) | The "friction" at substrate boundaries — the cost of information crossing from one substrate to another. High surface tension = high handoff cost = more signal loss. The scratchpad watcher and explicit handoff protocols are surfactant — they reduce surface tension and lower lossy-compression risk. |
+
+[laplace-pressure-empirical-validation.md](laplace-pressure-empirical-validation.md) § Primary Finding provides R²-validated empirical confirmation of this stability model: P1 Citation Density Pressure R²=0.68 (vs. task velocity), P2 Constraint Violation Pressure R²=0.72 (vs. test pass rate, p<0.001), measured across 60 days and 36 files — establishing that the Laplace metaphor yields statistically predictive structural health metrics, not merely illustrative geometry.
 
 **Anti-pattern — Unstabilized small bubble**:
 
@@ -193,7 +196,7 @@ Used together: the biological-homology model governs vertical design (how to enc
 
 **Pattern**: Each substrate in the system should be able to answer: *"What evolutionary pressure created this boundary?"* A substrate without a justifiable differentiation reason is an artificial boundary — the equivalent of drawing a line on a cortical map where no gradient exists. Artificial boundaries create maintenance burden without fidelity benefit.
 
-**Test for each substrate boundary**: Does each layer (MANIFESTO.md vs. AGENTS.md) have a distinct stability tier, mutation rate, and authoring scope? If two layers share the same mutation rate and the same authoring agent, they should be merged — an unstabilized small bubble that will collapse under Laplace pressure.
+**Test for each substrate boundary**: Does each layer (MANIFESTO.md vs. AGENTS.md) have a distinct stability tier, mutation rate, and authoring scope? If two layers share the same mutation rate and the same authoring agent, they should be merged — an unstabilized small bubble that will collapse under Laplace pressure. [substrate-taxonomy-content-context.md](substrate-taxonomy-content-context.md) § Four-Category Orthogonal Taxonomy formalizes the classification into Content, Context, Hybrid, and Regenerable Provenance categories — each with regenerability scores and compaction policies — providing an operational taxonomy for answering the evolutionary pressure test's authoring-scope boundary question.
 
 **Actionable implication**: Before creating a new agent file, confirm it satisfies the evolutionary pressure test: what distinct role does it fill that no existing agent covers? If the answer is "it does what Agent X does but for context Y," either extend Agent X with a context selector (the AGENTS.md §Context-Sensitive Amplification approach) or confirm that the context difference creates genuinely distinct stability and mutation requirements. Document the justification in the agent file's `## Beliefs (Endogenous Sources)` section.
 
@@ -205,7 +208,7 @@ Used together: the biological-homology model governs vertical design (how to enc
 
 **Pattern**: Every agent output that invokes a value or constraint must cite its provenance — the specific source (MANIFESTO.md section, AGENTS.md subsection, research doc) from which the value was drawn. Provenance citation is the structural counter-mechanism to filter-bubble isolation: it makes the foundational source visible, not just the local-session re-encoding.
 
-**Actionable implication**: `scripts/audit_provenance.py` already traces citation chains. Extend its output to flag agent files or research documents with zero provenance citations to `MANIFESTO.md` within a sliding 30-day window. This surfaces isolation risk before it becomes irreversible drift.
+**Actionable implication**: `scripts/audit_provenance.py` already traces citation chains. Extend its output to flag agent files or research documents with zero provenance citations to `MANIFESTO.md` within a sliding 30-day window. [filter-bubble-threshold-calibration.md](filter-bubble-threshold-calibration.md) § Empirical Thresholds operationalizes the isolation-risk levels for this flagging policy from a 61-file fleet measurement: CRD_critical=0.02 (high filter-bubble risk), CRD_warning=0.17 (drift risk), CRD_optimal=[0.32, 0.60] (Laplace equilibrium range) — converting the policy from aspirational to testably calibrated. This surfaces isolation risk before it becomes irreversible drift.
 
 ---
 
@@ -305,7 +308,7 @@ The endogenic inheritance chain — agent file nested inside `AGENTS.md` nested 
 | Dimension | Geometry | Substrate analog | Operational role |
 |-----------|----------|-----------------|------------------|
 | 3D | Bubble (cell) | Substrate (`MANIFESTO.md`, `AGENTS.md`, agent file) | Autonomous region with internal coherence |
-| 2D | Face | Cross-substrate boundary | Membrane with permeability spec (Pattern B1) |
+| 2D | Face | Cross-substrate boundary | Membrane with permeability spec (Pattern B1) (see [topological-audit-substrate.md](topological-audit-substrate.md) § Structural Coherence: empirical inventory — 9 structural + 6 functional enforcement-tier faces, 75V/52E/15F total; 67%/33% intra/cross-subsystem edge ratio — quantitative grounding for the nested-cubes coherence claim) |
 | 1D | Edge | Face-boundary intersection | Deferred — not yet operationalized |
 | 0D | Vertex | N-way membrane junction | Junction specification (Pattern B5) |
 
