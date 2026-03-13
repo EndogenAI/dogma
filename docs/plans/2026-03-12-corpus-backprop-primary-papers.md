@@ -229,7 +229,7 @@ The sweep table is the Scout's guide. Depth allocations matter — it prevents t
 **Agent**: Research Synthesizer
 **Effort**: M
 **Depends on**: Phase 1 Review APPROVED
-**Status**: ⬜ Not started
+**Status**: ⏳ In progress
 
 **Task**: Read `docs/plans/2026-03-12-corpus-raw-findings.md` and the current state of the three primary papers. For each raw finding, determine whether it warrants a proposal entry (absent from target paper + meaningful contribution). Produce `docs/plans/2026-03-12-backprop-proposal.md` — a structured proposal with one entry per candidate weave, grouped by target paper.
 
