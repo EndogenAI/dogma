@@ -77,6 +77,7 @@ This is a constraint on the entire agent fleet, not an optional preference. More
   Check-before-fetch: run `uv run python scripts/fetch_source.py <url> --check` on individual URLs before the Scout begins to eliminate redundant token burn during research delegation.
 - **Check `.cache/sources/` before fetching any individual URL** — use `uv run python scripts/fetch_source.py <url> --check` to see if a page is already cached as distilled Markdown. Re-fetching a cached source wastes tokens.
 - **Extend, don't duplicate** — if a script partially covers your need, extend it.
+- **Research-before-implement for external tools** — before scripting any workflow that proposes using an external tool (GitHub Actions marketplace action, PyPI package, or third-party API), confirm no existing internal script already covers the use case. If the use case overlaps, document the overlap in a D4 research doc before writing any implementation code. Encode the research finding as the gate; do not implement first and research later.
 - **Propose new scripts proactively** — if you perform an investigation or transformation that required significant context to execute, encapsulate it as a script and commit it so future sessions start with that knowledge encoded.
 - **Automation ≠ agent** — file watchers, pre-commit hooks, and CI tasks are preferred over agent-initiated repetition. The `Executive Automator` agent is the first escalation point for automation design. The `Executive Scripter` agent is the first escalation point for scripting gaps.
 - **Document at the top** — every script must open with a docstring or comment block describing its purpose, inputs, outputs, and usage example.
@@ -317,6 +318,7 @@ Mandatory checks after every subagent returns (before acting on output):
 | **Format match** | Did they follow your specified format? | Mismatch (e.g., prose instead of bullets) |
 | **Signal preservation** | For research/synthesis: are canonical examples + citations intact? | Lost examples or citations |
 | **Commit verification** | If the agent reports commits were made, run `git log --oneline -N` to confirm the commits exist on the branch before treating the task as complete. Narrative completion ≠ committed changes. | Expected commit hash absent from log |
+| **Sub-issue AC check** | For any phase that claims to implement GitHub issues, run `gh issue view <num>` for each claimed issue and confirm acceptance criteria are satisfied before writing the Phase N Output entry. Narrative claims of "implemented" are insufficient. | Any acceptance-criteria checkbox not marked `[x]` |
 **Loop-backs**: Request compression immediately: "Return **only**: [specific fields]. Drop explanations. Stay <2000 tokens."
 
 **When to accept overflow**: Only if subagent explicitly notes "compression unavoidable" + documents rationale. Rare.

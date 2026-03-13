@@ -207,35 +207,35 @@ The five work streams below have a recommended sequencing, but some can run part
 
 **Agent**: Executive Scripter
 **Deliverables**:
-- [ ] `.github/workflows/label-sync.yml` — `EndBug/label-sync@v2`; trigger push+dispatch; replaces `no-label-drift.yml` stub (#215)
-- [ ] `.github/workflows/no-label-drift.yml` retired/deleted (#215)
-- [ ] `.github/workflows/changelog-on-merge.yml` stub replaced with full `conventional-changelog-action` implementation (#216)
-- [ ] `.github/workflows/release-changelog.yml` created — `release-changelog-builder-action`, tag-push trigger (#217)
-- [ ] Issue #218 body checkboxes updated to `[x]` (`export_project_state.py` already implemented)
-- [ ] `stale.yml` reviewed; issue #219 closed if adequate or updated if not
-- [ ] `.github/workflows/release-drafter.yml` + `.github/release-drafter.yml` config (#220)
-- [ ] `ruff check scripts/ tests/` + `pytest tests/ -x -m "not slow and not integration" -q` both pass
+- [x] `.github/workflows/label-sync.yml` — `EndBug/label-sync@v2`; trigger push+dispatch; replaces `no-label-drift.yml` stub (#215)
+- [x] `.github/workflows/no-label-drift.yml` retired/deleted (#215)
+- [x] `.github/workflows/changelog-on-merge.yml` stub replaced with full `conventional-changelog-action` implementation (#216)
+- [x] `.github/workflows/release-changelog.yml` created — `release-changelog-builder-action`, tag-push trigger (#217)
+- [ ] Issue #218 body checkboxes updated to `[x]` (`export_project_state.py` already implemented) — pending Phase N
+- [x] `stale.yml` reviewed; issue #219 closed if adequate or updated if not — days-before-close 14, PR thresholds added
+- [x] `.github/workflows/release-drafter.yml` + `.github/release-drafter.yml` config (#220)
+- [x] `ruff check scripts/ tests/` + `pytest tests/ -x -m "not slow and not integration" -q` both pass
 
 **Depends on**: Phase 5A Review APPROVED
 **Note**: May run in parallel with Phase 5B-Docs
 **Gate**: Phase 5B Review does not start until 5B-Scripts AND 5B-Docs both committed
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — commit a7b7fbe
 
 ### Phase 5B-Docs — Orient-step + Documentation Updates (#213, #214, #215)
 
 **Agent**: Executive Docs
 **Deliverables**:
-- [ ] `AGENTS.md` Security Guardrails updated: issue output files in `.cache/`/`docs/issues/` classified as untrusted external content
-- [ ] `docs/issues/metrics.md` placeholder created; Orchestrator orient-step references it (#214, if adopt)
-- [ ] `scripts/seed_labels.py` docstring updated: CI supersedes it in production (#215)
-- [ ] `docs/guides/github-workflow.md` label management section updated: references `label-sync.yml` (#215)
-- [ ] If #213 adopt: orient-step updated + CI snippet added to `docs/guides/github-workflow.md`
-- [ ] `validate_agent_files.py --all` + `validate_synthesis.py` on any modified research docs pass
+- [x] `AGENTS.md` Security Guardrails updated: `.cache/github/` classified as untrusted external content
+- [x] `docs/issues/metrics.md` placeholder — **skipped** (#214 DEFER → not needed)
+- [x] `scripts/seed_labels.py` docstring updated: CI supersedes it in production (#215)
+- [x] `docs/guides/github-workflow.md` label management section updated: references `label-sync.yml` (#215)
+- [x] #213 adopt: **REJECT** — no orient-step update needed
+- [x] `validate_agent_files.py --all` + `validate_synthesis.py` pass
 
 **Depends on**: Phase 5A Review APPROVED
 **Note**: May run in parallel with Phase 5B-Scripts
 **Gate**: Phase 5B Review does not start until 5B-Scripts AND 5B-Docs both committed
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — commit a7b7fbe
 
 ### Phase 5B Review — Review Gate
 
@@ -243,7 +243,7 @@ The five work streams below have a recommended sequencing, but some can run part
 **Deliverables**: `## Phase 5B Review Output` in scratchpad, verdict: APPROVED
 **Depends on**: Phase 5B-Scripts AND Phase 5B-Docs both committed
 **Gate**: Phase N (Sprint Retrospective) does not start until APPROVED
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED (clean first pass, all 8 criteria)
 
 ---
 

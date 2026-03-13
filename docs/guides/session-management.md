@@ -224,20 +224,21 @@ uv run python scripts/prune_scratchpad.py --dry-run
 ## Ending a Session
 
 1. The executive agent writes a `## Session Summary` section
-2. **Update the issue body checkboxes** for every completed deliverable on actively worked issues:
+2. **Sub-issue acceptance-criteria sign-off**: for any phase that closed GitHub issues, run `gh issue view <num> --json body -q '.body' | grep -E '\[x\]|\[ \]'` for each issue and verify all acceptance-criteria checkboxes are marked `[x]` before marking the phase ✅ Complete in the workplan.
+3. **Update the issue body checkboxes** for every completed deliverable on actively worked issues:
    ```bash
    # Edit the body with a temp file (never use --body with multi-line content)
    gh issue edit <num> --body-file /tmp/issue_<num>_body.md
    # Verify checkboxes reflect reality
    gh issue view <num> --json body -q '.body' | grep -E '\[x\]|\[ \]'
    ```
-3. **Post a progress comment on every GitHub issue actively worked this session** — summarise what phase completed, what was committed, and what comes next:
+4. **Post a progress comment on every GitHub issue actively worked this session** — summarise what phase completed, what was committed, and what comes next:
    ```bash
    gh issue comment <num> --body-file /tmp/session_close_<num>.md
    gh issue view <num> --json comments -q '.comments[-1].body[:80]'
    ```
-4. Run `uv run python scripts/prune_scratchpad.py --force` to archive and update `_index.md`
-5. Stop the scratchpad watcher (Ctrl-C)
+5. Run `uv run python scripts/prune_scratchpad.py --force` to archive and update `_index.md`
+6. Stop the scratchpad watcher (Ctrl-C)
 
 **Substrate Retrospective (when applicable)**: If the session produced novel patterns or efficiency gains not yet encoded in the substrate, run the session-retrospective skill before closing. Invoke it with: "What lessons did we learn? Delegate querying which ones are encoded and which aren't, routing to the fleet to update the executive orchestrator and appropriate workflows." This encodes session experience back into the substrate — the session-level enactment of the neuroplasticity principle (see issue #82).
 
@@ -423,6 +424,19 @@ At the **end** of any session that will continue later, write a `## Executive Ha
 - **Recommended Next Session Scope** — one paragraph per candidate session (Session A, Session B…)
 
 The handoff section is the contract between sessions. Without it, the next session re-discovers at token cost what the prior session already knew.
+
+---
+
+## Session Health Signals
+
+After writing the `## Session Summary`, optionally review these signals to detect delegation drift and quality trends over time.
+
+| Metric | Target | How to Measure |
+|--------|--------|----------------|
+| **Delegation Ratio** | ≥ 70% of substantive work delegated | Count `**Agent**:` lines in scratchpad (non-Review, non-GitHub) / total domain phases × 100 |
+| **Review first-pass APPROVED rate** | ≥ 75% | Count Review gates that returned APPROVED without REQUEST CHANGES / total Review gates; baseline from 2026-03-13 sprint = 100% (4/4) |
+
+**Interpretation**: A Review first-pass APPROVED rate below 75% signals that delegation prompts lack sufficient acceptance criteria specificity — apply the explicit-criteria pattern from `AGENTS.md § Review Delegation`. A Delegation Ratio below 50% signals Orchestrator scope creep.
 
 ---
 
