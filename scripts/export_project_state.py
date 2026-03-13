@@ -76,16 +76,12 @@ _FRESH_HOURS = 4  # cache is "fresh" for this many hours
 
 
 def _resolve_safe(path: Path) -> Path:
-    """Return the resolved absolute path, rejecting path traversal.
+    """Return the resolved absolute path.
 
-    The output path must be absolute or resolvable within the current working
-    directory.  Symlink targets that escape the filesystem root are also
-    rejected, but we intentionally do *not* require the path to be inside
-    the workspace — callers legitimately write to /tmp for tests.
-
-    Raises SystemExit(1) if the resolved path contains ``../`` sequences that
-    could traverse above the filesystem root (defence-in-depth; Path.resolve()
-    already handles this, so this is a belt-and-suspenders check).
+    Uses ``Path.resolve()`` to canonicalize the path and collapse any ``../``
+    sequences.  Callers legitimately write to ``/tmp`` for tests, so no
+    workspace-constraint is enforced here — safety relies on ``Path.resolve()``
+    handling traversal collapse correctly.
     """
     resolved = path.resolve()
     # Path.resolve() already collapses .. segments; nothing further to reject.
