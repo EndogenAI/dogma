@@ -116,7 +116,7 @@ The five work streams below have a recommended sequencing, but some can run part
 
 **Depends on**: Phase 1B Review APPROVED
 **Gate**: Phase 2 Review does not start until deliverable committed
-**Status**: ⬜ Not started
+**Status**: ⏳ In progress — Session 2 (2026-03-13)
 
 ### Phase 2 Review — Review Gate
 
@@ -224,3 +224,4 @@ The five work streams below have a recommended sequencing, but some can run part
 | Session | Date | Focus | Phase(s) |
 |---------|------|-------|----------|
 | 1 | 2026-03-13 | Sprint setup + kick off planning | Phase 0 ✅ + begin 1A/1B |
+| 2 | 2026-03-13 | Substrate Rebalancing research + D4 doc | Phase 2 ⏳ |
