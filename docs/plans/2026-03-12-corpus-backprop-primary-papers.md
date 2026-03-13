@@ -40,7 +40,9 @@ All back-propagation follows the three-rule discipline encoded in `values-encodi
 **Agent**: Explore (read-only corpus analysis)
 **Effort**: M
 **Depends on**: nothing
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — `docs/plans/2026-03-12-corpus-sweep-table.md` committed (3111a2d)
+
+**Enhancement applied**: Added Doc Type / Synthesises / Status columns; generated programmatically via `scripts/generate_sweep_table.py` + `docs/plans/corpus-sweep-data.yml`; Phase 1 Scout strategy updated to read Synthesis docs first.
 
 **Task**: Produce `docs/plans/2026-03-12-corpus-sweep-table.md` — a structured reference table covering all 72 research docs in `docs/research/` with the following fields per document:
 
@@ -67,7 +69,7 @@ The sweep table is the Scout's guide. Depth allocations matter — it prevents t
 
 **Agent**: Review
 **Depends on**: Phase 0 complete
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED (2026-03-12)
 
 **Check**: Sweep table covers all 72 docs (no omissions); relevance ratings are not uniformly L/None (would indicate under-reading); "Already cited" status is grounded in actual cross-reference checks against the three primary papers; scout-depth assignments are coherent with relevance+citation status.
 
@@ -185,7 +187,7 @@ After user approval:
 
 ## Acceptance Criteria
 
-- [ ] Sweep table covers all 72 docs
+- [x] Sweep table covers all 72 docs
 - [ ] Raw findings doc covers all Thorough/Skim-rated docs
 - [ ] Proposal has entries grouped by target paper with exact section targets
 - [ ] All proposal entries follow weave/link/consolidate discipline
