@@ -331,7 +331,16 @@ Write a concise research frame:
 
 When scouting a corpus of more than ~20 documents, insert a **sweep step** before full scouting to allocate Scout depth proportionally:
 
+0. **Doc-type classification** — before sweeping, classify each document into one of four types to calibrate reading order and scout depth:
+   - *Synthesis*: cross-document conclusion papers (topic syntheses, empirical validations, peer-review syntheses) — read first; highest signal density
+   - *Bridge/Integration*: documents connecting two or more prior syntheses (sprint docs, topology audits, cross-sprint integrations) — read second
+   - *Raw Research*: single-topic investigations (surveys, case studies, implementation reports) — read after Synthesis and Bridge
+   - *Operational*: process and tool docs (async handling, GitHub workflow, onboarding patterns) — Skim or Skip unless directly relevant
+
+   **Reading order**: Synthesis → Bridge/Integration → Raw Research → Operational. Synthesis docs compress constituent work; reading them first avoids re-discovering signals already captured in the synthesis layer.
+
 1. **Organizational Sweep** — delegate to Explore agent: produce a triage table with one row per document:
+   - *Doc type*: Synthesis / Bridge/Integration / Raw Research / Operational
    - *Recency tier*: Old (> 6 months) / Mid / Recent (< 4 weeks)
    - *Relevance to each target* (H / M / L / None) + one-line rationale
    - *Already cited in target papers?* (Yes / Partial / No)
@@ -341,9 +350,42 @@ When scouting a corpus of more than ~20 documents, insert a **sweep step** befor
 
 3. **Recency + citation signal**: Older documents are *more likely* to contain uncited findings — primary papers are authored early and updated sporadically. Combine recency tier with citation status (not just relevance) to identify the highest-value targets.
 
+4. **Programmatic sweep table** — for corpora ≥ 20 docs, encode the sweep table as a YAML data file rather than a manually-maintained Markdown table:
+   - Create `docs/plans/corpus-sweep-data.yml` with one entry per document. Auto-computable fields (recency tier, already-cited status) are computed on generation; manual fields (relevance, scout depth, doc type) are set by the organiser.
+   - Generate the Markdown table: `uv run python scripts/generate_sweep_table.py docs/plans/corpus-sweep-data.yml docs/plans/YYYY-MM-DD-corpus-sweep-table.md`
+   - Update scout progress via CLI: `uv run python scripts/generate_sweep_table.py --mark-read <docname>` — never edit the generated Markdown directly.
+
+   **Why programmatic**: Manual Markdown tables drift when scouts mark dozens of docs read across multiple sessions. The YAML file is the canonical data source; the Markdown is a generated view. The `--mark-read` CLI keeps the status field accurate without requiring agents to edit raw tables.
+
 The sweep table is the Scout's guide. Commit it to `docs/plans/` before delegating Scout work so the depth allocations are reviewable.
 
 **Gate before advancing**: at least 3–5 relevant sources catalogued; no synthesis present in Scout output; Scout has returned control to Executive Researcher via takeback handoff.
+
+---
+
+#### Back-Propagation Methodology (when updating existing synthesis papers)
+
+When new research findings need to be incorporated into existing primary synthesis papers, three rules govern every edit:
+
+1. **Weave** — integrate into existing argument structure, not appended standalone paragraphs. Find the exact section where the argument already lives and extend it from within.
+2. **Link-out** — cross-reference links to source docs; do not reproduce definitions in-place. One sentence + a relative link is more durable than a paragraph that duplicates content.
+3. **Consolidate** — each pass leaves the paper more coherent, not longer. Net-shorter or net-same is the target; annotation proliferation is the failure mode to name.
+
+**Proposal-doc intermediary pattern** — separate the three operations to prevent scope creep:
+
+| Phase | Agent | Output | Reviewable against |
+|-------|-------|--------|-------------------|
+| Raw findings | Scout | `corpus-raw-findings.md` — what each source says; no proposals, no target sections | Were all assigned docs read? Are observations specific and grounded? |
+| Structured proposals | Synthesizer | `backprop-proposal.md` — one entry per candidate weave: source doc / target paper / target section / proposed change (one sentence) / link-out / rationale | Do entries follow weave/link/consolidate? No inline definitions? No duplicates? |
+| Applied edits | Executive Docs | Modified primary papers — every proposal entry applied exactly as specified; `validate_synthesis.py` run after each paper | Does `validate_synthesis.py` pass? Are all entries applied? |
+
+**Manual stop gate for primary-paper edits**: back-propagation commits into authoritative synthesis papers require explicit human approval before committing. The workflow is:
+1. Executive Docs applies edits → working tree modified, **not staged**
+2. Orchestrator surfaces diffs to user (`git diff docs/research/<paper>.md`)
+3. User reviews and explicitly approves
+4. Only then: `git add` + commit with message `research(#<issue>): <brief description>`
+
+This gate is qualitatively different from the automated Review agent gate — it is a human judgment call on edit quality and scope, not a structural compliance check.
 
 ---
 
