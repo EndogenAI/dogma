@@ -77,16 +77,16 @@ The sweep table is the Scout's guide. Depth allocations matter — it prevents t
 
 ---
 
-### Phase 1 — Corpus Scout (Raw Findings) [4 parallel groups]
+### Phase 1 — Corpus Scout (Raw Findings) [4 sequential groups]
 
-**Agents**: 4× Research Scout (run in parallel)
+**Agents**: 4× Research Scout (run sequentially: 1A → 1B → 1C → 1D)
 **Effort**: L
 **Depends on**: Phase 0 APPROVED
 **Status**: ⬜ Not started
 
-**Rationale for parallel split**: 36 Thorough + 13 Skim docs is too large for a single Scout delegation without significant context loss. Splitting by doc type keeps each Scout's working set coherent and compact.
+**Rationale for sequential split**: 36 Thorough + 13 Skim docs is too large for a single Scout delegation without context loss. Splitting by doc type keeps each Scout's working set coherent. Scouts run **sequentially** — not in parallel — because later groups' observations may be shaped by what Synthesis docs (1A) already captured: a Scout reading raw research after seeing the Synthesis layer can flag gaps rather than re-confirming already-synthesized material. Reading order: Synthesis first (1A), then Bridge/Sprint (1B), then Enforcement/LCF (1C), then remaining Thorough + Skim (1D). Each Scout must read `docs/plans/2026-03-12-corpus-raw-findings.md` before appending, to avoid redundant observations already noted by a prior Scout.
 
-**Task**: Each Scout reads its assigned docs (Thorough = full read; Skim = summary scan) and appends its findings section to `docs/plans/2026-03-12-corpus-raw-findings.md`. Output format per doc: one section heading plus bullet observations. No proposal-level specificity (no target sections, no exact change descriptions — those are Phase 2).
+**Task**: Each Scout reads its assigned docs (Thorough = full read; Skim = summary scan), reads prior Scout output for context, then appends its findings section to `docs/plans/2026-03-12-corpus-raw-findings.md`. Output format per doc: one section heading plus bullet observations. No proposal-level specificity (no target sections, no exact change descriptions — those are Phase 2).
 
 ---
 
