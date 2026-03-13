@@ -176,6 +176,11 @@ respect organizational closure constraints.
 **CS documentation tradition.** Knuth (1984), Nygard (2011), and Martraire (2019) form an
 internally documented chain that Martraire makes explicit: living documentation traces its
 lineage to literate programming and encompasses ADRs as decision-level living documents.
+Independent primary sources confirm the BDD step: North (2006) introduced Behavior-Driven
+Development as a methodology bridging executable specifications and living documentation;
+Adzic (2011) formalised Specification by Example as the practice that makes BDD outputs
+reviewable artifacts. These independently corroborate Martraire's (2019) living documentation
+framing.
 Czarnecki and Eisenecker (2000) provide an independent corroborating frame: in generative
 programming, the specification is the primary artifact from which executable behaviour is
 derived — structurally parallel to the encode-before-act direction. Dhar et al.'s AgenticAKM
@@ -430,10 +435,10 @@ predictions rigorously testable. The cross-reference density check in `validate_
 approximates K-measurement; a formal coupling graph would constitute a rigorous
 operationalization.
 
-The H4 lineage also has one incompletely sourced link: the BDD/Specification-by-Example step
-between ADRs and living documentation is present in Martraire (2019) but lacks an independent
-primary source in the current corpus. Dedicated BDD sourcing — Adzic, North — would strengthen
-the chain and provide a citable intermediate step.
+The H4 lineage's BDD/Specification-by-Example step is now fully sourced: North (2006) and
+Adzic (2011) have been added to the bibliography as independent primary sources, and the
+CS documentation tradition paragraph in §2 now cites them directly. This resolves the
+single-citation fragility at the ADRs → BDD/Spec-by-Example → living documentation step. *Resolved: dogma-update sprint 2026-03-13, closes #233.*
 
 **LCF F4 programmatic enforcement (partially addressed)**: The Local-Compute-First axiom's F4 gap — no CI-enforced programmatic gate — is now partially resolved. The enforcement surface is split into two independent dimensions: the semantic-intent surface (whether an agent meaningfully defers to local compute for high-stakes operations) is assigned to the intentional human-judgment tier; the observable-proxy surface (string-detectable markers of cloud-model API calls) is addressed by a recommended WARN-only gate, deferred to issue #131 for signal-to-noise calibration before FAIL-blocking is enabled. See [`lcf-programmatic-enforcement.md`](lcf-programmatic-enforcement.md) and [`lcf-oversight-infrastructure.md`](lcf-oversight-infrastructure.md).
 

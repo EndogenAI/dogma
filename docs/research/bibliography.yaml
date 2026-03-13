@@ -151,6 +151,15 @@
   address: "Shelter Island, NY"
   url: "https://www.manning.com/books/specification-by-example"
 
+- id: north2006
+  type: article
+  authors:
+    - "Dan North"
+  year: 2006
+  title: "Introducing BDD"
+  venue: "Better Software Magazine"
+  url: "https://dannorth.net/introducing-bdd/"
+
 - id: nygard2011
   type: web
   title: "Documenting Architecture Decisions"

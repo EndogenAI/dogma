@@ -440,11 +440,11 @@ Form definitions (from Pattern 1, §3):
 
 | Axiom | F1 Principle | F2 Example | F3 Anti-pattern | F4 Gate |
 |-------|:---:|:---:|:---:|:---:|
-| Endogenous-First | ✅ | ❌ | ✅ (×2) | ⚠️ |
+| Endogenous-First | ✅ | ✅ | ✅ (×2) | ⚠️ |
 | Algorithms Before Tokens | ✅ | ✅ | ✅ | ✅ |
 | Local Compute-First | ✅ | ✅ | ✅ | ⚠️ |
 
-**F2 gap — Endogenous-First**: No `**Canonical example**:` section. The inheritance-principle prose describes the concept but provides no concrete session prototype anchor. Recommended: add a before/after example of a session that opens with `AGENTS.md` + scratchpad read versus one that skips this step (the canonical ABT violation is already documented; the Endogenous-First equivalent is missing).
+**F2 resolved — Endogenous-First**: `**Canonical example**:` added to MANIFESTO.md §1 — before/after session-start vignette. *Resolved: dogma-update sprint 2026-03-13, closes #235.*
 
 **F4 gap — Endogenous-First**: `scripts/fetch_all_sources.py` and `scripts/generate_agent_manifest.py` are named as programmatic gates in MANIFESTO.md (added in ce8ee48 / PR #53). However, these are *invocation-time* session-start scripts — no automated CI check runs them at push time. This places EF-F4 in the same partial-gate status as LCF-F4. §4 R2 predates PR #53 and asked for this gate to be added; the behavioural gate was added but a hard CI check still does not exist.
 
@@ -456,29 +456,31 @@ Form definitions (from Pattern 1, §3):
 
 | Principle | F1 Principle | F2 Example | F3 Anti-pattern | F4 Gate |
 |-----------|:---:|:---:|:---:|:---:|
-| Programmatic-First | ✅ | ❌ | ❌ | ❌ |
-| Documentation-First | ✅ | ❌ | ❌ | ❌ |
+| Programmatic-First | ✅ | ✅ | ✅ | ❌ |
+| Documentation-First | ✅ | ✅ | ✅ | ❌ |
 | Adopt Over Author | ✅ | ❌ | ❌ | ❌ |
 | Self-Governance & Guardrails | ✅ | ❌ | ❌ | ⚠️ |
 | Compress Context | ✅ | ✅ implicit | ❌ | ❌ |
 | Isolate Invocations | ✅ | ✅ (labelled) | ❌ | ❌ |
 | Validate & Gate | ✅ | ✅ implicit | ❌ | ❌ |
-| Minimal Posture | ✅ | ❌ | ❌ | ❌ |
+| Minimal Posture | ✅ | ✅ | ✅ | ❌ |
 | Testing-First | ✅ | ✅ implicit | ❌ | ⚠️ |
 
 Notes: "implicit" = empirical basis note present but not in dedicated `**Canonical example**:` format. "⚠️" = partial gate (not automatically enforced in CI; may rely on guides, agents, or manually-invoked scripts rather than CI-wired checks).
+
+**F2/F3 resolved — Programmatic-First, Documentation-First, Minimal Posture**: `**Canonical example**:` and `**Anti-pattern**:` entries added to MANIFESTO.md for all three principles. *Resolved: dogma-update sprint 2026-03-13, closes #236.*
 
 ### Priority-Ordered Gap List
 
 Ordered by encoding fidelity risk × breadth of impact:
 
-1. **Endogenous-First F2 (canonical example)** — The primary axiom is missing its prototype anchor. Without a concrete session example, the principle is vulnerable to semantic drift through paraphrase. Highest-risk single gap in the [4,1] code. *→ Phase 3 (issue #70), first addition.*
+~~1. **Endogenous-First F2 (canonical example)** — The primary axiom is missing its prototype anchor. Without a concrete session example, the principle is vulnerable to semantic drift through paraphrase. Highest-risk single gap in the [4,1] code. *→ Phase 3 (issue #70), first addition.*~~ *(Resolved: MANIFESTO.md §1 updated; closes #235)*
 
 2. **Local Compute-First F4 (partially addressed — dual enforcement surface)** — The gap is now resolved into two distinct surfaces: (a) the semantic-intent surface is formally assigned to the human-judgment tier — MANIFESTO.md §3 was updated 2026-03-12 to make this intentional, not a placeholder; (b) the observable-proxy surface has a recommended WARN gate (`scripts/check_model_usage.py`), deferred to issue #131 (Cognee/Local Compute Baseline) for calibration before FAIL-blocking. The combined design narrows the no-CI-gate rationale to semantic enforcement only, where it remains correct. *→ LCF Research Sprint (2026-03-12, issues #209/#210/#211); FAIL-blocking calibration → issue #131.*
 
-3. **Guiding Principles F3 (anti-patterns) — Programmatic-First, Documentation-First, Minimal Posture** — Three most-cited principles with zero anti-patterns. Anti-patterns are the most resilient encoding form (survive paraphrasing); their absence is a compounding drift risk. *→ Phase 3 (issue #70), second pass on principles.*
+~~3. **Guiding Principles F3 (anti-patterns) — Programmatic-First, Documentation-First, Minimal Posture** — Three most-cited principles with zero anti-patterns. Anti-patterns are the most resilient encoding form (survive paraphrasing); their absence is a compounding drift risk. *→ Phase 3 (issue #70), second pass on principles.*~~ *(Resolved: MANIFESTO.md updated; closes #236 partial)*
 
-4. **Guiding Principles F2 (canonical examples) — Programmatic-First, Documentation-First, Minimal Posture** — Same three principles lack prototype anchors. "Compress Context", "Isolate Invocations", and "Validate & Gate" have implicit empirical notes but not labelled examples. *→ Phase 3 (issue #70), second pass.*
+~~4. **Guiding Principles F2 (canonical examples) — Programmatic-First, Documentation-First, Minimal Posture** — Same three principles lack prototype anchors. "Compress Context", "Isolate Invocations", and "Validate & Gate" have implicit empirical notes but not labelled examples. *→ Phase 3 (issue #70), second pass.*~~ *(Resolved: MANIFESTO.md updated; closes #236)*
 
 5. **Guiding Principles F4 (programmatic gates)** — None have dedicated enforcement scripts. Lower risk than F2/F3 gaps (a gate without an example anchor builds on sand), but forms a long-tail coverage gap. *→ Phase 4 (issue #54) + Phase 7 (issue #82).*
 
