@@ -198,6 +198,7 @@ After compaction, the `<conversation-summary>` block is the only conversation co
 |-----------|--------|
 | Session file < 2000 lines | No action needed |
 | Session file ≥ 2000 lines | `uv run python scripts/prune_scratchpad.py` |
+| Active multi-phase sprint | Do **NOT** run `--force` mid-sprint — preserve all Scout and phase output across phases; prune only after the sprint's highest Review gate is APPROVED |
 | Session end | Write `## Session Summary`, then `uv run python scripts/prune_scratchpad.py --force` |
 | New session day | `uv run python scripts/prune_scratchpad.py --init` |
 
@@ -208,6 +209,32 @@ Always dry-run before pruning:
 ```bash
 uv run python scripts/prune_scratchpad.py --dry-run
 ```
+
+### 5.1 Tracked Workplans (`docs/plans/`)
+
+For any multi-phase session (≥ 3 phases or ≥ 2 agent delegations, or spanning more than one day), create a **workplan** before execution begins and commit it to `docs/plans/`. Governed by [`AGENTS.md`](../../../AGENTS.md) § Agent Communication — Programmatic-First applied to session planning.
+
+**Naming**: `docs/plans/YYYY-MM-DD-<brief-slug>.md` (date-first for chronological sorting)
+
+**Required contents**:
+- Objective
+- Phase plan: agent, deliverables, depends-on, status — **with a Review gate phase after every domain phase**
+- Acceptance criteria checklist
+
+Use `docs/plans/2026-03-06-formalize-workflows.md` as the canonical template.
+
+**Commit** the workplan at the start of the session (before Phase 1 executes), then update status markers (`⬜ Not started`, `⏳ In progress`, `✅ Complete`) as phases complete. See § 3.4 for the phase status update pattern.
+
+**Fleet coherence mechanism**: a committed workplan gives every downstream execution agent (Scout, Synthesizer, Reviewer) a shared written specification to verify against — without the Orchestrator re-explaining scope at each handoff. Coherence emerges from the artifact, not from the Orchestrator's presence at every step.
+
+### 5.2 Per-Phase Execution Checklists
+
+Before delegating any multi-step execution phase, the Orchestrator delegates a detailed per-phase checklist to the **Executive Planner** first. The Planner's checklist functions as a shared coherence artifact: every downstream execution agent independently verifies their output against it, eliminating interpretive drift without requiring the Orchestrator to re-explain scope mid-phase.
+
+**Flow**:
+- Workplan created → delegate checklist creation to Executive Planner
+- Checklist committed to scratchpad or workplan doc before Phase 1 begins
+- Each execution phase invocation references the checklist as its acceptance criteria
 
 ---
 

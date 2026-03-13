@@ -418,40 +418,18 @@ When writing prompts for the **Review agent**, use explicit numbered binary acce
 
 ### Size Guard and Archive Convention
 
-| Situation | Action |
-|-----------|--------|
-| Session file < 2000 lines | No action needed |
-| Session file ≥ 2000 lines | Run `uv run python scripts/prune_scratchpad.py` |
-| Active multi-phase sprint | Do **NOT** run `--force` mid-sprint — preserve all Scout and phase output across phases; prune only after the sprint's highest Review gate is APPROVED |
-| Session end | Write `## Session Summary`, then run `uv run python scripts/prune_scratchpad.py --force` |
-| New session day | Run `uv run python scripts/prune_scratchpad.py --init` |
+Full scratchpad size management protocol: see [`session-management` SKILL.md](.github/skills/session-management/SKILL.md) § 5 Size Management.
+Active multi-phase sprint: do NOT run `--force` mid-sprint; prune only after the sprint's highest Review gate is APPROVED.
 
 ### `docs/plans/` — Tracked Workplans
 
-For any multi-phase session, create a **workplan** before execution begins and commit it to `docs/plans/`.
-
-**Naming**: `docs/plans/YYYY-MM-DD-<brief-slug>.md` (date-first for chronological sorting)
-
-**When to create**:
-- Any session with ≥ 3 phases or ≥ 2 agent delegations
-- Any session spanning more than one day
-
-**Contents** (use `docs/plans/2026-03-06-formalize-workflows.md` as the canonical template):
-- Objective
-- Phase plan: agent, deliverables, depends-on, status — **with a Review gate phase after every domain phase**
-- Acceptance criteria checklist
-
-**Commit** the workplan at the start of the session (before Phase 1 executes), then update status markers as phases complete. This creates an auditable plan history in git, separate from the ephemeral `.tmp/` scratchpad.
-
-The planning gate is also a **fleet coherence mechanism**: a committed workplan with per-phase detailed checklists gives every downstream execution agent (Scout, Synthesizer, Reviewer) a shared written specification to verify against — without the Orchestrator needing to re-explain scope at each handoff. Coherence emerges from the artifact, not from the Orchestrator's presence at every step.
+For any multi-phase session (≥ 3 phases or ≥ 2 agent delegations), create a workplan before execution begins and commit it to `docs/plans/`.
+Full protocol: see [`session-management` SKILL.md](.github/skills/session-management/SKILL.md) § 5.1 Tracked Workplans.
 
 ### Per-Phase Execution Checklists
 
-Before delegating any multi-step execution phase, the Orchestrator should delegate a detailed per-phase checklist to the **Executive Planner** first. The checklist becomes a shared written specification that every downstream execution agent independently verifies their output against — preventing interpretive drift without requiring the Orchestrator to re-explain scope at each handoff.
-
-- Workplan created → delegate checklist creation to Executive Planner
-- Checklist committed to scratchpad or workplan doc before Phase 1 begins
-- Each execution phase invocation references the checklist as its acceptance criteria
+Delegate per-phase checklists to the **Executive Planner** before each domain phase. The checklist is the shared coherence artifact for the execution fleet.
+Full protocol: see [`session-management` SKILL.md](.github/skills/session-management/SKILL.md) § 5.2 Per-Phase Execution Checklists.
 
 ### Scope-Narrowing in Delegations
 

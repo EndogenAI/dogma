@@ -401,23 +401,15 @@ body.unlink()
 
 ## GitHub Issue Conventions for Agent-Created Issues
 
-When an agent creates or edits a GitHub issue, the following rules apply:
+Follow the colon-prefixed label namespace (`type:`, `area:`, `priority:`, `status:`) and issue body conventions in `docs/guides/github-workflow.md`. Every issue needs at minimum one `type:` and one `priority:` label. Full reference: [`docs/guides/github-workflow.md`](../../docs/guides/github-workflow.md).
 
-- **Label every issue**: minimum one `type:` label and one `priority:` label.
-  Full taxonomy: `type:`, `area:`, `priority:`, `status:` — see `docs/guides/github-workflow.md`.
-- **Encode priority as a label**: Copilot reads labels; it does NOT read Projects v2 field values.
-  Always set `priority:` label regardless of whether a project field is also set.
-- **Self-contained body**: Put key facts in the issue body directly.
-  Copilot does not traverse cross-reference links to other issues.
-- **Verify after creating**: `gh issue list --state open --limit 3` immediately after `gh issue create`.
-- **Projects v2 scope** (once per machine before any `gh project` commands):
-  ```bash
-  gh auth refresh -s project
-  gh auth status  # verify "project" appears in scopes
-  ```
+**Copilot reads issue title, body, and labels — it does NOT read Projects v2 field values.** Encode priority as a label (not only in project fields). Put key facts in the issue body directly; do not rely on cross-reference links.
 
-See [`docs/guides/github-workflow.md`](../../docs/guides/github-workflow.md) for the full `gh` CLI quick-reference.
-See [`docs/research/github-project-management.md`](../../docs/research/github-project-management.md) for the full synthesis.
+**Projects v2 CLI prerequisite** (once per machine before any `gh project` commands):
+```bash
+gh auth refresh -s project
+gh auth status  # verify "project" appears in scopes
+```
 
 ---
 

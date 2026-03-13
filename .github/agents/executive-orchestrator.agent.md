@@ -113,27 +113,11 @@ Delegation is default, but edge cases are real (e.g., "fix this one typo in docs
 
 ### Pre-Delegation Checklist (Mandatory Before Every Subagent Invocation)
 
-Before invoking any subagent, verify **all three** checkpoints. If any fails, rewrite the prompt before delegating.
+Before invoking any subagent, verify all three. If any fails, rewrite the prompt first. Full definitions and canonical examples: [AGENTS.md § Focus-on-Descent / Compression-on-Ascent](../../AGENTS.md#focus-on-descent--compression-on-ascent).
 
-- [ ] **Scope Clarity**: Can you state the task in one sentence, imperative voice?
-  - ❌ Bad: "Review the workplan"
-  - ✅ Good: "Review workplan.md v2.1, identify gaps in issue count / effort / blockers, return bullets with issue numbers"
-  - **Check**: If you can't phrase it in 15 words, the scope is too broad. Narrow it.
-
-- [ ] **Output Format Specified**: Does the prompt explicitly state format + token ceiling?
-  - ❌ Bad: "Return your findings"
-  - ✅ Good: "Return only: bullets (issue# — gap description), ≤2000 tokens. No prose, no preamble."
-  - **Check**: Every prompt must name format (table / bullets / single line) and ceiling. Compress first, then delegate.
-
-- [ ] **Success Criteria Clear**: Would the agent immediately recognize success?
-  - ❌ Bad: "Fix the workplan"
-  - ✅ Good: "Reconcile count from 25 to 23. Add effort (XS/S/M/L) to Phases 2–5. Flag #151 dependency in acceptance criteria. Commit with msg: 'docs: workplan updates'."
-  - **Check**: If your success criteria have "and then see what they do with it," you're not done. Be prescriptive.
-
-**Canonical Examples from Session 2026-03-11**:
-- **Planner review** (scoped): "Review workplan.md, flag gaps [5 bullets], return: bullets only, ≤2000 tokens" → Result: 1,800 tokens, structured findings ✅
-- **Docs update** (scoped): "Apply 3 updates [list them], commit with [message], return: 'Updated — [item 1], [item 2], [item 3]'" → Result: 1-line confirmation ✅
-- **Review gate** (scoped): "Validate 4 checkpoints [list them], return: single line 'APPROVED' or 'REQUEST CHANGES — [issue]'" → Result: 1-line verdict ✅
+- [ ] **Scope Clarity** — state the task in one sentence, imperative voice (≤15 words)
+- [ ] **Output Format Specified** — prompt names format (table/bullets/line) + token ceiling
+- [ ] **Success Criteria Clear** — agent can recognize success without guessing
 
 ### Delegation Prompt Template (Layer 2 — Prescriptive Structure)
 

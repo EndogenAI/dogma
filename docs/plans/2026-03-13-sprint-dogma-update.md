@@ -143,7 +143,7 @@ The five work streams below have a recommended sequencing, but some can run part
 
 **Depends on**: Phase 2 Review APPROVED
 **Gate**: Phase 3 Review does not start until all deliverables committed
-**Status**: ⬜ Not started
+**Status**: ⏳ In progress — Session 2 (2026-03-13)
 
 ### Phase 3 Review — Review Gate
 
@@ -211,6 +211,7 @@ The five work streams below have a recommended sequencing, but some can run part
 
 - [ ] Issue #212: MANIFESTO §3 re-reviewed and full dogma propagation complete
 - [ ] Issue #221: GitHub automation implemented; local state representation auto-generated; AGENTS.md orient step uses cached artifacts
+- [ ] Issues #213, #214, #215, #216, #217, #218, #219, #220: all sub-issues completed and closed
 - [x] Issue #239: Substrate mapping table + rebalancing recommendations produced and committed
 - [ ] Issue #240: Top consolidation moves implemented; token + signal metrics documented
 - [ ] Issue #243: `governs:` annotation tooling implemented; fleet adoption begun
@@ -225,3 +226,4 @@ The five work streams below have a recommended sequencing, but some can run part
 |---------|------|-------|----------|
 | 1 | 2026-03-13 | Sprint setup + kick off planning | Phase 0 ✅ + begin 1A/1B |
 | 2 | 2026-03-13 | Substrate Rebalancing research + D4 doc | Phase 2 ⏳ |
+| 3 | 2026-03-13 | Substrate Consolidation | Phase 3 (begin) |

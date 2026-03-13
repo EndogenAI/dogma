@@ -98,11 +98,51 @@ Numeric targets X, Y, Z, W are derived from the D1 and D2 findings in [docs/rese
 
 ---
 
+## Substrate Health Metrics
+
+**Last consolidation pass**: 2026-03-13 (issue #240 — Substrate Consolidation)
+**Method**: chars ÷ 4 (consistent with D1 Baseline Methodology above)
+
+### Per-File Token Delta (2026-03-13 Consolidation)
+
+| File | Before Tokens | After Tokens | Delta | Move |
+|------|--------------|-------------|-------|------|
+| `AGENTS.md` | 13,851 | 13,467 | −384 | Move 2: trimmed Size Guard, `docs/plans/`, Per-Phase sections → `session-management` SKILL.md |
+| `.github/agents/AGENTS.md` | 5,727 | 5,633 | −93 | Move 1: trimmed GitHub Issue Conventions to pointer |
+| `.github/agents/executive-orchestrator.agent.md` | 8,251 | 7,942 | −309 | Move 3: trimmed Pre-Delegation Checklist to compact 3-line reminder |
+
+### Rolling T1 Startup Budget (exec-orchestrator session, these three files)
+
+| Snapshot | T1 Tokens (3 files) | Notes |
+|----------|---------------------|-------|
+| D1 Baseline (2026-03-08) | 14,375 | AGENTS.md + exec-orchestrator only (2-file subset) |
+| Phase 2 Audit (2026-03-13, pre-consolidation) | 27,828 | Added .github/agents/AGENTS.md to measurement scope |
+| Post-consolidation (2026-03-13) | **27,042** | −786 tokens vs pre-consolidation |
+
+### Alert Threshold
+
+> **If startup context overhead (L1+L2+L3+L4 auto-loaded files) > 65% of the active context window, escalate a consolidation pass.**
+
+At 128K context: 27,042 / 128,000 = **21.1%** — below the 25% T1 ceiling.
+At 64K context: 27,042 / 64,000 = **42.3%** — caution zone; monitor.
+At 50K context: 27,042 / 50,000 = **54.1%** — RISK ZONE; schedule next consolidation pass.
+
+### Recommended Review Cadence
+
+- **Quarterly substrate audit**: run `scripts/measure_cross_reference_density.py` and `wc -c AGENTS.md .github/agents/AGENTS.md .github/agents/executive-orchestrator.agent.md`; compare to this table.
+- **Trigger threshold**: if any single file grows >10% from post-consolidation chars, open a new consolidation issue.
+- **Consolidation gate in back-propagation workflow**: before any corpus back-propagation sprint updates AGENTS.md or agent files, check that T1 stays below 25% of the effective context window.
+
+See `docs/research/substrate-consolidation-2026-03-13.md` for the full D4 research document on this consolidation pass.
+
+---
+
 ## Related Issues
 
 - [#85](https://github.com/EndogenAI/dogma/issues/85) — Source research (this document derives from its D1/D2 findings)
 - [#80](https://github.com/EndogenAI/dogma/issues/80) — Queryable docs substrate — T4 implementation
 - [#79](https://github.com/EndogenAI/dogma/issues/79) — Skills as decision codifiers — T1 reduction via extraction (R1)
 - [#82](https://github.com/EndogenAI/dogma/issues/82) — Dogma neuroplasticity — T1 reduction via pruning (R2)
+- [#240](https://github.com/EndogenAI/dogma/issues/240) — Substrate Consolidation — this pass
 - [#13](https://github.com/EndogenAI/dogma/issues/13) — Episodic memory — T2 management (history queryable on demand)
 - [#14](https://github.com/EndogenAI/dogma/issues/14) — AIGNE AFS governance — pipeline-level context compress/select/isolate
