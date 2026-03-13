@@ -265,6 +265,12 @@ def main(argv: list[str] | None = None) -> int:
         help="Directory of .agent.md files (default: .github/agents/)",
     )
     parser.add_argument(
+        "--scope",
+        type=Path,
+        default=None,
+        help="Alias for --agents-dir: directory of .agent.md files to audit",
+    )
+    parser.add_argument(
         "--manifesto",
         type=Path,
         default=repo_root / "MANIFESTO.md",
@@ -285,15 +291,18 @@ def main(argv: list[str] | None = None) -> int:
 
     args = parser.parse_args(argv)
 
-    if not args.agents_dir.is_dir():
-        print(f"ERROR: agents directory not found: {args.agents_dir}", file=sys.stderr)
+    # --scope is an alias for --agents-dir
+    agents_dir = args.scope if args.scope is not None else args.agents_dir
+
+    if not agents_dir.is_dir():
+        print(f"ERROR: agents directory not found: {agents_dir}", file=sys.stderr)
         return 1
 
     if not args.manifesto.is_file():
         print(f"ERROR: MANIFESTO.md not found: {args.manifesto}", file=sys.stderr)
         return 1
 
-    report = build_report(args.agents_dir, args.manifesto)
+    report = build_report(agents_dir, args.manifesto)
 
     if args.format == "summary":
         output_text = format_summary(report)
