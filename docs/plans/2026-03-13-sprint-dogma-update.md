@@ -3,7 +3,7 @@ title: "Sprint — Dogma Update: Backprop Propagation, GitHub Automation, Substr
 sprint: "2026-03-13-dogma-update"
 branch: "feat/sprint-2026-03-13-dogma-update"
 generated: "2026-03-13"
-issues: ["#212", "#221", "#239", "#240", "#TBD-provenance"]
+issues: ["#212", "#221", "#239", "#240", "#243"]
 ---
 
 # Sprint — Dogma Update (2026-03-13)
@@ -28,7 +28,7 @@ The five work streams below have a recommended sequencing, but some can run part
 | B — Dogma Propagation | #212 Phase B+C | PR #208 merged ✅ | Session 1–2 |
 | C — Substrate Rebalancing | #239 | Stream B complete | Session 2–3 |
 | D — Substrate Consolidation | #240 | Stream C complete | Session 3–4 |
-| E — Provenance & Interlinking | TBD | Stream D complete | Session 4–5 |
+| E — Provenance & Interlinking | #243 | Stream D complete | Session 4–5 |
 
 ---
 
@@ -41,11 +41,11 @@ The five work streams below have a recommended sequencing, but some can run part
 - [x] Sprint branch created: `feat/sprint-2026-03-13-dogma-update`
 - [x] Scratchpad initialized: `.tmp/feat-sprint-2026-03-13-dogma-update/2026-03-13.md`
 - [x] Workplan committed: `docs/plans/2026-03-13-sprint-dogma-update.md`
-- [ ] Any missing tracking issues created (provenance/interlinking TBD#)
-- [ ] Executive Planner consulted for per-phase checklists
+- [x] Any missing tracking issues created (provenance/interlinking → #243)
+- [x] Executive Planner consulted for per-phase checklists (output in scratchpad `## Phase 0 Output`)
 
 **Depends on**: Nothing
-**Status**: ⏳ In progress
+**Status**: ✅ Complete
 
 ---
 
@@ -213,7 +213,7 @@ The five work streams below have a recommended sequencing, but some can run part
 - [ ] Issue #221: GitHub automation implemented; local state representation auto-generated; AGENTS.md orient step uses cached artifacts
 - [ ] Issue #239: Substrate mapping table + rebalancing recommendations produced and committed
 - [ ] Issue #240: Top consolidation moves implemented; token + signal metrics documented
-- [ ] TBD provenance issue: `governs:` annotation tooling implemented; fleet adoption begun
+- [ ] Issue #243: `governs:` annotation tooling implemented; fleet adoption begun
 - [ ] All PRs green CI; all issues closed via PR body `Closes #N`
 - [ ] Sprint retrospective lessons encoded into substrate
 
@@ -223,4 +223,4 @@ The five work streams below have a recommended sequencing, but some can run part
 
 | Session | Date | Focus | Phase(s) |
 |---------|------|-------|----------|
-| 1 | 2026-03-13 | Sprint setup + kick off planning | Phase 0 + begin 1A/1B |
+| 1 | 2026-03-13 | Sprint setup + kick off planning | Phase 0 ✅ + begin 1A/1B |
