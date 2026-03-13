@@ -624,3 +624,351 @@ sprint: "2026-03-12-corpus-backprop"
 4. **Value provenance chain (`value-provenance.md`) introduces a new measurement concept — chain-of-custody via `governs:` annotation — that is distinct from cross-reference density and drift detection but addresses the same question (are values encoded faithfully?).** The 100% orphaned fleet at baseline (`fleet_citation_coverage_pct = 0.0`) is a stark gap result that `values-encoding.md` §5 Fidelity Test Taxonomy does not account for. The Shepard's Citations / prov:wasDerivedFrom cross-domain evidence provides principled grounding. Weaving this into `values-encoding.md` would add a fourth measurement dimension alongside density, drift, and tier coverage.
 
 5. **The doc-interweb / programmatic interlinking synthesis (`doc-interweb.md`) represents the Algorithms-Before-Tokens application to the cross-reference density problem itself — a reflexive system where the claim (cross-references improve value fidelity) is enforced programmatically via a YAML registry and link-injection script.** This reflexivity (documentation tooling applying Documentation-First to documentation standards) is absent from all three primary papers and represents a clean canonical example of the endogenic methodology applied to its own substrate.
+
+---
+
+## Scout 1C — Enforcement/LCF/Query Docs (10 Thorough)
+
+---
+
+### programmatic-governors.md
+
+**Source**: Final, research_issue #151, date 2026-03-10
+
+**Key claims and patterns**
+
+- H1 CONFIRMED: Text-only guardrails are structurally inferior to programmatic enforcement for weight-conflicting patterns. Shannon's channel model applied: a single counter-signal token in a high-noise channel (billions of pretraining tokens) has limited suppression power.
+- H2 CONFIRMED: Four-tier governor hierarchy identified — Governor A (terminal middleware: inaccessible), Governor B (preexec/DEBUG trap: accessible, highest fidelity), Governor C (pre-commit pygrep: accessible, commit boundary only), Governor D (post-hoc audit: forensic fallback).
+- H3 CONFIRMED: Strongest reachable governor is shell preexec/DEBUG trap; ideal governor (terminal middleware, between LLM tool call and shell) is owner-inaccessible — VS Code Copilot extension exposes no pre-execution callback.
+- The Watt Governor analogy introduced explicitly: James Watt's centrifugal governor (1788) as the mechanical analog for a substrate-level constraint the model cannot override by generating a more confident token.
+- Explicit corollary stated: *"encode behavioral constraints at the lowest available execution layer, not only at the instruction layer"* — this is a first formulation of the Algorithms-Before-Tokens corollary for behavioral self-governance.
+- The `no-heredoc-writes` pygrep pre-commit hook is Governor C; the `preexec` trap is Governor B. Neither alone sufficient; both required for defense-in-depth.
+- Sources cited: Bai et al. 2022 (arXiv:2212.06402), Krakovna et al. 2020, Shannon 1948, Watt 1788 patent.
+
+**Absent from or underrepresented in primary papers**
+
+- `values-encoding.md` §H1 acknowledges text-instruction limitation but lacks the Shannon channel quantification analogy and the weight-prior vs. context-token framing from this document.
+- The four-tier Governor A/B/C/D hierarchy with explicit inaccessibility classification of Governor A is not encoded in any primary paper's pattern catalog.
+- The Watt governor analogy is unique to this document; absent from `endogenic-design-paper.md` and `bubble-clusters-substrate.md` where it would function as a canonical example for Algorithms-Before-Tokens.
+- The explicit Algorithms-Before-Tokens behavioral self-governance corollary (*"encode at the lowest available execution layer"*) is stated for the first time here; absent from `values-encoding.md` §4 Recommendations.
+- R5 documents an open research question (VS Code terminal middleware hook) that appears nowhere in primary papers as a future-work item.
+
+**Evidence structures for weaving**
+
+- Four-tier Governor A/B/C/D taxonomy table (Tier label / Mechanism / Intercepts before execution / Coverage gap) — directly usable in `values-encoding.md` §5 Fidelity Test Taxonomy column for T3/T4 enforcement tiers.
+- Shannon channel framing for token-layer suppression limits — usable in `endogenic-design-paper.md` §2 Background or §4 Theoretical Grounding.
+- Bai et al. 2022 arXiv:2212.06402 — Constitutional AI citation; this doc adds the specific "specification gaming for patterns not targeted by RLHF" application.
+- Watt governor (1788) — canonical mechanical analogy for algorithmic enforcement over instruction, usable as Pattern Catalog canonical example.
+
+---
+
+### shell-preexec-governor.md
+
+**Source**: Final, research_issue #150, closes_issue #150, date 2026-03-10
+
+**Key claims and patterns**
+
+- Q1 CONFIRMED: zsh ZLE `accept-line` wrapper is the highest-fidelity blocking mechanism; `preexec` alone cannot abort execution (notification-only hook). Bash requires `kill -INT $$` from a `DEBUG` trap.
+- Q3 PARTIAL: Zero global footprint architecturally impossible; minimal footprint achievable via `.envrc` variable trigger + conditional `~/.zshrc` block (~25 lines). Direnv subprocess constraint prevents function injection.
+- Q4: Narrow pattern (`cat/tee > file <<`) has near-zero false-positives; broad pattern has moderate false-positives with allowlist mitigation. Recommended: broad pattern + `_GOVERNOR_ALLOWLIST` for db/ops tools.
+- Q5 CONFIRMED: `bash-preexec` (rcaloras/bash-preexec) provides unified preexec API across bash/zsh. `zsh-safe-rm` is a direct precedent for safety-blocking via preexec. No existing tool targets heredoc-write blocking specifically.
+- Seven failure modes documented across three tiers (Architectural/Implementation/Edge); FM-1 (piped-to-subshell) is the only Medium-severity architectural constraint for the LLM-agent threat model; FM-3 (eval bypass) is NOT a gap because `<<` is present in eval string.
+- `PREEXEC_GOVERNOR_ENABLED=1` as env-var sentinel enables per-project activation/deactivation on directory change without global pollution.
+- Full minimal complete implementation provided: zsh ZLE wrapper, bash DEBUG trap, `.envrc` integration pattern.
+
+**Absent from or underrepresented in primary papers**
+
+- The Governor B/C/D enforcement stack table comparing all four tiers by Timing / Coverage / Limitation is more complete here than in `programmatic-governors.md` and absent from `values-encoding.md` §5.
+- The `bash-preexec` compatibility layer (unified preexec API across shells) is not surfaced in any primary paper as an implementation path.
+- The allowlist pattern for legitimate heredoc uses (mysql, psql, docker, ssh) extends the governor spec in a way absent from `values-encoding.md` or `endogenic-design-paper.md`.
+- FM-1 (piped-to-subshell) as the sole Medium-severity architectural constraint — this scopes the residual risk precisely; this scoping does not appear in the primary papers.
+
+**Evidence structures for weaving**
+
+- Full failure-mode summary table (7 modes × severity / LLM-exploitable? / Mitigation) — usable in `endogenic-design-paper.md` §3 Methodology or as Appendix evidence.
+- Enforcement Stack Comparison table (Static analysis / Pre-commit / Runtime / Post-hoc × Timing / What it covers / Limitation) — precise, weavable into `values-encoding.md` §5 Fidelity Test Taxonomy.
+- zsh/bash implementation code blocks — canonical examples for Algorithms-Before-Tokens programmatic gate pattern.
+- `zsh-safe-rm` precedent citation — external precedent for safety-blocking, usable as evidence in `endogenic-design-paper.md` §2 Background.
+
+---
+
+### llm-behavioral-testing.md
+
+**Source**: Final, research_issue #74, date 2026-03-09
+
+**Key claims and patterns**
+
+- H1 CONFIRMED with caveat: LLM-as-judge is reliable for narrow, well-specified anti-pattern checks; unreliable for open-ended quality assessment. Reliability bound from Zheng et al. 2023 (MT-Bench): evaluation rubric must be explicit, criteria specific, judge sees rubric and output together.
+- H2 CONFIRMED: MANIFESTO.md anti-patterns divide into 7 Tier 1 (machine-checkable, no LLM) and 5 Tier 2 (semantic/contextual, LLM-as-judge). Division is stable.
+- H3 CONFIRMED: 7 Tier 1 checks are implementable immediately covering: missing `## Session Start`, missing axiom citation, heredoc file writes, `--no-verify` CI bypass, missing cross-reference to MANIFESTO.md, missing `## Review Output`, direct `--body "..."` with multi-line text.
+- H4 CONFIRMED: Post-commit advisory hook is correct Phase 1 placement; blocking pre-push requires very high precision not achievable with Tier 1 alone.
+- Dependency gap: full behavioral testing requires issue #13 (Episodic Memory) for multi-session drift detection. Without #13, each session is evaluated in isolation.
+- Pattern G3 "Value Fidelity Test Taxonomy" per axiom: maps Endogenous-First, ABT, LCF, Documentation-First, Validate & Gate each to a Tier 1 and Tier 2 test.
+- `validate_session.py` specified: Tier 1 structural audit, post-commit advisory, CI PR flag. For Tier 2: local Ollama model (NO external API per LCF axiom). Minimum capability: 7B+ instruction-tuned (Mistral 7B Instruct, Llama 3 8B Instruct).
+- Sources: Bai et al. 2022 (arXiv:2212.06402), Zheng et al. 2023 (MT-Bench/Chatbot Arena), Krakovna et al. 2020.
+
+**Absent from or underrepresented in primary papers**
+
+- `values-encoding.md` §5 Fidelity Test Taxonomy does not include the Pattern G3 per-axiom Tier 1/Tier 2 test mapping from this document. The two tables are complementary but not merged.
+- The 7 specific Tier 1 machine-checkable anti-patterns (with detection methods) are enumerated with greater precision here than in `values-encoding.md`; they are not present in `endogenic-design-paper.md`.
+- The Goodhart's Law anti-pattern for validation (LLM optimizing for "sounding aligned" rather than being aligned) is stated here but absent from primary papers.
+- Dependency gap on issue #13 for drift detection is documented here but not cross-referenced in any primary paper.
+- `validate_session.py` Python pseudocode spec is the most concrete implementation specification of Tier 1 checks; absent from `endogenic-design-paper.md` §3 Methodology.
+
+**Evidence structures for weaving**
+
+- Tier 1 / Tier 2 anti-pattern table (Pattern G2): Anti-pattern × Detection method × Signal confidence — directly weavable into `values-encoding.md` §5.
+- Pattern G3 Value Fidelity Test Taxonomy: Axiom × Tier 1 test × Tier 2 test — maps directly onto `values-encoding.md` §5 Fidelity Test Taxonomy enhancement.
+- Zheng et al. 2023 MT-Bench — LLM judge reliability bounds: specific conditions for reliable vs. unreliable evaluation.
+- Krakovna et al. 2020 — 60+ specification gaming cases — citation for letter-vs-spirit violation taxonomy.
+
+---
+
+### context-amplification-calibration.md
+
+**Source**: Final, research_issue #178, closes_issue #178, date 2026-03-10
+
+**Key claims and patterns**
+
+- Corpus: n=6 session records, 3 task types (research, commit/review, closure/tracking).
+- Review gate invocation rate: pre-amplification ~60% (5/8 plans), post-amplification 100% (6/6 plans) — +40 percentage points.
+- `validate_synthesis.py` noted in deliverable: pre-amplification ~25%, post-amplification ~80% — +55 pp.
+- Issue checkpoint posted at phase end: pre-amplification ~50%, post-amplification 100% — +50 pp.
+- Calibrated weight ratios per task type: research = Endogenous-First 1.0 / ABT 0.4 / LCF 0.2; commit/review = Documentation-First 1.0 / Endogenous-First 0.3 / ABT 0.2; script/CI = ABT 1.0 / Testing-First 0.5 / Documentation-First 0.3; agent/fleet = Endogenous-First 0.8 / Minimal Posture 0.8; local/inference = LCF 1.0 / ABT 0.4.
+- Pattern C1 anti-pattern: session 2026-03-09 named Endogenous-First for a dominant `gh issue close` / commit task (correct task-type row: commit/review → Documentation-First). Multi-phase sessions require per-phase axiom declarations.
+- Phase 2 trigger condition met for research and commit task types (≥2 validated sessions each): `scripts/amplify_context.py` scripting now indicated by Programmatic-First principle.
+- Pattern C3: Phase 2 design = retrieval-augmented amplification; `amplify_context.py` would parse task description, retrieve MANIFESTO.md axiom block verbatim (preventing paraphrase-from-memory lossy encoding), prepend to scratchpad.
+
+**Absent from or underrepresented in primary papers**
+
+- Quantitative amplification improvement data (review gate +40pp, validate_synthesis +55pp, issue checkpoint +50pp) is unique to this document; absent from `values-encoding.md` §5 Back-Propagation section.
+- Calibrated weight ratio table (5 task types × primary / w₁ / secondary / w₂ / tertiary / w₃) is the most concrete empirical calibration produced by this milestone; absent from primary papers.
+- The per-phase axiom declaration requirement for multi-phase workplans is an originating finding here; not encoded in `values-encoding.md` or `endogenic-design-paper.md`.
+- `scaffold_workplan.py` extension requirement (per-phase `Governing axiom:` field) mentioned as R1 but not present in any primary paper's recommendations.
+
+**Evidence structures for weaving**
+
+- Quality gate compliance table (4 criteria × pre-/post-amplification): specific quantitative delta signal usable in `values-encoding.md` §5 Back-Propagation (Fidelity Test Taxonomy empirical grounding).
+- Calibrated weight ratio table — weavable as empirical calibration data in `values-encoding.md` §5 or `endogenic-design-paper.md` §3 Methodology.
+- Pattern C1 mis-amplification case study (session 2026-03-09): canonical anti-pattern with session ID and correction path.
+- Phase 2 amplify_context.py design spec (parse → retrieve verbatim axiom → prepend to scratchpad) — implementable recommendation for `endogenic-design-paper.md` §5 Discussion.
+
+---
+
+### context-budget-balance.md
+
+**Source**: Final, related issue #85, date 2026-03-08
+
+**Key claims and patterns**
+
+- Instruction substrate baseline: AGENTS.md 28,361 chars (~7,090 tokens) + Executive Orchestrator agent file 19,141 chars (~4,785 tokens) + mode instructions ~5,500 chars (~1,375 tokens) + memory ~4,500 chars (~1,125 tokens) = **14,375 tokens total fixed load**.
+- At 32K effective context window: 44.9% instruction fraction — risk zone confirmed. At 128K: 11.2%; at 200K: 7.2%.
+- Degradation threshold from Liu et al. 2023 (arXiv:2307.03172, "Lost in the Middle"): measurable degradation when instruction content represents ≤15–20% of total in-context tokens per turn.
+- Observable pattern in this repo: steps skipped most frequently are those encoded latest in AGENTS.md (§Verify-After-Act, §Convention Propagation Rule) — consistent with mid-context attention decay.
+- 4-intervention ranking by implementable cost/impact: Extraction > Pruning > Retrieval > Compression.
+- Skill extraction (Pattern A): 4,000–6,000 token reduction from agent body; ~30–40% agent body size reduction. No new tooling required.
+- BM25 RAG (Pattern B): Up to 90% instruction overhead replacement at steady state, but 1–2 week setup cost. Correctly categorized as medium-term infrastructure.
+- Compression risk: content that appears unused may be invoked in rare-but-critical edge cases. Requires [4,1] encoding coverage check before removal.
+- Sources: Liu et al. 2023 arXiv:2307.03172 ("Lost in the Middle"), Anthropic context engineering guidance (cached), Mei et al. 2025 arXiv:2507.13334 ("Context Engineering Survey").
+
+**Absent from or underrepresented in primary papers**
+
+- The 14,375-token instruction baseline measurement is unique to this document; absent from `values-encoding.md` and `endogenic-design-paper.md` as quantitative substrate characterization.
+- The 44.9% fraction at 32K context window — the precise risk zone calculation — is a quantitative grounding data point absent from primary papers.
+- Liu et al. 2023 arXiv:2307.03172 "Lost in the Middle" citation is the direct empirical grounding for the degradation threshold claim; not cited in `values-encoding.md`.
+- Mei et al. 2025 arXiv:2507.13334 "Context Engineering Survey" — models show "pronounced limitations in generating equally sophisticated, long-form outputs" — not cited in primary papers.
+- The 4-intervention ranking (Extraction > Pruning > Retrieval > Compression) with cost/impact analysis is actionable guidance absent from `values-encoding.md` §4 Recommendations.
+- Inverse Frequency Encoding (Pattern C: encode-by-criticality, load-by-frequency) is a novel pattern not present in any primary paper pattern catalog.
+
+**Evidence structures for weaving**
+
+- Instruction baseline measurement table (component × chars × tokens) — weavable into `endogenic-design-paper.md` §3 as substrate efficiency measurement.
+- 4-intervention cost/impact ranking table — directly weavable into `values-encoding.md` §4 Recommendations or §7 Gap Analysis.
+- Liu et al. 2023 arXiv:2307.03172 — "Lost in the Middle" citation, 15–20% degradation threshold — missing primary paper citation for the degradation threshold claim.
+- Pattern B "Progressive Disclosure" (just-in-time instruction injection, Anthropic guidance): canonical pattern for LCF application to instruction architecture; absent from bubble-clusters-substrate.md.
+
+---
+
+### queryable-substrate.md
+
+**Source**: Final, related issue #80, no date
+
+**Key claims and patterns**
+
+- Corpus size: 124 `docs/**/*.md` files + 33 `.github/agents/*.agent.md` files = 157 text files (verified 2026-03-08).
+- `rank_bm25>=0.2` already in `pyproject.toml` dependencies and `uv.lock`.
+- Q1 CONFIRMED: BM25 via `rank_bm25` is sufficient and preferred over embeddings. BM25 is deterministic (satisfies ABT axiom); embeddings introduce non-determinism. Full in-memory index construction < 100ms for this corpus.
+- Q2 CONFIRMED: Blank-line paragraph chunking + heading ancestry prefix is the correct strategy. Heading-boundary chunks are too coarse; fixed-token windows fracture Markdown structures.
+- Q3 CONFIRMED with additions: SCOPE_PATHS mapping — `manifesto`, `agents`, `guides`, `research`, `all` — extended with `toolchain` (docs/toolchain/*.md) and `skills` (.github/skills/**/*.md) as first-class scopes.
+- Pattern 3 "Retrieve-Then-Apply": `uv run python scripts/query_docs.py "<query>" --scope <scope> --top-n 3` returns top-N scored chunks as Markdown-fenced output with source path and score.
+- Pattern 4 "Score-Threshold Gating": ratio-based threshold (0.5 × top score default) more robust than absolute cutoff because BM25 scores are corpus-dependent.
+- Pattern 5 "Dry-Index Cache for CI": `--dry-run` mode validates scope globs resolve to ≥1 file; exits non-zero on empty scope.
+- Implementation anchored to `audit_provenance.py`'s `Path.glob()` + `read_text()` pattern.
+- Source citation: Robertson & Zaragoza (2009) "The Probabilistic Relevance Framework: BM25 and Beyond", FnTIR 3(4).
+
+**Absent from or underrepresented in primary papers**
+
+- `queryable-substrate.md` explicitly names itself as a concrete implementation of `values-encoding.md` §Pattern 7 (Retrieval-Augmented Governance) — but this reflexive link (Pattern 7 → this script) is absent from `values-encoding.md` itself.
+- The 157-file corpus size as a quantitative substrate characterization point is absent from `endogenic-design-paper.md` §3.
+- The connection between `query_docs.py` and `link_registry.yml` (doc-interweb component) is absent: the two tools address complementary navigation problems (BM25 semantic retrieval vs. explicit cross-reference weaving) but are not connected in either document.
+- The `toolchain` and `skills` scope additions extend the original issue #80 spec; the primary source `values-encoding.md` §Pattern 7 does not reflect these scopes.
+- Pattern 5 Dry-Index Cache for CI is an additional testing gate not present in any primary paper's enforcement tier model.
+
+**Evidence structures for weaving**
+
+- 157-file corpus measurement — weavable into `endogenic-design-paper.md` §3 as substrate scale quantification.
+- BM25 < 100ms index construction benchmark — concrete LCF evidence (no infrastructure dependency, local-only).
+- `chunk_file()` Python implementation sketch — canonical Algorithms-Before-Tokens example for queryable substrate.
+- Robertson & Zaragoza 2009 FnTIR citation — external academic grounding for BM25 in this context.
+- 7 SCOPE_PATHS (including toolchain and skills additions) — concrete substrate taxonomy.
+
+---
+
+### session-checkpoint-and-safeguard-patterns.md
+
+**Source**: Final, research_issue #194, closes_issue #194, session_date 2026-03-10
+
+**Key claims and patterns**
+
+- Catalyst: Session #2 corruption incident (epic #93 update) revealed Tier 0 (pre-use validation) was absent while Tier 1 (safe write) and Tier 3 (post-use verify) were encoded.
+- Gap confirmed via scan: AGENTS.md line 369 ("never use heredocs" = Tier 1 ✅), lines 247-250 (verify with `gh issue view` = Tier 3 ✅), Tier 0 (pre-use validation before `--body-file` consumption ❌).
+- Three-Tier Safeguard Model: Tier 0 (pre-use: `test -s`, `file | grep UTF-8`, `grep -q <pattern>`), Tier 1 (safe operation: create_file tool not heredocs), Tier 3 (post-use verification: `gh issue view | grep -E '\[x\]'`).
+- Tier 0 encoded across 4 locations: docs/toolchain/gh.md, executive-orchestrator.agent.md, session-management SKILL.md, AGENTS.md.
+- Pattern 2 "Measured Encoding for Abstract Behaviors": Pre-Task Commitment Checkpoint (binary: "substantive or coordination?") + Gray-Area Decision Tree (4-question flow) + Session-Level Audit metrics (delegation ratio ≥70%, breadth ≥5 specialists, bloat <20% direct reads/writes).
+- Pattern 3 "Gap Identification via Systematic Scan": Select principle → define desired state → scan across 4 file types (AGENTS.md, docs/AGENTS.md, skills, agent files) → classify (present/gap/ambiguous) → propose closure → delegate encoding → measure result.
+- Key finding: "Double-encoding is worth the cost" — encoding in AGENTS.md only is insufficient; agents in different scopes miss single-location encoding. Four-file encoding pattern is canonical.
+- Three-tier model generalizes to: delegation (Tier 0 checkpoint, Tier 1 decision tree, Tier 3 metrics), script execution (Tier 0 input validation), session coherence (Tier 0 planning).
+
+**Absent from or underrepresented in primary papers**
+
+- The Three-Tier Safeguard Model (Tier 0/1/3 = pre-use / safe-operation / post-use-verify) is a distinct, named pattern not present in `values-encoding.md` or `endogenic-design-paper.md`. It is closely related to the Governor A/B/C/D taxonomy but orthogonal.
+- The Tier 0 gap identification story (Tier 1 + Tier 3 were encoded; Tier 0 was missing) is a canonical empirical gap-closure example absent from `endogenic-design-paper.md` §4 Hypothesis Validation.
+- Delegation metrics (ratio ≥70%, breadth ≥5, bloat <20%) are operationally precise and absent from `values-encoding.md` §5 Fidelity Test Taxonomy.
+- The systematic scan → propose → encode → measure cycle is formalized as Pattern 3 here; implied by AGENTS.md §Programmatic-First Principle but never enumerated as a 7-step process in any primary paper.
+- Connection to scratchpad/prune lifecycle: present (Tier 0 temp file validation is triggered before gh commands), but the link between this model and the broader scratchpad prune lifecycle is not explicitly drawn for primary paper use.
+
+**Evidence structures for weaving**
+
+- Three-Tier Safeguard table (Tier 0/1/3 × Example × Purpose) — weavable into `values-encoding.md` §3 Pattern Catalog as a named pattern.
+- Delegation health metrics table (Delegation Ratio / Breadth / Bloat × target threshold) — weavable into `values-encoding.md` §5 or `endogenic-design-paper.md` §3 Methodology.
+- Commits `0b2f6f9` and `80f060c` with line counts — concrete evidence of encoding events traceable to specific scratchpad files.
+- Gap scan classification taxonomy (present ✅ / gap ❌ / ambiguous 🔶) — usable as evidence pattern for `endogenic-design-paper.md` §3 Methodology.
+
+---
+
+### deterministic-agent-components.md
+
+**Source**: Final, no research_issue, closes_issue, or date
+
+**Key claims and patterns**
+
+- H1 CONFIRMED: 12 of 19 orchestrator steps are deterministic (63%); 6 LLM-required (32%); 1 mixed. Deterministic steps: `prune_scratchpad.py --init`, scratchpad state reads, Delegation Decision Gate table lookup, specialist dispatch, deliverable confirmation, pre-review grep sweep, git commands, `prune_scratchpad.py --force`, issue checkbox updates.
+- H2 CONFIRMED: Three directly implementable patterns from pre-LLM architectures: Dialogflow CX Pages/Flows → Phase-Gate FSM; AIML pattern matching → Delegation Decision Gate YAML; Rasa NLU/Core split → LLM-as-NLU + scripts-as-Core.
+- H3 PLAUSIBLE (empirical validation pending): ~400–700 tokens per session saved by extracting 12 deterministic steps. Routing from a table lookup cannot drift; LLM routing for the same input can.
+- `data/delegation-gate.yml` and `data/phase-gate-fsm.yml` already committed to repo (explicitly referenced in Pattern DAC-1 and DAC-2).
+- Pattern DAC-3 "NLU/Core Split": closed vocabulary of 8–12 task classes (research, docs, scripting, fleet-audit, release, issue-triage, ci-health, security); LLM classifies → table routes deterministically.
+- Pattern DAC-4 "Pre-Commit Sweep as Programmatic Gate": `scripts/pre_review_sweep.py` as testable replacement for hardcoded grep in orchestrator agent file.
+- R4 "Annotate Orchestrator Steps with D/LLM Tags": inline `<!-- D -->` / `<!-- L -->` in `executive-orchestrator.agent.md` makes 63/37 split visible and auditable without changing behavior.
+- Sources: Rasa Open Source docs, Dialogflow CX, AWS Lex V2, AIML 2.0 spec, BotPress 2023, `values-encoding.md` Pattern 1 and Pattern 5, `MANIFESTO.md` Algorithms-Before-Tokens.
+
+**Absent from or underrepresented in primary papers**
+
+- The 63%/32% deterministic/LLM step split (12/19 steps) is a quantitative characterization of the orchestration substrate absent from `endogenic-design-paper.md` §3 Methodology and §4 Hypothesis Validation.
+- Pre-LLM architecture survey (AIML, Rasa Core, Dialogflow CX, BotPress, AWS Lex) as evidence base for the deterministic routing pattern is a cross-domain empirical grounding cluster absent from all three primary papers.
+- Pattern DAC-2 (Phase-Gate FSM in `data/phase-gate-fsm.yml`) — existence of this committed YAML spec as a machine-readable artifact is not referenced in `values-encoding.md` §5 Fidelity Test Taxonomy or `endogenic-design-paper.md` §3.
+- Pattern DAC-3's closed task-class vocabulary (8–12 terms) is the concrete design specification for NLU/Core separation; absent from primary papers.
+- The 400–700 token saving estimate from deterministic step extraction is quantitative infrastructure evidence absent from `bubble-clusters-substrate.md` (substrate efficiency) or `values-encoding.md`.
+
+**Evidence structures for weaving**
+
+- 19-step deterministic/LLM/mixed classification table (step × binary label × rationale) — weavable into `endogenic-design-paper.md` §3 Methodology as empirical characterization.
+- Pre-LLM architecture comparison table (5 architectures × pattern × EndogenAI equivalent) — usable as Background evidence (§2) in `endogenic-design-paper.md`.
+- 400–700 token saving estimate — weavable into `bubble-clusters-substrate.md` §5 Geometric Extension or `values-encoding.md` §4 Recommendations.
+- BotPress production bot empirics ("majority of nodes are logic nodes; LLM nodes are the minority") — external practitioner grounding for H1.
+- `data/delegation-gate.yml` and `data/phase-gate-fsm.yml` committed YAML artifacts — evidence of Algorithms-Before-Tokens operationalization in `endogenic-design-paper.md` §3.
+
+---
+
+### multi-principal-deployment-scenarios.md
+
+**Source**: Final, research_issue #173, closes_issue #173, date 2026-03-10
+
+**Key claims and patterns**
+
+- Full Principal hierarchy: EndogenAI Core → Deployment Principal → Client Principal → Session Principal.
+- H1 CONFIRMED: Six-layer model resolves principal hierarchy conflicts without runtime arbitration when structural; every dynamic-resolution attempt in the three scenarios produced inconsistent outcomes.
+- H2 SUPPORTED with one partial exception: Scenarios 1 and 2 resolve cleanly; Scenario 3 identifies boundary condition — no specified arbitration rule when two Deployment Layers conflict with each other. Conservative merge principle proposed as Cross-Org arbitration rule (more restrictive constraint wins; consistent with Bai et al. 2022 multi-stakeholder AI).
+- Most significant failure mode: failure to *detect* a conflict exists — when the Deployment Layer overrides a Core Layer constraint through omission rather than explicit statement.
+- `conflict_resolution` field in `client-values.yml` schema is currently prose without programmatic enforcement layer in `validate_agent_files.py` — identified as gap pointing to `external-value-architecture.md §Pattern E2`.
+- Four Patterns: D1 (Additive Constraint Composition), D2 (Anti-Corruption Layer — Evans 2003 DDD, Kubernetes ConfigMap, SNOMED CT), D3 (Transparent Boundaries — Linkerd micro-proxies, Envoy, Kubernetes network policies), D4 (Declarative Topology — Kubernetes manifests, Terraform HCL, Istio VirtualServices).
+- CDR (Conflict Decision Record) tables produced for all 3 scenarios; CDR-S3 (cross-org) has 4 entries including PII-purge vs. reproducibility and attribution vs. non-disclosure.
+- Topological diagram: standard six-layer hierarchy; for Scenario 3, a branched topology with two parallel Deployment Layers converging at a joint Client Layer.
+- Session-start ritual extension proposed (R2): conditional Deployment Layer read step with conflict detection pseudocode.
+- Sources: Bai et al. 2022 (multi-principal AI alignment), Evans 2003 (Domain-Driven Design, anti-corruption layer pattern), Kubernetes/Istio/Linkerd/Envoy documentation.
+
+**Absent from or underrepresented in primary papers**
+
+- The external-values conflict taxonomy (Type 1–4, ALLOW/BLOCK/ESCALATE) is T5-prose-only; this document adds three concrete CDR tables with resolved conflict cases but does not name or extend the Type 1–4 taxonomy by label.
+- The cross-org Deployment-to-Deployment conflict (Scenario 3) surfaces a topological boundary condition (no arbitration rule between peer Deployment Layers) absent from `bubble-clusters-substrate.md` §5 Geometric Extension.
+- Pattern D2 (Anti-Corruption Layer, Evans 2003) is a named DDD pattern directly applicable to Core↔Deployment boundary; absent from `endogenic-design-paper.md` §2 Background.
+- The `conflict_resolution` field lacking programmatic enforcement gap (`validate_agent_files.py`) is documented here but not in `values-encoding.md` §7 Gap Analysis.
+- Conservative merge principle for Deployment-layer conflicts is an EndogenAI-proposed rule without external standard citation — a gap flagged but unresolved here.
+
+**Evidence structures for weaving**
+
+- CDR tables (CDR-S1/S2/S3 × Conflict / Winning Layer / AGENTS.md cite) — weavable into `values-encoding.md` §3 Pattern Catalog or `endogenic-design-paper.md` §4 Hypothesis Validation.
+- Layer activation sequence topological diagram (nested → branched Scenario 3 topology) — weavable into `bubble-clusters-substrate.md` §5 Geometric Extension.
+- Evans 2003 DDD Anti-Corruption Layer citation — foundational DDD reference applicable to `endogenic-design-paper.md` §2 Background.
+- Pattern D3 (Transparent Boundaries via Linkerd/Envoy) as LCF-aligned enforcement mechanism — evidence for `values-encoding.md` §4 Recommendations.
+- Conservative merge principle formulation — a derived rule requiring upstream citation; weavable into `values-encoding.md` §2 Hypothesis Validation as a novel finding.
+
+---
+
+### six-layer-topological-extension.md
+
+**Source**: Final, research_issue #185, closes_issue #185, date 2026-03-10
+
+**Key claims and patterns**
+
+- H1 CONFIRMED: Six-layer topology is a solved problem in infrastructure. Kubernetes (6+ layers), Istio (5 layers), Linkerd (transparent proxies), Envoy sidecars all demonstrate production-proven intermediate-layer insertion. Key pattern: **policy declaration ↔ enforcement separation** (control plane / data plane).
+- H2 CONFIRMED: Three distinct membrane types with measurable permeability profiles emerge: (E1) Core↔Deployment = impermeable to overrides, permeable to additive constraints; (E2) Deployment↔Client = permeable to specialization; (E3) Session↔Enacted = permeable to task-specific overrides within all higher-layer constraints.
+- H3 CONFIRMED: Conflict resolution must be predetermined, not runtime-dynamic. Evidence: Constitutional AI (Bai et al. 2022) — multi-principal alignment feasible only when conflict resolution is predetermined in the constitution. US Supremacy Clause (Art. VI) as legal precedent for structural conflict resolution. Franchise agreements (McDonald's) as commercial analogy.
+- H4 CONFIRMED: Isolation drift risk increases with six-layer complexity. Six-layer model breaks the natural protection of three-layer (where every agent file had to reference AGENTS.md). Bubble-cluster model predicts: low inter-substrate connectivity → filter-bubble isolation → idiosyncratic behavior.
+- Mitigation for isolation drift: agents must declare layer membership in frontmatter (`layer: deployment`, `depends_on: [MANIFESTO.md, AGENTS.md]`). Kubernetes annotations as precedent.
+- Critical architectural innovation explicitly stated: "Supremacy principle is novel to EndogenAI" — no external standard formalizes conflict resolution with the same structural explicitness.
+- R1: Adopt Wizard (#56) must generate `client-values.yml` stub with `conflict_resolution` field pre-populated.
+- R3: Topology-aware agent-manifest generation — extend agent frontmatter with `layer:` and `depends_on:` fields; `generate_agent_manifest.py` extension.
+- Pattern 1 "Control-Plane ↔ Data-Plane Separation" with Kubernetes/Istio/Linkerd implementation sketches.
+- Pattern 4 "Declarative Topology Specification" (infra-as-code via YAML, Kubernetes manifests, Terraform HCL, Istio VirtualServices).
+- Sources: Kubernetes, Istio, Linkerd, Envoy documentation; Bai et al. 2022; Evans 2003 DDD; US Supremacy Clause (Art. VI).
+
+**Absent from or underrepresented in primary papers**
+
+- This document does NOT extend the 15-face topology count from `topological-audit-substrate.md`. It describes six layers and three membrane types but does not enumerate or extend geometric face counts.
+- The bubble-cluster model membrane dynamics are cited from `bubble-clusters-substrate.md` Pattern B1 but the exact surface-tension/selective-permeability vocabulary is not extended here — it is invoked, not developed.
+- The Supremacy novelty claim ("novel to EndogenAI") is asserted but lacks a systematic survey that would confirm no external standard formalizes this. This is a self-reported novelty claim without comparative review.
+- R3 (topology-aware manifest generation) involves agent frontmatter `layer:` field — this is a new agent file convention proposed here but NOT yet validated in `validate_agent_files.py`; the gap is named but not closed.
+- The control-plane/data-plane separation pattern from Kubernetes/Istio is a strong Algorithms-Before-Tokens expression but is absent from `endogenic-design-paper.md` §2 Background or §3 Methodology as an external precedent cluster.
+- LCF as a structural enabler: this document implicitly frames declarative topology (YAML policy files, CI validators) as the LCF expression — but does not explicitly name LCF as the enabling axiom for transparent enforcement.
+
+**Evidence structures for weaving**
+
+- Three-membrane permeability profile table (E1/E2/E3 × boundary / permeability / examples) — directly weavable into `bubble-clusters-substrate.md` §5 Geometric Extension membrane specs.
+- Infrastructure precedent table (Kubernetes / Istio / Linkerd / Envoy × mechanism / EndogenAI equivalent) — weavable into `endogenic-design-paper.md` §2 Background as external-domain validation of the six-layer model.
+- Branched topology diagram (Scenario 3 dual-Deployment convergence) — geometric extension for `bubble-clusters-substrate.md` §5.
+- US Supremacy Clause (Art. VI) + franchise agreement analogy — external precedents for statutory conflict resolution; novel evidence for `endogenic-design-paper.md` §2.
+- Isolation drift → filter-bubble isolation framing — directly links to bubble-cluster model; weavable into `bubble-clusters-substrate.md` §2 Hypothesis Validation.
+
+---
+
+### Scout 1C — Theme Summary
+
+1. **Programmatic enforcement tier convergence**: Across 4 documents (programmatic-governors, shell-preexec-governor, llm-behavioral-testing, session-checkpoint-and-safeguard-patterns), a consistent 3–4 tier enforcement model emerges: Governor A/B/C/D (governors doc), Tier 0/1/3 safeguard (session-checkpoint), Tier 1/2 behavioral testing (behavioral-testing). These are parallel taxonomies converging on the same insight: static text guardrails require complementary programmatic gates at write-time, commit-time, and runtime layers; no single tier is sufficient.
+
+2. **Quantitative calibration as primary paper gap**: context-amplification-calibration.md (+40pp review gate, +55pp validate, +50pp checkpoint), context-budget-balance.md (14,375 tokens, 44.9% at 32K, ≤15–20% degradation threshold), and deterministic-agent-components.md (63% deterministic steps, ~400–700 token saving) all produce concrete measurement data absent from all three primary papers. The primary papers articulate patterns but lack empirical quantification that these sprint docs supply.
+
+3. **Queryable substrate as navigationally-opaque gap closer**: queryable-substrate.md directly implements values-encoding.md Pattern 7 (Retrieval-Augmented Governance) as a concrete script (`query_docs.py` + `rank_bm25`), with 157-file corpus characterization and 7 SCOPE_PATHS. The link between `query_docs.py` and `link_registry.yml` (doc-interweb) is absent — the two tools address complementary navigation problems (BM25 semantic retrieval vs. explicit cross-reference weaving) but are not connected in either document.
+
+4. **Multi-principal deployment reveals six-layer boundary conditions**: multi-principal-deployment-scenarios.md and six-layer-topological-extension.md together expose two structural gaps not present in the primary papers: (a) no arbitration rule between peer Deployment Layers (conservative merge principle proposed without external citation), and (b) isolation drift risk specific to six-layer complexity (not present in three-layer model). The external-values conflict taxonomy (Type 1–4, T5-prose-only from Scout 1A) overlaps with the CDR pattern but is not name-mapped here.
+
+5. **LCF as enabling architecture for declarative enforcement**: context-budget-balance.md (BM25 RAG as LCF expression), queryable-substrate.md (rank_bm25 pure-Python, no external services), six-layer-topological-extension.md (transparent CI/commit enforcement as LCF-aligned governance), and deterministic-agent-components.md (phase-gate FSM as zero-token routing) collectively frame LCF not as a goal state but as a **structural design parameter** that shapes which enforcement mechanisms are viable. This framing is absent from all three primary papers as an explicit thesis.
