@@ -1,6 +1,6 @@
 # Workplan: Full Corpus Back-Propagation into Primary Papers
 
-**Issues**: [#165](https://github.com/EndogenAI/dogma/issues/165), [#212](https://github.com/EndogenAI/dogma/issues/212)
+**Issues**: [#165](https://github.com/EndogenAI/dogma/issues/165), [#212](https://github.com/EndogenAI/dogma/issues/212), [#225](https://github.com/EndogenAI/dogma/issues/225), [#226](https://github.com/EndogenAI/dogma/issues/226), [#227](https://github.com/EndogenAI/dogma/issues/227)
 **Branch**: `feat/issue-165-values-synthesis`
 **Related PR**: #208
 **Date Created**: 2026-03-12
@@ -77,28 +77,106 @@ The sweep table is the Scout's guide. Depth allocations matter — it prevents t
 
 ---
 
-### Phase 1 — Corpus Scout (Raw Findings)
+### Phase 1 — Corpus Scout (Raw Findings) [4 parallel groups]
 
-**Agent**: Research Scout
+**Agents**: 4× Research Scout (run in parallel)
 **Effort**: L
 **Depends on**: Phase 0 APPROVED
 **Status**: ⬜ Not started
 
-**Task**: Using the sweep table as the guide, read all docs rated Thorough in detail; skim docs rated Skim; skip docs rated Skip. Produce `docs/plans/2026-03-12-corpus-raw-findings.md` — an unstructured findings catalogue: one section per source doc (Thorough/Skim only), listing raw observations about content that appears relevant to any of the three primary papers. Do NOT yet determine exact target sections or write proposal entries — that is Phase 2's job.
+**Rationale for parallel split**: 36 Thorough + 13 Skim docs is too large for a single Scout delegation without significant context loss. Splitting by doc type keeps each Scout's working set coherent and compact.
 
-Each findings section format:
-```
-### [source-doc-filename]
-- [observation]: [one-line description of what the doc says that may be relevant]
-- [observation]: ...
-```
+**Task**: Each Scout reads its assigned docs (Thorough = full read; Skim = summary scan) and appends its findings section to `docs/plans/2026-03-12-corpus-raw-findings.md`. Output format per doc: one section heading plus bullet observations. No proposal-level specificity (no target sections, no exact change descriptions — those are Phase 2).
 
-Only include docs rated Thorough or Skim in the sweep table. Skip-rated docs get no section.
+---
+
+#### Scout 1A — Synthesis Docs (7 Thorough)
+
+**Doc list**:
+- enforcement-tier-mapping.md
+- external-values-decision-framework.md
+- h4-peer-review-synthesis.md
+- holographic-encoding-empirics.md
+- laplace-pressure-empirical-validation.md
+- methodology-synthesis.md
+- values-enforcement-tier-mapping.md
+
+**Output**: Section `## Scout 1A — Synthesis Docs` in `docs/plans/2026-03-12-corpus-raw-findings.md`
+
+---
+
+#### Scout 1B — Bridge/Integration + Sprint Docs (10 Thorough)
+
+**Doc list**:
+- doc-interweb.md
+- topological-audit-substrate.md
+- value-provenance.md
+- sprint-A-h1-novelty.md
+- sprint-B-h2-morphogenetic.md
+- sprint-C-h3-augmentive.md
+- sprint-DE-h4-cs-lineage.md
+- phase-5-recommendations-audit.md
+- substrate-taxonomy-content-context.md
+- workflow-formula-encoding-dsl.md
+
+**Output**: Section `## Scout 1B — Bridge/Integration + Sprint Docs` in `docs/plans/2026-03-12-corpus-raw-findings.md`
+
+---
+
+#### Scout 1C — Enforcement/LCF/Query Raw Research (10 Thorough)
+
+**Doc list**:
+- programmatic-governors.md
+- shell-preexec-governor.md
+- llm-behavioral-testing.md
+- context-amplification-calibration.md
+- context-budget-balance.md
+- queryable-substrate.md
+- session-checkpoint-and-safeguard-patterns.md
+- deterministic-agent-components.md
+- multi-principal-deployment-scenarios.md
+- six-layer-topological-extension.md
+
+**Output**: Section `## Scout 1C — Enforcement/LCF/Query` in `docs/plans/2026-03-12-corpus-raw-findings.md`
+
+---
+
+#### Scout 1D — Remaining Thorough + All Skim (9 Thorough + 13 Skim)
+
+**Doc list (Thorough)**:
+- agent-skills-integration.md
+- agent-taxonomy.md
+- external-team-case-study.md
+- filter-bubble-threshold-calibration.md
+- fleet-emergence-operationalization.md
+- holonomic-brain-theory-application.md
+- local-copilot-models.md
+- local-mcp-frameworks.md
+- semantic-holography-language-encoding.md
+
+**Doc list (Skim — summary scan only)**:
+- agent-fleet-design-patterns.md
+- agentic-research-flows.md
+- aigne-afs-evaluation.md
+- async-process-handling.md
+- dev-workflow-automations.md
+- endogenai-product-discovery.md
+- episodic-memory-agents.md
+- github-as-memory-substrate.md
+- github-project-management.md
+- iit-panpsychism-consciousness-bounds.md
+- onboarding-wizard-patterns.md
+- skills-as-decision-logic.md
+- xml-agent-instruction-format.md
+
+**Output**: Section `## Scout 1D — Remaining Thorough + Skim` in `docs/plans/2026-03-12-corpus-raw-findings.md`
+
+---
 
 **Deliverables**:
-- `docs/plans/2026-03-12-corpus-raw-findings.md` committed
+- `docs/plans/2026-03-12-corpus-raw-findings.md` with all 4 Scout sections committed
 
-**Gate**: Raw findings committed; Phase 1 Review APPROVED
+**Gate**: All 4 sections present; Phase 1 Review APPROVED
 
 ---
 
@@ -108,7 +186,7 @@ Only include docs rated Thorough or Skim in the sweep table. Skip-rated docs get
 **Depends on**: Phase 1 complete
 **Status**: ⬜ Not started
 
-**Check**: All Thorough-rated docs have a findings section; no Skim-rated doc is missing without explanation; observations are specific (not "this doc is relevant") and grounded in actual content read; no proposal-level specificity leaking in (target sections, exact change descriptions belong in Phase 2).
+**Check**: All 4 Scout sections present (1A/1B/1C/1D); all 36 Thorough-rated docs have a findings entry across the 4 sections; no Skim-rated doc is missing without explanation; observations are specific (not "this doc is relevant") and grounded in actual content read; no proposal-level specificity leaking in (target sections, exact change descriptions belong in Phase 2).
 
 **Deliverables**: APPROVED verdict in scratchpad
 
@@ -185,6 +263,59 @@ After user approval:
 
 ---
 
+### Phase 4A — Docs Encoding: Issue #225 + #227 (workflows.md)
+
+**Agent**: Executive Docs
+**Effort**: M
+**Depends on**: Phase 3 Review (user approval) — can be parallelised with Phase 3 at Orchestrator's discretion since target files differ
+**Status**: ⬜ Not started
+**Issues**: [#225](https://github.com/EndogenAI/dogma/issues/225), [#227](https://github.com/EndogenAI/dogma/issues/227)
+
+**Task**: Apply both issues' changes to `docs/guides/workflows.md` in one pass:
+- **#225**: Add doc-type taxonomy (Synthesis / Raw Research / Bridge / Operational) + programmatic sweep table pattern (YAML data file + generator script) + `--mark-read` status tracking CLI pattern to the org-sweep section
+- **#227**: Add new back-propagation methodology subsection: weave/link/consolidate discipline, proposal-doc pattern (Scout → raw findings → Synthesizer → structured proposal → Docs → applied edits), and manual stop gate requirement for primary-paper edits
+
+**Deliverables**:
+- `docs/guides/workflows.md` updated and committed
+
+**Gate**: Changes committed; Phase 4A Review (in shared Phase 4 Review gate) APPROVED
+
+---
+
+### Phase 4B — Docs Encoding: Issue #226 (AGENTS.md)
+
+**Agent**: Executive Docs
+**Effort**: S
+**Depends on**: Phase 3 Review (user approval) — can be run in parallel with Phase 4A since different target file
+**Status**: ⬜ Not started
+**Issues**: [#226](https://github.com/EndogenAI/dogma/issues/226)
+
+**Task**: Add explicit binary acceptance criteria requirement to `AGENTS.md` § Agent Communication → Review delegation guidance:
+- Encode the lesson: generic "validate this" prompts produce generic reviews; explicit numbered pass/fail criteria per check item catch inconsistencies that are missed otherwise
+- Add guidance with canonical example (first prompt = generic → missed 5 depth violations; second prompt = 7 numbered criteria = caught all 5)
+
+**Deliverables**:
+- `AGENTS.md` updated and committed
+
+**Gate**: Changes committed; Phase 4 Review APPROVED
+
+---
+
+### Phase 4 Review — Review Gate
+
+**Agent**: Review
+**Depends on**: Phase 4A + Phase 4B both committed
+**Status**: ⬜ Not started
+
+**Check**:
+1. `docs/guides/workflows.md` — doc-type taxonomy present in org-sweep section; back-prop methodology section present with weave/link/consolidate rules, proposal-doc pattern, and manual stop gate; no in-place definition reproduction (link-out discipline applies here too)
+2. `AGENTS.md` — explicit binary acceptance criteria guidance present in Review delegation section with canonical counter-example (generic prompt vs. numbered criteria)
+3. Both sections follow weave/link/consolidate discipline (no new isolated paragraphs appended without integration into surrounding context)
+
+**Deliverables**: APPROVED verdict in scratchpad
+
+---
+
 ## Acceptance Criteria
 
 - [x] Sweep table covers all 72 docs
@@ -193,3 +324,6 @@ After user approval:
 - [ ] All proposal entries follow weave/link/consolidate discipline
 - [ ] All three primary papers validate_synthesis PASS after edits
 - [ ] User has reviewed and approved diffs before commit
+- [ ] workflows.md updated with doc-type taxonomy + back-prop methodology section (#225, #227)
+- [ ] AGENTS.md updated with explicit Review acceptance criteria guidance (#226)
+- [ ] Phase 4 Review APPROVED
