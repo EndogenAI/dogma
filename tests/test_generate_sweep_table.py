@@ -15,6 +15,7 @@ Tests cover:
 import os
 import subprocess
 import sys
+from datetime import date, timedelta
 from pathlib import Path
 
 import pytest
@@ -70,42 +71,47 @@ def _make_primary_papers(research_dir: Path, content: str = "") -> None:
 
 @pytest.mark.io
 def test_detect_recency_recent_unquoted(tmp_path):
-    """Unquoted ISO date in 2026-03 range returns Recent."""
+    """Unquoted ISO date < 4 weeks ago returns Recent (PyYAML parses as datetime.date)."""
     doc = tmp_path / "doc.md"
-    # PyYAML will parse this as datetime.date(2026, 3, 10)
-    doc.write_text("---\ndate: 2026-03-10\n---\n# Doc\n", encoding="utf-8")
+    recent = (date.today() - timedelta(days=7)).isoformat()
+    # PyYAML will parse an unquoted ISO date as datetime.date
+    doc.write_text(f"---\ndate: {recent}\n---\n# Doc\n", encoding="utf-8")
     assert sut.detect_recency(doc) == "Recent"
 
 
 @pytest.mark.io
 def test_detect_recency_recent_quoted(tmp_path):
-    """Quoted ISO date in 2026-03 range returns Recent."""
+    """Quoted ISO date < 4 weeks ago returns Recent."""
     doc = tmp_path / "doc.md"
-    doc.write_text("---\ndate: '2026-03-01'\n---\n# Doc\n", encoding="utf-8")
+    recent = (date.today() - timedelta(days=14)).isoformat()
+    doc.write_text(f"---\ndate: '{recent}'\n---\n# Doc\n", encoding="utf-8")
     assert sut.detect_recency(doc) == "Recent"
 
 
 @pytest.mark.io
 def test_detect_recency_mid(tmp_path):
-    """Date in 2026-02 returns Mid."""
+    """Date between 4 weeks and 6 months ago returns Mid."""
     doc = tmp_path / "doc.md"
-    doc.write_text("---\ndate: '2026-02-15'\n---\n# Doc\n", encoding="utf-8")
+    mid = (date.today() - timedelta(days=45)).isoformat()  # ~1.5 months ago
+    doc.write_text(f"---\ndate: '{mid}'\n---\n# Doc\n", encoding="utf-8")
     assert sut.detect_recency(doc) == "Mid"
 
 
 @pytest.mark.io
-def test_detect_recency_old_2025(tmp_path):
-    """Date in 2025 returns Old."""
+def test_detect_recency_old_past_six_months(tmp_path):
+    """Date > 6 months ago returns Old."""
     doc = tmp_path / "doc.md"
-    doc.write_text("---\ndate: '2025-11-01'\n---\n# Doc\n", encoding="utf-8")
+    old = (date.today() - timedelta(days=200)).isoformat()  # ~6.5 months ago
+    doc.write_text(f"---\ndate: '{old}'\n---\n# Doc\n", encoding="utf-8")
     assert sut.detect_recency(doc) == "Old"
 
 
 @pytest.mark.io
-def test_detect_recency_old_2026_01(tmp_path):
-    """Date in 2026-01 returns Old."""
+def test_detect_recency_old_one_year(tmp_path):
+    """Date ~1 year ago returns Old."""
     doc = tmp_path / "doc.md"
-    doc.write_text("---\ndate: '2026-01-20'\n---\n# Doc\n", encoding="utf-8")
+    old = (date.today() - timedelta(days=365)).isoformat()
+    doc.write_text(f"---\ndate: '{old}'\n---\n# Doc\n", encoding="utf-8")
     assert sut.detect_recency(doc) == "Old"
 
 
