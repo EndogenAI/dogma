@@ -269,15 +269,7 @@ Entries grouped by target paper. Filter out anything already cited (use sweep ta
 **Agent**: Executive Docs
 **Effort**: L
 **Depends on**: Phase 2 Review APPROVED
-**Status**: ⬜ Not started
-
-**Task**: Apply every approved proposal entry in `docs/plans/2026-03-12-backprop-proposal.md` to the three primary papers. Proposal doc is the sole authoritative specification — do not add entries not in the proposal; do not skip entries without noting the reason.
-
-Run `validate_synthesis.py` on all three papers after all edits are complete.
-
-**Deliverables**:
-- All three primary papers updated per proposal
-- `validate_synthesis.py` PASS on all three
+**Status**: ✅ Complete — committed `a46a056` (2026-03-12)
 
 **Gate**: ⛔ MANUAL STOP — do NOT commit; surface diffs to user for review before any commit
 
@@ -286,7 +278,7 @@ Run `validate_synthesis.py` on all three papers after all edits are complete.
 ### Phase 3 Review — Manual Review (User)
 
 **Gate**: User reviews diffs on all three papers and approves
-**Status**: ⬜ Not started
+**Status**: ✅ APPROVED (user, 2026-03-12) — commit `a46a056`
 
 After user approval:
 - Commit with message `research(#165,#212): full corpus back-propagation into primary papers`
@@ -354,8 +346,8 @@ After user approval:
 - [x] Raw findings doc covers all Thorough/Skim-rated docs
 - [x] Proposal has entries grouped by target paper with exact section targets
 - [x] All proposal entries follow weave/link/consolidate discipline
-- [ ] All three primary papers validate_synthesis PASS after edits
-- [ ] User has reviewed and approved diffs before commit
+- [x] All three primary papers validate_synthesis PASS after edits
+- [x] User has reviewed and approved diffs before commit
 - [ ] workflows.md updated with doc-type taxonomy + back-prop methodology section (#225, #227)
 - [ ] AGENTS.md updated with explicit Review acceptance criteria guidance (#226)
 - [ ] Phase 4 Review APPROVED
