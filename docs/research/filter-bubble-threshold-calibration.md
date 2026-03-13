@@ -721,11 +721,11 @@ CRD is a deterministic, algorithmic measure (count references, divide) that can 
 
 ### Phase 3 Research Series
 
-- **Phase 3a — Topological Audit** ([#170](https://github.com/EndogenAI/Workflows/issues/170)): Complete inventory of vertices, edges, and faces in the substrate topology
-- **Phase 3a — Laplace Pressure Validation** ([#183](https://github.com/EndogenAI/Workflows/issues/183)): Empirical measurement of pressure metrics and correlation with task health
-- **Phase 3b — Membrane Validation Script** ([#181](https://github.com/EndogenAI/Workflows/issues/181)): Automated detection of handoff signal preservation across agent boundaries
-- **Phase 3b — Audit CI Integration** ([#182](https://github.com/EndogenAI/Workflows/issues/182)): CI workflow for parsing audit results and generating risk reports
-- **Phase 3b — This Research** ([#184](https://github.com/EndogenAI/Workflows/issues/184)): Cross-reference density measurement and isolation risk threshold calibration
+- **Phase 3a — Topological Audit** ([#170](https://github.com/EndogenAI/dogma/issues/170)): Complete inventory of vertices, edges, and faces in the substrate topology
+- **Phase 3a — Laplace Pressure Validation** ([#183](https://github.com/EndogenAI/dogma/issues/183)): Empirical measurement of pressure metrics and correlation with task health
+- **Phase 3b — Membrane Validation Script** ([#181](https://github.com/EndogenAI/dogma/issues/181)): Automated detection of handoff signal preservation across agent boundaries
+- **Phase 3b — Audit CI Integration** ([#182](https://github.com/EndogenAI/dogma/issues/182)): CI workflow for parsing audit results and generating risk reports
+- **Phase 3b — This Research** ([#184](https://github.com/EndogenAI/dogma/issues/184)): Cross-reference density measurement and isolation risk threshold calibration
 
 ### Prior Research
 

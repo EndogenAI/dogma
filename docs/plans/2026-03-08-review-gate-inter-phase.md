@@ -60,5 +60,5 @@ Formalise a Review gate between orchestration phases — currently Review only f
 
 **Completed**: 2026-03-08  
 **Commit**: b0f3b92  
-**PR**: https://github.com/EndogenAI/Workflows/pull/66  
+**PR**: https://github.com/EndogenAI/dogma/pull/66  
 **CI**: ✅ Tests + Auto-validate workflow both green

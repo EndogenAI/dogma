@@ -1,6 +1,6 @@
 # Workplan: Milestone 9 Research Sprint
 
-**Milestone**: [#9 — Action Items from Research](https://github.com/EndogenAI/Workflows/milestone/9)  
+**Milestone**: [#9 — Action Items from Research](https://github.com/EndogenAI/dogma/milestone/9)  
 **Research Issues**: #167–#185 (17 total)  
 **Branch**: `main` (or dedicated research branches per phase)  
 **Date Created**: 2026-03-10  

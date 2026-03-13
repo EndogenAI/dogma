@@ -3,7 +3,7 @@
 **Branch**: `feat/issue-2-formalize-workflows`
 **Date**: 2026-03-06
 **Orchestrator**: Executive Orchestrator
-**Closes**: [#12 — [Research] XML-Tagged Agent Instruction Format](https://github.com/EndogenAI/Workflows/issues/12)
+**Closes**: [#12 — [Research] XML-Tagged Agent Instruction Format](https://github.com/EndogenAI/dogma/issues/12)
 
 ---
 

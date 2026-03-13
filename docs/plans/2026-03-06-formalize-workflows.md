@@ -1,7 +1,7 @@
 # Workplan: Formalize Workflows — Apply Research Learnings
 
 **Branch**: `feat/issue-2-formalize-workflows`  
-**PR**: [#11 — docs: formalize agent workflows, research fleet, and scaffold tooling](https://github.com/EndogenAI/Workflows/pull/11)  
+**PR**: [#11 — docs: formalize agent workflows, research fleet, and scaffold tooling](https://github.com/EndogenAI/dogma/pull/11)  
 **Date**: 2026-03-06  
 **Orchestrator**: Executive Orchestrator  
 
@@ -40,9 +40,9 @@ Incorporate the findings from `docs/research/agentic-research-flows.md` (22-sour
 ### Phase 3 — GitHub Issues ✅
 **Agent**: Direct (gh CLI)  
 **Deliverables**:
-- Issue [#12 — [Research] XML-Tagged Agent Instruction Format](https://github.com/EndogenAI/Workflows/issues/12) — Very High priority; migrate/validate/scaffold tooling required
-- Issue [#13 — [Research] Episodic and Experiential Memory for Agent Sessions](https://github.com/EndogenAI/Workflows/issues/13) — Low priority; deferred until #1 resolved
-- Issue [#14 — [Research] AIGNE AFS Context Governance Layer Evaluation](https://github.com/EndogenAI/Workflows/issues/14) — Medium priority; deferred until #1 resolved
+- Issue [#12 — [Research] XML-Tagged Agent Instruction Format](https://github.com/EndogenAI/dogma/issues/12) — Very High priority; migrate/validate/scaffold tooling required
+- Issue [#13 — [Research] Episodic and Experiential Memory for Agent Sessions](https://github.com/EndogenAI/dogma/issues/13) — Low priority; deferred until #1 resolved
+- Issue [#14 — [Research] AIGNE AFS Context Governance Layer Evaluation](https://github.com/EndogenAI/dogma/issues/14) — Medium priority; deferred until #1 resolved
 
 **Status**: Complete
 

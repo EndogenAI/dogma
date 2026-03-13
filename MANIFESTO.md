@@ -385,7 +385,7 @@ The endogenic methodology is young. Open research questions include:
 - What are the best practices for running VS Code Copilot with local models?
 - How do we handle async agent processes reliably?
 
-See the [GitHub Issues](https://github.com/EndogenAI/Workflows/issues) for tracked research tasks.
+See the [GitHub Issues](https://github.com/EndogenAI/dogma/issues) for tracked research tasks.
 
 ---
 

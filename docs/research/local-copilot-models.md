@@ -163,4 +163,4 @@ Security note: no authentication is required by default on Ollama's HTTP API. Re
 - [VS Code Language Models documentation](https://code.visualstudio.com/docs/copilot/customization/language-models) — source for BYOK, Ollama setup, model picker
 - [Ollama documentation](https://ollama.ai) — model catalog, installation, API reference
 - [`docs/guides/local-compute.md`](../guides/local-compute.md) — endogenic local compute guide (update target for implementation)
-- [GitHub Issue #5](https://github.com/EndogenAI/Workflows/issues/5) — tracking issue for this research arc
+- [GitHub Issue #5](https://github.com/EndogenAI/dogma/issues/5) — tracking issue for this research arc

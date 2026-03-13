@@ -1,6 +1,6 @@
 # Workplan: Bubble Clusters as Substrate Mental Model — Milestone 7 Continuation
 
-**Milestone**: [Value Encoding & Fidelity](https://github.com/EndogenAI/Workflows/milestone/7)
+**Milestone**: [Value Encoding & Fidelity](https://github.com/EndogenAI/dogma/milestone/7)
 **Date seeded**: 2026-03-09
 **Status**: Active — open for pick-up
 **Governing axiom**: Endogenous-First — read `docs/research/values-encoding.md` before acting on any phase

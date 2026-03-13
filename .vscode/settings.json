@@ -19,6 +19,7 @@
         "awk": true,
         "git fetch": true,
         "uniq": true,
-        "git check-ignore": true
+        "git check-ignore": true,
+        "git remote": true
     }
 }

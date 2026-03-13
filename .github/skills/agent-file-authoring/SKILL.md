@@ -114,7 +114,7 @@ Use `## Beliefs & Context`, `## Workflow & Intentions`, and `## Desired Outcomes
 ## Beliefs & Context
 
 This agent is defined by:
-- **Issue**: [#62 Implement Remaining Agent Skills](https://github.com/EndogenAI/Workflows/issues/62)
+- **Issue**: [#62 Implement Remaining Agent Skills](https://github.com/EndogenAI/dogma/issues/62)
 - **Milestone**: Wave 1: Agent Fleet Tier A+B
 - **Governing axiom**: *Endogenous-First* (from [`MANIFESTO.md`](../../../MANIFESTO.md))
 - **Acceptance criteria**: All deliverables in the linked issue checklist

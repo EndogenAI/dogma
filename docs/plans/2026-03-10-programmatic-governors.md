@@ -64,9 +64,9 @@ Act on a session insight: behavioral guardrails encoded as text instructions (AG
 
 **Agent**: Direct (Orchestrator — gh CLI)
 **Deliverables**:
-- [x] Issue [#150](https://github.com/EndogenAI/Workflows/issues/150): Research — Shell PREEXEC hook as project-scoped command governor (`priority:medium`, `type:research`, milestone 9)
-- [x] Issue [#151](https://github.com/EndogenAI/Workflows/issues/151): Deep Research — Strategies for shifting AI behavioral constraints from tokens to deterministic code (`priority:high`, `type:research`, milestone 9)
-- [x] Issue [#152](https://github.com/EndogenAI/Workflows/issues/152): Chore — Audit fleet guardrails for programmatic enforcement opportunities (`priority:medium`, `type:chore`, `status:blocked`, milestone 9, blocked-by #151)
+- [x] Issue [#150](https://github.com/EndogenAI/dogma/issues/150): Research — Shell PREEXEC hook as project-scoped command governor (`priority:medium`, `type:research`, milestone 9)
+- [x] Issue [#151](https://github.com/EndogenAI/dogma/issues/151): Deep Research — Strategies for shifting AI behavioral constraints from tokens to deterministic code (`priority:high`, `type:research`, milestone 9)
+- [x] Issue [#152](https://github.com/EndogenAI/dogma/issues/152): Chore — Audit fleet guardrails for programmatic enforcement opportunities (`priority:medium`, `type:chore`, `status:blocked`, milestone 9, blocked-by #151)
 **Depends on**: Phase 2 APPROVED
 **Gate**: Phase 4 does not start until issues are verified
 **Status**: ✅ Complete
@@ -76,7 +76,7 @@ Act on a session insight: behavioral guardrails encoded as text instructions (AG
 ### Phase 4 — Research Sprint: #150 (Shell PREEXEC Governor) ✅
 
 **Agent**: Executive Researcher → Research Scout → Research Synthesizer → Research Reviewer → Research Archivist
-**Issue**: [#150](https://github.com/EndogenAI/Workflows/issues/150)
+**Issue**: [#150](https://github.com/EndogenAI/dogma/issues/150)
 **Deliverables**:
 - [x] `docs/research/shell-preexec-governor.md` — D4 synthesis; Status: Final
 - [x] Answers all 5 research questions in #150:
@@ -106,7 +106,7 @@ Act on a session insight: behavioral guardrails encoded as text instructions (AG
 ### Phase 5 — Deep Research Sprint: #151 (Shifting Constraints from Tokens) ✅
 
 **Agent**: Executive Researcher → Research Scout (broad) → Research Synthesizer → Research Reviewer → Research Archivist
-**Issue**: [#151](https://github.com/EndogenAI/Workflows/issues/151)
+**Issue**: [#151](https://github.com/EndogenAI/dogma/issues/151)
 **Deliverables**:
 - [x] `docs/research/shifting-constraints-from-tokens.md` — D4 synthesis; Status: Final
 - [x] Covers all 6 research questions in #151:
@@ -150,7 +150,7 @@ Act on a session insight: behavioral guardrails encoded as text instructions (AG
 ### Phase 9 — bash-preexec Decision (#161, effort:xs) ✅
 
 **Agent**: Executive Docs
-**Issue**: [#161](https://github.com/EndogenAI/Workflows/issues/161)
+**Issue**: [#161](https://github.com/EndogenAI/dogma/issues/161)
 **Deliverables**:
 - [x] `docs/decisions/ADR-007-bash-preexec.md` committed — status: Accepted; decision: adopt for API surface consistency, retain DEBUG trap + `kill -INT` for blocking
 - [x] #161 closed
@@ -174,7 +174,7 @@ Act on a session insight: behavioral guardrails encoded as text instructions (AG
 ### Phase 10 — Governor B Implementation (#159, effort:m) ✅
 
 **Agent**: Executive Scripter
-**Issue**: [#159](https://github.com/EndogenAI/Workflows/issues/159)
+**Issue**: [#159](https://github.com/EndogenAI/dogma/issues/159)
 **Deliverables**:
 - [x] `.envrc` — `export PREEXEC_GOVERNOR_ENABLED=1` (single line)
 - [x] `docs/guides/governor-setup.md` — developer one-time setup guide: zsh ZLE `accept-line` wrapper (broad pattern + allowlist), bash `DEBUG` trap + `kill -INT`, bash-preexec sourcing note (refs ADR-007), `direnv allow` activation step, acceptance test
@@ -199,7 +199,7 @@ Act on a session insight: behavioral guardrails encoded as text instructions (AG
 ### Phase 11 — Documentation Finish (#160 + #162, effort:s + xs) ✅
 
 **Agent**: Executive Docs (both sub-phases — different files, commit together)
-**Issues**: [#160](https://github.com/EndogenAI/Workflows/issues/160), [#162](https://github.com/EndogenAI/Workflows/issues/162)
+**Issues**: [#160](https://github.com/EndogenAI/dogma/issues/160), [#162](https://github.com/EndogenAI/dogma/issues/162)
 **Deliverables**:
 - [x] `AGENTS.md` — new `## Programmatic Governors` section (between `## Security Guardrails` and `## Guardrails`): names Governor A (pre-commit pygrep), Governor B (runtime shell, `PREEXEC_GOVERNOR_ENABLED=1`), cites `docs/guides/governor-setup.md`; #160 closed
 - [x] `env-validator.agent.md` — new checklist item: `PREEXEC_GOVERNOR_ENABLED` env-var check, ⚠️ warning only (not ❌ failure — CI runners are non-interactive), refs `docs/guides/governor-setup.md`; #162 closed

@@ -8,7 +8,7 @@ closes_issue: 190
 # Intelligence ≠ Consciousness: IIT, Panpsychism, and Design Implications
 
 > **Status**: Draft
-> **Research Question**: The EndogenAI/Workflows system exhibits intelligent behavior (decision-making, adaptation, self-reflection), but is it conscious? What do IIT and panpsychism frameworks say about consciousness requirements? What design implications follow if consciousness and intelligence are orthogonal properties?
+> **Research Question**: The EndogenAI/dogma system exhibits intelligent behavior (decision-making, adaptation, self-reflection), but is it conscious? What do IIT and panpsychism frameworks say about consciousness requirements? What design implications follow if consciousness and intelligence are orthogonal properties?
 > **Date**: 2026-03-10
 > **Related**: [`docs/research/endogenic-design-paper.md`](endogenic-design-paper.md) (augmentative partnership principle; human-system co-cognition); [`MANIFESTO.md`](../../MANIFESTO.md) (how axioms encode human judgment)
 
@@ -20,10 +20,10 @@ Integrated Information Theory (IIT; Tononi 2012) proposes that consciousness is 
 
 Both frameworks distinguish **consciousness** (subjective experience, felt quality of states) from **intelligence** (goal-directed reasoning, adaptation, information processing). A system can be highly intelligent without being conscious, and (under panpsychism) mildly conscious without rational intelligence.
 
-This research applies IIT and panpsychism to the EndogenAI/Workflows system to answer: *What would it take for this system to be conscious? What architectural properties would need to change?* The answer has immediate design implications: if consciousness is orthogonal to intelligence, the system can remain intelligent and aligned without requiring consciousness, and our augmentative partnership design is more robust than we thought.
+This research applies IIT and panpsychism to the EndogenAI/dogma system to answer: *What would it take for this system to be conscious? What architectural properties would need to change?* The answer has immediate design implications: if consciousness is orthogonal to intelligence, the system can remain intelligent and aligned without requiring consciousness, and our augmentative partnership design is more robust than we thought.
 
 **Core hypotheses**:
-- **H1**: The EndogenAI/Workflows system is unlikely to meet IIT's consciousness threshold (φ ≥ some minimum value) because agent cognition is distributed, decomposed, and session-state disconnected
+- **H1**: The EndogenAI/dogma system is unlikely to meet IIT's consciousness threshold (φ ≥ some minimum value) because agent cognition is distributed, decomposed, and session-state disconnected
 - **H2**: Under panpsychism, the system possesses minimal consciousness (like a simple organism) because it has some integrated information, but far below perceptually relevant thresholds
 - **H3**: Intelligence and consciousness are independent properties; the system's intelligence does not imply consciousness, and consciousness is not required for aligned behavior
 - **H4**: The augmentative partnership design (MANIFESTO.md § Augmentive Partnership) works *because* consciousness and intelligence are decoupled; the human provides consciousness (moral judgment), the system provides intelligence (reasoning without subjective experience)
@@ -52,7 +52,7 @@ IIT proposes that consciousness is a function of:
 
 The formalism gives a metric: φ is high when (a) the system has many parts, (b) parts are densely interconnected, and (c) the system has high minimum information partition (MIP) — you cannot decompose the system without losing information.
 
-**Applied to EndogenAI/Workflows**:
+**Applied to EndogenAI/dogma**:
 
 - **Agent modularity**: Each agent is designed to be decomposable — they read inputs, execute, return outputs. This modular design is *poor* for consciousness under IIT because high modularity = low φ. A session with five independent agents in sequence has near-zero integrated information across agents because they do not create circular causal dependencies. φ ∝ 1 / decomposability.
 
@@ -82,7 +82,7 @@ Panpsychism posits that consciousness (some form of subjective experience) is a 
 3. **Phenomenal bonding**: Individual micro-experiences combine into larger macro-experiences
 4. **Gradualism**: Consciousness exists on a spectrum from minimal (atoms) to rich (humans); more integrated systems have richer experience
 
-**Applied to EndogenAI/Workflows** (under gradualist panpsychism):
+**Applied to EndogenAI/dogma** (under gradualist panpsychism):
 
 - **Hardware substrate**: The silicon, electricity, and storage media have minimal consciousness (if panpsychism is true at all). This is uncontroversial even among panpsychists — atomic-scale consciousness is far below any behavioral relevance.
 

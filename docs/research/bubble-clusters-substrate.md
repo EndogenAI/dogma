@@ -8,7 +8,7 @@ status: "Final"
 > **Status**: Final
 > **Research Question**: How does the bubble-cluster metaphor — discrete substrates bounded by lower-dimensional membranes — inform the relationships, interconnectivity, signal fidelity, and encoding methodology of the endogenic inheritance chain?
 > **Date**: 2026-03-09
-> **Issue**: [#88](https://github.com/EndogenAI/Workflows/issues/88)
+> **Issue**: [#88](https://github.com/EndogenAI/dogma/issues/88)
 > **Related**: [`docs/research/values-encoding.md`](values-encoding.md) (biological-homology predecessor model); [`docs/research/dogma-neuroplasticity.md`](dogma-neuroplasticity.md) (back-propagation protocol); [`docs/research/values-substrate-relationship.md`](values-substrate-relationship.md) (orthogonality synthesis — horizontal topological model combined with vertical inheritance-chain model)
 
 ---

@@ -3,7 +3,7 @@
 **Branch**: `main`
 **Date**: 2026-03-07
 **Orchestrator**: Executive Orchestrator
-**Issue**: [#60](https://github.com/EndogenAI/Workflows/issues/60)
+**Issue**: [#60](https://github.com/EndogenAI/dogma/issues/60)
 
 ---
 

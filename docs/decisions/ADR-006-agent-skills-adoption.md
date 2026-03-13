@@ -120,4 +120,4 @@ Use VS Code-specific frontmatter fields where appropriate; they degrade graceful
 - [`docs/guides/session-management.md`](../guides/session-management.md) — source material for `session-management` skill
 - [`docs/guides/deep-research.md`](../guides/deep-research.md) — source material for `deep-research-sprint` skill
 - [`scripts/validate_agent_files.py`](../../scripts/validate_agent_files.py) — existing CI gate; extension target
-- Issue [#60](https://github.com/EndogenAI/Workflows/issues/60) — decision trigger
+- Issue [#60](https://github.com/EndogenAI/dogma/issues/60) — decision trigger

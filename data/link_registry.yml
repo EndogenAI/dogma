@@ -1,4 +1,4 @@
-# Link registry: bidirectional citation interweb for the EndogenAI/Workflows corpus
+# Link registry: bidirectional citation interweb for the EndogenAI/dogma corpus
 # Schema: concept, canonical_source (repo-relative), aliases (list),
 #         applications (list), scopes (list, optional — paths where injection is allowed)
 # Managed by scripts/weave_links.py

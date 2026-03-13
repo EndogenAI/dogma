@@ -16,9 +16,9 @@ sources: []
 
 ## 1. Executive Summary
 
-Copilot PR review cannot be triggered per-PR through any public API. Every mechanism tested against the live `EndogenAI/Workflows` repository — REST reviewer request, `gh` CLI, GraphQL `requestReviews`, and GraphQL node ID lookup — returns an error or a silent no-op. The root cause is that `copilot-pull-request-reviewer` is a GitHub App bot, not a collaborator User, and reviewer request APIs only accept collaborators.
+Copilot PR review cannot be triggered per-PR through any public API. Every mechanism tested against the live `EndogenAI/dogma` repository — REST reviewer request, `gh` CLI, GraphQL `requestReviews`, and GraphQL node ID lookup — returns an error or a silent no-op. The root cause is that `copilot-pull-request-reviewer` is a GitHub App bot, not a collaborator User, and reviewer request APIs only accept collaborators.
 
-The sole supported automation path is a **repository ruleset** ("Automatically request Copilot code review") accessible under Repository Settings → Rules. This feature is **gated behind GitHub Pro or a public repository**. `EndogenAI/Workflows` is private on a free plan, returning 403 for ruleset creation attempts.
+The sole supported automation path is a **repository ruleset** ("Automatically request Copilot code review") accessible under Repository Settings → Rules. This feature is **gated behind GitHub Pro or a public repository**. `EndogenAI/dogma` is private on a free plan, returning 403 for ruleset creation attempts.
 
 The immediate operational recommendation is to treat the Copilot review re-request as a manual two-second UI click (Reviewers sidebar → ↻). If the repository is made public or the plan is upgraded, a one-time ruleset configuration script replaces the click permanently.
 
@@ -33,7 +33,7 @@ The immediate operational recommendation is to treat the Copilot review re-reque
 Live test on PR #28:
 
 ```bash
-gh api repos/EndogenAI/Workflows/pulls/28/requested_reviewers \
+gh api repos/EndogenAI/dogma/pulls/28/requested_reviewers \
   --method POST --field reviewers[]="copilot-pull-request-reviewer"
 ```
 
@@ -74,7 +74,7 @@ The GitHub docs confirm one sanctioned automation mechanism: **Repository Settin
 - **Review new pushes** — re-triggers Copilot review on every push (closes the re-request gap)
 - **Review draft pull requests** — reviews drafts before human review
 
-Ruleset creation via REST API (`POST /repos/{owner}/{repo}/rulesets`) is supported but requires GitHub Pro or a public repo. Live test on `EndogenAI/Workflows`: **HTTP 403** — "Upgrade to GitHub Pro or make this repository public to enable this feature."
+Ruleset creation via REST API (`POST /repos/{owner}/{repo}/rulesets`) is supported but requires GitHub Pro or a public repo. Live test on `EndogenAI/dogma`: **HTTP 403** — "Upgrade to GitHub Pro or make this repository public to enable this feature."
 
 ---
 
@@ -91,7 +91,7 @@ Click ↻ next to Copilot in the PR Reviewers sidebar after each push. Two secon
 Requires GitHub Pro (~$4/month) or making the repo public. Once either condition is met, run once:
 
 ```bash
-gh api --method POST repos/EndogenAI/Workflows/rulesets \
+gh api --method POST repos/EndogenAI/dogma/rulesets \
   --input .github/rulesets/auto-copilot-review.json
 ```
 
@@ -129,7 +129,7 @@ A `scripts/request_copilot_review.py` would be a dead-end script on the current 
 
 ---
 
-## 5. Recommendations for `EndogenAI/Workflows`
+## 5. Recommendations for `EndogenAI/dogma`
 
 1. **Immediate**: Accept manual review re-request as the workflow — document in `docs/guides/github-workflow.md` under PR review conventions.
 

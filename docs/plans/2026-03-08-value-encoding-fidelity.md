@@ -1,6 +1,6 @@
 # Workplan: Value Encoding & Fidelity Research Agenda
 
-**Milestone**: [Value Encoding & Fidelity](https://github.com/EndogenAI/Workflows/milestone/7)
+**Milestone**: [Value Encoding & Fidelity](https://github.com/EndogenAI/dogma/milestone/7)
 **Date seeded**: 2026-03-08
 **Status**: Active — open for pick-up
 **Governing axiom**: Endogenous-First — every session must read `docs/research/values-encoding.md` before acting
@@ -266,7 +266,7 @@ Use this prompt to start the Phase 3 session in a new context window:
 - **Workplan**: `docs/plans/2026-03-08-value-encoding-fidelity.md`
 - **Scratchpad**: `.tmp/feat-value-encoding-fidelity/<YYYY-MM-DD>.md` (today's date)
 - **Governing axiom**: Endogenous-First
-- **Milestone**: https://github.com/EndogenAI/Workflows/milestone/7
+- **Milestone**: https://github.com/EndogenAI/dogma/milestone/7
 
 Before acting:
 1. Run `uv run python scripts/prune_scratchpad.py --init` and read the scratchpad `## Session Summary`

@@ -8,7 +8,7 @@ status: "Final"
 > **Status**: Final
 > **Research Question**: When the EndogenAI methodology is adopted by a downstream product team or client, how do we encode their product-specific and client-specific values into the agent substrate alongside the EndogenAI core dogma — without contaminating, overriding, or diluting the foundational axioms?
 > **Date**: 2026-03-09
-> **Issue**: [#83](https://github.com/EndogenAI/Workflows/issues/83)
+> **Issue**: [#83](https://github.com/EndogenAI/dogma/issues/83)
 > **Related**: [`docs/research/values-encoding.md`](values-encoding.md) (inheritance chain foundation); [`docs/research/bubble-clusters-substrate.md`](bubble-clusters-substrate.md) (boundary-membrane model for inter-layer signal dynamics)
 
 ---

@@ -31,15 +31,15 @@ import wait_for_unblock as sut  # noqa: E402, I001 — after sys.path manipulati
 
 
 def test_parse_repo_https():
-    assert sut.parse_repo_from_remote_url("https://github.com/EndogenAI/Workflows.git") == "EndogenAI/Workflows"
+    assert sut.parse_repo_from_remote_url("https://github.com/EndogenAI/dogma.git") == "EndogenAI/dogma"
 
 
 def test_parse_repo_https_no_git_suffix():
-    assert sut.parse_repo_from_remote_url("https://github.com/EndogenAI/Workflows") == "EndogenAI/Workflows"
+    assert sut.parse_repo_from_remote_url("https://github.com/EndogenAI/dogma") == "EndogenAI/dogma"
 
 
 def test_parse_repo_ssh():
-    assert sut.parse_repo_from_remote_url("git@github.com:EndogenAI/Workflows.git") == "EndogenAI/Workflows"
+    assert sut.parse_repo_from_remote_url("git@github.com:EndogenAI/dogma.git") == "EndogenAI/dogma"
 
 
 def test_parse_repo_non_github_returns_none():
@@ -87,7 +87,7 @@ def test_parse_issue_meta():
 
 
 def test_trigger_filename_slashes_replaced():
-    assert sut.trigger_filename("EndogenAI/Workflows", 60) == "EndogenAI-Workflows-issue-60.unblocked"
+    assert sut.trigger_filename("EndogenAI/dogma", 60) == "EndogenAI-dogma-issue-60.unblocked"
 
 
 # ---------------------------------------------------------------------------
@@ -96,9 +96,9 @@ def test_trigger_filename_slashes_replaced():
 
 
 def test_format_trigger_content_keys():
-    content = sut.format_trigger_content("EndogenAI/Workflows", 60, {"title": "My Issue", "url": "https://example.com"})
+    content = sut.format_trigger_content("EndogenAI/dogma", 60, {"title": "My Issue", "url": "https://example.com"})
     assert "issue: 60" in content
-    assert "repo: EndogenAI/Workflows" in content
+    assert "repo: EndogenAI/dogma" in content
     assert "title: My Issue" in content
     assert "url: https://example.com" in content
     assert "unblocked_at:" in content
@@ -206,8 +206,8 @@ def test_write_trigger_creates_parent_dir(tmp_path):
 @pytest.mark.io
 def test_write_trigger_filename_matches_helper(tmp_path):
     meta = {"title": "T", "url": ""}
-    path = sut.write_trigger(tmp_path, "EndogenAI/Workflows", 60, meta)
-    assert path.name == sut.trigger_filename("EndogenAI/Workflows", 60)
+    path = sut.write_trigger(tmp_path, "EndogenAI/dogma", 60, meta)
+    assert path.name == sut.trigger_filename("EndogenAI/dogma", 60)
 
 
 # ---------------------------------------------------------------------------
@@ -274,14 +274,14 @@ def test_poll_gh_error_returns_2(tmp_path):
 
 @pytest.mark.io
 def test_main_dry_run_exits_0(capsys):
-    with patch("wait_for_unblock.get_repo_from_git", return_value="EndogenAI/Workflows"):
+    with patch("wait_for_unblock.get_repo_from_git", return_value="EndogenAI/dogma"):
         with pytest.raises(SystemExit) as exc_info:
             sut.main(["--issue", "60", "--dry-run"])
     assert exc_info.value.code == 0
     out = capsys.readouterr().out
     assert "DRY RUN" in out
     assert "#60" in out
-    assert "EndogenAI/Workflows" in out
+    assert "EndogenAI/dogma" in out
 
 
 @pytest.mark.io

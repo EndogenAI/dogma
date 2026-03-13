@@ -11,7 +11,7 @@ date: 2026-03-10
 > **Status**: Final
 > **Research Question**: Given the six-layer deployment model (Core → Endogenic → Deployment → Client → Session → Enacted), how does this topology extend the three-layer nested-cube model documented in the values-encoding research? What new membranes and signal-preservation rules govern cross-layer communication when a Deployment Layer is inserted into an existing three-layer substrate?
 > **Date**: 2026-03-10
-> **Issue**: [#185](https://github.com/EndogenAI/Workflows/issues/185)
+> **Issue**: [#185](https://github.com/EndogenAI/dogma/issues/185)
 > **Related**: [`docs/research/external-value-architecture.md`](external-value-architecture.md) (six-layer core model); [`docs/research/bubble-clusters-substrate.md`](bubble-clusters-substrate.md) (boundary membrane dynamics); [`docs/research/values-encoding.md`](values-encoding.md) (inheritance chain foundation)
 
 ---

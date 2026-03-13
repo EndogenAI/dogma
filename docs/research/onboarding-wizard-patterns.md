@@ -8,7 +8,7 @@ status: "Draft"
 > **Status**: Draft
 > **Research Question**: What are the best-practice patterns for building onboarding CLI wizards that adopt a repository's conventions, agents, and dogma into an existing or greenfield project?
 > **Date**: 2026-03-07
-> **Related**: [GitHub Issue #45](https://github.com/EndogenAI/Workflows/issues/45) · [GitHub Issue #5](https://github.com/EndogenAI/Workflows/issues/5) · [GitHub Issue #6](https://github.com/EndogenAI/Workflows/issues/6)
+> **Related**: [GitHub Issue #45](https://github.com/EndogenAI/dogma/issues/45) · [GitHub Issue #5](https://github.com/EndogenAI/dogma/issues/5) · [GitHub Issue #6](https://github.com/EndogenAI/dogma/issues/6)
 
 ---
 
@@ -40,7 +40,7 @@ For the endogenic use case, the **Adopt** pathway requires a selective "inject, 
 **Partially supported**. Cookiecutter (24.7k GitHub stars, active maintenance, `uv tool install cookiecutter`) handles the Greenfield case well:
 - `cookiecutter.json` defines all prompts
 - Pre/post hooks execute arbitrary Python for git init, `uv sync`, etc.
-- Templates are shareable via GitHub (e.g., `uvx cookiecutter gh:EndogenAI/Workflows`)
+- Templates are shareable via GitHub (e.g., `uvx cookiecutter gh:EndogenAI/dogma`)
 
 **Limitation**: Cookiecutter is designed for new-repo creation from a reference template. It is not designed for injecting into an existing repo. Using cookiecutter for Adopt would overwrite files, which is unacceptable.
 
@@ -194,7 +194,7 @@ The wizard is installable as a tool (no project checkout required for Greenfield
 
 ```bash
 # Install once
-uv tool install git+https://github.com/EndogenAI/Workflows
+uv tool install git+https://github.com/EndogenAI/dogma
 
 # Run Greenfield from anywhere
 endogenic-new my-project
@@ -237,7 +237,7 @@ endogenic-adopt = "scripts.adopt_wizard:adopt_main"
 
 > **Note**: D3 (Greenfield UX spec) is gated on issue #45 product discovery conversation completing. This section is a placeholder outline pending that discussion.
 
-**Entry**: `uvx cookiecutter gh:EndogenAI/Workflows` or `endogenic-new <project-name>`
+**Entry**: `uvx cookiecutter gh:EndogenAI/dogma` or `endogenic-new <project-name>`
 
 **Question flow** (draft — subject to revision after #45):
 1. Project name and slug
@@ -295,5 +295,5 @@ This research feeds directly into the following implementation work (see D5 requ
 - [Cookiecutter GitHub](https://github.com/cookiecutter/cookiecutter) — project template engine (24.7k stars)
 - [copier](https://copier.readthedocs.io/) — alternative to cookiecutter with update support
 - [GitHub template repos](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository) — limitations for Adopt use case
-- [GitHub Issue #47](https://github.com/EndogenAI/Workflows/issues/47) — tracking issue
-- [GitHub Issue #45](https://github.com/EndogenAI/Workflows/issues/45) — parent epic (product definition gates Greenfield spec)
+- [GitHub Issue #47](https://github.com/EndogenAI/dogma/issues/47) — tracking issue
+- [GitHub Issue #45](https://github.com/EndogenAI/dogma/issues/45) — parent epic (product definition gates Greenfield spec)

@@ -25,7 +25,7 @@ This skill enacts the *Algorithms-Before-Tokens* axiom from [`MANIFESTO.md`](../
 ## Beliefs & Context
 
 - **Governing axiom**: Axiom 2 — *Algorithms Before Tokens* — deterministic procedure over repeated instruction
-- **GitHub issue**: [#79 — Skills as Decision Codifiers](https://github.com/EndogenAI/Workflows/issues/79)
+- **GitHub issue**: [#79 — Skills as Decision Codifiers](https://github.com/EndogenAI/dogma/issues/79)
 - **Formal FSM spec**: [`data/phase-gate-fsm.yml`](../../../data/phase-gate-fsm.yml) — machine-readable state specification for this gate loop (states: INIT, PHASE_RUNNING, GATE_CHECK, COMPACT_CHECK, COMMIT, CLOSED)
 - **Agents that use this skill**: Executive Orchestrator, Executive Researcher, Executive Fleet, Executive Docs
 - **Foundation docs**:

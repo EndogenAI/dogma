@@ -5,7 +5,7 @@ status: Final
 
 # Dogma Neuroplasticity & Back-Propagation Protocol
 
-> **Related issues**: [#82](https://github.com/EndogenAI/Workflows/issues/82), [#75](https://github.com/EndogenAI/Workflows/issues/75)
+> **Related issues**: [#82](https://github.com/EndogenAI/dogma/issues/82), [#75](https://github.com/EndogenAI/dogma/issues/75)
 > **Date**: 2026-03-09
 > **Research question**: How should accumulated session observations propagate back into the foundational substrate (`MANIFESTO.md`, `AGENTS.md`) in a governed, auditable way — without destabilizing the inheritance chain?
 
@@ -189,7 +189,7 @@ Add `propose_dogma_edit.py` to the Executive's session-close step: after writing
 
 ### R3 — Phase 8 — External Value Survey Integration Point
 
-Once the back-propagation protocol is operational, [issue #83](https://github.com/EndogenAI/Workflows/issues/83) (external values survey) becomes tractable: external literature signals can be treated as T2 evidence inputs. A formal external review would produce `## Evidence` citations from published literature rather than scratchpad sessions; the ADR template accepts both. The same `propose_dogma_edit.py` CLI handles external-literature proposals by treating the evidence section as free-text rather than session-file citations.
+Once the back-propagation protocol is operational, [issue #83](https://github.com/EndogenAI/dogma/issues/83) (external values survey) becomes tractable: external literature signals can be treated as T2 evidence inputs. A formal external review would produce `## Evidence` citations from published literature rather than scratchpad sessions; the ADR template accepts both. The same `propose_dogma_edit.py` CLI handles external-literature proposals by treating the evidence section as free-text rather than session-file citations.
 
 ---
 

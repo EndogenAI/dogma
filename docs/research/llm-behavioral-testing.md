@@ -8,7 +8,7 @@ status: "Final"
 > **Status**: Final
 > **Research Question**: Can session behavior be tested empirically for alignment with foundational values — and if so, what is the minimal viable testing mechanism that works within this project's local-compute-first, programmatic-first constraints?
 > **Date**: 2026-03-09
-> **Issue**: [#74](https://github.com/EndogenAI/Workflows/issues/74)
+> **Issue**: [#74](https://github.com/EndogenAI/dogma/issues/74)
 > **Related**: [`docs/research/values-encoding.md`](values-encoding.md) §5 OQ-VE-4 (source question); [`docs/research/bubble-clusters-substrate.md`](bubble-clusters-substrate.md) (boundary-membrane model — value fidelity testing is boundary health monitoring); [`docs/research/epigenetic-tagging.md`](epigenetic-tagging.md)
 
 ---

@@ -25,20 +25,20 @@ Close all currently open `type:research` GitHub issues by either:
 
 | Issue | Title | Research Doc | Status |
 |-------|-------|-------------|--------|
-| [#13](https://github.com/EndogenAI/Workflows/issues/13) | Episodic and Experiential Memory | `episodic-memory-agents.md` | Final |
-| [#14](https://github.com/EndogenAI/Workflows/issues/14) | AIGNE AFS Context Governance Layer Evaluation | `aigne-afs-evaluation.md` | Final |
-| [#72](https://github.com/EndogenAI/Workflows/issues/72) | Context-sensitive axiom amplification (OQ-VE-2) | `epigenetic-tagging.md` | Final |
-| [#74](https://github.com/EndogenAI/Workflows/issues/74) | LLM behavioral testing for value fidelity (OQ-VE-4) | `llm-behavioral-testing.md` | Final |
-| [#76](https://github.com/EndogenAI/Workflows/issues/76) | XML structuring in `handoffs.prompt` fields (OQ-12-4) | `xml-agent-instruction-format.md` §11 | Resolved per OPEN_RESEARCH.md 2026-03-09 |
-| [#83](https://github.com/EndogenAI/Workflows/issues/83) | Encoding external product/client values | `external-value-architecture.md` | Final |
-| [#131](https://github.com/EndogenAI/Workflows/issues/131) | Cognee Library Adoption | Blocked by #13 + local compute | Defer |
+| [#13](https://github.com/EndogenAI/dogma/issues/13) | Episodic and Experiential Memory | `episodic-memory-agents.md` | Final |
+| [#14](https://github.com/EndogenAI/dogma/issues/14) | AIGNE AFS Context Governance Layer Evaluation | `aigne-afs-evaluation.md` | Final |
+| [#72](https://github.com/EndogenAI/dogma/issues/72) | Context-sensitive axiom amplification (OQ-VE-2) | `epigenetic-tagging.md` | Final |
+| [#74](https://github.com/EndogenAI/dogma/issues/74) | LLM behavioral testing for value fidelity (OQ-VE-4) | `llm-behavioral-testing.md` | Final |
+| [#76](https://github.com/EndogenAI/dogma/issues/76) | XML structuring in `handoffs.prompt` fields (OQ-12-4) | `xml-agent-instruction-format.md` §11 | Resolved per OPEN_RESEARCH.md 2026-03-09 |
+| [#83](https://github.com/EndogenAI/dogma/issues/83) | Encoding external product/client values | `external-value-architecture.md` | Final |
+| [#131](https://github.com/EndogenAI/dogma/issues/131) | Cognee Library Adoption | Blocked by #13 + local compute | Defer |
 
 ### Issues Requiring Active Work
 
 | Issue | Title | Status | Effort |
 |-------|-------|--------|--------|
-| [#45](https://github.com/EndogenAI/Workflows/issues/45) | Research: Product Definition | `endogenai-product-discovery.md` draft — needs sprint | XL |
-| [#132](https://github.com/EndogenAI/Workflows/issues/132) | Product User Research Infrastructure | Implementation (R1–R6), not research | Relabel → `type:chore` |
+| [#45](https://github.com/EndogenAI/dogma/issues/45) | Research: Product Definition | `endogenai-product-discovery.md` draft — needs sprint | XL |
+| [#132](https://github.com/EndogenAI/dogma/issues/132) | Product User Research Infrastructure | Implementation (R1–R6), not research | Relabel → `type:chore` |
 
 ### OQ-10 Follow-Up Questions (Tracked in OPEN_RESEARCH.md, No Dedicated Issue)
 

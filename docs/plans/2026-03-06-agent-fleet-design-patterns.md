@@ -3,7 +3,7 @@
 **Branch**: `feat/issue-2-formalize-workflows`
 **Date**: 2026-03-06
 **Orchestrator**: Executive Orchestrator
-**Closes**: [#10 — [Research] Agent fleet design patterns](https://github.com/EndogenAI/Workflows/issues/10)
+**Closes**: [#10 — [Research] Agent fleet design patterns](https://github.com/EndogenAI/dogma/issues/10)
 
 ---
 

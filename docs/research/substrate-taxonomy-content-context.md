@@ -8,7 +8,7 @@ closes_issue: 191
 # Substrate Taxonomy: Content, Context, and Hybrid Encoding
 
 > **Status**: Draft
-> **Research Question**: Which digital substrates in EndogenAI/Workflows are "content" (never compact), "context" (always compact), or "hybrid" (conditional compaction)? What fourth category could account for regenerable vs. non-regenerable substrates? What is the optimal compaction and restoration protocol per type?
+> **Research Question**: Which digital substrates in EndogenAI/dogma are "content" (never compact), "context" (always compact), or "hybrid" (conditional compaction)? What fourth category could account for regenerable vs. non-regenerable substrates? What is the optimal compaction and restoration protocol per type?
 > **Date**: 2026-03-10
 > **Related**: [`session-management.md`](../guides/session-management.md) (scratchpad compaction protocol); [`docs/research/bubble-clusters-substrate.md`](bubble-clusters-substrate.md) (topological substrate model); [`AGENTS.md`](../AGENTS.md) (context-window guardrails)
 
@@ -16,7 +16,7 @@ closes_issue: 191
 
 ## 1. Executive Summary
 
-The EndogenAI/Workflows substrate is layered: MANIFESTO.md (foundational), AGENTS.md (operational constraints), agent files (specific implementations), scripts (automated actions), session scratchpads (ephemeral context), and cached external sources (reference material).
+The EndogenAI/dogma substrate is layered: MANIFESTO.md (foundational), AGENTS.md (operational constraints), agent files (specific implementations), scripts (automated actions), session scratchpads (ephemeral context), and cached external sources (reference material).
 
 Each layer serves a different purpose and has different compaction/archival policies:
 
@@ -37,7 +37,7 @@ The optimal policy per substrate balances:
 
 ### H1 — Substrates Fall into Four Orthogonal Categories
 
-**Verdict**: CONFIRMED — empirical analysis of EndogenAI/Workflows substrate shows distinct categories with non-overlapping closure properties
+**Verdict**: CONFIRMED — empirical analysis of EndogenAI/dogma substrate shows distinct categories with non-overlapping closure properties
 
 **Categorical definitions**:
 
@@ -152,7 +152,7 @@ The metric explains why we do not compact scripts (regenerability = 1.0, worth e
 
 **Verdict**: CONFIRMED — empirical data on token costs enables forward planning
 
-**Measurements** (sample from EndogenAI/Workflows repository):
+**Measurements** (sample from EndogenAI/dogma repository):
 
 | Substrate Type | Typical File Size | Tokens (est. 3.5 chars/token) | Cost per Session | Frequency |
 |---|---|---|---|---|
@@ -298,7 +298,7 @@ The metric explains why we do not compact scripts (regenerability = 1.0, worth e
 
 **Why it's distinct**: Unlike Content (which grows and is edited over time), Regenerable Provenance is write-once, execute-many. Unlike Hybrid (which has regeneration cost + latency), Regenerable Provenance has zero latency (git is instant). Unlike Context (which is ephemeral), Regenerable Provenance is permanent if backed up.
 
-**Examples in EndogenAI/Workflows**:
+**Examples in EndogenAI/dogma**:
 - `scripts/validate_synthesis.py` — gate executes deterministically; identical input → identical output
 - `tests/test_validate_synthesis.py` — test suite is deterministic; same seed → same result
 - `.github/workflows/lint.yml` — CI workflow is declarative; identical repo state → identical workflow run
@@ -403,7 +403,7 @@ If substrate ∈ Regenerable:
 
 ### Substrate Inventory — Comprehensive Table
 
-Complete enumeration of all digital substrates in EndogenAI/Workflows with all 7 columns. Regenerability score = (Fidelity + Determinism + Latency) / 3. Two-decimal precision: 1.00 = never compact; 0.50–0.75 = conditional; <0.50 = aggressive compaction.
+Complete enumeration of all digital substrates in EndogenAI/dogma with all 7 columns. Regenerability score = (Fidelity + Determinism + Latency) / 3. Two-decimal precision: 1.00 = never compact; 0.50–0.75 = conditional; <0.50 = aggressive compaction.
 
 | Type | Location | Compaction | Restoration | Example | Regenerability | Policy |
 |------|----------|-----------|------------|---------|---|---|
