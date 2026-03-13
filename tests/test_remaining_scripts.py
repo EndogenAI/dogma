@@ -88,7 +88,6 @@ class TestScaffoldWorkplanCreation:
         (tmp_path / "docs" / "plans").mkdir(parents=True)
         monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "ci-test"])
         monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
-        monkeypatch.setattr(sw, "_prompt", lambda msg, default: default)
         rc = sw.main()
         assert rc == 0
         content = (tmp_path / "docs" / "plans" / f"{date.today().isoformat()}-ci-test.md").read_text()
@@ -101,7 +100,6 @@ class TestScaffoldWorkplanCreation:
         (tmp_path / "docs" / "plans").mkdir(parents=True)
         monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "ci-default"])
         monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
-        monkeypatch.setattr(sw, "_prompt", lambda msg, default: default)
         rc = sw.main()
         assert rc == 0
         content = (tmp_path / "docs" / "plans" / f"{date.today().isoformat()}-ci-default.md").read_text()
@@ -112,17 +110,8 @@ class TestScaffoldWorkplanCreation:
         """Providing an invalid CI token causes exit code 1."""
         monkeypatch.chdir(tmp_path)
         (tmp_path / "docs" / "plans").mkdir(parents=True)
-        monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "ci-invalid"])
+        monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "ci-invalid", "--ci", "InvalidCI"])
         monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
-        call_count = {"n": 0}
-
-        def fake_prompt(msg, default):
-            call_count["n"] += 1
-            if call_count["n"] == 1:  # CI prompt
-                return "InvalidCI"
-            return default
-
-        monkeypatch.setattr(sw, "_prompt", fake_prompt)
         rc = sw.main()
         assert rc == 1
 
@@ -131,17 +120,8 @@ class TestScaffoldWorkplanCreation:
         """Providing issue numbers 42,43 emits Closes #42, Closes #43."""
         monkeypatch.chdir(tmp_path)
         (tmp_path / "docs" / "plans").mkdir(parents=True)
-        monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "issue-test"])
+        monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "issue-test", "--issues", "42,43"])
         monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
-        call_count = {"n": 0}
-
-        def fake_prompt(msg, default):
-            call_count["n"] += 1
-            if call_count["n"] == 1:  # CI prompt
-                return default
-            return "42,43"  # linked issues
-
-        monkeypatch.setattr(sw, "_prompt", fake_prompt)
         rc = sw.main()
         assert rc == 0
         content = (tmp_path / "docs" / "plans" / f"{date.today().isoformat()}-issue-test.md").read_text()
@@ -155,7 +135,6 @@ class TestScaffoldWorkplanCreation:
         (tmp_path / "docs" / "plans").mkdir(parents=True)
         monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "no-issues"])
         monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
-        monkeypatch.setattr(sw, "_prompt", lambda msg, default: default)
         rc = sw.main()
         assert rc == 0
         content = (tmp_path / "docs" / "plans" / f"{date.today().isoformat()}-no-issues.md").read_text()
@@ -166,17 +145,8 @@ class TestScaffoldWorkplanCreation:
         """Providing a negative issue number (e.g. -1) causes exit code 1."""
         monkeypatch.chdir(tmp_path)
         (tmp_path / "docs" / "plans").mkdir(parents=True)
-        monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "neg-issue"])
+        monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "neg-issue", "--issues", "-1"])
         monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
-        call_count = {"n": 0}
-
-        def fake_prompt(msg, default):
-            call_count["n"] += 1
-            if call_count["n"] == 1:
-                return default
-            return "-1"  # negative issue number
-
-        monkeypatch.setattr(sw, "_prompt", fake_prompt)
         rc = sw.main()
         assert rc == 1
 
@@ -185,17 +155,8 @@ class TestScaffoldWorkplanCreation:
         """Duplicate issue numbers are deduplicated in the output."""
         monkeypatch.chdir(tmp_path)
         (tmp_path / "docs" / "plans").mkdir(parents=True)
-        monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "dedup-test"])
+        monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "dedup-test", "--issues", "42,42,43"])
         monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
-        call_count = {"n": 0}
-
-        def fake_prompt(msg, default):
-            call_count["n"] += 1
-            if call_count["n"] == 1:
-                return default
-            return "42,42,43"  # duplicate 42
-
-        monkeypatch.setattr(sw, "_prompt", fake_prompt)
         rc = sw.main()
         assert rc == 0
         content = (tmp_path / "docs" / "plans" / f"{date.today().isoformat()}-dedup-test.md").read_text()
@@ -210,7 +171,6 @@ class TestScaffoldWorkplanCreation:
         (tmp_path / "docs" / "plans").mkdir(parents=True)
         monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "flag-ci-test", "--ci", "Tests,Lint"])
         monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
-        monkeypatch.setattr(sw, "_prompt", lambda msg, default: default)
         rc = sw.main()
         assert rc == 0
         content = (tmp_path / "docs" / "plans" / f"{date.today().isoformat()}-flag-ci-test.md").read_text()
@@ -223,7 +183,6 @@ class TestScaffoldWorkplanCreation:
         (tmp_path / "docs" / "plans").mkdir(parents=True)
         monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "flag-issues-test", "--issues", "99,100"])
         monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
-        monkeypatch.setattr(sw, "_prompt", lambda msg, default: default)
         rc = sw.main()
         assert rc == 0
         content = (tmp_path / "docs" / "plans" / f"{date.today().isoformat()}-flag-issues-test.md").read_text()
@@ -240,7 +199,6 @@ class TestScaffoldWorkplanCreation:
             ["scaffold_workplan.py", "flag-both-test", "--ci", "Tests", "--issues", "42,43"],
         )
         monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
-        monkeypatch.setattr(sw, "_prompt", lambda msg, default: default)
         rc = sw.main()
         assert rc == 0
         content = (tmp_path / "docs" / "plans" / f"{date.today().isoformat()}-flag-both-test.md").read_text()
@@ -255,7 +213,6 @@ class TestScaffoldWorkplanCreation:
         (tmp_path / "docs" / "plans").mkdir(parents=True)
         monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "flag-ci-invalid", "--ci", "BadCI"])
         monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
-        monkeypatch.setattr(sw, "_prompt", lambda msg, default: default)
         rc = sw.main()
         assert rc == 1
 
@@ -266,7 +223,6 @@ class TestScaffoldWorkplanCreation:
         (tmp_path / "docs" / "plans").mkdir(parents=True)
         monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "flag-issues-invalid", "--issues", "not-a-number"])
         monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
-        monkeypatch.setattr(sw, "_prompt", lambda msg, default: default)
         rc = sw.main()
         assert rc == 1
 
@@ -278,7 +234,6 @@ class TestScaffoldWorkplanCreation:
         argv = ["scaffold_workplan.py", "flag-ci-whitespace", "--ci", "  Tests  ,  Auto-validate  "]
         monkeypatch.setattr("sys.argv", argv)
         monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
-        monkeypatch.setattr(sw, "_prompt", lambda msg, default: default)
         rc = sw.main()
         assert rc == 0
         plan_path = tmp_path / "docs" / "plans" / f"{date.today().isoformat()}-flag-ci-whitespace.md"
@@ -292,7 +247,6 @@ class TestScaffoldWorkplanCreation:
         (tmp_path / "docs" / "plans").mkdir(parents=True)
         monkeypatch.setattr("sys.argv", ["scaffold_workplan.py", "flag-issues-dedup", "--issues", "42,42,43"])
         monkeypatch.setattr(sw, "_get_root", lambda: tmp_path)
-        monkeypatch.setattr(sw, "_prompt", lambda msg, default: default)
         rc = sw.main()
         assert rc == 0
         content = (tmp_path / "docs" / "plans" / f"{date.today().isoformat()}-flag-issues-dedup.md").read_text()
