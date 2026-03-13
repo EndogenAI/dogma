@@ -4,6 +4,7 @@ status: "Final"
 research_issue: "#239"
 date: "2026-03-13"
 closes_issue: "#239"
+governs: [endogenous-first, local-compute-first]
 ---
 
 # Substrate Rebalancing — Encoding Layer Audit 2026-03-13

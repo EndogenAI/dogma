@@ -1,3 +1,7 @@
+---
+governs: [endogenous-first, algorithms-before-tokens, local-compute-first, minimal-posture, programmatic-first, documentation-first]
+---
+
 # Endogenic Development Manifesto
 
 > We are not vibe coding. We are pioneering **Endogenic Development Methodology** — a complete design framework for AI-assisted systems.
