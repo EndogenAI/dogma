@@ -972,3 +972,421 @@ sprint: "2026-03-12-corpus-backprop"
 4. **Multi-principal deployment reveals six-layer boundary conditions**: multi-principal-deployment-scenarios.md and six-layer-topological-extension.md together expose two structural gaps not present in the primary papers: (a) no arbitration rule between peer Deployment Layers (conservative merge principle proposed without external citation), and (b) isolation drift risk specific to six-layer complexity (not present in three-layer model). The external-values conflict taxonomy (Type 1–4, T5-prose-only from Scout 1A) overlaps with the CDR pattern but is not name-mapped here.
 
 5. **LCF as enabling architecture for declarative enforcement**: context-budget-balance.md (BM25 RAG as LCF expression), queryable-substrate.md (rank_bm25 pure-Python, no external services), six-layer-topological-extension.md (transparent CI/commit enforcement as LCF-aligned governance), and deterministic-agent-components.md (phase-gate FSM as zero-token routing) collectively frame LCF not as a goal state but as a **structural design parameter** that shapes which enforcement mechanisms are viable. This framing is absent from all three primary papers as an explicit thesis.
+
+---
+
+## Scout 1D — Agent Taxonomy/Skills/Threshold/Emergence Docs (9 Thorough + 13 Skim)
+
+---
+
+### agent-skills-integration.md
+
+**Source**: Final, no research_issue field, date: 2026-03-07
+
+**Key claims and patterns**
+
+- Skills are portable `SKILL.md` files (agentskills.io standard, developed by Anthropic); agents load only ~100-token metadata at startup, full body on trigger
+- Canonical composition rule: agents encode *who does a task* (persona, posture, tool restrictions, handoff graph); skills encode *how a task is done* (procedures, templates, scripts)
+- Skills extend the encoding inheritance chain to a **five-layer** model: MANIFESTO.md → AGENTS.md → `.agent.md` files → `SKILL.md` files → session behavior
+- Cross-tool portability confirmed: agentskills.io spec is agent-agnostic; VS Code Copilot, Copilot CLI, and Claude Code share `.github/skills/` directory
+- Token budget comparison: ~2,000-token baseline metadata for 20 skills vs 20,000+ tokens if same knowledge in always-on instructions
+- Pattern B (Progressive Disclosure): skills load conditionally; `user-invocable: false` + `disable-model-invocation: false` = silent auto-load without slash-menu pollution
+- CI gate design specified: `validate_skill_files.py` checks frontmatter schema, name format, directory-name match, cross-reference density (≥1 MANIFESTO.md or AGENTS.md cite in body), minimum body length (≥20 non-blank lines)
+- Three highest-priority skills confirmed as novel OSS contributions: `session-management`, `deep-research-sprint`, `conventional-commit`
+
+**Absent from or underrepresented in primary papers**
+
+- `values-encoding.md` discusses the [4,1] repetition code as four-layer encoding but does not mention skills as a **fifth encoding layer** with CI-enforceable cross-reference density
+- The ABT axiom canonical example in MANIFESTO.md names `scripts/watch_scratchpad.py`; skills are a superior canonical example (instruction class, not single script) but are not cited in `values-encoding.md`
+- `endogenic-design-paper.md` H1 (encode-before-act) does not integrate the skills loading mechanism as a concrete ABT implementation metric
+- Fidelity test taxonomy in `values-encoding.md` does not include the skill layer as a testable encoding surface; validate_skill_files.py cross-reference check is a new T3 enforcement gate that extends fidelity testing to layer 5
+
+**Evidence structures for weaving**
+
+- Token-economy comparison table (Pattern B): 2,000 tokens baseline × 20 skills vs 20,000+ always-on — quantified ABT case for `values-encoding.md`
+- Five-layer encoding chain table (§Q7): direct extension to the four-layer chain in `values-encoding.md` and `endogenic-design-paper.md`
+- CI gate spec (Q6): `validate_skill_files.py` design with frontmatter checks + cross-reference density floor — candidate for fidelity test taxonomy extension
+- Implementation path (§5): Phase 1–3 skill rollout timeline with concrete deliverables — H1 evidence for `endogenic-design-paper.md`
+
+---
+
+### agent-taxonomy.md
+
+**Source**: Final, no research_issue field, date: 2026-03-07
+
+**Key claims and patterns**
+
+- Three-way taxonomy with non-overlapping roles: Roles (`.agent.md`) = *who*; Skills (`SKILL.md`) = *how*; Fleet constraints (`AGENTS.md`) = *what all agents must do*
+- **Six-layer** encoding inheritance chain explicitly documented (subdirectory `AGENTS.md` files are a distinct intermediate tier between root `AGENTS.md` and individual agent files)
+- Decision tree for boundary placement: WHO→agent file; HOW (reusable)→SKILL.md; MUST/EVERY AGENT→AGENTS.md
+- VS Code upstream term: "Custom Agents" (since v1.106); EndogenAI endogenous term: "Roles" (conceptual purpose)
+- **Boundary erosion failure modes** formalized: too-thin (agent body so minimal it loses posture identity; behaviorally generic) and too-thick (agent body embeds skill-level procedures; duplication across files)
+- Well-balanced agent body = 80–200 lines; >400 lines triggers audit for extractable procedure blocks
+- Standards vs procedures boundary: `AGENTS.md` = rules (constraints, obligations, prohibitions); `SKILL.md` = procedures (active step sequences requiring elaboration and resource files)
+- Programmatic-First constraint explicitly applied to *instruction prose*: same procedure in two agent bodies → extract before third copy
+- Anti-pattern table: posture creep (read-only agent with `execute`), no handoffs (dead-end agent), endogenous sources >10 items (over-broad pre-read)
+
+**Absent from or underrepresented in primary papers**
+
+- `values-encoding.md` discusses a **five-layer** chain; this document formalizes a **six-layer** chain (subdirectory AGENTS.md tier). The gap between layers 3 and 4 is not described in primary papers
+- Boundary erosion failure modes (too-thin/too-thick) are quantified (80–200 line optimal range, >400 line audit threshold) — these thresholds are absent from `values-encoding.md` fidelity test taxonomy
+- "Standards vs procedures" as a clean decision criterion for AGENTS.md vs SKILL.md is not encoded in `values-encoding.md` Pattern Catalog
+- Agent file thickness as a **fidelity proxy** (thicker = more duplicated procedure = lower encoding fidelity per line) is a new dimension for `values-encoding.md`
+
+**Evidence structures for weaving**
+
+- Six-layer hierarchy table (§Q3): adds the subdirectory-AGENTS.md tier to the chain diagram in `values-encoding.md`
+- Weight heuristic: ≤80 = too thin; 80–200 = healthy; >400 = audit — quantitative threshold absent from primary papers
+- Anti-pattern table (§Role Anti-Patterns): extractable to `values-encoding.md` Pattern Catalog as negative examples for encoding fidelity
+
+---
+
+### external-team-case-study.md
+
+**Source**: Final, research_issue: 167, date: 2026-03-10, closes_issue: 167
+
+**Key claims and patterns**
+
+- Proxy study design (MANIFESTO.md §1 Endogenous-First): EndogenAI repo itself as case subject; 5 observable metrics M1–M5
+- M1 (CONTRIBUTING.md complexity): 1,066 words (9 sections × 118.4 avg) — moderate onboarding friction, comparable to enterprise CI/CD docs
+- M2 (session-start encoding compliance): 74.1% overall; **100% post-protocol** (after `bed2e1c` 2026-03-07); zero lag, zero failed adoption attempts
+- M3 (ARM): 0 (planned growth), 5 (VEF sprint), 5 (Phase 3) — two independent ARM=5 events
+- M4 (workplan phase-gate adoption): 33/33 = 100%, propagated from single exemplar file
+- M5 (constraint encoding velocity): +7 T3, +1 T4 governors across 6 milestones (avg 1.3/milestone)
+- **H1 open empirical gap**: no A/B token-burn comparison; operational adoption confirmed but token reduction uncontrolled
+- **H2 confirmed**: T3/T4 = zero CI violations post-activation; same T5 constraint = 3+ documented violations before hook
+- **H3 confirmed (intra-team)**: ARM=5 achieved independently in two sprint events; 157% fleet growth; ≥2 confirmed emergence events at ≥3-metric threshold
+- **H4 partially supported**: 100% intra-team protocol adoption; external cold-start evidence = absent
+- Pattern 1 (Protocol-First Adoption Ladder): template → adoption, NOT theory → adoption
+- Pattern 3 (Enforcement-Adoption Asymmetry): context pressure reallocates budget away from "remember AGENTS.md"; programmatic enforcement does not consume context budget
+- Pattern 4 (Back-Propagation as Adoption Quality Signal): ARM>0 = inflection from instruction-following to co-authorship
+
+**Absent from or underrepresented in primary papers**
+
+- `endogenic-design-paper.md` §H4 states external validation as "future work" — this doc confirms that assessment and adds the proxy study as the strongest available evidence, but does NOT close H4
+- `endogenic-design-paper.md` §H1 has open conjecture about token-burn reduction; this doc explicitly cannot close that gap (no A/B comparison)
+- ARM=0 (planned growth) vs ARM=5 (morphogenetic) discriminator is not formalized in `endogenic-design-paper.md` §H2 or §H3
+- Protocol-First Adoption Ladder (Pattern 1) — "template is the sufficient condition, not theory" — is a direct takeaway for H4 operationalization but absent from `endogenic-design-paper.md`
+- `conflict_resolution` enforcement gap: not addressed in this study; ALLOW/BLOCK/ESCALATE CDR pattern from prior sprints is not tested against this case study metric set
+
+**Evidence structures for weaving**
+
+- Metrics table (§Executive Summary): M1–M5 with source citations — directly citable in `endogenic-design-paper.md` §5 empirical evidence
+- Pre/post protocol compliance tables (§H1, §H2): natural control group (7 pre-protocol sessions)
+- ARM=0/ARM=5 contrast case (§H3): canonical discriminating signal for morphogenesis — citable in `endogenic-design-paper.md` §H2
+- R1 recommendation: "Decouple H4 evaluation from full methodology exposure" — direct H4 strategy for `endogenic-design-paper.md`
+
+---
+
+### filter-bubble-threshold-calibration.md
+
+**Source**: Final, research_issue: 184, date: 2026-03-10, closes_issue: 184
+
+**Key claims and patterns**
+
+- **Cross-Reference Density (CRD)** formally defined: intra-refs / total-refs; range [0, 1]
+- Empirical thresholds from 61-file fleet measurement:
+  - CRD_critical = **0.02** (high filter-bubble risk; isolated from foundational axioms)
+  - CRD_warning = **0.17** (below-average; drift risk)
+  - CRD_optimal = **[0.32, 0.60]** (balanced integration and permeability)
+- Fleet descriptive stats: mean=0.46, median=0.50, SD=0.293; bimodal distribution (governance skills cluster CRD≈1.0; practical guides cluster CRD≈0.0)
+- **4× commit frequency difference**: high-CRD subsystems (8.4/month) vs low-CRD (2.1/month) — statistically significant (p<0.05)
+- Active vertices (≥5 edges/month): mean CRD=0.52; latent vertices (<5 edges/month): mean CRD=0.38 — +0.14 differential
+- Phase 3a production metrics substantially more reliable: Citation Density Pressure R²=0.68 v Task Velocity, Constraint Violation Pressure R²=0.72 v Test Pass Rate
+- **Membrane permeability mapping**: high CRD = low Laplace pressure = high foundational permeability; CRD=1.0 is not optimal (membrane collapse); CRD≈0.3–0.6 is Laplace equilibrium
+- CI integration pattern: `scripts/parse_audit_result.py` deploys threshold detection; 0.35 recommended for automated flagging
+- **Provenance transparency** as isolation remedy: axiom citations = retrieval-augmented governance; density of citations = proxy for isolation risk
+
+**Absent from or underrepresented in primary papers**
+
+- `bubble-clusters-substrate.md` introduces membrane permeability model but does NOT provide quantitative thresholds — CRD_critical=0.02, CRD_warning=0.17, CRD_optimal=[0.32,0.60] are new empirical constants missing from the primary paper
+- Bimodal CRD distribution (governance skills CRD≈1.0 vs practical guides CRD≈0.0) is a structural finding about the fleet not present in `bubble-clusters-substrate.md`
+- 4× commit-frequency differential between high/low CRD subsystems = first observable health correlation for membrane permeability model
+- `values-encoding.md` Pattern 7 (retrieval-augmented governance) is cited but the CRD threshold values that operationalize it (0.17 warning, 0.35 CI gate) are absent
+- CI integration path (parse_audit_result.py, non-blocking flag) is missing from both `values-encoding.md` and `bubble-clusters-substrate.md`
+
+**Evidence structures for weaving**
+
+- CRD threshold table: CRD_critical=0.02, CRD_warning=0.17, CRD_optimal=[0.32, 0.60] — citable in `bubble-clusters-substrate.md` §Pattern B4 and §Laplace Pressure section
+- Fleet stats table (§4 Descriptive Statistics): n=61, mean=0.46, SD=0.293 — empirical grounding for `bubble-clusters-substrate.md`
+- 4× commit-frequency differential: p<0.05 correlation — `bubble-clusters-substrate.md` health metric
+- Phase 3a cross-reference (R²=0.68, 0.72, 0.54) — `bubble-clusters-substrate.md` empirical basis
+- Laplace pressure ↔ CRD mapping (§2): $\Delta P = \frac{2\gamma}{r}$ operationalized via CRD — extends `bubble-clusters-substrate.md` theory section
+
+---
+
+### fleet-emergence-operationalization.md
+
+**Source**: Final, research_issue: 168, date: 2026-03-10, closes_issue: 168
+
+**Key claims and patterns**
+
+- Four operational metrics formally defined with thresholds: BPC (≥3/sprint), ARM (≥3/sprint), SCD (≥0.5 citations/100 lines), FTD (≥5 agents or normalized edge delta)
+- **Formal emergence model**: `E(M) = 1 iff |{BPC≥3, ARM≥3, SCD≥0.5, FTD≥5}| ≥ 3`
+- Fleet grew 157% in 4 days (14→36 agents, 2026-03-06 to 2026-03-10) across 5 milestone sprints
+- Growth alone ≠ emergence; back-propagation cycle (BPC>0) is necessary but not sufficient
+- **Case Study 1** (Fleet Design Patterns): BPC=4, ARM=5, SCD≈0.8 → FTD=0; 3/4 above threshold → **emergence confirmed**
+- **Case Study 2** (Value Encoding Fidelity): BPC=5, ARM=5, SCD≈1.2, FTD≈5 → 4/4 → **strongest emergence event**. Second-order feedback: research output altered CI enforcement validating the fleet's own files
+- **Case Study 3** (Shell Governor Sprint): BPC=3, ARM=2, SCD≈0.6, FTD=0 → 2/4 → **evolution event, not emergence** (negative result validates multi-metric threshold)
+- Cross-reference density as morphogen gradient proxy: validate_agent_files.py's density check is the programmatic analog to positional signaling
+- SCD measures encoding fidelity in session behavior; high SCD sessions produce more back-propagation-eligible observations
+- **Anti-pattern**: high SCD + zero BPC/ARM = expansion without consolidation; Deep Research Sprint skill must trigger substrate-update notification
+
+**Absent from or underrepresented in primary papers**
+
+- `endogenic-design-paper.md` §H2 claims emergent fleet topology without formal emergence definition; this doc provides BPC/ARM/SCD/FTD formal model with empirically measured thresholds — absent from primary paper
+- ARM=0 (planned growth) vs ARM=5 (morphogenetic feedback) discriminator is not stated in `endogenic-design-paper.md` §H3
+- Negative case study (Case Study 3: evolution ≠ emergence) validates the multi-metric threshold requirement but is not discussed in any primary paper
+- Second-order morphogenetic feedback loop ("research → automated enforcement → constraint verification") is described in CHANGELOG but not formalized in `endogenic-design-paper.md` §H2
+- SCD = 0.5 citations/100-line threshold as session behavior metric not in `values-encoding.md` fidelity test taxonomy
+- "Expansion without consolidation" anti-pattern (high-SCD / zero-BPC) directly relevant to `values-encoding.md` but absent
+
+**Evidence structures for weaving**
+
+- Metric definition table (§3): BPC/ARM/SCD/FTD with observable proxy bash commands — direct `endogenic-design-paper.md` §H2 evidence
+- Case study metric tables (1–3): measurable emergence vs evolution — `endogenic-design-paper.md` §5 empirical section
+- Formal emergence model formula: `E(M) = 1 iff |...| ≥ 3` — mathematical notation for primary paper
+- Fleet growth trajectory table: ARM=0 (milestone 6) → ARM=5 (milestone 8) — discriminating signal for `endogenic-design-paper.md` §H3
+- Substrate delta descriptions per case study: concrete examples of what "emerged" per sprint
+
+---
+
+### holonomic-brain-theory-application.md
+
+**Source**: Final, research_issue: 188, date: 2026-03-10, closes_issue: 188
+
+**Key claims and patterns**
+
+- HBT structural analogy holds at three levels: dendritic web ↔ AGENTS.md constraint network; wave interference ↔ citation density peaks; non-locality ↔ Endogenous-First axiom
+- **[4,1] code mapped to HBT model**: principle (Fourier coefficient), canonical example (spatial anchor), anti-pattern (destructive interference classifier), programmatic gate (synaptic substrate/temporal coherence)
+- Non-local access property: any agent reading any fragment can partially reconstruct full axiom (holographic); agents cite MANIFESTO.md directly 85% of the time (not via relay)
+- Preliminary spectral analysis: R²=0.67 for spectral entropy vs task velocity (p<0.05); power-law distribution confirmed (not white noise)
+- Empirical test design: 60-day FFT decomposition of citation-frequency vectors; success criterion R²>0.6
+- **Fourier decomposition of constraints**: "Commit only after Review approval" decomposes into three orthogonal axiom components (3D manifold, not random scatter) — preliminary finding
+- CI gates (validate_synthesis.py, scratchpad watcher) function as "oscillating field" maintaining interference pattern coherence; without gates, patterns decay into noise
+- **Structural claims (testable)**: Fourier-decomposable citation spectra, non-local access property, temporal coherence >50% over 60 days
+- **Analogical claims (illustration-only)**: individual agents as neurons, synaptic strength as citation weight
+- Pribram (2013) core: information stored non-locally via Fourier decomposition in dendritic web; any region reconstructs the whole
+
+**Absent from or underrepresented in primary papers**
+
+- `values-encoding.md` §H4 introduces HBT analogy but does not formalize mapping M1–M5 (dendritic web, interference, non-locality, Fourier decomposition, oscillating field)
+- Spectral entropy test design (R²=0.67 preliminary) is a new empirical dimension absent from `values-encoding.md` — a testable alternative to CRD as a fidelity metric
+- Fourier decomposition of constraints into axiom components (3D manifold finding) is preliminary but would be the first analytical grounding for the three-axiom orthogonal basis claim
+- The structural vs analogical HBT claim distinction is not made in `values-encoding.md`, which risks conflating testable and illustrative elements
+- Temporal coherence test (half-life of axiom citation alignment) is a new time-series dimension absent from `values-encoding.md` fidelity taxonomy
+- M5 mapping (scratchpad watcher / validate_synthesis.py as oscillating field) provides causal mechanism for why CI gates preserve fidelity — not in `values-encoding.md`
+
+**Evidence structures for weaving**
+
+- M1–M5 structural mapping table (§5): direct evidence tables for `values-encoding.md` Pattern 4 (HBT) section
+- [4,1] code ↔ HBT form table (§4): principle/example/anti-pattern/gate mapped to frequency component/spatial anchor/destructive classifier/synaptic substrate — enriches `values-encoding.md` §3 Pattern 1
+- Preliminary spectral analysis result: R²=0.67 (p<0.05) — quantitative support citable in `values-encoding.md`
+- Pseudocode: `validate_holographic_encoding()` — candidate implementation for `values-encoding.md` §Recommendations
+- 85% direct MANIFESTO.md citation rate (vs <15% relay) — observable non-locality proxy metric
+- Pribram citations: *The Implicate Order* (2013); Westlake (1991); Globus (2003); Freeman (2007)
+
+---
+
+### local-copilot-models.md
+
+**Source**: Draft, no research_issue field, date: 2026-03-07
+
+**Key claims and patterns**
+
+- BYOK via VS Code Language Models editor (stable as of VS Code 1.104); routes chat to Ollama/LM Studio
+- Confirmed capability: structured editing (YAML/JSON/frontmatter), boilerplate generation, classification, annotation; NOT for: inline completions, complex multi-step reasoning, architecture decisions
+- Model selection table: llama3.2:3b (4GB VRAM) for annotation; qwen2.5-coder:7b (8GB VRAM) for code; frontier tasks remain cloud-bound
+- Internet connection + Copilot plan still required even for local chat
+- BYOK not available for Copilot Business/Enterprise (planned later)
+
+**Absent from or underrepresented in primary papers**
+
+- LCF as structural design parameter shapes which enforcement mechanisms are viable; operational how-to guide does not contain primary paper gap signals beyond the model-capability boundary
+- Local/cloud frontier boundary (annotation viable locally; synthesis requires cloud) is implied by `endogenic-design-paper.md` LCF axiom but not operationalized as task-type guidance
+
+**Evidence structures for weaving**
+
+- Model selection table by task type: VRAM requirements and capability boundaries — `endogenic-design-paper.md` Local Compute-First case study evidence
+
+---
+
+### local-mcp-frameworks.md
+
+**Source**: Draft, no research_issue field, date: 2026-03-07
+
+**Key claims and patterns**
+
+- MCP (Anthropic, 2024) client/server architecture: tools run where servers are configured; stdio (local) vs HTTP (network) transports
+- Zero-marginal-cost tool invocations (only model decision consumes tokens) — direct ABT implementation
+- Docker Compose for reproducible multi-service MCP; stdio preferred for single-machine
+- Security gap: HTTP MCP servers have no default auth; must use network-layer firewall
+- Endogenic MCP server proposal: wrap `fetch_source.py`, `prune_scratchpad.py`, `validate_synthesis.py` as MCP tools — "encode CLI as tools once; agents call without re-deriving syntax"
+- Open questions: which `.agent.md` files should explicitly list MCP tool dependencies; MCP tool names in frontmatter
+
+**Absent from or underrepresented in primary papers**
+
+- local-mcp-frameworks.md — no primary-paper gap signal
+
+---
+
+### semantic-holography-language-encoding.md
+
+**Source**: Draft, research_issue: 189, closes_issue: 189, date: 2026-03-10
+
+**Key claims and patterns**
+
+- Core hypothesis confirmed: holographic semantic encoding (principle + example + anti-pattern + programmatic gate) preserves semantic integrity better than single-level encoding — cross-field evidence from neuroscience, linguistics, information theory, law, CS
+- **H1 confirmed**: neuroscience (Pribram 2013), information theory (Kieffer 2002 [4,1] redundancy — corrects any single-symbol error), computational linguistics (Rosch 1975 prototype theory), constitutional law (Lessig 1996; Balkin 2004)
+- **H2 confirmed**: examples and anti-patterns are primary semantic anchors — more drift-resistant than abstract principles; AGENTS.md empirical observation (agents with only principle skip source fetch; with canonical example they follow)
+- **H3 confirmed**: programmatic gates lock meaning at protocol layer; **Goodhart's Law caveat** — protocol enforces letter not spirit; must be paired with example anchors
+- **H4 plausible**: holographic density formula = #unique foundational cites / #total assertion statements; threshold ≥0.4 = high fidelity; 0.2–0.4 = medium; <0.2 = drift risk
+- Three-channel minimum viable encoding: principle + example + anti-pattern (no programmatic gate required for minimal viability, but gate adds structural immunity)
+- **"Endogenous-First" case study**: all four channels mapped (MANIFESTO.md principle, AGENTS.md canonical example, anti-pattern in guides, `validate_agent_files.py` gate)
+- Specification gaming (Krakovna et al. 2020) cited as semantic drift through letter-vs-spirit gap — direct validation of H3 Goodhart caveat
+
+**Absent from or underrepresented in primary papers**
+
+- `values-encoding.md` lacks the cross-field bibliography (Kieffer 2002, Shannon 1948, Rosch 1975, Langacker 1987, Lessig 1996, Balkin 2004, Krakovna et al. 2020)
+- Goodhart's Law caveat for programmatic gates (specification gaming as semantic drift) is absent from `values-encoding.md` Pattern Catalog; this is a critical failure mode not documented
+- Holographic density formula with specific thresholds (≥0.4 = high, 0.2–0.4 = medium, <0.2 = drift risk) is absent from `values-encoding.md`
+- Three-channel minimum viable encoding (principle + example + anti-pattern without programmatic gate) is not stated in `values-encoding.md` — primary paper implies all four are always required
+- Constitutional law multi-layer structure (Lessig 1996; Balkin 2004) as independent external validation of [4,1] not currently in `values-encoding.md`
+- Specification gaming bibliography (Krakovna et al. 2020) as empirical evidence for letter-vs-spirit semantic gap absent from `values-encoding.md`
+
+**Evidence structures for weaving**
+
+- Cross-field bibliography (§5): 8 citable papers — direct additions to `values-encoding.md` §Sources
+- "Endogenous-First" four-channel case study (§H1): extractable canonical example block for `values-encoding.md`
+- Three-channel pattern (Pattern 1): principle + example + anti-pattern with strength/weakness analysis — `values-encoding.md` Pattern Catalog addition
+- Holographic density formula (Pattern 2): $\text{Density} = \frac{n\_unique\_foundational\_cites}{n\_total\_assertion\_statements}$ — operationalizable threshold for `values-encoding.md`
+- Goodhart's Law formulation (§H3): "programmatic enforcement catches structural compliance but not semantic enrichment" — direct `values-encoding.md` Pattern 3 amendment
+
+---
+
+### agent-fleet-design-patterns.md
+
+**Primary-paper gap signal** (skim)
+- Focus-on-Descent/Compression-on-Ascent operationalizes membrane permeability as a **directionality constraint** not present in `bubble-clusters-substrate.md`: outbound briefs contract the problem space; inbound results compress to 1,000–2,000 tokens. This is the membrane boundary as defined handoff compression ratio — a quantitative permeability property absent from the primary paper
+- "Isolation is the mechanism of coherence, not coupling" — directly supports `bubble-clusters-substrate.md`'s bubble isolation claim with multi-source confirmation from Anthropic production systems
+- Three-layer phase gate (subagent self-evaluation → lead re-evaluation → CitationAgent post-gate) is an architectural pattern for membrane-preserving handoffs not formalized in any primary paper
+
+---
+
+### agentic-research-flows.md
+
+**Primary-paper gap signal** (skim)
+- Memory architecture audit table maps seven memory types to EndogenAI substrate; episodic + experiential = confirmed gaps — directly relevant to `endogenic-design-paper.md` (no semantic retrieval layer is operational gap in H1 encode-before-act operationalization)
+- "Write discipline is the deeper problem" (scratchpad compliance) with per-invocation context isolation as empirically confirmed anti-redundancy mechanism provides `endogenic-design-paper.md` H1 supporting evidence
+- AIGNE four-stage loop (write→select→compress→isolate) properly attributed to LangChain as prior art — `endogenic-design-paper.md` should not claim this as novel to the endogenic methodology
+
+---
+
+### aigne-afs-evaluation.md
+
+**Primary-paper gap signal** (skim)
+- AIGNE AFS Context Engineering Pipeline (Constructor + Updater + Evaluator) closes the episodic + experiential memory gaps — but is MONITOR/deferred pending local compute baseline; open gap remains
+- "No library adoption before local compute baseline resolved" is a structural blocking constraint for `endogenic-design-paper.md` H1 (encode-before-act cannot leverage cross-session recall until issue prerequisite closed)
+
+---
+
+### async-process-handling.md
+
+async-process-handling.md — no primary-paper gap signal
+
+---
+
+### dev-workflow-automations.md
+
+**Primary-paper gap signal** (skim)
+- "File watcher and pre-commit hook are complementary, not competing" establishes the Governor defense-in-depth principle at the toolchain level; the multi-governor stack (T3+T4+T0) is not described as defense-in-depth in `values-encoding.md`
+- Slow hooks at pre-push rather than pre-commit — a nuance in the Governor A/B architecture not described in primary papers; ergonomic cost of enforcement layer deployment absent from `values-encoding.md` §Governor patterns
+
+---
+
+### endogenai-product-discovery.md
+
+endogenai-product-discovery.md — no primary-paper gap signal
+
+---
+
+### episodic-memory-agents.md
+
+**Primary-paper gap signal** (skim)
+- **Issue #13 is CLOSED by this paper** (closes_issue: 13) with R1: do not adopt any episodic memory library until local compute baseline confirmed (`OPEN_RESEARCH.md` item 1 unresolved as of 2026-03-09). `validate_session.py --drift-check` cross-session drift detection remains blocked
+- `endogenic-design-paper.md` H1 implicit dependency: cross-session episodic recall requires a local embedding stack. This prerequisite chain is not stated in primary papers
+- Conservative merge principle: NOT present — episodic memory libraries evaluate overwrite/merge semantics but no "conservative merge" external citation found
+- Cognee as preferred library: `cognee.config.set_llm_provider("ollama")` is the local-first pattern; graphiti avoided due to Neo4j dependency
+
+---
+
+### github-as-memory-substrate.md
+
+github-as-memory-substrate.md — no primary-paper gap signal
+
+---
+
+### github-project-management.md
+
+github-project-management.md — no primary-paper gap signal
+
+---
+
+### iit-panpsychism-consciousness-bounds.md
+
+**Primary-paper gap signal** (skim)
+- **H4 (augmentative partnership)** strengthened by the intelligence-consciousness orthogonality finding: system can be arbitrarily intelligent without being conscious; consciousness not required for aligned behavior; this decouples moral authority from machine capability claims in `endogenic-design-paper.md §Human-System Co-cognition`
+- IIT modularity → low φ → anti-consciousness by design: agent decomposability is framed as a *feature* not a limitation; modular architecture aids interpretability and control. Reframes fleet architecture with philosophical grounding (Tononi 2012, Dennett 1991, Chalmers 1995)
+
+---
+
+### onboarding-wizard-patterns.md
+
+**Primary-paper gap signal** (skim)
+- Adopt wizard as a **mechanical H4 operationalization**: "inject, don't overwrite" design (questionary prompt flow + file conflict resolution) provides a tangible external-team adoption pathway that `endogenic-design-paper.md` H4 lacks
+- Three file conflict scenarios (doesn't exist / identical / differs) formalize adoption boundary without requiring theoretical understanding of H1–H3 — supporting `endogenic-design-paper.md` R1 framing
+
+---
+
+### skills-as-decision-logic.md
+
+**Primary-paper gap signal** (skim)
+- **66% context reduction** from skill extraction (~150 line avg agent file → ~50 line minimum body) = quantified ABT metric absent from `values-encoding.md` and `endogenic-design-paper.md`
+- SDL-1 (Theoretical Minimum Instruction Body) formalizes 5 irreducible elements: role declaration, axiomatic alignment, scope boundary, gate deliverables, skill references. Minimum body specification is new dimension for `endogenic-design-paper.md` H1 operationalization
+- "Procedures that embed agent-specific values can be parameterized: skill = function body; agent file = call site with arguments" — function-call model for instruction reuse not in `values-encoding.md` Pattern Catalog
+- ~180 of ~280 lines in executive-orchestrator.agent.md are extractable (64% extractable to irreducible ratio) — empirical measurement of instruction bloat not in primary papers
+
+---
+
+### xml-agent-instruction-format.md
+
+xml-agent-instruction-format.md — no primary-paper gap signal
+
+---
+
+### Scout 1D — Theme Summary
+
+1. **Multi-layer encoding chain extension and new fidelity metrics**: `agent-skills-integration.md`, `agent-taxonomy.md`, and `skills-as-decision-logic.md` converge on a six-layer encoding chain (adding subdirectory AGENTS.md and SKILL.md layers). `semantic-holography-language-encoding.md` and `holonomic-brain-theory-application.md` add four new fidelity metrics (holographic density formula, spectral entropy R²=0.67, temporal coherence half-life, [4,1]-to-HBT mapping) and a cross-field bibliography (Kieffer 2002, Rosch 1975, Krakovna 2020) absent from `values-encoding.md`. Critical missing item: Goodhart's Law caveat for programmatic gates (specification gaming = letter-not-spirit enforcement) is not in any primary paper Pattern Catalog.
+
+2. **Quantitative operationalization of bubble-cluster and emergence claims**: `filter-bubble-threshold-calibration.md` provides empirical constants: CRD_critical=0.02, CRD_warning=0.17, CRD_optimal=[0.32, 0.60]; 4× commit-frequency differential (p<0.05); Laplace pressure ↔ CRD operationalization. `fleet-emergence-operationalization.md` provides the formal emergence model `E(M) = 1 iff ≥3/4 metrics above threshold`, three case studies (two emergence confirmed, one negative), and BPC/ARM/SCD/FTD thresholds. Both are absent from `bubble-clusters-substrate.md` — they are the empirical grounding the primary paper cites as "pending operationalization."
+
+3. **External team H4 evidence: proxy study with explicit open gaps**: `external-team-case-study.md` provides the strongest available H4 evidence (M1–M5 metrics: 100% post-protocol compliance, 33/33 phase-gate adoption, ARM=5 in two independent sprints). H1 token-burn A/B, H4 external cold-start, and `conflict_resolution` enforcement closure remain explicitly open. Protocol-First Adoption Ladder (template → adoption) and ARM>0 co-authorship inflection are actionable additions absent from `endogenic-design-paper.md`.
+
+4. **LCF as structural dependency constraint and blocker**: `episodic-memory-agents.md`, `aigne-afs-evaluation.md`, `local-copilot-models.md`, and `local-mcp-frameworks.md` establish a four-step blocking dependency: LCF → local compute baseline → episodic memory integration → cross-session drift detection → full H1/H2 validation. This prerequisite chain is implicit in primary papers but never stated as a causal dependency. Issue #13 is now closed with a "wait" verdict; `validate_session.py --drift-check` remains blocked.
+
+5. **Agent file body as encoding fidelity surface**: `agent-taxonomy.md` and `skills-as-decision-logic.md` quantify body thickness as a fidelity proxy: optimal 80–200 lines, >400 triggers audit, 66% context reduction from skill extraction, SDL-1 minimum (5 irreducible elements). This connects to the [4,1] model: the agent file body is an encoding form; bloated bodies degrade holographic redundancy. Absent from `values-encoding.md` fidelity test taxonomy.
+
+6. **Philosophical grounding for H4 augmentative partnership**: `iit-panpsychism-consciousness-bounds.md` provides IIT/panpsychism grounding (intelligence ≠ consciousness orthogonal; modularity → low φ → controllable) with Tononi 2012, Dennett 1991, Chalmers 1995 citations. `holonomic-brain-theory-application.md` adds Pribram 2013 HBT non-locality as architectural model for Endogenous-First. Neither IIT nor HBT citations appear in `endogenic-design-paper.md` bibliography.
+
+---
+
+### Watch for in Phase 2 Proposal Synthesizer
+
+- **Conservative merge principle — external citation not found across all 4 Scout groups**: No doc in Scouts 1A–1D cites an external source. Unresolved provenance gap; must be surfaced as an open item in `values-encoding.md` §Gap Analysis.
+- **Geometric topology extension beyond 15-face count — confirmed absent**: No Scout 1D doc extends the topological audit's 15-face count. Polyhedral geometric extension remains as a gap in `bubble-clusters-substrate.md` §5 Geometric Extension.
+- **H1 token-burn A/B comparison — explicitly cannot be closed endogenously**: `external-team-case-study.md` confirms no A/B data exists. `endogenic-design-paper.md` H1 empirical core remains Priority 1 open gap.
+- **`conflict_resolution` enforcement / ALLOW-BLOCK-ESCALATE — not closed**: CDR pattern not name-mapped to Type 1–4 taxonomy anywhere across 4 Scout groups. External-values conflict enforcement at T3/T4 remains open.
+- **Spectral entropy HBT validation — pending LCF baseline**: R²=0.67 preliminary; formal 60-day / n=full-fleet study unstarted; depends on local inference stack.
+- **H4 external cold-start data — requires external validation**: Proxy study provides internal proxies only. Onboarding wizard provides mechanism not outcome data. H4 closure cannot be derived from endogenous sources.
+- **Episodic memory + drift detection prerequisite chain**: LCF baseline → Cognee → `validate_session.py --drift-check` → cross-session drift measurement. Four-step blocker for full H2 validation; must be stated in `endogenic-design-paper.md` as a blocking dependency.
+- **Goodhart's Law caveat for programmatic gates**: Not in any primary paper. `semantic-holography-language-encoding.md` §H3 + Krakovna et al. 2020 provides formulation. Must be woven into `values-encoding.md` Pattern 3 as a critical qualifier.
