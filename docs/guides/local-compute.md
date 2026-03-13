@@ -16,6 +16,10 @@ Cloud LLM inference is expensive — in tokens, API cost, and environmental impa
 
 The endogenic approach compounds this: by encoding context as scripts, you reduce the number of tokens needed per session regardless of where the inference runs.
 
+### Structural Test & Enforcement-Proximity
+
+Local compute is not merely a cost tier — it is oversight infrastructure. The **structural test** is the authoritative decision rule: before choosing cloud execution, ask whether cloud residency transfers enforcement authority, oversight access, or governance guarantees to an external party. If yes, local is preferred regardless of cost or convenience. The **enforcement-proximity principle** (from [`docs/research/lcf-oversight-infrastructure.md`](../research/lcf-oversight-infrastructure.md)) states that governance mechanisms must be co-located with what they govern: a validator that runs locally cannot be bypassed by an API outage or provider policy change, whereas a cloud-only enforcement point inherits a structural availability dependency at every enforcement boundary. Apply both tests before delegating any enforcement-critical operation to a cloud service.
+
 ---
 
 ## Strategy A: Encode Context as Scripts (Highest ROI)

@@ -40,6 +40,7 @@ Additional operational constraints:
 - **Programmatic-First** — if you have done a task twice interactively, the third time is a script. See [Programmatic-First Principle](#programmatic-first-principle).
 - **Documentation-First** — every change to a workflow, agent, or script must be accompanied by clear documentation
 - **Commit Discipline** — small, incremental commits following [Conventional Commits](https://www.conventionalcommits.org/) — see [`CONTRIBUTING.md#commit-discipline`](CONTRIBUTING.md#commit-discipline)
+- **Enforcement-Proximity** — validators, pre-commit hooks, and enforcement scripts must run locally; cloud CI is a supplementary enforcement layer, not the primary gate. Local residency is what makes governance mechanisms structurally reliable — a cloud-only enforcement point is bypassed by any service outage or network partition. See [`MANIFESTO.md#3-local-compute-first`](MANIFESTO.md#3-local-compute-first).
 
 For a complete treatment of guiding principles and ethical values, read [`MANIFESTO.md#guiding-principles-cross-cutting`](MANIFESTO.md#guiding-principles-cross-cutting) and [`MANIFESTO.md#ethical-values`](MANIFESTO.md#ethical-values).
 
