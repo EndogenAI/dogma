@@ -77,20 +77,32 @@ The sweep table is the Scout's guide. Depth allocations matter — it prevents t
 
 ---
 
-### Phase 1 — Corpus Scout (Raw Findings) [4 sequential groups]
+### Phase 1 — Corpus Scout (Raw Findings) [4 sequential groups, Orchestrator-mediated]
 
-**Agents**: 4× Research Scout (run sequentially: 1A → 1B → 1C → 1D)
+**Agents**: Executive Orchestrator (coordination) + 4× Research Scout (sequential: 1A → 1B → 1C → 1D)
 **Effort**: L
 **Depends on**: Phase 0 APPROVED
 **Status**: ⬜ Not started
 
-**Rationale for sequential split**: 36 Thorough + 13 Skim docs is too large for a single Scout delegation without context loss. Splitting by doc type keeps each Scout's working set coherent. Scouts run **sequentially** — not in parallel — because later groups' observations may be shaped by what Synthesis docs (1A) already captured: a Scout reading raw research after seeing the Synthesis layer can flag gaps rather than re-confirming already-synthesized material. Reading order: Synthesis first (1A), then Bridge/Sprint (1B), then Enforcement/LCF (1C), then remaining Thorough + Skim (1D). Each Scout must read `docs/plans/2026-03-12-corpus-raw-findings.md` before appending, to avoid redundant observations already noted by a prior Scout.
+**Rationale for sequential, Orchestrator-mediated split**: 36 Thorough + 13 Skim docs is too large for a single Scout delegation without context loss. Splitting by doc type keeps each Scout's working set coherent and compact. Scouts run **sequentially** because later groups' observations should be framed by what earlier Scouts found — but the handoff is **always through the Orchestrator**, not Scout-to-Scout. Direct Scout-to-Scout handoff risks a telephone-game effect: lossy summarisation at each step drifts from the original intent. The Orchestrator is the integration point: it reads each Scout's output, distills a ≤200-token **guiding brief** highlighting what was already observed and what gaps remain, then delegates the next Scout with that brief as explicit context. The corpus does not collapse into a funnel; the Orchestrator preserves the full picture across the sequence.
 
-**Task**: Each Scout reads its assigned docs (Thorough = full read; Skim = summary scan), reads prior Scout output for context, then appends its findings section to `docs/plans/2026-03-12-corpus-raw-findings.md`. Output format per doc: one section heading plus bullet observations. No proposal-level specificity (no target sections, no exact change descriptions — those are Phase 2).
+**Reading order rationale**: Synthesis first (1A) establishes the highest-density signal layer; Bridge/Sprint (1B) shows how synthesis connects to constituent work; Enforcement/LCF (1C) covers the most operationally-dense raw research; remaining Thorough + Skim (1D) fills gaps. Each successive brief will narrow what the next Scout needs to flag (avoiding re-observation of already-captured signals).
+
+**Orchestrator inter-scout brief format** (written to scratchpad before each delegation):
+```
+## Orchestrator Brief — Before Scout 1[X]
+**Already observed** (≤5 bullets from prior output): ...
+**Themes NOT yet seen** (gaps to watch for): ...
+**Watch list for this group** (specific signals relevant to this doc type): ...
+```
+
+**Each Scout's task**: Read the Orchestrator's brief, then read its assigned docs (Thorough = full read; Skim = summary scan), then append its findings section to `docs/plans/2026-03-12-corpus-raw-findings.md`. Output format per doc: one section heading plus bullet observations. No proposal-level specificity (no target sections, no exact change descriptions — those are Phase 2).
 
 ---
 
 #### Scout 1A — Synthesis Docs (7 Thorough)
+
+**Receives**: Orchestrator brief summarising back-propagation goals and the three primary papers' current state (no prior Scout output yet — this is the opening pass).
 
 **Doc list**:
 - enforcement-tier-mapping.md
@@ -106,6 +118,8 @@ The sweep table is the Scout's guide. Depth allocations matter — it prevents t
 ---
 
 #### Scout 1B — Bridge/Integration + Sprint Docs (10 Thorough)
+
+**Receives**: Orchestrator brief distilled from Scout 1A output — what themes the Synthesis layer already surfaced, and what signals to watch for in Bridge/Sprint material specifically.
 
 **Doc list**:
 - doc-interweb.md
@@ -125,6 +139,8 @@ The sweep table is the Scout's guide. Depth allocations matter — it prevents t
 
 #### Scout 1C — Enforcement/LCF/Query Raw Research (10 Thorough)
 
+**Receives**: Orchestrator brief distilled from Scout 1A+1B output — cumulative theme map and gaps still unseen; watch list specific to enforcement, local-compute, and queryable-substrate material.
+
 **Doc list**:
 - programmatic-governors.md
 - shell-preexec-governor.md
@@ -142,6 +158,8 @@ The sweep table is the Scout's guide. Depth allocations matter — it prevents t
 ---
 
 #### Scout 1D — Remaining Thorough + All Skim (9 Thorough + 13 Skim)
+
+**Receives**: Orchestrator brief distilled from Scout 1A+1B+1C output — full gap map; explicit list of signals not yet observed that are likely to appear in fleet/agent/context material.
 
 **Doc list (Thorough)**:
 - agent-skills-integration.md
@@ -173,8 +191,15 @@ The sweep table is the Scout's guide. Depth allocations matter — it prevents t
 
 ---
 
+**Orchestrator inter-scout steps** (between each delegation):
+1. Read the completed Scout section in `docs/plans/2026-03-12-corpus-raw-findings.md`
+2. Write `## Orchestrator Brief — Before Scout 1[X]` to the scratchpad (≤200 tokens; already-observed themes + unseen gaps + watch list for next group)
+3. Commit completed Scout section before delegating next
+4. Delegate next Scout with the brief as explicit context in the prompt
+
 **Deliverables**:
 - `docs/plans/2026-03-12-corpus-raw-findings.md` with all 4 Scout sections committed
+- 3 Orchestrator briefs written to scratchpad (before 1B, 1C, 1D)
 
 **Gate**: All 4 sections present; Phase 1 Review APPROVED
 
