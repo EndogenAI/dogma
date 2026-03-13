@@ -82,7 +82,7 @@ A CI gate that checks for the presence of required headings in a research docume
 
 This is the information-theoretic analog of moving a value from the message layer to the protocol layer. Protocol-layer values are enforced by the channel itself, not by each message. TCP checksums do not rely on the application programmer remembering to validate data integrity — the protocol enforces it.
 
-**Caveat — coverage gap:** `validate_synthesis.py` checks structural compliance but not semantic fidelity. A document can have a `## 2. Hypothesis Validation` heading with content that contradicts `MANIFESTO.md`. Programmatic encoding is necessary but not sufficient; it must be combined with hermeneutical constraints (H4) and the canonical-example anchor (H2).
+**Caveat — coverage gap:** `validate_synthesis.py` checks structural compliance but not semantic fidelity. A document can have a `## 2. Hypothesis Validation` heading with content that contradicts `MANIFESTO.md`. Programmatic encoding is necessary but not sufficient; it must be combined with hermeneutical constraints (H4) and the canonical-example anchor (H2). [values-enforcement-tier-mapping.md](values-enforcement-tier-mapping.md) § Critical Asymmetry quantifies the gap: across 112 constraints, behavioral constraints = 54% T5 prose-only; values-specific constraints = 91% T5 prose-only (77/112 = 69% T5 overall) — giving the coverage gap an empirically measured scale.
 
 **Caveat — Goodhart's Law:** Values encoded as metrics become targets for optimization, not for genuine alignment. An agent that knows `validate_synthesis.py` requires `## 2. Hypothesis Validation` will include that heading whether or not it produces genuine validation content. The programmatic gate is a necessary condition, not a sufficient one.
 
@@ -102,7 +102,7 @@ This is the information-theoretic analog of moving a value from the message laye
 
 *Cross-reference density as a health metric:* The number of back-references from downstream documents (agent files, scratchpad entries) to `MANIFESTO.md` is a proxy for encoding integrity. A fleet of agent files with zero references to `MANIFESTO.md` is a fleet that has lost its holographic signal. A fleet with back-references from every agent file is one where every layer contains a traceable echo.
 
-*Algorithmic feasibility:* A measurement script exists (`generate_agent_manifest.py`) that computes cross-reference density scores per agent and fleet-wide average. However, a fleet-wide baseline has not yet been established, and empirical validation showing that density correlates with output quality remains pending. This prevents H4 from being validated as "confirmed"; the hypothesis remains plausible but awaiting empirical grounding. Corpus reference: [epigenetic-tagging.md](epigenetic-tagging.md) Phase 2 work includes baseline measurement and fleet-wide density scoring.
+*Algorithmic feasibility:* A measurement script exists (`generate_agent_manifest.py`) that computes cross-reference density scores per agent and fleet-wide average. However, a fleet-wide baseline has not yet been established. [holographic-encoding-empirics.md](holographic-encoding-empirics.md) § Fleet Density Distribution provides the first fleet-wide census (49 files, mean density 0.85), qualifying H4 as a [4,1] confirmation at the collective fleet layer — individual-file holographic reconstruction requires density ≥2.5, currently achieved by 6.1% of the fleet. Corpus reference: [epigenetic-tagging.md](epigenetic-tagging.md) Phase 2 work includes baseline measurement and fleet-wide density scoring.
 
 ---
 
@@ -119,7 +119,7 @@ The DNA → RNA → Protein → Expression chain maps to MANIFESTO.md → AGENTS
 
 **The epigenetic layer** — currently underformalised in the endogenic system — corresponds to CI gates, validate_synthesis.py, the scratchpad watcher, and session start rituals. These do not change the substrate but regulate which values get expressed in which contexts. Epigenetic marks that silence certain genes in certain tissues are the precise biological analog of a CI gate that silences non-compliant documentation before it reaches the production branch.
 
-**Gap identified:** The endogenic system has no equivalent of **regulatory regions** — promoters and enhancers in DNA that amplify expression of adjacent genes under specific conditions. The endogenic substrate would benefit from context-sensitive amplification: when an agent is executing a research task, the Endogenous-First axiom should be amplified; when committing code, the Documentation-First principle should be amplified. This requires a lightweight "context tagging" mechanism for agent files.
+**Gap identified:** The endogenic system has no equivalent of **regulatory regions** — promoters and enhancers in DNA that amplify expression of adjacent genes under specific conditions. The endogenic substrate would benefit from context-sensitive amplification: when an agent is executing a research task, the Endogenous-First axiom should be amplified; when committing code, the Documentation-First principle should be amplified. This requires a lightweight "context tagging" mechanism for agent files. [agent-taxonomy.md](agent-taxonomy.md) § Six-Layer Encoding Inheritance Chain formalizes a six-layer refinement of the chain: subdirectory AGENTS.md files act as context-narrowing post-translational regulators; SKILL.md files act as domain-specific enzymes — extending the four-layer model to match the codebase's operational state.
 
 ---
 
@@ -206,9 +206,9 @@ The DNA → RNA → Protein → Expression chain maps to MANIFESTO.md → AGENTS
 
 **Pattern**: Treat the density of back-references from downstream documents to the foundational substrate (MANIFESTO.md) as a measurable proxy for encoding fidelity. High cross-reference density = the foundational values are present as explicit echoes throughout the fleet. Low density = the fleet has drifted to implicit or forgotten values.
 
-**Measurement approach**: Count the number of references to `MANIFESTO.md`, `AGENTS.md`, and core guides from agent files. A fleet with 20 agent files and 0 references to `MANIFESTO.md` has a cross-reference density of 0 — the holographic signal is absent. A fleet where each agent file contains at least one citation to the foundational substrate has minimum density 1 per agent.
+**Measurement approach**: Count the number of references to `MANIFESTO.md`, `AGENTS.md`, and core guides from agent files. A fleet with 20 agent files and 0 references to `MANIFESTO.md` has a cross-reference density of 0 — the holographic signal is absent. A fleet where each agent file contains at least one citation to the foundational substrate has minimum density 1 per agent. [semantic-holography-language-encoding.md](semantic-holography-language-encoding.md) § Pattern 2 supplies empirically derived operating thresholds: ≥0.4 = high fidelity, 0.2–0.4 = medium fidelity, <0.2 = drift risk — converting this measurement concept into an actionable threshold framework.
 
-**Implementation**: `generate_agent_manifest.py` already extracts agent metadata. Extending it to count back-references and surface a cross-reference density score would provide a quantitative fidelity metric.
+**Implementation**: `generate_agent_manifest.py` already extracts agent metadata. Extending it to count back-references and surface a cross-reference density score would provide a quantitative fidelity metric. [doc-interweb.md](doc-interweb.md) addresses the enforcement complement (§ Q1 YAML Registry; § R2 weave_links.py): rather than measuring existing cross-references, `scripts/weave_links.py` + `data/link_registry.yml` programmatically inject concept links at corpus scale — the Algorithms-Before-Tokens complement that makes Pattern 6 actionable rather than only diagnostic.
 
 ---
 
@@ -324,7 +324,7 @@ Ordered by impact-to-cost ratio (highest first):
 
 These questions require a further research pass or empirical investigation within this project:
 
-1. **Semantic drift detection**: Can we build a lightweight script that detects when an agent file's behavioral instructions have drifted from the MANIFESTO.md axioms? Would require either embedding-similarity comparison (semantic) or keyword-watermark detection (syntactic). Is the watermark-phrase approach sufficient, or does it only detect surface-level alignment?
+1. **Semantic drift detection**: Can we build a lightweight script that detects when an agent file's behavioral instructions have drifted from the MANIFESTO.md axioms? Would require either embedding-similarity comparison (semantic) or keyword-watermark detection (syntactic). Is the watermark-phrase approach sufficient, or does it only detect surface-level alignment? [value-provenance.md](value-provenance.md) introduces a complementary dimension: chain-of-custody provenance via `governs:` YAML frontmatter annotation (Pattern P1), declaring which axioms a file was derived from — orthogonal to content drift detection; fleet adoption is at 0% baseline (`fleet_citation_coverage_pct = 0.0`), targeting 100% via an O(N) pure-stdlib audit pass (see [value-provenance.md § H3 baseline](value-provenance.md)).
 
 2. **Epigenetic tagging for context-sensitive amplification** *(RESOLVED — 2026-03-09)*
 
