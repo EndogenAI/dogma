@@ -169,7 +169,7 @@ The five work streams below have a recommended sequencing, but some can run part
 
 **Depends on**: Phase 3 Review APPROVED
 **Gate**: Phase 4 Review does not start until all deliverables committed
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — commits 9d5c774 + 3da2149
 
 ### Phase 4 Review — Review Gate
 
@@ -177,7 +177,7 @@ The five work streams below have a recommended sequencing, but some can run part
 **Deliverables**: `## Phase 4 Review Output` in scratchpad, verdict: APPROVED
 **Depends on**: Phase 4 committed
 **Gate**: Sprint Retrospective does not start until APPROVED
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED
 
 ---
 
@@ -214,7 +214,7 @@ The five work streams below have a recommended sequencing, but some can run part
 - [ ] Issues #213, #214, #215, #216, #217, #218, #219, #220: all sub-issues completed and closed
 - [x] Issue #239: Substrate mapping table + rebalancing recommendations produced and committed
 - [x] Issue #240: Top consolidation moves implemented; token + signal metrics documented
-- [ ] Issue #243: `governs:` annotation tooling implemented; fleet adoption begun
+- [x] Issue #243: `governs:` annotation tooling implemented; fleet adoption begun
 - [ ] All PRs green CI; all issues closed via PR body `Closes #N`
 - [ ] Sprint retrospective lessons encoded into substrate
 
@@ -228,3 +228,4 @@ The five work streams below have a recommended sequencing, but some can run part
 | 2 | 2026-03-13 | Substrate Rebalancing research + D4 doc | Phase 2 ⏳ |
 | 3 | 2026-03-13 | Substrate Consolidation | Phase 3 (begin) |
 | 4 | 2026-03-13 | Substrate Consolidation complete | Phase 3 ✅ |
+| 5 | 2026-03-13 | Provenance & Interlinking | Phase 4 ✅ |
