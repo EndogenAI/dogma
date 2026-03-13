@@ -52,3 +52,8 @@ https://github.com/AccessiTech/EndogenAI/issues/35
 # cicirello/issue-completion-stats — repository no longer exists (404).
 # Referenced in docs/research/issue-metrics-action.md as a DEFER candidate.
 https://github.com/cicirello/issue-completion-stats
+
+# The Atlantic "As We May Think" (Bush, 1945) returns 503 intermittently from CI runners.
+# Canonical historical reference; URL is correct and publicly accessible outside CI.
+# Appears in docs/research/endogenic-design-paper.md and sprint-C-h3-augmentive.md.
+https://www.theatlantic.com/magazine/archive/1945/07/as-we-may-think/303881/
