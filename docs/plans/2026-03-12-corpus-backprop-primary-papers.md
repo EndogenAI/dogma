@@ -22,7 +22,7 @@ Survey the entire `docs/research/` corpus (all 72 documents) and back-propagate 
 
 **Back-propagation discipline** (from `values-encoding.md` §5): Weave / Link-out / Consolidate — no annotation proliferation, no in-place definition reproduction, link to source docs for lossless access.
 
-> ⛔ **NO-PRUNE RULE (Phase 1)**: The scratchpad (`2026-03-12.md`) must not be pruned, summarised, or truncated at any point during Phase 1. Scout output is the raw record Phase 2 depends on — completeness takes priority over brevity. If the file grows beyond practical size, continue in `2026-03-12-b.md`, `2026-03-12-c.md`, etc. `prune_scratchpad.py` must NOT be run with `--force` until Phase 1 Review is APPROVED.
+> ⛔ **NO-PRUNE RULE (entire sprint)**: The scratchpad (`2026-03-12.md`) must not be pruned, summarised, or truncated at any point during this sprint (Phases 1–4). Scout output, Orchestrator briefs, and phase outputs are the raw record each subsequent phase depends on — completeness takes priority over brevity. If the file grows beyond practical size, continue in `2026-03-12-b.md`, `2026-03-12-c.md`, etc. `prune_scratchpad.py` must NOT be run with `--force` until Phase 4 Review is APPROVED and the sprint is closed.
 
 ---
 
@@ -202,7 +202,7 @@ The sweep table is the Scout's guide. Depth allocations matter — it prevents t
 2. Write `## Orchestrator Brief — Before Scout 1[X]` to the scratchpad (≤200 tokens; already-observed themes distilled from prior briefs + new signals from latest Scout + unseen gaps + watch list for next group)
 3. Commit completed Scout section to `corpus-raw-findings.md` before delegating next
 4. Delegate next Scout with the brief as the only inter-Scout context in the prompt (not a dump of raw output)
-5. **Do not prune the scratchpad** — if it exceeds file size limits, create `2026-03-12-b.md` and continue there
+5. **Do not prune the scratchpad** — if it exceeds file size limits, create `2026-03-12-b.md` and continue there. No pruning for the entire sprint.
 
 **Deliverables**:
 - `docs/plans/2026-03-12-corpus-raw-findings.md` with all 4 Scout sections committed
