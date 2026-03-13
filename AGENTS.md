@@ -245,9 +245,12 @@ Rules:
 - The executive **reads today's session file first** before delegating to avoid re-discovering context another agent already gathered.
 - At session end, the executive writes a `## Session Summary` section so the next session starts with an orientation point.
 - At session end, the executive **posts a progress comment** on every GitHub issue that was actively worked during the session — summarising what phase completed, what was committed, and what comes next. Use `gh issue comment <num> --body-file <path>`. This is a non-negotiable close step, same as writing the Session Summary.
+- **Update issue acceptance criteria that received new knowledge** — if a session comment added quantitative data, a new mechanism, or a tightened recommendation to an existing issue, check whether the issue's acceptance criteria need updating to reflect the new knowledge. Where criteria are missing or stale, use `gh issue edit <num> --body-file <path>` to add them. This prevents useful context from living only in comments where it will be missed when the issue is picked up.
 - If the session produced novel patterns, efficiency observations, or techniques that outperformed prior expectations — run the **session-retrospective** skill before closing: `@session-retrospective What lessons did we learn this session?`
 - At phase completion, the executive **updates the issue body checkboxes** to reflect completed deliverables. Write the updated body to a temp file and use `gh issue edit <num> --body-file <path>`. Verify with `gh issue view <num> --json body -q '.body' | grep -E '\[x\]|\[ \]'`. This keeps the issue body as a live progress tracker, not just the initial spec.
 - Use the active session file for inter-agent handoff notes, gap reports, and aggregated sub-agent results.
+
+**Comments vs. Issues — Signal Split**: Use comments to carry updated context, data, and mechanism changes to an existing issue (`gh issue comment`). Create new issues only for untracked work items. Conflating the two produces either stale comments (actionable items lost in discussion threads) or noisy issue trackers (every finding becomes an issue). Rule: if the insight updates an existing commitment → comment; if the insight reveals a new commitment → issue.
 
 ### Focus-on-Descent / Compression-on-Ascent
 
@@ -468,6 +471,7 @@ Any command that creates or modifies a remote side effect must be immediately pr
 
 | Command | Pre-Use Validation | Verification |
 |---------|-------------------|------------|
+| `Pre-filing duplicate check` | `gh issue list --state all --limit 120 \| grep -i "<keyword>"` | N/A |
 | `gh issue create` | `test -s /tmp/file && file /tmp/file \| grep -q "UTF-8"` | `gh issue list --state open --limit 5` |
 | `git push` | N/A (local commit) | `git log --oneline -1` then `gh run list --limit 3` to monitor CI |
 | `gh pr create` | `test -s /tmp/file && file /tmp/file \| grep -q "UTF-8"` | `gh pr view` |
