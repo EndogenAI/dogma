@@ -279,7 +279,18 @@ def parse_frontmatter_governs(text: str) -> list[str]:
     block_match = re.search(r"^governs\s*:\s*$", fm, re.MULTILINE)
     if block_match:
         after = fm[block_match.end() :]
-        return [m.group(1).strip().strip("\"'") for m in re.finditer(r"^\s+-\s+(.+)$", after, re.MULTILINE)]
+        items = []
+        for line in after.splitlines():
+            if not line.strip():
+                if items:
+                    break  # blank line after items signals end of block
+                continue  # blank line before first item (newline after governs:)
+            m = re.match(r"^\s+-\s+(.+)$", line)
+            if m:
+                items.append(m.group(1).strip().strip("\"'"))
+            else:
+                break  # next YAML key or non-list line — stop
+        return items
 
     # Inline list: governs: [val1, val2]
     inline_match = re.search(r"^governs\s*:\s*\[(.+)\]", fm, re.MULTILINE)

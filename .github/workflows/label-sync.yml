@@ -18,8 +18,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Extract labels array for label-sync
+        run: |
+          python3 -c "
+          import yaml
+          with open('data/labels.yml') as f:
+              manifest = yaml.safe_load(f)
+          with open('/tmp/labels-flat.yml', 'w') as f:
+              yaml.dump(manifest['labels'], f, default_flow_style=False, allow_unicode=True)
+          "
       - uses: EndBug/label-sync@v2
         with:
-          config-file: data/labels.yml
+          config-file: /tmp/labels-flat.yml
           delete-other-labels: false  # conservative: do not delete unrecognised labels; set true once stable
           token: ${{ secrets.GITHUB_TOKEN }}

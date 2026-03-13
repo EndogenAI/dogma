@@ -19,8 +19,8 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           stale-issue-message: "This issue has been inactive for 60 days and has been marked as stale. If it is still relevant, please comment or remove the stale label."
           stale-pr-message: "This PR has been inactive for 60 days and has been marked as stale. If still active, please comment or remove the stale label."
-          close-issue-message: "This issue has been automatically closed after 90 days of inactivity. Please reopen if still needed."
-          close-pr-message: "This PR has been automatically closed after 90 days of inactivity. Please reopen if still needed."
+          close-issue-message: "This issue has been automatically closed after 74 days of inactivity (60 days to stale + 14 days to close). Please reopen if still needed."
+          close-pr-message: "This PR has been automatically closed after 37 days of inactivity (30 days to stale + 7 days to close). Please reopen if still needed."
           days-before-stale: 60
           days-before-close: 14
           days-before-pr-stale: 30

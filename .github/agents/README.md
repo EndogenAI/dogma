@@ -1,3 +1,9 @@
+---
+governs:
+  - endogenous-first
+  - programmatic-first
+---
+
 # Agent Fleet Catalog
 
 VS Code Copilot custom agents for the EndogenAI Workflows project.

@@ -48,3 +48,7 @@ https://spec.modelcontextprotocol.io/
 # The AccessiTech/EndogenAI repository no longer exists; issue is permanently 404.
 # Referenced in README.md as historical context.
 https://github.com/AccessiTech/EndogenAI/issues/35
+
+# cicirello/issue-completion-stats — repository no longer exists (404).
+# Referenced in docs/research/issue-metrics-action.md as a DEFER candidate.
+https://github.com/cicirello/issue-completion-stats

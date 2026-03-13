@@ -225,3 +225,68 @@ def test_gh_not_found_exits_1(tmp_path):
             export_project_state.main(["--output", str(output)])
 
     assert exc_info.value.code == 1
+
+
+# ---------------------------------------------------------------------------
+# --fields filtering
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.io
+def test_fields_single_issues(tmp_path):
+    """--fields issues produces output with only issues key (no labels)."""
+    output = tmp_path / "state.json"
+
+    with patch("subprocess.run", side_effect=_make_mock_run()):
+        rc = export_project_state.main(["--output", str(output), "--fields", "issues"])
+
+    assert rc == 0
+    data = json.loads(output.read_text())
+    assert "issues" in data
+    assert "labels" not in data
+    assert "generated_at" in data
+
+
+@pytest.mark.io
+def test_fields_issues_and_labels(tmp_path):
+    """--fields issues,labels produces output with both keys and no extras."""
+    output = tmp_path / "state.json"
+
+    with patch("subprocess.run", side_effect=_make_mock_run()):
+        rc = export_project_state.main(["--output", str(output), "--fields", "issues,labels"])
+
+    assert rc == 0
+    data = json.loads(output.read_text())
+    assert "issues" in data
+    assert "labels" in data
+    assert "generated_at" in data
+    # No unexpected top-level keys
+    assert set(data.keys()) == {"issues", "labels", "generated_at"}
+
+
+@pytest.mark.io
+def test_fields_unknown_exits_1(tmp_path, capsys):
+    """--fields unknown_field exits 1 with an error message naming the unknown field."""
+    output = tmp_path / "state.json"
+
+    rc = export_project_state.main(["--output", str(output), "--fields", "unknown_field"])
+
+    assert rc == 1
+    captured = capsys.readouterr()
+    assert "unknown" in captured.err.lower()
+    assert "unknown_field" in captured.err
+
+
+@pytest.mark.io
+def test_no_fields_all_present(tmp_path):
+    """Default (no --fields) includes all known fields — backward-compat regression."""
+    output = tmp_path / "state.json"
+
+    with patch("subprocess.run", side_effect=_make_mock_run()):
+        rc = export_project_state.main(["--output", str(output)])
+
+    assert rc == 0
+    data = json.loads(output.read_text())
+    assert "issues" in data
+    assert "labels" in data
+    assert "generated_at" in data

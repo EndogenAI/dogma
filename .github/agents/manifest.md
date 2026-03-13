@@ -1,3 +1,8 @@
+---
+governs:
+  - programmatic-first
+---
+
 | Agent | Description | Posture | Capabilities | Handoffs |
 |-------|-------------|---------|--------------|----------|
 | A5 Context Architect | Evaluate context governance options — AFS context layers, semantic memory isolation, and scratchpad vs repo-memory tradeoffs — and design context layering conventions. | readonly | evaluate-context, afs-context, semantic-memory, scratchpad-repo-memory, design-context | Research Reviewer, Executive Orchestrator, Executive Docs |

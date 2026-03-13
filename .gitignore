@@ -56,6 +56,10 @@ cover/
 # index and IS tracked. Per-source synthesis stubs live in docs/research/sources/ (tracked).
 .cache/
 !.cache/sources/manifest.json
+# snapshot-issues.yml workflow output (daily issue/label snapshot)
+!.cache/github/project_state.json
+# release-changelog-builder cache (release-changelog.yml workflow)
+!.cache/pr-changelog-cache.json
 
 # Translations
 *.mo

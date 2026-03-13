@@ -53,14 +53,14 @@ The five work streams below have a recommended sequencing, but some can run part
 
 **Agent**: Executive Researcher → Research Scout → Executive Scripter
 **Deliverables**:
-- [ ] Sub-issues #213–#220 triaged and ordered for execution
-- [ ] `scripts/export_project_state.py` implemented and tested (#218 gap-filler)
-- [ ] GitHub Actions CI workflows drafted for #214, #215, #216, #217
-- [ ] `data/labels.yml` governance enforced via CI (#215)
-- [ ] CHANGELOG automation wired (#216, #217)
-- [ ] Issue corpus snapshot mechanism implemented (#213)
-- [ ] AGENTS.md updated: orient-step references local cached artifacts before API calls
-- [ ] Fleet/skills updated to use new tooling
+- [x] Sub-issues #213–#220 triaged and ordered for execution
+- [x] `scripts/export_project_state.py` implemented and tested (#218 gap-filler)
+- [x] GitHub Actions CI workflows drafted for #214, #215, #216, #217
+- [x] `data/labels.yml` governance enforced via CI (#215)
+- [x] CHANGELOG automation wired (#216, #217)
+- [x] Issue corpus snapshot mechanism implemented (#213)
+- [x] AGENTS.md updated: orient-step references local cached artifacts before API calls
+- [x] Fleet/skills updated to use new tooling
 
 **Depends on**: Phase 0 complete
 **Gate**: Phase 1A Review does not start until all deliverables committed
@@ -80,14 +80,14 @@ The five work streams below have a recommended sequencing, but some can run part
 
 **Agent**: Executive Docs
 **Deliverables**:
-- [ ] MANIFESTO.md §3 re-reviewed against updated endogenic-design-paper.md (Phase B)
-- [ ] AGENTS.md updated with LCF structural-enabler operational constraints (Phase C)
-- [ ] `docs/guides/local-compute.md` updated with structural test + enforcement-proximity principle (Phase C)
-- [ ] Relevant `.github/agents/` agent files updated (LLM Cost Optimizer, Executive Orchestrator) (Phase C)
-- [ ] `docs/research/values-encoding.md` F4 section reviewed for any further updates (Phase C)
-- [ ] Relevant skill files referencing LCF or cost-tier framing updated (Phase C)
-- [ ] `validate_synthesis.py` passes on all updated research docs
-- [ ] `validate_agent_files.py --all` passes
+- [x] MANIFESTO.md §3 re-reviewed against updated endogenic-design-paper.md (Phase B)
+- [x] AGENTS.md updated with LCF structural-enabler operational constraints (Phase C)
+- [x] `docs/guides/local-compute.md` updated with structural test + enforcement-proximity principle (Phase C)
+- [x] Relevant `.github/agents/` agent files updated (LLM Cost Optimizer, Executive Orchestrator) (Phase C)
+- [x] `docs/research/values-encoding.md` F4 section reviewed for any further updates (Phase C)
+- [x] Relevant skill files referencing LCF or cost-tier framing updated (Phase C)
+- [x] `validate_synthesis.py` passes on all updated research docs
+- [x] `validate_agent_files.py --all` passes
 
 **Depends on**: Phase 0 complete (can run in parallel with Phase 1A)
 **Gate**: Phase 1B Review does not start until all deliverables committed
@@ -107,12 +107,12 @@ The five work streams below have a recommended sequencing, but some can run part
 
 **Agent**: Executive Researcher → Research Scout → Executive Docs
 **Deliverables**:
-- [ ] Substrate mapping table created (CSV/structured data): each layer × file × content type × token count × audience × cross-ref density × re-encoding frequency
-- [ ] High-opportunity consolidation candidates identified (4+ encodings, >15% startup budget, CRD < 2)
-- [ ] Agent wayfinding interviews completed (2–3 agents: pain points, first-read patterns, redundancy)
-- [ ] Rebalancing recommendations report produced: top 3–5 ranked opportunities with current state / proposed state / estimated token savings / signal-preservation rationale
-- [ ] `docs/research/substrate-rebalancing-2026-03-13.md` created (D4, status: Final)
-- [ ] Issue #239 acceptance criteria fully checked off
+- [x] Substrate mapping table created (CSV/structured data): each layer × file × content type × token count × audience × cross-ref density × re-encoding frequency
+- [x] High-opportunity consolidation candidates identified (4+ encodings, >15% startup budget, CRD < 2)
+- [x] Agent wayfinding interviews completed (2–3 agents: pain points, first-read patterns, redundancy)
+- [x] Rebalancing recommendations report produced: top 3–5 ranked opportunities with current state / proposed state / estimated token savings / signal-preservation rationale
+- [x] `docs/research/substrate-rebalancing-2026-03-13.md` created (D4, status: Final)
+- [x] Issue #239 acceptance criteria fully checked off
 
 **Depends on**: Phase 1B Review APPROVED
 **Gate**: Phase 2 Review does not start until deliverable committed
@@ -132,14 +132,14 @@ The five work streams below have a recommended sequencing, but some can run part
 
 **Agent**: Executive Docs (with Executive Scripter for tooling)
 **Deliverables**:
-- [ ] Top 3–5 consolidation moves implemented (move/dedup/absorb content; updated cross-references; clarified ownership)
-- [ ] Token count delta measured: before / after / per layer
-- [ ] Startup context budget delta measured
-- [ ] Signal preservation spot-check: 3–5 critical forward references confirmed intact
-- [ ] `docs/research/substrate-consolidation-2026-03-13.md` created (D4, status: Final)
-- [ ] `docs/context_budget_target.md` (or new `docs/context_sustainability.md`) updated with tracking metric
-- [ ] CI substrate health check added (if feasible)
-- [ ] `validate_agent_files.py --all` and `validate_synthesis.py` both pass
+- [x] Top 3–5 consolidation moves implemented (move/dedup/absorb content; updated cross-references; clarified ownership)
+- [x] Token count delta measured: before / after / per layer
+- [x] Startup context budget delta measured
+- [x] Signal preservation spot-check: 3–5 critical forward references confirmed intact
+- [x] `docs/research/substrate-consolidation-2026-03-13.md` created (D4, status: Final)
+- [x] `docs/context_budget_target.md` (or new `docs/context_sustainability.md`) updated with tracking metric
+- [x] CI substrate health check added (if feasible)
+- [x] `validate_agent_files.py --all` and `validate_synthesis.py` both pass
 
 **Depends on**: Phase 2 Review APPROVED
 **Gate**: Phase 3 Review does not start until all deliverables committed
@@ -159,13 +159,13 @@ The five work streams below have a recommended sequencing, but some can run part
 
 **Agent**: Executive Scripter → Executive Docs
 **Deliverables**:
-- [ ] Provenance/interlinking issue created and number assigned (TBD#)
-- [ ] `governs:` YAML frontmatter annotation adoption script implemented (complement to value-provenance.md P1 pattern; 0% fleet coverage at baseline)
-- [ ] `data/link_registry.yml` audited and gaps in interlinking identified
-- [ ] `scripts/weave_links.py` extended or a new script created to assist agents in provenance/interlinking tasks
-- [ ] Fleet adoption: key docs updated with `governs:` annotations
-- [ ] Agent orientation updated: references to provenance tooling in AGENTS.md / relevant guides
-- [ ] Issue acceptance criteria fully checked off
+- [x] Provenance/interlinking issue created and number assigned (#243)
+- [x] `governs:` YAML frontmatter annotation adoption script implemented (complement to value-provenance.md P1 pattern; 0% fleet coverage at baseline)
+- [x] `data/link_registry.yml` audited and gaps in interlinking identified
+- [x] `scripts/weave_links.py` extended or a new script created to assist agents in provenance/interlinking tasks
+- [x] Fleet adoption: key docs updated with `governs:` annotations (29/36 agents, 7 residual acceptable)
+- [x] Agent orientation updated: references to provenance tooling in AGENTS.md / relevant guides
+- [x] Issue acceptance criteria fully checked off
 
 **Depends on**: Phase 3 Review APPROVED
 **Gate**: Phase 4 Review does not start until all deliverables committed
@@ -211,7 +211,7 @@ The five work streams below have a recommended sequencing, but some can run part
 - [x] `.github/workflows/no-label-drift.yml` retired/deleted (#215)
 - [x] `.github/workflows/changelog-on-merge.yml` stub replaced with full `conventional-changelog-action` implementation (#216)
 - [x] `.github/workflows/release-changelog.yml` created — `release-changelog-builder-action`, tag-push trigger (#217)
-- [ ] Issue #218 body checkboxes updated to `[x]` (`export_project_state.py` already implemented) — pending Phase N
+- [x] Issue #218 body checkboxes updated to `[x]` (`export_project_state.py` already implemented)
 - [x] `stale.yml` reviewed; issue #219 closed if adequate or updated if not — days-before-close 14, PR thresholds added
 - [x] `.github/workflows/release-drafter.yml` + `.github/release-drafter.yml` config (#220)
 - [x] `ruff check scripts/ tests/` + `pytest tests/ -x -m "not slow and not integration" -q` both pass
@@ -275,9 +275,9 @@ The five work streams below have a recommended sequencing, but some can run part
 
 ## Acceptance Criteria (Sprint Level)
 
-- [ ] Issue #212: MANIFESTO §3 re-reviewed and full dogma propagation complete
-- [ ] Issue #221: GitHub automation implemented; local state representation auto-generated; AGENTS.md orient step uses cached artifacts
-- [ ] Issues #213, #214, #215, #216, #217, #218, #219, #220: all sub-issues completed and closed
+- [x] Issue #212: MANIFESTO §3 re-reviewed and full dogma propagation complete
+- [x] Issue #221: GitHub automation implemented; local state representation auto-generated; AGENTS.md orient step uses cached artifacts
+- [x] Issues #213, #214, #215, #216, #217, #218, #219, #220: all sub-issues completed and closed
 - [x] Issue #239: Substrate mapping table + rebalancing recommendations produced and committed
 - [x] Issue #240: Top consolidation moves implemented; token + signal metrics documented
 - [x] Issue #243: `governs:` annotation tooling implemented; fleet adoption begun

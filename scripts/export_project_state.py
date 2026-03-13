@@ -32,6 +32,9 @@ Flags
 -----
 --output PATH   Destination file path.
                 Default: .cache/github/project_state.json
+--fields FIELDS Comma-separated list of top-level output fields to include.
+                Known: issues, labels. Default: all fields.
+                Case-insensitive.
 --check         Print cache age and exit 0 if fresh (<4 h), exit 1 if stale/absent.
 --quiet         Suppress informational stdout messages.
 --help          Show this help and exit.
@@ -68,6 +71,7 @@ from pathlib import Path
 
 _DEFAULT_OUTPUT = Path(".cache/github/project_state.json")
 _FRESH_HOURS = 4  # cache is "fresh" for this many hours
+_KNOWN_FIELDS: tuple[str, ...] = ("issues", "labels")
 
 
 # ---------------------------------------------------------------------------
@@ -108,6 +112,16 @@ def _build_parser() -> argparse.ArgumentParser:
         action="store_true",
         default=False,
         help="Check cache freshness only; exits 0 if fresh (<4 h), 1 if stale/absent.",
+    )
+    parser.add_argument(
+        "--fields",
+        default=None,
+        metavar="FIELDS",
+        help=(
+            "Comma-separated list of fields to include (e.g. issues,labels). "
+            f"Known fields: {', '.join(_KNOWN_FIELDS)}. "
+            "Default: all fields."
+        ),
     )
     parser.add_argument(
         "--quiet",
@@ -208,21 +222,27 @@ def fetch_labels() -> list[dict]:
 # ---------------------------------------------------------------------------
 
 
-def export(output_path: Path, quiet: bool = False) -> int:
+def export(
+    output_path: Path,
+    quiet: bool = False,
+    fields: list[str] | None = None,
+) -> int:
     """Fetch GitHub state and write JSON to *output_path*.  Returns exit code."""
-    if not quiet:
-        print("Fetching issues…", flush=True)
-    issues = fetch_issues()
+    requested = fields if fields is not None else list(_KNOWN_FIELDS)
 
-    if not quiet:
-        print("Fetching labels…", flush=True)
-    labels = fetch_labels()
+    payload: dict = {}
 
-    payload = {
-        "issues": issues,
-        "labels": labels,
-        "generated_at": datetime.now(tz=timezone.utc).isoformat(),
-    }
+    if "issues" in requested:
+        if not quiet:
+            print("Fetching issues…", flush=True)
+        payload["issues"] = fetch_issues()
+
+    if "labels" in requested:
+        if not quiet:
+            print("Fetching labels…", flush=True)
+        payload["labels"] = fetch_labels()
+
+    payload["generated_at"] = datetime.now(tz=timezone.utc).isoformat()
 
     # Validate / create parent directory
     safe_path = _resolve_safe(output_path)
@@ -234,10 +254,8 @@ def export(output_path: Path, quiet: bool = False) -> int:
         return 1
 
     if not quiet:
-        print(
-            f"Written: {safe_path} ({len(issues)} issues, {len(labels)} labels)",
-            flush=True,
-        )
+        counts = ", ".join(f"{len(payload[f])} {f}" for f in requested if f in payload)
+        print(f"Written: {safe_path} ({counts})", flush=True)
     return 0
 
 
@@ -255,7 +273,20 @@ def main(argv: list[str] | None = None) -> int:
     if args.check:
         return check_cache(output_path, quiet=args.quiet)
 
-    return export(output_path, quiet=args.quiet)
+    fields: list[str] | None = None
+    if args.fields is not None:
+        requested_fields = [f.strip().lower() for f in args.fields.split(",") if f.strip()]
+        unknown = [f for f in requested_fields if f not in _KNOWN_FIELDS]
+        if unknown:
+            print(
+                f"ERROR: unknown field(s): {', '.join(unknown)}. Known fields: {', '.join(_KNOWN_FIELDS)}",
+                file=sys.stderr,
+                flush=True,
+            )
+            return 1
+        fields = requested_fields
+
+    return export(output_path, quiet=args.quiet, fields=fields)
 
 
 if __name__ == "__main__":

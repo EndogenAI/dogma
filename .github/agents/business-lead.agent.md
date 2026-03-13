@@ -11,6 +11,10 @@ handoffs:
     agent: executive-orchestrator
     prompt: ""
     send: false
+governs:
+  - endogenous-first
+  - algorithms-before-tokens
+  - local-compute-first
 ---
 
 ## Beliefs & Context

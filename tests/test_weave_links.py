@@ -467,3 +467,139 @@ class TestIdempotencyGuard:
         result_text, was_filtered = wl.filter_sections(text, "References")
         assert result_text == text
         assert was_filtered is False
+
+
+# ---------------------------------------------------------------------------
+# parse_frontmatter_governs
+# ---------------------------------------------------------------------------
+
+
+class TestParseFrontmatterGoverns:
+    def test_inline_scalar_form(self):
+        text = "---\ngoverns: endogenous-first\n---\n"
+        assert wl.parse_frontmatter_governs(text) == ["endogenous-first"]
+
+    def test_block_list_single_item(self):
+        text = "---\ngoverns:\n  - algorithms-before-tokens\n---\n"
+        assert wl.parse_frontmatter_governs(text) == ["algorithms-before-tokens"]
+
+    def test_block_list_stops_at_next_yaml_key(self):
+        """Bug case: subsequent YAML key items must not bleed into governs list."""
+        text = "---\ngoverns:\n  - endogenous-first\napplications:\n  - AGENTS.md\n---\n"
+        assert wl.parse_frontmatter_governs(text) == ["endogenous-first"]
+
+    def test_no_governs_field_returns_empty(self):
+        text = "---\ntitle: My Doc\nstatus: Draft\n---\n"
+        assert wl.parse_frontmatter_governs(text) == []
+
+    def test_governs_empty_block_returns_empty(self):
+        """governs: with no list items and a bare next key → empty list."""
+        text = "---\ngoverns:\nstatus: Draft\n---\n"
+        assert wl.parse_frontmatter_governs(text) == []
+
+    def test_no_frontmatter_returns_empty(self):
+        text = "# Just a markdown file with no frontmatter.\n"
+        assert wl.parse_frontmatter_governs(text) == []
+
+    def test_inline_list_form(self):
+        text = "---\ngoverns: [endogenous-first, local-compute-first]\n---\n"
+        result = wl.parse_frontmatter_governs(text)
+        assert result == ["endogenous-first", "local-compute-first"]
+
+
+# ---------------------------------------------------------------------------
+# _normalise_concept_name
+# ---------------------------------------------------------------------------
+
+
+class TestNormaliseConceptName:
+    def test_hyphenated_name_lowercased(self):
+        assert wl._normalise_concept_name("Endogenous-First") == "endogenous-first"
+
+    def test_spaces_converted_to_hyphens(self):
+        assert wl._normalise_concept_name("Local Compute First") == "local-compute-first"
+
+    def test_already_normalised_unchanged(self):
+        assert wl._normalise_concept_name("algorithms-before-tokens") == "algorithms-before-tokens"
+
+    def test_deterministic_repeated_calls(self):
+        name = "Programmatic-First"
+        assert wl._normalise_concept_name(name) == wl._normalise_concept_name(name)
+
+
+# ---------------------------------------------------------------------------
+# find_governs_annotation_candidates
+# ---------------------------------------------------------------------------
+
+
+class TestFindGovernsAnnotationCandidates:
+    def _make_registry(self, concepts):
+        """Build a registry list with governs_source set for each concept."""
+        entries = []
+        for concept, source in concepts:
+            entries.append(
+                {
+                    "concept": concept,
+                    "canonical_source": source,
+                    "aliases": [],
+                    "governs_source": source,
+                }
+            )
+        return entries
+
+    def test_two_matching_concepts_both_returned(self, tmp_path):
+        text = "---\ngoverns:\n  - endogenous-first\n  - local-compute-first\n---\n"
+        registry = self._make_registry(
+            [
+                ("endogenous-first", "MANIFESTO.md"),
+                ("local-compute-first", "MANIFESTO.md"),
+            ]
+        )
+        filepath = tmp_path / "docs" / "guide.md"
+        filepath.parent.mkdir(parents=True)
+        filepath.touch()
+        candidates = wl.find_governs_annotation_candidates(text, registry, filepath, tmp_path)
+        concepts_found = [c[0] for c in candidates]
+        assert "endogenous-first" in concepts_found
+        assert "local-compute-first" in concepts_found
+        assert len(candidates) == 2
+
+    def test_already_linked_governs_value_is_skipped(self, tmp_path):
+        """A governs value already written as [name](url) is not suggested again."""
+        text = '---\ngoverns:\n  - "[endogenous-first](MANIFESTO.md)"\n---\n'
+        registry = self._make_registry([("endogenous-first", "MANIFESTO.md")])
+        filepath = tmp_path / "guide.md"
+        filepath.touch()
+        candidates = wl.find_governs_annotation_candidates(text, registry, filepath, tmp_path)
+        assert candidates == []
+
+    def test_empty_registry_returns_empty(self, tmp_path):
+        text = "---\ngoverns:\n  - endogenous-first\n---\n"
+        filepath = tmp_path / "guide.md"
+        filepath.touch()
+        candidates = wl.find_governs_annotation_candidates(text, [], filepath, tmp_path)
+        assert candidates == []
+
+    def test_registry_entry_without_governs_source_is_ignored(self, tmp_path):
+        """Entries without governs_source key are not considered."""
+        text = "---\ngoverns:\n  - endogenous-first\n---\n"
+        registry = [
+            {
+                "concept": "endogenous-first",
+                "canonical_source": "MANIFESTO.md",
+                "aliases": [],
+                # no governs_source key
+            }
+        ]
+        filepath = tmp_path / "guide.md"
+        filepath.touch()
+        candidates = wl.find_governs_annotation_candidates(text, registry, filepath, tmp_path)
+        assert candidates == []
+
+    def test_no_governs_frontmatter_returns_empty(self, tmp_path):
+        text = "---\ntitle: Guide\n---\n"
+        registry = self._make_registry([("endogenous-first", "MANIFESTO.md")])
+        filepath = tmp_path / "guide.md"
+        filepath.touch()
+        candidates = wl.find_governs_annotation_candidates(text, registry, filepath, tmp_path)
+        assert candidates == []

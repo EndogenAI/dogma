@@ -1,3 +1,9 @@
+---
+governs:
+  - endogenous-first
+  - programmatic-first
+---
+
 # .github/agents/AGENTS.md
 
 > This file narrows the constraints in the root [`AGENTS.md`](../../AGENTS.md).
