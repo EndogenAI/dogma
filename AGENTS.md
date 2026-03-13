@@ -270,6 +270,8 @@ Before invoking **any** subagent, verify all three:
 
 If **any** check fails → rewrite the prompt before delegating.
 
+**Batch-by-file**: When two issues target non-overlapping sections of the *same* file, batch them into a single delegation; when they target *different* files, split into separate delegations (parallelise only if phases are independent). Batching same-file edits preserves the single-review-per-file contract; splitting cross-file edits keeps each delegation accountable to a focused scope. *Grounded in corpus back-propagation sprint Phase 4 (2026-03-12): issues #225+#227 batched into Phase 4A because both targeted `workflows.md`; issue #226 kept as Phase 4B because it targeted `AGENTS.md`.* 
+
 **Broad-scope irreversible changes require a blocking question gate**: before delegating any task that would modify many files in bulk (e.g., renaming sections across all `.agent.md` files, restructuring a widely-referenced subsystem), surface the design decision to the user via an interactive question prompt and block delegation until confirmed. Do not guess the mapping and delegate speculatively — one wrong assumption propagates to every affected file.
 
 **Canonical Session Examples** (2026-03-11 Milestone 9 review):
@@ -347,6 +349,8 @@ When writing prompts for the **Review agent**, use explicit numbered binary acce
 
 *Grounded in corpus back-propagation sprint observation (2026-03-12, issue #226): a 7-criterion prompt caught a discipline violation and confirmed 6 criteria explicitly; a prior equivalent generic prompt returned APPROVED without surfacing the violation.*
 
+**Include integration-point criteria**: complement existence checks ("does X exist?") with integration checks ("does X connect to Y?"). A field added to a taxonomy but absent from the sweep table that references it passes an existence check but breaks the integration — write two separate criteria: one for existence, one for the expected join. Integration failures are the most common missed-review gap in multi-section docs. *Grounded in corpus back-propagation sprint Phase 4A (2026-03-12): doc-type field was added to the taxonomy section but was absent from the sweep table; a generic existence check would have passed.*
+
 ### Membrane Permeability Specifications
 
 **Essence**: The agent fleet is a pipeline system. Each handoff between agents is bounded by a **membrane** — a specification of what data flows in, what flows out, and what canonical signals must be preserved in transit. Defective membranes cause signal loss. Documenting membranes makes losses visible.
@@ -417,6 +421,7 @@ When writing prompts for the **Review agent**, use explicit numbered binary acce
 |-----------|--------|
 | Session file < 2000 lines | No action needed |
 | Session file ≥ 2000 lines | Run `uv run python scripts/prune_scratchpad.py` |
+| Active multi-phase sprint | Do **NOT** run `--force` mid-sprint — preserve all Scout and phase output across phases; prune only after the sprint's highest Review gate is APPROVED |
 | Session end | Write `## Session Summary`, then run `uv run python scripts/prune_scratchpad.py --force` |
 | New session day | Run `uv run python scripts/prune_scratchpad.py --init` |
 

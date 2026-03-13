@@ -32,6 +32,12 @@ This skill implements the back-propagation protocol: new patterns discovered int
 
 **Companion skill**: [`session-management`](../session-management/SKILL.md) — retrospective runs during Session Close phase (Step 5 of that skill)
 
+**Encoding circuit** — the complete back-propagation loop this skill enacts:
+
+> Sprint observation → Retrospective harvest → Gap-analysis → Routing plan → Issue seed → Workplan → Phase delegation → Commit
+
+Steps 2–4 map to this skill's Harvest, Gap-Analyse, and Route steps; steps 5–8 execute in subsequent sessions from the routing plan. The circuit closes only when a commit lands — scratchpad notes alone do not close it. The highest-leverage point is step 3: a routing entry missing the `Section` field causes re-scoping at step 6 or 7, costing tokens that a complete entry at step 3 would have eliminated.
+
 ---
 
 ## When to Run
@@ -119,6 +125,12 @@ For each lesson with Gap = **Yes**, route to the correct fleet agent using the R
 | Script or automation gap | **Executive Scripter** | `scripts/<script>.py` |
 
 **Constraint**: route **one gap per delegation**. Do not batch all gaps into a single agent invocation — batching reduces accountability and makes Review harder. Each delegation gets a focused scope.
+
+**Routing entry format** (for execution handoff across sessions): each row in the `## Routing Plan` section should contain six fields:
+
+| Gap# | Lesson (one sentence) | Target Agent | Target File | Section | Change (one sentence) |
+
+A routing plan entry with these six fields is sufficient context to reconstruct a full delegation brief in a later session without re-reading session history. The `Section` field is the highest-value addition: without it, the receiving agent re-derives the insertion point at delegation cost. *Grounded in 2026-03-13 corpus sprint: the 6-row routing plan from 2026-03-12 reconstructed all 6 Phase 4 delegations without re-derivation.*
 
 **Inputs to each downstream agent**: the specific lesson text + the target file(s) + the reasoning for the gap.
 **Expected outputs**: a file edit (new section, new bullet, or new file) ready for Review.
