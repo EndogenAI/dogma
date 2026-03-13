@@ -1,0 +1,49 @@
+name: Snapshot GitHub State
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # Daily at 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write  # Required for git push; uses GITHUB_TOKEN
+
+jobs:
+  snapshot:
+    name: Export and commit GitHub issue/label state
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Use GITHUB_TOKEN for auth; fetch-depth=0 ensures we push to the
+          # correct branch. For private repos or orgs that restrict GITHUB_TOKEN
+          # push access, replace with a repository secret (PAT) that has
+          # repo scope: secrets.SNAPSHOT_PAT
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v1
+        with:
+          version: "latest"
+
+      - name: Install dependencies
+        run: uv sync --extra dev
+
+      - name: Export project state
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: uv run python scripts/export_project_state.py
+
+      - name: Commit snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .cache/github/
+          git commit -m "chore: update GitHub state snapshot" --allow-empty
+          git push
+        # Note: if GITHUB_TOKEN push is blocked by branch protection rules
+        # (e.g., required reviews on main), replace `token` above with a PAT
+        # stored as secrets.SNAPSHOT_PAT that has `repo` scope and is listed
+        # as a bypass actor for the branch protection rule.
