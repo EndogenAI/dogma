@@ -352,7 +352,7 @@ When scouting a corpus of more than ~20 documents, insert a **sweep step** befor
 
 4. **Programmatic sweep table** — for corpora ≥ 20 docs, encode the sweep table as a YAML data file rather than a manually-maintained Markdown table:
    - Create `docs/plans/corpus-sweep-data.yml` with one entry per document. Auto-computable fields (recency tier, already-cited status) are computed on generation; manual fields (relevance, scout depth, doc type) are set by the organiser.
-   - Generate the Markdown table: `uv run python scripts/generate_sweep_table.py docs/plans/corpus-sweep-data.yml docs/plans/YYYY-MM-DD-corpus-sweep-table.md`
+   - Generate the Markdown table: `uv run python scripts/generate_sweep_table.py --output docs/plans/YYYY-MM-DD-corpus-sweep-table.md`
    - Update scout progress via CLI: `uv run python scripts/generate_sweep_table.py --mark-read <docname>` — never edit the generated Markdown directly.
 
    **Why programmatic**: Manual Markdown tables drift when scouts mark dozens of docs read across multiple sessions. The YAML file is the canonical data source; the Markdown is a generated view. The `--mark-read` CLI keeps the status field accurate without requiring agents to edit raw tables.

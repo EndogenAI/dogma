@@ -36,9 +36,8 @@ Exit codes:
 """
 
 import argparse
-import re
 import sys
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 import yaml
@@ -91,14 +90,20 @@ def detect_recency(doc_path: Path) -> str:
     else:
         date_str = str(date_val)
 
-    if re.search(r"2026-0[3-9]|2026-1[0-2]", date_str):
-        return "Recent"
-    if "2026-02" in date_str:
-        return "Mid"
-    if "2026-01" in date_str or re.search(r"202[0-5]|201\d|200\d|19\d\d", date_str):
-        return "Old"
+    try:
+        doc_date = date.fromisoformat(date_str[:10])
+    except (ValueError, TypeError):
+        return "Unknown"
 
-    return "Unknown"
+    today = date.today()
+    four_weeks_ago = today - timedelta(weeks=4)
+    six_months_ago = today - timedelta(days=182)
+
+    if doc_date >= four_weeks_ago:
+        return "Recent"
+    if doc_date >= six_months_ago:
+        return "Mid"
+    return "Old"
 
 
 def detect_citations(primary_paper_path: Path, doc_name: str) -> bool:
@@ -204,12 +209,6 @@ def generate_header(entries: list, citations_map: dict) -> str:
         cited = sorted(citations_map.get(key, set()))
         xref_lines.append(f"Docs already cited in **{label}**: {', '.join(cited) if cited else 'none'}")
 
-    _note = (
-        '> Note: Workplan counted "72 docs" \u2014 actual file count is 73 total; '
-        "subtract OPEN_RESEARCH.md (1) and 3 primary papers = 69 sweepable source docs. "
-        "Table is complete."
-    )
-
     return f"""# Corpus Sweep Table \u2014 docs/research/ vs Primary Papers
 
 **Generated**: {today}
@@ -219,8 +218,6 @@ def generate_header(entries: list, citations_map: dict) -> str:
 - `endogenic-design-paper.md`
 
 **Sweep covers**: {total} source docs (excludes OPEN_RESEARCH.md and the 3 primary papers)
-
-{_note}
 
 ---
 
