@@ -379,6 +379,16 @@ When new research findings need to be incorporated into existing primary synthes
 | Structured proposals | Synthesizer | `backprop-proposal.md` — one entry per candidate weave: source doc / target paper / target section / proposed change (one sentence) / link-out / rationale | Do entries follow weave/link/consolidate? No inline definitions? No duplicates? |
 | Applied edits | Executive Docs | Modified primary papers — every proposal entry applied exactly as specified; `validate_synthesis.py` run after each paper | Does `validate_synthesis.py` pass? Are all entries applied? |
 
+**Entry ID convention**: Every entry in the proposal doc must include an `**Entry ID**:` field using the format `<paper-prefix>-<seq>` (e.g. `VE-1`, `BC-1`, `EP-1` — prefix from the target paper abbreviation, sequential within the group). Entry IDs must appear in both the proposal doc and the MANUAL STOP gate summary table. This allows targeted partial rejection: the user can approve/reject/modify by ID, and the Orchestrator can re-delegate specific entries without re-running the full proposal phase.
+
+**Proposal-as-specification constraint**: The proposal doc is the sole authoritative specification for the Docs agent in Phase 3. Phase 2 (Synthesizer) makes all judgment calls about *what* to change and *why* — Phase 3 (Docs) makes none. Concretely:
+- Phase 3 agents MUST apply every entry in the proposal exactly as specified
+- Phase 3 agents MUST NOT add entries not in the proposal
+- Phase 3 agents MUST NOT skip entries without noting a specific reason
+- If a proposed edit looks wrong, the Docs agent returns control to the Orchestrator — it does not make a judgment call
+
+This separation eliminates the most common back-propagation failure mode: a Docs agent adding unrequested context, appending standalone paragraphs, or reproducing definitions inline because the proposal was ambiguous. An unambiguous proposal is zero-risk Phase 3.
+
 **Manual stop gate for primary-paper edits**: back-propagation commits into authoritative synthesis papers require explicit human approval before committing. The workflow is:
 1. Executive Docs applies edits → working tree modified, **not staged**
 2. Orchestrator surfaces diffs to user (`git diff docs/research/<paper>.md`)
