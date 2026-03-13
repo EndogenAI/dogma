@@ -229,7 +229,7 @@ The sweep table is the Scout's guide. Depth allocations matter — it prevents t
 **Agent**: Research Synthesizer
 **Effort**: M
 **Depends on**: Phase 1 Review APPROVED
-**Status**: ⏳ In progress
+**Status**: ✅ Complete (884e516)
 
 **Task**: Read `docs/plans/2026-03-12-corpus-raw-findings.md` and the current state of the three primary papers. For each raw finding, determine whether it warrants a proposal entry (absent from target paper + meaningful contribution). Produce `docs/plans/2026-03-12-backprop-proposal.md` — a structured proposal with one entry per candidate weave, grouped by target paper.
 
@@ -256,7 +256,7 @@ Entries grouped by target paper. Filter out anything already cited (use sweep ta
 
 **Agent**: Review
 **Depends on**: Phase 2 complete
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED
 
 **Check**: Each proposal entry names an exact target section (verifiable against the actual paper heading); proposed change follows weave/link/consolidate discipline (no entries that would add standalone paragraphs or in-place definitions); all source docs exist; no entry duplicates a reference already present in the target paper.
 
@@ -351,9 +351,9 @@ After user approval:
 ## Acceptance Criteria
 
 - [x] Sweep table covers all 72 docs
-- [ ] Raw findings doc covers all Thorough/Skim-rated docs
-- [ ] Proposal has entries grouped by target paper with exact section targets
-- [ ] All proposal entries follow weave/link/consolidate discipline
+- [x] Raw findings doc covers all Thorough/Skim-rated docs
+- [x] Proposal has entries grouped by target paper with exact section targets
+- [x] All proposal entries follow weave/link/consolidate discipline
 - [ ] All three primary papers validate_synthesis PASS after edits
 - [ ] User has reviewed and approved diffs before commit
 - [ ] workflows.md updated with doc-type taxonomy + back-prop methodology section (#225, #227)
