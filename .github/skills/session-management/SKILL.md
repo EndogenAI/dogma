@@ -236,6 +236,8 @@ Before delegating any multi-step execution phase, the Orchestrator delegates a d
 - Checklist committed to scratchpad or workplan doc before Phase 1 begins
 - Each execution phase invocation references the checklist as its acceptance criteria
 
+**Hard gate (≥3 phases or ≥2 delegations)**: The Executive Planner must produce per-phase checklists before the first domain phase delegation begins. This is not optional. Skipping this step produces a ~1 audit-round overhead to recover mid-phase scope gaps — observed twice in the 2026-03-13 Dogma Update Sprint (Phase 5 recast, Phase 1A sub-issue gap). Write "Planner checklist received" in the scratchpad before delegating Phase 1.
+
 ---
 
 ## 6. Session Close

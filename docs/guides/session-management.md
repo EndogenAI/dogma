@@ -25,6 +25,8 @@ Workplans are **committed to git** (not gitignored). They serve as the durable, 
 
 See [`docs/plans/2026-03-06-formalize-workflows.md`](../plans/2026-03-06-formalize-workflows.md) for the canonical example.
 
+**Hard gate**: For any session with ≥3 phases or ≥2 agent delegations, invoke the Executive Planner to produce per-phase numbered checklists before the first domain phase delegation. Mark "Planner checklist received" in the scratchpad. Do not skip this step — the checklist is the shared coherence artifact that prevents mid-phase re-scoping.
+
 ---
 
 ## Design Rationale
@@ -87,6 +89,8 @@ This implements the **fetch-before-act** posture: scouts read cached `.md` files
 rather than re-fetching pages through the context window, saving tokens every session.
 
 **Deployment Layer check**: If `client-values.yml` exists in the workspace root, read it now and note any Deployment Layer constraints that will affect session decisions.
+
+**Provenance health check**: After running `annotate_provenance.py --dry-run`, if the report shows >20% registered agent files orphaned, treat this as a **blocking gap** — distribute annotation work across upcoming phases rather than deferring to a late-sprint clean-up. Evidence: the 2026-03-13 sprint found 0/36 annotated at Phase 4 start; distributed annotation in Phase 0 would have saved one concentrated annotation sprint.
 
 ### Session-Start Encoding Checkpoint
 

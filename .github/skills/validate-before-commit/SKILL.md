@@ -139,6 +139,10 @@ Wait for the latest run to show a green `✓` status before requesting or re-req
 | `detect_drift` below threshold | Add explicit axiom citations to the flagged `.agent.md` file. |
 | `lychee` dead link (TLS / 4xx) | Check if the URL is genuinely dead. If it's a transient TLS issue (e.g. `spec.modelcontextprotocol.io`), add to `.lycheeignore` with a dated comment. |
 
+### Lychee (Dead Link Checks)
+
+**Lychee two-step rule**: After any lychee fix commit, always wait for CI to complete before declaring lychee clean. CI runners receive intermittent 503s from high-traffic domains (e.g., theatlantic.com) that local `lychee` does not reproduce. These produce a second CI failure requiring a separate `.lycheeignore` entry and re-push. Lychee is clean only when CI is green, not when local check exits 0.
+
 ---
 
 ## 5. Commit Only After All Checks Pass — Orchestrator Terminal Operations
