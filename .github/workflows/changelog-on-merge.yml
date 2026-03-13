@@ -1,0 +1,22 @@
+# Stub — see issues #216 and #217 for full implementation
+
+name: Changelog on Merge (stub)
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  changelog:
+    name: Update changelog on merge (stub)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Placeholder — full implementation pending
+        run: echo "CHANGELOG update — implement with towncrier or git-cliff in follow-up #216 #217"

@@ -91,7 +91,7 @@ The five work streams below have a recommended sequencing, but some can run part
 
 **Depends on**: Phase 0 complete (can run in parallel with Phase 1A)
 **Gate**: Phase 1B Review does not start until all deliverables committed
-**Status**: ⬜ Not started
+**Status**: ✅ Complete
 
 ### Phase 1B Review — Review Gate
 
@@ -99,7 +99,7 @@ The five work streams below have a recommended sequencing, but some can run part
 **Deliverables**: `## Phase 1B Review Output` in scratchpad, verdict: APPROVED
 **Depends on**: Phase 1B committed
 **Gate**: Phase 2 does not start until APPROVED
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED
 
 ---
 
