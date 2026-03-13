@@ -318,6 +318,32 @@ Mandatory checks after every subagent returns (before acting on output):
 
 *Amendments grounded in empirical handoff-drift audit (issue #75); degradation table in `docs/research/values-encoding.md` §5 OQ-VE-5. Three-layer encoding formalized session 2026-03-11 (issue #198); implementation in `.github/agents/executive-orchestrator.agent.md` § Pre-Delegation Checklist + Return Validation Gate.*
 
+#### Review Delegation — Explicit Acceptance Criteria
+
+When writing prompts for the **Review agent**, use explicit numbered binary acceptance criteria per check item — not a generic "validate this" prompt. Generic prompts produce generic reviews that miss specific quality violations.
+
+**Anti-pattern** (generic):
+> "Validate this draft and flag any issues."
+→ Review agent checks basic structure only; misses discipline-specific gaps and depth inconsistencies.
+
+**Canonical example** (explicit criteria):
+> Validate the proposal doc against these 7 criteria:
+> 1. Structure: entries grouped by target paper with headers?
+> 2. Entry completeness: all 6 fields (source doc, target paper, target section, proposed change, link-out, rationale) present for every entry?
+> 3. Target section verifiability: can each target section heading be found verbatim in the actual paper?
+> 4. Weave discipline: no entry would add a standalone paragraph or in-place definition?
+> 5. Link-out discipline: every proposed change links to a source doc section, not inline content?
+> 6. Source existence: all named source docs exist in docs/research/?
+> 7. No duplicates: no entry references a citation already present in the stated target section?
+>
+> Return: APPROVED or REQUEST CHANGES — [criterion number: one-line reason], one line per failing criterion.
+
+→ Result: 7 criteria assessed independently; precision failures caught that a generic prompt would pass.
+
+**Why this matters**: The Review agent can only catch what it is told to check. Criterion cardinality (number of explicit criteria) is the primary predictor of review completeness. Binary pass/fail formulation eliminates hedging and produces actionable, addressable output. This applies equally when writing per-phase checklists for execution agents — a shared written specification that every agent independently verifies against prevents interpretive drift without requiring the Orchestrator to re-explain scope at each handoff.
+
+*Grounded in corpus back-propagation sprint observation (2026-03-12, issue #226): a 7-criterion prompt caught a discipline violation and confirmed 6 criteria explicitly; a prior equivalent generic prompt returned APPROVED without surfacing the violation.*
+
 ### Membrane Permeability Specifications
 
 **Essence**: The agent fleet is a pipeline system. Each handoff between agents is bounded by a **membrane** — a specification of what data flows in, what flows out, and what canonical signals must be preserved in transit. Defective membranes cause signal loss. Documenting membranes makes losses visible.
