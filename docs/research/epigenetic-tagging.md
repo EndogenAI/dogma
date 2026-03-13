@@ -8,7 +8,7 @@ status: "Final"
 > **Status**: Final
 > **Research Question**: How should the endogenic system amplify different axioms for different task contexts — and what is the minimal viable mechanism to implement this without new infrastructure?
 > **Date**: 2026-03-09
-> **Issue**: [#72](https://github.com/EndogenAI/Workflows/issues/72)
+> **Issue**: [#72](https://github.com/EndogenAI/dogma/issues/72)
 > **Related**: [`docs/research/values-encoding.md`](values-encoding.md) §5 OQ-VE-2 (source of the regulatory-region gap); [`docs/research/bubble-clusters-substrate.md`](bubble-clusters-substrate.md) (boundary-membrane model — epigenetic tagging is boundary-permeability calibration)
 
 ---

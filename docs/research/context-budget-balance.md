@@ -7,7 +7,7 @@ status: Final
 
 > **Research Question**: As the endogenic documentation substrate grows, how do we prevent instruction volume from saturating the session context window — degrading principle adherence in the process — while preserving full fidelity of encoded values?
 > **Date**: 2026-03-08
-> **Related**: [#85](https://github.com/EndogenAI/Workflows/issues/85) (source issue), [#80](https://github.com/EndogenAI/Workflows/issues/80) (queryable docs), [#79](https://github.com/EndogenAI/Workflows/issues/79) (skills extraction), [#82](https://github.com/EndogenAI/Workflows/issues/82) (dogma neuroplasticity), [#14](https://github.com/EndogenAI/Workflows/issues/14) (AIGNE AFS governance), [#13](https://github.com/EndogenAI/Workflows/issues/13) (episodic memory), [#75](https://github.com/EndogenAI/Workflows/issues/75) (value drift at handoffs)
+> **Related**: [#85](https://github.com/EndogenAI/dogma/issues/85) (source issue), [#80](https://github.com/EndogenAI/dogma/issues/80) (queryable docs), [#79](https://github.com/EndogenAI/dogma/issues/79) (skills extraction), [#82](https://github.com/EndogenAI/dogma/issues/82) (dogma neuroplasticity), [#14](https://github.com/EndogenAI/dogma/issues/14) (AIGNE AFS governance), [#13](https://github.com/EndogenAI/dogma/issues/13) (episodic memory), [#75](https://github.com/EndogenAI/dogma/issues/75) (value drift at handoffs)
 
 ---
 
@@ -121,7 +121,7 @@ These recommendations are ordered by implementable cost/impact ratio (R1 is high
 **Action**: Extract the delegation routing table (Executive Orchestrator "which agent handles X" lookup), phase-gate sequence, and the full "Guardrails" checklist into dedicated SKILL.md files. Replace inline prose with `Read skill: validate-before-commit/SKILL.md` references (one line per skill reference).  
 **Estimated Token Saving**: 4,000–6,000 tokens from agent body (the Executive Orchestrator file is 4,785 tokens of which an estimated 40% is decision logic rather than identity/values). Reduction from ~14,375 to ~10,000 fixed-load tokens per turn.  
 **Implementation Cost**: Low — SKILL.md infrastructure exists. 2–3 new SKILL.md files, 1–2 days. No new tooling required.  
-**Depends-on**: [#79](https://github.com/EndogenAI/Workflows/issues/79) (skills as decision codifiers — formal validation of this approach)
+**Depends-on**: [#79](https://github.com/EndogenAI/dogma/issues/79) (skills as decision codifiers — formal validation of this approach)
 
 ---
 
@@ -131,7 +131,7 @@ These recommendations are ordered by implementable cost/impact ratio (R1 is high
 **Action**: Audit AGENTS.md sections against the last 20 session scratchpad files. Identify sections with zero citations in session behavior. Compress them to 2-line summaries with links to full documentation. Apply dogma neuroplasticity (#82) protocol: demote consistently-ignored instructions to referenced docs.  
 **Estimated Token Saving**: 2,000–3,500 tokens from AGENTS.md (from 7,090 to ~4,000 tokens). The "Toolchain Reference" table and "Async Process Handling" detailed tables are candidates — referenced rarely inline, already fully documented in `docs/toolchain/`.  
 **Implementation Cost**: Low to medium — requires session audit script (1 day) + careful review before any removals. Risk: rare-but-critical instructions may appear unused but are essential.  
-**Depends-on**: [#82](https://github.com/EndogenAI/Workflows/issues/82) (dogma neuroplasticity — governance process for substrate edits)
+**Depends-on**: [#82](https://github.com/EndogenAI/dogma/issues/82) (dogma neuroplasticity — governance process for substrate edits)
 
 ---
 
@@ -141,7 +141,7 @@ These recommendations are ordered by implementable cost/impact ratio (R1 is high
 **Action**: Implement a BM25-based local retrieval layer over `docs/` (no embeddings required — BM25 is deterministic and local-first). At each task boundary, agents query for the relevant AGENTS.md section rather than loading the full document. At session start, load only a 500-token "orientation header" that bootstraps the query interface.  
 **Estimated Token Saving**: Up to 6,000 tokens of fixed instruction load replaced by 500-token orientation + 300-600 tokens per targeted query. Over a 20-step session, this is net neutral on retrieval volume but prevents context accumulation of unused instruction content.  
 **Implementation Cost**: Medium — requires `scripts/query_docs.py` (BM25 over docs/ tree), AGENTS.md restructure into queryable units, and agent-file updates to use query patterns. Estimated 1–2 weeks.  
-**Depends-on**: [#80](https://github.com/EndogenAI/Workflows/issues/80) (queryable documentation substrate — formal design for the retrieval layer)
+**Depends-on**: [#80](https://github.com/EndogenAI/dogma/issues/80) (queryable documentation substrate — formal design for the retrieval layer)
 
 ---
 
@@ -172,12 +172,12 @@ These recommendations are ordered by implementable cost/impact ratio (R1 is high
 
 ### Cross-Referenced Issues
 
-- [#75](https://github.com/EndogenAI/Workflows/issues/75) — Empirical value drift measurement at multi-agent handoff boundaries. Provides the empirical measurement methodology that can be adapted to per-turn instruction attention measurement.
-- [#79](https://github.com/EndogenAI/Workflows/issues/79) — Skills as decision codifiers. Primary vehicle for R1 (skill extraction).
-- [#80](https://github.com/EndogenAI/Workflows/issues/80) — Queryable documentation substrate. Primary vehicle for R3 (retrieval governance layer).
-- [#82](https://github.com/EndogenAI/Workflows/issues/82) — Dogma neuroplasticity. Governance process required before R2 (pruning) and R4 (compression) can be safely applied.
-- [#13](https://github.com/EndogenAI/Workflows/issues/13) — Episodic memory. Reduces T2 (session context) load by making historical context queryable rather than bulk-loaded.
-- [#14](https://github.com/EndogenAI/Workflows/issues/14) — AIGNE AFS context governance. Pipeline-level solution for compress/select/isolate — a potential future wrapper around R3.
+- [#75](https://github.com/EndogenAI/dogma/issues/75) — Empirical value drift measurement at multi-agent handoff boundaries. Provides the empirical measurement methodology that can be adapted to per-turn instruction attention measurement.
+- [#79](https://github.com/EndogenAI/dogma/issues/79) — Skills as decision codifiers. Primary vehicle for R1 (skill extraction).
+- [#80](https://github.com/EndogenAI/dogma/issues/80) — Queryable documentation substrate. Primary vehicle for R3 (retrieval governance layer).
+- [#82](https://github.com/EndogenAI/dogma/issues/82) — Dogma neuroplasticity. Governance process required before R2 (pruning) and R4 (compression) can be safely applied.
+- [#13](https://github.com/EndogenAI/dogma/issues/13) — Episodic memory. Reduces T2 (session context) load by making historical context queryable rather than bulk-loaded.
+- [#14](https://github.com/EndogenAI/dogma/issues/14) — AIGNE AFS context governance. Pipeline-level solution for compress/select/isolate — a potential future wrapper around R3.
 
 ### External Sources Not In Cache
 

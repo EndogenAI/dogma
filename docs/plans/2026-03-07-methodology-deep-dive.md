@@ -2,7 +2,7 @@
 
 **Date**: 2026-03-07
 **Branch**: `feat/methodology-deep-dive`
-**Issue**: [#59](https://github.com/EndogenAI/Workflows/issues/59)
+**Issue**: [#59](https://github.com/EndogenAI/dogma/issues/59)
 **Seed document**: `docs/research/methodology-review.md` (Status: Final)
 
 ---

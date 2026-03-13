@@ -100,7 +100,7 @@ Every skill file must contain at least one of each:
 
 This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md) by encoding the complete research sprint workflow as a reusable procedure.
 
-**Implements**: The research orchestration pattern from issue [#45 (Research: Product Definition)](https://github.com/EndogenAI/Workflows/issues/45)
+**Implements**: The research orchestration pattern from issue [#45 (Research: Product Definition)](https://github.com/EndogenAI/dogma/issues/45)
 
 **Used by**:
 - Executive Researcher (orchestrates fleet)

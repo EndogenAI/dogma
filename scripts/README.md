@@ -691,7 +691,7 @@ uv run python scripts/pr_review_reply.py --resolve PRRT_kwDORfkAR85yvrwz
 uv run python scripts/pr_review_reply.py --batch .tmp/review-replies.json
 
 # Explicit repo and PR number (defaults auto-detect from gh CLI)
-uv run python scripts/pr_review_reply.py --pr 15 --repo EndogenAI/Workflows --batch .tmp/review-replies.json
+uv run python scripts/pr_review_reply.py --pr 15 --repo EndogenAI/dogma --batch .tmp/review-replies.json
 ```
 
 **Batch JSON format**:
@@ -825,7 +825,7 @@ uv run python scripts/wait_for_unblock.py --issue 60 --interval 60 --timeout 720
 uv run python scripts/wait_for_unblock.py --issue 60 --dry-run
 
 # Explicit repo
-uv run python scripts/wait_for_unblock.py --issue 60 --repo EndogenAI/Workflows
+uv run python scripts/wait_for_unblock.py --issue 60 --repo EndogenAI/dogma
 
 # Session-start trigger check
 ls .tmp/triggers/*.unblocked 2>/dev/null && cat .tmp/triggers/*.unblocked

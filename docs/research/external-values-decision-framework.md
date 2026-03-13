@@ -10,7 +10,7 @@ closes_issue: "177"
 
 > **Status**: Final
 > **Date**: 2026-03-10
-> **Issue**: [#177](https://github.com/EndogenAI/Workflows/issues/177)
+> **Issue**: [#177](https://github.com/EndogenAI/dogma/issues/177)
 > **Related**: [`docs/research/external-value-architecture.md`](external-value-architecture.md) · [`MANIFESTO.md`](../../MANIFESTO.md) · [`docs/guides/manifesto-hermeneutics.md`](../guides/manifesto-hermeneutics.md)
 
 ---

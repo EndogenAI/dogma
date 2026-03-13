@@ -42,8 +42,8 @@ Key findings summary:
 See AGENTS.md § Focus-on-Descent / Compression-on-Ascent for the governing constraints.
 
 Referenced sources:
-[MANIFESTO.md](https://github.com/EndogenAI/Workflows/blob/main/MANIFESTO.md)
-[values-encoding.md](https://github.com/EndogenAI/Workflows/blob/main/docs/research/values-encoding.md)
+[MANIFESTO.md](https://github.com/EndogenAI/dogma/blob/main/MANIFESTO.md)
+[values-encoding.md](https://github.com/EndogenAI/dogma/blob/main/docs/research/values-encoding.md)
 """
 
 
@@ -101,7 +101,7 @@ def missing_canonical_example_handoff():
 Axiom reference: MANIFESTO.md § Endogenous-First principle suggests grounding all work
 in existing substrate knowledge.
 
-Source documentation: [AGENTS.md](https://github.com/EndogenAI/Workflows/blob/main/AGENTS.md)
+Source documentation: [AGENTS.md](https://github.com/EndogenAI/dogma/blob/main/AGENTS.md)
 """
 
 
@@ -548,7 +548,7 @@ MANIFESTO.md § Endogenous-First principle governs this constraint.
 
 [Detailed rationale...]
 
-[References](https://github.com/EndogenAI/Workflows/blob/main/doc)
+[References](https://github.com/EndogenAI/dogma/blob/main/doc)
 """
         result = validate_handoff_permeability(
             handoff,

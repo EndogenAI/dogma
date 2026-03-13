@@ -191,6 +191,6 @@ Detailed synthesis documents for local compute topics:
 |-------|----------|--------|
 | VS Code Copilot with local models | [`docs/research/local-copilot-models.md`](../research/local-copilot-models.md) | Draft |
 | Locally distributed MCP frameworks | [`docs/research/local-mcp-frameworks.md`](../research/local-mcp-frameworks.md) | Draft |
-| Benchmarking local vs. cloud token usage | Open — see [issue #5 D3](https://github.com/EndogenAI/Workflows/issues/5) | Not started |
+| Benchmarking local vs. cloud token usage | Open — see [issue #5 D3](https://github.com/EndogenAI/dogma/issues/5) | Not started |
 
-See [GitHub Issues labeled `research`](https://github.com/EndogenAI/Workflows/issues?q=label%3Aresearch) for current status.
+See [GitHub Issues labeled `research`](https://github.com/EndogenAI/dogma/issues?q=label%3Aresearch) for current status.

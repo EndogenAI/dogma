@@ -50,10 +50,10 @@ You are **read-only** — you query GitHub's API and present findings. You do no
 
 ```bash
 # Star count, fork count, watcher count
-gh api repos/EndogenAI/Workflows --jq '{stars: .stargazers_count, forks: .forks_count, watchers: .subscribers_count}'
+gh api repos/EndogenAI/dogma --jq '{stars: .stargazers_count, forks: .forks_count, watchers: .subscribers_count}'
 
 # Open issue and PR counts
-gh api repos/EndogenAI/Workflows --jq '{open_issues: .open_issues_count}'
+gh api repos/EndogenAI/dogma --jq '{open_issues: .open_issues_count}'
 gh pr list --state open --json number | python3 -c "import json,sys; print(len(json.load(sys.stdin)), 'open PRs')"
 ```
 

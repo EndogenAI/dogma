@@ -68,7 +68,7 @@ Semantic drift test: If an agent encounters a novel situation (e.g., should we a
 
 **From religious text transmission:** The Talmudic method preserves meaning by attaching specific case examples to each principle. The principle "Honor your father and mother" is insufficient for interpretation; it requires cases: "What if the father asks you to violate the Sabbath? What if the father physically assaults you?" The cases anchor the principle against overgeneralization. The principle stated alone would shift meaning across centuries; with cases, the boundary conditions are fixed.
 
-**Empirical observation**: In EndogenAI/Workflows codebase, agent behavioral conformance is higher when an AGENTS.md section includes a canonical example. Agents that encounter only abstract principles ("Fetch sources before acting") routinely skip source fetching. Agents that encounter a canonical example ("The agent reads .tmp/<branch>/<date>.md first to avoid re-discovering context another agent already gathered") consistently follow the pattern. The example anchors the semantic content.
+**Empirical observation**: In EndogenAI/dogma codebase, agent behavioral conformance is higher when an AGENTS.md section includes a canonical example. Agents that encounter only abstract principles ("Fetch sources before acting") routinely skip source fetching. Agents that encounter a canonical example ("The agent reads .tmp/<branch>/<date>.md first to avoid re-discovering context another agent already gathered") consistently follow the pattern. The example anchors the semantic content.
 
 ---
 

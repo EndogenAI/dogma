@@ -106,7 +106,7 @@ You are the **{name}** for the EndogenAI Workflows project.
 3. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting to avoid re-discovering context.
 
 <!-- TODO: If this agent implements a GitHub issue, add it here:
-   - **Issue**: [#XX Name](https://github.com/EndogenAI/Workflows/issues/XX)
+   - **Issue**: [#XX Name](https://github.com/EndogenAI/dogma/issues/XX)
    - **Milestone**: <Which phase>
    - **Governing axiom**: <Which core axiom from MANIFESTO.md>
 -->

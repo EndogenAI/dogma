@@ -36,7 +36,7 @@ Purpose:
 Usage:
     uv run python scripts/wait_for_unblock.py --issue 60
     uv run python scripts/wait_for_unblock.py --issue 60 --interval 60 --timeout 3600
-    uv run python scripts/wait_for_unblock.py --issue 60 --repo EndogenAI/Workflows
+    uv run python scripts/wait_for_unblock.py --issue 60 --repo EndogenAI/dogma
     uv run python scripts/wait_for_unblock.py --issue 60 --dry-run
 
 Arguments:

@@ -1,5 +1,5 @@
 """
-scripts/seed_labels.py — Idempotent GitHub label seeder for EndogenAI/Workflows.
+scripts/seed_labels.py — Idempotent GitHub label seeder for EndogenAI/dogma.
 
 Purpose
 -------

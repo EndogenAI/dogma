@@ -3,7 +3,7 @@ weave_links.py
 --------------
 Purpose:
     Programmatically injects Markdown cross-reference links across the
-    EndogenAI/Workflows documentation corpus. Reads a YAML concept registry
+    EndogenAI/dogma documentation corpus. Reads a YAML concept registry
     (data/link_registry.yml) and wraps every unlinked occurrence of a registered
     concept name with [concept](canonical_source).
 
@@ -323,7 +323,7 @@ def weave_file(filepath: Path, registry: list[dict], dry_run: bool, repo_root: P
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Weave cross-reference links across the EndogenAI/Workflows corpus.")
+    parser = argparse.ArgumentParser(description="Weave cross-reference links across the EndogenAI/dogma corpus.")
     parser.add_argument(
         "--scope",
         default="docs/",

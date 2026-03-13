@@ -1,6 +1,6 @@
 # Workplan: Milestone 9 — Action Items from Research
 
-**Milestone**: [#9 — Action Items from Research](https://github.com/EndogenAI/Workflows/milestone/9)
+**Milestone**: [#9 — Action Items from Research](https://github.com/EndogenAI/dogma/milestone/9)
 **Branch**: `main`
 **Date**: 2026-03-10
 **Orchestrator**: Executive Orchestrator

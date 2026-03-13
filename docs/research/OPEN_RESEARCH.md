@@ -143,7 +143,7 @@ Open follow-up questions are tracked in the **Issue #10 Follow-Up Open Questions
 **Status**: ✅ Research resolved 2026-03-10
 **Deliverable**: [`docs/research/episodic-memory-agents.md`](episodic-memory-agents.md)
 
-Cognee adoption follow-up tracked in [#131](https://github.com/EndogenAI/Workflows/issues/131) — **deferred** pending local compute baseline (OPEN_RESEARCH.md #1).
+Cognee adoption follow-up tracked in [#131](https://github.com/EndogenAI/dogma/issues/131) — **deferred** pending local compute baseline (OPEN_RESEARCH.md #1).
 
 ---
 
@@ -206,19 +206,19 @@ Sources: `llm-behavioral-testing.md` H1, H4; `agent-fleet-design-patterns.md` Pa
 
 ## Research Sprint — VS Code Agent Format & Toolset Best Practices
 
-**Added**: 2026-03-07 | **Status**: ✅ D1 resolved 2026-03-07 (b26d188); D2/D3 resolved 2026-03-07 | **Priority**: Medium | **Closes**: [#23](https://github.com/EndogenAI/Workflows/issues/23)
+**Added**: 2026-03-07 | **Status**: ✅ D1 resolved 2026-03-07 (b26d188); D2/D3 resolved 2026-03-07 | **Priority**: Medium | **Closes**: [#23](https://github.com/EndogenAI/dogma/issues/23)
 
 Deep dive on VS Code Copilot custom agent file format: toolset declarations (which tools map to which capabilities), `applyTo` glob patterns, the VS Code Language Model API layer, instruction-following fidelity between XML and Markdown bodies (OQ-12-2), and non-Claude model degradation (OQ-12-3). Closes remaining open questions from issue #12.
 
 **Target deliverable**: Append findings to [`docs/research/xml-agent-instruction-format.md`](xml-agent-instruction-format.md) or create `docs/research/vscode-agent-format.md`
-**GitHub issue**: [#23](https://github.com/EndogenAI/Workflows/issues/23)
+**GitHub issue**: [#23](https://github.com/EndogenAI/dogma/issues/23)
 **Prerequisite**: Resolves OQ-12-1, OQ-12-2, OQ-12-3 from Issue #12 Follow-Up Open Questions above
 
 ---
 
 ## Research Sprint — Context Compaction Best Practices (VS Code Copilot /compact)
 
-**Added**: 2026-03-07 | **Status**: ✅ Complete 2026-03-07 | **Priority**: High | **Closes**: [#24](https://github.com/EndogenAI/Workflows/issues/24)
+**Added**: 2026-03-07 | **Status**: ✅ Complete 2026-03-07 | **Priority**: High | **Closes**: [#24](https://github.com/EndogenAI/dogma/issues/24)
 
 Research and document best practices for VS Code Copilot Chat's `/compact` slash command and "Compact Conversation" context window button.
 
@@ -229,23 +229,23 @@ Research and document best practices for VS Code Copilot Chat's `/compact` slash
 
 ## Research Sprint — Copilot PR Review Automation
 
-**Added**: 2026-03-07 | **Status**: ✅ Complete 2026-03-07 | **Priority**: High | **Closes**: [#29](https://github.com/EndogenAI/Workflows/issues/29)
+**Added**: 2026-03-07 | **Status**: ✅ Complete 2026-03-07 | **Priority**: High | **Closes**: [#29](https://github.com/EndogenAI/dogma/issues/29)
 
 Research whether requests for GitHub Copilot PR reviews can be triggered programmatically (REST API, `gh` CLI, GraphQL, GitHub Actions, CODEOWNERS). Primary finding: no public API exists for per-PR bot reviewer requests. The only supported automation path is a repository ruleset gated on GitHub Pro or a public repo. Manual re-request via UI is the correct baseline until then.
 
 **Target deliverable**: [`docs/research/copilot-pr-review-automation.md`](copilot-pr-review-automation.md)
-**GitHub issue**: [#29](https://github.com/EndogenAI/Workflows/issues/29)
+**GitHub issue**: [#29](https://github.com/EndogenAI/dogma/issues/29)
 
 ---
 
 ## Research Sprint — GitHub as Episodic & Long-term Memory Substrate
 
-**Added**: 2026-03-07 | **Status**: ✅ Complete 2026-03-07 | **Priority**: High | **Closes**: [#30](https://github.com/EndogenAI/Workflows/issues/30)
+**Added**: 2026-03-07 | **Status**: ✅ Complete 2026-03-07 | **Priority**: High | **Closes**: [#30](https://github.com/EndogenAI/dogma/issues/30)
 
 Research whether GitHub Issues, PRs, commits, and Projects can serve as a structured episodic memory layer for the agent fleet. Finding: GitHub is a viable episodic tier — issues and commit log are queryable via `gh` CLI and GraphQL at practical rate limits. Not a semantic or working memory replacement. Four-tier memory architecture defined with GitHub occupying the episodic slot. Complements (but does not replace) the external memory research in Issue #7/#13.
 
 **Target deliverable**: [`docs/research/github-as-memory-substrate.md`](github-as-memory-substrate.md)
-**GitHub issue**: [#30](https://github.com/EndogenAI/Workflows/issues/30)
+**GitHub issue**: [#30](https://github.com/EndogenAI/dogma/issues/30)
 
 ---
 
@@ -255,20 +255,20 @@ _Items below are resolved. Open follow-up questions are still tracked in the mai
 
 | Issue | Title | Deliverable | Closed |
 |---|---|---|---|
-| [#2](https://github.com/EndogenAI/Workflows/issues/2) | Research and document detailed agent workflows | [`agentic-research-flows.md`](agentic-research-flows.md) | 2026-03-07 |
-| [#10](https://github.com/EndogenAI/Workflows/issues/10) | Agent Fleet Design Patterns | [`agent-fleet-design-patterns.md`](agent-fleet-design-patterns.md) | 2026-03-06 |
-| [#12](https://github.com/EndogenAI/Workflows/issues/12) | XML-Tagged Agent Instruction Format _(implementation in progress)_ | [`xml-agent-instruction-format.md`](xml-agent-instruction-format.md) | 2026-03-06 |
-| [#13](https://github.com/EndogenAI/Workflows/issues/13) | Episodic and Experiential Memory for Agent Sessions | [`episodic-memory-agents.md`](episodic-memory-agents.md) | 2026-03-10 |
-| [#14](https://github.com/EndogenAI/Workflows/issues/14) | AIGNE AFS Context Governance Layer Evaluation | [`aigne-afs-evaluation.md`](aigne-afs-evaluation.md) | 2026-03-10 |
-| [#16](https://github.com/EndogenAI/Workflows/issues/16) | Testing Tools & Frameworks | [`testing-tools-and-frameworks.md`](testing-tools-and-frameworks.md) | 2026-03-07 |
-| [#17](https://github.com/EndogenAI/Workflows/issues/17) | Development Workflow Automations | [`dev-workflow-automations.md`](dev-workflow-automations.md) | 2026-03-07 |
-| [#18](https://github.com/EndogenAI/Workflows/issues/18) | OSS Documentation Best Practices | [`oss-documentation-best-practices.md`](oss-documentation-best-practices.md) | 2026-03-07 |
-| [#19](https://github.com/EndogenAI/Workflows/issues/19) | PM & Dev Team Structures | [`pm-and-team-structures.md`](pm-and-team-structures.md) | 2026-03-07 |
-| [#20](https://github.com/EndogenAI/Workflows/issues/20) | Product Research & Design _(seed)_ | [`product-research-and-design.md`](product-research-and-design.md) | 2026-03-07 |
-| [#21](https://github.com/EndogenAI/Workflows/issues/21) | Comms, Marketing & Bizdev _(seed)_ | [`comms-marketing-bizdev.md`](comms-marketing-bizdev.md) | 2026-03-07 |
-| [#22](https://github.com/EndogenAI/Workflows/issues/22) | GitHub Project Management & Automation | [`github-project-management.md`](github-project-management.md) | 2026-03-07 |
-| [#24](https://github.com/EndogenAI/Workflows/issues/24) | Context Compaction Best Practices | [`session-management.md#context-compaction`](../guides/session-management.md) | 2026-03-07 |
-| [#72](https://github.com/EndogenAI/Workflows/issues/72) | Context-sensitive axiom amplification (OQ-VE-2) | [`epigenetic-tagging.md`](epigenetic-tagging.md) | 2026-03-10 |
-| [#74](https://github.com/EndogenAI/Workflows/issues/74) | LLM behavioral testing for value fidelity (OQ-VE-4) | [`llm-behavioral-testing.md`](llm-behavioral-testing.md) | 2026-03-10 |
-| [#76](https://github.com/EndogenAI/Workflows/issues/76) | XML structuring in `handoffs.prompt` fields (OQ-12-4) | [`xml-agent-instruction-format.md`](xml-agent-instruction-format.md) §11 | 2026-03-10 |
-| [#83](https://github.com/EndogenAI/Workflows/issues/83) | Encoding external product/client values — layered value architecture | [`external-value-architecture.md`](external-value-architecture.md) | 2026-03-10 |
+| [#2](https://github.com/EndogenAI/dogma/issues/2) | Research and document detailed agent workflows | [`agentic-research-flows.md`](agentic-research-flows.md) | 2026-03-07 |
+| [#10](https://github.com/EndogenAI/dogma/issues/10) | Agent Fleet Design Patterns | [`agent-fleet-design-patterns.md`](agent-fleet-design-patterns.md) | 2026-03-06 |
+| [#12](https://github.com/EndogenAI/dogma/issues/12) | XML-Tagged Agent Instruction Format _(implementation in progress)_ | [`xml-agent-instruction-format.md`](xml-agent-instruction-format.md) | 2026-03-06 |
+| [#13](https://github.com/EndogenAI/dogma/issues/13) | Episodic and Experiential Memory for Agent Sessions | [`episodic-memory-agents.md`](episodic-memory-agents.md) | 2026-03-10 |
+| [#14](https://github.com/EndogenAI/dogma/issues/14) | AIGNE AFS Context Governance Layer Evaluation | [`aigne-afs-evaluation.md`](aigne-afs-evaluation.md) | 2026-03-10 |
+| [#16](https://github.com/EndogenAI/dogma/issues/16) | Testing Tools & Frameworks | [`testing-tools-and-frameworks.md`](testing-tools-and-frameworks.md) | 2026-03-07 |
+| [#17](https://github.com/EndogenAI/dogma/issues/17) | Development Workflow Automations | [`dev-workflow-automations.md`](dev-workflow-automations.md) | 2026-03-07 |
+| [#18](https://github.com/EndogenAI/dogma/issues/18) | OSS Documentation Best Practices | [`oss-documentation-best-practices.md`](oss-documentation-best-practices.md) | 2026-03-07 |
+| [#19](https://github.com/EndogenAI/dogma/issues/19) | PM & Dev Team Structures | [`pm-and-team-structures.md`](pm-and-team-structures.md) | 2026-03-07 |
+| [#20](https://github.com/EndogenAI/dogma/issues/20) | Product Research & Design _(seed)_ | [`product-research-and-design.md`](product-research-and-design.md) | 2026-03-07 |
+| [#21](https://github.com/EndogenAI/dogma/issues/21) | Comms, Marketing & Bizdev _(seed)_ | [`comms-marketing-bizdev.md`](comms-marketing-bizdev.md) | 2026-03-07 |
+| [#22](https://github.com/EndogenAI/dogma/issues/22) | GitHub Project Management & Automation | [`github-project-management.md`](github-project-management.md) | 2026-03-07 |
+| [#24](https://github.com/EndogenAI/dogma/issues/24) | Context Compaction Best Practices | [`session-management.md#context-compaction`](../guides/session-management.md) | 2026-03-07 |
+| [#72](https://github.com/EndogenAI/dogma/issues/72) | Context-sensitive axiom amplification (OQ-VE-2) | [`epigenetic-tagging.md`](epigenetic-tagging.md) | 2026-03-10 |
+| [#74](https://github.com/EndogenAI/dogma/issues/74) | LLM behavioral testing for value fidelity (OQ-VE-4) | [`llm-behavioral-testing.md`](llm-behavioral-testing.md) | 2026-03-10 |
+| [#76](https://github.com/EndogenAI/dogma/issues/76) | XML structuring in `handoffs.prompt` fields (OQ-12-4) | [`xml-agent-instruction-format.md`](xml-agent-instruction-format.md) §11 | 2026-03-10 |
+| [#83](https://github.com/EndogenAI/dogma/issues/83) | Encoding external product/client values — layered value architecture | [`external-value-architecture.md`](external-value-architecture.md) | 2026-03-10 |

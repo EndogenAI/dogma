@@ -92,7 +92,7 @@ The `## Endogenous Sources` section MUST reference:
 ## Endogenous Sources
 
 This agent is defined by:
-- **Issue**: [#62 Implement Remaining Agent Skills](https://github.com/EndogenAI/Workflows/issues/62)
+- **Issue**: [#62 Implement Remaining Agent Skills](https://github.com/EndogenAI/dogma/issues/62)
 - **Milestone**: Wave 1: Agent Fleet Tier A+B
 - **Labels**: type:feature, priority:high, area:agents
 - **Governing axiom**: *Endogenous-First* (see [`MANIFESTO.md`](../../MANIFESTO.md))
@@ -114,7 +114,7 @@ The `## Completion Criteria` section should mirror the issue's acceptance checkl
 ```markdown
 ## Completion Criteria
 
-Deliverables match the acceptance criteria in [issue #62](https://github.com/EndogenAI/Workflows/issues/62):
+Deliverables match the acceptance criteria in [issue #62](https://github.com/EndogenAI/dogma/issues/62):
 
 - ✅ `executive-pm.agent.md` created with full Endogenous Sources section
 - ✅ Agent reads GitHub issue definitions before acting
@@ -160,7 +160,7 @@ requires:                           # Other skills this depends on
 
 This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md).
 
-**Implements**: The research orchestration pattern from [issue #45 (Research: Product Definition)](https://github.com/EndogenAI/Workflows/issues/45)
+**Implements**: The research orchestration pattern from [issue #45 (Research: Product Definition)](https://github.com/EndogenAI/dogma/issues/45)
 
 **Used by**: Executive Researcher, Research Scout, Research Synthesizer, Research Reviewer, Research Archivist
 

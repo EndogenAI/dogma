@@ -393,7 +393,7 @@ These questions require a further research pass or empirical investigation withi
 
    **Full back-propagation protocol**: `docs/research/dogma-neuroplasticity.md` §Pattern Catalog → Pattern C2.
 
-   **Closes**: [issue #75](https://github.com/EndogenAI/Workflows/issues/75) — empirical handoff drift audit complete.
+   **Closes**: [issue #75](https://github.com/EndogenAI/dogma/issues/75) — empirical handoff drift audit complete.
 
 ---
 
@@ -427,7 +427,7 @@ The inheritance-chain model describes value transmission in one direction: MANIF
 **Audit date**: 2026-03-08
 **Reviewer**: Executive Orchestrator, first session on milestone #7
 **Source**: `MANIFESTO.md` reviewed in full against the [4,1] repetition code forms from §3 Pattern 1
-**Closes**: [issue #73](https://github.com/EndogenAI/Workflows/issues/73) — feeds Phase 3 (issue #70)
+**Closes**: [issue #73](https://github.com/EndogenAI/dogma/issues/73) — feeds Phase 3 (issue #70)
 
 Form definitions (from Pattern 1, §3):
 - **F1 — Principle statement**: Abstract declaration of the value

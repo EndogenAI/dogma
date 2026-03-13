@@ -47,7 +47,7 @@ See [`docs/guides/issue-and-artifact-discipline.md`](docs/guides/issue-and-artif
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/EndogenAI/Workflows.git
+git clone https://github.com/EndogenAI/dogma.git
 cd Workflows
 
 # 2. Install dependencies (uv manages the virtual environment)

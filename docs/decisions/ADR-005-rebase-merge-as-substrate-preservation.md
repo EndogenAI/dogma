@@ -63,5 +63,5 @@ It is also an instance of the **Endogenous-First axiom**: the git commit log is 
 - [`docs/research/github-as-memory-substrate.md`](../research/github-as-memory-substrate.md) — P4: Commit archaeology, Layer architecture
 - [`docs/guides/github-workflow.md`](../guides/github-workflow.md) — Section 9: PR Merge Strategy
 - [`docs/toolchain/git.md`](../toolchain/git.md) — PR Merge Strategy section
-- Issue [#36](https://github.com/EndogenAI/Workflows/issues/36) — decision trigger
-- PR [#37](https://github.com/EndogenAI/Workflows/pull/37) — initial documentation
+- Issue [#36](https://github.com/EndogenAI/dogma/issues/36) — decision trigger
+- PR [#37](https://github.com/EndogenAI/dogma/pull/37) — initial documentation

@@ -2,7 +2,7 @@
 query_docs.py
 -------------
 Purpose:
-    BM25-based CLI for querying the EndogenAI/Workflows documentation corpus.
+    BM25-based CLI for querying the EndogenAI/dogma documentation corpus.
     Implements on-demand retrieval over scoped corpus slices, enabling agents
     to fetch precisely the section they need rather than bulk-loading entire
     documents.
@@ -258,7 +258,7 @@ def format_output(results: list[dict], mode: str) -> str:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="BM25 query over the EndogenAI/Workflows documentation corpus.")
+    parser = argparse.ArgumentParser(description="BM25 query over the EndogenAI/dogma documentation corpus.")
     parser.add_argument("query", help="Search query string")
     parser.add_argument(
         "--scope",

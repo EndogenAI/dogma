@@ -228,4 +228,4 @@ Every server requires explicit trust on first start. Use `MCP: Reset Trust` (Com
 - [Model Context Protocol specification](https://modelcontextprotocol.io/) — protocol standard
 - [GitHub MCP server registry](https://github.com/mcp) — curated server gallery
 - [`docs/guides/local-compute.md`](../guides/local-compute.md) Strategy C — endogenic local network compute guide
-- [GitHub Issue #6](https://github.com/EndogenAI/Workflows/issues/6) — tracking issue for this research arc
+- [GitHub Issue #6](https://github.com/EndogenAI/dogma/issues/6) — tracking issue for this research arc

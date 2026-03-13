@@ -30,7 +30,7 @@ The most actionable finding is a **four-tier memory architecture** mapping each 
 
 **Verdict**: CONFIRMED — with rate limit constraints
 
-Live tests against `EndogenAI/Workflows`:
+Live tests against `EndogenAI/dogma`:
 
 - `gh issue view <num> --json number,title,body,labels,state,comments` — returns full structured record (~1–3K tokens per issue)
 - `gh issue list --label "type:research" --state closed --json number,title,labels,closedAt --limit 20` — 20 issue summaries (~200 tokens) for pattern sweep

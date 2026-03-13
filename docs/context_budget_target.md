@@ -100,9 +100,9 @@ Numeric targets X, Y, Z, W are derived from the D1 and D2 findings in [docs/rese
 
 ## Related Issues
 
-- [#85](https://github.com/EndogenAI/Workflows/issues/85) — Source research (this document derives from its D1/D2 findings)
-- [#80](https://github.com/EndogenAI/Workflows/issues/80) — Queryable docs substrate — T4 implementation
-- [#79](https://github.com/EndogenAI/Workflows/issues/79) — Skills as decision codifiers — T1 reduction via extraction (R1)
-- [#82](https://github.com/EndogenAI/Workflows/issues/82) — Dogma neuroplasticity — T1 reduction via pruning (R2)
-- [#13](https://github.com/EndogenAI/Workflows/issues/13) — Episodic memory — T2 management (history queryable on demand)
-- [#14](https://github.com/EndogenAI/Workflows/issues/14) — AIGNE AFS governance — pipeline-level context compress/select/isolate
+- [#85](https://github.com/EndogenAI/dogma/issues/85) — Source research (this document derives from its D1/D2 findings)
+- [#80](https://github.com/EndogenAI/dogma/issues/80) — Queryable docs substrate — T4 implementation
+- [#79](https://github.com/EndogenAI/dogma/issues/79) — Skills as decision codifiers — T1 reduction via extraction (R1)
+- [#82](https://github.com/EndogenAI/dogma/issues/82) — Dogma neuroplasticity — T1 reduction via pruning (R2)
+- [#13](https://github.com/EndogenAI/dogma/issues/13) — Episodic memory — T2 management (history queryable on demand)
+- [#14](https://github.com/EndogenAI/dogma/issues/14) — AIGNE AFS governance — pipeline-level context compress/select/isolate

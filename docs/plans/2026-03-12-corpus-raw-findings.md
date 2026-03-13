@@ -547,7 +547,7 @@ sprint: "2026-03-12-corpus-backprop"
 
 **Key claims and patterns**
 
-- Proposes a **four-category orthogonal substrate taxonomy** for EndogenAI/Workflows: (1) Content (never compact), (2) Context (always compact), (3) Hybrid (conditional compaction), (4) Regenerable Provenance (zero compaction cost, fully deterministic).
+- Proposes a **four-category orthogonal substrate taxonomy** for EndogenAI/dogma: (1) Content (never compact), (2) Context (always compact), (3) Hybrid (conditional compaction), (4) Regenerable Provenance (zero compaction cost, fully deterministic).
 - **H1 (CONFIRMED)**: Four categories are empirically distinct with non-overlapping closure properties. Orthogonality proof: no substrate can simultaneously belong to two categories (6 impossible pairings argued).
 - **Categorical definitions with examples**: Content: MANIFESTO.md, AGENTS.md, committed docs/research/*.md, git history. Loss impact: HIGH. Compaction: Never. Monotonically growing. Context: .tmp/<branch>/<date>.md scratchpad, terminal state, VS Code scratch buffers — session-local, gitignored, aggressively compacted at session-end. Hybrid: .cache/sources/.md (distilled external pages), test artifacts, build outputs. Regenerable with cost; conditional retention based on access frequency and regeneration cost. Regenerable Provenance (fourth category, novel): scripts/*.py, tests/*.py, .github/workflows/*.yml, .github/agents/*.agent.md — fully deterministic, zero loss if backed up in git, write-once-execute-many.
 - **H2 (CONFIRMED)**: Optimal policies differ radically by category. Content=never compact/commit every edit. Context=aggressive compaction via prune_scratchpad.py --force. Hybrid=conditional rule. Regenerable=never compact, optimize for legibility.

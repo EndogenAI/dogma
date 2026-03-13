@@ -6,12 +6,12 @@ Useful for CI workflows where the agent must wait for a build to finish before
 proceeding (e.g., after pushing a commit, before merging a PR).
 
 Usage:
-    uv run python scripts/wait_for_github_run.py <run-id> [--timeout-secs 150] [--repo EndogenAI/Workflows]
+    uv run python scripts/wait_for_github_run.py <run-id> [--timeout-secs 150] [--repo EndogenAI/dogma]
 
 Arguments:
     run-id              GitHub Actions run ID (e.g., from `gh run list` output)
     --timeout-secs      Maximum wait time in seconds (default: 150 = 2.5 minutes)
-    --repo              Repository in format owner/repo (default: EndogenAI/Workflows)
+    --repo              Repository in format owner/repo (default: EndogenAI/dogma)
     --interval-secs     Poll interval in seconds (default: 5)
 
 Exit Codes:
@@ -49,8 +49,8 @@ def parse_args():
     )
     parser.add_argument(
         "--repo",
-        default="EndogenAI/Workflows",
-        help="Repository in format owner/repo (default: EndogenAI/Workflows)",
+        default="EndogenAI/dogma",
+        help="Repository in format owner/repo (default: EndogenAI/dogma)",
     )
     parser.add_argument(
         "--interval-secs",
