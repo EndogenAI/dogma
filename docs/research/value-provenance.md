@@ -1,6 +1,7 @@
 ---
 title: "Value Signal Provenance — Research Synthesis"
 status: Final
+governs: [endogenous-first, provenance-tracking]
 ---
 
 # Value Signal Provenance — Research Synthesis

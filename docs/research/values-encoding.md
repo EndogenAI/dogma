@@ -1,6 +1,7 @@
 ---
 title: "Verbally Encoding Values — Cross-Sectoral Synthesis"
 status: "Final"
+governs: [endogenous-first, algorithms-before-tokens]
 ---
 
 # Verbally Encoding Values — Cross-Sectoral Synthesis

@@ -1,3 +1,7 @@
+---
+governs: [endogenous-first, algorithms-before-tokens, local-compute-first, minimal-posture, programmatic-first, documentation-first, commit-discipline, enforcement-proximity]
+---
+
 # AGENTS.md
 
 Guidance for AI coding agents working in this repository.
@@ -558,6 +562,8 @@ Write ## Session Start with a one-paragraph orientation before proceeding.
 ```
 
 Full prompt library entry and protocol: `docs/guides/workflows.md` → **Orchestration & Planning Prompts** → *Continue from a prior session*.
+
+- Before the first commit of a session, run `uv run python scripts/annotate_provenance.py --dry-run --scope .` to check for files missing `governs:` annotations.
 
 ---
 
