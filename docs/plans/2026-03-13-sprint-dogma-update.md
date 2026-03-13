@@ -181,19 +181,85 @@ The five work streams below have a recommended sequencing, but some can run part
 
 ---
 
-### Phase 5 — Sprint Retrospective & Close
+### Phase 5A — GitHub Automation Research (#213, #214)
+
+**Agent**: Executive Researcher → Research Scout
+**Deliverables**:
+- [ ] `docs/research/issue-to-markdown-action.md` (D4, Status: Final) — trigger model, output format, Orchestrator orientation use-case, PM efficiency, cache location tradeoff, security; adopt/defer/reject recommendation
+- [ ] `docs/research/issue-metrics-action.md` (D4, Status: Final) — action mechanics, scheduled-trigger design, commit-step, `docs/issues/` untrusted classification; adopt/defer/reject recommendation
+- [ ] Both docs pass `validate_synthesis.py`
+
+**Depends on**: Phase 4 Review APPROVED ✅
+**Gate**: Phase 5A Review APPROVED before any 5B phase starts
+**Status**: ⬜ Not started
+
+### Phase 5A Review — Review Gate
+
+**Agent**: Review
+**Deliverables**: `## Phase 5A Review Output` in scratchpad, verdict: APPROVED
+**Depends on**: Phase 5A committed
+**Gate**: Phases 5B-Scripts and 5B-Docs do not start until APPROVED
+**Status**: ⬜ Not started
+
+---
+
+### Phase 5B-Scripts — Workflow Implementation (#215, #216, #217, #218, #219, #220)
+
+**Agent**: Executive Scripter
+**Deliverables**:
+- [ ] `.github/workflows/label-sync.yml` — `EndBug/label-sync@v2`; trigger push+dispatch; replaces `no-label-drift.yml` stub (#215)
+- [ ] `.github/workflows/no-label-drift.yml` retired/deleted (#215)
+- [ ] `.github/workflows/changelog-on-merge.yml` stub replaced with full `conventional-changelog-action` implementation (#216)
+- [ ] `.github/workflows/release-changelog.yml` created — `release-changelog-builder-action`, tag-push trigger (#217)
+- [ ] Issue #218 body checkboxes updated to `[x]` (`export_project_state.py` already implemented)
+- [ ] `stale.yml` reviewed; issue #219 closed if adequate or updated if not
+- [ ] `.github/workflows/release-drafter.yml` + `.github/release-drafter.yml` config (#220)
+- [ ] `ruff check scripts/ tests/` + `pytest tests/ -x -m "not slow and not integration" -q` both pass
+
+**Depends on**: Phase 5A Review APPROVED
+**Note**: May run in parallel with Phase 5B-Docs
+**Gate**: Phase 5B Review does not start until 5B-Scripts AND 5B-Docs both committed
+**Status**: ⬜ Not started
+
+### Phase 5B-Docs — Orient-step + Documentation Updates (#213, #214, #215)
+
+**Agent**: Executive Docs
+**Deliverables**:
+- [ ] `AGENTS.md` Security Guardrails updated: issue output files in `.cache/`/`docs/issues/` classified as untrusted external content
+- [ ] `docs/issues/metrics.md` placeholder created; Orchestrator orient-step references it (#214, if adopt)
+- [ ] `scripts/seed_labels.py` docstring updated: CI supersedes it in production (#215)
+- [ ] `docs/guides/github-workflow.md` label management section updated: references `label-sync.yml` (#215)
+- [ ] If #213 adopt: orient-step updated + CI snippet added to `docs/guides/github-workflow.md`
+- [ ] `validate_agent_files.py --all` + `validate_synthesis.py` on any modified research docs pass
+
+**Depends on**: Phase 5A Review APPROVED
+**Note**: May run in parallel with Phase 5B-Scripts
+**Gate**: Phase 5B Review does not start until 5B-Scripts AND 5B-Docs both committed
+**Status**: ⬜ Not started
+
+### Phase 5B Review — Review Gate
+
+**Agent**: Review
+**Deliverables**: `## Phase 5B Review Output` in scratchpad, verdict: APPROVED
+**Depends on**: Phase 5B-Scripts AND Phase 5B-Docs both committed
+**Gate**: Phase N (Sprint Retrospective) does not start until APPROVED
+**Status**: ⬜ Not started
+
+---
+
+### Phase N — Sprint Retrospective & Close
 
 **Agent**: Executive Orchestrator + session-retrospective skill
 **Deliverables**:
 - [ ] `@session-retrospective` invoked: lessons encoded into substrate
 - [ ] All issue body checkboxes updated to reflect completed deliverables
-- [ ] Progress comments posted on all sprint issues
-- [ ] PR(s) opened with `Closes #212`, `Closes #221`, `Closes #239`, `Closes #240`, `Closes #TBD`
-- [ ] CI green on all PRs
+- [ ] Progress comments posted on all sprint issues (#212, #221, #239, #240, #243)
+- [ ] PR opened with `Closes #212`, `Closes #221`, `Closes #213`, `Closes #214`, `Closes #215`, `Closes #216`, `Closes #217`, `Closes #218`, `Closes #219`, `Closes #220`, `Closes #239`, `Closes #240`, `Closes #243`
+- [ ] CI green on PR
 - [ ] Scratchpad `## Session Summary` written
 - [ ] `prune_scratchpad.py --force` run after retrospective
 
-**Depends on**: Phase 4 Review APPROVED
+**Depends on**: Phase 5B Review APPROVED
 **Status**: ⬜ Not started
 
 ---
@@ -229,3 +295,4 @@ The five work streams below have a recommended sequencing, but some can run part
 | 3 | 2026-03-13 | Substrate Consolidation | Phase 3 (begin) |
 | 4 | 2026-03-13 | Substrate Consolidation complete | Phase 3 ✅ |
 | 5 | 2026-03-13 | Provenance & Interlinking | Phase 4 ✅ |
+| 6 | 2026-03-13 | Plan recast: #213–#220 as Phase 5A/5B | Phase 5 planning ✅ |
