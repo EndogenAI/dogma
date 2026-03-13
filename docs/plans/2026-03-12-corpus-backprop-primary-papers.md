@@ -22,6 +22,8 @@ Survey the entire `docs/research/` corpus (all 72 documents) and back-propagate 
 
 **Back-propagation discipline** (from `values-encoding.md` §5): Weave / Link-out / Consolidate — no annotation proliferation, no in-place definition reproduction, link to source docs for lossless access.
 
+> ⛔ **NO-PRUNE RULE (Phase 1)**: The scratchpad (`2026-03-12.md`) must not be pruned, summarised, or truncated at any point during Phase 1. Scout output is the raw record Phase 2 depends on — completeness takes priority over brevity. If the file grows beyond practical size, continue in `2026-03-12-b.md`, `2026-03-12-c.md`, etc. `prune_scratchpad.py` must NOT be run with `--force` until Phase 1 Review is APPROVED.
+
 ---
 
 ## Methodology Constraint
@@ -96,7 +98,11 @@ The sweep table is the Scout's guide. Depth allocations matter — it prevents t
 **Watch list for this group** (specific signals relevant to this doc type): ...
 ```
 
-**Each Scout's task**: Read the Orchestrator's brief, then read its assigned docs (Thorough = full read; Skim = summary scan), then append its findings section to `docs/plans/2026-03-12-corpus-raw-findings.md`. Output format per doc: one section heading plus bullet observations. No proposal-level specificity (no target sections, no exact change descriptions — those are Phase 2).
+**Brief construction discipline — IMPORTANT**: When writing the brief for Scout 1C, the Orchestrator reads the **prior briefs** (small, already-distilled) plus Scout 1B's section heading list — NOT the full raw Scout 1A+1B output again. The briefs are the running distillation; they carry the signal forward compactly across the Orchestrator's context window. The full raw findings on disk are for Phase 2 (Synthesizer) to read comprehensively. This keeps the Orchestrator's working context bounded at each step: `workplan key sections + briefs so far (≤600 tokens total by 1D) + next Scout's doc list`.
+
+**Scratchpad discipline — NO PRUNING**: Scouts may output as much as they find relevant to `corpus-raw-findings.md`. The scratchpad (`2026-03-12.md`) must **not be pruned at any point during Phase 1** — brevity is not a goal here; completeness is. If the scratchpad file grows beyond a single file's practical size, split into `2026-03-12-b.md`, `2026-03-12-c.md`, etc. — but do NOT truncate or summarise existing content. The raw Scout output is the primary record Phase 2 depends on.
+
+**Each Scout's task**: Read the Orchestrator's brief (not the prior raw output), then read its assigned docs (Thorough = full read; Skim = summary scan), then append its findings section to `docs/plans/2026-03-12-corpus-raw-findings.md`. Output format per doc: one section heading plus bullet observations. Write as much as is relevant — do not compress for brevity. No proposal-level specificity (no target sections, no exact change descriptions — those are Phase 2).
 
 ---
 
@@ -192,10 +198,11 @@ The sweep table is the Scout's guide. Depth allocations matter — it prevents t
 ---
 
 **Orchestrator inter-scout steps** (between each delegation):
-1. Read the completed Scout section in `docs/plans/2026-03-12-corpus-raw-findings.md`
-2. Write `## Orchestrator Brief — Before Scout 1[X]` to the scratchpad (≤200 tokens; already-observed themes + unseen gaps + watch list for next group)
-3. Commit completed Scout section before delegating next
-4. Delegate next Scout with the brief as explicit context in the prompt
+1. Read the **prior briefs** in the scratchpad (not the full raw Scout output) plus the just-completed Scout's section heading list to confirm coverage
+2. Write `## Orchestrator Brief — Before Scout 1[X]` to the scratchpad (≤200 tokens; already-observed themes distilled from prior briefs + new signals from latest Scout + unseen gaps + watch list for next group)
+3. Commit completed Scout section to `corpus-raw-findings.md` before delegating next
+4. Delegate next Scout with the brief as the only inter-Scout context in the prompt (not a dump of raw output)
+5. **Do not prune the scratchpad** — if it exceeds file size limits, create `2026-03-12-b.md` and continue there
 
 **Deliverables**:
 - `docs/plans/2026-03-12-corpus-raw-findings.md` with all 4 Scout sections committed
