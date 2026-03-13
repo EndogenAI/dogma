@@ -255,12 +255,16 @@ The five work streams below have a recommended sequencing, but some can run part
 - [x] All issue body checkboxes updated to reflect completed deliverables
 - [x] Progress comments posted on all sprint issues (#212, #221, #239, #240, #243)
 - [x] PR opened: #244 with Closes #213, #215–#220, #239, #240, #243
-- [ ] CI green on PR
-- [ ] Scratchpad `## Session Summary` written
+- [x] CI green on PR (#244, commit 66ec460)
+- [x] D4 Sprint Retrospective synthesis doc: `docs/research/sprint-retrospective-2026-03-13-dogma-update.md` (commit 13879fa)
+- [x] Remaining substrate gaps encoded: Planner gate (C4), Provenance health check (C6), Lychee two-step (C7) (commit 13879fa)
+- [x] 3 new Self Improvement Sprint issues created: #248 (CRD CI check), #249 (§-reference validation), #250 (PR triage skill)
+- [x] Retrospective comments posted on backprop issues #227, #228, #229
+- [x] Scratchpad `## Session Summary` written (Session 7)
 - [ ] `prune_scratchpad.py --force` run after retrospective
 
 **Depends on**: Phase 5B Review APPROVED
-**Status**: ⏳ In progress — PR #244 opened; CI pending; scratchpad close pending
+**Status**: ✅ Complete — all retrospective deliverables committed 13879fa, push confirmed
 
 ---
 
@@ -281,8 +285,8 @@ The five work streams below have a recommended sequencing, but some can run part
 - [x] Issue #239: Substrate mapping table + rebalancing recommendations produced and committed
 - [x] Issue #240: Top consolidation moves implemented; token + signal metrics documented
 - [x] Issue #243: `governs:` annotation tooling implemented; fleet adoption begun
-- [ ] All PRs green CI; all issues closed via PR body `Closes #N`
-- [ ] Sprint retrospective lessons encoded into substrate
+- [x] All PRs green CI; all issues closed via PR body `Closes #N`
+- [x] Sprint retrospective lessons encoded into substrate (cd2ceb5, 13879fa)
 
 ---
 
