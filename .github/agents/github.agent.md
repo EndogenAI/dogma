@@ -1,6 +1,6 @@
 ---
 name: GitHub
-description: Commit approved changes to the current branch following Conventional Commits. The final step in every agent workflow before human review.
+description: Executive-tier agent owning all git and GitHub API write operations — commits, pushes, PR creation, issue updates, label management. Receives approved changes from any executive after Review APPROVED. The sole executor of remote writes in the fleet.
 tools:
   - terminal
   - execute
@@ -83,7 +83,23 @@ uv run python scripts/validate_agent_files.py --all
 
 If **any** check fails, **stop immediately**. Report the failure to the delegating agent — do not commit broken code. Return with the failure details and the command used to reproduce it.
 
-### 3. Stage Changed Files
+### 3. Scope Determination — Decide What to Commit
+
+After Review approval, determine the commit scope:
+- **File-level**: Stage only the files explicitly listed by the delegating agent in the Review approval message
+- **Never auto-stage all**: Do not run `git add -A` unless the delegating agent explicitly instructs it and the working tree is clean of out-of-scope changes
+- Run `git status` first to confirm staged vs. unstaged before committing
+- If the working tree contains unexpected changes, flag them to the delegating agent before proceeding
+
+### 4. Post-Commit Verification
+
+After every commit:
+1. Run `git log --oneline -1` to confirm the commit SHA
+2. Return commit SHA and one-line summary to the delegating agent: `Committed: <SHA> — <message>`
+3. For push operations: run `git push` and verify exit 0 before reporting success
+4. Do not silently swallow push failures — report them immediately with the error output
+
+### 5. Stage Changed Files
 
 Stage only the explicitly approved files — never use `git add -A` or `git add .` without verifying first:
 
@@ -94,7 +110,7 @@ git status                 # review staged files before committing
 
 Compare the staged changes against the delegating agent's approval list to ensure no unintended files are included.
 
-### 4. Create Atomic Commit
+### 6. Create Atomic Commit
 
 Create a single commit using Conventional Commits format:
 
@@ -117,7 +133,7 @@ Closes #<issue-number>"  # if applicable
 
 For logically separate changes, use separate commits. For related multi-file changes, use a single commit with a detailed body explaining the coherence.
 
-### 5. Push to Origin
+### 7. Push to Origin
 
 ```bash
 git push origin HEAD
