@@ -121,7 +121,7 @@ to DOT format for Graphviz rendering.
 
 ## Pattern Catalog
 
-### Canonical Example: FSM-as-Navigable-Graph
+**Canonical example**: FSM-as-Navigable-Graph
 
 **What it is**: `data/phase-gate-fsm.yml` with NetworkX integration for path analysis.
 
@@ -144,7 +144,7 @@ token-burn reasoning about "what comes next."
 
 ---
 
-### Anti-Pattern: Importing LangGraph for Static Workflow Graphs
+**Anti-pattern**: Importing LangGraph for Static Workflow Graphs
 
 **What it is**: Adding LangGraph as a runtime dependency to encode a workflow that has
 fewer than 20 states and no live LLM invocations at routing decision points.
@@ -167,7 +167,7 @@ fewer than 20 states and no live LLM invocations at routing decision points.
 
 ---
 
-### Pattern: Delegation Gate as Weighted Digraph
+**Pattern**: Delegation Gate as Weighted Digraph
 
 The existing `data/delegation-gate.yml` encodes agent delegation routes as a static
 adjacency list. This can be promoted to a weighted digraph:
