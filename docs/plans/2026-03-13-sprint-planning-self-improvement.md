@@ -58,7 +58,7 @@ Produce a fully sequenced, phase-gated execution plan for the **Self Improvement
 - Dependency graph between issue groups noted
 
 **Depends on**: nothing
-**Status**: Not started
+**Status**: ✅ Complete — `10dccac`
 
 ---
 
@@ -75,7 +75,7 @@ Produce a fully sequenced, phase-gated execution plan for the **Self Improvement
 
 ---
 
-### Phase 3 — Fleet Elevation & Agent Tier Changes ⬜
+### Phase 3 — Fleet Elevation & Agent Tier Changes ✅
 
 **Agent**: Executive Fleet
 **Parallel with**: Phase 2, Phase 4, Phase 6 (agent files vs research docs / MANIFESTO vs workflows — distinct domains)
@@ -85,11 +85,11 @@ Produce a fully sequenced, phase-gated execution plan for the **Self Improvement
 - #48 `Chore: Investigate GitHub sub-issues API and feature availability` — effort: S — small investigation; GitHub domain pairs cleanly with #200
 
 **Depends on**: Phase 1; **gates Phase 5** (AGENTS.md must stabilize after #200 before delegation signal updates begin)
-**Status**: Not started
+**Status**: ✅ Complete — `ff9bf83` (closes #200, #48; #152 deferred to future session — M effort audit, #151 dependency confirmed closed)
 
 ---
 
-### Phase 4 — MANIFESTO Core Documentation ⬜
+### Phase 4 — MANIFESTO Core Documentation ✅
 
 **Agent**: Executive Docs
 **Parallel with**: Phase 3 (MANIFESTO vs agent files), Phase 6 (MANIFESTO vs workflows.md)
@@ -99,7 +99,7 @@ Produce a fully sequenced, phase-gated execution plan for the **Self Improvement
 - #233 `docs: H4 BDD primary source gap — add independent Adzic/North citations` — effort: S — citation addition to existing docs section; same Executive Docs domain, efficient to batch
 
 **Depends on**: Phase 1; soft: Phase 2 (#245 LCF output may refine MANIFESTO axiom framing — not a hard gate); **gates Phase 9** (MANIFESTO citation patterns must stabilize before CI enforcement)
-**Status**: Not started
+**Status**: ✅ Complete — `3db96a8` (closes #235, #236, #233)
 
 ---
 
@@ -117,7 +117,7 @@ Produce a fully sequenced, phase-gated execution plan for the **Self Improvement
 
 ---
 
-### Phase 6 — Back-Propagation Methodology ⬜
+### Phase 6 — Back-Propagation Methodology ✅
 
 **Agent**: Executive Docs
 **Parallel with**: Phase 2, Phase 3, Phase 4, Phase 5 (distinct file domain: methodology docs + `docs/guides/workflows.md`)
@@ -127,7 +127,7 @@ Produce a fully sequenced, phase-gated execution plan for the **Self Improvement
 - #227 `docs(guides): add back-propagation methodology section to workflows.md` — effort: M — new guide section in `docs/guides/workflows.md`; depends on #229 and #228 completing first within the phase
 
 **Depends on**: Phase 1 (#229 and #228 are independent; #227 requires #229 and #228 within-phase)
-**Status**: Not started
+**Status**: ✅ Complete — `0bc63b4` (closes #229, #228, #227)
 
 ---
 
