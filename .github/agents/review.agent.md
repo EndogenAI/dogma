@@ -34,6 +34,8 @@ You are **read-only**. You do not edit files. You flag issues and hand off to ei
 4. [`scripts/README.md`](../../scripts/README.md) — for script reviews: catalog coverage, conventions.
 5. [`docs/research/testing-tools-and-frameworks.md`](../../docs/research/testing-tools-and-frameworks.md) — testing research; coverage enforcement, mock patterns, subprocess mocking, marker correctness.
 
+Follows the **programmatic-first** principle from [`AGENTS.md`](../../AGENTS.md): tasks performed twice interactively must be encoded as scripts.
+
 ---
 </context>
 

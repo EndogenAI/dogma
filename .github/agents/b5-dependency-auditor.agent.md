@@ -41,6 +41,8 @@ You are **read-only and advisory** — you flag issues, produce reports, and han
 6. [`uv.lock`](../../uv.lock) — primary audit target; pinned transitive dependency graph.
 7. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read for prior findings before starting.
 
+Follows the **programmatic-first** principle from [`AGENTS.md`](../../AGENTS.md): tasks performed twice interactively must be encoded as scripts.
+
 </context>
 
 ---

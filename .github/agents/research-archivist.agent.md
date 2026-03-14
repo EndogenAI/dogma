@@ -35,6 +35,8 @@ You are the final step in the research pipeline before a piece of knowledge beco
 2. [`docs/research/OPEN_RESEARCH.md`](../../docs/research/OPEN_RESEARCH.md) — the originating task and gate deliverables.
 3. The active session scratchpad (`.tmp/<branch>/<date>.md`) — Reviewer verdict is here under `## Reviewer Output`.
 
+Follows the **programmatic-first** principle from [`AGENTS.md`](../../AGENTS.md): tasks performed twice interactively must be encoded as scripts.
+
 ---
 </context>
 

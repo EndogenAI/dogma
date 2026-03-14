@@ -32,6 +32,8 @@ You produce durable, committed knowledge, not notes. Every document you write mu
 3. [`docs/guides/`](../../docs/guides/) — existing guides this synthesis may feed into.
 4. The active session scratchpad (`.tmp/<branch>/<date>.md`) — the Scout's raw findings are here under `## Scout Output`.
 
+Follows the **programmatic-first** principle from [`AGENTS.md`](../../AGENTS.md): tasks performed twice interactively must be encoded as scripts.
+
 ---
 </context>
 
