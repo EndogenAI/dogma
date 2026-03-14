@@ -173,7 +173,7 @@ Produce a fully sequenced, phase-gated execution plan for the **Self Improvement
 
 ---
 
-### Phase 10 — Standalone Research Sprints ⬜
+### Phase 10 — Standalone Research Sprints ✅
 
 **Agent**: Executive Researcher
 **Parallel with**: Phase 8, Phase 9 (independent research domain; no shared files)
@@ -183,7 +183,7 @@ Produce a fully sequenced, phase-gated execution plan for the **Self Improvement
 - #131 `Cognee Library Adoption (After Local Compute Baseline)` — effort: XL — exploratory research; gated externally on local compute baseline; lowest execution priority in this phase
 
 **Depends on**: Phase 1 (no inter-phase dependencies within the milestone)
-**Status**: Not started
+**Status**: ✅ Complete — `af49037` + `d091a73` (closes #203; #234 scoped/deferred; #131 triaged; #252 filed for Q4 study)
 
 ---
 
@@ -194,6 +194,8 @@ Produce a fully sequenced, phase-gated execution plan for the **Self Improvement
 **Issues**:
 - #128 `Phase 1 AFS Integration — Index Session to AFS on Session Close` — effort: L — feature implementation; low priority; no hard upstream gate within this milestone
 - #146 `Implement prompt archaeology as a post-sprint ritual` — effort: M — define and document ritual; benefits from scratchpad architecture research (#242 in Phase 2) completing first
+- #252 `research: Execute Q4 empirical study — CRD vs output quality (Spearman ρ)` — effort: M — filed from Phase 10 output; retrospective rubric study; tractable now with `validate_agent_files.py` CRD extraction
+- **scripting follow-on from #203**: `feat(scripts): parse_fsm_to_graph.py — FSM-to-NetworkX path analysis + CI invariant check` — effort: S — recommendation from dynamic-agent-navigation.md; file new issue or implement directly in Phase 11
 
 **Depends on**: Phase 1; soft: Phase 2 (#242 scratchpad architecture research informs #146 ritual design)
 **Status**: Not started
