@@ -323,6 +323,12 @@ enhancement in the sprint planning workplan.
    append discipline, Executive-as-integration-point, compaction-aware writing, and
    `## Session Summary` close requirement.
 
+3a. **EndogenAI Workflows.** `MANIFESTO.md §1 — Endogenous-First`. Governs the augmentation
+    design direction in R1–R2: session history must remain endogenous (git-committed, locally
+    parseable) rather than routed to cloud-resident tracing services. Also cited in §1
+    Executive Summary ("correctly implements the Endogenous-First axiom's emphasis on
+    preserved, locally-resident context").
+
 4. **EndogenAI Workflows.** `MANIFESTO.md §3` — Local Compute-First. The structural test:
    "does cloud residency transfer enforcement authority, oversight access, or governance
    guarantees to an external party? If yes, local is preferred regardless of cost."
