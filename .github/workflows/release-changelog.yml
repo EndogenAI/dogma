@@ -24,7 +24,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           outputFile: RELEASE_CHANGELOG.md
           exportCache: .cache/pr-changelog-cache.json
-          importCache: .cache/pr-changelog-cache.json
           fetchReviewers: false
           fetchReleaseInformation: true
         env:
