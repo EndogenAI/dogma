@@ -113,7 +113,7 @@ Produce a fully sequenced, phase-gated execution plan for the **Self Improvement
 - #124 `Extended Agent Documentation Standard` — effort: M — defines extended documentation standard for agent files; naturally follows structural improvements from #194 and #195
 
 **Depends on**: Phase 3 (AGENTS.md must stabilize after GitHub agent tier elevation); **gates Phase 9** (AGENTS.md patterns must stabilize before CI enforcement)
-**Status**: Not started
+**Status**: ✅ Complete — `b4cea44` (closes #194, #195, #124)
 
 ---
 
