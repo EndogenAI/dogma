@@ -93,6 +93,17 @@ VS Code Copilot reads issue **title**, **body**, and **labels** when given `#<nu
 - **Structured headings**: YAML issue form output produces predictable heading anchors (`## Research Question`, `## Gate Deliverables`) that agents can grep.
 - **Use the checklist items** in Gate Deliverables to signal progress; Copilot reads checked/unchecked markdown checkboxes.
 
+### Sub-Issues (Issue Hierarchy)
+
+GitHub sub-issues (native parent-child linking) reached GA in 2025 and are available on all plans.
+
+**API / CLI access**:
+- REST: `POST /repos/{owner}/{repo}/issues/{issue_number}/sub_issues` with body `{"sub_issue_id": N}`
+- GraphQL: `addSubIssue` mutation
+- CLI: no dedicated `gh issue sub-issue` command — use `gh api` to call the REST endpoint
+
+**Decision (2026-03-13)**: Defer adoption. The current workaround (tracking issues that reference a parent by mention) is sufficient. Revisit when a native `gh` CLI sub-command exists or when a new epic requires formal hierarchy tracking. *Closes #48.*
+
 ---
 
 ## 5. Milestone Conventions

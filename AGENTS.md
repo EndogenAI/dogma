@@ -488,7 +488,7 @@ Only **Executive Orchestrator** and **Executive Docs** agents commit to the repo
 
 ## Executive Fleet Privileges
 
-**Terminal Access Model**: The eight executive-tier agents (Orchestrator, Docs, Researcher, Scripter, Automator, PM, Fleet, Planner) hold terminal and remote-write authority proportional to their domain. This design instantiates the [Endogenous-First](../MANIFESTO.md#1-endogenous-first) principle: executives responsible for scripts, agents, and documentation are treated as endogenous knowledge infrastructure — their tool scope is scoped to their domain, not restricted by default. Terminal access **is not full shell access**; it is scoped to the agent's function:
+**Terminal Access Model**: The nine executive-tier agents (Orchestrator, Docs, Researcher, Scripter, Automator, PM, Fleet, Planner, GitHub) hold terminal and remote-write authority proportional to their domain. This design instantiates the [Endogenous-First](../MANIFESTO.md#1-endogenous-first) principle: executives responsible for scripts, agents, and documentation are treated as endogenous knowledge infrastructure — their tool scope is scoped to their domain, not restricted by default. Terminal access **is not full shell access**; it is scoped to the agent's function:
 
 | Executive | Terminal Access Scope | Functions |
 |-----------|----------------------|----------| 
@@ -507,10 +507,13 @@ Only **Executive Orchestrator** and **Executive Docs** agents commit to the repo
 - **Docs ↔ Researcher, Scripter, Automator**: Docs coordinates with specialist executives for methodology and encoding decisions
 - **Researcher ↔ Scripter**: Researcher may escalate research findings to Scripter when a caching or transformation script is needed
 - **Scripter ↔ Automator**: Scripter and Automator coordinate on script-to-automation escalation paths
+- **GitHub ↔ all executives**: GitHub Agent receives approved changes from any executive after Review APPROVED; routes final commit hash and push confirmation back to the originating executive
 
 **File Write Discipline**: All file writes route through the established VS Code tools (`create_file`, `replace_string_in_file`, `multi_replace_string_in_file`). No agent uses heredocs, terminal I/O redirection, or inline Python file operations — these patterns corrupt content containing backticks and special characters. Enforced by pre-commit hook `no-heredoc-writes`.
 
-**Commit Discipline**: Every commit message follows [Conventional Commits](https://www.conventionalcommits.org/) format. Only Orchestrator and Docs agents invoke the GitHub agent to commit; all other agents return work for finalization. This restriction applies the [Algorithms Before Tokens](../MANIFESTO.md#2-algorithms-before-tokens) principle: centralized commit authority ensures every change is logged through a deterministic channel, preventing token-burn from distributed re-commitment and audit gaps. See [`CONTRIBUTING.md#commit-discipline`](CONTRIBUTING.md#commit-discipline) for format and examples.
+**Commit Discipline**: Every commit message follows [Conventional Commits](https://www.conventionalcommits.org/) format. All git and GitHub API operations (commits, pushes, PR creation, issue updates, labels) route through the **GitHub Agent** — it is the sole executor of remote writes. All other agents return work to the GitHub Agent after Review approval; they do not invoke `git` or `gh` directly. This centralizes the audit trail of all remote state changes in one specialist and applies the [Algorithms Before Tokens](../MANIFESTO.md#2-algorithms-before-tokens) principle: deterministic single-channel commit authority prevents distributed re-commitment and audit gaps. See [`CONTRIBUTING.md#commit-discipline`](CONTRIBUTING.md#commit-discipline) for format and examples.
+
+**Delegation rule**: Any action involving `git commit`, `git push`, `gh issue`, `gh pr`, or any other GitHub API write must be delegated to the GitHub Agent — not performed directly by the delegating agent.
 
 ### GitHub Label and Issue Conventions
 
