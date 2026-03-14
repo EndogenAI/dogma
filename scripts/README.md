@@ -107,7 +107,46 @@ For detailed testing guidance, see [`docs/guides/testing.md`](../docs/guides/tes
 
 ---
 
+## README-Driven Development Convention
+
+Before implementing a new script, write its README entry first: the JTBD statement, description, and usage example. This forces scope clarity before a line of code is written, and ensures the script catalog stays current.
+
+**Why**: Writing the entry first makes you state what the user can accomplish (the job), not just what the code does. If you cannot write a clear JTBD statement, the script's scope is not yet well-defined.
+
+**Template for a new script entry**:
+
+```markdown
+## scripts/your-script.py
+
+**Job**: Enable [who] to [accomplish what outcome] so that [why it matters].
+
+**Purpose**: [What the script does and why — 1–3 sentences.]
+
+**Tests**: [`tests/test_your_script.py`](../tests/test_your_script.py)
+
+**Usage**:
+
+\```bash
+uv run python scripts/your-script.py --flag value
+\```
+
+**Flags**:
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--flag` | yes | What this flag controls |
+| `--dry-run` | no | Preview without writing |
+
+**Exit codes**: `0` success; `1` error.
+```
+
+Commit the README entry in the same commit as the script. If the entry cannot be written, do not implement the script yet.
+
+---
+
 ## scripts/prune_scratchpad.py
+
+**Job**: Enable agents to manage cross-agent scratchpad session files — initialising, annotating, and pruning `.tmp/` files — so context is preserved and recoverable across sessions without manual file management.
 
 **Purpose**: Manage cross-agent scratchpad session files in `.tmp/<branch>/<date>.md`.
 Initialises today's session file, annotates H2 headings with line ranges, and prunes
@@ -157,6 +196,8 @@ at session end (`--force` + `--append-summary`) to archive cleanly and update `_
 
 ## scripts/scaffold_workplan.py
 
+**Job**: Enable agents to scaffold a dated, pre-filled workplan file in one command so planning is committed to git before execution begins.
+
 **Purpose**: Scaffold a new `docs/plans/YYYY-MM-DD-<slug>.md` workplan file from a standard
 template, with today's date and the current git branch pre-filled. Prints the created path to
 stdout. Exits 1 without overwriting if the target file already exists.
@@ -205,6 +246,8 @@ then commit with `docs(plans): add workplan for <slug>`.
 
 ## scripts/watch_scratchpad.py
 
+**Job**: Enable agents to keep scratchpad heading line-range annotations current automatically on every file change, so navigation annotations are always accurate without any manual update step.
+
 **Purpose**: File watcher (uses Python `watchdog`) that auto-annotates `.tmp/*.md` session
 files on every change. Keeps H2 heading line-range annotations current without any manual
 agent step. Includes a cooldown guard to prevent the annotator's own writes from re-triggering
@@ -245,6 +288,8 @@ when the workspace opens. Example:
 
 ## scripts/scaffold_agent.py
 
+**Job**: Enable fleet architects to generate a schema-compliant `.agent.md` stub from a validated template in one command, so new agents start with correct frontmatter from the first commit.
+
 **Purpose**: Scaffold a new VS Code Copilot `.agent.md` file in `.github/agents/` from a
 validated template. Enforces the frontmatter schema and naming conventions defined in
 `.github/agents/AGENTS.md`. Validates name uniqueness and description length before writing.
@@ -284,6 +329,8 @@ uv run python scripts/scaffold_agent.py \
 ---
 
 ## scripts/generate_agent_manifest.py
+
+**Job**: Enable orchestrators to load lightweight agent stubs (~100 tokens each) rather than full agent bodies, so context window budget is preserved during multi-agent sessions.
 
 **Purpose**: Enumerate all `.agent.md` files in `.github/agents/`, extract `name`, `description`,
 `tools`, `posture`, `capabilities`, and `handoffs` from their YAML frontmatter, and emit a
@@ -346,6 +393,8 @@ uv run python scripts/generate_agent_manifest.py --agents-dir path/to/agents/
 ---
 
 ## scripts/fetch_source.py
+
+**Job**: Enable agents to cache any external web page as distilled Markdown locally so subsequent sessions read from disk instead of re-fetching the same URL, saving tokens and network round-trips.
 
 **Purpose**: Fetch a URL, distil the HTML into clean Markdown (headings, bold, links, code
 blocks, lists — noise stripped), save the result to `.cache/sources/<slug>.md`, and maintain
@@ -418,6 +467,8 @@ Example: `https://arxiv.org/abs/2512.05470` → `arxiv-org-abs-2512-05470`.
 
 ## scripts/fetch_all_sources.py
 
+**Job**: Enable agents to pre-warm the entire research source cache in one command at session start, so all referenced URLs are available locally before any research session begins.
+
 **Purpose**: Batch-fetch and cache all research source URLs referenced across the repo — from
 `docs/research/OPEN_RESEARCH.md` "Resources to Survey" bullets and `docs/research/*.md` YAML
 frontmatter `sources:` lists. Run this at the start of every research session to pre-warm the
@@ -466,6 +517,8 @@ uv run python scripts/fetch_all_sources.py --research-docs-only
 ---
 
 ## scripts/fetch_toolchain_docs.py
+
+**Job**: Enable agents to look up `gh` CLI flag syntax locally without network round-trips, so command patterns are always available without interactive re-discovery across sessions.
 
 **Purpose**: Run `gh help` and `gh <subcommand> --help` for every top-level subcommand, convert
 the output to structured Markdown, and write it to `.cache/toolchain/`. Agents can look up `gh`
@@ -529,6 +582,8 @@ interactive lookups.
 
 ## scripts/link_source_stubs.py
 
+**Job**: Enable agents to maintain the bidirectional link graph between research syntheses and per-source stubs automatically, so `## Referenced By` sections are accurate without manual editing.
+
 **Purpose**: Maintain the bidirectional link graph between issue syntheses and per-source stubs.
 Scans `docs/research/*.md` (issue syntheses) and `docs/research/sources/*.md` (stubs) for
 markdown links to stubs, then writes `## Referenced By` entries back into each target stub.
@@ -558,6 +613,8 @@ Also run after adding new links to any issue synthesis or stub.
 ---
 
 ## scripts/validate_synthesis.py
+
+**Job**: Enable the Research Archivist to block commits when a research document fails minimum quality checks, so only well-structured documents reach the repository.
 
 **Purpose**: Programmatic quality gate for D3 per-source synthesis reports and D4 issue
 synthesis documents. Run before any Research Archivist commit to enforce a minimum quality
@@ -602,6 +659,8 @@ uv run python scripts/validate_synthesis.py "$FILE" || exit 1
 ---
 
 ## scripts/validate_agent_files.py
+
+**Job**: Enable CI to gate every commit on encoding-fidelity checks for `.agent.md` and `SKILL.md` files, so value-encoding drift is caught before it is merged.
 
 **Purpose**: Programmatic encoding-fidelity gate for `.agent.md` files in `.github/agents/`
 and `SKILL.md` files in `.github/skills/`. Prevents encoding drift in the
@@ -654,6 +713,8 @@ done
 
 ## scripts/migrate_agent_xml.py
 
+**Job**: Enable fleet maintainers to convert all `.agent.md` body sections to hybrid Markdown + XML format in one batch pass, so agents follow the canonical instruction format without manual editing of every file.
+
 **Purpose**: Bulk-migrate `.github/agents/*.agent.md` body sections from plain Markdown prose
 to hybrid Markdown + XML format. Implements the migration spec from
 `docs/research/xml-agent-instruction-format.md` §8.
@@ -695,6 +756,8 @@ uv run python scripts/migrate_agent_xml.py --all --min-lines 30
 ---
 
 ## scripts/pr_review_reply.py
+
+**Job**: Enable agents to post replies and resolve review threads on GitHub PRs in a single batch pass, so the post-review response loop executes without manual UI click-through.
 
 **Purpose**: Post replies to GitHub PR inline review comments and resolve review threads.
 Automates the post-review response loop — after fixing issues, post a reply on each inline
@@ -771,6 +834,8 @@ gh api graphql -f query='{
 
 ## scripts/seed_labels.py
 
+**Job**: Enable repo maintainers to create or sync GitHub label namespaces idempotently from a YAML manifest, so label configuration is version-controlled and reproducible.
+
 **Purpose**: Idempotent GitHub label seeder. Reads `data/labels.yml` (or a custom path) and
 creates or updates every label via `gh label create --force`. Optionally deletes the legacy
 GitHub default labels (`bug`, `documentation`, etc.) listed in the `legacy_labels` section.
@@ -831,6 +896,8 @@ legacy_labels:
 
 ## scripts/wait_for_unblock.py
 
+**Job**: Enable orchestration sessions to pause on a `status:blocked` issue and auto-resume when the block is cleared, so multi-session workflows continue without manual monitoring.
+
 Poll a GitHub issue on an interval until `status:blocked` is removed from its
 labels. Designed for two integration patterns:
 
@@ -870,6 +937,8 @@ automatically when a PR containing `Unblocks #N` in its body is merged to `main`
 ---
 
 ## scripts/audit_provenance.py
+
+**Job**: Enable fleet maintainers to verify that every `.agent.md` file traces its instructions back to a MANIFESTO.md axiom, so orphaned or unverifiable provenance chains are detected before merging.
 
 **Purpose**: Audit `.agent.md` files in `.github/agents/` for `governs:` frontmatter annotations that trace each file's instructions back to foundational MANIFESTO.md axioms. Extends `detect_drift.py` (phrasal watermark alignment) and `generate_agent_manifest.py` (cross-reference density) with chain-of-custody tracing at the file level.
 
@@ -924,6 +993,8 @@ uv run python scripts/audit_provenance.py --agents-dir path/to/agents/ --manifes
 ---
 
 ## scripts/propose_dogma_edit.py
+
+**Job**: Enable agents to generate ADR-style dogma edit proposals from session evidence as a deterministic CLI, so the back-propagation protocol runs without manual reasoning steps.
 
 **Purpose**: Programmatic enforcer of the back-propagation protocol from `docs/research/dogma-neuroplasticity.md`. Reads a scratchpad session file, extracts watermark-phrase evidence lines, runs the coherence check (does the proposed delta remove a watermark phrase?), and emits an ADR-style Markdown proposal. Implements **Algorithms Before Tokens** (`MANIFESTO.md §2`) by encoding the evidence extraction and coherence validation as a deterministic CLI.
 
@@ -988,6 +1059,8 @@ echo "Add signal-preservation bullet" | uv run python scripts/propose_dogma_edit
 
 ## scripts/validate_handoff_permeability.py
 
+**Job**: Enable agents to verify that cross-agent handoffs preserve required signals — canonical examples, axiom citations, source URLs — per the membrane rules in AGENTS.md, so value-encoding drift is caught at handoff boundaries.
+
 **Purpose**: Validate that cross-substrate handoffs preserve required signal types per membrane
 layer in agent fleet communication. Implements the signal preservation rules from [`AGENTS.md`](../AGENTS.md)
 § Agent Communication → Focus-on-Descent / Compression-on-Ascent.
@@ -1042,6 +1115,8 @@ compression. Use in CI gates to prevent value-drift across fleet boundaries.
 ---
 
 ## scripts/parse_audit_result.py
+
+**Job**: Enable CI pipelines to convert raw provenance audit JSON into human-readable risk assessments and PR comment tables, so risk levels surface automatically on every commit to `.github/agents/`.
 
 **Purpose**: Convert JSON provenance audit output (from [`audit_provenance.py`](../scripts/audit_provenance.py))
 into human-readable Markdown risk assessments and PR comment tables. Computes per-agent risk

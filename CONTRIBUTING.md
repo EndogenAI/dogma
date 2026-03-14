@@ -104,6 +104,8 @@ This is required once per machine. The `project` scope is needed for:
 
 ### For New or Updated Scripts
 
+> **Before implementing**: write your README entry first — see the [README-Driven Development Convention](scripts/README.md#readme-driven-development-convention) in `scripts/README.md`.
+
 1. Branch: `git checkout -b chore/scripts-<name>`
 2. Write the script with a module docstring (purpose, inputs, outputs, usage, exit codes)
 3. Add a `--dry-run` flag if the script writes or deletes files
@@ -180,6 +182,8 @@ All PRs use the template in [`.github/pull_request_template.md`](.github/pull_re
 - [ ] New scripts are **idempotent** — running twice produces the same result as running once
 - [ ] New scripts are **legible** — another agent can infer intent from the docstring and function names alone, without reading every line
 - [ ] Side-effectful scripts have a `--dry-run` flag
+- [ ] **Legibility**: Script code is readable in a single top-to-bottom pass — complex logic is extracted to named functions with docstrings.
+- [ ] **Idempotency**: Scripts that write files, create issues, or modify state are idempotent — running them twice produces the same result as running them once.
 
 ---
 
