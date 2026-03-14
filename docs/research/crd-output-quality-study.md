@@ -195,3 +195,5 @@ Total quality score Q = C + S + M, range 3–9.
 - [`AGENTS.md`](../../AGENTS.md) §Encoding Inheritance Chain — cross-reference density as fidelity proxy definition
 - [`.github/agents/`](../../.github/agents/) — corpus of 36 `.agent.md` files analyzed; data collected 2026-03-14
 - Spearman, C. (1904). "The proof and measurement of association between two things." *American Journal of Psychology*, 15(1), 72–101.
+- **SciPy.** `scipy.stats.spearmanr` — Spearman rank-order correlation implementation.
+  https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.spearmanr.html
