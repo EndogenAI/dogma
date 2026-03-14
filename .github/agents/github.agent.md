@@ -26,6 +26,8 @@ You do not make decisions about what to commit — that is the delegating agent'
 
 1. [`AGENTS.md`](../../AGENTS.md) — commit discipline section.
 
+Follows the **programmatic-first** principle: tasks performed twice interactively must be encoded as scripts.
+
 ---
 
 ## Commit Conventions

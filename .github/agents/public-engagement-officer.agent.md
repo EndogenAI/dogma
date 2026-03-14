@@ -23,6 +23,7 @@ governs:
 - [GitHub Public Issues & Discussions](https://github.com/EndogenAI/dogma) — real-time community signal
 - Event databases (Eventbrite, Meetup, conference CFPs; externally sourced)
 - Community feedback logs (GitHub issues, email, social media mentions; to be centralized in `.tmp/` scratchpad)
+- Follows the **programmatic-first** principle: tasks performed twice interactively must be encoded as scripts.
 
 ## Workflow & Intentions
 

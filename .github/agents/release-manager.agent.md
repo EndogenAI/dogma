@@ -48,6 +48,8 @@ You enforce structured, auditable releases so that the project's version history
 6. [`docs/toolchain/gh.md`](../../docs/toolchain/gh.md) — `gh release create` patterns; consult before running release commands.
 7. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting.
 
+Follows the **programmatic-first** principle from [`AGENTS.md`](../../AGENTS.md): tasks performed twice interactively must be encoded as scripts.
+
 </context>
 
 ---

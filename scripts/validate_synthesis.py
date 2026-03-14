@@ -140,6 +140,30 @@ def is_d3(file_path: Path) -> bool:
     return "sources" in file_path.parts
 
 
+# Axiom names that must have an adjacent MANIFESTO.md §N reference on the same line.
+_AXIOM_NAMES: tuple[str, ...] = (
+    "Endogenous-First",
+    "Algorithms Before Tokens",
+    "Local Compute-First",
+)
+
+
+def check_axiom_citations(lines: list[str], filepath: str) -> None:
+    """Warn when an axiom name appears without a MANIFESTO.md §-reference on the same line.
+
+    Prints WARN messages to stdout for each bare axiom name found.
+    Does NOT call sys.exit — this is advisory only.
+
+    Args:
+        lines: List of text lines from the document.
+        filepath: Path string used in warning messages.
+    """
+    for i, line in enumerate(lines, start=1):
+        for axiom in _AXIOM_NAMES:
+            if axiom in line and "MANIFESTO.md §" not in line:
+                print(f"WARN: bare axiom name without §-reference: line {i} in {filepath}")
+
+
 # ---------------------------------------------------------------------------
 # Validation logic
 # ---------------------------------------------------------------------------
@@ -244,6 +268,10 @@ def main() -> None:
     print(f"validate_synthesis: {file_path}  [{doc_type}]")
 
     passed, failures = validate(file_path, args.min_lines)
+
+    # For D4 documents, run advisory axiom citation check (warn-only, non-blocking).
+    if not is_d3(file_path) and file_path.exists():
+        check_axiom_citations(file_path.read_text(encoding="utf-8").splitlines(), str(file_path))
 
     if passed:
         print("PASS — all checks passed.")

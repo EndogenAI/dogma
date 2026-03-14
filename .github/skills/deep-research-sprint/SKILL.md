@@ -179,6 +179,7 @@ The Reviewer must confirm:
 - [ ] Hypothesis verdicts are explicit (CONFIRMED / REFUTED / INCONCLUSIVE / DEFERRED)
 - [ ] Recommendations are actionable and tied to specific findings
 - [ ] Status field is `Final` only after Reviewer approval — `Draft` during review
+- [ ] All axiom names (Endogenous-First, Algorithms Before Tokens, Local Compute-First) include a `MANIFESTO.md §N` §-reference on the same line or sentence
 
 ### 4.3 Lychee Link Check
 

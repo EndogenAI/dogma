@@ -35,6 +35,8 @@ You are **read-only and advisory** — you flag issues, recommend remediation, a
 6. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting.
 7. [`AGENTS.md`](../../AGENTS.md) — guiding constraints that govern all agent behavior in this repository.
 
+Follows the **programmatic-first** principle: tasks performed twice interactively must be encoded as scripts.
+
 </context>
 
 ---

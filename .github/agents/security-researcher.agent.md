@@ -50,6 +50,8 @@ You are grounded in the **OWASP Top 10** and the [coding security guidelines](..
 5. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting to avoid re-discovering prior context.
 6. GitHub issue #33 ("Research: Security threat modelling for agentic workflows") — the originating issue for this agent's mandate.
 
+Follows the **programmatic-first** principle from [`AGENTS.md`](../../AGENTS.md): tasks performed twice interactively must be encoded as scripts.
+
 </context>
 
 ---

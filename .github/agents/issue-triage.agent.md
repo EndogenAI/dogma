@@ -36,6 +36,8 @@ You are advisory — you suggest labels and comments, but the final apply/close/
 5. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting to check for prior triage notes.
 6. [`AGENTS.md`](../../AGENTS.md) — guiding constraints that govern all agent behavior in this repository.
 
+Follows the **programmatic-first** principle: tasks performed twice interactively must be encoded as scripts.
+
 </context>
 
 ---

@@ -50,6 +50,8 @@ You are the **keeper of agent standards**: every agent file must have explicit g
 5. [`scripts/generate_agent_manifest.py`](../../scripts/generate_agent_manifest.py) — generates a manifest from all agent files; run after any fleet change.
 6. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting.
 
+Follows the **programmatic-first** principle from [`AGENTS.md`](../../AGENTS.md): tasks performed twice interactively must be encoded as scripts.
+
 ---
 </context>
 
