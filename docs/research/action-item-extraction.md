@@ -201,6 +201,8 @@ Tests must cover: section detection (sections found / not found), item extractio
 - `docs/research/values-encoding.md` §7 Gap Analysis & Follow-Up Research — sample Recommendations section
 - `docs/research/dev-workflow-automations.md` §Recommendations — sample numbered list format
 - `pyproject.toml` — confirmed: `rank_bm25>=0.2` already in dependencies; no new dep required for BM25
+- **rank-bm25.** Doheun Kim. `rank-bm25` Python package. https://github.com/dorianbrown/rank_bm25 — BM25Okapi
+  implementation used for duplicate-detection tier 2 (semantic similarity at threshold 0.5).
 - MANIFESTO.md §2 Algorithms-Before-Tokens — rule-based over LLM for deterministic extraction
 - MANIFESTO.md §3 Local-Compute-First — on-demand over scheduled CI for initial posture
 - AGENTS.md §Testing-First Requirement for Scripts — 80% coverage gate, tests before shipping
