@@ -169,7 +169,7 @@ Produce a fully sequenced, phase-gated execution plan for the **Self Improvement
 - #107 `ci(lint): wire detect_drift.py into CI lint job` — effort: S — CI config addition; batched with #248 for single CI-workflow review pass
 
 **Depends on**: Phase 4 (MANIFESTO citation patterns stabilized), Phase 5 (AGENTS.md patterns stabilized)
-**Status**: Not started
+**Status**: ✅ Complete — `8203208` (closes #249, #248, #107; fleet_avg 0.1435→0.2084)
 
 ---
 
