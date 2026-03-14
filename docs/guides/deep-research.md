@@ -184,6 +184,42 @@ status: "Draft"  # → "In Review" → "Final"
 ## 5. Source Index
 ```
 
+#### Outline-First Checkpoint (Tier 0)
+
+Before delegating body writing to the Synthesizer, verify that the H2 heading skeleton is complete. Writing body content under missing or wrong headings causes `validate_synthesis.py` failures that require rework.
+
+**Tier 0** — extract and verify the H2 structure before any body writing begins:
+
+```bash
+# If a draft already exists, check its headings
+grep "^## " docs/research/<target-file>.md
+# Expected headings: Executive Summary, Hypothesis Validation, Pattern Catalog,
+#                    Bibliography Notes, Source Index
+# If the file does not exist yet, create a heading-only skeleton first.
+```
+
+**Tier 1** — run `validate_synthesis.py` to confirm heading compliance and status field before delegating synthesis:
+
+```bash
+uv run python scripts/validate_synthesis.py docs/research/<target-file>.md
+# Also check formatting if any Python was used in pre-processing
+uv run ruff format --check scripts/
+```
+
+**Tier 3** — after synthesis is complete, confirm all headings are present, all sources cited, and all cross-references resolve:
+
+```bash
+# Confirm all required D4 headings are present
+grep -E "^## .*(Executive Summary|Hypothesis Validation|Pattern Catalog)" \
+  docs/research/<target-file>.md
+
+# Validate synthesis doc passes CI gate
+uv run python scripts/validate_synthesis.py docs/research/<target-file>.md
+
+# Scan cross-references for broken links
+uv run python scripts/scan_research_links.py --scope all --output /tmp/link-check.json
+```
+
 After synthesis: delegate to Research Reviewer, then Research Archivist to commit.
 
 ---

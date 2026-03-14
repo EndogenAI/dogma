@@ -112,6 +112,8 @@ To refresh the auto-generated raw reference cache: `uv run python scripts/fetch_
 
 See [`docs/toolchain/README.md`](docs/toolchain/README.md) for the full update workflow and two-layer architecture (`.cache/toolchain/` vs `docs/toolchain/`).
 
+**Script execution safety**: Each toolchain script supports a Tier 0 → Tier 1 → Tier 3 validation ladder — a pre-execution existence check, a `--dry-run` or `--check` gate that previews side effects without writing, and a static CI gate on commit. For copy-paste-ready validation commands for `fetch_source.py`, `prune_scratchpad.py`, and `validate_agent_files.py`, see [`docs/toolchain/uv.md` § Script Execution Safety — Three-Tier Validation](docs/toolchain/uv.md#script-execution-safety--three-tier-validation).
+
 ---
 
 ## Testing-First Requirement for Scripts

@@ -85,6 +85,92 @@ uv cache dir        # print cache directory location
 
 ---
 
+## Script Execution Safety — Three-Tier Validation
+
+Before running any repo script that modifies state, apply this three-tier validation ladder:
+
+| Tier | When | Purpose |
+|------|------|---------|
+| **Tier 0** — Pre-execution | Before any run | Verify prerequisites: cache state, file existence, estimated scope |
+| **Tier 1** — Dry-run gate | First attempt | Preview side effects with `--dry-run` or `--check` — no writes |
+| **Tier 3** — Static gate | On commit | CI or pre-commit hook enforces final compliance |
+
+> **Why skip Tier 2?** Tier 2 is text-constraint encoding (AGENTS.md decision tables). For runtime execution, the operative tiers are pre-execution (0), safe preview (1), and static gate (3). See [`AGENTS.md` § Value Fidelity Test Taxonomy](../../AGENTS.md#value-fidelity-test-taxonomy) for the full tier definitions.
+
+---
+
+### `fetch_source.py` — Source Cache Validation
+
+**Tier 0** — check if the URL is already cached before fetching:
+
+```bash
+uv run python scripts/fetch_source.py <url> --check
+# Exit 0 = already cached; exit 2 = not cached (safe to fetch)
+```
+
+**Tier 1** — dry-run: verify the URL resolves without writing to disk:
+
+```bash
+uv run python scripts/fetch_source.py <url> --dry-run
+```
+
+**Tier 3** — after fetching, confirm the source is registered in the manifest:
+
+```bash
+uv run python scripts/fetch_source.py --list | grep "<slug>"
+```
+
+---
+
+### `prune_scratchpad.py` — Scratchpad Safety
+
+**Tier 0** — verify the scratchpad is non-empty before pruning:
+
+```bash
+BRANCH=$(git branch --show-current | tr '/' '-')
+test -s ".tmp/${BRANCH}/$(date +%Y-%m-%d).md" \
+  && echo "OK — scratchpad exists" \
+  || echo "MISSING — run --init first"
+```
+
+**Tier 1** — dry-run prune to review what will be compressed before writing:
+
+```bash
+uv run python scripts/prune_scratchpad.py --dry-run
+```
+
+**Tier 3** — after pruning, verify live sections remain intact:
+
+```bash
+BRANCH=$(git branch --show-current | tr '/' '-')
+grep "^## " ".tmp/${BRANCH}/$(date +%Y-%m-%d).md"
+```
+
+---
+
+### `validate_agent_files.py` — Agent File Compliance
+
+**Tier 0** — confirm the baseline passes before making any edits:
+
+```bash
+uv run python scripts/validate_agent_files.py --all
+# Exit 0 = clean baseline; non-zero = pre-existing failures to fix first
+```
+
+**Tier 1** — after editing, validate the specific file before staging:
+
+```bash
+uv run python scripts/validate_agent_files.py .github/agents/<name>.agent.md
+```
+
+**Tier 3** — CI runs `validate_agent_files.py --all` automatically on every PR touching `.github/agents/`. To replicate locally before pushing:
+
+```bash
+uv run python scripts/validate_agent_files.py --all
+```
+
+---
+
 ## Known Failure Modes
 
 | Failure | Cause | Fix |

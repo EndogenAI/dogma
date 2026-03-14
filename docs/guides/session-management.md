@@ -129,6 +129,38 @@ See [`MANIFESTO.md` → How to Read This Document](../../MANIFESTO.md) for axiom
 
 ## During a Session
 
+### Phase Preconditions Checklist (Tier 0)
+
+Before delegating any phase, verify all three preconditions. A failed check is a **blocking gate** — do not proceed until it is resolved.
+
+**Check 1 — Dependency phase committed and confirmed**
+
+```bash
+git log --oneline -5
+# Verify the prior phase's commit appears with the expected message.
+# If the prior phase is not committed, stop and commit before continuing.
+```
+
+**Check 2 — Blocker issues closed**
+
+```bash
+gh issue view <blocker-issue-number> --json state -q '.state'
+# Expected output: "CLOSED"
+# If OPEN, the phase is blocked — escalate or defer.
+```
+
+**Check 3 — Workplan gate status set to ⏳ In progress**
+
+```bash
+grep -n "In progress\|Not started\|Complete" docs/plans/<current-plan>.md
+# Update the relevant phase line: ⬜ Not started → ⏳ In progress
+# This makes phase state explicit before delegation begins.
+```
+
+If all three checks pass, update the workplan phase marker and proceed with delegation.
+
+---
+
 ### Writing to the Scratchpad
 
 Each agent appends findings under its **own named section heading** and reads only its own prior section:
