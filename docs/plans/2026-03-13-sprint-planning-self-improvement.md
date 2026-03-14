@@ -71,7 +71,7 @@ Produce a fully sequenced, phase-gated execution plan for the **Self Improvement
 - #245 `Research: LCF axiom positioning — standalone core axiom vs structural enabler` — effort: XL — determines how Local Compute-First is positioned in MANIFESTO; informs MANIFESTO edits in Phase 4
 
 **Depends on**: Phase 1; outputs soft-gate Phase 4 (LCF framing) and Phase 11 (#242 informs #146 ritual design)
-**Status**: Not started
+**Status**: ✅ Complete — `c1996af` + `ee4bb8a` (closes #242 scratchpad-architecture-maturation, closes #245 lcf-axiom-positioning)
 
 ---
 
@@ -140,7 +140,7 @@ Produce a fully sequenced, phase-gated execution plan for the **Self Improvement
 - #247 `Research: corpus-wide automated action item extraction from research docs` — effort: XL — companion research sprint; no Phase 8 downstream dependency but batched for research fleet efficiency
 
 **Depends on**: Phase 1; **gates Phase 8** (for #142 and #145)
-**Status**: Not started
+**Status**: ✅ Complete — `cc42e08` + `d0a67c9` (closes #246 scripts-documentation-generation, closes #247 action-item-extraction; scripts/docs/ scaffolded)
 
 ---
 
@@ -155,7 +155,7 @@ Produce a fully sequenced, phase-gated execution plan for the **Self Improvement
 - #250 `docs(skills): create PR review triage workflow as a reusable SKILL.md` — effort: M — new SKILL.md file; independent of Phase 7 research but benefits from agent standard (#124) in Phase 5
 
 **Depends on**: Phase 7 (for #142 and #145); soft: Phase 5 (for #250 agent-standard context); #143 unblocked after Phase 1
-**Status**: Not started
+**Status**: ✅ Complete — `2f5f41d` (closes #142 JTBD statements, closes #145 README-driven convention, closes #143 legibility/idempotency checklist, closes #250 pr-review-triage skill)
 
 ---
 
@@ -187,7 +187,7 @@ Produce a fully sequenced, phase-gated execution plan for the **Self Improvement
 
 ---
 
-### Phase 11 — Low-Priority Features & Chores ⬜
+### Phase 11 — Low-Priority Features & Chores ✅
 
 **Agent**: Executive Orchestrator
 **Parallel with**: Phase 10 (independent work streams)
@@ -195,10 +195,10 @@ Produce a fully sequenced, phase-gated execution plan for the **Self Improvement
 - #128 `Phase 1 AFS Integration — Index Session to AFS on Session Close` — effort: L — feature implementation; low priority; no hard upstream gate within this milestone
 - #146 `Implement prompt archaeology as a post-sprint ritual` — effort: M — define and document ritual; benefits from scratchpad architecture research (#242 in Phase 2) completing first
 - #252 `research: Execute Q4 empirical study — CRD vs output quality (Spearman ρ)` — effort: M — filed from Phase 10 output; retrospective rubric study; tractable now with `validate_agent_files.py` CRD extraction
-- **scripting follow-on from #203**: `feat(scripts): parse_fsm_to_graph.py — FSM-to-NetworkX path analysis + CI invariant check` — effort: S — recommendation from dynamic-agent-navigation.md; file new issue or implement directly in Phase 11
+- **scripting follow-on from #203**: `feat(scripts): parse_fsm_to_graph.py — FSM-to-NetworkX path analysis + CI invariant check` — effort: S — recommendation from dynamic-agent-navigation.md; filed as #253
 
 **Depends on**: Phase 1; soft: Phase 2 (#242 scratchpad architecture research informs #146 ritual design)
-**Status**: Not started
+**Status**: ✅ Complete — `0e605aa` + `a7acf14` + `e9861ee` (closes #252 crd-output-quality-study; closes #146 prompt-archaeology skill; #253 filed for parse_fsm_to_graph.py scripting; #128 deferred — AFS dependency unresolved)
 
 ---
 
