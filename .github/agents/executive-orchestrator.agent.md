@@ -225,7 +225,17 @@ Write `## Orchestration Plan` in the scratchpad as well. For each domain area re
 **Status**: ⬜ Not started
 ```
 
-Use the `✓ Plan reviewed — begin execution` self-loop handoff to review the plan before acting.
+After committing the workplan, **delegate workplan review to the Review agent before Phase 1 begins**. This is a hard gate — not a self-review:
+
+> Review `docs/plans/<workplan-slug>.md` against these 4 criteria:
+> 1. Cross-cutting research (informs ≥ 2 phases) is in Phase 2 and not marked "parallel with" any phase it informs
+> 2. Phase-specific research (informs 1 phase) is placed immediately before that phase (N−1 pattern)
+> 3. Guidance-providing documentation phases precede the phases that rely on them
+> 4. Every dependent implementation phase has explicit `Depends on:` annotations
+>
+> Return APPROVED or REQUEST CHANGES — [criterion number: phase number, one-line reason].
+
+Log the verdict under `## Workplan Review Output` in the scratchpad. Phase 1 does not begin until APPROVED.
 
 Before delegating any phase to an execution agent, delegate a **per-phase detailed checklist** to the **Executive Planner** first. The Planner's checklist functions as a shared coherence artifact for the execution fleet: every downstream agent independently verifies their output against it, eliminating interpretive drift between agents without requiring the Orchestrator to re-explain scope mid-phase. Coherence emerges from the shared artifact, not from the Orchestrator's presence at every step.
 

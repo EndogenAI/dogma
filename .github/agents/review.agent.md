@@ -64,6 +64,17 @@ Follows the **programmatic-first** principle from [`AGENTS.md`](../../AGENTS.md)
 - [ ] Cross-references to other docs are valid.
 - [ ] Consistent voice and formatting with surrounding content.
 
+### Workplan Files (`docs/plans/*.md`)
+
+- [ ] Cross-cutting research issues (informing ≥ 2 implementation phases) are placed in Phase 2 — not mid-sprint or late-sprint.
+- [ ] No cross-cutting research issue is annotated as "parallel with" any implementation phase it informs.
+- [ ] Phase-specific research issues (informing exactly 1 phase) are placed immediately before (Phase N−1) the phase they inform.
+- [ ] Guidance-providing documentation phases (encoding agent/workflow conventions, not retrospective docs) precede the phases that rely on that guidance.
+- [ ] If both cross-cutting research and guidance docs compete for the earliest phases, the chicken-and-egg resolution decision is recorded in the workplan's Objective section.
+- [ ] Every implementation phase that depends on prior research or docs has an explicit `Depends on:` annotation referencing those phases.
+- [ ] Phase status markers (`⬜`, `✅`) present for every phase.
+- [ ] Acceptance criteria present and use `- [ ]` / `- [x]` checkbox format.
+
 ### Script Changes
 
 - [ ] Script opens with a module docstring (purpose, inputs, outputs, usage, exit codes).

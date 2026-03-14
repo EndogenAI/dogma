@@ -88,7 +88,50 @@ Every committed workplan must include the following sections:
 
 ---
 
-## 4. Commit Before Phase 1
+## 4. Phase Ordering Prerequisite Check
+
+Before committing the workplan, audit phase ordering against the constraints in [`AGENTS.md` § Sprint Phase Ordering Constraints](../../../AGENTS.md#sprint-phase-ordering-constraints). This check prevents the primary source of re-review debt: implementation phases starting before the research or docs that should inform them.
+
+### 4.1 Tag Every Research and Documentation Issue
+
+In the phase plan, add an `informs:` annotation to every research and guidance-documentation issue so dependencies are visible:
+
+```markdown
+- #242 `Scratchpad Architecture Maturation` — effort: XL — **informs: [Phase 5, Phase 11]**
+- #246 `Research: scripts documentation` — effort: XL — **informs: [Phase 8]**
+```
+
+Issues that are purely retrospective (documenting work already done) do not need an `informs:` tag. All others must have one.
+
+### 4.2 Cross-Cutting Research Gate Check
+
+List every research issue tagged `informs: [≥ 2 phases]`. Confirm all three:
+
+- [ ] It is placed in Phase 2 (the earliest executable phase after planning) — not mid-sprint
+- [ ] Every implementation phase it informs has an explicit `Depends on: Phase N Research` entry
+- [ ] It is **not** annotated as "parallel with" any phase it informs
+
+If any check fails, reorder the phase plan before committing. Parallel-with annotations on cross-cutting research are the primary way gate constraints collapse in practice.
+
+### 4.3 Documentation Gate Check
+
+List every documentation issue tagged as guidance-providing (not retrospective). Confirm:
+
+- [ ] It is placed before the earliest implementation phase that uses its guidance
+- [ ] The phases that depend on it have explicit `Depends on:` entries
+- [ ] If both research and guidance docs are both needed upfront: apply the chicken-and-egg rule from `AGENTS.md` § Sprint Phase Ordering Constraints and record the decision in the Objective section
+
+### 4.4 Submit Workplan for Review
+
+After committing the workplan (§ 5 below), **do not begin Phase 1** until the workplan has been reviewed by the Review agent. Delegate with this prompt:
+
+> Review `docs/plans/<slug>.md`. Check: (1) cross-cutting research is in Phase 2 and gates all phases it informs — not marked parallel; (2) guidance-providing documentation phases precede the phases that use them; (3) every dependent implementation phase has an explicit `Depends on:` annotation. Return APPROVED or REQUEST CHANGES — [phase number: specific issue].
+
+Log the verdict under `## Workplan Review Output` in the scratchpad. Phase 1 does not begin until APPROVED.
+
+---
+
+## 5. Commit Before Phase 1
 
 The workplan **must be committed before Phase 1 executes**. This creates an auditable plan history in git that is independent of the ephemeral `.tmp/` scratchpad.
 
@@ -101,7 +144,7 @@ git commit -m "docs(plans): add workplan for <slug>"
 
 ---
 
-## 5. Mirror in Scratchpad
+## 6. Mirror in Scratchpad
 
 After committing the workplan, write an `## Orchestration Plan` section in the active scratchpad (`.tmp/<branch-slug>/<today>.md`) that mirrors the phase list and links to the committed file. This gives delegated agents a single orientation point:
 
@@ -118,7 +161,7 @@ Workplan: docs/plans/YYYY-MM-DD-<slug>.md
 
 ---
 
-## 6. Update as Phases Complete
+## 7. Update as Phases Complete
 
 After each phase, update both the workplan and the scratchpad mirror:
 
@@ -128,7 +171,7 @@ After each phase, update both the workplan and the scratchpad mirror:
 
 ---
 
-## 7. Session Self-Loop Handoff
+## 8. Session Self-Loop Handoff
 
 After writing and committing the workplan, write the following line in the scratchpad before delegating Phase 1:
 
