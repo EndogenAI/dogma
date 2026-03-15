@@ -167,11 +167,10 @@ The following issues appear open on GitHub despite the prior workplan marking th
 - #205 `feat(adoption): AccessiTech LLC — first dogma adoption use case, informs onboarding playbook` — effort: L — documents first external adoption; drives wizard acceptance criteria; must precede #56 within the phase
 - #56 `feat: implement Adopt onboarding wizard (scripts/adopt_wizard.py)` — effort: L — first-time adopter CLI; requires hardened tooling from Phase 3 and stable doc conventions from Phase 4
 - #125 `Adopt Wizard Integration with client-values.yml` — effort: M — connects wizard with Deployment Layer values file; natural batch follow-on to #56 within the phase
-- #241 `Agent Orientation Efficiency — Streamline Session Startup Without Adding Tokens` — effort: M — **blocked: dependency-decision gate required before implementation begins** — do not start until user confirms the mechanism in response to the blocking question below
+- #241 `Agent Orientation Efficiency — Streamline Session Startup Without Adding Tokens` — effort: M — unblocked 2026-03-14; proceed per issue body mechanism
 
-**Effort total**: L + L + M + M (conditional) ≈ 4 dev-days
+**Effort total**: L + L + M + M ≈ 4 dev-days
 **Depends on**: Phase 3 (hardened tooling); Phase 4 full (doc conventions stable); Phase 2 (dogma propagation complete — ensures onboarding reflects final LCF framing)
-**Blocking question for #241**: Before delegating #241 implementation, the Orchestrator must surface this decision: *"Issue #241 (Agent Orientation Efficiency) is currently blocked. The mechanism proposed is [TBD from issue body]. Do you want to unblock it in this sprint, and if so, which approach should be used?"*
 **Status**: ⬜ Not started
 
 ---
@@ -202,8 +201,7 @@ Phase 1 (Housekeeping)
 ├── Phase 5 (Fleet Audit + Coverage) ────────────── after Phase 2; soft-informs Phase 6
 ├── Phase 6 (Scripts Tooling Features) ──────────── parallel with Phase 4 and 5
 └── Phase 7 (Adoption) ──────────────────────────── gates Phase 8
-    └── #241: blocked — awaiting unblocking decision
-        └── Phase 8 (Review + Commit)
+    └── Phase 8 (Review + Commit)
 ```
 
 **Sequencing layers**:
@@ -251,7 +249,7 @@ Phase 1 (Housekeeping)
 - [ ] All 18 sprint issues assigned to a named execution phase with effort label (XS/S/M/L/XL)
 - [ ] Phase dependencies explicit — no phase begins before its prerequisite phase
 - [ ] #226 and #224 start only after Phase 2 AGENTS.md propagation commits land
-- [ ] #241 blocking gate documented — unblocking decision received from user before implementation
+- [ ] #241 unblocked — implemented in Phase 7
 - [ ] Parallelisable phases explicitly annotated
 - [ ] Review agent APPROVED verdict logged in scratchpad under `## Review Output`
 - [ ] CI passes before review is requested (`gh run list --limit 3` green)
