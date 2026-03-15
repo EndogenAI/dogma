@@ -701,6 +701,38 @@ Orient → Audit → Draft → Validate against MANIFESTO.md → Review → Comm
 | Before finalising | No guardrail or constraint silently removed; no new axiom added without grounding |
 | Before committing | Routed through **Review** agent; **MANIFESTO.md** changes require explicit user instruction |
 
+### Doc Type Taxonomy
+
+Every document in this repo belongs to one of four types. The type determines when it must be updated, what lifecycle it follows, and what quality gates apply.
+
+| Type | Category | Examples | Update Rule | Quality Gate |
+|------|----------|----------|-------------|-------------|
+| **D1** | Operational | `AGENTS.md`, guides, skill files | Must be updated **before** the phases they govern; never retrospective | Consistent with `MANIFESTO.md`; no guardrails silently removed |
+| **D2** | Plans | `docs/plans/*.md` | Committed before Phase 1 begins; updated at each phase gate | Passes workplan Review before Phase 1; phase checkboxes kept current |
+| **D3** | Decision records | `docs/decisions/*.md` (ADRs) | Permanent — **never edited after ratification**; superseded by a new ADR | Status field set; superseded ADRs cross-reference their successor |
+| **D4** | Research syntheses | `docs/research/*.md` | Status lifecycle: `Draft` → `Final` (after Reviewer approval) | `validate_synthesis.py` passes; MANIFESTO axiom citation density > 2 per 1,000 words |
+
+**Rule**: when a phase is in progress, identify the doc type for every file it touches before drafting. D1 docs gate phases; D4 docs inform them. Mixing the two produces governance drift.
+
+### Programmatic Sweep Table Pattern
+
+When a convention update touches multiple documents across more than one doc type, **generate a sweep table rather than editing ad-hoc**. A sweep table makes the scope of the change auditable and prevents missed files.
+
+Sweep table columns:
+
+| doc path | doc type | change needed | status |
+|----------|----------|---------------|--------|
+
+**When to use**: any convention update that would require opening ≥ 3 files, or any update touching more than one doc type.
+
+**Tool**: `scripts/generate_sweep_table.py` automates sweep table generation from a glob pattern and a change description. Run it at the start of any cross-cutting update:
+
+```bash
+uv run python scripts/generate_sweep_table.py --pattern "docs/**/*.md" --change "<description>"
+```
+
+Fill in the `status` column as work progresses (`pending` → `done`). Commit the sweep table to the session scratchpad before starting work — it is the audit trail for the update.
+
 ---
 
 ## Scripting Workflow
