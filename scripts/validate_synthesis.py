@@ -57,6 +57,7 @@ from __future__ import annotations
 
 import argparse
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -146,6 +147,48 @@ _AXIOM_NAMES: tuple[str, ...] = (
     "Algorithms Before Tokens",
     "Local Compute-First",
 )
+
+
+def check_final_status_modified(file_path: Path, allow_final_edit: bool) -> None:
+    """Warn when a Final- or Published-status doc has uncommitted modifications.
+
+    Detects modification via ``git diff --name-only HEAD`` (compares working tree
+    and staging area to HEAD). Prints a WARNING unless *allow_final_edit* is True.
+    Does NOT call sys.exit — advisory only.
+
+    Args:
+        file_path: Path to the synthesis document.
+        allow_final_edit: When True, suppress the warning (--allow-final-edit flag).
+    """
+    fm = parse_frontmatter(file_path.read_text(encoding="utf-8"))
+    status = fm.get("status", "").strip().lower()
+    if status not in ("final", "published"):
+        return
+
+    try:
+        result = subprocess.run(
+            ["git", "diff", "--name-only", "HEAD"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        modified_files = result.stdout.strip().splitlines()
+    except FileNotFoundError:
+        return  # git not available — skip check
+
+    # git diff returns repo-relative paths; resolve both sides for comparison.
+    try:
+        cwd = Path.cwd()
+        resolved_target = file_path.resolve()
+        is_modified = any((cwd / Path(f)).resolve() == resolved_target for f in modified_files)
+    except Exception:
+        return
+
+    if is_modified and not allow_final_edit:
+        print(
+            "WARNING: Final-status research doc modified — manual review gate recommended "
+            "before committing. Use --allow-final-edit to suppress."
+        )
 
 
 def check_axiom_citations(lines: list[str], filepath: str) -> None:
@@ -260,6 +303,11 @@ def main() -> None:
         action="store_true",
         help="Reserved for future use — currently a no-op.",
     )
+    parser.add_argument(
+        "--allow-final-edit",
+        action="store_true",
+        help="Suppress the WARNING emitted when a Final- or Published-status doc is modified.",
+    )
     args = parser.parse_args()
 
     file_path = Path(args.file)
@@ -272,6 +320,10 @@ def main() -> None:
     # For D4 documents, run advisory axiom citation check (warn-only, non-blocking).
     if not is_d3(file_path) and file_path.exists():
         check_axiom_citations(file_path.read_text(encoding="utf-8").splitlines(), str(file_path))
+
+    # For D4 documents, warn if a Final/Published doc has been modified without --allow-final-edit.
+    if not is_d3(file_path) and file_path.exists():
+        check_final_status_modified(file_path, args.allow_final_edit)
 
     if passed:
         print("PASS — all checks passed.")
