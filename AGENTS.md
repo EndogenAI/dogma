@@ -16,7 +16,7 @@ These constraints govern all agent behavior. They derive from three core axioms 
 2. **Algorithms Before Tokens** — prefer deterministic, encoded solutions over interactive token burn
 3. **Local Compute-First** — minimize token usage; run locally whenever possible *(LCF as structural enabler — see [`MANIFESTO.md §3`](MANIFESTO.md#3-local-compute-first))*
 
-**Encoding Inheritance Chain**: Values flow through six layers — `MANIFESTO.md` (foundational axioms) → `AGENTS.md` (operational constraints) → subdirectory `AGENTS.md` files (narrowing constraints for specific scopes) → role files (`.agent.md`; VS Code: Custom Agents) → `SKILL.md` files (reusable tactical knowledge) → session prompts (enacted behavior). Each layer is a re-encoding of the layer above it. Agents must minimise lossy re-encoding: prefer direct quotation or explicit citation over paraphrase when invoking a foundational principle. Cross-reference density (back-references to `MANIFESTO.md` in your output) is a proxy for encoding fidelity. Low density signals likely drift. See [`docs/research/values-encoding.md`](docs/research/values-encoding.md) for the cross-sectoral evidence base.
+**Encoding Inheritance Chain**: Values flow through MANIFESTO.md (foundational axioms) → AGENTS.md (operational constraints) → role files (.agent.md; VS Code: Custom Agents) → SKILL.md files (reusable tactical knowledge) → session prompts (enacted behavior). Each layer is a re-encoding of the layer above it. Agents must minimise lossy re-encoding: prefer direct quotation or explicit citation over paraphrase when invoking a foundational principle. Cross-reference density (back-references to MANIFESTO.md in your output) is a proxy for encoding fidelity. Low density signals likely drift. See [docs/research/values-encoding.md](docs/research/values-encoding.md) for the cross-sectoral evidence base. [AGENTS.md](AGENTS.md) is the central authority for all operational constraints; subdirectory redirection notices point back here for global governance.
 
 **Session-Start Encoding Checkpoint**: At the start of every session, the first sentence of `## Session Start` in the scratchpad must name the governing axiom and one primary endogenous source. See [`docs/guides/session-management.md` → Session-Start Encoding Checkpoint](docs/guides/session-management.md#session-start-encoding-checkpoint) for format and examples. The agent fleet is the pressurizing medium — it gives each substrate coherent form but does not own the membrane or the bucket. Agents are tools that shape how values flow through the system, but they neither create nor control the values themselves.
 
@@ -44,6 +44,7 @@ Additional operational constraints:
 - **Programmatic-First** — if you have done a task twice interactively, the third time is a script. See [Programmatic-First Principle](#programmatic-first-principle).
 - **Documentation-First** — every change to a workflow, agent, or script must be accompanied by clear documentation
 - **Commit Discipline** — small, incremental commits following [Conventional Commits](https://www.conventionalcommits.org/) — see [`CONTRIBUTING.md#commit-discipline`](CONTRIBUTING.md#commit-discipline)
+- **Heredoc Prohibition** — NEVER use heredocs (`<< 'EOF'`) for Markdown or code. Use built-in file tools (`create_file`, `replace_string_in_file`) to avoid truncation and character corruption. See [File Writing Guardrails](#file-writing-guardrails).
 - **Enforcement-Proximity** — validators, pre-commit hooks, and enforcement scripts must run locally; cloud CI is a supplementary enforcement layer, not the primary gate. Local residency is what makes governance mechanisms structurally reliable — a cloud-only enforcement point is bypassed by any service outage or network partition. See [`MANIFESTO.md#3-local-compute-first`](MANIFESTO.md#3-local-compute-first).
 
 For a complete treatment of guiding principles and ethical values, read [`MANIFESTO.md#guiding-principles-cross-cutting`](MANIFESTO.md#guiding-principles-cross-cutting) and [`MANIFESTO.md#ethical-values`](MANIFESTO.md#ethical-values).
@@ -217,6 +218,10 @@ After launching a service, verify health via its status API — do not treat a z
 | Docker container | `docker inspect --format '{{.State.Health.Status}}' <name>` | `healthy` |
 | Ollama | `curl -sf http://localhost:11434/` | `Ollama is running` |
 | Local HTTP service | `curl -sf http://localhost:<port>/health` | exit 0 |
+
+### Substrate Note
+
+When updating `docs/toolchain/*.md`, run `uv run python scripts/fetch_toolchain_docs.py --tool <tool>` first to refresh the `.cache/toolchain/` layer — then use that as a reference when curating `docs/toolchain/<tool>.md`. The script writes to `.cache/`, not to `docs/toolchain/`; never auto-overwrite the curated files with script output. When a new failure mode is discovered, add it to both `docs/toolchain/<tool>.md` and the relevant `docs/guides/<tool>-workflow.md`.
 
 ### Retry and Abort Policy
 
@@ -573,13 +578,9 @@ See [`docs/guides/github-workflow.md`](docs/guides/github-workflow.md) for the f
 
 ### Convention Propagation Rule
 
-When a new convention is introduced, identify **every** `AGENTS.md` file it applies to and update them all in the same commit:
+When a new convention is introduced, update the root `AGENTS.md`. Subdirectory `AGENTS.md` files in `docs/` and `.github/agents/` are now redirection notices only. Ensure the new governing constraint is added to the root file to maintain fleet-wide visibility.
 
-- Root `AGENTS.md` — applies to all agents
-- `docs/AGENTS.md` — applies to any convention touching `docs/`
-- `.github/agents/AGENTS.md` — applies to agent file authoring conventions
-
-A convention documented only in the root file will be missed by agents operating under subdirectory scope. Check with:
+Check for remaining subdirectory files with:
 ```bash
 find . -name 'AGENTS.md' | grep -v node_modules
 ```
@@ -635,6 +636,62 @@ When proceeding under ambiguity, **document the assumption inline** (code commen
 
 ---
 
+## File Writing Guardrails
+
+**Never use heredocs to write Markdown or code content.**
+
+Heredocs (`cat >> file << 'EOF'`, Python inline `<< 'PYEOF'`) silently corrupt or truncate content containing backticks, triple-backtick fences, and special characters when executed through the VS Code terminal tool.
+
+**Rules**:
+1. **New files**: Use `create_file` tool.
+2. **Edits**: Use `replace_string_in_file` or `multi_replace_string_in_file`.
+3. **Appends**: Use `replace_string_in_file` with anchor text at the end of the file.
+4. **GitHub CLI**: Use `--body-file <path>` for all multi-line content. Never pass multi-line strings to `--body "..."`.
+
+---
+
+## Documentation Standards
+
+- **What Lives Where**: `docs/guides/` for procedures; `docs/toolchain/` for CLI references; `docs/research/` for syntheses; `docs/plans/` for workplans.
+- **Writing Standards**: Use clear, concise Markdown. Link to related docs, agents, and scripts by relative path. Research docs must distinguish between "established fact", "working hypothesis", and "open question".
+- **D4 Synthesis Format**: Research outputs must follow the D4 (Distributed Dogma Discovery & Distillation) schema:
+  - **Pass 1**: Per-source synthesis reports in `docs/research/sources/`. One file per surveyed source; standard synthesis note conventions: citation, research question, framework, methodology, key claims with quotes, critical assessment, cross-source connections, and project relevance.
+  - **Pass 3**: Issue-level synthesis in `docs/research/`. Draws conclusions across all per-source synthesis documents for the issue.
+- **References**: Use relative links for all internal document citations.
+
+---
+
+## Agent-Role Terminology
+
+- **Character vs. Role**:
+  - **Character**: A specialized agent with narrow domain scope and explicit decision authority (e.g., Business Lead). Escalation paths explicitly defined in agent body.
+  - **Role**: A broader functional agent classification (e.g., "Research roles", "Infrastructure roles"). Used in workplans and dependencies to describe agent clusters.
+- **Naming Conventions**:
+  - Fleet executive: `<area>-executive.agent.md` (Name: `<Area> Executive`)
+  - Fleet sub-agent: `<area>-<role>.agent.md` (Name: `<Area> <Role>`)
+  - Workflow agent: `<verb|noun>.agent.md` (Name: `<Verb|Noun>`)
+
+---
+
+## Agent authoring conventions
+
+The authoring contract for `.agent.md` files (VS Code Custom Agents) is enforced via `scripts/validate_agent_files.py`. 
+
+- **Frontmatter**: Requires `name` (unique), `description` (≤200 chars), `tools` (minimal subset), and `handoffs` (at least one). Optional fields: `tier`, `effort`, `status`, `area`, `depends-on`.
+- **POSTURE-mapped toolsets**:
+  - **Read-only**: `search`, `read`, `changes`, `usages`
+  - **Read + create**: adds `edit`, `web` (only if fetching remote URLs)
+  - **Full execution**: adds `execute`, `terminal`, `agent`
+- **Handoff Patterns**:
+  - **Takeback**: Sub-agent returns to executive for review gate before next phase.
+  - **Inter-Phase Review Gate**: Multi-phase sessions invoke Review agent between every domain phase pair.
+  - **Evaluator-Optimizer Loop**: Executive includes handoff buttons targeting itself for phase boundary review.
+- **Structure**: Markdown headings (`## Section`) with semantic XML wrappers (`<context>`, `<instructions>`, `<constraints>`, `<output>`).
+  - **BDI Sections**: Action content grouped into **Beliefs & Context**, **Workflow & Intentions**, and **Desired Outcomes & Acceptance**.
+  - **Body Requirements**: 1. Bold role statement ("You are the..."), 2. Endogenous sources (relative links), 3. Workflow/checklist, 4. Guardrails.
+
+---
+
 ## Agent Fleet Overview
 
 See [`.github/agents/README.md`](.github/agents/README.md) for the full agent catalog.
@@ -666,10 +723,10 @@ Key agents for this repo:
 
 Skills are `SKILL.md` files at `.github/skills/<skill-name>/SKILL.md`. **Agents encode *who does a task*; skills encode *how a task is done*.** If a procedure is needed by more than one agent or AI tool, it belongs in a skill — not an agent body.
 
-**Encoding inheritance chain** — six layers:
+**Encoding inheritance chain** — four layers (plus redirection):
 
 ```
-MANIFESTO.md → AGENTS.md → subdirectory AGENTS.md files → .agent.md files → SKILL.md files → session behaviour
+MANIFESTO.md → AGENTS.md (central) → role files (.agent.md) → SKILL.md files → session behaviour
 ```
 
 Every `SKILL.md` body **must reference this file (`AGENTS.md`) as its governing constraint** — cite the governing axiom in the first substantive section.
@@ -818,5 +875,5 @@ uv run pre-commit install --hook-type pre-push
 **Prefer caution over assumption for:**
 
 - Any change that renames or restructures existing documentation
-- Adding new agents (follow the agent authoring guide in `.github/agents/AGENTS.md`)
-- Any change to the `MANIFESTO.md` (it represents core project dogma)
+- Adding new agents (follow the [Agent authoring conventions](AGENTS.md#agent-authoring-conventions))
+    - Any change to the [MANIFESTO.md](MANIFESTO.md) (it represents core project dogma)
