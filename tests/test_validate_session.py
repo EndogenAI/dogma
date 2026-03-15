@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scripts.validate_session import validate_session_file
+from scripts.validate_session import check_value_fidelity, validate_session_file
 
 
 class TestValidateSessionFile:
@@ -527,3 +527,86 @@ Source: MANIFESTO.md
         exit_code, messages = validate_session_file(session_file)
         # Should pass with "Governing axiom:" present (note the colon)
         assert exit_code == 0
+
+
+class TestCheckValueFidelity:
+    """Tests for the constitutional AI value fidelity hook (OQ-4)."""
+
+    def _well_formed(self, tmp_path: Path) -> Path:
+        f = tmp_path / "session.md"
+        f.write_text(
+            """## Session Start
+
+**Governing axiom**: Endogenous-First — primary endogenous source: MANIFESTO.md.
+
+See also MANIFESTO.md §1 for full axiom definition.
+
+## Session Summary
+
+Phase 1 complete. Next session: continue Phase 2 implementation.
+"""
+        )
+        return f
+
+    def test_well_formed_session_passes(self, tmp_path: Path) -> None:
+        f = self._well_formed(tmp_path)
+        warnings = check_value_fidelity(f)
+        assert warnings == [], f"Expected no warnings, got: {warnings}"
+
+    def test_missing_session_start_warns(self, tmp_path: Path) -> None:
+        f = tmp_path / "session.md"
+        f.write_text("## Other Section\n\nContent with MANIFESTO.md and MANIFESTO.md refs.\n")
+        warnings = check_value_fidelity(f)
+        msgs = [w.message for w in warnings]
+        assert any("Session Start" in m for m in msgs)
+
+    def test_missing_governing_axiom_warns(self, tmp_path: Path) -> None:
+        f = tmp_path / "session.md"
+        f.write_text(
+            "## Session Start\n\nSome content without the required phrase. "
+            "MANIFESTO.md and MANIFESTO.md mentioned.\n\n"
+            "## Session Summary\n\nNext session: continue work.\n"
+        )
+        warnings = check_value_fidelity(f)
+        msgs = [w.message for w in warnings]
+        assert any("Governing axiom" in m for m in msgs)
+
+    def test_insufficient_manifesto_citations_warns(self, tmp_path: Path) -> None:
+        f = tmp_path / "session.md"
+        f.write_text(
+            "## Session Start\n\n**Governing axiom**: Endogenous-First — source: MANIFESTO.md.\n\n"
+            "## Session Summary\n\nNext session: Phase 2.\n"
+        )
+        # Only 1 MANIFESTO.md reference — should warn
+        warnings = check_value_fidelity(f)
+        msgs = [w.message for w in warnings]
+        assert any("MANIFESTO" in m for m in msgs)
+
+    def test_two_manifesto_citations_silent(self, tmp_path: Path) -> None:
+        f = self._well_formed(tmp_path)  # has 2 references
+        warnings = check_value_fidelity(f)
+        fidelity_warnings = [w for w in warnings if "MANIFESTO" in w.message]
+        assert fidelity_warnings == []
+
+    def test_summary_without_forward_ref_warns(self, tmp_path: Path) -> None:
+        f = tmp_path / "session.md"
+        f.write_text(
+            "## Session Start\n\n**Governing axiom**: Endogenous-First. MANIFESTO.md §1. MANIFESTO.md.\n\n"
+            "## Session Summary\n\nPhase 1 complete. All items addressed.\n"
+        )
+        warnings = check_value_fidelity(f)
+        msgs = [w.message for w in warnings]
+        assert any("forward reference" in m for m in msgs)
+
+    def test_no_summary_section_no_forward_ref_warning(self, tmp_path: Path) -> None:
+        """If no ## Session Summary exists, forward-ref check is skipped."""
+        f = tmp_path / "session.md"
+        f.write_text("## Session Start\n\n**Governing axiom**: Endogenous-First. MANIFESTO.md. MANIFESTO.md.\n")
+        warnings = check_value_fidelity(f)
+        msgs = [w.message for w in warnings]
+        assert not any("forward reference" in m for m in msgs)
+
+    def test_file_not_found_returns_error(self, tmp_path: Path) -> None:
+        warnings = check_value_fidelity(tmp_path / "missing.md")
+        assert len(warnings) == 1
+        assert warnings[0].severity == "error"

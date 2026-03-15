@@ -46,7 +46,95 @@ from __future__ import annotations
 import argparse
 import re
 import sys
+from dataclasses import dataclass
 from pathlib import Path
+
+
+@dataclass
+class ValidationWarning:
+    """A value-fidelity warning for a session file."""
+
+    message: str
+    severity: str  # "error" | "warning"
+
+
+def check_value_fidelity(session_file: Path) -> list[ValidationWarning]:
+    """
+    Constitutional AI post-session value fidelity hook (OQ-4).
+
+    Checks:
+        1. Session contains a ## Session Start heading with a governing axiom sentence.
+        2. At least 2 MANIFESTO.md citations appear in the file.
+        3. If ## Session Summary exists, it contains at least one forward reference
+           (a next step or open question).
+
+    Returns:
+        List of ValidationWarning objects. Empty list means all checks passed.
+    """
+    warnings: list[ValidationWarning] = []
+
+    if not session_file.exists():
+        return [ValidationWarning(f"File not found: {session_file}", severity="error")]
+
+    text = session_file.read_text(encoding="utf-8")
+
+    # --- Check 1: ## Session Start with governing axiom ---
+    session_start_match = re.search(r"## Session Start(.+?)(?=\n##|\Z)", text, re.DOTALL)
+    if not session_start_match:
+        warnings.append(
+            ValidationWarning(
+                "Missing '## Session Start' section — governing axiom cannot be verified",
+                severity="error",
+            )
+        )
+    else:
+        body = session_start_match.group(1)
+        if not re.search(r"Governing axiom", body, re.IGNORECASE):
+            warnings.append(
+                ValidationWarning(
+                    "## Session Start missing 'Governing axiom' sentence "
+                    "(required by AGENTS.md §Session-Start Encoding Checkpoint)",
+                    severity="warning",
+                )
+            )
+
+    # --- Check 2: At least 2 MANIFESTO.md citations ---
+    manifesto_refs = re.findall(r"MANIFESTO\.md", text)
+    if len(manifesto_refs) < 2:
+        warnings.append(
+            ValidationWarning(
+                f"Only {len(manifesto_refs)} MANIFESTO.md citation(s) found; "
+                "at least 2 required for adequate encoding fidelity",
+                severity="warning",
+            )
+        )
+
+    # --- Check 3: ## Session Summary with forward reference ---
+    summary_match = re.search(r"## Session Summary(.+?)(?=\n##|\Z)", text, re.DOTALL)
+    if summary_match:
+        summary_body = summary_match.group(1)
+        forward_ref_patterns = [
+            r"next\s+session",
+            r"next\s+step",
+            r"recommended\s+next",
+            r"open\s+question",
+            r"follow.?up",
+            r"TODO",
+            r"\[ \]",  # unchecked item
+            r"Phase\s+\d+.*pending",
+            r"continues?\s+(in|with|at)",
+        ]
+        has_forward = any(re.search(p, summary_body, re.IGNORECASE) for p in forward_ref_patterns)
+        if not has_forward:
+            warnings.append(
+                ValidationWarning(
+                    "## Session Summary lacks a forward reference "
+                    "(next step or open question required by AGENTS.md §Agent Communication)",
+                    severity="warning",
+                )
+            )
+
+    return warnings
 
 
 def validate_session_file(file_path: Path) -> tuple[int, list[str]]:
@@ -142,6 +230,11 @@ def main() -> int:
     parser.add_argument("files", nargs="*", help="Session .md files to validate (optional if --all is used)")
     parser.add_argument("--all", action="store_true", help="Scan all session files in .tmp/*/*.md")
     parser.add_argument("--branch", action="store_true", help="Only scan current branch")
+    parser.add_argument(
+        "--fidelity",
+        action="store_true",
+        help="Run constitutional AI value fidelity hook (OQ-4) on session files",
+    )
 
     args = parser.parse_args()
 
@@ -173,14 +266,25 @@ def main() -> int:
 
     overall_exit_code = 0
     for file_path in files_to_check:
-        exit_code, messages = validate_session_file(file_path)
-        if exit_code > 0:
-            overall_exit_code = max(overall_exit_code, exit_code)
-            print(f"{file_path}:")
-            for msg in messages:
-                print(msg)
+        if args.fidelity:
+            fidelity_warnings = check_value_fidelity(file_path)
+            if fidelity_warnings:
+                overall_exit_code = max(overall_exit_code, 2)
+                print(f"{file_path}:")
+                for w in fidelity_warnings:
+                    prefix = "  ✗" if w.severity == "error" else "  ⚠"
+                    print(f"{prefix} [{w.severity}] {w.message}")
+            else:
+                print(f"{file_path}: ✓ fidelity OK")
         else:
-            print(f"{file_path}: ✓ OK")
+            exit_code, messages = validate_session_file(file_path)
+            if exit_code > 0:
+                overall_exit_code = max(overall_exit_code, exit_code)
+                print(f"{file_path}:")
+                for msg in messages:
+                    print(msg)
+            else:
+                print(f"{file_path}: ✓ OK")
 
     return overall_exit_code
 
