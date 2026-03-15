@@ -287,9 +287,10 @@ def main() -> None:
         epilog="Exit 0 = pass. Exit 1 = one or more checks failed.",
     )
     parser.add_argument(
-        "file",
+        "files",
         metavar="<file>",
-        help="Path to the synthesis document to validate.",
+        nargs="+",
+        help="Path(s) to synthesis document(s) to validate. Accepts multiple files.",
     )
     parser.add_argument(
         "--min-lines",
@@ -310,29 +311,32 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    file_path = Path(args.file)
-    doc_type = "D3 (per-source)" if is_d3(file_path) else "D4 (issue synthesis)"
+    overall_passed = True
+    for file_arg in args.files:
+        file_path = Path(file_arg)
+        doc_type = "D3 (per-source)" if is_d3(file_path) else "D4 (issue synthesis)"
 
-    print(f"validate_synthesis: {file_path}  [{doc_type}]")
+        print(f"validate_synthesis: {file_path}  [{doc_type}]")
 
-    passed, failures = validate(file_path, args.min_lines)
+        passed, failures = validate(file_path, args.min_lines)
 
-    # For D4 documents, run advisory axiom citation check (warn-only, non-blocking).
-    if not is_d3(file_path) and file_path.exists():
-        check_axiom_citations(file_path.read_text(encoding="utf-8").splitlines(), str(file_path))
+        # For D4 documents, run advisory axiom citation check (warn-only, non-blocking).
+        if not is_d3(file_path) and file_path.exists():
+            check_axiom_citations(file_path.read_text(encoding="utf-8").splitlines(), str(file_path))
 
-    # For D4 documents, warn if a Final/Published doc has been modified without --allow-final-edit.
-    if not is_d3(file_path) and file_path.exists():
-        check_final_status_modified(file_path, args.allow_final_edit)
+        # For D4 documents, warn if a Final/Published doc has been modified without --allow-final-edit.
+        if not is_d3(file_path) and file_path.exists():
+            check_final_status_modified(file_path, args.allow_final_edit)
 
-    if passed:
-        print("PASS — all checks passed.")
-        sys.exit(0)
-    else:
-        print(f"FAIL — {len(failures)} check(s) failed:")
-        for i, msg in enumerate(failures, 1):
-            print(f"  {i}. {msg}")
-        sys.exit(1)
+        if passed:
+            print("PASS — all checks passed.")
+        else:
+            print(f"FAIL — {len(failures)} check(s) failed:")
+            for i, msg in enumerate(failures, 1):
+                print(f"  {i}. {msg}")
+            overall_passed = False
+
+    sys.exit(0 if overall_passed else 1)
 
 
 if __name__ == "__main__":
