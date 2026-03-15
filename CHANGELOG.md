@@ -1,4 +1,23 @@
-# 0.1.0 (2026-03-13)
+# [0.2.0](https://github.com/EndogenAI/dogma/compare/v0.1.0...v0.2.0) (2026-03-15)
+
+
+### Bug Fixes
+
+* **ci:** correct broken relative paths in lcf-axiom-positioning + add lycheeignore entries ([dcaaa42](https://github.com/EndogenAI/dogma/commit/dcaaa4265c2eedd057803d5121c3a056a50fbfc0)), closes [MANIFESTO.md#3](https://github.com/MANIFESTO.md/issues/3) [../../MANIFESTO.md#3](https://github.com/../../MANIFESTO.md/issues/3)
+* **research:** [#203](https://github.com/EndogenAI/dogma/issues/203) pattern catalog labels — H3→bold inline per D4 convention ([401aa6d](https://github.com/EndogenAI/dogma/commit/401aa6d1b1ec95242cf06d6e2ec3815fcc015bb5))
+* **research:** [#242](https://github.com/EndogenAI/dogma/issues/242) add second MANIFESTO §1 citation to scratchpad-architecture-maturation.md ([7e8ebcd](https://github.com/EndogenAI/dogma/commit/7e8ebcd8da614f21b834a218429c2a413bf73a06))
+* **research:** [#247](https://github.com/EndogenAI/dogma/issues/247) add rank-bm25 external source to action-item-extraction.md ([6786856](https://github.com/EndogenAI/dogma/commit/6786856b48fe19d57c6285b6b6224e8d531d773f))
+* **research:** [#252](https://github.com/EndogenAI/dogma/issues/252) add scipy external source URL to crd-output-quality-study.md ([d9212fb](https://github.com/EndogenAI/dogma/commit/d9212fbb7f080d4f3b3a7c8f00ae3ad04673ac00))
+
+
+### Features
+
+* **agents:** elevate GitHub Agent to executive tier; docs: sub-issues decision ([863f71d](https://github.com/EndogenAI/dogma/commit/863f71ddae6c8788503a2abe869d3042acb6e178)), closes [#200](https://github.com/EndogenAI/dogma/issues/200) [#48](https://github.com/EndogenAI/dogma/issues/48)
+* **ci,scripts:** resolve [#249](https://github.com/EndogenAI/dogma/issues/249) [#248](https://github.com/EndogenAI/dogma/issues/248) [#107](https://github.com/EndogenAI/dogma/issues/107) — axiom §-ref warn, CRD substrate health, drift gate calibration ([5b44d6e](https://github.com/EndogenAI/dogma/commit/5b44d6eca83338d2b79d74136a9cfe10a4d0ea4e))
+
+
+
+# [0.1.0](https://github.com/EndogenAI/dogma/compare/12f8382bf74e514be69953642a92a5fb17d2692d...v0.1.0) (2026-03-13)
 
 
 ### Bug Fixes
