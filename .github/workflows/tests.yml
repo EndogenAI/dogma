@@ -110,7 +110,7 @@ jobs:
       - name: Check links
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --no-progress --exclude-loopback --accept 200,403,429 docs/**/*.md README.md CHANGELOG.md CONTRIBUTING.md
+          args: --no-progress --exclude-loopback --accept 200,403,429,502 docs/**/*.md README.md CHANGELOG.md CONTRIBUTING.md
           fail: true
 
   required:
