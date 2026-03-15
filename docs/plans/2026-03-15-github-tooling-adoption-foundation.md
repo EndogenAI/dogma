@@ -213,7 +213,7 @@ Deliver two high-priority bulk GitHub operations scripts (#260, #261), lay the a
 
 ---
 
-### Phase 7 — Phase 10 Research Sprint ⬜
+### Phase 7 — Phase 10 Research Sprint ✅
 
 **Agent**: Executive Researcher (full Scout → Synthesizer → Reviewer pipeline)
 **Deliverables**:
@@ -224,21 +224,21 @@ Deliver two high-priority bulk GitHub operations scripts (#260, #261), lay the a
 **Depends on**: Phase 6 Review APPROVED
 **Note**: Phase 10 research (#196, #197) is the final phase — placed last because it is self-contained and does not gate any implementation phase in this sprint. If context window pressure is high after Phase 6, this phase may be deferred to the next sprint with a recorded decision in the scratchpad.
 **Gate**: Both docs pass `uv run python scripts/validate_synthesis.py` before Phase 7 Review
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — `308c2e9`
 
 ---
 
-### Phase 7 Review — Review Gate ⬜
+### Phase 7 Review — Review Gate ✅
 
 **Agent**: Review
 **Deliverables**: `## Phase 7 Review Output` in scratchpad
 **Depends on**: Phase 7 deliverables committed
 **Gate**: Phase 8 does not begin until APPROVED
-**Status**: ⬜ Not started
+**Status**: ✅ APPROVED (first pass)
 
 ---
 
-### Phase 8 — Commit, PR & Session Close ⬜
+### Phase 8 — Commit, PR & Session Close ✅
 
 **Agent**: GitHub (commits/push/PR) + Executive Orchestrator (session close)
 **Deliverables**:
@@ -249,7 +249,7 @@ Deliver two high-priority bulk GitHub operations scripts (#260, #261), lay the a
 
 **Depends on**: Phase 7 Review APPROVED (or Phase 6 Review APPROVED if Phase 7 deferred)
 **Gate**: `git status` clean; `gh pr view` returns PR URL
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — PR #263 opened
 
 ---
 
@@ -262,8 +262,8 @@ Deliver two high-priority bulk GitHub operations scripts (#260, #261), lay the a
 - [ ] Phase 4 — `docs/research/product-fork-initialization.md` committed as D4 Draft (#207 closed)
 - [ ] Phase 5 — `docs/guides/product-fork-initialization.md` committed; README updated (#204 closed)
 - [ ] Phase 6 — `scripts/adopt_wizard.py` shipped with tests (#57 closed)
-- [ ] Phase 7 — Two Phase 10 D4 research docs committed (or deferral decision recorded) (#196, #197 closed or deferred with note)
-- [ ] Phase 8 — PR opened with all `Closes #N` lines; progress comments posted on all 10 issues
+- [x] Phase 7 — Two Phase 10 D4 research docs committed (or deferral decision recorded) (#196, #197 closed or deferred with note)
+- [x] Phase 8 — PR opened with all `Closes #N` lines; progress comments posted on all 10 issues
 - [ ] All changes pushed and PR is up to date
 
 ## PR Description Template
