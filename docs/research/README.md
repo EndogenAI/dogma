@@ -13,7 +13,7 @@ This directory contains research synthesis documents, gap analyses, and explorat
 | [infrastructure/](infrastructure/) | Security, scripting, substrate mechanics | `infrastructure/security-threat-model.md` |
 | [models/](models/) | LLM strategies, local inference, behavioral testing | `models/llm-tier-strategy.md` |
 | [pm/](pm/) | Project management, GitHub workflows, product discovery | `pm/github-project-management.md` |
-| [neuroscience/](neuroscience/) | Bubble clusters, neuroplasticity, holographic encoding | `neuroscience/values-encoding-neuroscience.md` |
+| [neuroscience/](neuroscience/) | Bubble clusters, neuroplasticity, holographic encoding | `neuroscience/bubble-clusters-substrate.md` |
 | [sources/](sources/) | Raw per-source synthesis notes (D4 Pass 1) | — |
 
 ## Root-level Key Docs
