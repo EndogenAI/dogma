@@ -57,3 +57,30 @@ https://github.com/cicirello/issue-completion-stats
 # Canonical historical reference; URL is correct and publicly accessible outside CI.
 # Appears in docs/research/endogenic-design-paper.md and sprint-C-h3-augmentive.md.
 https://www.theatlantic.com/magazine/archive/1945/07/as-we-may-think/303881/
+
+# The Atlantic "As We May Think" entry is already present above — do not duplicate.
+
+# AutoGen stable user-guide URL — 404; page moved in autogen v0.4+ restructure.
+# Referenced in docs/research/scratchpad-architecture-maturation.md.
+https://microsoft.github.io/autogen/stable/user-guide/agentchat/user
+
+# GitHub milestone/7 — milestone was deleted/renamed after workplan docs were written.
+# Referenced in docs/plans/2026-03-08-value-encoding-fidelity.md and
+# docs/plans/2026-03-09-bubble-substrate-model.md.
+https://github.com/EndogenAI/dogma/milestone/7
+
+# Bogus issue IDs from auto-generated CHANGELOG.md — these are PR review comment
+# IDs captured as "closes #N" by the conventional-commits changelog toolchain.
+# Real dogma issues are numbered sequentially and are < 500; these are invalid.
+https://github.com/-/issues/3
+https://github.com/EndogenAI/dogma/issues/292027
+https://github.com/EndogenAI/dogma/issues/2901498118
+https://github.com/EndogenAI/dogma/issues/2901498926
+https://github.com/EndogenAI/dogma/issues/2901499889
+https://github.com/EndogenAI/dogma/issues/2920271870
+https://github.com/EndogenAI/dogma/issues/2920271912
+https://github.com/EndogenAI/dogma/issues/2920271974
+https://github.com/EndogenAI/dogma/issues/2920272032
+https://github.com/EndogenAI/dogma/issues/2920272059
+https://github.com/EndogenAI/dogma/issues/2920272078
+https://github.com/EndogenAI/dogma/issues/3911133661

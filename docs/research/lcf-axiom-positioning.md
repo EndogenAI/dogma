@@ -302,8 +302,8 @@ usage; run locally whenever possible."
 
 Proposed addition: "LCF is structural oversight infrastructure: it keeps enforcement scripts,
 validators, and inference locally resident, enabling the other axioms to function as designed.
-See [`MANIFESTO.md §3`](MANIFESTO.md#3-local-compute-first) and
-[`docs/research/lcf-oversight-infrastructure.md`](docs/research/lcf-oversight-infrastructure.md)."
+See [`MANIFESTO.md §3`](../../MANIFESTO.md#3-local-compute-first) and
+[`lcf-oversight-infrastructure.md`](lcf-oversight-infrastructure.md)."
 
 **Rationale**: The AGENTS.md axiom amplification table entry for `local / inference / model / cost`
 is currently correct but omits the structural framing. Agents reading AGENTS.md first
