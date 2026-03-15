@@ -47,7 +47,8 @@ Usage:
     # Target a specific file (overrides auto-resolution)
     uv run python scripts/prune_scratchpad.py --file .tmp/my-branch/2026-03-04.md
 
-    # Force prune regardless of line count (also updates _index.md)
+    # Force prune regardless of line count (also updates _index.md) — DEPRECATED
+    # Prefer --init for new sessions; let each day's file persist intact.
     uv run python scripts/prune_scratchpad.py --force
 
     # Initialise a new session file for today (creates if absent)
@@ -426,7 +427,13 @@ def main() -> int:
     parser.add_argument(
         "--force",
         action="store_true",
-        help="Prune regardless of line count (bypasses size guard)",
+        help=(
+            "[DEPRECATED] Prune regardless of line count (bypasses size guard). "
+            "Per-day session files make aggressive compression unnecessary. "
+            "Use --init (new session) instead. --force still archives to "
+            "docs/sessions/ for backward compatibility, but compression is "
+            "discouraged — prefer letting each day's file persist intact."
+        ),
     )
     parser.add_argument(
         "--init",
@@ -544,11 +551,25 @@ def main() -> int:
     line_count = text.count("\n")
 
     if not args.force and line_count < SIZE_GUARD:
-        print(
-            f"INFO: {path} has {line_count} lines (threshold: {SIZE_GUARD}). "
-            "No pruning needed. Use --force to prune anyway."
-        )
+        print(f"INFO: {path} has {line_count} lines (threshold: {SIZE_GUARD}). No pruning needed.")
         return 0
+
+    if args.force:
+        import warnings
+
+        warnings.warn(
+            "--force (compression) is deprecated. Per-day session files make "
+            "aggressive pruning unnecessary. The archive step (docs/sessions/) "
+            "still runs. Prefer --init for new sessions; let existing files persist intact.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        print(
+            "DEPRECATION WARNING: --force compression is discouraged. "
+            "Session files are now per-day; let them persist intact. "
+            "Archive step (docs/sessions/) will still run.",
+            file=sys.stderr,
+        )
 
     pruned, archived, kept = prune(text, today)
 

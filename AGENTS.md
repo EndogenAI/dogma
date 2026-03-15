@@ -253,6 +253,8 @@ Rules:
 - The executive **reads today's session file first** before delegating to avoid re-discovering context another agent already gathered.
 - At session end, the executive writes a `## Session Summary` section so the next session starts with an orientation point.
 - At session end, the executive **posts a progress comment** on every GitHub issue that was actively worked during the session — summarising what phase completed, what was committed, and what comes next. Use `gh issue comment <num> --body-file <path>`. This is a non-negotiable close step, same as writing the Session Summary.
+- **For sprint-close sessions** (where a PR is opened): post a closure comment on *every* issue the PR closes, explaining what was implemented and how it resolves the issue. Include the PR number and commit SHA. This lets future sessions and contributors understand the resolution without reading the PR diff.
+- **Track follow-up items as issues**: At sprint close, review the sprint for any partial implementations, regressions introduced, or encoding gaps discovered during delivery. Each item must be seeded as a new GitHub issue (not kept in the scratchpad only). Use the `gh issue create` pattern from the Verify-after-act table. Untracked follow-ups are invisible to future sessions.
 - **Update issue acceptance criteria that received new knowledge** — if a session comment added quantitative data, a new mechanism, or a tightened recommendation to an existing issue, check whether the issue's acceptance criteria need updating to reflect the new knowledge. Where criteria are missing or stale, use `gh issue edit <num> --body-file <path>` to add them. This prevents useful context from living only in comments where it will be missed when the issue is picked up.
 - If the session produced novel patterns, efficiency observations, or techniques that outperformed prior expectations — run the **session-retrospective** skill before closing: `@session-retrospective What lessons did we learn this session?`
 - At phase completion, the executive **updates the issue body checkboxes** to reflect completed deliverables. Write the updated body to a temp file and use `gh issue edit <num> --body-file <path>`. Verify with `gh issue view <num> --json body -q '.body' | grep -E '\[x\]|\[ \]'`. This keeps the issue body as a live progress tracker, not just the initial spec.
@@ -429,7 +431,15 @@ When writing prompts for the **Review agent**, use explicit numbered binary acce
 ### Size Guard and Archive Convention
 
 Full scratchpad size management protocol: see [`session-management` SKILL.md](.github/skills/session-management/SKILL.md) § 5 Size Management.
-Active multi-phase sprint: do NOT run `--force` mid-sprint; prune only after the sprint's highest Review gate is APPROVED.
+
+**`prune_scratchpad.py --force` is deprecated.** Session scratchpads are now per-day (`<YYYY-MM-DD>.md`); each day is its own file, so aggressive compression of in-session content is counterproductive. Do NOT run `--force` during a sprint — it will emit a `DeprecationWarning`. The archive step (`docs/sessions/` copy) still runs for backward compatibility, but the compression step is discouraged.
+
+Preferred session-close posture:
+1. Write `## Session Summary` to today's scratchpad (use `replace_string_in_file`)
+2. Leave the full content intact — do not compress
+3. Start tomorrow's session with a fresh `--init` file
+
+If you are mid-sprint and the scratchpad is genuinely over 2000 lines, use `--dry-run` to inspect first, then prune only the clearly completed sections manually.
 
 ### `docs/plans/` — Tracked Workplans
 
@@ -778,6 +788,10 @@ uv run python scripts/validate_agent_files.py --all
 
 # Research doc compliance (if any docs/research/*.md changed)
 uv run python scripts/validate_synthesis.py docs/research/<changed-file>.md
+
+# Provenance annotations (before first commit of any session)
+uv run python scripts/annotate_provenance.py --dry-run
+# If files are listed as "Would annotate", run without --dry-run to apply them before committing.
 ```
 
 Pre-commit hooks automate ruff, validate-synthesis, and validate-agent-files on every `git commit`; the `fast-tests` hook runs on every `git push`. Install **both** once per clone; do not skip with `--no-verify`:
