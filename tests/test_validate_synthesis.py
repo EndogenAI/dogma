@@ -260,6 +260,80 @@ class TestValidateSynthesisIntegration:
     @pytest.mark.io
     def test_validates_real_synthesis_file(self, sample_d3_synthesis):
         """Can validate a real synthesis document structure."""
-        # Test with actual sample_d3_synthesis fixture
+        # Real test: verify all required fields present
         assert "url:" in sample_d3_synthesis
         assert "## Summary" in sample_d3_synthesis
+
+
+class TestFinalEditWarning:
+    """Tests for check_final_status_modified — Final-status edit gate (issue #224)."""
+
+    def _make_d4(self, tmp_path, status="Final"):
+        f = tmp_path / "docs" / "research" / "test.md"
+        f.parent.mkdir(parents=True)
+        f.write_text(f"---\ntitle: Test\nstatus: {status}\n---\n\n## Section\n\nBody.\n")
+        return f
+
+    def _import_vs(self):
+        import sys
+        from pathlib import Path
+
+        sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
+        import validate_synthesis as vs
+
+        return vs
+
+    def _mock_git_diff(self, monkeypatch, modified_paths):
+        """Patch subprocess.run in validate_synthesis to return modified_paths."""
+        vs = self._import_vs()
+        modified_strs = [str(p) for p in modified_paths]
+
+        def _fake_run(cmd, **kwargs):
+            class _R:
+                stdout = "\n".join(modified_strs)
+                returncode = 0
+
+            return _R()
+
+        monkeypatch.setattr(vs.subprocess, "run", _fake_run)
+        return vs
+
+    @pytest.mark.io
+    def test_warns_when_final_doc_is_modified(self, tmp_path, monkeypatch, capsys):
+        """WARNING printed when a Final-status doc appears in git diff output."""
+        d4_file = self._make_d4(tmp_path, status="Final")
+        vs = self._mock_git_diff(monkeypatch, [d4_file.resolve()])
+        vs.check_final_status_modified(d4_file, allow_final_edit=False)
+        assert "WARNING" in capsys.readouterr().out
+
+    @pytest.mark.io
+    def test_warns_when_published_doc_is_modified(self, tmp_path, monkeypatch, capsys):
+        """WARNING printed for Published-status docs as well as Final."""
+        d4_file = self._make_d4(tmp_path, status="Published")
+        vs = self._mock_git_diff(monkeypatch, [d4_file.resolve()])
+        vs.check_final_status_modified(d4_file, allow_final_edit=False)
+        assert "WARNING" in capsys.readouterr().out
+
+    @pytest.mark.io
+    def test_no_warning_when_allow_final_edit(self, tmp_path, monkeypatch, capsys):
+        """No WARNING emitted when allow_final_edit=True."""
+        d4_file = self._make_d4(tmp_path, status="Final")
+        vs = self._mock_git_diff(monkeypatch, [d4_file.resolve()])
+        vs.check_final_status_modified(d4_file, allow_final_edit=True)
+        assert "WARNING" not in capsys.readouterr().out
+
+    @pytest.mark.io
+    def test_no_warning_for_draft_status(self, tmp_path, capsys):
+        """No WARNING for Draft-status documents — function returns early."""
+        d4_file = self._make_d4(tmp_path, status="Draft")
+        vs = self._import_vs()
+        vs.check_final_status_modified(d4_file, allow_final_edit=False)
+        assert "WARNING" not in capsys.readouterr().out
+
+    @pytest.mark.io
+    def test_no_warning_when_file_not_in_diff(self, tmp_path, monkeypatch, capsys):
+        """No WARNING when Final doc does not appear in git diff output."""
+        d4_file = self._make_d4(tmp_path, status="Final")
+        vs = self._mock_git_diff(monkeypatch, [])  # empty diff
+        vs.check_final_status_modified(d4_file, allow_final_edit=False)
+        assert "WARNING" not in capsys.readouterr().out
