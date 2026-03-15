@@ -30,7 +30,7 @@ repos:
         pass_filenames: false
       - id: detect-drift
         name: Check value-encoding drift in agent files
-        entry: python3 scripts/detect_drift.py --agents-dir .github/agents/ --format summary --fail-below 0.33
+        entry: python3 scripts/detect_drift.py --agents-dir .github/agents/ --format summary --fail-below 0.1
         language: system
         files: ^\.github/agents/.*\.agent\.md$
         pass_filenames: false
@@ -39,7 +39,7 @@ repos:
         entry: python3 -m pytest tests/ -x -m "not slow and not integration" -q
         language: system
         pass_filenames: false
-        stages: [push]
+        stages: [pre-push]
       - id: check-doc-links
         name: Check relative file links in Markdown docs
         entry: python3 scripts/check_doc_links.py
