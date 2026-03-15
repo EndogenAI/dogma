@@ -1,0 +1,9 @@
+{
+  "project_name": "My Dogma Project",
+  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '-').replace('_', '-') }}",
+  "python_version": "3.11",
+  "domain": ["software", "research", "operations", "custom"],
+  "team_size": ["solo", "small (2-5)", "medium (6-20)", "large (21+)"],
+  "ci": ["GitHub Actions", "none"],
+  "pre_commit": ["yes", "no"]
+}

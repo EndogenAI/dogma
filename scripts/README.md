@@ -41,6 +41,8 @@ scripts/
   encoding_coverage.py         # Check MANIFESTO F1-F4 encoding coverage for named principles/axioms; outputs Markdown table (--manifesto, --agents)
   adopt_wizard.py              # Dogma framework onboarding wizard — generates client-values.yml and scaffolds AGENTS.md for new adopters; --org, --repo required; --non-interactive, --load-values, --output-dir flags; runs validate_agent_files.py before reporting success (closes #56, #125)
   orientation_snapshot.py      # Pre-computed session orientation digest — writes .cache/github/orientation-snapshot.md with open issue counts, recent commits, active branches, milestone summary; --branch includes scratchpad ## Session Summary (closes #241)
+  bulk_github_operations.py    # Batch GitHub issue/PR write operations (issue-create, issue-edit, issue-close, pr-edit) from a JSON/YAML spec file or stdin; --dry-run safety gate; --rate-limit-delay throttling; JSON results to stdout (closes #260)
+  bulk_github_read.py          # Batch GitHub issue/PR metadata reads — fetch by number (--issues, --prs) or search query (--query); --format table|json|csv; --fields column selection (closes #261)
   docs/                        # Per-script generated Markdown documentation (see scripts/docs/README.md)
 ```
 

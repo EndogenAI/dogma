@@ -34,6 +34,17 @@ gh repo create my-org/my-project --template EndogenAI/dogma --clone
 cd my-project
 ```
 
+**Alternatively, scaffold directly with the cookiecutter template** (no GitHub fork required):
+
+```bash
+uvx cookiecutter gh:EndogenAI/dogma
+```
+
+This runs interactively, prompts for `project_name`, `domain`, `team_size`, `ci`, and
+`pre_commit` preferences, then generates a minimal dogma-aligned project directory with
+`AGENTS.md`, `client-values.yml`, `pyproject.toml`, and CI workflow stubs. After generation,
+continue from Step 2 to complete the Deployment Layer configuration.
+
 > **Anti-pattern**: Stopping here. A raw fork or template copy contains no `client-values.yml`, no Deployment Layer comment, and no axiom emphasis. Agents will operate against dogma's own Core Layer defaults rather than your project's specialized priorities. The `validate-agent-files` pre-commit hook will fail on first commit. *This step alone is insufficient.*
 
 ---

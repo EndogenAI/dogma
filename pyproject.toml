@@ -63,6 +63,15 @@ target-version = "py39"
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I"]
+
+# Cookiecutter template — invocation reference:
+# The dogma cookiecutter template lives at the repo root (cookiecutter.json).
+# Scaffold a new dogma-based repo with:
+#   uvx cookiecutter gh:EndogenAI/dogma        # from GitHub
+#   uvx cookiecutter .                          # from a local clone
+# No entry point is registered here because cookiecutter ships its own CLI.
+# The template is referenced in docs/guides/product-fork-initialization.md.
+
 # T2 (static linting) enforcement: Terminal file I/O redirection is monitored
 # via pre-commit hook 'no-terminal-file-io-redirect' (see .pre-commit-config.yaml).
 # Patterns flagged: > file, >> file, | tee file, | cat >> file

@@ -1,0 +1,27 @@
+# client-values.yml — Deployment Layer Configuration
+#
+# This file specializes dogma's Core Layer axioms for {{ cookiecutter.project_name }}.
+# Agents read this file before their first action in every session.
+#
+# Constraint: values here may NOT override MANIFESTO.md Core Layer constraints.
+# They may only add or specialize priorities at the Deployment Layer.
+#
+# For the full schema and interpretation rules, see:
+# https://github.com/EndogenAI/dogma/blob/main/AGENTS.md#deployment-layer-integration
+
+project_name: "{{ cookiecutter.project_name }}"
+domain: "{{ cookiecutter.domain }}"
+team_size: "{{ cookiecutter.team_size }}"
+
+# One sentence describing your project's purpose.
+mission: ""
+
+# Ordered list of your team's primary concerns (e.g., security, cost, latency).
+priorities: []
+
+# Which dogma axioms to amplify for this project.
+# Options: endogenous-first, algorithms-before-tokens, local-compute-first
+axiom_emphasis: []
+
+# Domain-specific guardrails (e.g., no-external-api-calls, gdpr-compliant).
+constraints: []
