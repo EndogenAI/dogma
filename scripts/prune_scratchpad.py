@@ -71,6 +71,7 @@ Exit codes:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import re
 import sys
 from datetime import date
@@ -156,6 +157,44 @@ def update_index(branch_folder: Path, session_path: Path, today: str) -> None:
     with index.open("a") as f:
         f.write(stub)
     print(f"Updated index: {index}")
+
+
+def archive_to_sessions(
+    session_path: Path,
+    content: str,
+    session_date: str,
+    branch_slug: str,
+    repo_root: Path | None = None,
+) -> None:
+    """Archive a pruned session file to docs/sessions/<branch>/<date>.md.
+
+    Phase 2 of the session-archive pipeline: in addition to the .tmp/ index stub
+    written by update_index(), this function commits a permanent copy of the pruned
+    session to docs/sessions/ with YAML frontmatter for provenance tracking.
+
+    The YAML frontmatter added at the top of the archived file:
+        ---
+        session: YYYY-MM-DD
+        branch: <branch-slug>
+        hash: <sha256 first 8 hex chars of content>
+        ---
+
+    Args:
+        session_path: Path to the original .tmp scratchpad file (used only for
+            context; the *content* arg is what gets archived).
+        content: The pruned session content to archive.
+        session_date: ISO date string (YYYY-MM-DD) for the session.
+        branch_slug: Branch slug (/ replaced with -).
+        repo_root: Workspace root Path; defaults to two directories above this script.
+    """
+    root = repo_root or Path(__file__).parent.parent
+    dest_dir = root / "docs" / "sessions" / branch_slug
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    dest = dest_dir / f"{session_date}.md"
+    content_hash = hashlib.sha256(content.encode()).hexdigest()[:8]
+    frontmatter = f"---\nsession: {session_date}\nbranch: {branch_slug}\nhash: {content_hash}\n---\n\n"
+    dest.write_text(frontmatter + content, encoding="utf-8")
+    print(f"Archived session to: {dest}")
 
 
 def _classify(heading: str) -> str:
@@ -532,6 +571,7 @@ def main() -> int:
     )
     if args.force and ".tmp" in path.parts:
         update_index(path.parent, path, today)
+        archive_to_sessions(path, pruned, path.stem, path.parent.name)
     return 0
 
 

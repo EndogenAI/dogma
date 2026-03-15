@@ -14,9 +14,13 @@ Tests cover:
 """
 
 import subprocess
+import sys
 from datetime import date
+from pathlib import Path
 
 import pytest
+
+sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 
 class TestPruneScrapbookInitialisation:
@@ -199,3 +203,99 @@ More content.
         text = markdown_file.read_text()
         lines = [line for line in text.split("\n") if line.startswith("##")]
         assert len(lines) == len(set(lines)), "Should have no duplicate headings"
+
+
+# ---------------------------------------------------------------------------
+# Phase 2: docs/sessions/ archive — issue #254
+# ---------------------------------------------------------------------------
+
+
+class TestArchiveToSessions:
+    """Tests for archive_to_sessions() — Phase 2 session archive behaviour."""
+
+    @pytest.mark.io
+    def test_creates_file_at_correct_location(self, tmp_path):
+        """archive_to_sessions() creates docs/sessions/<branch>/<date>.md."""
+        from prune_scratchpad import archive_to_sessions  # noqa: PLC0415
+
+        content = "## Session Start\n\nSome content.\n"
+        branch = "feat-test-branch"
+        session_date = "2026-03-14"
+        session_path = tmp_path / ".tmp" / branch / f"{session_date}.md"
+
+        archive_to_sessions(session_path, content, session_date, branch, repo_root=tmp_path)
+
+        dest = tmp_path / "docs" / "sessions" / branch / f"{session_date}.md"
+        assert dest.exists(), f"Expected archive at {dest}"
+
+    @pytest.mark.io
+    def test_frontmatter_present(self, tmp_path):
+        """Archived session file starts with a YAML frontmatter block."""
+        from prune_scratchpad import archive_to_sessions  # noqa: PLC0415
+
+        content = "## Session Start\n\nSome content.\n"
+        branch = "feat-test-branch"
+        session_date = "2026-03-14"
+        session_path = tmp_path / ".tmp" / branch / f"{session_date}.md"
+
+        archive_to_sessions(session_path, content, session_date, branch, repo_root=tmp_path)
+
+        dest = tmp_path / "docs" / "sessions" / branch / f"{session_date}.md"
+        text = dest.read_text(encoding="utf-8")
+        assert text.startswith("---\n"), "Expected YAML frontmatter at top of file"
+        assert "session:" in text
+        assert "branch:" in text
+        assert "hash:" in text
+
+    @pytest.mark.io
+    def test_frontmatter_field_values(self, tmp_path):
+        """Frontmatter fields contain the correct session date, branch, and content hash."""
+        import hashlib  # noqa: PLC0415
+
+        from prune_scratchpad import archive_to_sessions  # noqa: PLC0415
+
+        content = "## Session Start\n\nSome content.\n"
+        branch = "feat-test-branch"
+        session_date = "2026-03-14"
+        session_path = tmp_path / ".tmp" / branch / f"{session_date}.md"
+
+        archive_to_sessions(session_path, content, session_date, branch, repo_root=tmp_path)
+
+        dest = tmp_path / "docs" / "sessions" / branch / f"{session_date}.md"
+        text = dest.read_text(encoding="utf-8")
+        expected_hash = hashlib.sha256(content.encode()).hexdigest()[:8]
+        assert f"session: {session_date}" in text
+        assert f"branch: {branch}" in text
+        assert f"hash: {expected_hash}" in text
+
+    @pytest.mark.io
+    def test_creates_directory_if_absent(self, tmp_path):
+        """archive_to_sessions() creates docs/sessions/<branch>/ if it does not exist."""
+        from prune_scratchpad import archive_to_sessions  # noqa: PLC0415
+
+        branch = "new-branch-slug"
+        session_date = "2026-03-14"
+        session_path = tmp_path / ".tmp" / branch / f"{session_date}.md"
+        dest_dir = tmp_path / "docs" / "sessions" / branch
+        assert not dest_dir.exists(), "Pre-condition: directory should not exist"
+
+        archive_to_sessions(session_path, "content\n", session_date, branch, repo_root=tmp_path)
+
+        assert dest_dir.exists(), "Expected directory to be created"
+
+    @pytest.mark.io
+    def test_content_follows_frontmatter(self, tmp_path):
+        """The original session content appears after the frontmatter block."""
+        from prune_scratchpad import archive_to_sessions  # noqa: PLC0415
+
+        content = "## Session Start\n\nSome specific content.\n"
+        branch = "feat-test-branch"
+        session_date = "2026-03-14"
+        session_path = tmp_path / ".tmp" / branch / f"{session_date}.md"
+
+        archive_to_sessions(session_path, content, session_date, branch, repo_root=tmp_path)
+
+        dest = tmp_path / "docs" / "sessions" / branch / f"{session_date}.md"
+        text = dest.read_text(encoding="utf-8")
+        assert "## Session Start" in text
+        assert "Some specific content." in text
