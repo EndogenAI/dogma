@@ -1,3 +1,15 @@
+## [0.3.1](https://github.com/EndogenAI/dogma/compare/v0.3.0...v0.3.1) (2026-03-15)
+
+
+### Bug Fixes
+
+* **ci:** accept HTTP 502 in lychee link check ([2d5b21d](https://github.com/EndogenAI/dogma/commit/2d5b21dc3275e1b8eff4cba3a0be7066cc23a10f))
+* **ci:** skip README.md in validate_synthesis loop ([c9a1d85](https://github.com/EndogenAI/dogma/commit/c9a1d855f958ad63558d749f493837a2a4aa1284))
+* **docs:** correct dead neuroscience entry point link in research README ([c24248d](https://github.com/EndogenAI/dogma/commit/c24248d36b218ecea797a6ca552aea7be339775e)), closes [#262](https://github.com/EndogenAI/dogma/issues/262)
+* **docs:** rewrite all relative links after research/ restructuring ([68e4a2e](https://github.com/EndogenAI/dogma/commit/68e4a2e8a4c59be494b10f177a6eb487f7a330cd))
+
+
+
 # [0.3.0](https://github.com/EndogenAI/dogma/compare/v0.2.0...v0.3.0) (2026-03-15)
 
 
