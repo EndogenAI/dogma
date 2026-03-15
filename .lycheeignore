@@ -84,3 +84,9 @@ https://github.com/EndogenAI/dogma/issues/2920272032
 https://github.com/EndogenAI/dogma/issues/2920272059
 https://github.com/EndogenAI/dogma/issues/2920272078
 https://github.com/EndogenAI/dogma/issues/3911133661
+
+# CHANGELOG.md auto-generated artifact: "closes [MANIFESTO.md#3]" in a commit
+# message was interpreted as a GitHub issue reference by the changelog toolchain,
+# producing a nonsensical github.com/MANIFESTO.md/... URL.
+https://github.com/MANIFESTO.md/issues/3
+https://github.com/../../MANIFESTO.md/issues/3

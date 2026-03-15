@@ -6,7 +6,7 @@ governs: [endogenous-first, algorithms-before-tokens, programmatic-first, self-g
 
 **Date**: 2026-03-14  
 **Branch**: feat/sprint-production-hardening-adoption  
-**Closes**: [#152](https://github.com/endogenai/workflows/issues/152)
+**Closes**: [#152](https://github.com/EndogenAI/dogma/issues/152)
 
 This audit surveys every behavioural guardrail stated in [`AGENTS.md`](../../AGENTS.md)
 and [`MANIFESTO.md`](../../MANIFESTO.md) and classifies each by its current enforcement
@@ -191,9 +191,9 @@ if not hook_path.is_file() or not os.access(hook_path, os.X_OK):
 
 | Status | Count |
 |--------|-------|
-| Enforced (T3/T4) | 14 |
+| Enforced (T3/T4) | 12 |
 | Partial (T2 + incomplete T3) | 5 |
-| Unenforced (T1/T2 only) | 9 |
+| Unenforced (T1/T2 only) | 11 |
 | **Total guardrails audited** | **28** |
 
 50% of guardrails have no programmatic enforcement.  The five gaps above

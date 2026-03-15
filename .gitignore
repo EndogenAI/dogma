@@ -58,6 +58,8 @@ cover/
 !.cache/sources/manifest.json
 # snapshot-issues.yml workflow output (daily issue/label snapshot)
 !.cache/github/project_state.json
+# issue-metrics.yml workflow output (weekly issue/PR health snapshots)
+!.cache/github/issue-metrics-*.md
 # release-changelog-builder cache (release-changelog.yml workflow)
 !.cache/pr-changelog-cache.json
 
