@@ -1,3 +1,29 @@
+# [0.3.0](https://github.com/EndogenAI/dogma/compare/v0.2.0...v0.3.0) (2026-03-15)
+
+
+### Bug Fixes
+
+* **docs:** correct broken repo URLs, review count errors + provenance annotations ([98f4c5b](https://github.com/EndogenAI/dogma/commit/98f4c5bfd3f65d7de426bda3b5ab2968549e3c8a)), closes [#56](https://github.com/EndogenAI/dogma/issues/56) [#125](https://github.com/EndogenAI/dogma/issues/125) [#205](https://github.com/EndogenAI/dogma/issues/205) [MANIFESTO.md#3](https://github.com/MANIFESTO.md/issues/3)
+* **scripts:** validate_synthesis.py — accept multiple files for pre-commit pass_filenames compatibility ([7fed812](https://github.com/EndogenAI/dogma/commit/7fed8122f95e35531449930c58ac05da083fed47))
+* **security:** block IPv6 link-local addresses in fetch_source.py validate_url() closes [#106](https://github.com/EndogenAI/dogma/issues/106) ([f8e44c0](https://github.com/EndogenAI/dogma/commit/f8e44c0a3f21954a1c853c5a5541d7a953d80503))
+
+
+### Features
+
+* **ci:** issue-metrics action — weekly issue/PR health snapshot for agent orientation closes [#214](https://github.com/EndogenAI/dogma/issues/214) ([cdf1376](https://github.com/EndogenAI/dogma/commit/cdf13767d5a2d8b20f5fd7e526dbf61c7c826c7e))
+* **scripts,ci:** validate_agent_files.py — specificity metrics + MANIFESTO section-anchored citation check closes [#257](https://github.com/EndogenAI/dogma/issues/257) ([b0d0253](https://github.com/EndogenAI/dogma/commit/b0d0253e79e1cd9de295477c958e4d227d2b008a))
+* **scripts,docs:** deprecate prune_scratchpad --force + encode sprint-close requirements ([3c89004](https://github.com/EndogenAI/dogma/commit/3c8900458aa27fc67c5cf952af89aa3fe289a1aa))
+* **scripts:** adopt_wizard.py — dogma onboarding wizard closes [#56](https://github.com/EndogenAI/dogma/issues/56) ([1fd7d5c](https://github.com/EndogenAI/dogma/commit/1fd7d5c5377df8b4d2018ef02b72748b263527cc))
+* **scripts:** encoding_coverage.py — MANIFESTO F1-F4 coverage baseline closes [#237](https://github.com/EndogenAI/dogma/issues/237) ([77c52d5](https://github.com/EndogenAI/dogma/commit/77c52d56255f7bb08055c803f700f96817a3571e))
+* **scripts:** extract_action_items.py — D4 doc action item extraction with BM25 dedup closes [#256](https://github.com/EndogenAI/dogma/issues/256) ([4601593](https://github.com/EndogenAI/dogma/commit/4601593d587474c6ce92a26b8365ba71d8968bad))
+* **scripts:** generate_script_docs.py — pydoc-markdown wrapper for scripts/docs/ closes [#255](https://github.com/EndogenAI/dogma/issues/255) ([7c8ada7](https://github.com/EndogenAI/dogma/commit/7c8ada7ed469e3861a721bdc2a49c917d4b25030))
+* **scripts:** orientation_snapshot.py — pre-computed session orientation digest closes [#241](https://github.com/EndogenAI/dogma/issues/241) ([11dbf10](https://github.com/EndogenAI/dogma/commit/11dbf10bcdd6f75201833def4cec25bc154481ee))
+* **scripts:** prune_scratchpad.py phase 2 — docs/sessions/ archive + session-hash frontmatter closes [#254](https://github.com/EndogenAI/dogma/issues/254) ([5e5285e](https://github.com/EndogenAI/dogma/commit/5e5285e87ae32ef5ba25e284393afc8ca97819bf))
+* **scripts:** validate_session.py — constitutional AI value fidelity hook (OQ-4) closes [#238](https://github.com/EndogenAI/dogma/issues/238) ([41f6ee7](https://github.com/EndogenAI/dogma/commit/41f6ee77116b8df29e6e21f13e8bb87c465e8cb5))
+* **scripts:** validate_synthesis.py — manual stop gate warning for Final-status doc edits closes [#224](https://github.com/EndogenAI/dogma/issues/224) ([f330a0f](https://github.com/EndogenAI/dogma/commit/f330a0fe5af2feb1ac3ba07986cd3fff413a8a77))
+
+
+
 # [0.2.0](https://github.com/EndogenAI/dogma/compare/v0.1.0...v0.2.0) (2026-03-15)
 
 
