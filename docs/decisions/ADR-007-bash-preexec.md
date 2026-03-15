@@ -8,7 +8,7 @@
 
 ## Context
 
-The interactive shell governor (see [`docs/research/shell-preexec-governor.md`](../research/shell-preexec-governor.md)) requires a `preexec` hook — a callback that fires before each interactive command — to intercept heredoc writes and kill-signal the shell session when a forbidden pattern is detected.
+The interactive shell governor (see [`docs/research/shell-preexec-governor.md`](../research/infrastructure/shell-preexec-governor.md)) requires a `preexec` hook — a callback that fires before each interactive command — to intercept heredoc writes and kill-signal the shell session when a forbidden pattern is detected.
 
 Bash does not natively expose a `preexec_functions` array. The closest primitive is the `DEBUG` trap (`trap '...' DEBUG`), which fires before every simple command. Using the raw `DEBUG` trap directly works but has two problems:
 
@@ -38,5 +38,5 @@ Bash does not natively expose a `preexec_functions` array. The closest primitive
 
 ## References
 
-- [`docs/research/shell-preexec-governor.md`](../research/shell-preexec-governor.md) — R5, Q5: bash-preexec adoption rationale
+- [`docs/research/shell-preexec-governor.md`](../research/infrastructure/shell-preexec-governor.md) — R5, Q5: bash-preexec adoption rationale
 - [https://github.com/rcaloras/bash-preexec](https://github.com/rcaloras/bash-preexec) — upstream library

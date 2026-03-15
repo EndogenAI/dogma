@@ -1124,8 +1124,8 @@ compression. Use in CI gates to prevent value-drift across fleet boundaries.
 **Purpose**: Convert JSON provenance audit output (from [`audit_provenance.py`](../scripts/audit_provenance.py))
 into human-readable Markdown risk assessments and PR comment tables. Computes per-agent risk
 levels (green/yellow/red) based on axiom citation intensity and test coverage per
-[`docs/research/enforcement-tier-mapping.md`](../docs/research/enforcement-tier-mapping.md)
-and [`docs/research/bubble-clusters-substrate.md`](../docs/research/bubble-clusters-substrate.md).
+[`docs/research/enforcement-tier-mapping.md`](../docs/research/methodology/enforcement-tier-mapping.md)
+and [`docs/research/bubble-clusters-substrate.md`](../docs/research/neuroscience/bubble-clusters-substrate.md).
 
 Risk assessment thresholds (configurable, baseline default 0.5):
 - **Green**: axiom_cites > threshold × 0.8 AND coverage > 80%

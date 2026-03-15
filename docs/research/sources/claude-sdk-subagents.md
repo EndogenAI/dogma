@@ -114,7 +114,7 @@ The hard limit that subagents cannot spawn their own subagents caps the EndogenA
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
 - [A2A Announcement](../sources/a2a-announcement.md)
-- [Agentic Research Flows](../agentic-research-flows.md)
+- [Agentic Research Flows](../agents/agentic-research-flows.md)
 - [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
 - [Arxiv React](../sources/arxiv-react.md)
 - [Claude Code Agent Teams](../sources/claude-code-agent-teams.md)
@@ -123,4 +123,4 @@ The hard limit that subagents cannot spawn their own subagents caps the EndogenA
 - [Cookbook Research Subagent](../sources/cookbook-research-subagent.md)
 - [Platform Claude Com Docs En Build With Claude Prompt Enginee](../sources/platform-claude-com-docs-en-build-with-claude-prompt-enginee.md)
 - [Tds Claude Skills Subagents](../sources/tds-claude-skills-subagents.md)
-- [Xml Agent Instruction Format](../xml-agent-instruction-format.md)
+- [Xml Agent Instruction Format](../agents/xml-agent-instruction-format.md)

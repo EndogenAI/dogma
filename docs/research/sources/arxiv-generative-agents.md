@@ -93,7 +93,7 @@ The paper is peer-reviewed and published at ACM UIST 2023. The ablation study pr
 
 ## Relevance to EndogenAI
 
-The generative agents architecture is the most directly applicable memory model in the current literature to the EndogenAI research workflow gap identified in [docs/research/agentic-research-flows.md](../agentic-research-flows.md). That document notes two unresolved gaps: episodic memory is "present but not queryable" and experiential memory is "external, ephemeral, and non-portable." The memory stream + reflection architecture described here is the canonical solution to exactly this gap — it converts a linear append-only log into a queryable, abstraction-generating memory substrate. **ADOPT** the three-tier retrieval scoring (recency × importance × relevance) as the design basis for a future semantic retrieval layer over scratchpad session files. The importance score in particular addresses the specific failure mode where trivial recent events crowd out significant older ones — a problem endemic to the current `.tmp/` scratchpad model.
+The generative agents architecture is the most directly applicable memory model in the current literature to the EndogenAI research workflow gap identified in [docs/research/agentic-research-flows.md](../agents/agentic-research-flows.md). That document notes two unresolved gaps: episodic memory is "present but not queryable" and experiential memory is "external, ephemeral, and non-portable." The memory stream + reflection architecture described here is the canonical solution to exactly this gap — it converts a linear append-only log into a queryable, abstraction-generating memory substrate. **ADOPT** the three-tier retrieval scoring (recency × importance × relevance) as the design basis for a future semantic retrieval layer over scratchpad session files. The importance score in particular addresses the specific failure mode where trivial recent events crowd out significant older ones — a problem endemic to the current `.tmp/` scratchpad model.
 
 The reflection mechanism — periodic second-order querying of episodic memory to generate higher-level insights — maps directly onto the `## Session Summary` convention in `AGENTS.md` and `docs/guides/session-management.md`. Currently, the session summary is produced manually by the Executive at session end with no structured trigger or quality criterion. **ADAPT** the reflection architecture: encode the session summary step as a scheduled, criteria-gated reflection pass (triggered when the scratchpad exceeds a threshold or at phase transitions), rather than an ad-hoc human reminder. This would move the summary from a best-effort convention to a mechanically enforced architectural step, consistent with the ablation finding that reflection is individually necessary, not merely beneficial.
 
@@ -102,8 +102,8 @@ The paper's ablation result — that observation, planning, and reflection are e
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
-- [Agent Fleet Design Patterns](../agent-fleet-design-patterns.md)
-- [Agentic Research Flows](../agentic-research-flows.md)
+- [Agent Fleet Design Patterns](../agents/agent-fleet-design-patterns.md)
+- [Agentic Research Flows](../agents/agentic-research-flows.md)
 - [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
 - [Arxiv Org Html 2512 05470V1](../sources/arxiv-org-html-2512-05470v1.md)
 - [Arxiv React](../sources/arxiv-react.md)

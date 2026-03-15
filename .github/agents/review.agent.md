@@ -34,7 +34,7 @@ You are **read-only**. You do not edit files. You flag issues and hand off to ei
 2. [`MANIFESTO.md`](../../MANIFESTO.md) — core values; any change that dilutes a stated value is a blocker.
 3. [`.github/agents/AGENTS.md`](./AGENTS.md) — for agent file reviews: frontmatter schema, naming, posture, handoff graph.
 4. [`scripts/README.md`](../../scripts/README.md) — for script reviews: catalog coverage, conventions.
-5. [`docs/research/testing-tools-and-frameworks.md`](../../docs/research/testing-tools-and-frameworks.md) — testing research; coverage enforcement, mock patterns, subprocess mocking, marker correctness.
+5. [`docs/research/testing-tools-and-frameworks.md`](../../docs/research/infrastructure/testing-tools-and-frameworks.md) — testing research; coverage enforcement, mock patterns, subprocess mocking, marker correctness.
 
 Follows the **programmatic-first** principle from [`AGENTS.md`](../../AGENTS.md): tasks performed twice interactively must be encoded as scripts.
 

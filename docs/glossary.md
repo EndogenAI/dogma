@@ -395,7 +395,7 @@ Measured as a proxy by [cross-reference density](#cross-reference-density).
 
 **Related terms**: [Encoding Inheritance Chain](#encoding-inheritance-chain), [Cross-Reference Density](#cross-reference-density), [Signal Preservation](#signal-preservation)
 
-*Source: [`AGENTS.md` §Guiding Constraints](../AGENTS.md#guiding-constraints), [`docs/research/values-encoding.md`](research/values-encoding.md)*
+*Source: [`AGENTS.md` §Guiding Constraints](../AGENTS.md#guiding-constraints), [`docs/research/values-encoding.md`](./research/methodology/values-encoding.md)*
 
 ---
 
@@ -528,7 +528,7 @@ Any point in the substrate system at which information undergoes a transformatio
 
 **Related terms**: [Encoding Inheritance Chain](#encoding-inheritance-chain), [Transit Loss](#transit-loss), [Boundary Specification](#boundary-specification)
 
-*Source: [`docs/research/vocabulary-bridge-encoding-models.md`](../docs/research/vocabulary-bridge-encoding-models.md)*
+*Source: [`docs/research/vocabulary-bridge-encoding-models.md`](./research/methodology/vocabulary-bridge-encoding-models.md)*
 
 ---
 
@@ -538,7 +538,7 @@ The degradation or complete absence of a signal after it has crossed a signal bo
 
 **Related terms**: [Signal Boundary](#signal-boundary), [Encoding Fidelity](#encoding-fidelity), [Preservation Unit](#preservation-unit)
 
-*Source: [`docs/research/vocabulary-bridge-encoding-models.md`](../docs/research/vocabulary-bridge-encoding-models.md)*
+*Source: [`docs/research/vocabulary-bridge-encoding-models.md`](./research/methodology/vocabulary-bridge-encoding-models.md)*
 
 ---
 
@@ -548,7 +548,7 @@ A discrete element of content explicitly designated — through labeling, struct
 
 **Related terms**: [Canonical Example](#canonical-example), [Anti-pattern](#anti-pattern), [Signal Boundary](#signal-boundary), [Boundary Specification](#boundary-specification)
 
-*Source: [`docs/research/vocabulary-bridge-encoding-models.md`](../docs/research/vocabulary-bridge-encoding-models.md)*
+*Source: [`docs/research/vocabulary-bridge-encoding-models.md`](./research/methodology/vocabulary-bridge-encoding-models.md)*
 
 ---
 
@@ -558,7 +558,7 @@ The compound health property of a substrate measuring both (a) its fidelity to i
 
 **Related terms**: [Encoding Fidelity](#encoding-fidelity), [Cross-Reference Density](#cross-reference-density), [Encoding Inheritance Chain](#encoding-inheritance-chain)
 
-*Source: [`docs/research/vocabulary-bridge-encoding-models.md`](../docs/research/vocabulary-bridge-encoding-models.md)*
+*Source: [`docs/research/vocabulary-bridge-encoding-models.md`](./research/methodology/vocabulary-bridge-encoding-models.md)*
 
 ---
 
@@ -568,7 +568,7 @@ The declarative act of stating, before a signal boundary event occurs, which pre
 
 **Related terms**: [Signal Boundary](#signal-boundary), [Preservation Unit](#preservation-unit), [Encoding Inheritance Chain](#encoding-inheritance-chain)
 
-*Source: [`docs/research/vocabulary-bridge-encoding-models.md`](../docs/research/vocabulary-bridge-encoding-models.md)*
+*Source: [`docs/research/vocabulary-bridge-encoding-models.md`](./research/methodology/vocabulary-bridge-encoding-models.md)*
 
 ---
 
@@ -748,7 +748,7 @@ The workplan is committed at the start of the session (before Phase 1 executes) 
 
 A substrate is a discrete layer in the endogenic architecture — a bounded region of encoded knowledge with its own mutation rate, stability tier, and specificity level. The complete set of substrates forms the [Encoding Inheritance Chain](#encoding-inheritance-chain).
 
-*Source: [`MANIFESTO.md` §What Is Endogenic Development?](../MANIFESTO.md#what-is-endogenic-development), [`docs/research/bubble-clusters-substrate.md`](research/bubble-clusters-substrate.md)*
+*Source: [`MANIFESTO.md` §What Is Endogenic Development?](../MANIFESTO.md#what-is-endogenic-development), [`docs/research/bubble-clusters-substrate.md`](./research/neuroscience/bubble-clusters-substrate.md)*
 
 ---
 
@@ -818,7 +818,7 @@ In the [Bubble-Cluster Model](#bubble-cluster-model), the active boundary betwee
 
 **Related terms**: [Bubble-Cluster Model](#bubble-cluster-model), [Signal Preservation](#signal-preservation), [Handoff Drift](#handoff-drift)
 
-*Source: [`docs/research/bubble-clusters-substrate.md`](research/bubble-clusters-substrate.md)*
+*Source: [`docs/research/bubble-clusters-substrate.md`](./research/neuroscience/bubble-clusters-substrate.md)*
 
 ---
 
@@ -841,7 +841,7 @@ A mental model that frames the endogenic substrate as a collection of discrete "
 
 **Related terms**: [Substrate](#substrate), [Membrane (Substrate Boundary)](#membrane-substrate-boundary), [Encoding Inheritance Chain](#encoding-inheritance-chain)
 
-*Source: [`docs/research/bubble-clusters-substrate.md`](research/bubble-clusters-substrate.md)*
+*Source: [`docs/research/bubble-clusters-substrate.md`](./research/neuroscience/bubble-clusters-substrate.md)*
 
 ---
 
@@ -923,7 +923,7 @@ The complete set of defined agents that work together following the endogenic me
 
 **Related terms**: [Agent](#agent), [Role](#role), [Executive Agent vs. Sub-agent](#executive-agent-vs-sub-agent)
 
-*Source: [`AGENTS.md` §Agent Fleet Overview](../AGENTS.md#agent-fleet-overview), [`docs/research/agent-fleet-design-patterns.md`](research/agent-fleet-design-patterns.md)*
+*Source: [`AGENTS.md` §Agent Fleet Overview](../AGENTS.md#agent-fleet-overview), [`docs/research/agent-fleet-design-patterns.md`](./research/agents/agent-fleet-design-patterns.md)*
 
 ---
 

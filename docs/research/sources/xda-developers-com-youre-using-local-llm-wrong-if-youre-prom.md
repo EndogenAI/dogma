@@ -101,7 +101,7 @@ Finally, the claim that local models are "more predictable" due to their literal
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
-- [Agentic Research Flows](../agentic-research-flows.md)
+- [Agentic Research Flows](../agents/agentic-research-flows.md)
 - [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
 - [Arxiv Org Html 2512 05470V1](../sources/arxiv-org-html-2512-05470v1.md)
 - [Arxiv React](../sources/arxiv-react.md)

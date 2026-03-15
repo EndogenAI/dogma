@@ -3,7 +3,7 @@
 **Status**: Draft
 **Governs**: All Executive fleet agents
 **Review cycle**: After each Value Encoding milestone phase
-**Source research**: [docs/research/context-budget-balance.md](research/context-budget-balance.md) (issue #85)
+**Source research**: [docs/research/context-budget-balance.md](./research/agents/context-budget-balance.md) (issue #85)
 
 ---
 
@@ -89,7 +89,7 @@ R1 (skill extraction) must be executed before the +2 phase forecast is reached t
 
 ## Derivation
 
-Numeric targets X, Y, Z, W are derived from the D1 and D2 findings in [docs/research/context-budget-balance.md](research/context-budget-balance.md):
+Numeric targets X, Y, Z, W are derived from the D1 and D2 findings in [docs/research/context-budget-balance.md](./research/agents/context-budget-balance.md):
 
 - **X = 25%** (T1 ceiling): 1.25× the measured D1 fraction at 50K context (28.7%). Provides a managed growth buffer while staying below the Q2 degradation threshold (30–45% at 32K; 15–20% of in-flight context mid-session). Aligns with Anthropic guidance: fixed system prompt should be minimal given finite attention budget.
 - **Y = 55%** (T2 ceiling): Derived as the complement of T1 + T3 + T4 floors (25% + 15% + 5%). Consistent with the scratchpad compaction trigger at 2,000 lines (`prune_scratchpad.py`).

@@ -54,17 +54,21 @@ nav:
     - Local Compute: guides/local-compute.md
     - Mental Models: guides/mental-models.md
   - Research:
+    - Overview: research/README.md
     - Open Research Tasks: research/OPEN_RESEARCH.md
-    - Agent Fleet Design Patterns: research/agent-fleet-design-patterns.md
-    - Agentic Research Flows: research/agentic-research-flows.md
-    - Testing Tools & Frameworks: research/testing-tools-and-frameworks.md
-    - Dev Workflow Automations: research/dev-workflow-automations.md
     - OSS Documentation Best Practices: research/oss-documentation-best-practices.md
-    - PM & Team Structures: research/pm-and-team-structures.md
-    - Product Research & Design: research/product-research-and-design.md
-    - Comms, Marketing & BizDev: research/comms-marketing-bizdev.md
-    - XML Agent Instruction Format: research/xml-agent-instruction-format.md
-    - GitHub Project Management: research/github-project-management.md
+    - Agent Fleet:
+      - Agent Fleet Design Patterns: research/agents/agent-fleet-design-patterns.md
+      - Agentic Research Flows: research/agents/agentic-research-flows.md
+      - XML Agent Instruction Format: research/agents/xml-agent-instruction-format.md
+    - Infrastructure:
+      - Dev Workflow Automations: research/infrastructure/dev-workflow-automations.md
+      - Testing Tools & Frameworks: research/infrastructure/testing-tools-and-frameworks.md
+    - PM & Product:
+      - PM & Team Structures: research/pm/pm-and-team-structures.md
+      - Product Research & Design: research/pm/product-research-and-design.md
+      - Comms, Marketing & BizDev: research/pm/comms-marketing-bizdev.md
+      - GitHub Project Management: research/pm/github-project-management.md
   - Decisions:
     - ADR Index: decisions/README.md
     - ADR-001 — uv Package Manager: decisions/ADR-001-uv-package-manager.md

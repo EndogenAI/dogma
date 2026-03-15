@@ -185,13 +185,13 @@ Agents focused on cost governance, documentation quality enforcement, research q
 | **Parallel research fleet** | Breadth-first research; independent sub-questions | Full per-agent isolation; no lateral communication | Token cost scales with N agents; 3–20 agents typical |
 | **Hybrid (orchestrator + specialist sub-fleet)** | Production pipelines; multi-phase long-horizon tasks | Per-specialist isolation; shared external memory for plan state | Highest cost; justified by quality requirements |
 
-Full topology comparison with context handoff mechanisms and source evidence: [`docs/research/agent-fleet-design-patterns.md §4`](../../docs/research/agent-fleet-design-patterns.md).
+Full topology comparison with context handoff mechanisms and source evidence: [`docs/research/agent-fleet-design-patterns.md §4`](../../docs/research/agents/agent-fleet-design-patterns.md).
 
 ---
 
 ### Named Patterns
 
-Eight patterns derived from production multi-agent systems research. Full treatment (Context / Forces / Solution / Consequences) in [`docs/research/agent-fleet-design-patterns.md §3`](../../docs/research/agent-fleet-design-patterns.md).
+Eight patterns derived from production multi-agent systems research. Full treatment (Context / Forces / Solution / Consequences) in [`docs/research/agent-fleet-design-patterns.md §3`](../../docs/research/agents/agent-fleet-design-patterns.md).
 
 - **Pattern 1 — Orchestrator-Workers**: lead decomposes task; workers execute in isolation; lead synthesises
 - **Pattern 2 — Evaluator-Optimizer Loop**: generator + evaluator in a bounded feedback cycle with explicit stopping conditions

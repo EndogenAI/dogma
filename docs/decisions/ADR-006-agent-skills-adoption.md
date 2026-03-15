@@ -113,7 +113,7 @@ Use VS Code-specific frontmatter fields where appropriate; they degrade graceful
 
 ## References
 
-- [`docs/research/agent-skills-integration.md`](../research/agent-skills-integration.md) — Phase 1 research synthesis; all findings in this ADR are derived from it
+- [`docs/research/agent-skills-integration.md`](../research/agents/agent-skills-integration.md) — Phase 1 research synthesis; all findings in this ADR are derived from it
 - [`MANIFESTO.md`](../../MANIFESTO.md) — *Algorithms Before Tokens* axiom
 - [`AGENTS.md`](../../AGENTS.md) — guiding constraints; governs all skill bodies
 - [`docs/guides/agents.md`](../guides/agents.md) — agent fleet guide

@@ -40,7 +40,7 @@ The `.tmp/<branch>/` structure implements two levels of this pattern:
 
 **Write-back is not optional.** The scratchpad only works as a memory substrate if agents write to it consistently. Every agent file should encode this as a requirement — not just a recommendation.
 
-For the theoretical grounding of this convention in the context engineering literature, see [`docs/research/agentic-research-flows.md`](../research/agentic-research-flows.md) (Memory Architecture and Token Offloading sections).
+For the theoretical grounding of this convention in the context engineering literature, see [`docs/research/agentic-research-flows.md`](../research/agents/agentic-research-flows.md) (Memory Architecture and Token Offloading sections).
 
 ---
 
@@ -482,5 +482,5 @@ After writing the `## Session Summary`, optionally review these signals to detec
 
 ## Further Reading
 
-- [`docs/research/context-amplification-calibration.md`](../research/context-amplification-calibration.md) — Empirical calibration study for context-sensitive amplification weights (w₁/w₂/w₃) per task type. Validate thresholds against this document before adjusting the amplification lookup table in `AGENTS.md`.
+- [`docs/research/context-amplification-calibration.md`](../research/agents/context-amplification-calibration.md) — Empirical calibration study for context-sensitive amplification weights (w₁/w₂/w₃) per task type. Validate thresholds against this document before adjusting the amplification lookup table in `AGENTS.md`.
 

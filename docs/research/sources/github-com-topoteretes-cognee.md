@@ -87,7 +87,7 @@ The README is comprehensive but primarily promotional. Performance claims ("impr
 - Academic context: [arxiv-org-html-2512-05470v1](./arxiv-org-html-2512-05470v1.md) — the AIGNE context engineering paper proposes a file-system abstraction over exactly the kind of heterogeneous memory stores (graph + vector) that Cognee combines; the two are complementary at different abstraction levels.
 - MCP integration alignment: [a2a-announcement](./a2a-announcement.md) — both cognee-mcp and A2A position MCP as the canonical integration layer for agent–tool communication; Cognee's first-party MCP server is consistent with the complementary A2A+MCP stack described there.
 - Infrastructure deployment: [kdnuggets-com-docker-ai-for-agent-builders-models-tools-and-](./kdnuggets-com-docker-ai-for-agent-builders-models-tools-and-.md) — Cognee's Docker deployment mode aligns with the Docker-as-agent-substrate pattern; vector and graph backends can run as sidecar services alongside Docker Model Runner.
-- Workflow integration: [agentic-research-flows.md](../agentic-research-flows.md) — `scripts/prune_scratchpad.py` is the natural session-end integration point for `cognee.add()` calls, as proposed in the D4 analysis above.
+- Workflow integration: [agentic-research-flows.md](../agents/agentic-research-flows.md) — `scripts/prune_scratchpad.py` is the natural session-end integration point for `cognee.add()` calls, as proposed in the D4 analysis above.
 - Programmatic-first alignment: Cognee's CLI (`cognee-cli add / cognify / search / delete`) enables shell-script integration without Python scaffolding, directly supporting the EndogenAI programmatic-first constraint that repeated tasks be encoded as scripts.
 - Context engineering complement: [arxiv-context-engineering-survey](./arxiv-context-engineering-survey.md) — both cognee and the survey identify the same gap: the absence of unified, structured retrieval over accumulated agent context; cognee's graph-plus-vector search is a practical realisation of what the survey recommends.
 
@@ -103,7 +103,7 @@ The README is comprehensive but primarily promotional. Performance claims ("impr
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
 - [A2A Announcement](../sources/a2a-announcement.md)
-- [Agentic Research Flows](../agentic-research-flows.md)
+- [Agentic Research Flows](../agents/agentic-research-flows.md)
 - [Arxiv Context Engineering Survey](../sources/arxiv-context-engineering-survey.md)
 - [Arxiv Org Html 2512 05470V1](../sources/arxiv-org-html-2512-05470v1.md)
 - [Freecodecamp Org News Build And Deploy Multi Agent Ai With P](../sources/freecodecamp-org-news-build-and-deploy-multi-agent-ai-with-p.md)

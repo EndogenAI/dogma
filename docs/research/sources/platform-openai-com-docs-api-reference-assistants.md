@@ -202,4 +202,4 @@ delivery, not for a stateful Assistants object.
 - [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
 - [Code Visualstudio Com Docs Copilot Customization Custom Agen](../sources/code-visualstudio-com-docs-copilot-customization-custom-agen.md)
 - [Platform Openai Com Docs Guides Prompt Engineering](../sources/platform-openai-com-docs-guides-prompt-engineering.md)
-- [Xml Agent Instruction Format](../xml-agent-instruction-format.md)
+- [Xml Agent Instruction Format](../agents/xml-agent-instruction-format.md)

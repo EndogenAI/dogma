@@ -18,7 +18,7 @@ The endogenic approach compounds this: by encoding context as scripts, you reduc
 
 ### Structural Test & Enforcement-Proximity
 
-Local compute is not merely a cost tier — it is oversight infrastructure. The **structural test** is the authoritative decision rule: before choosing cloud execution, ask whether cloud residency transfers enforcement authority, oversight access, or governance guarantees to an external party. If yes, local is preferred regardless of cost or convenience. The **enforcement-proximity principle** (from [`docs/research/lcf-oversight-infrastructure.md`](../research/lcf-oversight-infrastructure.md)) states that governance mechanisms must be co-located with what they govern: a validator that runs locally cannot be bypassed by an API outage or provider policy change, whereas a cloud-only enforcement point inherits a structural availability dependency at every enforcement boundary. Apply both tests before delegating any enforcement-critical operation to a cloud service.
+Local compute is not merely a cost tier — it is oversight infrastructure. The **structural test** is the authoritative decision rule: before choosing cloud execution, ask whether cloud residency transfers enforcement authority, oversight access, or governance guarantees to an external party. If yes, local is preferred regardless of cost or convenience. The **enforcement-proximity principle** (from [`docs/research/lcf-oversight-infrastructure.md`](../research/infrastructure/lcf-oversight-infrastructure.md)) states that governance mechanisms must be co-located with what they govern: a validator that runs locally cannot be bypassed by an API outage or provider policy change, whereas a cloud-only enforcement point inherits a structural availability dependency at every enforcement boundary. Apply both tests before delegating any enforcement-critical operation to a cloud service.
 
 ---
 
@@ -77,7 +77,7 @@ For custom endpoints (VS Code Insiders, 1.104+):
 ]
 ```
 
-For full setup guide and model selection rationale, see [`docs/research/local-copilot-models.md`](../research/local-copilot-models.md).
+For full setup guide and model selection rationale, see [`docs/research/local-copilot-models.md`](../research/models/local-copilot-models.md).
 
 ### Model Selection Strategy
 
@@ -122,7 +122,7 @@ VS Code has **native MCP server support** (1.103+): configure servers in `.vscod
 
 **Sandboxing** (macOS/Linux): enable `sandboxEnabled: true` to restrict stdio servers to configured filesystem paths and network domains. Auto-approves tool calls within the sandbox.
 
-For architecture recommendations and the endogenic MCP server design, see [`docs/research/local-mcp-frameworks.md`](../research/local-mcp-frameworks.md).
+For architecture recommendations and the endogenic MCP server design, see [`docs/research/local-mcp-frameworks.md`](../research/agents/local-mcp-frameworks.md).
 
 ---
 
@@ -183,7 +183,7 @@ reduces monthly cost and rate-limit pressure.
 - **Local (Ollama/LM Studio)**: zero marginal cost for the tasks listed above
 
 For the full rationale, model capability map, and lazy escalation pattern, see the
-[LLM Tier Strategy research doc](../research/llm-tier-strategy.md).
+[LLM Tier Strategy research doc](../research/models/llm-tier-strategy.md).
 
 ---
 
@@ -193,8 +193,8 @@ Detailed synthesis documents for local compute topics:
 
 | Topic | Document | Status |
 |-------|----------|--------|
-| VS Code Copilot with local models | [`docs/research/local-copilot-models.md`](../research/local-copilot-models.md) | Draft |
-| Locally distributed MCP frameworks | [`docs/research/local-mcp-frameworks.md`](../research/local-mcp-frameworks.md) | Draft |
+| VS Code Copilot with local models | [`docs/research/local-copilot-models.md`](../research/models/local-copilot-models.md) | Draft |
+| Locally distributed MCP frameworks | [`docs/research/local-mcp-frameworks.md`](../research/agents/local-mcp-frameworks.md) | Draft |
 | Benchmarking local vs. cloud token usage | Open — see [issue #5 D3](https://github.com/EndogenAI/dogma/issues/5) | Not started |
 
 See [GitHub Issues labeled `research`](https://github.com/EndogenAI/dogma/issues?q=label%3Aresearch) for current status.

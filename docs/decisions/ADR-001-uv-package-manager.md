@@ -33,5 +33,5 @@ Alternatives considered: `pip` + `venv`, `poetry`, `pipenv`, `conda`, `hatch`.
 
 ## References
 
-- [`docs/research/dev-workflow-automations.md`](../research/dev-workflow-automations.md) — F7: uv + uv.lock + .python-version = full reproducibility
+- [`docs/research/dev-workflow-automations.md`](../research/infrastructure/dev-workflow-automations.md) — F7: uv + uv.lock + .python-version = full reproducibility
 - [https://docs.astral.sh/uv/](https://docs.astral.sh/uv/)

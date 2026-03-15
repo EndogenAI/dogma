@@ -37,7 +37,7 @@ It also enacts the *Programmatic-First* principle from [`AGENTS.md`](../../../AG
 **Companion skill**: [`session-retrospective`](../session-retrospective/SKILL.md) — retrospective harvests this session's lessons; archaeology mines older sessions. They feed each other: retrospective findings accumulate as future archaeology targets.
 
 **Foundation documents**:
-- [`docs/research/scratchpad-architecture-maturation.md`](../../../docs/research/scratchpad-architecture-maturation.md) — R1 recommendation: `docs/sessions/` curated archive (the primary persistent archaeology substrate)
+- [`docs/research/scratchpad-architecture-maturation.md`](../../../docs/research/infrastructure/scratchpad-architecture-maturation.md) — R1 recommendation: `docs/sessions/` curated archive (the primary persistent archaeology substrate)
 - [`docs/guides/session-management.md`](../../../docs/guides/session-management.md) — session lifecycle this skill extends
 
 ---
@@ -107,7 +107,7 @@ Key sections to target: `## Session Summary`, `## Executive Handoff`, `## Retros
 
 ### 4.2 Archived Session Summaries (`docs/sessions/`)
 
-Committed to git per R1 of [`scratchpad-architecture-maturation.md`](../../../docs/research/scratchpad-architecture-maturation.md). Naming convention: `YYYY-MM-DD-<branch-slug>-summary.md`.
+Committed to git per R1 of [`scratchpad-architecture-maturation.md`](../../../docs/research/infrastructure/scratchpad-architecture-maturation.md). Naming convention: `YYYY-MM-DD-<branch-slug>-summary.md`.
 
 ```bash
 ls docs/sessions/

@@ -103,7 +103,7 @@ This is a well-structured practitioner guide with concrete, runnable code exampl
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
 - [A2A Announcement](../sources/a2a-announcement.md)
-- [Agentic Research Flows](../agentic-research-flows.md)
+- [Agentic Research Flows](../agents/agentic-research-flows.md)
 - [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
 - [Arxiv Context Engineering Survey](../sources/arxiv-context-engineering-survey.md)
 - [Freecodecamp Org News Build And Deploy Multi Agent Ai With P](../sources/freecodecamp-org-news-build-and-deploy-multi-agent-ai-with-p.md)

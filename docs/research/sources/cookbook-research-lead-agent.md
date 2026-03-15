@@ -108,8 +108,8 @@ The **subagent instruction quality standard** ("IF all the subagents followed th
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
-- [Agent Fleet Design Patterns](../agent-fleet-design-patterns.md)
-- [Agentic Research Flows](../agentic-research-flows.md)
+- [Agent Fleet Design Patterns](../agents/agent-fleet-design-patterns.md)
+- [Agentic Research Flows](../agents/agentic-research-flows.md)
 - [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
 - [Anthropic Com Engineering Multi Agent Research System](../sources/anthropic-com-engineering-multi-agent-research-system.md)
 - [Arxiv Context Engineering Survey](../sources/arxiv-context-engineering-survey.md)
@@ -120,4 +120,4 @@ The **subagent instruction quality standard** ("IF all the subagents followed th
 - [Cookbook Research Subagent](../sources/cookbook-research-subagent.md)
 - [Freecodecamp Org News Build And Deploy Multi Agent Ai With P](../sources/freecodecamp-org-news-build-and-deploy-multi-agent-ai-with-p.md)
 - [Platform Claude Com Docs En Build With Claude Prompt Enginee](../sources/platform-claude-com-docs-en-build-with-claude-prompt-enginee.md)
-- [Xml Agent Instruction Format](../xml-agent-instruction-format.md)
+- [Xml Agent Instruction Format](../agents/xml-agent-instruction-format.md)

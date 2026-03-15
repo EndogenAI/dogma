@@ -30,5 +30,5 @@ Scrum's fixed sprint cycles are incompatible with on-demand agent architecture: 
 
 ## References
 
-- [`docs/research/pm-and-team-structures.md`](../research/pm-and-team-structures.md) — RQ3: Sprint vs. Kanban vs. Flow
+- [`docs/research/pm-and-team-structures.md`](../research/pm/pm-and-team-structures.md) — RQ3: Sprint vs. Kanban vs. Flow
 - [`docs/guides/workflows.md`](../guides/workflows.md) — Project Management Workflow section

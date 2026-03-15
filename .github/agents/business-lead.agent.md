@@ -19,7 +19,7 @@ governs:
 
 ## Beliefs & Context
 
-- [EndogenAI Product Discovery](../../docs/research/endogenai-product-discovery.md) — market positioning, go-to-market strategy, revenue assumptions
+- [EndogenAI Product Discovery](../../docs/research/pm/endogenai-product-discovery.md) — market positioning, go-to-market strategy, revenue assumptions
 - [MANIFESTO.md](../../MANIFESTO.md) — core axioms governing business decisions (Endogenous-First, Algorithms Before Tokens, Local Compute-First)
 - [GitHub Epic #93](https://github.com/EndogenAI/dogma/issues/93) — product discovery roadmap + context
 - [Strategic Roadmap](../../docs/plans/2026-03-10-endogenai-strategic-roadmap.md) — months 1–12 business milestones

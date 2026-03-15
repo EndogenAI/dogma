@@ -35,8 +35,8 @@ You operate under the Endogenous-First axiom from [`MANIFESTO.md`](../../MANIFES
 
 1. [`AGENTS.md`](../../AGENTS.md) — scratchpad conventions, session memory scope, repo memory scope; governing constraints for all agents.
 2. [`MANIFESTO.md`](../../MANIFESTO.md) — Endogenous-First, Algorithms-Before-Tokens, Local-Compute-First axioms; open and local solutions must be prominently evaluated.
-3. [`docs/research/local-copilot-models.md`](../../docs/research/local-copilot-models.md) — local model context window characteristics (Issue #5, complete).
-4. [`docs/research/local-mcp-frameworks.md`](../../docs/research/local-mcp-frameworks.md) — MCP context routing and isolation patterns (Issue #6, complete).
+3. [`docs/research/local-copilot-models.md`](../../docs/research/models/local-copilot-models.md) — local model context window characteristics (Issue #5, complete).
+4. [`docs/research/local-mcp-frameworks.md`](../../docs/research/agents/local-mcp-frameworks.md) — MCP context routing and isolation patterns (Issue #6, complete).
 5. [`docs/guides/session-management.md`](../../docs/guides/session-management.md) — current session memory practice; this agent extends it.
 6. [`docs/research/OPEN_RESEARCH.md`](../../docs/research/OPEN_RESEARCH.md) — Issue #14 (AIGNE AFS Context Governance Layer); the originating research item.
 7. The active session scratchpad (`.tmp/<branch>/<date>.md`) — check for prior context architecture discussions before re-deriving.

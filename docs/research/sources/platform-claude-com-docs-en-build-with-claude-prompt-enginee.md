@@ -166,4 +166,4 @@ This preserves the documentation legibility mandated by the Documentation-First 
 - [Microsoft Github Io Autogen Stable User Guide Agentchat User](../sources/microsoft-github-io-autogen-stable-user-guide-agentchat-user.md)
 - [Platform Claude Com Docs En Agents And Tools Agent Skills Ov](../sources/platform-claude-com-docs-en-agents-and-tools-agent-skills-ov.md)
 - [Platform Openai Com Docs Guides Prompt Engineering](../sources/platform-openai-com-docs-guides-prompt-engineering.md)
-- [Xml Agent Instruction Format](../xml-agent-instruction-format.md)
+- [Xml Agent Instruction Format](../agents/xml-agent-instruction-format.md)

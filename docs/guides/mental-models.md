@@ -45,7 +45,7 @@ The journey from substance to substrate is lossy if not carefully managed. That 
 
 **Example**: An axiom in MANIFESTO.md (substance) loses fidelity if it is paraphrased rather than cited by an agent file (substrate). Documentation-First encoding requires explicit back-reference citations. This is why AGENTS.md specifies cross-reference density as a measurement of encoding fidelity — if the axiom is cited fewer than 2 times per 1000 words, it is not being preserved in the substrate.
 
-See [`docs/research/values-encoding.md`](../research/values-encoding.md) for the full encoding fidelity framework.
+See [`docs/research/values-encoding.md`](../research/methodology/values-encoding.md) for the full encoding fidelity framework.
 
 ---
 

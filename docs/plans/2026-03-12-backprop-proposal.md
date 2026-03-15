@@ -20,7 +20,7 @@ generated: "2026-03-12"
 
 ---
 
-**Source doc**: [holographic-encoding-empirics.md](../research/holographic-encoding-empirics.md)
+**Source doc**: [holographic-encoding-empirics.md](../research/neuroscience/holographic-encoding-empirics.md)
 **Target paper**: values-encoding.md
 **Target section**: `### H4 — Holographic Encoding is Feasible`
 **Proposed change**: Update the final paragraph (starting "Algorithmic feasibility: A measurement script exists...") to replace "empirical validation showing that density correlates with output quality remains pending. This prevents H4 from being validated as 'confirmed'; the hypothesis remains plausible but awaiting empirical grounding" with a one-sentence forward-reference to holographic-encoding-empirics.md establishing the fleet baseline (49-file census, mean density 0.85) and qualifying the [4,1] confirmation: holds at fleet layer collectively; individual-file holographic reconstruction requires density ≥2.5, currently achieved by 6.1% of the fleet.
@@ -29,7 +29,7 @@ generated: "2026-03-12"
 
 ---
 
-**Source doc**: [semantic-holography-language-encoding.md](../research/semantic-holography-language-encoding.md)
+**Source doc**: [semantic-holography-language-encoding.md](../research/neuroscience/semantic-holography-language-encoding.md)
 **Target paper**: values-encoding.md
 **Target section**: `### Pattern 6 — Cross-Reference Density as Fidelity Metric`
 **Proposed change**: Extend the "Measurement approach" paragraph with a forward-reference sentence naming the calibrated density thresholds from semantic-holography-language-encoding.md: ≥0.4 = high fidelity, 0.2–0.4 = medium, <0.2 = drift risk — converting the existing qualitative density metric into a named threshold framework.
@@ -38,7 +38,7 @@ generated: "2026-03-12"
 
 ---
 
-**Source doc**: [values-enforcement-tier-mapping.md](../research/values-enforcement-tier-mapping.md)
+**Source doc**: [values-enforcement-tier-mapping.md](../research/methodology/values-enforcement-tier-mapping.md)
 **Target paper**: values-encoding.md
 **Target section**: `### H3 — Programmatic Encoding is Immune to Semantic Drift`
 **Proposed change**: Extend the "Caveat — coverage gap" paragraph with a forward-reference sentence quantifying the asymmetry: behavioral constraints = 54% T5 prose-only; values-specific constraints = 91% T5 prose-only — citing values-enforcement-tier-mapping.md for the complete inventory (112 constraints total, 77/112 = 69% T5) that gives the gap its empirical size.
@@ -47,7 +47,7 @@ generated: "2026-03-12"
 
 ---
 
-**Source doc**: [agent-taxonomy.md](../research/agent-taxonomy.md)
+**Source doc**: [agent-taxonomy.md](../research/agents/agent-taxonomy.md)
 **Target paper**: values-encoding.md
 **Target section**: `### H5 — Endogenic Inheritance Chain Maps to Biological Model`
 **Proposed change**: In the "Gap identified" paragraph at the end of H5 (which discusses the missing regulatory-region equivalent), add a forward-reference sentence noting that agent-taxonomy.md formalizes a six-layer refinement of the inheritance chain (subdirectory AGENTS.md files as context-narrowing post-translational regulators; SKILL.md files as domain-specific enzymes), extending the primary paper's four-layer model to match the codebase's operational state.
@@ -56,7 +56,7 @@ generated: "2026-03-12"
 
 ---
 
-**Source doc**: [value-provenance.md](../research/value-provenance.md)
+**Source doc**: [value-provenance.md](../research/methodology/value-provenance.md)
 **Target paper**: values-encoding.md
 **Target section**: `## 5. Open Questions` (item 1: Semantic drift detection)
 **Proposed change**: Extend Open Questions item 1 with a forward-reference sentence introducing value-provenance.md as a complementary approach: while drift detection measures content alignment, the `governs:` YAML frontmatter annotation declares chain-of-custody (which axioms a file was derived from) — a distinct fidelity measurement dimension at 0% fleet adoption at baseline (`fleet_citation_coverage_pct = 0.0`), targeting 100% via an O(N) pure-stdlib audit pass.
@@ -65,7 +65,7 @@ generated: "2026-03-12"
 
 ---
 
-**Source doc**: [doc-interweb.md](../research/doc-interweb.md)
+**Source doc**: [doc-interweb.md](../research/infrastructure/doc-interweb.md)
 **Target paper**: values-encoding.md
 **Target section**: `### Pattern 6 — Cross-Reference Density as Fidelity Metric`
 **Proposed change**: In the "Implementation" paragraph (ending "...would provide a quantitative fidelity metric"), add a forward-reference sentence noting that doc-interweb.md addresses the complement: rather than measuring existing cross-references, `scripts/weave_links.py` + `data/link_registry.yml` programmatically inject concept links at corpus scale — the Algorithms-Before-Tokens enforcement complement to the measurement approach.
@@ -78,7 +78,7 @@ generated: "2026-03-12"
 
 ---
 
-**Source doc**: [filter-bubble-threshold-calibration.md](../research/filter-bubble-threshold-calibration.md)
+**Source doc**: [filter-bubble-threshold-calibration.md](../research/neuroscience/filter-bubble-threshold-calibration.md)
 **Target paper**: bubble-clusters-substrate.md
 **Target section**: `### Pattern B4 — Provenance Transparency as Echo-Chamber Antidote`
 **Proposed change**: In the "Actionable implication" paragraph (which prescribes a 30-day rolling window audit), add a forward-reference sentence inserting the empirically calibrated CRD thresholds from filter-bubble-threshold-calibration.md as the operationalized isolation-risk levels for the flagging policy: CRD_critical=0.02 (high filter-bubble risk), CRD_warning=0.17 (drift risk), CRD_optimal=[0.32, 0.60] (Laplace equilibrium range) — from a 61-file fleet measurement.
@@ -87,7 +87,7 @@ generated: "2026-03-12"
 
 ---
 
-**Source doc**: [laplace-pressure-empirical-validation.md](../research/laplace-pressure-empirical-validation.md)
+**Source doc**: [laplace-pressure-empirical-validation.md](../research/neuroscience/laplace-pressure-empirical-validation.md)
 **Target paper**: bubble-clusters-substrate.md
 **Target section**: `### H3 — Mathematical Bubble Properties Provide Formal Vocabulary for Substrate Stability`
 **Proposed change**: At the end of the "Encoding implications" table's conclusion section, add a forward-reference sentence noting that laplace-pressure-empirical-validation.md provides R²-validated empirical confirmation of the stability formula (P2 Constraint Violation Pressure R²=0.72 vs. test pass rate p<0.001; P1 Citation Density Pressure R²=0.68 vs. task velocity) — establishing that the Laplace metaphor yields statistically predictive structural health metrics, not merely illustrative geometry.
@@ -96,7 +96,7 @@ generated: "2026-03-12"
 
 ---
 
-**Source doc**: [fleet-emergence-operationalization.md](../research/fleet-emergence-operationalization.md)
+**Source doc**: [fleet-emergence-operationalization.md](../research/agents/fleet-emergence-operationalization.md)
 **Target paper**: bubble-clusters-substrate.md
 **Target section**: `### H2 — Neuroanatomical Connectivity Gradients Map to Inter-Substrate Connectivity`
 **Proposed change**: In the "Endogenous evidence" paragraph (which cites values-encoding.md §5 B8 Degradation Table), add a forward-reference bullet to fleet-emergence-operationalization.md as convergent endogenous evidence: the formal emergence model (`E(M) = 1 iff ≥3/4 substrate metrics exceed threshold`) with 157% fleet growth in 4 days and two independently confirmed emergence events operationalizes the "substrate differentiation under evolutionary pressure" mechanism in H2 with operational measurement independent of handoff-boundary loss data.
@@ -105,7 +105,7 @@ generated: "2026-03-12"
 
 ---
 
-**Source doc**: [topological-audit-substrate.md](../research/topological-audit-substrate.md)
+**Source doc**: [topological-audit-substrate.md](../research/neuroscience/topological-audit-substrate.md)
 **Target paper**: bubble-clusters-substrate.md
 **Target section**: `## 5. Geometric Extension — The Nested-Cube Topology and Junction Specifications`
 **Proposed change**: In the dimension table (3D/2D/1D/0D with substrate analogs), add a parenthetical forward-reference to topological-audit-substrate.md immediately after the "15 faces" row, citing the empirical face count (9 structural + 6 functional enforcement-tier faces) and 67%/33% intra/cross-subsystem edge ratio as quantitative grounding for the three-nested-cubes model's coherence claim.
@@ -114,7 +114,7 @@ generated: "2026-03-12"
 
 ---
 
-**Source doc**: [substrate-taxonomy-content-context.md](../research/substrate-taxonomy-content-context.md)
+**Source doc**: [substrate-taxonomy-content-context.md](../research/methodology/substrate-taxonomy-content-context.md)
 **Target paper**: bubble-clusters-substrate.md
 **Target section**: `### Pattern B3 — Evolutionary Pressure as Substrate Differentiation Rationale`
 **Proposed change**: In the "Test for each substrate boundary" paragraph (after "Does each layer have a distinct stability tier, mutation rate, and authoring scope?"), add a forward-reference sentence noting that substrate-taxonomy-content-context.md formalizes a four-category orthogonal substrate classification (Content/Context/Hybrid/Regenerable Provenance) with regenerability scores and compaction policies — providing an operational taxonomy for answering the evolutionary pressure test's authoring-scope boundary question.
@@ -127,7 +127,7 @@ generated: "2026-03-12"
 
 ---
 
-**Source doc**: [fleet-emergence-operationalization.md](../research/fleet-emergence-operationalization.md)
+**Source doc**: [fleet-emergence-operationalization.md](../research/agents/fleet-emergence-operationalization.md)
 **Target paper**: endogenic-design-paper.md
 **Target section**: `### 4.2 Individual Hypothesis Assessments` (H2 paragraph)
 **Proposed change**: Update the H2 assessment paragraph (ending "K-value mapping to agent role design remains qualitative pending formal empirical validation") to add a forward-reference to fleet-emergence-operationalization.md as the strongest available H2 empirical grounding: the formal emergence model `E(M) = 1 iff ≥3/4 metrics above threshold` with 157% fleet growth in 4 days and two independently confirmed emergence events — including a negative-control case (Case Study 3: only 2/4 metrics above threshold = evolution event, not emergence) that validates the multi-metric threshold structure.
@@ -136,7 +136,7 @@ generated: "2026-03-12"
 
 ---
 
-**Source doc**: [external-team-case-study.md](../research/external-team-case-study.md)
+**Source doc**: [external-team-case-study.md](../research/pm/external-team-case-study.md)
 **Target paper**: endogenic-design-paper.md
 **Target section**: `### 5.2 Limitations and Operational Breadth Gap`
 **Proposed change**: In the paragraph "external team validation remains future work," extend the sentence to forward-reference external-team-case-study.md for the proxy study metrics (M2=100% post-protocol compliance across 20 sessions; M4=33/33 phase-gate adoption; ARM=5 in two independent sprint events; CONTRIBUTING.md=1,066 words), naming these as the strongest available internal-proxy evidence without removing the explicit caveat that external cold-start validation is the outstanding gap.
@@ -145,7 +145,7 @@ generated: "2026-03-12"
 
 ---
 
-**Source doc**: [external-team-case-study.md](../research/external-team-case-study.md)
+**Source doc**: [external-team-case-study.md](../research/pm/external-team-case-study.md)
 **Target paper**: endogenic-design-paper.md
 **Target section**: `### 3.4 Pattern Catalog` (Encode-Before-Act as Artifact Activation Discipline entry)
 **Proposed change**: Add a forward-reference bullet to the "Encode-Before-Act as Artifact Activation Discipline (H4 × H1)" pattern entry, linking to external-team-case-study.md Pattern 1 (Protocol-First Adoption Ladder): template-sufficiency — completing the fill-in-the-blank encoding checkpoint without theoretical understanding of H1–H3 — achieved 100% compliance across 20 sessions, providing the empirical operationalization that the H4×H1 pattern claims but does not demonstrate.
@@ -154,7 +154,7 @@ generated: "2026-03-12"
 
 ---
 
-**Source doc**: [episodic-memory-agents.md](../research/episodic-memory-agents.md)
+**Source doc**: [episodic-memory-agents.md](../research/agents/episodic-memory-agents.md)
 **Target paper**: endogenic-design-paper.md
 **Target section**: `### 5.4 Open Empirical Questions` (Question 1: encode-before-act measured effect)
 **Proposed change**: Extend Open Empirical Question #1 (effect of encode-before-act on token efficiency) to add that the controlled measurement is currently blocked by a 4-step prerequisite chain — LCF baseline (issue #131) → local compute stack → episodic memory integration (issue #13 closed with "wait" verdict) → cross-session drift detection (`validate_session.py --drift-check`) — forward-referencing episodic-memory-agents.md for the closed-with-wait verdict and naming the chain as an explicit open blocker, not merely an aspirational next step.
@@ -163,7 +163,7 @@ generated: "2026-03-12"
 
 ---
 
-**Source doc**: [workflow-formula-encoding-dsl.md](../research/workflow-formula-encoding-dsl.md)
+**Source doc**: [workflow-formula-encoding-dsl.md](../research/methodology/workflow-formula-encoding-dsl.md)
 **Target paper**: endogenic-design-paper.md
 **Target section**: `### 3.4 Pattern Catalog` (Programmatic Governance Stack entry)
 **Proposed change**: In the Programmatic Governance Stack entry (which lists validate_synthesis.py as T3 and pre-commit hooks as T4 implementation examples), add a forward-reference sentence noting that workflow-formula-encoding-dsl.md extends Algorithms-Before-Tokens to the workflow-specification layer: EBNF DSL encoding of decision logic with 81% semantic compression, deterministic round-trip validation, and ISO/IEC 14977 grammar — a protocol-level instantiation of the same principle, pending promotion from Draft status.
@@ -172,7 +172,7 @@ generated: "2026-03-12"
 
 ---
 
-**Source doc**: [external-values-decision-framework.md](../research/external-values-decision-framework.md)
+**Source doc**: [external-values-decision-framework.md](../research/methodology/external-values-decision-framework.md)
 **Target paper**: endogenic-design-paper.md
 **Target section**: `## 7. Gap Analysis & Follow-Up Research` (Deployment-Layer Extension bullet)
 **Proposed change**: In the "Deployment-Layer Extension" gap item (which cites external-value-architecture.md for the formal specification), extend the list item to also reference external-values-decision-framework.md as the document that formalizes the conflict taxonomy (Type 1 Axiomatic Override, Type 2 Session Injection, Type 3 Ethical Conflict, Type 4 Provenance Suppression) with an ALLOW/BLOCK/ESCALATE outcome tree — and note that this taxonomy is currently T5 prose-only governance, making programmatic enforcement (adopt-wizard + `resolve_values_conflict.py`) the outstanding gap.

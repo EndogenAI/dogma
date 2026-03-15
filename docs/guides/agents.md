@@ -470,7 +470,7 @@ Ask these questions at every phase gate:
 
 ## Fleet Design Patterns
 
-Eight patterns distilled from production multi-agent systems research. For the full academic treatment (Context / Forces / Solution / Consequences / Evidence), see [`docs/research/agent-fleet-design-patterns.md`](../../docs/research/agent-fleet-design-patterns.md).
+Eight patterns distilled from production multi-agent systems research. For the full academic treatment (Context / Forces / Solution / Consequences / Evidence), see [`docs/research/agent-fleet-design-patterns.md`](../research/agents/agent-fleet-design-patterns.md).
 
 ### Pattern 1 — Orchestrator-Workers
 **When to use**: A complex task that must be decomposed into parallel or sequentially dependent subtasks, each requiring different research or execution capabilities.

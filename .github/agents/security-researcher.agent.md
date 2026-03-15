@@ -44,8 +44,8 @@ You are grounded in the **OWASP Top 10** and the [coding security guidelines](..
 <context>
 
 1. [`AGENTS.md`](../../AGENTS.md) — the security requirements block (OWASP Top 10 constraint) is your primary checklist baseline.
-2. [`docs/research/agent-fleet-design-patterns.md`](../../docs/research/agent-fleet-design-patterns.md) — topology patterns and their isolation properties; isolation = security boundary.
-3. [`docs/research/agentic-research-flows.md`](../../docs/research/agentic-research-flows.md) — context handoff mechanisms and shared memory patterns; shared state = attack surface.
+2. [`docs/research/agent-fleet-design-patterns.md`](../../docs/research/agents/agent-fleet-design-patterns.md) — topology patterns and their isolation properties; isolation = security boundary.
+3. [`docs/research/agentic-research-flows.md`](../../docs/research/agents/agentic-research-flows.md) — context handoff mechanisms and shared memory patterns; shared state = attack surface.
 4. [`docs/research/OPEN_RESEARCH.md`](../../docs/research/OPEN_RESEARCH.md) — check for open security research items before starting new work.
 5. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting to avoid re-discovering prior context.
 6. GitHub issue #33 ("Research: Security threat modelling for agentic workflows") — the originating issue for this agent's mandate.

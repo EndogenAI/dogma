@@ -99,8 +99,8 @@ This is an internal system prompt, not a peer-reviewed study or externally valid
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
-- [Agent Fleet Design Patterns](../agent-fleet-design-patterns.md)
-- [Agentic Research Flows](../agentic-research-flows.md)
+- [Agent Fleet Design Patterns](../agents/agent-fleet-design-patterns.md)
+- [Agentic Research Flows](../agents/agentic-research-flows.md)
 - [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
 - [Anthropic Com Engineering Multi Agent Research System](../sources/anthropic-com-engineering-multi-agent-research-system.md)
 - [Claude Sdk Subagents](../sources/claude-sdk-subagents.md)
@@ -108,4 +108,4 @@ This is an internal system prompt, not a peer-reviewed study or externally valid
 - [Cookbook Citations Agent](../sources/cookbook-citations-agent.md)
 - [Cookbook Research Lead Agent](../sources/cookbook-research-lead-agent.md)
 - [Platform Claude Com Docs En Build With Claude Prompt Enginee](../sources/platform-claude-com-docs-en-build-with-claude-prompt-enginee.md)
-- [Xml Agent Instruction Format](../xml-agent-instruction-format.md)
+- [Xml Agent Instruction Format](../agents/xml-agent-instruction-format.md)
