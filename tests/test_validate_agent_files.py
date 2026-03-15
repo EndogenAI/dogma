@@ -819,3 +819,81 @@ class TestCitationOrderImpermeability:
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
         assert passed is True, f"Expected pass but got: {failures}"
+
+
+# ---------------------------------------------------------------------------
+# MANIFESTO.md citation specificity — issue #257
+# ---------------------------------------------------------------------------
+
+
+class TestManifestoAnchoring:
+    """Tests for manifesto_warnings() — specificity metric and bare citation checks."""
+
+    def test_bare_manifesto_reference_triggers_specificity_warning(self):
+        """File with bare MANIFESTO.md (no anchor) produces the specificity metric warning."""
+        content = (
+            "---\nname: A\ndescription: B\n---\n\n"
+            "## Beliefs & Context\n\nSee MANIFESTO.md for axioms.\n\n"
+            "## Workflow & Intentions\n\nDo work.\n\n"
+            "## Desired Outcomes & Acceptance\n\nDone. References AGENTS.md."
+        )
+        warnings = vaf.manifesto_warnings(content)
+        assert any("specificity metric" in w for w in warnings)
+
+    def test_anchored_manifesto_ref_no_specificity_warning(self):
+        """File with MANIFESTO.md#section anchor produces no specificity metric warning."""
+        content = (
+            "---\nname: A\ndescription: B\n---\n\n"
+            "## Beliefs & Context\n\nSee [MANIFESTO.md#1-endogenous-first](MANIFESTO.md#1-endogenous-first).\n\n"
+            "## Workflow & Intentions\n\nDo work.\n\n"
+            "## Desired Outcomes & Acceptance\n\nDone. References AGENTS.md."
+        )
+        warnings = vaf.manifesto_warnings(content)
+        assert not any("specificity metric" in w for w in warnings)
+
+    def test_no_manifesto_reference_no_warnings(self):
+        """File with no MANIFESTO.md reference at all produces no warnings from either check."""
+        content = (
+            "---\nname: A\ndescription: B\n---\n\n"
+            "## Beliefs & Context\n\nSee [AGENTS.md](../../AGENTS.md).\n\n"
+            "## Workflow & Intentions\n\nDo work.\n\n"
+            "## Desired Outcomes & Acceptance\n\nDone."
+        )
+        warnings = vaf.manifesto_warnings(content)
+        assert warnings == []
+
+    def test_bare_manifesto_citation_triggers_bare_warning(self):
+        """Bare MANIFESTO.md prose reference (without anchor) triggers the bare citation warning."""
+        content = (
+            "---\nname: A\ndescription: B\n---\n\n"
+            "## Beliefs & Context\n\nReads MANIFESTO.md to understand axioms.\n\n"
+            "## Workflow & Intentions\n\nDo work.\n\n"
+            "## Desired Outcomes & Acceptance\n\nDone. References AGENTS.md."
+        )
+        warnings = vaf.manifesto_warnings(content)
+        assert any("Bare MANIFESTO" in w for w in warnings)
+
+    def test_negation_context_suppresses_bare_warning(self):
+        """A line with a negation word + bare MANIFESTO.md does not trigger the bare citation warning."""
+        content = (
+            "---\nname: A\ndescription: B\n---\n\n"
+            "## Beliefs & Context\n\nNever cite MANIFESTO.md without an anchor.\n\n"
+            "## Workflow & Intentions\n\nDo work.\n\n"
+            "## Desired Outcomes & Acceptance\n\nDone. See MANIFESTO.md#1-endogenous-first."
+        )
+        warnings = vaf.manifesto_warnings(content)
+        # "never" negation on the bare-ref line should suppress bare-citation warning
+        # Last line has an anchored ref so specificity warning also absent
+        assert not any("Bare MANIFESTO" in w for w in warnings)
+        assert not any("specificity metric" in w for w in warnings)
+
+    def test_section_symbol_notation_no_warnings(self):
+        """MANIFESTO.md §N notation counts as section-anchored — no warnings produced."""
+        content = (
+            "---\nname: A\ndescription: B\n---\n\n"
+            "## Beliefs & Context\n\nEnacts `MANIFESTO.md §1` (Endogenous-First).\n\n"
+            "## Workflow & Intentions\n\nDo work.\n\n"
+            "## Desired Outcomes & Acceptance\n\nDone. References AGENTS.md."
+        )
+        warnings = vaf.manifesto_warnings(content)
+        assert not any("specificity metric" in w for w in warnings)
