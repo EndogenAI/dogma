@@ -712,6 +712,8 @@ Every document in this repo belongs to one of four types. The type determines wh
 | **D3** | Decision records | `docs/decisions/*.md` (ADRs) | Permanent — **never edited after ratification**; superseded by a new ADR | Status field set; superseded ADRs cross-reference their successor |
 | **D4** | Research syntheses | `docs/research/*.md` | Status lifecycle: `Draft` → `Final` (after Reviewer approval) | `validate_synthesis.py` passes; MANIFESTO axiom citation density > 2 per 1,000 words |
 
+**Final-status edit gate**: Final-status research docs require a manual stop gate before any edit is committed. Run `uv run python scripts/validate_synthesis.py <file>` — if it emits a `WARNING: Final-status research doc modified` message, surface the diff for human review before committing. To proceed with an intentional edit after review, re-run with `--allow-final-edit` to suppress the warning.
+
 **Rule**: when a phase is in progress, identify the doc type for every file it touches before drafting. D1 docs gate phases; D4 docs inform them. Mixing the two produces governance drift.
 
 ### Programmatic Sweep Table Pattern
