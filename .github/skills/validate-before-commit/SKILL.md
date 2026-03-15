@@ -105,10 +105,11 @@ uv run pytest tests/ -x -m "not slow and not integration" -q
 
 ## 3. Pre-Commit Hooks
 
-Pre-commit hooks automate ruff, validate-synthesis, and validate-agent-files on every `git commit`. Install them **once per clone**:
+Pre-commit hooks automate ruff, validate-synthesis, and validate-agent-files on every `git commit`; `fast-tests` runs on every `git push`. Install **both** once per clone:
 
 ```bash
 uv run pre-commit install
+uv run pre-commit install --hook-type pre-push
 ```
 
 After installation, hooks run automatically on `git commit`. You do not need to run the manual checks above for files covered by the hooks — but running them proactively surfaces issues earlier in the workflow.

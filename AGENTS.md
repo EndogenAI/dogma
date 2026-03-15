@@ -720,7 +720,7 @@ The heredoc write anti-pattern is enforced by a two-tier programmatic stack. Tex
 
 **Mechanism**: `no-heredoc-writes` pygrep hook in `.pre-commit-config.yaml`  
 **Scope**: All committed `.py` and `.sh` files  
-**Activation**: Automatic on every `git commit` (install pre-commit hooks with `pre-commit install`)  
+**Activation**: Automatic on every `git commit` (install pre-commit hooks with `uv run pre-commit install`)  
 **Catches**: `cat >> file << 'EOF'` and `cat > file << 'EOF'` patterns at commit boundary  
 **Does not catch**: Commands typed directly in the terminal before committing
 
@@ -778,7 +778,12 @@ uv run python scripts/validate_agent_files.py --all
 uv run python scripts/validate_synthesis.py docs/research/<changed-file>.md
 ```
 
-Pre-commit hooks (`uv run pre-commit install` once per clone) automate ruff, validate-synthesis, and validate-agent-files on every `git commit`. Install them; do not skip with `--no-verify`.
+Pre-commit hooks automate ruff, validate-synthesis, and validate-agent-files on every `git commit`; the `fast-tests` hook runs on every `git push`. Install **both** once per clone; do not skip with `--no-verify`:
+
+```bash
+uv run pre-commit install
+uv run pre-commit install --hook-type pre-push
+```
 
 **CI must pass before requesting or re-requesting Copilot review.** After every push, run `gh run list --limit 3` and wait for green before reviewing.
 

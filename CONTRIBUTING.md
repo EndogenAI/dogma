@@ -53,8 +53,11 @@ cd Workflows
 # 2. Install dependencies (uv manages the virtual environment)
 uv sync
 
-# 3. Install pre-commit hooks (runs ruff, ruff-format, validate-synthesis, validate-agent-files on every git commit)
+# 3. Install pre-commit hooks
+#    - commit: ruff, ruff-format, validate-synthesis, validate-agent-files, and 5 more (9 hooks total)
+#    - push:   fast-tests (pytest -m "not slow and not integration")
 uv run pre-commit install
+uv run pre-commit install --hook-type pre-push
 
 # 4. Run the test suite
 uv run pytest tests/
