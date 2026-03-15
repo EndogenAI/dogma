@@ -119,6 +119,12 @@ _FETCH_BEFORE_CHECK_NEGATIONS = frozenset(_HEREDOC_NEGATIONS | {"grep"})
 # (e.g. "do not use '## Phase N Review Output'") are not incorrectly flagged.
 _PHASE_N_REVIEW_RE = re.compile(r"^##\s+Phase\s+N\s+Review\s+Output", re.IGNORECASE | re.MULTILINE)
 
+# MANIFESTO section-anchored reference: MANIFESTO.md#anchor or MANIFESTO.md §N
+_MANIFESTO_SECTION_RE = re.compile(r"MANIFESTO\.md(?:#[a-zA-Z0-9\-_]+|\s+§\d)")
+
+# Bare MANIFESTO reference: MANIFESTO.md NOT immediately followed by # or \s+§
+_MANIFESTO_BARE_RE = re.compile(r"MANIFESTO\.md(?!#|\s+§)")
+
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -267,6 +273,51 @@ def check_citation_priority(citations: list[str]) -> list[str]:
         )
 
     return errors
+
+
+def manifesto_warnings(text: str) -> list[str]:
+    """Return soft warnings for MANIFESTO.md citation specificity (non-blocking checks).
+
+    These warnings do not affect the pass/fail status of validate() — they are
+    guidance to improve cross-reference fidelity in the encoding chain.
+
+    Check A — Specificity metric:
+        If MANIFESTO.md appears in the file but no references include a section anchor
+        (``#section-name`` or `` §N``), warn that no section-anchored citations exist.
+
+    Check B — Bare citation:
+        If any MANIFESTO.md reference lacks a section anchor and is not in a negation
+        context (e.g., a guardrail prohibition), warn that bare citations should use anchors.
+
+    Returns:
+        list[str]: Warning messages; empty list means no issues.
+    """
+    warnings: list[str] = []
+
+    # Check A: specificity metric
+    manifesto_refs = re.findall(r"MANIFESTO\.md", text)
+    if manifesto_refs:
+        distinct_anchored = set(_MANIFESTO_SECTION_RE.findall(text))
+        if not distinct_anchored:
+            warnings.append(
+                "MANIFESTO specificity metric: MANIFESTO.md is cited but no section-anchored "
+                "references found — add at least one MANIFESTO.md#section-name or MANIFESTO.md §N "
+                "to maintain encoding fidelity (AGENTS.md cross-reference density guideline)"
+            )
+
+    # Check B: bare citation (negation-aware — guardrail lines are skipped)
+    for line in text.splitlines():
+        if _MANIFESTO_BARE_RE.search(line):
+            lower = line.lower()
+            if not any(neg in lower for neg in _HEREDOC_NEGATIONS):
+                warnings.append(
+                    "Bare MANIFESTO.md citation found: citations should include a section anchor "
+                    "(prefer MANIFESTO.md#section-name or MANIFESTO.md §N over bare MANIFESTO.md) "
+                    "to maintain cross-reference specificity"
+                )
+                break
+
+    return warnings
 
 
 # ---------------------------------------------------------------------------
@@ -568,6 +619,9 @@ def main() -> None:
             print(f"FAIL  {file_path}")
             for msg in failures:
                 print(f"      • {msg}")
+        if file_path.exists():
+            for w in manifesto_warnings(file_path.read_text(encoding="utf-8")):
+                print(f"      ⚠ {w}")
 
     for file_path in skill_targets:
         errors = validate_skill_file(file_path)
