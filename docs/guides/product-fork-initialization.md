@@ -70,7 +70,7 @@ Open the generated `client-values.yml` and review or extend:
 
 **Constraint**: `client-values.yml` may NOT override MANIFESTO.md Core Layer constraints (Endogenous-First, Algorithms Before Tokens, Local Compute-First). It may only specialize or add priorities at the Deployment Layer.
 
-Refer to [`AGENTS.md`](../../AGENTS.md) (§ Deployment Layer integration) for the full interpretation rules agents apply when reading this file. A detailed schema and constraint reference will be published in `docs/research/external-value-architecture.md` (forthcoming).
+Refer to [`AGENTS.md`](../../AGENTS.md) (§ Deployment Layer integration) for the full interpretation rules agents apply when reading this file and the schema for the full external-value schema and Supremacy constraint reference.
 
 ---
 
