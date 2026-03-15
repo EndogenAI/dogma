@@ -75,6 +75,8 @@ Also start the scratchpad watcher so H2 headings stay annotated automatically:
 uv run python scripts/watch_scratchpad.py
 ```
 
+Run `uv run python scripts/orientation_snapshot.py --branch <branch>` for a pre-computed orientation digest before reading the full scratchpad.
+
 If this is a research session, pre-warm the source cache before delegating to any scout:
 
 ```bash
