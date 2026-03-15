@@ -195,6 +195,6 @@ it as a Deployment Layer directive.
 - [session-management.md](session-management.md) — scratchpad and session lifecycle
 - [`AGENTS.md` § Deployment Layer integration](../../AGENTS.md#deployment-layer-integration)
 - [`MANIFESTO.md`](../../MANIFESTO.md) — core dogma; non-negotiable axioms
-- Issue [#56](https://github.com/EndogenAI/Workflows/issues/56) — adopt wizard implementation
-- Issue [#125](https://github.com/EndogenAI/Workflows/issues/125) — client-values.yml integration
-- Issue [#205](https://github.com/EndogenAI/Workflows/issues/205) — AccessiTech use case (this document closes #205)
+- Issue [#56](https://github.com/EndogenAI/dogma/issues/56) — adopt wizard implementation
+- Issue [#125](https://github.com/EndogenAI/dogma/issues/125) — client-values.yml integration
+- Issue [#205](https://github.com/EndogenAI/dogma/issues/205) — AccessiTech use case (this document closes #205)
