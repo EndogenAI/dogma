@@ -39,7 +39,8 @@ def test_algorithms_before_tokens_bare(capsys: pytest.CaptureFixture[str]) -> No
     check_axiom_citations(lines, "docs/research/example.md")
     captured = capsys.readouterr()
     assert "WARN" in captured.out
-    assert "Algorithms Before Tokens" not in captured.out or "WARN" in captured.out
+    assert "bare axiom name without §-reference" in captured.out
+    assert "docs/research/example.md" in captured.out
 
 
 def test_algorithms_before_tokens_with_ref_no_warn(capsys: pytest.CaptureFixture[str]) -> None:
