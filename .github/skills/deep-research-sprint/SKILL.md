@@ -226,6 +226,16 @@ CI must pass before requesting review. Common failure modes after adding a resea
 - Missing source stubs in `docs/research/sources/` → create the stub file
 - `validate_synthesis.py` failure → fix frontmatter or headings
 
+### 5.4 Weave / Link / Consolidate Pass
+
+After committing the final synthesis, the Archivist must complete a back-propagation pass **before the session closes**:
+
+1. **Weave** — for every source doc that the synthesis cites, add a back-reference (cross-link) to the new synthesis so the citation is bidirectional. Use `scripts/weave_links.py` to locate and insert missing back-references.
+2. **Link** — link the new synthesis from any related D1 docs (guides, AGENTS.md, skill files) or D2 docs (workplans) that discuss the same topic. A synthesis not reachable from operational docs is effectively invisible to future agents.
+3. **Consolidate** — if a prior synthesis covers overlapping content, add a `**See also**:` cross-reference note in both docs. Do not delete or merge prior syntheses; add the cross-reference and note the relationship.
+
+**This pass is non-optional.** A synthesis committed without a weave/link/consolidate pass is a dead-end encoding — it cannot propagate its knowledge upward through the encoding inheritance chain.
+
 ---
 
 ## 6. Agent Delegation Pattern

@@ -169,7 +169,17 @@ Before finalising any change, re-read `MANIFESTO.md`. Ask:
 - Does it introduce a constraint that contradicts an existing one?
 - Is it consistent with the endogenic methodology?
 
-### 5. Handoff
+### 5. Weave / Link / Consolidate
+
+Every new research synthesis (`D4` doc) committed during a session must trigger a back-propagation pass before the session closes:
+
+- **Weave**: add back-references into source docs that the synthesis cites (use `scripts/weave_links.py`).
+- **Link**: link the synthesis from any related D1 guides, AGENTS.md files, or skill files that discuss the same topic.
+- **Consolidate**: add `**See also**:` cross-reference notes in any prior synthesis with overlapping coverage.
+
+Do not close the session without confirming this pass is complete. A synthesis that is not reachable from operational docs cannot shape agent behaviour.
+
+### 6. Handoff
 
 Route all changes through **Review** before committing. Never self-merge documentation changes to `main`.
 
