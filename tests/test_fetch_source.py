@@ -86,6 +86,11 @@ class TestValidateUrl:
         with pytest.raises(ValueError, match="hostname"):
             validate_url("https://172.16.0.1/internal")
 
+    def test_rejects_ipv6_link_local_full_range(self):
+        """fe81:: is in fe80::/10 but not caught by the fe80: prefix regex — must be rejected via ipaddress module."""
+        with pytest.raises(ValueError, match="not permitted"):
+            validate_url("https://[fe81::1]/secret")
+
 
 class TestValidateSlug:
     """Security tests for path traversal prevention — issue #49."""
