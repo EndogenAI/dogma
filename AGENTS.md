@@ -14,7 +14,7 @@ These constraints govern all agent behavior. They derive from three core axioms 
 
 1. **Endogenous-First** — scaffold from existing system knowledge and external best practices
 2. **Algorithms Before Tokens** — prefer deterministic, encoded solutions over interactive token burn
-3. **Local Compute-First** — minimize token usage; run locally whenever possible
+3. **Local Compute-First** — minimize token usage; run locally whenever possible *(LCF as structural enabler — see [`MANIFESTO.md §3`](MANIFESTO.md#3-local-compute-first))*
 
 **Encoding Inheritance Chain**: Values flow through six layers — `MANIFESTO.md` (foundational axioms) → `AGENTS.md` (operational constraints) → subdirectory `AGENTS.md` files (narrowing constraints for specific scopes) → role files (`.agent.md`; VS Code: Custom Agents) → `SKILL.md` files (reusable tactical knowledge) → session prompts (enacted behavior). Each layer is a re-encoding of the layer above it. Agents must minimise lossy re-encoding: prefer direct quotation or explicit citation over paraphrase when invoking a foundational principle. Cross-reference density (back-references to `MANIFESTO.md` in your output) is a proxy for encoding fidelity. Low density signals likely drift. See [`docs/research/values-encoding.md`](docs/research/values-encoding.md) for the cross-sectoral evidence base.
 
