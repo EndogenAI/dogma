@@ -356,6 +356,8 @@ When writing prompts for the **Review agent**, use explicit numbered binary acce
 
 **Why this matters**: The Review agent can only catch what it is told to check. Criterion cardinality (number of explicit criteria) is the primary predictor of review completeness. Binary pass/fail formulation eliminates hedging and produces actionable, addressable output. This applies equally when writing per-phase checklists for execution agents — a shared written specification that every agent independently verifies against prevents interpretive drift without requiring the Orchestrator to re-explain scope at each handoff.
 
+**Enforcement**: Generic prompts produce generic reviews. Criterion cardinality is the primary predictor of review completeness.
+
 *Grounded in corpus back-propagation sprint observation (2026-03-12, issue #226): a 7-criterion prompt caught a discipline violation and confirmed 6 criteria explicitly; a prior equivalent generic prompt returned APPROVED without surfacing the violation.*
 
 **Include integration-point criteria**: complement existence checks ("does X exist?") with integration checks ("does X connect to Y?"). A field added to a taxonomy but absent from the sweep table that references it passes an existence check but breaks the integration — write two separate criteria: one for existence, one for the expected join. Integration failures are the most common missed-review gap in multi-section docs. *Grounded in corpus back-propagation sprint Phase 4A (2026-03-12): doc-type field was added to the taxonomy section but was absent from the sweep table; a generic existence check would have passed.*
