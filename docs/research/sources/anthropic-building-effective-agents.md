@@ -111,8 +111,8 @@ The **routing workflow** is completely absent from the EndogenAI research pipeli
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
 - [A2A Announcement](../sources/a2a-announcement.md)
 - [A2Aproject Github Io A2A Latest Specification](../sources/a2aproject-github-io-A2A-latest-specification.md)
-- [Agent Fleet Design Patterns](../agent-fleet-design-patterns.md)
-- [Agentic Research Flows](../agentic-research-flows.md)
+- [Agent Fleet Design Patterns](../agents/agent-fleet-design-patterns.md)
+- [Agentic Research Flows](../agents/agentic-research-flows.md)
 - [Anthropic Com Engineering Effective Context Engineering For ](../sources/anthropic-com-engineering-effective-context-engineering-for-.md)
 - [Anthropic Com Engineering Multi Agent Research System](../sources/anthropic-com-engineering-multi-agent-research-system.md)
 - [Arxiv Context Engineering Survey](../sources/arxiv-context-engineering-survey.md)
@@ -140,4 +140,4 @@ The **routing workflow** is completely absent from the EndogenAI research pipeli
 - [Python Langchain Com Docs Concepts Agents](../sources/python-langchain-com-docs-concepts-agents.md)
 - [Tds Claude Skills Subagents](../sources/tds-claude-skills-subagents.md)
 - [Xda Developers Com Youre Using Local Llm Wrong If Youre Prom](../sources/xda-developers-com-youre-using-local-llm-wrong-if-youre-prom.md)
-- [Xml Agent Instruction Format](../xml-agent-instruction-format.md)
+- [Xml Agent Instruction Format](../agents/xml-agent-instruction-format.md)

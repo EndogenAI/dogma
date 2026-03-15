@@ -112,7 +112,7 @@ This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](../../../MA
 **Foundation documents**:
 - [`AGENTS.md`](../../../AGENTS.md) — governance constraints
 - [`docs/guides/deep-research.md`](../../../docs/guides/deep-research.md) — full investigation methodology
-- [`docs/research/methodology-review.md`](../../../docs/research/methodology-review.md) — prior art survey
+- [`docs/research/methodology-review.md`](../../../docs/research/methodology/methodology-review.md) — prior art survey
 ```
 
 ---

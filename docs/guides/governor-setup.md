@@ -16,7 +16,7 @@ Governor B is the **runtime shell governor** for this project. It intercepts her
 This governor is project-scoped: it activates when you enter the project directory (via `direnv`) and deactivates when you leave.
 
 **References:**
-- Full technical background: [`docs/research/shell-preexec-governor.md`](../research/shell-preexec-governor.md)
+- Full technical background: [`docs/research/shell-preexec-governor.md`](../research/infrastructure/shell-preexec-governor.md)
 - bash-preexec adoption decision: [`docs/decisions/ADR-007-bash-preexec.md`](../decisions/ADR-007-bash-preexec.md)
 
 ---
@@ -148,4 +148,4 @@ The full enforcement stack for heredoc prevention in this project:
 
 The two layers are complementary, not redundant: Governor A catches heredocs in staged files; Governor B blocks them from executing in the first place. Both must be active for defense-in-depth.
 
-For architecture details, see [`docs/research/shell-preexec-governor.md`](../research/shell-preexec-governor.md).
+For architecture details, see [`docs/research/shell-preexec-governor.md`](../research/infrastructure/shell-preexec-governor.md).

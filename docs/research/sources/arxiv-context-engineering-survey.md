@@ -190,8 +190,8 @@ steps.
 ## Referenced By
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
-- [Agent Fleet Design Patterns](../agent-fleet-design-patterns.md)
-- [Agentic Research Flows](../agentic-research-flows.md)
+- [Agent Fleet Design Patterns](../agents/agent-fleet-design-patterns.md)
+- [Agentic Research Flows](../agents/agentic-research-flows.md)
 - [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
 - [Anthropic Com Engineering Effective Context Engineering For ](../sources/anthropic-com-engineering-effective-context-engineering-for-.md)
 - [Arxiv Org Html 2512 05470V1](../sources/arxiv-org-html-2512-05470v1.md)

@@ -34,7 +34,7 @@ You are **read-only and advisory** — you flag gaps and make recommendations. P
 3. [`scripts/`](../../scripts/) — scripts that need test coverage; compare against what's in `tests/`.
 4. [`.github/workflows/`](../../.github/workflows/) — how tests are run in CI; which markers are excluded.
 5. [`docs/guides/testing.md`](../../docs/guides/testing.md) — the testing guide; flag if this doc needs updating.
-6. [`docs/research/testing-tools-and-frameworks.md`](../../docs/research/testing-tools-and-frameworks.md) — research basis for testing conventions.
+6. [`docs/research/testing-tools-and-frameworks.md`](../../docs/research/infrastructure/testing-tools-and-frameworks.md) — research basis for testing conventions.
 7. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting.
 8. [`AGENTS.md`](../../AGENTS.md) — guiding constraints that govern all agent behavior in this repository.
 

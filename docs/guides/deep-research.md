@@ -2,7 +2,7 @@
 
 This guide defines the **Endogenic Deep Dive Research Workflow** — a recursive, programmatic-first research methodology for conducting exhaustive, hypothesis-driven investigations that culminate in academically rigorous synthesis documents and papers.
 
-The workflow is self-referential: the methodology described here was itself discovered and refined through a deep dive into endogenic methodology foundations. See [`docs/research/methodology-review.md`](../research/methodology-review.md) as the seed document.
+The workflow is self-referential: the methodology described here was itself discovered and refined through a deep dive into endogenic methodology foundations. See [`docs/research/methodology-review.md`](../research/methodology/methodology-review.md) as the seed document.
 
 ---
 

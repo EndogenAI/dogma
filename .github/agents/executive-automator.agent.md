@@ -54,7 +54,7 @@ You enforce the **programmatic-first** constraint from [`AGENTS.md`](../../AGENT
 1. [`AGENTS.md`](../../AGENTS.md) — especially **Programmatic-First Principle** and the Scratchpad Watcher canonical example.
 2. [`scripts/watch_scratchpad.py`](../../scripts/watch_scratchpad.py) — the canonical file-watcher pattern for this codebase.
 3. [`scripts/README.md`](../../scripts/README.md) — script catalog.
-4. [`docs/research/dev-workflow-automations.md`](../../docs/research/dev-workflow-automations.md) — dev workflow automation research; pre-commit stack, Taskfile.dev, CI anti-patterns, environment reproducibility.
+4. [`docs/research/dev-workflow-automations.md`](../../docs/research/infrastructure/dev-workflow-automations.md) — dev workflow automation research; pre-commit stack, Taskfile.dev, CI anti-patterns, environment reproducibility.
 
 ---
 </context>

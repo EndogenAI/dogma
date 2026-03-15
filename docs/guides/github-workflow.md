@@ -2,7 +2,7 @@
 
 A concise, locally-queryable reference for GitHub operations on this repository — covering the `gh` CLI command vocabulary, label taxonomy, issue design conventions, milestone/project patterns, and Copilot-aware issue authoring.
 
-This guide is derived from [`docs/research/github-project-management.md`](../research/github-project-management.md). Consult that document for hypothesis analysis, trade-off discussion, and the full setup reasoning.
+This guide is derived from [`docs/research/github-project-management.md`](../research/pm/github-project-management.md). Consult that document for hypothesis analysis, trade-off discussion, and the full setup reasoning.
 
 ---
 
@@ -245,6 +245,6 @@ This repo enforces **rebase and merge** only. Squash merge is disabled in reposi
 
 ## 12. Further Reading
 
-- Full synthesis with hypothesis analysis: [`docs/research/github-project-management.md`](../research/github-project-management.md)
+- Full synthesis with hypothesis analysis: [`docs/research/github-project-management.md`](../research/pm/github-project-management.md)
 - OSS documentation patterns: [`docs/research/oss-documentation-best-practices.md`](../research/oss-documentation-best-practices.md)
-- PM and team structures: [`docs/research/pm-and-team-structures.md`](../research/pm-and-team-structures.md)
+- PM and team structures: [`docs/research/pm-and-team-structures.md`](../research/pm/pm-and-team-structures.md)

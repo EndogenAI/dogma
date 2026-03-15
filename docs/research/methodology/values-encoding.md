@@ -1,0 +1,579 @@
+---
+title: "Verbally Encoding Values — Cross-Sectoral Synthesis"
+status: "Final"
+governs: [endogenous-first, algorithms-before-tokens]
+---
+
+# Verbally Encoding Values — Cross-Sectoral Synthesis
+
+> **Status**: Final
+> **Research Question**: How are values encoded, preserved, and degraded across textual layers? What mechanisms strengthen signal fidelity, and how can they be applied to the endogenic substrate?
+> **Date**: 2026-03-07
+> **Related**: [`docs/research/methodology-review.md`](methodology-review.md) (prior art foundation for this research arc); [`docs/research/bubble-clusters-substrate.md`](../neuroscience/bubble-clusters-substrate.md) (bubble-cluster topology — complementary spatial/topological model extending the biological-homology framing); [`docs/research/values-substrate-relationship.md`](values-substrate-relationship.md) (orthogonality synthesis — how values-encoding and bubble-clusters complement each other as orthogonal dimensions)
+
+---
+
+## 1. Executive Summary
+
+Every system that encodes values into text faces the same fundamental problem: the signal degrades across layers. The original intent becomes paraphrased, compressed, reinterpreted, or instrumentalized by the time it reaches its operational expression. This is not a failure of the original author — it is a structural property of textual transmission through heterogeneous interpreters across time.
+
+The endogenic substrate has exactly this structure: core values are stated in `MANIFESTO.md`, transcribed into operational constraints in `AGENTS.md`, implemented as specific instructions in agent files, and expressed in session behavior. Each layer is a re-encoding. Each re-encoding is a lossy compression unless active preservation mechanisms are applied.
+
+**The biological homology is precise, not decorative:**
+
+| Biological layer | Endogenic layer | Encoding role |
+|---|---|---|
+| DNA | `MANIFESTO.md` | Foundational code; rarely changes; carries all values |
+| RNA (transcription) | `AGENTS.md` | Working copy; operational translation of the code |
+| Protein (translation) | Agent files (`.agent.md`) | Specific functional implementations; many variants |
+| Phenotypic expression | Session behavior & prompts | Observable output enacted in context |
+| Epigenetic regulation | CI gates, `validate_synthesis.py`, scratchpad watcher | Modulates expression without altering sequence |
+
+This synthesis draws on six evidence domains — genetics/epigenetics, information theory, linguistics/semiotics, legal scholarship, religious text transmission, and AI alignment — to identify mechanisms that strengthen or degrade value fidelity across these layers.
+
+**Hypotheses submitted for validation:**
+
+- **H1** — Value degradation across textual layers follows predictable, field-validated patterns (not random noise).
+- **H2** — Structural redundancy at multiple levels of abstraction (semantic + structural + programmatic) is the primary defense against drift.
+- **H3** — Programmatic encoding (scripts, CI gates) is structurally immune to semantic drift and is the strongest available signal preservation mechanism.
+- **H4** — Holographic encoding — every downstream layer contains an identifiable echo of top-level values — is feasible and measurably improves fidelity.
+- **H5** — The endogenic inheritance chain maps precisely to the DNA → RNA → Protein → Expression model, and the biological toolkit for signal fidelity applies directly.
+
+---
+
+## 2. Hypothesis Validation
+
+### H1 — Value Degradation Follows Predictable Patterns
+
+**Verdict**: CONFIRMED — five independent fields identify the same degradation mechanisms
+
+**From linguistics (Saussure, Derrida, Rosch):** The relationship between signifier and signified is arbitrary and conventional — it drifts as communities reinterpret signs. Derrida's *différance* formalizes this: meaning is perpetually deferred through sign chains, with no stable essence. Empirically, semantic drift is well-documented: "awful" originally meant "inspiring awe"; "nice" meant "ignorant." Values expressed only as abstract nouns ("transparency", "accountability") are maximally vulnerable to semantic drift because the abstract noun has no prototype anchor.
+
+**From legal scholarship:** Living constitutionalism vs. originalism is the debate about *how* to interpret a fixed text as contexts change. Value drift in US constitutional law occurred primarily through interpretive method change, not textual change — the 14th Amendment's Equal Protection Clause has been applied to deny and then guarantee the same rights over time without changing a word. The pattern: **the text is stable; the hermeneutical framework drifts.**
+
+**From religious text transmission:** The Old Testament → New Testament drift is not primarily a textual corruption problem but a community-and-interpreter problem. Different communities selected different texts (the canon was contested), and the same texts were read through new interpretive frameworks (typological reading of Isaiah as Messianic prophecy). The Masoretes (7th–10th c. CE) understood this risk: they added cantillation marks and vowel points *not* to change the text but to constrain interpretation by locking pronunciation, rhythm, and thereby meaning.
+
+**From information theory (Shannon 1948):** Information degrades across noisy channels unless redundancy is added. For a binary symmetric channel with error probability *p*, the minimum redundancy needed to achieve arbitrary reliability is given by the channel coding theorem. Values transmitted across "layers" (human-written layers of a document hierarchy) encounter semantic noise — paraphrasing, compression, reordering. Without redundancy encoding, each layer amplifies the noise.
+
+**From AI alignment (specification gaming literature):** Krakovna et al. (2020) catalogued 60+ instances of AI agents exploiting specification letter vs. spirit discrepancies. The pattern is identical to legal loophole exploitation: the agent follows the encoded rule but not the intent behind it. Values must be encoded at multiple levels of abstraction simultaneously — operational instructions ("do X") and principled justifications ("because we value Y") — so the agent can handle novel situations by invoking the principle where the operation doesn't apply.
+
+**Net finding:** Degradation mechanisms across domains converge on four causes: compression (nuance lost), paraphrasing (synonyms introduce drift), abstraction preservation with example loss (prototype anchor removed), and interpreter-framework shift (the layer that reads the value uses a different hermeneutic than the layer that wrote it).
+
+---
+
+### H2 — Structural Redundancy is the Primary Defense
+
+**Verdict**: CONFIRMED — convergent evidence from all six domains
+
+**Biological basis:** The genetic code is redundant by design: 64 codons encode only 20 amino acids plus stop signals. Multiple codons map to the same amino acid (synonymous codons). This means most point mutations are silent — the resulting protein is unchanged. DNA proofreading polymerase has an error rate of ~10⁻⁹ per base per replication. The combinatorial result: critical values (amino acid sequences of essential proteins) survive thousands of replication cycles with near-zero drift. The lesson: **redundancy at the encoding level, not the channel level, is the primary defense.**
+
+**Information-theoretic basis:** Error-correcting codes (Hamming, Reed-Solomon, turbo codes) add structured redundancy to detect and correct errors. A [4,1] repetition code — repeating each bit four times — can correct one-bit errors. The endogenic analog: a value encoded in four forms (principle statement + canonical example + anti-pattern + programmatic gate) is a [4,1] repetition code for values. Removal of any one form does not destroy the signal.
+
+**Legal basis:** Constitutional entrenchment — the requirement that core rights require a supermajority to amend — is structural redundancy applied to law. The value is not just stated; it is structurally protected. The U.S. First Amendment appears in the text, in case law precedent, in legal education curricula, and in cultural discourse. Four independent encoding layers, four independent degradation events required to silence the signal.
+
+**Religious text basis:** The Quranic memorization tradition exemplifies multiplied encoding layers: the text exists in written codex form AND as memorized oral tradition encoded in millions of hafiz practitioners. A fire that destroyed every printed Quran would not destroy the text — the oral layer survives. This is the most extreme form of layer redundancy: physical medium + human memory + embodied performance. The LLM-endogenic analog: `MANIFESTO.md` (text) + README references + AGENTS.md constraints + validate_synthesis.py (programmatic) + session start ritual (performative) = five independent encoding layers.
+
+---
+
+### H3 — Programmatic Encoding is Immune to Semantic Drift
+
+**Verdict**: CONFIRMED — with important caveats on coverage gaps
+
+A CI gate that checks for the presence of required headings in a research document does not paraphrase, compress, or reinterpret. It executes deterministically. The semantics of "a research document must have a `## 2. Hypothesis Validation` section" cannot drift unless the script is rewritten. This is the fundamental advantage of programmatic over textual encoding: **the code is the specification; performance and specification are fused.**
+
+This is the information-theoretic analog of moving a value from the message layer to the protocol layer. Protocol-layer values are enforced by the channel itself, not by each message. TCP checksums do not rely on the application programmer remembering to validate data integrity — the protocol enforces it.
+
+**Caveat — coverage gap:** `validate_synthesis.py` checks structural compliance but not semantic fidelity. A document can have a `## 2. Hypothesis Validation` heading with content that contradicts `MANIFESTO.md`. Programmatic encoding is necessary but not sufficient; it must be combined with hermeneutical constraints (H4) and the canonical-example anchor (H2). [values-enforcement-tier-mapping.md](values-enforcement-tier-mapping.md) § Critical Asymmetry quantifies the gap: across 112 constraints, behavioral constraints = 54% T5 prose-only; values-specific constraints = 91% T5 prose-only (77/112 = 69% T5 overall) — giving the coverage gap an empirically measured scale.
+
+**Caveat — Goodhart's Law:** Values encoded as metrics become targets for optimization, not for genuine alignment. An agent that knows `validate_synthesis.py` requires `## 2. Hypothesis Validation` will include that heading whether or not it produces genuine validation content. The programmatic gate is a necessary condition, not a sufficient one.
+
+---
+
+### H4 — Holographic Encoding is Feasible
+
+**Verdict**: PLAUSIBLE (Empirical Validation Pending) — supported by prior art; not yet implemented fleet-wide
+
+"Holographic encoding" here means: every downstream layer contains an identifiable echo (not a copy) of the top-level values, such that reading any single layer allows reconstruction of the core value set. The analogy is the holographic plate: every piece of the plate contains the whole image, just at lower resolution.
+
+**Evidence for feasibility:**
+
+*Steganographic structural encoding:* The positional, structural, and typographic features of a document carry signal independently of its content. Values encoded in the structural position of sections (axiom 1 is always Endogenous-First; the review gate is always last; anti-patterns always follow examples) persist even when content is paraphrased. An agent reading only section headers can reconstruct the priority ordering.
+
+*Watermark phrases:* Distinctive, memorable phrases ("encode-before-act", "morphogenetic seed", "augmentive partnership") serve as integrity checks. If these phrases appear correctly in an agent file, the agent likely absorbed the underlying concept. Their absence or semantic distortion is a measurable signal of value drift. This is an information-theoretic watermark: a low-bandwidth signal embedded in the document that detects copying-without-understanding.
+
+*Cross-reference density as a health metric:* The number of back-references from downstream documents (agent files, scratchpad entries) to `MANIFESTO.md` is a proxy for encoding integrity. A fleet of agent files with zero references to `MANIFESTO.md` is a fleet that has lost its holographic signal. A fleet with back-references from every agent file is one where every layer contains a traceable echo.
+
+*Algorithmic feasibility:* A measurement script exists (`generate_agent_manifest.py`) that computes cross-reference density scores per agent and fleet-wide average. However, a fleet-wide baseline has not yet been established. [holographic-encoding-empirics.md](../neuroscience/holographic-encoding-empirics.md) § Fleet Density Distribution provides the first fleet-wide census (49 files, mean density 0.85), qualifying H4 as a [4,1] confirmation at the collective fleet layer — individual-file holographic reconstruction requires density ≥2.5, currently achieved by 6.1% of the fleet. Corpus reference: [epigenetic-tagging.md](epigenetic-tagging.md) Phase 2 work includes baseline measurement and fleet-wide density scoring.
+
+---
+
+### H5 — Endogenic Inheritance Chain Maps to Biological Model
+
+**Verdict**: CONFIRMED — with epigenetic regulation identified as a gap
+
+The DNA → RNA → Protein → Expression chain maps to MANIFESTO.md → AGENTS.md → Agent files → Session behavior. The mappings are operational, not merely analogical:
+
+- **MANIFESTO.md = DNA**: rarely changes; carries all core information; authoritative source; mutations (edits) are rare and significant.
+- **AGENTS.md = RNA**: transcribed from MANIFESTO.md; operational working copy; re-read each session (RNA is transient but re-synthesized); multiple "transcription factors" (mode instructions, memory files) modulate how it is read.
+- **Agent files = Proteins**: specific functional expressions of the code; many variants (dozens of agents) serving specific roles; can be post-translationally modified (the mode instructions in VS Code add runtime context).
+- **Session prompts = Phenotype**: the observable behavioral output in a specific environment; varies with context (the same agent file produces different behavior in different task contexts, just as the same genome produces different phenotypes in different environments).
+
+**The epigenetic layer** — currently underformalised in the endogenic system — corresponds to CI gates, validate_synthesis.py, the scratchpad watcher, and session start rituals. These do not change the substrate but regulate which values get expressed in which contexts. Epigenetic marks that silence certain genes in certain tissues are the precise biological analog of a CI gate that silences non-compliant documentation before it reaches the production branch.
+
+**Gap identified:** The endogenic system has no equivalent of **regulatory regions** — promoters and enhancers in DNA that amplify expression of adjacent genes under specific conditions. The endogenic substrate would benefit from context-sensitive amplification: when an agent is executing a research task, the Endogenous-First axiom should be amplified; when committing code, the Documentation-First principle should be amplified. This requires a lightweight "context tagging" mechanism for agent files. [agent-taxonomy.md](../agents/agent-taxonomy.md) § Six-Layer Encoding Inheritance Chain formalizes a six-layer refinement of the chain: subdirectory AGENTS.md files act as context-narrowing post-translational regulators; SKILL.md files act as domain-specific enzymes — extending the four-layer model to match the codebase's operational state.
+
+---
+
+## 3. Pattern Catalog
+
+### Pattern 1 — Multi-Modal [4,1] Repetition Code for Values
+
+**Source fields**: Information theory (repetition codes), religious text transmission (oral + written + ritual), legal scholarship (text + precedent + education + culture)
+
+**Pattern**: Encode every core value in at least four independent forms:
+1. **Principle statement** — abstract declaration (e.g., "Endogenous-First: scaffold from existing knowledge")
+2. **Canonical example** — concrete demonstration of the value in action (the prototype anchor)
+3. **Anti-pattern** — explicit counter-example; states what violates the value
+4. **Programmatic gate** — a script or CI check that enforces the structural implication of the value
+
+**Endogenic implementation**: MANIFESTO.md currently has forms 1 and 3 for most axioms. Forms 2 (concrete examples) and 4 (programmatic gates) are partially implemented. Completing form 4 for all three core axioms would close the most significant fidelity gap.
+
+**Why it works**: Each form encodes the value through a different channel. A degradation event that destroys form 1 (semantic drift in the principle statement) does not destroy form 3 (anti-patterns are often more resilient because they are memorable and negative). A degradation event in form 2 does not destroy form 4. The [4,1] code corrects any single-form failure.
+
+---
+
+### Pattern 2 — Hermeneutical Frame as a Separate Document Layer
+
+**Source fields**: Talmudic exegesis, constitutional law, Quranic tafsir tradition, digital humanities (stemmatic analysis)
+
+**Pattern**: The textual substrate (MANIFESTO.md) is accompanied by an explicit interpretation framework — a documented set of rules for *how* to read and apply it. This frame is physically and logically separate from the substrate itself.
+
+**Structure**:
+- The substrate states the values
+- The hermeneutical frame states: (a) which sections take precedence in conflicts, (b) what "in the spirit of" means operationally, (c) how to handle novel situations not covered explicitly
+
+**Talmudic analog**: On each page of the Talmud, the Mishnah text occupies the center column; Rashi's commentary occupies one margin; Tosafot occupies the other. The layers are visually distinct. A reader cannot confuse the Torah with its commentary. The endogenic equivalent: `MANIFESTO.md` is the center column; `AGENTS.md` is Rashi; agent files are Tosafot. The hierarchy is architectural.
+
+**Status — Partially Closed (2026-03-10)**: A hermeneutical frame has been added to MANIFESTO.md (per R1 recommendation and phase 2 enactment) explaining how to read the axioms, handle conflicts, and derive novel behaviors. The pattern is now operationalized. Corpus reference: MANIFESTO.md now includes an explicit "How to Read This Document" section.
+
+---
+
+### Pattern 3 — Structural Steganography (Watermark Encoding)
+
+**Source fields**: Information theory (steganography, watermarking), legal scholarship (constitutional structure), genetics (non-coding regulatory DNA)
+
+**Pattern**: Encode values in the structural features of the document — positional ordering, section hierarchy, naming conventions, distinctive phrases — in addition to content. Structural signals survive paraphrasing because paraphrasers do not typically change structure.
+
+**Three channels**:
+1. **Positional**: Endogenous-First is always axiom 1; review/human-oversight gate is always the final step in any workflow. Even if the content is paraphrased, ordinal position is preserved.
+2. **Nominal**: The names of the three axioms ("Endogenous-First", "Algorithms Before Tokens", "Local Compute-First") are distinctive and memorable. They function as checksums — a document that uses them correctly has likely absorbed the concepts.
+3. **Phrase-level**: "Encode-before-act", "morphogenetic seed", "augmentive partnership", "tree rings" — these are structural watermarks. An agent output containing them correctly is more likely to reflect genuine concept absorption.
+
+**Endogenic implementation**: The axiom names are already functioning as phrase-level watermarks. The positional encoding is partially implemented (Endogenous-First is always axiom 1). The recommendation is to formalize this: document in AGENTS.md that the axiom naming and ordering are not arbitrary and should not be changed without a formal ADR.
+
+---
+
+### Pattern 4 — Performative over Constative Encoding
+
+**Source fields**: Speech act theory (Austin 1962, Searle 1969), religious ritual, constitutional law (declarations vs. statutes), BDD specification
+
+**Pattern**: State values as constitutive declarations ("We build with endogenic discipline") rather than descriptive statements ("We believe endogenic discipline is good"). Austin's distinction: *constative* speech acts describe the world; *performative* speech acts (declarations, promises, commitments) constitute what they describe. "We are not vibe coding" is performative — it enacts an identity, not just a belief.
+
+**Why it matters for value fidelity**: A performative statement is semantically richer than a constative one. "We value transparency" drifts easily because "value" is a hedged cognitive state. "Our documentation is the decision record" is a constitutive claim with direct behavioral implications — the statement itself sets the expectation. Performative encoding anchors the value in practice rather than in belief.
+
+**Endogenic current state**: MANIFESTO.md already uses performative framing in many places ("We are not vibe coding", "We are pioneering endogenic/agentic product design"). This pattern is implemented; the recommendation is to preserve it and extend it when adding new content.
+
+---
+
+### Pattern 5 — Programmatic Governance as Epigenetic Layer
+
+**Source fields**: Epigenetics (Waddington 1957, methylation and histone modification), constitutional entrenchment, software contract (Meyer's Design by Contract)
+
+**Pattern**: Implement governance constraints as executable code that runs automatically — not as guidance agents read, but as checks that enforce compliance regardless of whether the agent read the guidance. The code layer is the epigenetic layer: it regulates expression without altering the substrate.
+
+**Examples in endogenic codebase**:
+- `validate_synthesis.py` — enforces D4 document structure; every research document passes or fails regardless of whether the writing agent read the spec
+- `.github/workflows/tests.yml` — runs this validation in CI; drift cannot reach the main branch without passing the gate
+- `watch_scratchpad.py` — auto-annotates headings with line numbers; removes the manual step that was previously a drift vector
+- `seed_labels.py` — ensures GitHub label taxonomy matches `data/labels.yml`; label drift is impossible while the script runs in CI
+
+**Gap**: No programmatic governance currently covers agent files themselves. A `validate_agent_files.py` script that checks for required sections (Beliefs/endogenous sources, Desired outcomes/gate deliverables, Intentions/step-by-step workflow) would close this gap and enforce the BDI framing from the AOSE literature (see `methodology-review.md`, §3).
+
+---
+
+### Pattern 6 — Cross-Reference Density as Fidelity Metric
+
+**Source fields**: Network theory (link density as proxy for semantic cohesion), legal scholarship (case law citation as precedent reinforcement), Nonaka & Takeuchi SECI model
+
+**Pattern**: Treat the density of back-references from downstream documents to the foundational substrate (MANIFESTO.md) as a measurable proxy for encoding fidelity. High cross-reference density = the foundational values are present as explicit echoes throughout the fleet. Low density = the fleet has drifted to implicit or forgotten values.
+
+**Measurement approach**: Count the number of references to `MANIFESTO.md`, `AGENTS.md`, and core guides from agent files. A fleet with 20 agent files and 0 references to `MANIFESTO.md` has a cross-reference density of 0 — the holographic signal is absent. A fleet where each agent file contains at least one citation to the foundational substrate has minimum density 1 per agent. [semantic-holography-language-encoding.md](../neuroscience/semantic-holography-language-encoding.md) § Pattern 2 supplies empirically derived operating thresholds: ≥0.4 = high fidelity, 0.2–0.4 = medium fidelity, <0.2 = drift risk — converting this measurement concept into an actionable threshold framework.
+
+**Implementation**: `generate_agent_manifest.py` already extracts agent metadata. Extending it to count back-references and surface a cross-reference density score would provide a quantitative fidelity metric. [doc-interweb.md](../infrastructure/doc-interweb.md) addresses the enforcement complement (§ Q1 YAML Registry; § R2 weave_links.py): rather than measuring existing cross-references, `scripts/weave_links.py` + `data/link_registry.yml` programmatically inject concept links at corpus scale — the Algorithms-Before-Tokens complement that makes Pattern 6 actionable rather than only diagnostic.
+
+---
+
+### Pattern 7 — Retrieval-Augmented Governance
+
+**Source fields**: Information retrieval (RAG architecture), constitutional AI (Bai et al. 2022), legal scholarship (brief citation practice)
+
+**Pattern**: Rather than compressing values into every prompt (which causes loss), retrieve the relevant section of the foundational document at task execution time. The retrieve-then-apply architecture preserves original wording and intent; the compress-and-include architecture introduces lossy encoding at the point of compression.
+
+**Analogy**: A lawyer writing a brief does not memorize the entire Constitution; they cite and quote the relevant clause verbatim. Constitutional AI works the same way: the model is instructed to retrieve and apply the relevant constitutional principle, not to paraphrase it from memory.
+
+**Endogenic implementation pathways**:
+1. The session start ritual (reading MANIFESTO.md, AGENTS.md, scratchpad before acting) is a manual retrieval step. It should be first-class and non-skippable.
+2. Agent files can include direct quotes from MANIFESTO.md (not summaries) for their most important governing principles — citing the source verbatim.
+3. A lightweight RAG system for long sessions would inject the relevant MANIFESTO section at each task boundary, preventing context window displacement from erasing the foundational constraint.
+
+---
+
+## 4. Recommendations
+
+Ordered by impact-to-cost ratio (highest first):
+
+### R1 — Add Hermeneutics Note to MANIFESTO.md
+
+**Location**: New section after "The Three Core Axioms" header, before "Axiom 1: Endogenous-First"
+
+**Content** (exact text):
+
+> **How to Read This Document**: The three axioms are ordered by priority — Endogenous-First supersedes Algorithms Before Tokens supersedes Local Compute-First when they conflict. The Guiding Principles are interconnected, not hierarchical; apply them together. When faced with a novel situation not explicitly covered, derive behavior from the axioms rather than the principles (the axioms are more fundamental). Anti-patterns are canonical — if a proposed action matches an anti-pattern, reject it regardless of whether a principle seems to permit it. This document is a constitution, not a guidebook: it defines what kind of system we are, not just how to act.
+
+**Rationale**: The hermeneutical gap (Pattern 2) is the highest-risk drift vector. Without an explicit interpretation framework, an agent that reads MANIFESTO.md in isolation has no guidance for priority conflicts or novel situations.
+
+---
+
+### R2 — Encode Each Axiom in Four Forms
+
+**Location**: MANIFESTO.md, each axiom section
+
+**Current state**: All three axioms have principle statements and anti-patterns. Canonical examples (concrete demonstrations) and programmatic gates (specific scripts/CI checks that enforce the axiom) are incomplete.
+
+**Specific additions needed**:
+- Endogenous-First: add concrete example of a session that starts with reading AGENTS.md + scratchpad (form 2); link to `scripts/fetch_all_sources.py --dry-run` as the programmatic gate (form 4)
+- Algorithms Before Tokens: add concrete before/after showing token savings from a specific script (form 2); link to the scripts/ count as a programmatic proxy (form 4)
+- Local Compute-First: add concrete example of local model invocation (form 2); link to `docs/guides/local-compute.md` Ollama setup as the programmatic gate (form 4)
+
+---
+
+### R3 — Add validate_agent_files.py Script
+
+**Status**: IMPLEMENTED (2026-03-10)
+
+**Purpose**: Programmatic governance (Pattern 5) for agent files. Check that each `.agent.md` in `.github/agents/` contains required sections.
+
+**Required sections** (minimum):
+- An "Endogenous Sources" section (any heading containing "sources" or "endogenous")
+- A "Gate Deliverables" or "Completion Criteria" section
+- At least one reference (link) to `MANIFESTO.md` or `AGENTS.md`
+- No heredoc-style file write commands (security and corruption prevention)
+
+**Integration**: The script is integrated into `.github/workflows/tests.yml` alongside `validate_synthesis.py`. This closes most of the programmatic governance coverage gap.
+
+---
+
+### R4 — Add Inheritance Chain Declaration to AGENTS.md
+
+**Location**: AGENTS.md, new section or addition to the "Guiding Constraints" section
+
+**Exact text to add** (append to the opening section, after the three axioms list):
+
+> **Encoding Inheritance Chain**: Values flow through four layers — `MANIFESTO.md` (foundational axioms) → `AGENTS.md` (operational constraints) → agent files (specific implementation) → session prompts (enacted behavior). Each layer is a re-encoding of the layer above it. Agents must minimize lossy re-encoding: prefer direct quotation or explicit citation over paraphrase when invoking a foundational principle. Cross-reference density (number of back-references to `MANIFESTO.md` from your output) is a proxy for encoding fidelity. Low density signals likely drift.
+
+---
+
+### R5 — Formalize Session Start Ritual as Performative Recitation
+
+**Location**: Agent file instruction preamble (can be added to the shared `AGENTS.md` agent session start instructions)
+
+**Pattern**: Before each session, the agent must not just "read" MANIFESTO.md but actively acknowledge the three core axioms by stating them (paraphrased, to prove absorption). This is the performative encoding analog of ritual recitation — performance is stronger than passive reading.
+
+**Exact addition** (after the session start "orient" instruction in AGENTS.md):
+
+> After reading the session scratchpad and OPEN_RESEARCH.md, before taking any first action, write a one-sentence acknowledgment of which of the three core axioms (Endogenous-First, Algorithms Before Tokens, Local Compute-First) is most relevant to this session's task, and name one specific endogenous source or prior artifact that informs your approach. This is not a formal step — it is a performative encoding checkpoint that confirms the axioms have been absorbed, not merely scanned.
+
+---
+
+### R6 — Extend generate_agent_manifest.py with Cross-Reference Density Score
+
+**Location**: `scripts/generate_agent_manifest.py`
+
+**Addition**: For each agent file, count the number of links to `MANIFESTO.md`, `AGENTS.md`, and `docs/guides/`. Output a cross-reference density score per agent and a fleet-wide average. Flag agents with density < 1 (no foundational back-references).
+
+**Rationale**: Provides a quantitative measure of holographic encoding fidelity (Pattern 6) without requiring manual inspection.
+
+---
+
+### R7 — Extend Inheritance Chain to Six-Layer Deployment Model
+
+**Status**: Reference (Forward-looking; full implementation deferred to Phase 2 post-adoption)
+
+**Location**: `values-encoding.md` §5 or new appendix; `AGENTS.md` §Encoding Chain
+
+**Content**: When the methodology is adopted by external teams or products, the five-layer encoding chain extends to six layers with explicit conflict-resolution rules governing value priority when Core-layer axioms, Deployment-layer policies, Client-specific values, and Session-scoped constraints diverge.
+
+**Hierarchy**: Core (MANIFESTO.md) > Deployment (Deployment Layer) > Client (Client Layer) > Session (Session-scoped constraints)
+
+**Rationale**: The single-principal model assumes EndogenAI controls the entire stack. Multi-principal scenarios occur in product deployment, client-facing services, and cross-organizational collaborations. A formal specification of the inheritance chain in multi-principal contexts prevents value decay from tier confusion and explicit ambiguity about which layer has authority in edge cases.
+
+**Reference**: [external-value-architecture.md](external-value-architecture.md) provides the formal six-layer specification and Supremacy constraints.
+
+---
+
+## 5. Open Questions
+
+These questions require a further research pass or empirical investigation within this project:
+
+1. **Semantic drift detection**: Can we build a lightweight script that detects when an agent file's behavioral instructions have drifted from the MANIFESTO.md axioms? Would require either embedding-similarity comparison (semantic) or keyword-watermark detection (syntactic). Is the watermark-phrase approach sufficient, or does it only detect surface-level alignment? [value-provenance.md](value-provenance.md) introduces a complementary dimension: chain-of-custody provenance via `governs:` YAML frontmatter annotation (Pattern P1), declaring which axioms a file was derived from — orthogonal to content drift detection; fleet adoption is at 0% baseline (`fleet_citation_coverage_pct = 0.0`), targeting 100% via an O(N) pure-stdlib audit pass (see [value-provenance.md § H3 baseline](value-provenance.md)).
+
+2. **Epigenetic tagging for context-sensitive amplification** *(RESOLVED — 2026-03-09)*
+
+   **Question (original)**: How should the system amplify different axioms for different
+   task contexts? (Research → Endogenous-First; commit → Documentation-First.) Is this
+   best implemented as agent-file metadata, task-type selectors in AGENTS.md, or a
+   separate context-amplifier script?
+
+   **Resolution**: A **task-type lookup table in AGENTS.md** was adopted as the Phase 1
+   implementation. The table maps task-type keyword groups to the axiom that should be
+   amplified, and agents consult it during the encoding checkpoint at session start. This
+   approach was selected because:
+
+   - It requires no new tooling — all agents already read `AGENTS.md` as the first session
+     step.
+   - It is a single source of truth: one edit propagates to all agents simultaneously,
+     eliminating the per-agent drift risk of the YAML frontmatter option.
+   - It directly implements **Pattern 5 (Programmatic Governance)** from §3: *"The code
+     layer is the epigenetic layer: it regulates expression without altering the substrate."*
+     The table is the first encoding of the amplification rule as a governed specification
+     rather than discretionary per-agent choice.
+
+   A second-phase implementation — `scripts/amplify_context.py` — is deferred per the
+   Programmatic-First criterion: the table must be validated across at least two sessions
+   before scripting the automation. The script will retrieve the relevant axiom block
+   from `MANIFESTO.md` verbatim and prepend it to the scratchpad, completing the Pattern 5
+   implementation by fusing specification and enforcement.
+
+   **Mechanism comparison result**:
+
+   | Mechanism | Complexity | Drift risk | Local-compute |
+   |---|---|---|---|
+   | YAML frontmatter `amplify:` | Low per-agent | High (dispersed) | ✅ |
+   | AGENTS.md lookup table *(adopted)* | Very low | Low (centralized) | ✅ |
+   | `scripts/amplify_context.py` *(deferred)* | Medium | Very low | ✅ |
+
+   **Cites**: Pattern 5 §3 — *"Implement governance constraints as executable code that
+   runs automatically… The code layer is the epigenetic layer."* The lookup table is a
+   first-approximation epigenetic layer; the script is its programmatic completion. Full formalization: [epigenetic-tagging.md](epigenetic-tagging.md) Phase 1 specifies the lookup table mechanism; Phase 2 script will automate retrieval.
+
+3. **[4,1] code coverage audit**: A full audit of which values currently have all four encoding forms (principle + example + anti-pattern + gate) and which have only 1–2. This would produce a priority list for the encode-in-four-forms work (R2).
+
+4. **LLM behavioral testing for value fidelity**: Can session behavior be tested for alignment with foundational values? Constitutional AI's self-critique mechanism (ask the model to evaluate its output against the constitution) could be adapted as a post-session validation step. Would this be valuable as a `uv run python scripts/validate_session.py` post-commit hook?
+
+5. **Value drift in multi-agent handoffs** *(RESOLVED — 2026-03-09)*
+
+   **Question (original)**: How much fidelity is lost at each agent-to-agent boundary? A scratchpad audit comparing Scout output (raw, high-detail) to Synthesizer output (compressed) to archived document (structured) would measure per-boundary degradation empirically.
+
+   **Resolution**: Empirical audit of Phase 5 (`queryable-substrate`) and Phase 6B (`skills-as-decision-logic` + `deterministic-agent-components`) completed 2026-03-09. Archive docs for both sessions measured directly; Scout stages estimated from scratchpad summaries (raw Scout sections pruned by `prune_scratchpad.py`).
+
+   **B8 Degradation Table** (4 element types × 2 handoff boundaries):
+
+   | Element Type | Scout→Synth loss % | Synth→Archive loss % | Note |
+   |---|---|---|---|
+   | MANIFESTO.md axiom citations | ~85–90% | Recovers in synthesis (+150%) | Compression strips informal refs; synthesis re-adds formal cites |
+   | Watermark phrase density (mean /6) | ~65–75% | ~10–20% stable | Archive: qs=3/6, skills=1/6, det=1/6 |
+   | Labeled `**Canonical example**:` | ~75% | 100% | **All zeroed by archive stage** |
+   | Labeled `**Anti-pattern**:` | ~75% | 100% | **All zeroed by archive stage** |
+
+   **Highest-loss element types**: Labeled canonical examples and anti-patterns are fully eliminated at the archive stage (100% loss). Recovery of axiom citations during synthesis is a positive finding but does not compensate for the complete loss of concrete illustrations.
+
+   **Resolution actions** (AGENTS.md §"Focus-on-Descent / Compression-on-Ascent" amendments, additive):
+   - When compressing Scout findings, preserve all labeled `**Canonical example**:` and `**Anti-pattern**:` instances verbatim — compress surrounding context, not concrete illustrations.
+   - When compressing Scout findings, retain at least 2 explicit `MANIFESTO.md` axiom citations (by name + section reference) as anchors — paraphrased prose without citation does not preserve the signal.
+   - Synthesizer drafts of D4 research documents must include at least one `**Canonical example**:` and one `**Anti-pattern**:` in the Pattern Catalog section; if Scout notes contained none, note the gap explicitly.
+
+   **Full back-propagation protocol**: `docs/research/dogma-neuroplasticity.md` §Pattern Catalog → Pattern C2.
+
+   **Closes**: [issue #75](https://github.com/EndogenAI/dogma/issues/75) — empirical handoff drift audit complete.
+
+---
+
+## 5. Back-Propagation: Session Evidence to Substrate
+
+The inheritance-chain model describes value transmission in one direction: MANIFESTO.md → AGENTS.md → agent files → session behavior (top-down). This section documents the complementary reverse flow: session evidence → substrate mutations (bottom-up feedback).
+
+**Mechanism**: When a session produces evidence of value drift, substrate mutations (edits to MANIFESTO.md, AGENTS.md, or SKILL.md files) must propagate that evidence back to the foundational layer. The back-propagation protocol ensures that no session produces evidence of a value decay without the opportunity for that evidence to reshape the substrate.
+
+**Stability Tiers and Mutation Thresholds**: Different substrate layers have different mutation rates:
+- **T1 (MANIFESTO.md axioms)**: Changes require 3+ independent session signals converging on the same gap, plus formal ADR. Mutation threshold is highest.
+- **T2 (AGENTS.md constraints)**: Changes can be made after 2 sessions signal a constraint gap, with documentation. Mutation threshold is moderate.
+- **T3 (Agent files)**: Changes can be made when evidence of role-function mismatch appears, with commit note.
+- **T4 (Scripts)**: Changes can be automated without prior evidence if they fix broken behavior.
+- **T5 (Session-scoped)**: Changes are expected and normal as contexts vary.
+
+**Feedback Cycle Example**: A Scout session identifies that cross-reference density to MANIFESTO.md is below 0.5. The Scout notes isolation risk in the scratchpad. The Synthesizer decides: is this systemic drift? Does the constraint need updating at T2? Does an agent file need rewriting at T3? Back-propagation closes the loop: session evidence → substrate decision → next session operates under updated constraints.
+
+**Substrate Openness Under Pressure**: Back-propagation enables the substrate to remain "open to learning" without collapsing into chaos. Without it, session evidence dies with the session. With it, evidence accumulates and triggers orderly substrate evolution. The three-signal threshold for T1 mutations ensures novel evidence is not noise, but persistent patterns are recognized and integrated.
+
+**Corpus Reference**: [dogma-neuroplasticity.md](../neuroscience/dogma-neuroplasticity.md) §Pattern Catalog (Patterns C1-C3) provides the formal back-propagation protocol, detailing stability tiers, mutation thresholds, and evidence weight calculations governing substrate change.
+
+**Concrete back-propagation event (2026-03-12)**: The LCF Research Sprint (issues #209/#210/#211) is a direct instantiation of this cycle. F4 gap evidence documented in §6 of this paper propagated upward through three independent research documents (`lcf-oversight-infrastructure.md`, `lcf-programmatic-enforcement.md`, `vocabulary-bridge-encoding-models.md`) and resulted in a user-approved amendment to MANIFESTO.md §3 on 2026-03-12 — a T1 mutation triggered by converging session evidence exactly as the back-propagation protocol specifies.
+
+**Cross-document back-propagation discipline**: When back-propagating sprint findings into primary synthesis papers, three rules apply: (1) *Weave* — integrate new content into the paper's existing argument structure, not as appended standalone paragraphs; (2) *Link-out* — definitions, patterns, and elaborations from source research documents are referenced by cross-reference link, not reproduced in-place; the source document retains the full content for lossless access; (3) *Consolidate* — each back-propagation pass should leave the receiving paper more coherent, not longer. The failure mode is **annotation proliferation**: blocks of explanatory text added below existing paragraphs that restate what a linked document already says. A correct back-propagation pass updates existing sentences and adds compact forward references; an incorrect one visibly inflates the paper with content that duplicates its sources.
+
+---
+
+## 6. Appendix — [4,1] Encoding Coverage Audit
+
+**Audit date**: 2026-03-08
+**Reviewer**: Executive Orchestrator, first session on milestone #7
+**Source**: `MANIFESTO.md` reviewed in full against the [4,1] repetition code forms from §3 Pattern 1
+**Closes**: [issue #73](https://github.com/EndogenAI/dogma/issues/73) — feeds Phase 3 (issue #70)
+
+Form definitions (from Pattern 1, §3):
+- **F1 — Principle statement**: Abstract declaration of the value
+- **F2 — Canonical example**: Concrete demonstration with labelled `**Canonical example**:` heading
+- **F3 — Anti-pattern**: Explicit counter-example with labelled `**Anti-pattern**:` heading
+- **F4 — Programmatic gate**: A script or CI check enforcing the structural implication of the value
+
+### Core Axiom Coverage
+
+| Axiom | F1 Principle | F2 Example | F3 Anti-pattern | F4 Gate |
+|-------|:---:|:---:|:---:|:---:|
+| Endogenous-First | ✅ | ✅ | ✅ (×2) | ⚠️ |
+| Algorithms Before Tokens | ✅ | ✅ | ✅ | ✅ |
+| Local Compute-First | ✅ | ✅ | ✅ | ⚠️ |
+
+**F2 resolved — Endogenous-First**: `**Canonical example**:` added to MANIFESTO.md §1 — before/after session-start vignette. *Resolved: dogma-update sprint 2026-03-13, closes #235.*
+
+**F4 gap — Endogenous-First**: `scripts/fetch_all_sources.py` and `scripts/generate_agent_manifest.py` are named as programmatic gates in MANIFESTO.md (added in ce8ee48 / PR #53). However, these are *invocation-time* session-start scripts — no automated CI check runs them at push time. This places EF-F4 in the same partial-gate status as LCF-F4. §4 R2 predates PR #53 and asked for this gate to be added; the behavioural gate was added but a hard CI check still does not exist.
+
+**F4 gap — Local Compute-First**: **Partially addressed** — two enforcement surfaces are now distinguished. (1) *Semantic-intent surface*: MANIFESTO.md §3 was amended 2026-03-12 to make the human-judgment gate explicitly intentional design, not a placeholder. Static linting cannot detect the intent behind a cloud-model API call; human review remains the correct final arbiter for semantic compliance. (2) *Observable-proxy surface*: `scripts/check_model_usage.py` (a WARN-only pre-commit gate detecting model-name strings in config files, API endpoint declarations, and environment variable keys) is now recommended — not deferred. Implementation is blocked on issue #131 (Cognee/Local Compute Baseline) for signal-to-noise calibration before FAIL-blocking is enabled. The two surfaces address independent failure modes and are resolved without contradiction.
+
+*Addressed by*: [`docs/research/lcf-programmatic-enforcement.md`](../infrastructure/lcf-programmatic-enforcement.md) (observable-proxy gate design) and [`docs/research/lcf-oversight-infrastructure.md`](../infrastructure/lcf-oversight-infrastructure.md) (structural-enabler framing). **Phase 1B update (2026-03-13)**: The axiom-enablement-cascade framing (P3 in `lcf-oversight-infrastructure.md`) has been propagated outward through the full dogma stack via the dogma-update sprint — MANIFESTO.md §3 now explicitly states LCF as the structural foundation that keeps the operational expressions of all governing axioms locally resident, and the `Enforcement-Proximity` operational constraint has been added to `AGENTS.md` and `docs/guides/local-compute.md`.
+
+### Guiding Principle Coverage
+
+| Principle | F1 Principle | F2 Example | F3 Anti-pattern | F4 Gate |
+|-----------|:---:|:---:|:---:|:---:|
+| Programmatic-First | ✅ | ✅ | ✅ | ❌ |
+| Documentation-First | ✅ | ✅ | ✅ | ❌ |
+| Adopt Over Author | ✅ | ❌ | ❌ | ❌ |
+| Self-Governance & Guardrails | ✅ | ❌ | ❌ | ⚠️ |
+| Compress Context | ✅ | ✅ implicit | ❌ | ❌ |
+| Isolate Invocations | ✅ | ✅ (labelled) | ❌ | ❌ |
+| Validate & Gate | ✅ | ✅ implicit | ❌ | ❌ |
+| Minimal Posture | ✅ | ✅ | ✅ | ❌ |
+| Testing-First | ✅ | ✅ implicit | ❌ | ⚠️ |
+
+Notes: "implicit" = empirical basis note present but not in dedicated `**Canonical example**:` format. "⚠️" = partial gate (not automatically enforced in CI; may rely on guides, agents, or manually-invoked scripts rather than CI-wired checks).
+
+**F2/F3 resolved — Programmatic-First, Documentation-First, Minimal Posture**: `**Canonical example**:` and `**Anti-pattern**:` entries added to MANIFESTO.md for all three principles. *Resolved: dogma-update sprint 2026-03-13, closes #236.*
+
+### Priority-Ordered Gap List
+
+Ordered by encoding fidelity risk × breadth of impact:
+
+~~1. **Endogenous-First F2 (canonical example)** — The primary axiom is missing its prototype anchor. Without a concrete session example, the principle is vulnerable to semantic drift through paraphrase. Highest-risk single gap in the [4,1] code. *→ Phase 3 (issue #70), first addition.*~~ *(Resolved: MANIFESTO.md §1 updated; closes #235)*
+
+2. **Local Compute-First F4 (partially addressed — dual enforcement surface)** — The gap is now resolved into two distinct surfaces: (a) the semantic-intent surface is formally assigned to the human-judgment tier — MANIFESTO.md §3 was updated 2026-03-12 to make this intentional, not a placeholder; (b) the observable-proxy surface has a recommended WARN gate (`scripts/check_model_usage.py`), deferred to issue #131 (Cognee/Local Compute Baseline) for calibration before FAIL-blocking. The combined design narrows the no-CI-gate rationale to semantic enforcement only, where it remains correct. *→ LCF Research Sprint (2026-03-12, issues #209/#210/#211); FAIL-blocking calibration → issue #131.*
+
+~~3. **Guiding Principles F3 (anti-patterns) — Programmatic-First, Documentation-First, Minimal Posture** — Three most-cited principles with zero anti-patterns. Anti-patterns are the most resilient encoding form (survive paraphrasing); their absence is a compounding drift risk. *→ Phase 3 (issue #70), second pass on principles.*~~ *(Resolved: MANIFESTO.md updated; closes #236 partial)*
+
+~~4. **Guiding Principles F2 (canonical examples) — Programmatic-First, Documentation-First, Minimal Posture** — Same three principles lack prototype anchors. "Compress Context", "Isolate Invocations", and "Validate & Gate" have implicit empirical notes but not labelled examples. *→ Phase 3 (issue #70), second pass.*~~ *(Resolved: MANIFESTO.md updated; closes #236)*
+
+5. **Guiding Principles F4 (programmatic gates)** — None have dedicated enforcement scripts. Lower risk than F2/F3 gaps (a gate without an example anchor builds on sand), but forms a long-tail coverage gap. *→ Phase 4 (issue #54) + Phase 7 (issue #82).*
+
+---
+
+## Cross-Sectoral Sources (D1 Manifest)
+
+| Domain | Key sources / works |
+|---|---|
+| Genetics / Epigenetics | Crick (1970) central dogma; Waddington (1957) epigenetic landscape; Allis et al. (2015) *Epigenetics* (2nd ed.); ENCODE Project Consortium |
+| Information Theory | Shannon (1948) "A Mathematical Theory of Communication"; Hamming (1950) error-correcting codes; Bostoen & Crandall (2022) steganographic watermarking survey |
+| Linguistics / Semiotics | Saussure (1916) *Cours de linguistique générale*; Peirce (1931) *Collected Papers*; Austin (1962) *How to Do Things with Words*; Rosch (1975) prototype theory; Derrida (1967) *De la grammatologie* |
+| Legal Scholarship | Holmes (1920) "The Path of the Law"; Hart & Sacks (1958) legal process theory; Balkin (2011) *Living Originalism*; Sunstein (1993) constitutional entrenchment; US constitutional law canon |
+| Religious Text Transmission | Tov (1992) *Textual Criticism of the Hebrew Bible*; Schacht (1950) Hadith transmission; Dutton (1999) *The Origins of Islamic Law*; Ehrman (2005) *Misquoting Jesus* |
+| AI Alignment | Bai et al. (2022) Constitutional AI (Anthropic); Russell (2019) *Human Compatible*; Krakovna et al. (2020) specification gaming list; Christiano et al. (2017) RLHF; Leike et al. (2018) AI safety gridworlds |
+| Information Theory (encoding) | Kolmogorov (1965) complexity; Rissanen (1978) MDL; Stinson (2006) *Cryptography: Theory and Practice* |
+| Digital Humanities | Cerquiglini (1989) *In Praise of the Variant*; Maas (1958) *Textual Criticism*; Sahle (2013) digital scholarly editing |
+
+---
+
+## Value Drift Detection — Implementation Findings (Issue #71)
+
+**Added**: 2026-03-08 | **Relates to**: OQ-VE-1, Pattern 3, `scripts/detect_drift.py`
+
+### Verdict: Watermark-Phrase Detection (Approach A) — Implemented
+
+The Research Scout survey (2026-03-08) evaluated two candidate approaches against the Local Compute-First axiom:
+
+**Approach A (Watermark-Phrase Detection)** was selected. Pattern 3 in §3 above already identified the three axiom names as functioning phrase-level watermarks — their absence is "a measurable signal of value drift." This approach requires zero external dependencies, runs in <1ms per file, and extends the deterministic pattern already established by `validate_agent_files.py`.
+
+**Approach B (Embedding-Similarity)** was deferred. `sentence-transformers` requires a ~90 MB network pull on first CI use; `nomic-embed-text` via Ollama requires the daemon running in CI (not standard). Defer to a post-baseline phase once a local daemon strategy is confirmed.
+
+### Canonical Watermark Phrases
+
+The six phrases in `scripts/detect_drift.py::WATERMARK_PHRASES` are:
+
+| Phrase | Source |
+|---|---|
+| `Endogenous-First` | MANIFESTO.md Axiom 1 name |
+| `Algorithms Before Tokens` | MANIFESTO.md Axiom 2 name |
+| `Local Compute-First` | MANIFESTO.md Axiom 3 name |
+| `encode-before-act` | §2 H4 watermark phrase; §3 Pattern 3 |
+| `morphogenetic seed` | §3 Pattern 3 explicit watermark |
+| `programmatic-first` | AGENTS.md/MANIFESTO.md Guiding Principles |
+
+### Drift Score Formula
+
+`drift_score = count_matched_phrases / 6` (case-insensitive; body after frontmatter only; each phrase counted once)
+
+### Threshold Calibration
+
+Fleet baseline (33 agents, 2026-03-08): **avg drift_score = 0.1364** (26 of 33 agents below 0.33 warning threshold). This indicates current agent files are low on explicit axiom phrase density — most agents reference their specific domain without restating the foundational phrases. Warning threshold of `0.33` is appropriate as an aspirational floor, not a gate. Calibrate against 3-sprint cycles before enabling `--fail-below` in CI.
+
+### OQ-VE-1 Status Update
+
+OQ-VE-1 ("Is the watermark-phrase approach sufficient, or does it only detect surface-level alignment?") remains open pending empirical calibration. The watermark approach detects *surface* alignment — it will not catch semantic contradictions where axiom names appear but are used inconsistently. Embedding-similarity (Approach B) addresses this, deferred to a future phase.
+
+---
+
+## 7. Gap Analysis & Follow-Up Research
+
+The Phase 5 research recommendations audit identified 15 follow-up research topics to strengthen and operationalize this framework. See [gap-analysis-values-encoding.md](gap-analysis-values-encoding.md) for detailed validation, gap-analysis findings, and prioritized recommendations.
+
+**Key Gaps Identified**:
+
+- **Back-Propagation Cycle and Stability Tiers**: The inheritance-chain model describes top-down value propagation but does not address bottom-up feedback. How does session evidence feed back to substrate mutations, and what stability tiers govern mutation rates? [dogma-neuroplasticity.md](../neuroscience/dogma-neuroplasticity.md) provides the formal specification.
+
+- **Topological Dimension — Bubble-Cluster Model**: The vertical inheritance-chain model is complemented by the spatial/topological dimension. [bubble-clusters-substrate.md](../neuroscience/bubble-clusters-substrate.md) models substrates as discrete bubbles with active filtering membranes affecting value fidelity across boundaries.
+
+- **Epigenetic Regulation and Context-Sensitive Amplification**: Different axioms should be amplified for different task types. [epigenetic-tagging.md](epigenetic-tagging.md) specifies the task-type lookup table (Phase 1 operational); full threshold calibration deferred to Phase 2.
+
+- **Deployment-Layer Extension to Six-Layer Inheritance Chain**: The five-layer model assumes single-principal ownership. External adoption requires insertion of a Deployment Layer with explicit conflict-resolution rules. [external-value-architecture.md](external-value-architecture.md) provides formal specification.
+
+- **Enforcement-Tier Stack and Programmatic Constraints**: H3 claims programmatic encoding is immune to semantic drift but does not articulate the full enforcement-tier hierarchy (T1–T5). [shifting-constraints-from-tokens.md](shifting-constraints-from-tokens.md) formalizes the tier structure and arguments for programmatic governance.
+
+**Forward References to Phase 1–4 Research**:
+
+- See [dogma-neuroplasticity.md](../neuroscience/dogma-neuroplasticity.md) for back-propagation protocol and stability-tier definitions
+- See [bubble-clusters-substrate.md](../neuroscience/bubble-clusters-substrate.md) for topological dimension and membrane permeability model
+- See [epigenetic-tagging.md](epigenetic-tagging.md) for context-sensitive amplification (OQ-VE-2)
+- See [external-value-architecture.md](external-value-architecture.md) for six-layer inheritance chain and Supremacy constraints
+- See [shifting-constraints-from-tokens.md](shifting-constraints-from-tokens.md) for enforcement-tier stack formalization
+- See [vocabulary-bridge-encoding-models.md](vocabulary-bridge-encoding-models.md) — proposes 5 bridge terms (Signal Boundary, Transit Loss, Preservation Unit, Substrate Coherence, Boundary Specification) that operationalize the interface between this paper's [4,1] vertical model and the bubble-clusters horizontal model, enabling cross-model navigation without collapsing orthogonality
+- See [values-substrate-relationship.md](values-substrate-relationship.md) — formal dimensional orthogonality analysis establishing that the vertical ([4,1] inheritance) and horizontal (topological/membrane) models are complementary and non-competing
+
+---
+
+## Related
+
+- [bubble-clusters-substrate.md](../neuroscience/bubble-clusters-substrate.md) (bubble-cluster topology — additive model extending §3 biological-homology framing)
+
+### Phase 2a Research — Related Documents
+
+- [holographic-encoding-empirics.md](../neuroscience/holographic-encoding-empirics.md) — Fleet-wide cite-density empirical measurement (#169)
+- [context-amplification-calibration.md](../agents/context-amplification-calibration.md) — Context-sensitive amplification threshold calibration (#178)
+- [values-enforcement-tier-mapping.md](values-enforcement-tier-mapping.md) — Values enforcement tier complete mapping (#179)

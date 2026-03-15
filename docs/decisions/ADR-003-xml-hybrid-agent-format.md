@@ -8,7 +8,7 @@
 
 ## Context
 
-`.agent.md` files currently use Markdown headings (`## Workflow`, `## Guardrails`) to structure agent instruction bodies. Research from [`docs/research/xml-agent-instruction-format.md`](../research/xml-agent-instruction-format.md) found that:
+`.agent.md` files currently use Markdown headings (`## Workflow`, `## Guardrails`) to structure agent instruction bodies. Research from [`docs/research/xml-agent-instruction-format.md`](../research/agents/xml-agent-instruction-format.md) found that:
 
 - Anthropic's production cookbook agents use XML-tagged section boundaries (`<research_process>`, `<delegation_instructions>`) rather than Markdown headings
 - XML tags are machine-unambiguous and appear in Claude's training data as instruction delimiters
@@ -32,6 +32,6 @@
 
 ## References
 
-- [`docs/research/xml-agent-instruction-format.md`](../research/xml-agent-instruction-format.md)
+- [`docs/research/xml-agent-instruction-format.md`](../research/agents/xml-agent-instruction-format.md)
 - `scripts/migrate_agent_xml.py`
 - Issue #12 Follow-Up Open Questions in `docs/research/OPEN_RESEARCH.md`

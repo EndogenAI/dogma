@@ -26,4 +26,4 @@ Canonical source for the skills manifest generator pattern. The three-level prog
 
 ## Referenced By
 
-- [agentic-research-flows](../agentic-research-flows.md)
+- [agentic-research-flows](../agents/agentic-research-flows.md)

@@ -14,7 +14,7 @@ repos:
         language: system
         types: [markdown]
         files: ^docs/research/
-        exclude: ^docs/research/OPEN_RESEARCH\.md$
+        exclude: ^docs/research/(OPEN_RESEARCH\.md|README\.md|.+/README\.md|sources/)
         pass_filenames: true
       - id: validate-agent-files
         name: Validate agent files

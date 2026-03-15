@@ -210,6 +210,6 @@ The `securitySchemes` + per-skill `securityRequirements` pattern is more granula
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
 - [A2A Announcement](../sources/a2a-announcement.md)
-- [Agent Fleet Design Patterns](../agent-fleet-design-patterns.md)
+- [Agent Fleet Design Patterns](../agents/agent-fleet-design-patterns.md)
 - [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
 - [Anthropic Com Engineering Multi Agent Research System](../sources/anthropic-com-engineering-multi-agent-research-system.md)

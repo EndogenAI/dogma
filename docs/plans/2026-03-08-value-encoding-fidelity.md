@@ -12,7 +12,7 @@
 
 Execute the full Value Encoding & Fidelity milestone: deepen the endogenic substrate's ability to preserve value signal across all layers of the inheritance chain (MANIFESTO.md → AGENTS.md → agent files → session behavior), make enforcement programmatic, make the substrate queryable and self-referential, and establish a governed process for the dogma to evolve through neuroplasticity.
 
-**Primary research document**: [`docs/research/values-encoding.md`](../research/values-encoding.md) — Final synthesis that generated all issues in this milestone. Read it in full before picking up any issue.
+**Primary research document**: [`docs/research/values-encoding.md`](../research/methodology/values-encoding.md) — Final synthesis that generated all issues in this milestone. Read it in full before picking up any issue.
 
 ---
 

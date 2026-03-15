@@ -16,7 +16,7 @@ These constraints govern all agent behavior. They derive from three core axioms 
 2. **Algorithms Before Tokens** — prefer deterministic, encoded solutions over interactive token burn
 3. **Local Compute-First** — minimize token usage; run locally whenever possible *(LCF as structural enabler — see [`MANIFESTO.md §3`](MANIFESTO.md#3-local-compute-first))*
 
-**Encoding Inheritance Chain**: Values flow through MANIFESTO.md (foundational axioms) → AGENTS.md (operational constraints) → role files (.agent.md; VS Code: Custom Agents) → SKILL.md files (reusable tactical knowledge) → session prompts (enacted behavior). Each layer is a re-encoding of the layer above it. Agents must minimise lossy re-encoding: prefer direct quotation or explicit citation over paraphrase when invoking a foundational principle. Cross-reference density (back-references to MANIFESTO.md in your output) is a proxy for encoding fidelity. Low density signals likely drift. See [docs/research/values-encoding.md](docs/research/values-encoding.md) for the cross-sectoral evidence base. [AGENTS.md](AGENTS.md) is the central authority for all operational constraints; subdirectory redirection notices point back here for global governance.
+**Encoding Inheritance Chain**: Values flow through MANIFESTO.md (foundational axioms) → AGENTS.md (operational constraints) → role files (.agent.md; VS Code: Custom Agents) → SKILL.md files (reusable tactical knowledge) → session prompts (enacted behavior). Each layer is a re-encoding of the layer above it. Agents must minimise lossy re-encoding: prefer direct quotation or explicit citation over paraphrase when invoking a foundational principle. Cross-reference density (back-references to MANIFESTO.md in your output) is a proxy for encoding fidelity. Low density signals likely drift. See [docs/research/values-encoding.md](./docs/research/methodology/values-encoding.md) for the cross-sectoral evidence base. [AGENTS.md](AGENTS.md) is the central authority for all operational constraints; subdirectory redirection notices point back here for global governance.
 
 **Session-Start Encoding Checkpoint**: At the start of every session, the first sentence of `## Session Start` in the scratchpad must name the governing axiom and one primary endogenous source. See [`docs/guides/session-management.md` → Session-Start Encoding Checkpoint](docs/guides/session-management.md#session-start-encoding-checkpoint) for format and examples. The agent fleet is the pressurizing medium — it gives each substrate coherent form but does not own the membrane or the bucket. Agents are tools that shape how values flow through the system, but they neither create nor control the values themselves.
 
@@ -36,7 +36,7 @@ When writing the encoding checkpoint sentence in `## Session Start`, consult thi
 
 **How to use**: Match your session's primary task to the nearest keyword row. In the encoding checkpoint, write: *"Governing axiom: [amplified principle or axiom] — primary endogenous source: [source name]."* If a session spans multiple task types, name the axiom for the **first phase** and update in subsequent `## Pre-Compact Checkpoint` entries.
 
-*Implements OQ-VE-2 from [`docs/research/values-encoding.md`](docs/research/values-encoding.md) §5 — epigenetic tagging via AGENTS.md lookup table (Phase 1 mechanism). See that document for mechanism comparison and deferred Phase 2 script implementation.*
+*Implements OQ-VE-2 from [`docs/research/values-encoding.md`](./docs/research/methodology/values-encoding.md) §5 — epigenetic tagging via AGENTS.md lookup table (Phase 1 mechanism). See that document for mechanism comparison and deferred Phase 2 script implementation.*
 
 Additional operational constraints:
 
@@ -91,7 +91,7 @@ The scratchpad auto-annotator (`scripts/watch_scratchpad.py`) exemplifies this p
 - The result (line-range annotations in heading text) is durable even if links break.
 - Run `uv run python scripts/watch_scratchpad.py` or start the VS Code task **Watch Scratchpad**.
 
-The terminal file I/O redirection rule (`no-terminal-file-io-redirect` pre-commit hook) exemplifies this principle: agents' text-level instructions to avoid terminal I/O are shifted into a deterministic T2 (static linting) layer. See [docs/research/shifting-constraints-from-tokens.md](docs/research/shifting-constraints-from-tokens.md) § Recommendations for the theoretical foundation.
+The terminal file I/O redirection rule (`no-terminal-file-io-redirect` pre-commit hook) exemplifies this principle: agents' text-level instructions to avoid terminal I/O are shifted into a deterministic T2 (static linting) layer. See [docs/research/shifting-constraints-from-tokens.md](./docs/research/methodology/shifting-constraints-from-tokens.md) § Recommendations for the theoretical foundation.
 
 ---
 
@@ -232,7 +232,7 @@ When updating `docs/toolchain/*.md`, run `uv run python scripts/fetch_toolchain_
 
 **Canonical example — GitHub Actions run polling**: [`scripts/wait_for_github_run.py`](scripts/wait_for_github_run.py) encodes the full polling pattern for CI runs. After `git push`, use this script to wait for the run to complete instead of ad-hoc bash polling. Exit codes are semantically clean: 0 = success, 1 = failure or timeout, 2 = run not found.
 
-For a full pattern reference including polling algorithms, observable status APIs, and detailed timeout guidance, see [`docs/research/async-process-handling.md`](docs/research/async-process-handling.md).
+For a full pattern reference including polling algorithms, observable status APIs, and detailed timeout guidance, see [`docs/research/async-process-handling.md`](./docs/research/infrastructure/async-process-handling.md).
 
 ---
 
@@ -574,7 +574,7 @@ gh auth refresh -s project
 gh auth status  # verify "project" appears in scopes
 ```
 
-See [`docs/guides/github-workflow.md`](docs/guides/github-workflow.md) for the full `gh` CLI quick-reference and [`docs/research/github-project-management.md`](docs/research/github-project-management.md) for the full synthesis.
+See [`docs/guides/github-workflow.md`](docs/guides/github-workflow.md) for the full `gh` CLI quick-reference and [`docs/research/github-project-management.md`](./docs/research/pm/github-project-management.md) for the full synthesis.
 
 ### Convention Propagation Rule
 
@@ -803,7 +803,7 @@ The heredoc write anti-pattern is enforced by a two-tier programmatic stack. Tex
 
 For the full setup guide, pattern details, and acceptance test: [`docs/guides/governor-setup.md`](docs/guides/governor-setup.md)  
 For the bash-preexec adoption decision: [`docs/decisions/ADR-007-bash-preexec.md`](docs/decisions/ADR-007-bash-preexec.md)  
-Research synthesis: [`docs/research/shell-preexec-governor.md`](docs/research/shell-preexec-governor.md)
+Research synthesis: [`docs/research/shell-preexec-governor.md`](./docs/research/infrastructure/shell-preexec-governor.md)
 
 ---
 

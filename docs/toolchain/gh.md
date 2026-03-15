@@ -330,5 +330,5 @@ gh run list --branch <branch-name> --limit 5
 ## Further Reading
 
 - Full `gh` flag inventory: `.cache/toolchain/gh/` (run `uv run python scripts/fetch_toolchain_docs.py gh` to populate)
-- Full synthesis and hypothesis analysis: [`docs/research/github-project-management.md`](../research/github-project-management.md)
+- Full synthesis and hypothesis analysis: [`docs/research/github-project-management.md`](../research/pm/github-project-management.md)
 - Actionable workflow guide: [`docs/guides/github-workflow.md`](../guides/github-workflow.md)

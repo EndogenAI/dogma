@@ -227,4 +227,4 @@ EndogenAI's multi-agent handoff pattern (Executive → Scout → Synthesizer →
 - [Platform Claude Com Docs En Build With Claude Prompt Enginee](../sources/platform-claude-com-docs-en-build-with-claude-prompt-enginee.md)
 - [Platform Openai Com Docs Api Reference Assistants](../sources/platform-openai-com-docs-api-reference-assistants.md)
 - [Python Langchain Com Docs Concepts Agents](../sources/python-langchain-com-docs-concepts-agents.md)
-- [Xml Agent Instruction Format](../xml-agent-instruction-format.md)
+- [Xml Agent Instruction Format](../agents/xml-agent-instruction-format.md)

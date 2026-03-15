@@ -82,12 +82,12 @@ The README is a well-structured, technically detailed repository landing page. I
 - Extends / contextualises: [arxiv-react.md](./arxiv-react.md) — Graphiti provides a persistent memory substrate that ReAct-style agents can read and write, closing the statelessness gap in the original ReAct design.
 - Contrasts with: [anthropic-building-effective-agents.md](./anthropic-building-effective-agents.md) — Anthropic's guide focuses on ephemeral context windows and tool-call patterns; Graphiti is an explicit counter-architecture that externalises and indexes cross-session memory.
 - Potential complement to: [arxiv-generative-agents.md](./arxiv-generative-agents.md) — generative agents rely on a memory stream with retrieval; Graphiti's temporal graph is a more structured and queryable alternative to flat memory streams.
-- May be referenced by: [agentic-research-flows.md](../agentic-research-flows.md) — the issue synthesis on agentic research flows where D4 (token offloading / memory management) is a gate deliverable.
+- May be referenced by: [agentic-research-flows.md](../agents/agentic-research-flows.md) — the issue synthesis on agentic research flows where D4 (token offloading / memory management) is a gate deliverable.
 - Overlapping scope / compare and contrast: [github-com-topoteretes-cognee](./github-com-topoteretes-cognee.md) — Cognee also builds knowledge graphs for agent memory but emphasises a higher-level add→cognify→search pipeline; Graphiti offers finer-grained control over the temporal edge model and is more explicit about bi-temporal query semantics.
 - Overlapping scope: [github-com-mem0ai-mem0](./github-com-mem0ai-mem0.md) — mem0 is an abstraction layer over multiple memory backends; Graphiti is a specific temporal graph backend that mem0 could in principle wrap, though direct integration is not described in either source.
 - Academic grounding: [arxiv-org-html-2512-05470v1](./arxiv-org-html-2512-05470v1.md) — the AIGNE context engineering paper explicitly surveys Graphiti/Zep as prior work in its related-work section, validating Graphiti's positioning within the broader context engineering research space.
 - Infrastructure deployment: [kdnuggets-com-docker-ai-for-agent-builders-models-tools-and-](./kdnuggets-com-docker-ai-for-agent-builders-models-tools-and-.md) — FalkorDB can be launched via Docker Compose alongside Docker Model Runner, enabling a fully containerised local inference-plus-memory agent stack.
-- Workflow scratchpad evolution: [agentic-research-flows.md](../agentic-research-flows.md) — the `.tmp/` scratchpad is a flat precursor to what Graphiti's temporal graph offers; the two represent successive stages of memory infrastructure maturity in the research workflow.
+- Workflow scratchpad evolution: [agentic-research-flows.md](../agents/agentic-research-flows.md) — the `.tmp/` scratchpad is a flat precursor to what Graphiti's temporal graph offers; the two represent successive stages of memory infrastructure maturity in the research workflow.
 - Protocol complement: [a2a-announcement](./a2a-announcement.md) — A2A manages inter-agent task coordination while Graphiti manages persistent cross-session memory; both are simultaneously required for a fully stateful distributed multi-agent system.
 - Programmatic scripting: the Graphiti Python SDK integrates naturally with `uv run` scripts, consistent with the EndogenAI programmatic-first principle that repeated memory operations be encoded as scripts rather than performed interactively by agents.
 
@@ -103,7 +103,7 @@ The README is a well-structured, technically detailed repository landing page. I
 
 <!-- Populated automatically by scripts/link_source_stubs.py — do not edit manually -->
 - [A2A Announcement](../sources/a2a-announcement.md)
-- [Agentic Research Flows](../agentic-research-flows.md)
+- [Agentic Research Flows](../agents/agentic-research-flows.md)
 - [Anthropic Building Effective Agents](../sources/anthropic-building-effective-agents.md)
 - [Arxiv Generative Agents](../sources/arxiv-generative-agents.md)
 - [Arxiv Org Html 2512 05470V1](../sources/arxiv-org-html-2512-05470v1.md)
