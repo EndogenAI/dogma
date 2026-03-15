@@ -74,7 +74,9 @@ jobs:
       - name: Run validate_synthesis
         run: |
           for f in docs/research/*.md; do
-            [ "$(basename "$f")" = "OPEN_RESEARCH.md" ] && continue
+            base="$(basename "$f")"
+            [ "$base" = "OPEN_RESEARCH.md" ] && continue
+            [ "$base" = "README.md" ] && continue
             uv run python3 scripts/validate_synthesis.py "$f"
           done
 
