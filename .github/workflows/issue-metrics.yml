@@ -1,0 +1,78 @@
+name: issue-metrics
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'   # Mondays at 06:00 UTC
+  workflow_dispatch:       # Allow manual trigger
+
+permissions:
+  issues: read
+  pull-requests: read
+  contents: write
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate issue/PR metrics snapshot
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          OUTFILE=".cache/github/issue-metrics-${DATE}.md"
+          mkdir -p .cache/github
+
+          echo "# Issue & PR Health Snapshot — ${DATE}" > "${OUTFILE}"
+          echo "" >> "${OUTFILE}"
+
+          # Open issues by priority label
+          echo "## Open Issues by Priority" >> "${OUTFILE}"
+          echo "" >> "${OUTFILE}"
+          echo "| Priority | Count |" >> "${OUTFILE}"
+          echo "|---|---|" >> "${OUTFILE}"
+          for priority in critical high medium low; do
+            count=$(gh issue list --repo "${REPO}" --state open --label "priority:${priority}" --json number --jq 'length')
+            echo "| priority:${priority} | ${count} |" >> "${OUTFILE}"
+          done
+          unlabeled=$(gh issue list --repo "${REPO}" --state open --json labels --jq '[.[] | select(.labels | map(.name) | any(startswith("priority:")) | not)] | length')
+          echo "| (no priority label) | ${unlabeled} |" >> "${OUTFILE}"
+          echo "" >> "${OUTFILE}"
+
+          # Open PR count
+          echo "## Open Pull Requests" >> "${OUTFILE}"
+          echo "" >> "${OUTFILE}"
+          pr_count=$(gh pr list --repo "${REPO}" --state open --json number --jq 'length')
+          echo "Open PRs: **${pr_count}**" >> "${OUTFILE}"
+          echo "" >> "${OUTFILE}"
+
+          # Stale issues (> 30 days no activity)
+          echo "## Stale Issues (> 30 days no activity)" >> "${OUTFILE}"
+          echo "" >> "${OUTFILE}"
+          STALE_DATE=$(date -u -d '30 days ago' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-30d +%Y-%m-%dT%H:%M:%SZ)
+          echo "| Issue | Title | Last Updated |" >> "${OUTFILE}"
+          echo "|---|---|---|" >> "${OUTFILE}"
+          gh issue list --repo "${REPO}" --state open --json number,title,updatedAt \
+            --jq ".[] | select(.updatedAt < \"${STALE_DATE}\") | \"| #\(.number) | \(.title | gsub(\"|\"; \"\\\\|\")) | \(.updatedAt[:10]) |\"" \
+            >> "${OUTFILE}"
+          echo "" >> "${OUTFILE}"
+
+          echo "Snapshot written to ${OUTFILE}"
+          cat "${OUTFILE}"
+
+      - name: Commit snapshot
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          OUTFILE=".cache/github/issue-metrics-${DATE}.md"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "${OUTFILE}"
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore(ci): issue-metrics snapshot ${DATE}"
+            git push
+          fi
