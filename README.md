@@ -60,6 +60,8 @@ Prefer running locally. Minimize token usage by encoding knowledge as scripts, c
 
 ## Quick Start
 
+For forking and adopting dogma in a new project, see [Product Fork Initialization Guide](docs/guides/product-fork-initialization.md).
+
 ### Using the Agent Fleet
 
 The `.github/agents/` directory contains VS Code Copilot custom agents. To use them:
