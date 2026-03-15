@@ -36,6 +36,8 @@ scripts/
   validate_handoff_permeability.py  # Validate cross-substrate handoff signal preservation (Canonical examples, Anti-patterns, Axiom citations, Source URLs) per membrane type (scout-to-synthesizer, synthesizer-to-reviewer, reviewer-to-archivist); AGENTS.md § Signal Preservation Rules enforcement
   parse_audit_result.py        # Convert JSON provenance audit output to Markdown risk assessment & PR comments; compute risk levels (green/yellow/red) from axiom citation intensity and test coverage
   export_project_state.py      # Export GitHub issue and label state to a local JSON snapshot (.cache/github/project_state.json); --check for cache freshness, --output for custom path
+  extract_action_items.py      # Extract and deduplicate action items from D4 research docs (docs/research/*.md); outputs Markdown table; --output FILE, --threshold 0.8
+  generate_script_docs.py      # Generate per-script Markdown docs from module docstrings into scripts/docs/; --check for staleness, --dry-run
   docs/                        # Per-script generated Markdown documentation (see scripts/docs/README.md)
 ```
 
@@ -53,9 +55,7 @@ script.
 open scripts/docs/prune_scratchpad.md
 ```
 
-**Regenerate all docs** (once `generate_script_docs.py` is implemented — see
-[#246](https://github.com/EndogenAI/dogma/issues/246) and
-[`docs/research/scripts-documentation-generation.md`](../docs/research/scripts-documentation-generation.md)):
+**Regenerate all docs**:
 ```bash
 uv run python scripts/generate_script_docs.py
 ```
