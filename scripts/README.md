@@ -38,6 +38,7 @@ scripts/
   export_project_state.py      # Export GitHub issue and label state to a local JSON snapshot (.cache/github/project_state.json); --check for cache freshness, --output for custom path
   extract_action_items.py      # Extract and deduplicate action items from D4 research docs (docs/research/*.md); outputs Markdown table; --output FILE, --threshold 0.8
   generate_script_docs.py      # Generate per-script Markdown docs from module docstrings into scripts/docs/; --check for staleness, --dry-run
+  encoding_coverage.py         # Check MANIFESTO F1-F4 encoding coverage for named principles/axioms; outputs Markdown table (--manifesto, --agents)
   docs/                        # Per-script generated Markdown documentation (see scripts/docs/README.md)
 ```
 
