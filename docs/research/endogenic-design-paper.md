@@ -517,6 +517,7 @@ The Phase 5 research recommendations audit identified 15 follow-up research topi
 - See [shifting-constraints-from-tokens.md](shifting-constraints-from-tokens.md) for enforcement-tier stack formalization
 - See [security-threat-model.md](security-threat-model.md) for comprehensive threat catalog and mitigation strategies
 - See [lcf-oversight-infrastructure.md](lcf-oversight-infrastructure.md) for LCF as structural-enabler governance property — enforcement proximity as design rationale
+- See [lcf-axiom-positioning.md](lcf-axiom-positioning.md) for axiom priority-vs-structural-role distinction — R1–R5 prose clarification recommendations (closes #245)
 - See [lcf-programmatic-enforcement.md](lcf-programmatic-enforcement.md) for F4 observable-proxy gate design — two enforcement surfaces (semantic-intent: human-judgment; observable-proxy: WARN-only check_model_usage.py, deferred to #131)
 - See [vocabulary-bridge-encoding-models.md](vocabulary-bridge-encoding-models.md) for shared vocabulary bridging the [4,1] vertical encoding model and the topological membrane model in bubble-clusters-substrate.md
 - See [values-substrate-relationship.md](values-substrate-relationship.md) for formal dimensional orthogonality analysis — [4,1] vertical and bubble-clusters horizontal models are complementary, not competing
