@@ -239,8 +239,9 @@ When a sub-agent cannot complete a task, it writes an escalation note and return
 |-----------|--------|
 | Session file < 2000 lines | No action needed |
 | Session file ≥ 2000 lines | Run `uv run python scripts/prune_scratchpad.py` |
-| Session end | Write `## Session Summary`, then run `uv run python scripts/prune_scratchpad.py --force` |
+| Session end | Write `## Session Summary` — leave file intact; start fresh tomorrow with `--init` |
 | New session day | Run `uv run python scripts/prune_scratchpad.py --init` |
+| Need to archive session stub | Run `uv run python scripts/prune_scratchpad.py --force` (**deprecated** — emits `DeprecationWarning`; archive step still runs but compression is discouraged) |
 
 ### What Pruning Does
 
@@ -275,7 +276,8 @@ uv run python scripts/prune_scratchpad.py --dry-run
    gh issue comment <num> --body-file /tmp/session_close_<num>.md
    gh issue view <num> --json comments -q '.comments[-1].body[:80]'
    ```
-5. Run `uv run python scripts/prune_scratchpad.py --force` to archive and update `_index.md`
+5. Leave the session file intact — do **not** run `--force` for compression. Session files are per-day; historical days are naturally bounded.
+   - If you need the `_index.md` stub written, run `uv run python scripts/prune_scratchpad.py --force` but expect a `DeprecationWarning` on stderr.
 6. Stop the scratchpad watcher (Ctrl-C)
 
 **Substrate Retrospective (when applicable)**: If the session produced novel patterns or efficiency gains not yet encoded in the substrate, run the session-retrospective skill before closing. Invoke it with: "What lessons did we learn? Delegate querying which ones are encoded and which aren't, routing to the fleet to update the executive orchestrator and appropriate workflows." This encodes session experience back into the substrate — the session-level enactment of the neuroplasticity principle (see issue #82).
@@ -315,8 +317,8 @@ uv run python scripts/prune_scratchpad.py --dry-run
 # Prune in-place (when file exceeds 2000 lines)
 uv run python scripts/prune_scratchpad.py
 
-# Force prune + archive session (at session end)
-uv run python scripts/prune_scratchpad.py --force
+# DEPRECATED: Force prune + archive session (compression discouraged; per-day files make this unnecessary)
+# uv run python scripts/prune_scratchpad.py --force  # emits DeprecationWarning
 ```
 
 ---
