@@ -1,3 +1,21 @@
+# [0.4.0](https://github.com/EndogenAI/dogma/compare/v0.3.1...v0.4.0) (2026-03-15)
+
+
+### Bug Fixes
+
+* **agents:** replace unverifiable commit-discipline governs: cites with canonical MANIFESTO.md axioms ([f98de6a](https://github.com/EndogenAI/dogma/commit/f98de6a9910605e8421da6b64f063c3db422be79))
+* **docs:** remove forthcoming external-value-architecture.md reference from fork guide ([#204](https://github.com/EndogenAI/dogma/issues/204)) ([4e47972](https://github.com/EndogenAI/dogma/commit/4e479724719e489c28fc383ebbdb7af6c227bb2f))
+* **sprint:** address PR [#263](https://github.com/EndogenAI/dogma/issues/263) review — traceability + template links + interface docs ([24161d2](https://github.com/EndogenAI/dogma/commit/24161d227849c3a710405ec137e0db515be4893b))
+
+
+### Features
+
+* **adoption:** Greenfield cookiecutter template — scaffold new dogma forks via uvx cookiecutter ([#57](https://github.com/EndogenAI/dogma/issues/57)) ([4f8559c](https://github.com/EndogenAI/dogma/commit/4f8559c01e795f78be1bcac77ce94da5b484fad4))
+* **ci,scripts,agents:** stale-URL pre-commit hook, amplify_context.py, corpus-sweep skill ([#259](https://github.com/EndogenAI/dogma/issues/259), [#105](https://github.com/EndogenAI/dogma/issues/105), [#223](https://github.com/EndogenAI/dogma/issues/223)) ([8e12024](https://github.com/EndogenAI/dogma/commit/8e1202406ef73fab16e6f1ca7bed97d6cc0c83c1))
+* **scripts:** bulk_github_operations.py and bulk_github_read.py — batch GitHub ops with rate-limit throttling and structured read ([#260](https://github.com/EndogenAI/dogma/issues/260), [#261](https://github.com/EndogenAI/dogma/issues/261)) ([88ffafd](https://github.com/EndogenAI/dogma/commit/88ffafd172dec16e1cf33e90412a8077bc6008f1))
+
+
+
 ## [0.3.1](https://github.com/EndogenAI/dogma/compare/v0.3.0...v0.3.1) (2026-03-15)
 
 
