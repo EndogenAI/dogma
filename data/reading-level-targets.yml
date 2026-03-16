@@ -1,0 +1,42 @@
+# reading-level-targets.yml
+# Per-substrate Flesch-Kincaid grade level targets for assess_doc_quality.py.
+# Rationale: Sprint 12 synthesis established per-substrate baselines before CI enforcement.
+# Source: docs/research/reading-level-assessment-framework.md
+
+substrates:
+  AGENTS_md:
+    path_pattern: "AGENTS.md"
+    target_grade_min: 10
+    target_grade_max: 12
+    rationale: "Governance doc read by agents and humans; plain-language operational constraints"
+
+  SKILL_md:
+    path_pattern: "**/*.github/skills/**/*.md"
+    target_grade_min: 10
+    target_grade_max: 12
+    rationale: "Procedural how-to docs; should be actionable and low-friction to read"
+
+  guides:
+    path_pattern: "docs/guides/*.md"
+    target_grade_min: 10
+    target_grade_max: 12
+    rationale: "Practitioner guides; clear and direct prose required"
+
+  research:
+    path_pattern: "docs/research/*.md"
+    target_grade_min: 14
+    target_grade_max: 16
+    rationale: "D4 synthesis docs inherit academic register from cited sources; Pattern Catalog ≤12 independently"
+
+  research_pattern_catalog:
+    path_pattern: "docs/research/*.md"
+    section: "Pattern Catalog"
+    target_grade_min: 10
+    target_grade_max: 12
+    rationale: "Pattern Catalog sections must be actionable; lower register than surrounding synthesis prose"
+
+  scripts_docstrings:
+    path_pattern: "scripts/*.py"
+    target_grade_min: null
+    target_grade_max: null
+    rationale: "N/A — skipped in reading-level checks"
