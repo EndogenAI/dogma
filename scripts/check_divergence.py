@@ -177,8 +177,8 @@ def check_client_values(derived_root: Path) -> dict[str, Any]:
 
 
 def has_drift(results: list[dict[str, Any]]) -> bool:
-    """Return True if any result contains added, removed, or changed items."""
-    return any(r.get("added") or r.get("removed") or r.get("changed") for r in results)
+    """Return True if any result contains added, removed, changed, or error items."""
+    return any(r.get("added") or r.get("removed") or r.get("changed") or r.get("errors") for r in results)
 
 
 def format_report(results: list[dict[str, Any]]) -> str:
@@ -208,7 +208,7 @@ def format_report(results: list[dict[str, Any]]) -> str:
 
 
 def build_hgt_candidates(results: list[dict[str, Any]]) -> list[dict[str, str]]:
-    """Build list of HGT (High-Governance Term) candidates from drift results.
+    """Build list of HGT (Horizontal Gene Transfer) candidates from drift results.
 
     Each candidate is a dict with keys: file, type (added/removed/changed), section.
     Candidates are governance sections that changed in the derived repo vs template —

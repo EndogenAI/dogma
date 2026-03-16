@@ -169,14 +169,25 @@ def init_session_file(path: Path) -> None:
     branch = path.parent.name
     today = path.stem
     raw_branch = _git_branch_raw()
+    try:
+        import yaml  # type: ignore[import-untyped]
+
+        branch_val = raw_branch or branch  # fall back to folder slug if detached HEAD
+        yaml_block = yaml.safe_dump(
+            {"branch": branch_val, "active_phase": None, "phases": []},
+            default_flow_style=False,
+            sort_keys=False,
+            allow_unicode=True,
+        )
+    except Exception:
+        branch_val = raw_branch or branch
+        yaml_block = f"branch: '{branch_val}'\nactive_phase: null\nphases: []\n"
     path.write_text(
         f"# Session — {branch} / {today}\n\n"
         f"_Created by prune_scratchpad.py. Append findings under `## <Task> Results` headings._\n\n"
         f"## Session State\n\n"
         f"```yaml\n"
-        f"branch: {raw_branch}\n"
-        f"active_phase: null\n"
-        f"phases: []\n"
+        f"{yaml_block}"
         f"```\n"
     )
     print(f"Initialised new session file: {path}")

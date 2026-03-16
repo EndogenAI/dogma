@@ -495,7 +495,7 @@ After writing the `## Session Summary`, optionally review these signals to detec
 
 **Interpretation**: A Review first-pass APPROVED rate below 75% signals that delegation prompts lack sufficient acceptance criteria specificity — apply the explicit-criteria pattern from `AGENTS.md § Review Delegation`. A Delegation Ratio below 50% signals Orchestrator scope creep.
 
-**Sprint-Open Drift Audit**: At sprint open, run `uv run python scripts/assess_doc_quality.py --delta data/reading-level-targets.yml` on changed docs to surface reading-level regressions before implementation begins; `data/reading-level-targets.yml` is the config source for per-substrate FK grade targets.
+**Sprint-Open Drift Audit**: At sprint open, run `uv run python scripts/assess_doc_quality.py <file> --delta data/reading-level-targets.yml` on changed docs to surface reading-level regressions before implementation begins; `data/reading-level-targets.yml` is the config source for per-substrate FK grade targets.
 
 ---
 

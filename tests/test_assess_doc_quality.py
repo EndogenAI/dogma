@@ -191,6 +191,41 @@ class TestAssess:
         result = assess(doc, delta_path=targets)
         assert result.get("delta") is None
 
+    @pytest.mark.io
+    def test_delta_with_nested_substrates_schema(self, tmp_path):
+        """compute_delta() matches path_pattern in nested substrates schema."""
+        doc = tmp_path / "AGENTS.md"
+        doc.write_text(SAMPLE_MD)
+        targets = tmp_path / "reading-level-targets.yml"
+        targets.write_text(
+            "substrates:\n"
+            "  AGENTS_md:\n"
+            "    path_pattern: 'AGENTS.md'\n"
+            "    target_grade_min: 10\n"
+            "    target_grade_max: 12\n"
+            "    rationale: test\n"
+        )
+        result = assess(doc, delta_path=targets)
+        assert result.get("delta") is not None
+        assert "10" in result["delta"] or "12" in result["delta"]
+
+    @pytest.mark.io
+    def test_delta_none_when_no_pattern_matches(self, tmp_path):
+        """compute_delta() returns None when no substrate path_pattern matches."""
+        doc = tmp_path / "unmatched.md"
+        doc.write_text(SAMPLE_MD)
+        targets = tmp_path / "reading-level-targets.yml"
+        targets.write_text(
+            "substrates:\n"
+            "  guides:\n"
+            "    path_pattern: 'docs/guides/*.md'\n"
+            "    target_grade_min: 10\n"
+            "    target_grade_max: 12\n"
+            "    rationale: test\n"
+        )
+        result = assess(doc, delta_path=targets)
+        assert result.get("delta") is None
+
 
 # ---------------------------------------------------------------------------
 # main (CLI)

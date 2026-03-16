@@ -210,8 +210,42 @@ def load_reading_level_targets(targets_path: Path) -> dict:
         return {}
 
 
-def compute_delta(fk_grade: float, file_name: str, targets: dict) -> str | None:
-    """Return a human-readable delta string, or None if no target is defined."""
+def compute_delta(fk_grade: float, file_path: str, targets: dict) -> str | None:
+    """Return a human-readable delta string, or None if no target is defined.
+
+    Supports two targets-file schemas:
+    - Flat: ``{filename: grade_target, "default": grade_target}``
+    - Nested: ``{substrates: {name: {path_pattern, target_grade_min, target_grade_max}}}``
+      (as produced by ``data/reading-level-targets.yml``)
+    """
+    from fnmatch import fnmatch
+
+    # Handle nested substrates schema (data/reading-level-targets.yml)
+    if "substrates" in targets:
+        substrate_data = targets["substrates"]
+        if isinstance(substrate_data, dict):
+            normalized = file_path.replace("\\", "/")
+            basename = normalized.rsplit("/", 1)[-1]
+            for substrate_info in substrate_data.values():
+                if not isinstance(substrate_info, dict):
+                    continue
+                pattern = substrate_info.get("path_pattern", "")
+                if pattern and (fnmatch(normalized, pattern) or fnmatch(basename, pattern)):
+                    t_min = substrate_info.get("target_grade_min")
+                    t_max = substrate_info.get("target_grade_max")
+                    if t_min is None or t_max is None:
+                        return None
+                    t_mid = (float(t_min) + float(t_max)) / 2
+                    delta = fk_grade - t_mid
+                    direction = "above" if delta > 0 else "below"
+                    return (
+                        f"FK grade {fk_grade:.1f} vs target {t_min}\u2013{t_max}"
+                        f" \u2192 {abs(delta):.1f} {direction} target midpoint"
+                    )
+        return None
+
+    # Flat schema: {file_name: target} or {"default": target}
+    file_name = file_path.replace("\\", "/").rsplit("/", 1)[-1]
     target = targets.get(file_name) or targets.get("default")
     if target is None:
         return None
@@ -259,7 +293,7 @@ def assess(file_path: Path, delta_path: Path | None = None) -> dict:
 
     if delta_path is not None:
         targets = load_reading_level_targets(delta_path)
-        result["delta"] = compute_delta(fk_grade, file_path.name, targets)
+        result["delta"] = compute_delta(fk_grade, str(file_path), targets)
 
     return result
 

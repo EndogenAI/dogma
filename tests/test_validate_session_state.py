@@ -153,6 +153,26 @@ class TestParseYamlBlock:
         _, err = parse_yaml_block(yaml_text)
         assert err is not None
 
+    def test_branch_null_is_error(self):
+        """branch: (YAML null) must be rejected — detached HEAD edge case."""
+        yaml_text = "branch: \nactive_phase: null\nphases: []\n"
+        _, err = parse_yaml_block(yaml_text)
+        assert err is not None
+        assert "branch" in err.lower()
+
+    def test_non_dict_phase_entry_is_error(self):
+        """Phase entries that are not dicts (e.g. bare strings) must be rejected."""
+        yaml_text = "branch: feat/test\nactive_phase: null\nphases:\n  - not-a-dict\n"
+        _, err = parse_yaml_block(yaml_text)
+        assert err is not None
+
+    def test_phase_missing_name_is_error(self):
+        """Phase dicts without a 'name' field must be rejected."""
+        yaml_text = "branch: feat/test\nactive_phase: null\nphases:\n  - status: complete\n"
+        _, err = parse_yaml_block(yaml_text)
+        assert err is not None
+        assert "name" in err
+
 
 # ---------------------------------------------------------------------------
 # display_phase_table

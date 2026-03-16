@@ -109,3 +109,7 @@ https://github.blog/2024-06-20-survey-reveals-ai-coding-tools-are-in-wide-use/
 # Zed AI improvement docs — 404; Zed docs restructured after Sprint 12 research.
 # Referenced in docs/research/platform-agnosticism.md as platform coverage data.
 https://zed.dev/docs/assistant/ai-improvement
+
+# EndogenAI dogma GitHub Pages site — deploying; may return 404 while Pages
+# build is pending after docs workflow was first introduced in Sprint 14.
+https://endogenai.github.io/dogma/

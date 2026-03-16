@@ -11,7 +11,7 @@ substrates:
     rationale: "Governance doc read by agents and humans; plain-language operational constraints"
 
   SKILL_md:
-    path_pattern: "**/*.github/skills/**/*.md"
+    path_pattern: ".github/skills/**/SKILL.md"
     target_grade_min: 10
     target_grade_max: 12
     rationale: "Procedural how-to docs; should be actionable and low-friction to read"

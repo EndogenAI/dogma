@@ -211,6 +211,12 @@ def test_has_drift_added(cd_mod):
     assert cd_mod.has_drift(results) is True
 
 
+def test_has_drift_with_errors(cd_mod):
+    """has_drift() treats non-empty errors as drift so CI fails when comparisons error."""
+    results = [{"file": "x", "added": [], "removed": [], "changed": [], "errors": ["read error"]}]
+    assert cd_mod.has_drift(results) is True
+
+
 # ---------------------------------------------------------------------------
 # build_hgt_candidates
 # ---------------------------------------------------------------------------

@@ -94,8 +94,17 @@ def parse_yaml_block(yaml_content: str) -> tuple[dict | None, str | None]:
     for key in ("branch", "active_phase", "phases"):
         if key not in data:
             return None, f"Missing required key: {key}"
+    if not isinstance(data["branch"], str) or not data["branch"]:
+        return None, "'branch' must be a non-empty string"
+    if data["active_phase"] is not None and not isinstance(data["active_phase"], str):
+        return None, "'active_phase' must be a string or null"
     if not isinstance(data["phases"], list):
         return None, "'phases' must be a YAML list"
+    for i, phase in enumerate(data["phases"]):
+        if not isinstance(phase, dict):
+            return None, f"phases[{i}] must be a YAML mapping"
+        if "name" not in phase:
+            return None, f"phases[{i}] is missing required field 'name'"
 
     return data, None
 
