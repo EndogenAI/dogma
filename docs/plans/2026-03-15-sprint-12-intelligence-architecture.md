@@ -80,7 +80,7 @@ This sprint sequences 16 open research issues across the Intelligence & Architec
 
 ---
 
-### Phase 7 — Wave 4 Research ⬜
+### Phase 7 — Wave 4 Research ✅
 **Agent**: Executive Researcher
 **Issues**: #266, #267, #274, #275, #276, #230, #232
 **Deliverables**:
@@ -91,18 +91,23 @@ This sprint sequences 16 open research issues across the Intelligence & Architec
 - `docs/research/high-reading-level-encoding-drift-signal.md` (Status: Final, committed) — closes #276
 - `docs/research/output-format-constraint-compressed-returns.md` (Status: Final, committed) — closes #230
 - `docs/research/h2-nk-model-formalization.md` (Status: Final, committed) — closes #232
-**Depends on**: Wave 3 Review Gate APPROVED
+**Depends on**: Wave 3 Review Gate APPROVED ✅
 **Gate**: Wave 4 Review Gate does not start until all Wave 4 deliverables committed
-**Status**: ⬜ Not started
+**Status**: ✅ Complete
+
+**Acceptance criteria**:
+- [x] All 7 D4 docs committed with `status: Final`
+- [x] All 7 pass `uv run python scripts/validate_synthesis.py`
+- [x] All 7 commits on `feat/sprint-12-intelligence-architecture`
 
 ---
 
-### Phase 8 — Wave 4 Review Gate ⬜
+### Phase 8 — Wave 4 Review Gate ⏳
 **Agent**: Review
 **Deliverables**: `## Wave 4 Review Output` in scratchpad, verdict: APPROVED
-**Depends on**: Phase 7 deliverables committed
+**Depends on**: Phase 7 deliverables committed ✅
 **Gate**: Phase 9 does not start until APPROVED
-**Status**: ⬜ Not started
+**Status**: ⏳ In progress
 
 ---
 
@@ -131,12 +136,12 @@ This sprint sequences 16 open research issues across the Intelligence & Architec
 - [x] #273 — `docs/research/biological-evolution-dogma-propagation.md` committed (Status: Final)
 - [x] #277 — `docs/research/semantic-encoding-modes-contextual-routing.md` committed (Status: Final)
 - [x] Wave 3 Review Gate APPROVED recorded in scratchpad
-- [ ] #266 — `docs/research/classic-programmatic-patterns-dogma-legibility.md` committed (Status: Final)
-- [ ] #267 — `docs/research/glossary-maintenance-strategy.md` committed (Status: Final)
-- [ ] #274 — `docs/research/reading-level-assessment-framework.md` committed (Status: Final)
-- [ ] #275 — `docs/research/programmatic-writing-assessment-tooling.md` committed (Status: Final)
-- [ ] #276 — `docs/research/high-reading-level-encoding-drift-signal.md` committed (Status: Final)
-- [ ] #230 — `docs/research/output-format-constraint-compressed-returns.md` committed (Status: Final)
-- [ ] #232 — `docs/research/h2-nk-model-formalization.md` committed (Status: Final)
+- [x] #266 — `docs/research/classic-programmatic-patterns-dogma-legibility.md` committed (Status: Final)
+- [x] #267 — `docs/research/glossary-maintenance-strategy.md` committed (Status: Final)
+- [x] #274 — `docs/research/reading-level-assessment-framework.md` committed (Status: Final)
+- [x] #275 — `docs/research/programmatic-writing-assessment-tooling.md` committed (Status: Final)
+- [x] #276 — `docs/research/high-reading-level-encoding-drift-signal.md` committed (Status: Final)
+- [x] #230 — `docs/research/output-format-constraint-compressed-returns.md` committed (Status: Final)
+- [x] #232 — `docs/research/h2-nk-model-formalization.md` committed (Status: Final)
 - [ ] Wave 4 Review Gate APPROVED recorded in scratchpad
 - [ ] `docs/research/intelligence-architecture-synthesis.md` committed (Status: Final)
