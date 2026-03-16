@@ -43,6 +43,8 @@ scripts/
   orientation_snapshot.py      # Pre-computed session orientation digest — writes .cache/github/orientation-snapshot.md with open issue counts, recent commits, active branches, milestone summary; --branch includes scratchpad ## Session Summary (closes #241)
   bulk_github_operations.py    # Batch GitHub issue/PR write operations (issue-create, issue-edit, issue-close, pr-edit) from a JSON/YAML spec file or stdin; --dry-run safety gate; --rate-limit-delay throttling; JSON results to stdout (closes #260)
   bulk_github_read.py          # Batch GitHub issue/PR metadata reads — fetch by number (--issues, --prs) or search query (--query); --format table|json|csv; --fields column selection (closes #261)
+  check_glossary_coverage.py   # Bold-term glossary scanner — extracts **term** patterns from governance docs and checks each against docs/glossary.md; --check exits 1 on gaps; --fix scaffolds stub entries (idempotent; closes #290)
+  assess_doc_quality.py        # Composite readability/structure/completeness scorer for Markdown docs; 30% readability (FK grade, textstat), 40% structural (heading density, tables, list/code ratio), 30% completeness (citations, bold terms, labeled blocks); --output json, --delta for FK grade target comparison (advisory only — calibrate before CI enforcement; closes #289)
   docs/                        # Per-script generated Markdown documentation (see scripts/docs/README.md)
 ```
 
