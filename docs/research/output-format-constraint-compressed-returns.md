@@ -110,7 +110,7 @@ Key findings:
 
 ---
 
-## 6. Project Relevance
+## 5. Project Relevance
 
 The output format constraint finding is operationally the highest-leverage intervention in the AGENTS.md delegation framework. It requires no new tooling, no new agent, and no structural changes to the session lifecycle — it requires only that a two-field specification (format + ceiling) be present in every delegation prompt. The marginal authoring cost is ~10–15 words per prompt; the benefit is predictable context budget management across all multi-agent sessions.
 
@@ -128,7 +128,7 @@ The session-management SKILL.md should document the "no-constraint → overrun" 
 
 ---
 
-## 5. Sources
+## 6. Sources
 
 - Zhou, Y. et al. (2022). *Large Language Models are Human-Level Prompt Engineers*. arXiv:2211.01910.
 - Ye, F. et al. (2023). *Prompt Engineering a Prompt Engineer*. arXiv:2311.05661.

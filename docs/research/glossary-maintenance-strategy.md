@@ -112,7 +112,7 @@ Key findings:
 
 ---
 
-## 6. Project Relevance
+## 5. Project Relevance
 
 `docs/glossary.md` is one of the most structurally mature artefacts in the repository — 1,123 lines, organised semantic sections, citation discipline. This research's contribution is to position it as an active enforcement layer, not passive reference material. The shift from reference to enforcement is the same transition that `validate_synthesis.py` made for synthesis documents: a manually-maintained format constraint became a CI-enforced structural contract.
 
@@ -132,7 +132,7 @@ Prioritised next action: commission `scripts/check_glossary_coverage.py`, integr
 
 ---
 
-## 5. Sources
+## 6. Sources
 
 - `docs/glossary.md` — 1,123-line canonical vocabulary, 11 semantic sections, current state
 - [`docs/research/substrate-atlas.md`](substrate-atlas.md) — vocabulary layer definition and substrate taxonomy

@@ -163,7 +163,7 @@ return annotate_with_fsm_gates(sequence, "data/phase-gate-fsm.yml")
 
 **Source**: AGENTS.md §Context-Sensitive Amplification; compiler warning levels
 
-Proposed annotation schema for constraintlevel semantic modes:
+Proposed annotation schema for constraint-level semantic modes:
 
 ```yaml
 # In task frontmatter or session-start metadata

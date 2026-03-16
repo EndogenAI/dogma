@@ -42,7 +42,7 @@ Key findings:
 
 **Evidence**:
 
-**AGENTS.md (operational governance)**: Primary audience is LLMs executing session sessions; secondary audience is human contributors reviewing constraints. Target: Grade 10–12 Flesch–Kincaid for prose sections; Grade N/A for decision-table sections (tables bypass readability scoring). The constraint-first pattern (imperative verb, object, condition) is most parse-reliable for LLMs. Analysis of existing AGENTS.md sections shows the "Guardrails" section (imperative bullets) outperforms the "When to Ask vs Proceed" section (conditional prose) on agent adherence rates.
+**AGENTS.md (operational governance)**: Primary audience is LLMs executing sessions; secondary audience is human contributors reviewing constraints. Target: Grade 10–12 Flesch–Kincaid for prose sections; Grade N/A for decision-table sections (tables bypass readability scoring). The constraint-first pattern (imperative verb, object, condition) is most parse-reliable for LLMs. Analysis of existing AGENTS.md sections shows the "Guardrails" section (imperative bullets) outperforms the "When to Ask vs Proceed" section (conditional prose) on agent adherence rates.
 
 **Code comments**: Primary audience is human contributors maintaining code; secondary audience is LLMs interpreting function intent. Target: Grade 8–10, imperative voice, ≤ 20 words per sentence. Docstring-style comments (purpose, inputs, outputs) provide a machine-parseable schema. NLP tooling (Flesch–Kincaid via `textstat`, `spacy` sentence length analysis) can enforce this constraint in CI.
 
@@ -114,7 +114,7 @@ Internal endogenous qualification: commit history analysis of AGENTS.md sections
 
 ---
 
-## 6. Project Relevance
+## 5. Project Relevance
 
 This framework directly unblocks issue #275 (programmatic writing assessment tooling) by providing the per-substrate baselines that automated tools need as target thresholds. Without defined targets, a readability metric is computationally meaningful but operationally useless — it produces a score with no reference point.
 
@@ -126,14 +126,12 @@ Cross-reference: [`docs/research/semantic-encoding-modes-contextual-routing.md`]
 
 ---
 
-## 5. Sources
+## 6. Sources
 
 - Kincaid, J.P., Fishburne, R.P., Rogers, R.L., and Chissom, B.S. (1975). *Derivation of New Readability Formulas for Navy Enlisted Personnel*. Research Branch Report 8-75, Naval Technical Training Command.
 - Gunning, R. (1952). *The Technique of Clear Writing*. McGraw-Hill.
 - Wei, J. et al. (2022). *Chain-of-Thought Prompting Elicits Reasoning in Large Language Models*. NeurIPS 2022.
-- Kincaid et al. (1975). *Derivation of New Readability Formulas*. NTCC Report 8-75.
-- Gunning, R. (1952). *The Technique of Clear Writing*. McGraw-Hill.
-- Wei, J. et al. (2022). *Chain-of-Thought Prompting Elicits Reasoning in Large Language Models*. NeurIPS 2022.
+- Coleman, M., & Liau, T.L. (1975). *A Computer Readability Formula Designed with Machine Scoring in Mind*. Journal of Applied Psychology, 60(2), 283–284.
 - US Plain Language Guidelines: <https://www.plainlanguage.gov/guidelines/>
 - [`docs/research/platform-agnosticism.md`](platform-agnosticism.md) — audience diversity and multi-contributor context
 - [`docs/research/semantic-encoding-modes-contextual-routing.md`](semantic-encoding-modes-contextual-routing.md) — structural encoding modes and routing by audience

@@ -18,7 +18,7 @@ governs: []
 
 ## 1. Executive Summary
 
-Unexpectedly high reading level in a governance document is a reliable **lagging indicator** of under-encoding: it signals that structural encoding (decision tables, labeled blocks, imperative lists) was deferred and replaced by explanatory prose. It is not a leading indicator — the drift has already occurred by the time the reading level exceeds its substrate baseline. However, the complexity delta (observed grade level minus baseline) is measurable, track able across commits, and actionable: it identifies which sections require structural re-encoding without requiring a full document rewrite.
+Unexpectedly high reading level in a governance document is a reliable **lagging indicator** of under-encoding: it signals that structural encoding (decision tables, labeled blocks, imperative lists) was deferred and replaced by explanatory prose. It is not a leading indicator — the drift has already occurred by the time the reading level exceeds its substrate baseline. However, the complexity delta (observed grade level minus baseline) is measurable, trackable across commits, and actionable: it identifies which sections require structural re-encoding without requiring a full document rewrite.
 
 Key findings:
 
@@ -118,7 +118,7 @@ This is a scripted implementation of the **Algorithms Before Tokens** principle 
 
 ---
 
-## 6. Project Relevance
+## 5. Project Relevance
 
 This research provides the observability layer for encoding fidelity measurement across the governance corpus. The complexity delta metric (§P1) closes the measurement gap identified in the **Endogenous-First** axiom (MANIFESTO.md §1): the dogma substrate must be self-correcting, and self-correction requires a detectable signal. Without a measurable drift indicator, under-encoding accumulates silently across sprints until it becomes a structural rewrite problem.
 
@@ -130,7 +130,7 @@ Cross-reference: [`docs/research/reading-level-assessment-framework.md`](reading
 
 ---
 
-## 5. Sources
+## 6. Sources
 
 - Parnas, D.L. (1994). *Software Aging*. Proceedings of the 16th International Conference on Software Engineering.
 - Kincaid, J.P. et al. (1975). *Derivation of New Readability Formulas*. NTCC Report 8-75.

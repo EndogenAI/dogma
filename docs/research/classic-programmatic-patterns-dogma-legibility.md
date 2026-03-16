@@ -10,7 +10,7 @@ governs: []
 # Classic Programmatic Patterns for Dogma Legibility — Decision Tables, State Machines, Guard Clauses, and Design-by-Contract in Governance Documents
 
 > **Status**: Final
-> **Research Question**: Which classic (non-AI) software engineering patterns — decision tables, state machines, guard clauses, contract-by-design — most improve dogma document legibility for both humans and LLM agents?
+> **Research Question**: Which classic (non-AI) software engineering patterns — decision tables, state machines, guard clauses, design-by-contract — most improve dogma document legibility for both humans and LLM agents?
 > **Date**: 2026-03-15
 > **Related**: [`docs/research/agent-to-agent-communication-protocol.md`](agent-to-agent-communication-protocol.md) · [`docs/research/mcp-state-architecture.md`](mcp-state-architecture.md) · [`AGENTS.md` §Programmatic-First Principle](../../AGENTS.md#programmatic-first-principle) · [Issue #266](https://github.com/EndogenAI/dogma/issues/266)
 
@@ -108,7 +108,7 @@ Cross-reference: [`docs/research/agent-to-agent-communication-protocol.md`](agen
 
 ---
 
-## 6. Project Relevance
+## 5. Project Relevance
 
 The four patterns catalogued here are not hypothetical improvements — they are already partially instantiated in the EndogenAI dogma substrate. This research's contribution is to name them, connect them to their 30–40-year-old theoretical foundations, and make the pattern vocabulary available to human authors and LLM agents alike. The **Endogenous-First** axiom (MANIFESTO.md §1) is directly served: the research synthesises from what is already present in the substrate, making the implicit explicit.
 
@@ -126,7 +126,7 @@ Decision tables, FSMs, guard clauses, and DbC contracts are each independently v
 
 ---
 
-## 5. Sources
+## 6. Sources
 
 - Beizer, B. (1990). *Software Testing Techniques*, 2nd ed. Van Nostrand Reinhold.
 - Meyer, B. (1988). *Object-Oriented Software Construction*. Prentice Hall. (Design-by-Contract origin)
