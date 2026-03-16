@@ -1,8 +1,10 @@
-# ADR-006: Agent Skills Adoption
+---
+Status: Accepted
+Date: 2026-03-07
+Deciders: EndogenAI core team
+---
 
-**Date**: 2026-03-07
-**Status**: Accepted
-**Deciders**: EndogenAI core team
+# ADR-006: Agent Skills Adoption
 
 ---
 
@@ -29,6 +31,20 @@ Skills extend the encoding inheritance chain from four layers to six (adding bot
 This is the endogenic alignment: skills are a stronger instantiation of *Algorithms Before Tokens* than any single script, because they cover the entire instruction class of repeated tasks, are agent-agnostic, and add capability without proportional context cost.
 
 ---
+
+## Decision Drivers
+
+- Procedure duplication across agent bodies cannot be resolved without an explicit reusable artifact type
+- *Algorithms Before Tokens* (MANIFESTO.md): knowledge encoded once and loaded on demand is strictly preferable to knowledge loaded on every request regardless of relevance
+- Multi-agent reusability: a skill can be consumed by any fleet member without re-authoring the procedure in each agent body
+- Cross-ecosystem portability: `SKILL.md` works in GitHub Copilot, Copilot CLI, and Claude Code without modification
+
+## Considered Options
+
+1. **Embed procedures in agent bodies (status quo)** — duplicated across agents; token-inefficient; drift risk when procedures change
+2. **Embed procedures in always-on `.instructions.md`** — loaded on every request regardless of relevance; token-wasteful; not reusable across agents
+3. **`SKILL.md` files in `.github/skills/`** — on-demand load; agent-agnostic; cross-ecosystem; CI-validatable (**chosen**)
+4. **External skill registry (agentskills.io plugin packaging)** — deferred; adds distribution overhead not yet warranted for a single-repo skill set
 
 ## Decision
 

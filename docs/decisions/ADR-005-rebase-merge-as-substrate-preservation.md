@@ -1,8 +1,10 @@
-# ADR-005: Rebase-and-Merge as the Canonical PR Merge Strategy
+---
+Status: Accepted
+Date: 2026-03-07
+Deciders: EndogenAI core team
+---
 
-**Date**: 2026-03-07
-**Status**: Accepted
-**Deciders**: EndogenAI core team
+# ADR-005: Rebase-and-Merge as the Canonical PR Merge Strategy
 
 ---
 
@@ -29,6 +31,20 @@ Three merge strategies were evaluated:
 | **Squash merge** | Degraded — N commits → 1 per PR | History readable but encoding granularity lost |
 | **Merge commit** | Full — all commits + merge commit | Merges add noise to `main`; non-linear history |
 | **Rebase and merge** | Full — all commits, linear | No merge commit noise; linear `git log`; ideal for Conventional Commits |
+
+## Decision Drivers
+
+- Preserve full Conventional Commits granularity on `main` for `git log`, `git bisect`, and `git blame` precision
+- Avoid squash-merge degradation of the "tree rings" encoding principle (MANIFESTO.md)
+- Linear history without merge-commit noise; rebase-and-merge is the only strategy that achieves both
+
+## Considered Options
+
+See the strategy comparison table in the Context section above. Short summary:
+
+1. **Squash merge** — degrades Layer 3 history; N commits collapsed to 1 per PR; encoding granularity lost
+2. **Merge commit** — preserves all commits but adds non-linear merge noise to `main`
+3. **Rebase and merge** — full granular history, linear log, no merge commits (**chosen**)
 
 ## Decision
 

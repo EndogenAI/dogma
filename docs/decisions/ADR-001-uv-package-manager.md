@@ -1,8 +1,10 @@
-# ADR-001: Adopt `uv` as the Sole Python Package and Environment Manager
+---
+Status: Accepted
+Date: 2026-03-07
+Deciders: EndogenAI core team
+---
 
-**Date**: 2026-03-07
-**Status**: Accepted
-**Deciders**: EndogenAI core team
+# ADR-001: Adopt `uv` as the Sole Python Package and Environment Manager
 
 ---
 
@@ -15,7 +17,20 @@ This project requires a Python toolchain that:
 - Works cleanly with `pyproject.toml` as the single configuration source
 - Satisfies the Local Compute-First axiom — minimal cloud dependency, fast local startup
 
-Alternatives considered: `pip` + `venv`, `poetry`, `pipenv`, `conda`, `hatch`.
+## Decision Drivers
+
+- Single-tool philosophy: avoid managing multiple separate tools (`pip`, `venv`, `virtualenv`)
+- Reproducible installs via lockfile: critical for CI and agent-driven scripting across machines
+- Speed: `uv` is 10–100× faster than `pip`+`venv` for install operations
+
+## Considered Options
+
+1. `pip` + `venv` — standard but slow, no single lockfile, fragmented tooling
+2. `poetry` — feature-rich but heavier; slower than `uv`; separate `pyproject.toml` divergence
+3. `pipenv` — declining ecosystem adoption; known performance issues
+4. `conda` — too heavyweight for a pure-Python project; cloud-dependency risk
+5. `hatch` — fewer guarantees on lock reproducibility at the time of evaluation
+6. `uv` — fast, unified, lockfile-native, `pyproject.toml`-aligned (**chosen**)
 
 ## Decision
 

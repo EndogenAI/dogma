@@ -1,8 +1,10 @@
-# ADR-002: Kanban Over Scrum for Project Planning
+---
+Status: Accepted
+Date: 2026-03-07
+Deciders: EndogenAI core team
+---
 
-**Date**: 2026-03-07
-**Status**: Accepted
-**Deciders**: EndogenAI core team
+# ADR-002: Kanban Over Scrum for Project Planning
 
 ---
 
@@ -14,6 +16,18 @@ The project needs a planning methodology. The options are:
 - **Flow/ad-hoc**: no formal structure
 
 The project has irregular contributor cadence — both human contributors and AI agent sessions arrive on-demand, not on a fixed schedule. Agent sessions can complete weeks of work in hours, and may be triggered by a single conversation.
+
+## Decision Drivers
+
+- Irregular, on-demand contributor cadence (humans + agent sessions); fixed sprint cycles are incompatible with agent architecture
+- Agents do not attend retrospectives; a single agent session may close an entire sprint's issues
+- GitHub Projects v2 supports Kanban natively with minimal configuration overhead
+
+## Considered Options
+
+1. **Scrum** — fixed sprints, retrospectives, velocity tracking; incompatible with on-demand agent cadence
+2. **Kanban** — continuous flow, WIP limits, pull-based (**chosen**)
+3. **Flow/ad-hoc** — no formal structure; insufficient traceability for multi-agent sessions
 
 ## Decision
 

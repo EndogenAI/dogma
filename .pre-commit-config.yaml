@@ -30,8 +30,8 @@ repos:
         pass_filenames: false
       - id: validate-adr-files
         name: Validate ADR files
-        language: python
-        entry: python scripts/validate_adr.py
+        language: system
+        entry: python3 scripts/validate_adr.py
         types: [markdown]
         files: ^docs/decisions/ADR-.*\.md$
         pass_filenames: true

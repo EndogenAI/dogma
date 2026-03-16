@@ -1,8 +1,10 @@
-# ADR-004: Do Not Enforce a Coverage Percentage Threshold in CI
+---
+Status: Accepted
+Date: 2026-03-07
+Deciders: EndogenAI core team
+---
 
-**Date**: 2026-03-07
-**Status**: Accepted
-**Deciders**: EndogenAI core team
+# ADR-004: Do Not Enforce a Coverage Percentage Threshold in CI
 
 ---
 
@@ -15,6 +17,19 @@ In practice, the test suite achieves approximately **6% direct import coverage**
 The 80% threshold was copied from general project templates without accounting for this structural difference. Its effect in practice:
 - It causes a CI failure that is misleading — tests are full and meaningful, but coverage numbers suggest no testing at all.
 - It discourages the subprocess testing pattern, which is appropriate here because scripts expose `if __name__ == "__main__"` entry points designed for subprocess invocation.
+
+## Decision Drivers
+
+- Coverage percentage is structurally inaccurate for subprocess-style tests (child process not instrumented)
+- The 80% threshold was copied from templates without project-specific validation; it produced misleading CI failures
+- Test quality is better evaluated by exit codes and test case content than by a coverage number
+
+## Considered Options
+
+1. **Keep `--cov-fail-under=80`** — causes misleading CI failures; discourages the correct subprocess testing pattern
+2. **Lower threshold (e.g. `--cov-fail-under=10`)** — arbitrary; still inaccurate and misleading
+3. **Remove `--cov-fail-under` entirely; keep coverage reporting** — honest signal; Codecov still shows trends (**chosen**)
+4. **Migrate all tests to direct-import pattern** — significant rework; inappropriate for CLI-entry-point scripts
 
 ## Decision
 

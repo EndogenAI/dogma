@@ -1,8 +1,10 @@
-# ADR-003: XML-Hybrid Format for Agent Instruction Files
+---
+Status: Proposed
+Date: 2026-03-07
+Deciders: EndogenAI core team
+---
 
-**Date**: 2026-03-07
-**Status**: Proposed
-**Deciders**: EndogenAI core team
+# ADR-003: XML-Hybrid Format for Agent Instruction Files
 
 ---
 
@@ -13,6 +15,18 @@
 - Anthropic's production cookbook agents use XML-tagged section boundaries (`<research_process>`, `<delegation_instructions>`) rather than Markdown headings
 - XML tags are machine-unambiguous and appear in Claude's training data as instruction delimiters
 - Migration requires a script (`scripts/migrate_agent_xml.py` exists) and fleet-wide consistency
+
+## Decision Drivers
+
+- XML tags are machine-unambiguous: LLM training data treats XML boundaries as semantic delimiters, not presentation markup
+- Markdown headings are ambiguous to models — they may be treated as content, not structure
+- Open questions must be resolved empirically before fleet-wide adoption (see Consequences)
+
+## Considered Options
+
+1. **Markdown headings only (current)** — human-readable but semantically ambiguous for agent instruction parsing
+2. **Pure XML** — machine-optimized but reduces human readability and Markdown rendering
+3. **XML-hybrid format** (proposed) — XML section delimiters (`<context>`, `<instructions>`, `<constraints>`, `<output>`) within a Markdown body; YAML frontmatter preserved as-is (**proposed**)
 
 ## Decision
 

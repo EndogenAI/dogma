@@ -1,8 +1,10 @@
-# ADR-007: Adopt `bash-preexec` for Interactive Shell Governor API
+---
+Status: Accepted
+Date: 2026-03-10
+Deciders: EndogenAI core team
+---
 
-**Date**: 2026-03-10
-**Status**: Accepted
-**Deciders**: EndogenAI core team
+# ADR-007: Adopt `bash-preexec` for Interactive Shell Governor API
 
 ---
 
@@ -18,6 +20,19 @@ Bash does not natively expose a `preexec_functions` array. The closest primitive
 `bash-preexec` (rcaloras/bash-preexec) is a widely-deployed shim that provides the `preexec_functions` / `precmd_functions` array API for bash, matching zsh's native interface. Tools like `atuin` already depend on it, making coexistence with third-party tools proven. It manages `DEBUG` trap delegation internally so multiple consumers can register callbacks without conflict.
 
 **Scope**: this decision applies only to interactive shell sessions. CI runs in non-interactive bash; the governor and `bash-preexec` are never loaded there.
+
+## Decision Drivers
+
+- Bash does not expose a native `preexec_functions` array; using the raw `DEBUG` trap directly conflicts with other tools (atuin, profilers) that also need `DEBUG` trap access
+- zsh exposes `preexec_functions` natively; bash users need a compatibility shim for cross-shell parity
+- `bash-preexec` already has proven coexistence with widely-deployed tools (atuin), reducing integration risk
+
+## Considered Options
+
+1. **Raw `bash DEBUG` trap** — fragile; any other tool setting a `DEBUG` trap silently overwrites the governor's trap, breaking either tool
+2. **Function wrapping (`eval` + `alias`)** — complex; not compatible with non-interactive shells; maintenance burden
+3. **`bash-preexec` shim (rcaloras/bash-preexec)** — standardized `preexec_functions` API; proven coexistence; manages `DEBUG` trap delegation internally (**chosen**)
+4. **zsh-only governor** — excludes bash users; insufficient given mixed bash/zsh team environments
 
 ## Decision
 
