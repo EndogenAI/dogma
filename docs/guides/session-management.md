@@ -276,9 +276,26 @@ uv run python scripts/prune_scratchpad.py --dry-run
    gh issue comment <num> --body-file /tmp/session_close_<num>.md
    gh issue view <num> --json comments -q '.comments[-1].body[:80]'
    ```
-5. Leave the session file intact — do **not** run `--force` for compression. Session files are per-day; historical days are naturally bounded.
+5. **HGT Learning Slot** — classify each learning accumulated during the sprint before the final commit and push:
+
+   #### HGT Learning Slot
+
+   At sprint close, classify each learning accumulated during the sprint:
+
+   | Learning | Direction | Rationale |
+   |----------|-----------|----------|
+   | _example_ | Upstream / Internal | _why_ |
+
+   - **Upstream** — propagate back to `dogma` template (new patterns, corrected AGENTS.md guidance, validated scripts)
+   - **Internal** — keep in derived repo only (project-specific config, domain personas)
+   - Unclassified learnings default to **Internal** and are lost to the parent substrate.
+   - If any upstream learnings are identified, create a follow-up issue (`type:docs` or `type:chore`) to encode them.
+
+   Source: [`docs/research/biological-evolution-dogma-propagation.md`](../research/biological-evolution-dogma-propagation.md)
+
+6. Leave the session file intact — do **not** run `--force` for compression. Session files are per-day; historical days are naturally bounded.
    - If you need the `_index.md` stub written, run `uv run python scripts/prune_scratchpad.py --force` but expect a `DeprecationWarning` on stderr.
-6. Stop the scratchpad watcher (Ctrl-C)
+7. Stop the scratchpad watcher (Ctrl-C)
 
 **Substrate Retrospective (when applicable)**: If the session produced novel patterns or efficiency gains not yet encoded in the substrate, run the session-retrospective skill before closing. Invoke it with: "What lessons did we learn? Delegate querying which ones are encoded and which aren't, routing to the fleet to update the executive orchestrator and appropriate workflows." This encodes session experience back into the substrate — the session-level enactment of the neuroplasticity principle (see issue #82).
 
