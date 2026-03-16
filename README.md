@@ -1,6 +1,7 @@
 # EndogenAI Workflows
 
 [![Tests](https://github.com/EndogenAI/dogma/actions/workflows/tests.yml/badge.svg)](https://github.com/EndogenAI/dogma/actions/workflows/tests.yml)
+[![Docs](https://github.com/EndogenAI/dogma/actions/workflows/docs.yml/badge.svg)](https://endogenai.github.io/dogma/)
 
 The authoritative source for **endogenic / agentic product design and development** workflows, best practices, agent files, and automation scripts.
 

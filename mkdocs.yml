@@ -1,6 +1,6 @@
 site_name: EndogenAI Workflows
 site_description: Endogenic / agentic product design and development workflows, best practices, agent files, and automation scripts.
-site_url: https://endogenai.github.io/Workflows/
+site_url: https://endogenai.github.io/dogma/
 repo_url: https://github.com/EndogenAI/dogma
 repo_name: EndogenAI/dogma
 edit_uri: edit/main/docs/
