@@ -1305,3 +1305,17 @@ Commit message: [type(scope): description]
 @Review Please review the changed files against AGENTS.md constraints 
 before committing. Changed files: [list].
 ```
+
+---
+
+## Reusable Format Constraint Library
+
+Default format + ceiling for common delegation types. Use these in the `**4. Output Format**` field of every delegation prompt to satisfy the Output Format + Ceiling dual mandate.
+
+| Delegation type | Format | Ceiling |
+|----------------|--------|---------|
+| Research summary | Bullets | 2000 tokens |
+| Review verdict | Single line: `APPROVED` or `REQUEST CHANGES — [reason]` | 50 tokens |
+| State query | Single line | 100 tokens |
+| Phase output summary | Bullets (≤ 5 items) | 500 tokens |
+| Script implementation report | `"Implemented: [item], [item]. Tests: [pass/fail]. Commit: [SHA]"` | 200 tokens |

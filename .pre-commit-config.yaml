@@ -28,6 +28,13 @@ repos:
         language: system
         files: ^\.github/skills/.*/SKILL\.md$
         pass_filenames: false
+      - id: validate-adr-files
+        name: Validate ADR files
+        language: python
+        entry: python scripts/validate_adr.py
+        types: [markdown]
+        files: ^docs/decisions/ADR-.*\.md$
+        pass_filenames: true
       - id: detect-drift
         name: Check value-encoding drift in agent files
         entry: python3 scripts/detect_drift.py --agents-dir .github/agents/ --format summary --fail-below 0.1

@@ -280,7 +280,7 @@ Before invoking **any** subagent, verify all three:
 | Check | Definition | Red Flag | Fix |
 |-------|-----------|----------|-----|
 | **Scope Clarity** | Can you state the task in one sentence, imperative voice (≤15 words)? | "Review the workplan" | "Review workplan.md v2.1; flag gaps in issue count/effort/blockers; return bullets with issue #s" |
-| **Output Format** | Does your prompt explicitly name format (bullets/table/line) + token ceiling? | "Return your findings" | "Return only: bullets (issue# — gap), ≤2000 tokens. No prose, no preamble." |
+| **Output Format + Ceiling** *(dual mandate — neither alone is sufficient; Sprint 12: format alone → 15–25% variance reduction; format + ceiling → 60–70%)* | Does your prompt name BOTH format type AND token ceiling? | "Return your findings" (no format, no ceiling) / "Return bullets" (format without ceiling) | "Return only: bullets (issue# — gap), ≤2000 tokens. No prose, no preamble." |
 | **Success Criteria** | Would the agent immediately recognize success without guessing? | "Fix the workplan" | "Reconcile count 25→23. Add effort (XS/S/M/L) to Phases 2–5. Flag #151 dependency. Commit: 'docs: workplan...'" |
 
 If **any** check fails → rewrite the prompt before delegating.
