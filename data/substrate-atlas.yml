@@ -1,0 +1,223 @@
+---
+# data/substrate-atlas.yml
+#
+# Machine-readable registry of all 23 substrate types in the dogma system.
+# Source of truth: docs/research/substrate-atlas.md § H1 Full Enumeration Table.
+# Updated by: scripts/check_substrate_health.py --atlas
+#
+# Schema per entry:
+#   id            — sequential integer (1-based)
+#   name          — human-readable substrate name
+#   path_pattern  — glob or literal path relative to repo root
+#   tier          — encoding tier label (T1–T9)
+#   primary_reader — list: human | agent | tool
+#   persistence   — permanent | durable | session-local | ephemeral | external
+#   validation    — programmatic | review | none
+
+substrates:
+  - id: 1
+    name: "MANIFESTO.md"
+    path_pattern: "MANIFESTO.md"
+    tier: "T1: Constitutional"
+    primary_reader: ["human", "agent"]
+    persistence: "permanent"
+    validation: "review"
+    owns: "core axioms and ethical values"
+
+  - id: 2
+    name: "AGENTS.md (root)"
+    path_pattern: "AGENTS.md"
+    tier: "T2: Operational"
+    primary_reader: ["human", "agent"]
+    persistence: "permanent"
+    validation: "review+ci"
+    owns: "operational constraints and guardrails"
+
+  - id: 3
+    name: "Subdirectory AGENTS.md"
+    path_pattern: "*/AGENTS.md"
+    tier: "T2: Operational"
+    primary_reader: ["human", "agent"]
+    persistence: "permanent"
+    validation: "pre-commit"
+    owns: "scope-specific narrowing constraints"
+
+  - id: 4
+    name: ".agent.md files"
+    path_pattern: ".github/agents/*.agent.md"
+    tier: "T3: Role"
+    primary_reader: ["agent"]
+    persistence: "durable"
+    validation: "programmatic"
+    owns: "agent persona, posture, tool restrictions, handoff graph"
+
+  - id: 5
+    name: ".instructions.md files"
+    path_pattern: ".github/**/*.instructions.md"
+    tier: "T3: Role"
+    primary_reader: ["agent"]
+    persistence: "durable"
+    validation: "schema (partial)"
+    owns: "always-on agent instructions with applyTo scope"
+
+  - id: 6
+    name: "copilot-instructions.md"
+    path_pattern: ".github/copilot-instructions.md"
+    tier: "T3: Role"
+    primary_reader: ["agent"]
+    persistence: "durable"
+    validation: "manual review"
+    owns: "global always-on Copilot instructions"
+
+  - id: 7
+    name: ".prompt.md files"
+    path_pattern: ".github/**/*.prompt.md"
+    tier: "T3: Role"
+    primary_reader: ["agent"]
+    persistence: "durable"
+    validation: "manual review"
+    owns: "reusable prompt templates"
+
+  - id: 8
+    name: "SKILL.md files"
+    path_pattern: ".github/skills/*/SKILL.md"
+    tier: "T4: Procedural"
+    primary_reader: ["agent"]
+    persistence: "durable"
+    validation: "programmatic"
+    owns: "reusable workflow procedures loadable on demand"
+
+  - id: 9
+    name: "scripts/*.py"
+    path_pattern: "scripts/*.py"
+    tier: "T5: Programmatic"
+    primary_reader: ["tool", "human"]
+    persistence: "durable"
+    validation: "programmatic"
+    owns: "automation scripts, validators, generators"
+
+  - id: 10
+    name: "tests/*.py"
+    path_pattern: "tests/*.py"
+    tier: "T5: Programmatic"
+    primary_reader: ["tool"]
+    persistence: "durable"
+    validation: "programmatic"
+    owns: "test suite — regression prevention and specification"
+
+  - id: 11
+    name: ".github/workflows/*.yml"
+    path_pattern: ".github/workflows/*.yml"
+    tier: "T5: Programmatic"
+    primary_reader: ["tool"]
+    persistence: "durable"
+    validation: "schema+ci"
+    owns: "CI/CD automation pipelines"
+
+  - id: 12
+    name: ".pre-commit-config.yaml"
+    path_pattern: ".pre-commit-config.yaml"
+    tier: "T5: Programmatic"
+    primary_reader: ["tool"]
+    persistence: "durable"
+    validation: "pre-commit self-checks"
+    owns: "local enforcement hooks for commit-time validation"
+
+  - id: 13
+    name: "data/*.yml"
+    path_pattern: "data/*.yml"
+    tier: "T6: Structured Data"
+    primary_reader: ["tool", "agent"]
+    persistence: "durable"
+    validation: "schema (partial)"
+    owns: "machine-readable governance data (labels, amplification table, atlas)"
+
+  - id: 14
+    name: "pyproject.toml"
+    path_pattern: "pyproject.toml"
+    tier: "T6: Structured Data"
+    primary_reader: ["tool"]
+    persistence: "durable"
+    validation: "uv resolver"
+    owns: "Python project metadata, dependencies, tool config"
+
+  - id: 15
+    name: "cookiecutter.json + hooks"
+    path_pattern: "cookiecutter.json"
+    tier: "T6: Structured Data"
+    primary_reader: ["tool"]
+    persistence: "durable"
+    validation: "schema (partial)"
+    owns: "project scaffolding template parameters and post-generation hooks"
+
+  - id: 16
+    name: "docs/guides/*.md"
+    path_pattern: "docs/guides/*.md"
+    tier: "T7: Documentation"
+    primary_reader: ["human", "agent"]
+    persistence: "durable"
+    validation: "lychee links"
+    owns: "how-to procedures and workflow guides"
+
+  - id: 17
+    name: "docs/research/*.md"
+    path_pattern: "docs/research/*.md"
+    tier: "T7: Documentation"
+    primary_reader: ["human", "agent"]
+    persistence: "durable"
+    validation: "programmatic"
+    owns: "D4 research synthesis documents with evidence-backed findings"
+
+  - id: 18
+    name: "docs/decisions/ADR-*.md"
+    path_pattern: "docs/decisions/ADR-*.md"
+    tier: "T7: Documentation"
+    primary_reader: ["human"]
+    persistence: "durable"
+    validation: "programmatic"
+    owns: "architecture decision records — authoritative decisions agents act on"
+
+  - id: 19
+    name: "docs/glossary.md"
+    path_pattern: "docs/glossary.md"
+    tier: "T7: Documentation"
+    primary_reader: ["human", "agent"]
+    persistence: "durable"
+    validation: "lychee links"
+    owns: "canonical terminology definitions"
+
+  - id: 20
+    name: "docs/plans/*.md"
+    path_pattern: "docs/plans/*.md"
+    tier: "T7: Documentation"
+    primary_reader: ["human", "agent"]
+    persistence: "durable"
+    validation: "none"
+    owns: "multi-phase sprint workplans — cross-session execution state"
+
+  - id: 21
+    name: ".tmp/<branch>/<date>.md"
+    path_pattern: ".tmp/**/*.md"
+    tier: "T8: Ephemeral"
+    primary_reader: ["agent"]
+    persistence: "ephemeral"
+    validation: "none"
+    owns: "per-session cross-agent scratchpad (gitignored by design)"
+
+  - id: 22
+    name: ".cache/sources/*.md"
+    path_pattern: ".cache/sources/*.md"
+    tier: "T8: Ephemeral"
+    primary_reader: ["agent"]
+    persistence: "session-local"
+    validation: "none"
+    owns: "distilled Markdown snapshots of externally-fetched research sources"
+
+  - id: 23
+    name: "GitHub issues/labels/milestones"
+    path_pattern: "external:github"
+    tier: "T9: External State"
+    primary_reader: ["human", "agent"]
+    persistence: "external"
+    validation: "gh CLI+seed_labels.py"
+    owns: "issue tracker, label taxonomy, milestone roadmap"
