@@ -1,15 +1,18 @@
-## [Unreleased]
+# [0.5.0](https://github.com/EndogenAI/dogma/compare/v0.4.0...v0.5.0) (2026-03-16)
+
+
+### Bug Fixes
+
+* **agents:** agent_registry flow-sequence parsing, scoped tool IDs, relative paths ([#278](https://github.com/EndogenAI/dogma/issues/278)) ([fdc1a9a](https://github.com/EndogenAI/dogma/commit/fdc1a9abd096859c8689c75f42d60c9d8583b4a5))
+
 
 ### Features
 
-* **ci:** GitHub Actions caching patterns research — date-keyed cache, artifact-as-snapshot, centralized producer/consumer, multi-factor lockfile-hash key ([#221](https://github.com/EndogenAI/dogma/issues/221))
-* **scripts:** preexec_audit_log.py — audit bash -c subshell invocations with structured log and `--summary` mode ([#157](https://github.com/EndogenAI/dogma/issues/157))
-* **scripts:** token_spin_detector.py — detect N≥5 repeated-invocation spinning within configurable window; `--check` exits 0/2 ([#156](https://github.com/EndogenAI/dogma/issues/156))
-* **agents:** agent_registry.py — capability-aware filterable fleet registry; queryable by tool, tier, and area; `--list`/`--json`/`--filter-*` flags ([#158](https://github.com/EndogenAI/dogma/issues/158))
-* **research:** encode-before-act baseline D4 synthesis — directionally supported; A/B experiment design in R1 ([#231](https://github.com/EndogenAI/dogma/issues/231))
-* **skills:** sprint-planning skill and fleet wiring for Executive PM + Planner
+* **agents:** capability-aware agent registry design ([#158](https://github.com/EndogenAI/dogma/issues/158)) ([2e46c84](https://github.com/EndogenAI/dogma/commit/2e46c841b9ea1f4fc98f94bb69ee94f97b36bea6))
+* **scripts:** PREEXEC subshell audit logging and token-spin detection ([#156](https://github.com/EndogenAI/dogma/issues/156), [#157](https://github.com/EndogenAI/dogma/issues/157)) ([e9dc455](https://github.com/EndogenAI/dogma/commit/e9dc455b8ed7fed11cbf49b9eac3ecc79f360138))
+* **skills:** sprint-planning skill and fleet wiring for Executive PM + Planner ([5bf4448](https://github.com/EndogenAI/dogma/commit/5bf44482f7b9b3ef27a4d21c011f6191e759dfee))
 
----
+
 
 # [0.4.0](https://github.com/EndogenAI/dogma/compare/v0.3.1...v0.4.0) (2026-03-15)
 
