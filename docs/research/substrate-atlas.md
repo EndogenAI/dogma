@@ -200,6 +200,7 @@ The glossary Substrates section currently has 4 substrate type definitions. Add 
 ### Internal
 
 - [`MANIFESTO.md` §The Growth Model: Tree Rings of Knowledge](../../MANIFESTO.md#the-growth-model-tree-rings-of-knowledge) — tree-ring substrate metaphor, each session adds knowledge layers
+- [`MANIFESTO.md` §1 Endogenous-First](../../MANIFESTO.md#1-endogenous-first) — the principle that substrate knowledge must be scaffolded from existing system artefacts; basis for the atlas prioritizing internal substrates over external tool adoption
 - [`AGENTS.md` §Value Fidelity Test Taxonomy](../AGENTS.md#value-fidelity-test-taxonomy) — T1–T4 signal types and encoding layers; basis for tier mapping
 - [`AGENTS.md` §Guiding Constraints — Encoding Inheritance Chain](../AGENTS.md#guiding-constraints) — six-layer chain that this atlas extends
 - [`docs/glossary.md` §Substrates](../glossary.md#substrates) — existing substrate type definitions (Substrate, Encoded Substrate, Knowledge Substrate, Membrane, Bubble-Cluster Model)

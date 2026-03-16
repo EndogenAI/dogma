@@ -161,6 +161,8 @@ Add a guardrail to `.github/agents/AGENTS.md` (or the MCP server authoring guide
 **R4 — Defer Redux-style middleware and time-travel (LOW PRIORITY)**
 A full Redux middleware pipeline (for tracing, rollback, and debugging) is architecturally sound but not warranted until the fleet scales beyond 9 executives and 20+ sub-agents. Document as a Wave 4 consideration.
 
+All four recommendations instantiate the **Endogenous-First** axiom ([MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first)): they build from the existing scratchpad substrate rather than adopting external state stores, reinforcing that endogenous knowledge infrastructure is the primary medium for agent coordination.
+
 ---
 
 ## 5. Sources

@@ -173,6 +173,8 @@ Document the four-stage escalation path (inline → SKILL → script → MCP too
 **R4 — Defer A2A Agent Card pattern (LOW PRIORITY)**
 A2A per-agent service layers are appropriate only when EndogenAI agents need to communicate with external, independently-deployed agents via REST. This is not the current architecture. Revisit in Wave 3+ when cross-organizational agent communication is a requirement.
 
+The service boundary model embodies two MANIFESTO.md axioms: **Algorithms Before Tokens** ([MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens)) — encode reusable logic in scripts before wrapping in an agent; and **Endogenous-First** ([MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first)) — service modules must emerge from observed multi-agent patterns in the existing fleet, not from external service-oriented architecture blueprints.
+
 ---
 
 ## 5. Sources
