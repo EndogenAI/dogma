@@ -102,12 +102,16 @@ This sprint sequences 16 open research issues across the Intelligence & Architec
 
 ---
 
-### Phase 8 — Wave 4 Review Gate ⏳
+### Phase 8 — Wave 4 Review Gate ✅
 **Agent**: Review
 **Deliverables**: `## Wave 4 Review Output` in scratchpad, verdict: APPROVED
 **Depends on**: Phase 7 deliverables committed ✅
 **Gate**: Phase 9 does not start until APPROVED
-**Status**: ⏳ In progress
+**Status**: ✅ Complete
+
+**Acceptance criteria**:
+- [x] Review APPROVED verdict recorded under `## Wave 4 Review Output` in scratchpad
+- [x] All 7 criteria passed for all 7 files
 
 ---
 
@@ -143,5 +147,5 @@ This sprint sequences 16 open research issues across the Intelligence & Architec
 - [x] #276 — `docs/research/high-reading-level-encoding-drift-signal.md` committed (Status: Final)
 - [x] #230 — `docs/research/output-format-constraint-compressed-returns.md` committed (Status: Final)
 - [x] #232 — `docs/research/h2-nk-model-formalization.md` committed (Status: Final)
-- [ ] Wave 4 Review Gate APPROVED recorded in scratchpad
+- [x] Wave 4 Review Gate APPROVED recorded in scratchpad
 - [ ] `docs/research/intelligence-architecture-synthesis.md` committed (Status: Final)
