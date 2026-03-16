@@ -98,6 +98,9 @@ jobs:
       - name: Check value-encoding drift
         run: uv run python scripts/detect_drift.py --agents-dir .github/agents/ --fail-below 0.1 --format summary
 
+      - name: Validate phase-gate FSM
+        run: uv run python scripts/parse_fsm_to_graph.py --validate
+
       - name: Run ruff format (check)
         run: uv run ruff format --check scripts/ tests/
 

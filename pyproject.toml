@@ -13,6 +13,8 @@ dependencies = [
     "rank_bm25>=0.2",
     "textstat>=0.7.13",
     "markdown-it-py>=3.0.0",
+    "networkx>=3.2.1",
+    "mkdocs-material>=9.7.5",
 ]
 
 [project.optional-dependencies]

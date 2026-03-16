@@ -46,6 +46,7 @@ scripts/
   check_glossary_coverage.py   # Bold-term glossary scanner — extracts **term** patterns from governance docs and checks each against docs/glossary.md; --check exits 1 on gaps; --fix scaffolds stub entries (idempotent; closes #290)
   assess_doc_quality.py        # Composite readability/structure/completeness scorer for Markdown docs; 30% readability (FK grade, textstat), 40% structural (heading density, tables, list/code ratio), 30% completeness (citations, bold terms, labeled blocks); --output json, --delta for FK grade target comparison (advisory only — calibrate before CI enforcement; closes #289)
   check_divergence.py          # Cookiecutter template drift detector — compares governance artefacts (AGENTS.md H2 headings, .pre-commit-config.yaml hook IDs, pyproject.toml sections, client-values.yml presence) in a derived repo vs the dogma template; --check exits 1 on drift; --dry-run; --export-hgt outputs YAML HGT candidates (closes #293)
+  parse_fsm_to_graph.py        # FSM-to-NetworkX path analysis + CI invariant check — loads data/phase-gate-fsm.yml into a NetworkX DiGraph; --validate checks all terminal states are reachable from the initial state (exit 0/1); --query <FROM> <TO> checks reachability between two states (closes #253)
   docs/                        # Per-script generated Markdown documentation (see scripts/docs/README.md)
 ```
 
