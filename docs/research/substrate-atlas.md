@@ -193,6 +193,8 @@ Once the YAML registry exists, update `check_substrate_health.py` to report: cou
 **R5 — Update `docs/glossary.md` §Substrates to reference this document (LOW PRIORITY)**
 The glossary Substrates section currently has 4 substrate type definitions. Add a reference to this document and the YAML registry as the canonical enumeration. The glossary entries remain as human-readable definitions; this document provides the full atlas.
 
+Recommendations R1–R3 (programmatic validation for all substrates) instantiate **Algorithms Before Tokens** ([MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens)): every substrate that can be linted deterministically should be linted, replacing the current reliance on agent reasoning about substrate correctness at runtime.
+
 ---
 
 ## 5. Sources
