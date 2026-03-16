@@ -12,7 +12,7 @@ governs: []
 > **Status**: Final
 > **Research Question**: Can unexpectedly high reading level in a governance doc reliably signal under-encoding (i.e., complex prose substituting for missing structure)?
 > **Date**: 2026-03-15
-> **Related**: [`docs/research/reading-level-assessment-framework.md`](reading-level-assessment-framework.md) · [`docs/research/programmatic-writing-assessment-tooling.md`](programmatic-writing-assessment-tooling.md) · [`AGENTS.md` §Value Fidelity Test Taxonomy](../../AGENTS.md#value-fidelity-test-taxonomy) · [Issue #276](https://github.com/EndogenAI/dogma/issues/276)
+> **Related**: [`docs/research/reading-level-assessment-framework.md`](reading-level-assessment-framework.md) · [`docs/research/programmatic-writing-assessment-tooling.md`](programmatic-writing-assessment-tooling.md) · [`docs/research/substrate-atlas.md`](substrate-atlas.md) · [`AGENTS.md` §Value Fidelity Test Taxonomy](../../AGENTS.md#value-fidelity-test-taxonomy) · [Issue #276](https://github.com/EndogenAI/dogma/issues/276)
 
 ---
 
@@ -134,6 +134,7 @@ Cross-reference: [`docs/research/reading-level-assessment-framework.md`](reading
 
 - Parnas, D.L. (1994). *Software Aging*. Proceedings of the 16th International Conference on Software Engineering.
 - Kincaid, J.P. et al. (1975). *Derivation of New Readability Formulas*. NTCC Report 8-75.
+- [`docs/research/substrate-atlas.md`](substrate-atlas.md) — Wave 1 substrate taxonomy; defines the governance corpus audited for reading level drift (issue #268)
 - [`docs/research/reading-level-assessment-framework.md`](reading-level-assessment-framework.md) — per-substrate baseline targets (issue #274)
 - [`docs/research/programmatic-writing-assessment-tooling.md`](programmatic-writing-assessment-tooling.md) — tooling suite implementation (issue #275)
 - [`AGENTS.md` §Value Fidelity Test Taxonomy](../../AGENTS.md#value-fidelity-test-taxonomy) — existing encoding fidelity measurement framework
