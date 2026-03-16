@@ -136,15 +136,48 @@ def resolve_active_file(base: Path | None = None) -> Path:
     return folder / f"{today}.md"
 
 
+def _git_branch_raw() -> str:
+    """Return current git branch name (un-slugified) from git branch --show-current.
+
+    Returns empty string if not in a git repo or the command fails.
+    """
+    import subprocess
+
+    try:
+        result = subprocess.run(
+            ["git", "branch", "--show-current"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        if result.returncode == 0:
+            return result.stdout.strip()
+    except Exception:
+        pass
+    return ""
+
+
 def init_session_file(path: Path) -> None:
-    """Create a new session file with a minimal header if it does not exist."""
+    """Create a new session file with a minimal header and a Session State YAML block.
+
+    If the file already exists, does nothing (safe to call multiple times).
+    The ## Session State block is appended after the header line so that
+    validate_session_state.py --yaml-state can parse it immediately.
+    """
     if path.exists():
         return
     branch = path.parent.name
     today = path.stem
+    raw_branch = _git_branch_raw()
     path.write_text(
         f"# Session — {branch} / {today}\n\n"
-        f"_Created by prune_scratchpad.py. Append findings under `## <Task> Results` headings._\n"
+        f"_Created by prune_scratchpad.py. Append findings under `## <Task> Results` headings._\n\n"
+        f"## Session State\n\n"
+        f"```yaml\n"
+        f"branch: {raw_branch}\n"
+        f"active_phase: null\n"
+        f"phases: []\n"
+        f"```\n"
     )
     print(f"Initialised new session file: {path}")
 
