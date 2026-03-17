@@ -20,10 +20,14 @@ Checks (FSM mode):
     3. No duplicate phases.
     4. Session contains at least Phase 1 (session started).
 
-YAML block schema (--yaml-state):
-    branch:       string
-    active_phase: string or null
-    phases:       list of {name: str, status: str, commit: str}
+YAML block schema (--yaml-state, Candidate C extended):
+    branch:        string
+    date:          string or null  (optional, ISO date)
+    active_phase:  string or null
+    active_issues: list            (optional, GitHub issue numbers)
+    blockers:      list            (optional, open blocker strings)
+    last_agent:    string or null  (optional, last delegated agent)
+    phases:        list of {name: str, status: str, commit: str}
 
 Inputs:
     [file ...]         Path to session .md file (positional, optional).
@@ -74,10 +78,14 @@ def parse_yaml_block(yaml_content: str) -> tuple[dict | None, str | None]:
     """
     Parse YAML content and validate required keys.
 
-    Expected schema:
-        branch:       string
-        active_phase: string or null
-        phases:       list of {name, status, commit}
+    Expected schema (Candidate C extended):
+        branch:        string
+        date:          string or null  (optional)
+        active_phase:  string or null
+        active_issues: list            (optional)
+        blockers:      list            (optional)
+        last_agent:    string or null  (optional)
+        phases:        list of {name, status, commit}
 
     Returns:
         (data_dict, error_message) — error_message is None on success.
@@ -106,6 +114,16 @@ def parse_yaml_block(yaml_content: str) -> tuple[dict | None, str | None]:
         if "name" not in phase:
             return None, f"phases[{i}] is missing required field 'name'"
 
+    # Validate optional Candidate C fields when present
+    if "date" in data and data["date"] is not None and not isinstance(data["date"], str):
+        return None, "'date' must be a string or null"
+    if "active_issues" in data and not isinstance(data["active_issues"], list):
+        return None, "'active_issues' must be a list"
+    if "blockers" in data and not isinstance(data["blockers"], list):
+        return None, "'blockers' must be a list"
+    if "last_agent" in data and data["last_agent"] is not None and not isinstance(data["last_agent"], str):
+        return None, "'last_agent' must be a string or null"
+
     return data, None
 
 
@@ -113,10 +131,24 @@ def display_phase_table(data: dict) -> None:
     """Print a human-readable phase status table from parsed YAML state data."""
     branch = data.get("branch") or "(unknown)"
     active_phase = data.get("active_phase")
+    session_date = data.get("date")
+    active_issues = data.get("active_issues") or []
+    blockers = data.get("blockers") or []
+    last_agent = data.get("last_agent")
     phases = data.get("phases", [])
 
     print(f"Branch: {branch}")
+    if session_date:
+        print(f"Date: {session_date}")
     print(f"Active phase: {active_phase or '(none)'}")
+    if last_agent:
+        print(f"Last agent: {last_agent}")
+    if active_issues:
+        print(f"Active issues: {', '.join(str(i) for i in active_issues)}")
+    if blockers:
+        print("Blockers:")
+        for blocker in blockers:
+            print(f"  - {blocker}")
     print("Phases:")
 
     if not phases:

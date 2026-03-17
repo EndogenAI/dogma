@@ -272,3 +272,164 @@ class TestMain:
     def test_no_files_exits_1(self, capsys):
         rc = main([])
         assert rc == 1
+
+
+# ---------------------------------------------------------------------------
+# Candidate C — extended schema tests
+# ---------------------------------------------------------------------------
+
+CANDIDATE_C_SCRATCHPAD = """\
+# Session — feat-candidate-c / 2026-03-17
+
+_Created by prune_scratchpad.py._
+
+## Session State
+
+```yaml
+branch: feat/sprint-16-candidate-c
+date: '2026-03-17'
+active_phase: Phase 2
+active_issues:
+  - 307
+  - 308
+blockers:
+  - Waiting for Review gate APPROVED
+last_agent: Executive Orchestrator
+phases:
+  - name: Phase 1 — Governance
+    status: complete
+    commit: abc1234
+  - name: Phase 2 — Claude Code
+    status: in-progress
+    commit: ''
+```
+
+## Session Start
+
+Some content here.
+"""
+
+LEGACY_SCHEMA_SCRATCHPAD = """\
+# Session — feat-legacy / 2026-03-01
+
+## Session State
+
+```yaml
+branch: feat/legacy-branch
+active_phase: null
+phases: []
+```
+"""
+
+
+class TestCandidateCSchema:
+    """Tests for Candidate C extended YAML schema fields."""
+
+    def test_extended_schema_parses_without_error(self):
+        """Extended schema with all Candidate C fields passes parse_yaml_block."""
+        yaml_content = """\
+branch: feat/sprint-16-candidate-c
+date: '2026-03-17'
+active_phase: Phase 2
+active_issues:
+  - 307
+  - 308
+blockers:
+  - Waiting for review
+last_agent: Executive Orchestrator
+phases:
+  - name: Phase 1
+    status: complete
+    commit: abc1234
+"""
+        data, error = parse_yaml_block(yaml_content)
+        assert error is None
+        assert data is not None
+        assert data["date"] == "2026-03-17"
+        assert data["active_issues"] == [307, 308]
+        assert data["blockers"] == ["Waiting for review"]
+        assert data["last_agent"] == "Executive Orchestrator"
+
+    def test_legacy_schema_backward_compat(self):
+        """Old schema (branch + active_phase + phases only) still passes validation."""
+        yaml_content = "branch: feat/legacy\nactive_phase: null\nphases: []\n"
+        data, error = parse_yaml_block(yaml_content)
+        assert error is None
+        assert data is not None
+        assert "date" not in data or data.get("date") is None
+
+    def test_active_issues_non_list_is_error(self):
+        """'active_issues' must be a list."""
+        yaml_content = "branch: b\nactive_phase: null\nphases: []\nactive_issues: 307\n"
+        _, error = parse_yaml_block(yaml_content)
+        assert error is not None
+        assert "active_issues" in error
+
+    def test_blockers_non_list_is_error(self):
+        """'blockers' must be a list."""
+        yaml_content = "branch: b\nactive_phase: null\nphases: []\nblockers: some string\n"
+        _, error = parse_yaml_block(yaml_content)
+        assert error is not None
+        assert "blockers" in error
+
+    def test_last_agent_non_string_non_null_is_error(self):
+        """'last_agent' must be a string or null."""
+        yaml_content = "branch: b\nactive_phase: null\nphases: []\nlast_agent: 42\n"
+        _, error = parse_yaml_block(yaml_content)
+        assert error is not None
+        assert "last_agent" in error
+
+    def test_date_non_string_is_error(self):
+        """'date' must be a string or null."""
+        yaml_content = "branch: b\nactive_phase: null\nphases: []\ndate: 20260317\n"
+        # YAML parses '20260317' as int if unquoted
+        _, error = parse_yaml_block(yaml_content)
+        assert error is not None
+        assert "date" in error
+
+    def test_display_shows_date_and_optional_fields(self, capsys):
+        """display_phase_table renders date, last_agent, active_issues, blockers."""
+        data = {
+            "branch": "feat/candidate-c",
+            "date": "2026-03-17",
+            "active_phase": "Phase 2",
+            "active_issues": [307, 308],
+            "blockers": ["Review not yet APPROVED"],
+            "last_agent": "Executive Orchestrator",
+            "phases": [],
+        }
+        display_phase_table(data)
+        out = capsys.readouterr().out
+        assert "2026-03-17" in out
+        assert "Executive Orchestrator" in out
+        assert "307" in out
+        assert "Review not yet APPROVED" in out
+
+    def test_display_omits_empty_optional_fields(self, capsys):
+        """display_phase_table omits date/last_agent/active_issues/blockers when empty."""
+        data = {
+            "branch": "feat/candidate-c",
+            "active_phase": None,
+            "phases": [],
+        }
+        display_phase_table(data)
+        out = capsys.readouterr().out
+        assert "Active issues" not in out
+        assert "Blockers" not in out
+        assert "Last agent" not in out
+
+    @pytest.mark.io
+    def test_full_candidate_c_scratchpad_passes_yaml_state(self, tmp_path):
+        """A real scratchpad file with Candidate C extended schema passes --yaml-state."""
+        f = tmp_path / "session.md"
+        f.write_text(CANDIDATE_C_SCRATCHPAD)
+        rc = main(["--yaml-state", str(f)])
+        assert rc == 0
+
+    @pytest.mark.io
+    def test_legacy_scratchpad_still_passes_yaml_state(self, tmp_path):
+        """A scratchpad file with old 3-field schema (no Candidate C fields) passes --yaml-state."""
+        f = tmp_path / "session.md"
+        f.write_text(LEGACY_SCHEMA_SCRATCHPAD)
+        rc = main(["--yaml-state", str(f)])
+        assert rc == 0
