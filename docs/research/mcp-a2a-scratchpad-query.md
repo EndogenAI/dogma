@@ -32,7 +32,7 @@ The dominant justification is **token efficiency**, not fleet size. FTS5 returns
 50 lines against a 500-line scratchpad for a targeted section query, reaching break-even at a
 200-line scratchpad queried for a 20-line section. This threshold is crossed in every multi-phase
 dogma session, making the per-session query-frequency threshold the correct adoption criterion —
-not fleet scale. This aligns with the Algorithms-Before-Tokens axiom (MANIFESTO.md §2): encoding
+not fleet scale. This aligns with the [Algorithms-Before-Tokens](../../MANIFESTO.md#2-algorithms-before-tokens) axiom: encoding
 the retrieval problem deterministically at the FTS5 layer produces a more efficient, auditable
 outcome than prompting agents to navigate raw Markdown.
 
@@ -63,7 +63,7 @@ Direct `read_file` calls have identical data exposure; the MCP layer adds no sec
 meaningful improvement is that the structured envelope `{"section": ..., "content": ...}` plus
 the `audience` annotation makes the trust boundary explicit and machine-checkable — whereas a
 raw `read_file` return provides no such signal. For the local stdio use case, this distinction
-is sufficient. The Endogenous-First axiom (MANIFESTO.md §1) supports encoding this trust signal
+is sufficient. The [Endogenous-First](../../MANIFESTO.md#1-endogenous-first) axiom supports encoding this trust signal
 in the tool schema rather than relying on agent-level prompt instructions.
 
 ### H2: The MCP server can provide useful phase status queries without a structured backend (Candidate D as standalone)
@@ -88,7 +88,7 @@ per phase, the gross saving is on the order of 3,600 lines avoided (16 queries �
 each). At typical LLM context costs this is material. The IPC overhead of stdio JSON-RPC adds
 5–15ms and approximately 200 bytes of framing per call — negligible against the token budget.
 Break-even is reached at 200-line scratchpad queried for a 20-line section, which is the default
-dogma session format. The Algorithms-Before-Tokens axiom (MANIFESTO.md §2) is directly
+dogma session format. The [Algorithms-Before-Tokens](../../MANIFESTO.md#2-algorithms-before-tokens) axiom is directly
 instantiated here: a deterministic FTS5 query encodes more value per token than prompting an
 agent to scan the file interactively.
 
@@ -272,8 +272,7 @@ Three controls are required and non-negotiable for the prototype:
   kwarg. This is the primary prompt injection mitigation and must not be omitted in the
   prototype — it is not a polish item.
 
-These controls are sufficient for the local stdio threat model. The Endogenous-First axiom
-(MANIFESTO.md §1) supports encoding these as enforced schema constraints (MCP annotations +
+These controls are sufficient for the local stdio threat model. The [Endogenous-First](../../MANIFESTO.md#1-endogenous-first) axiom supports encoding these as enforced schema constraints (MCP annotations +
 Python assertions) rather than relying on agent-level prompt reminders.
 
 ### 3. DEFER Tasks API integration
