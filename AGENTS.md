@@ -124,7 +124,7 @@ This project uses Claude exclusively as its model. For single-query tasks that d
 claude -p "..." --output-format json --max-turns 1 --max-budget-usd 0.10
 
 # CI/non-interactive context — no session persistence
-claude -p "..." --no-session-persistence --output-format json
+claude -p "..." --no-session-persistence --output-format json --max-turns 1 --max-budget-usd 0.10
 ```
 
 **Use print mode for** (single-query, no tool use needed):

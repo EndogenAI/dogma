@@ -15,7 +15,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "Before stopping, verify these phase-gate-sequence checks. Answer YES only if ALL pass, otherwise list what is failing:\n1. Are there no uncommitted changes? (run: git status --porcelain)\n2. Does today's scratchpad have a '## Pre-Compact Checkpoint' entry since the last ## Phase header?\n3. Have all changed scripts passed ruff check? (uv run ruff check scripts/ tests/ --quiet)\n4. If any docs/research/*.md was changed: does it have Status: Final and is every ## Recommendations item tracked as a #NNN issue or marked deferred?\nIf stop_hook_active is set, skip this check and proceed immediately."
+            "prompt": "Before stopping, verify these phase-gate-sequence checks. Answer YES only if ALL pass, otherwise list what is failing:\n1. Are there no uncommitted changes? (run: git status --porcelain)\n2. Does today's scratchpad have a '## Pre-Compact Checkpoint' entry since the last ## Phase header?\n3. Have all changed scripts passed ruff check? (uv run ruff check scripts/ tests/ --quiet)\n4. If any docs/research/*.md was changed: does it have Status: Final and is every ## Recommendations item tracked as a #NNN issue or marked deferred?\nIf STOP_HOOK_ACTIVE is set, skip this check and proceed immediately."
           }
         ]
       }

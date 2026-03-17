@@ -58,6 +58,11 @@ https://github.com/cicirello/issue-completion-stats
 # Appears in docs/research/endogenic-design-paper.md and sprint-C-h3-augmentive.md.
 https://www.theatlantic.com/magazine/archive/1945/07/as-we-may-think/303881/
 
+# The New Stack article on MCP production pain points — HTTP 404 as of 2026-03-17.
+# Content cited in docs/research/mcp-production-pain-points.md.
+# Cached in .cache/sources/ via fetch_source.py.
+https://thenewstack.io/mcps-biggest-growing-pains-for-production-use-will-soon-be-solved/
+
 # The Atlantic "As We May Think" entry is already present above — do not duplicate.
 
 # AutoGen stable user-guide URL — 404; page moved in autogen v0.4+ restructure.

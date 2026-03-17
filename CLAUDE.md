@@ -108,7 +108,7 @@ For single-query tasks that don't require interactive agent sessions, prefer pri
 claude -p "..." --output-format json --max-turns 1 --max-budget-usd 0.10
 
 # CI/non-interactive context (no session persistence)
-claude -p "..." --no-session-persistence --output-format json
+claude -p "..." --no-session-persistence --output-format json --max-turns 1 --max-budget-usd 0.10
 ```
 
 **When to use print mode** (≈ 50K tokens saved per avoided interactive session):
