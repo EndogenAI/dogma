@@ -230,6 +230,33 @@ Phase 1 (2h) [checkpoint: budget check, sleep if needed]
 
 ---
 
+## v2 Strict Mitigation Pattern (2026-03-17 — two rate-limit hits same session)
+
+**Root cause**: 30s post-delegation sleep + 45s phase-boundary sleep insufficient when token
+consumption is high during large subagent delegations. Two hits in one session caused cascading
+context loss and interrupted Sprint 17 work twice.
+
+**Mandated changes** (applied to `scripts/detect_rate_limit.py` and encoded here):
+
+| Trigger | Old sleep | New sleep | Rationale |
+|---------|-----------|-----------|----------|
+| After every delegation returns | 30s | **60s** | Observed: 30s insufficient for window recovery |
+| At every phase boundary | 45s | **120s (2 min)** | Phase boundaries concentrate token spend |
+| `DEFAULT_SAFETY_MARGIN` | 8,000 tokens | **15,000 tokens** | Wider buffer catches approaching exhaustion sooner |
+| `MIN_SLEEP_MS` floor | 1,000 ms | **60,000 ms (60s)** | Prevents sub-threshold defensive sleeps being skipped |
+| `PHASE_BOUNDARY_SLEEP_MS` | (new) | **120,000 ms** | Explicit constant for consistent enforcement |
+
+**Enforcement rule** (update AGENTS.md Rate-Limit Pattern section):
+```
+Rate-Limit Sleep Pattern (v2 — enforced from 2026-03-17):
+  - After every delegation returns:  sleep 60s  (not 30s)
+  - At every phase boundary:          sleep 120s (not 45s)
+  - Before large delegations (>35k):  run detect_rate_limit.py --check first
+  - safety-margin:                    15,000 tokens (not 8,000)
+```
+
+---
+
 ## Recommendations
 
 ### For Next Sprint (Phase 1–3 of Resilience Workplan)
