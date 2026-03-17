@@ -163,6 +163,15 @@ def init_session_file(path: Path) -> None:
     If the file already exists, does nothing (safe to call multiple times).
     The ## Session State block is appended after the header line so that
     validate_session_state.py --yaml-state can parse it immediately.
+
+    YAML schema (Candidate C):
+        branch:        string — git branch name
+        date:          string — ISO date (YYYY-MM-DD)
+        active_phase:  string or null — current phase name
+        active_issues: list — GitHub issue numbers actively worked
+        blockers:      list — open blockers (strings)
+        last_agent:    string or null — last delegated agent name
+        phases:        list of {name, status, commit}
     """
     if path.exists():
         return
@@ -174,14 +183,30 @@ def init_session_file(path: Path) -> None:
 
         branch_val = raw_branch or branch  # fall back to folder slug if detached HEAD
         yaml_block = yaml.safe_dump(
-            {"branch": branch_val, "active_phase": None, "phases": []},
+            {
+                "branch": branch_val,
+                "date": today,
+                "active_phase": None,
+                "active_issues": [],
+                "blockers": [],
+                "last_agent": None,
+                "phases": [],
+            },
             default_flow_style=False,
             sort_keys=False,
             allow_unicode=True,
         )
     except Exception:
         branch_val = raw_branch or branch
-        yaml_block = f"branch: '{branch_val}'\nactive_phase: null\nphases: []\n"
+        yaml_block = (
+            f"branch: '{branch_val}'\n"
+            f"date: '{today}'\n"
+            f"active_phase: null\n"
+            f"active_issues: []\n"
+            f"blockers: []\n"
+            f"last_agent: null\n"
+            f"phases: []\n"
+        )
     path.write_text(
         f"# Session — {branch} / {today}\n\n"
         f"_Created by prune_scratchpad.py. Append findings under `## <Task> Results` headings._\n\n"

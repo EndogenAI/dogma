@@ -51,6 +51,61 @@ class TestPruneScrapbookInitialisation:
         assert session_file.exists()
         assert sample_markdown["content"] in session_file.read_text()
 
+    @pytest.mark.io
+    def test_init_writes_yaml_state_block(self, tmp_path):
+        """init_session_file writes a ## Session State YAML block with Candidate C schema."""
+        import yaml  # type: ignore[import-untyped]
+        from prune_scratchpad import init_session_file  # noqa: PLC0415
+
+        session_file = tmp_path / ".tmp" / "feat-candidate-c" / "2026-03-17.md"
+        session_file.parent.mkdir(parents=True)
+        init_session_file(session_file)
+
+        text = session_file.read_text(encoding="utf-8")
+        assert "## Session State" in text, "Expected ## Session State section"
+        assert "```yaml" in text, "Expected fenced YAML block"
+
+        # Extract YAML content between fences
+        import re  # noqa: PLC0415
+
+        match = re.search(r"```yaml\n(.*?)```", text, re.DOTALL)
+        assert match, "Could not extract YAML block"
+        data = yaml.safe_load(match.group(1))
+
+        # Required fields
+        assert "branch" in data
+        assert "active_phase" in data
+        assert "phases" in data
+        # Candidate C extended fields
+        assert "date" in data, "Expected 'date' field (Candidate C)"
+        assert "active_issues" in data, "Expected 'active_issues' field (Candidate C)"
+        assert "blockers" in data, "Expected 'blockers' field (Candidate C)"
+        assert "last_agent" in data, "Expected 'last_agent' field (Candidate C)"
+
+    @pytest.mark.io
+    def test_init_yaml_field_defaults(self, tmp_path):
+        """init_session_file sets sensible defaults for all Candidate C schema fields."""
+        import re  # noqa: PLC0415
+
+        import yaml  # type: ignore[import-untyped]
+        from prune_scratchpad import init_session_file  # noqa: PLC0415
+
+        session_file = tmp_path / ".tmp" / "feat-candidate-c" / "2026-03-17.md"
+        session_file.parent.mkdir(parents=True)
+        init_session_file(session_file)
+
+        text = session_file.read_text(encoding="utf-8")
+        match = re.search(r"```yaml\n(.*?)```", text, re.DOTALL)
+        assert match
+        data = yaml.safe_load(match.group(1))
+
+        assert data["active_phase"] is None
+        assert data["active_issues"] == []
+        assert data["blockers"] == []
+        assert data["last_agent"] is None
+        assert data["phases"] == []
+        assert data["date"] == "2026-03-17"  # matches the filename stem/folder date
+
 
 class TestPruneScrapbookAnnotation:
     """Tests for --annotate flag (H2 heading line ranges)."""
