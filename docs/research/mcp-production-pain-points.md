@@ -140,4 +140,4 @@ The MCP roadmap's transport evolution (P1) will land a `.well-known` metadata en
 
 4. EndogenAI Workflows. "MANIFESTO.md — Foundational Axioms." *MANIFESTO.md*. [`MANIFESTO.md`](../../MANIFESTO.md)
 
-5. Typescript SDK GitHub issue #892 (referenced in The New Stack article): stateless MCP — client session IDs not reliably mapped to server event streams in multi-pod deployments.
+5. TypeScript SDK GitHub issue #892 (referenced in The New Stack article): stateless MCP — client session IDs not reliably mapped to server event streams in multi-pod deployments.

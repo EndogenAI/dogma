@@ -25,7 +25,7 @@ distinct class of constraint that dogma currently handles through agent-level
 prompt instructions. This research confirms that three of these primitives map
 directly onto existing dogma scripts and represent a shift from T1 (verbal
 instruction) to T3/T4 (static and runtime) enforcement — the same upward
-movement the Governer A/B stack achieved for heredoc prevention. The practical
+movement the Governor A/B stack achieved for heredoc prevention. The practical
 result is that phase-gate compliance, session lifecycle management, context
 amplification, and compaction guards can all be encoded as deterministic hook
 invocations rather than relied upon as prompt-time reminders subject to drift.
@@ -79,7 +79,7 @@ code 2 sending feedback and continuing the agent rather than stopping. This is
 precisely the mechanism needed to encode phase-gate-sequence criteria
 (`docs/research/` section checks, commit verification, issue AC confirmation)
 as runtime gates rather than prompt instructions. The Stop hook includes a
-`stop_hook_active` environment variable that must be checked to prevent infinite
+`STOP_HOOK_ACTIVE` environment variable that must be checked to prevent infinite
 loops — agents must guard against a Stop hook triggering a continuation that fires
 another Stop.
 
@@ -150,7 +150,7 @@ it structurally.
 **Anti-pattern**: Using `async: true` on a `Stop` hook when the gate decision is
 needed — async hooks cannot block the stop event. Decision hooks must omit
 `async` (they are synchronous by default). A second anti-pattern is omitting the
-`stop_hook_active` guard: a Stop hook that performs agentic continuation will
+`STOP_HOOK_ACTIVE` guard: a Stop hook that performs agentic continuation will
 fire another Stop, entering an infinite loop.
 
 ---
@@ -225,7 +225,7 @@ expressible in simple pre-commit hooks. This is the
 [Programmatic-First](../../MANIFESTO.md#programmatic-first-principle-cross-cutting)
 principle applied at the agent lifecycle layer: encode the checklist once in a
 hook; stop relying on every agent remembering to run it. Guard every `Stop` hook
-with `stop_hook_active` to prevent infinite loops.
+with `STOP_HOOK_ACTIVE` to prevent infinite loops.
 
 ### 3. MAP dogma scripts to the SessionStart/SessionEnd hook lifecycle
 

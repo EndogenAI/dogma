@@ -82,7 +82,7 @@ An LLM-evaluated phase gate that checks:
 3. Ruff check passes on changed scripts
 4. Any new D4 research docs have all `## Recommendations` items tracked as issues
 
-Guards against infinite loops with `stop_hook_active` check.
+Guards against infinite loops with `STOP_HOOK_ACTIVE` check.
 
 ### `PreCompact` — Compaction Guard
 

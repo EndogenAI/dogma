@@ -17,7 +17,7 @@ Implement `scripts/mcp_governance_server.py` — a FastMCP stdio server exposing
 
 ## Prerequisites
 
-1. B' SQLite scratchpad index (#129) — scratchpad query tools require FTS5 backend
+1. **Soft dependency**: B' SQLite scratchpad index (#129) — required for full FTS5 query performance. Phase 1 degrades gracefully to heading-grep fallback when absent; full performance requires B' to be complete before enabling production use.
 2. #297 research doc APPROVED (defines the 3-tool interface spec)
 
 ## Phases

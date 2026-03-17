@@ -73,24 +73,24 @@ Markdown files serve as the canonical, append-only source of truth for session c
 
 ---
 
-### P2: Incremental YAML-Frontmatter Enrichment
+### P2: Incremental YAML Session-State Block
 
-Session-level metadata (active phase, current branch, active issue numbers, blocker flags) is encoded as YAML frontmatter at the top of each scratchpad file at init time. This addresses the fastest-path query patterns (Q1: active phase, Q5: open blockers) without requiring any infrastructure beyond the `python-frontmatter` library. It is not a final architecture — it does not address cross-session queries or section-content lookup — but it is a zero-friction incremental improvement that can ship immediately while B' is being implemented.
+Session-level metadata (active phase, current branch, active issue numbers, blocker flags) is encoded as a fenced YAML block under a `## Session State` section in each scratchpad file at init time (`prune_scratchpad.py --init`). This addresses the fastest-path query patterns (Q1: active phase, Q5: open blockers) without requiring any infrastructure beyond PyYAML (`pyyaml`, already a project dependency). It is not a final architecture — it does not address cross-session queries or section-content lookup — but it is a zero-friction incremental improvement that can ship immediately while B' is being implemented.
 
-**Canonical example**:
+**Canonical example** (the `## Session State` section written by `prune_scratchpad.py --init`):
 ```yaml
----
 branch: feature/scratchpad-sqlite
 date: 2026-03-17
 active_phase: "Phase 2"
 active_issues: [304, 297, 128]
 blockers: []
 last_agent: "Executive Orchestrator"
----
+phases: []
 ```
-With this frontmatter, `validate_session_state.py` can answer Q1 and Q5 via `frontmatter.load(path).metadata['active_phase']` — a single dict lookup, not a heading scan. Agents write their active phase label to frontmatter on phase transition via `replace_string_in_file`, preserving the existing write tool contract.
 
-**Anti-pattern**: Using YAML frontmatter as a substitute for a structured query layer — attempting to encode the full section-content index and cross-session history in frontmatter keys. YAML frontmatter is bounded by the fact that `python-frontmatter` loads the entire file into memory and returns a string for `.content` — it does not provide indexed access into body sections. Queries Q2 (section content) and Q3 (cross-day lookup) still require full-file reads even with frontmatter present. Candidate C treated as a final architecture produces a system that answers two of five queries well and the remaining three no better than the status quo.
+With this `## Session State` block, `validate_session_state.py` can answer Q1 and Q5 via `yaml.safe_load(block)['active_phase']` — a single dict lookup, not a heading scan. Agents write their active phase label to the block on phase transition via `replace_string_in_file`, preserving the existing write tool contract.
+
+**Anti-pattern**: Using the YAML session-state block as a substitute for a structured query layer — attempting to encode the full section-content index and cross-session history in YAML keys. The block still requires a full-file read to locate the `## Session State` heading before `yaml.safe_load` can parse it — it does not provide indexed access into body sections. Queries Q2 (section content) and Q3 (cross-day lookup) still require full-file reads even with the state block present. Candidate C treated as a final architecture produces a system that answers two of five queries well and the remaining three no better than the status quo.
 
 ---
 
@@ -102,7 +102,7 @@ With this frontmatter, `validate_session_state.py` can answer Q1 and Q5 via `fro
 | **Git compatibility** (human-readable, diffable?) | ✅ Full git-diff; session history readable | ✅ Markdown source diffs cleanly; `.db` file is gitignored | ✅ Full git-diff | ✅ Markdown source unchanged |
 | **Write path change required?** | — (no change) | ❌ No write-path change; index updated by watcher/init | ❌ No write-path change; frontmatter added at init | ❌ No write-path change (access layer only) |
 | **Migration complexity** | — (status quo) | Low — `prune_scratchpad.py --init` builds index from existing files | Very low — add frontmatter block to `--init` template | Medium — requires B' as prerequisite; MCP server scaffolding |
-| **Local Compute-First compliance** | ✅ Zero infrastructure | ✅ stdlib `sqlite3`; no network; no external deps | ✅ stdlib + `python-frontmatter`; no network | ✅ stdio subprocess; no network (stdio transport) |
+| **Local Compute-First compliance** | ✅ Zero infrastructure | ✅ stdlib `sqlite3`; no network; no external deps | ✅ stdlib + `pyyaml`; no network | ✅ stdio subprocess; no network (stdio transport) |
 
 ---
 
@@ -137,7 +137,7 @@ Issue #297 (MCP-mediated scratchpad query) remains valid and its access-layer ar
 
 **Decision**: ADOPT NOW (fast win while B' is in progress)
 
-Add structured YAML frontmatter to `prune_scratchpad.py --init`. Fields: `branch`, `date`, `active_phase`, `active_issues`, `blockers`, `last_agent`. This costs one `replace_string_in_file` call at init time and enables `validate_session_state.py` to answer Q1 (active phase) and Q5 (open blockers) without heading-grep. The `python-frontmatter` library parses it with a single dict lookup. Agents that transition phases write their new phase label to the frontmatter block — a one-line `replace_string_in_file` call. This delivers immediate brittleness reduction for the two highest-frequency queries before B' ships, consistent with the **Algorithms Before Tokens** axiom ([MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens)).
+Add structured YAML state block to `prune_scratchpad.py --init` under a `## Session State` heading. Fields: `branch`, `date`, `active_phase`, `active_issues`, `blockers`, `last_agent`. This costs one `replace_string_in_file` call at init time and enables `validate_session_state.py` to answer Q1 (active phase) and Q5 (open blockers) without heading-grep. PyYAML parses it with a single `yaml.safe_load()` dict lookup. Agents that transition phases write their new phase label to the `## Session State` block — a one-line `replace_string_in_file` call. This delivers immediate brittleness reduction for the two highest-frequency queries before B' ships, consistent with the **Algorithms Before Tokens** axiom ([MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens)).
 
 ---
 
@@ -164,7 +164,7 @@ Add structured YAML frontmatter to `prune_scratchpad.py --init`. Fields: `branch
 - [docs/research/mcp-state-architecture.md](mcp-state-architecture.md) — gap analysis: "programmatic queryability" and "state shape enforcement" deficiencies in current scratchpad substrate
 - [docs/research/agent-to-agent-communication-protocol.md](agent-to-agent-communication-protocol.md) — MCP as minimal viable A2A surface; atomic write coordination gap
 - [docs/research/intelligence-architecture-synthesis.md](intelligence-architecture-synthesis.md) — LangGraph SQLite checkpointer as production-validated cross-phase state persistence pattern
-- [MCP Specification — Transports (2025-03-26)]( https://modelcontextprotocol.io/specification/2025-03-26/basic/transports) — stdio transport recommendation for local subprocesses; HTTP transport complexity
+- [MCP Specification — Transports (2025-03-26)](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports) — stdio transport recommendation for local subprocesses; HTTP transport complexity
 - [SQLite FTS5 Extension](https://www.sqlite.org/fts5.html) — FTS5 virtual table schema, automerge, query syntax
 - [AGENTS.md](../../AGENTS.md) — Local Compute-First, Algorithms Before Tokens, Programmatic-First constraints
 - [MANIFESTO.md](../../MANIFESTO.md) — §2 Algorithms Before Tokens, §3 Local Compute-First (foundational axioms)
