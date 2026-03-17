@@ -123,3 +123,8 @@ https://endogenai.github.io/dogma/
 # URLs are valid commit objects; treat as transient upstream availability.
 https://github.com/EndogenAI/dogma/commit/7684b5ad8a094470b4cdbbf66c37707f0df3f19b
 https://github.com/EndogenAI/dogma/commit/a257c83c93b524ab0f46e95c2fdf642ed9eb4448
+
+# XDA Developers article intermittently fails in GitHub Actions with HTTP/2
+# transport errors despite being reachable outside CI.
+# Referenced from docs/research/OPEN_RESEARCH.md.
+https://www.xda-developers.com/youre-using-local-llm-wrong-if-youre-prompting-it-like-cloud-llm/
