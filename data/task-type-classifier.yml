@@ -1,0 +1,79 @@
+# data/task-type-classifier.yml — Task Keyword → Governance Boundary Category Mapping
+#
+# Source of truth for scripts/suggest_routing.py.
+# Maps free-text task keywords to governance_boundary operation categories,
+# which are then used to produce a topological delegation sequence via
+# data/delegation-gate.yml.
+#
+# Schema per entry:
+#   category    : str   — governance boundary operation category name
+#   keywords    : list  — keywords matched case-insensitively to task description
+#   agent       : str   — primary specialist agent for this category
+#   axiom       : str   — amplified governing axiom (from data/amplification-table.yml)
+#   description : str   — one-line description of what this category covers
+
+- category: research
+  keywords: [research, survey, scout, synthesize, synthesis, investigate, explore, discover, source, cache, fetch]
+  agent: Executive Researcher
+  axiom: Endogenous-First
+  description: Literature survey, web scouting, source caching, and D4 research doc synthesis
+
+- category: docs
+  keywords: [docs, documentation, guide, manifest, changelog, readme, write, update, edit, document]
+  agent: Executive Docs
+  axiom: Documentation-First
+  description: Documentation writing and governance doc updates
+
+- category: scripting
+  keywords: [script, automate, encode, ci, implement, build, code, develop, feature, fix, bug, refactor]
+  agent: Executive Scripter
+  axiom: Programmatic-First
+  description: Script authoring, feature implementation, bug fixes, and CI tasks
+
+- category: fleet
+  keywords: [agent, fleet, skill, authoring, role, persona, handoff, validate-agent, audit, create-agent]
+  agent: Executive Fleet
+  axiom: Endogenous-First
+  description: Agent file authoring, fleet audits, and skill authoring
+
+- category: review
+  keywords: [review, validate, check, verify, approve, lint, test, quality, assess]
+  agent: Review
+  axiom: Documentation-First
+  description: Validation and review gates before commits
+
+- category: commit
+  keywords: [commit, push, pr, pull-request, release, tag, publish, merge]
+  agent: GitHub
+  axiom: Documentation-First
+  description: Git operations, PR creation, and release management
+
+- category: planning
+  keywords: [plan, decompose, sequence, phase, order, workplan, roadmap, milestone, sprint]
+  agent: Executive Planner
+  axiom: Algorithms-Before-Tokens
+  description: Workplan authoring and phase decomposition before execution
+
+- category: pm
+  keywords: [issue, label, milestone, triage, backlog, priority, close-issue, seed-issues, board]
+  agent: Executive PM
+  axiom: Programmatic-First
+  description: Issue management, labelling, milestones, and project board operations
+
+- category: automation
+  keywords: [automate, watcher, hook, pre-commit, precommit, workflow, cron, trigger, event-driven]
+  agent: Executive Automator
+  axiom: Programmatic-First
+  description: File watchers, pre-commit hooks, and CI workflow design
+
+- category: security
+  keywords: [security, threat, ssrf, injection, owasp, audit-security, vulnerability, auth, token]
+  agent: Security Researcher
+  axiom: Local-Compute-First
+  description: Security threat modelling and vulnerability assessment
+
+- category: ci
+  keywords: [ci, failing, test-failure, flaky, coverage, pipeline, github-actions, green, red]
+  agent: CI Monitor
+  axiom: Algorithms-Before-Tokens
+  description: CI health monitoring, test failure triage, and pipeline optimisation

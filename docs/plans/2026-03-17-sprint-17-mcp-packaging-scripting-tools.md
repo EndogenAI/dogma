@@ -29,42 +29,40 @@ external use* — packaging, discoverability, and fleet intelligence tooling.
 
 ---
 
+## Architecture Decisions (2026-03-17)
+
+1. **MCP SDK**: official `mcp>=1.0` (includes FastMCP high-level API). Added as `[project.optional-dependencies] mcp = ["mcp>=1.0"]` — users enable with `uv sync --extra mcp`. No Tasks API — synchronous request/response only per `docs/research/mcp-production-pain-points.md` Rec 2.
+2. **Phase ordering**: Scripting tools (#129, #291, #292) deliver in Phase 2 before MCP server (Phase 3). Required by #303 acceptance criteria gate: scratchpad tools depend on B' FTS5 index (#129) shipping first.
+3. **`dogma-governance` package**: Option A — standalone with schemas embedded as package data. Zero imports from `scripts/` or `data/`. Validation logic extracted into `packages/dogma-governance/dogma_governance/` with YAML schemas as embedded package data.
+
+---
+
 ## Phase Plan
 
-### Phase 1 — Research: MCP Server Architecture ⬜
+### Phase 1 — Research: MCP Server Architecture ✅ (pre-done)
 
-**Agent**: Executive Researcher
-**Issues**: #303 (pre-implementation architecture scan)
-**Deliverables**:
-- `docs/research/mcp-server-governance-tools.md` — architecture decision (transport, tool schema, auth) — Status: Final
+**Note**: Three Final research docs already cover all architecture decisions. Skipping delegation.
+- `docs/research/mcp-production-pain-points.md` (Status: Final, closes #285)
+- `docs/research/mcp-state-architecture.md` (Status: Final)
+- `docs/research/mcp-a2a-scratchpad-query.md` (Status: Final)
 
-**Depends on**: nothing
-**Gate**: Phase 1 Review APPROVED before Phase 2 begins
-**CI**: Tests, Auto-validate
-**Status**: Not started
+**Status**: Complete — pre-existing research docs
 
 ---
 
-### Phase 1 Review — Review Gate ⬜
-
-**Agent**: Review
-**Deliverables**: `## Phase 1 Review Output` in scratchpad, verdict: APPROVED
-**Depends on**: Phase 1 committed
-**Status**: Not started
-
----
-
-### Phase 2 — Implementation: MCP Server (#303) ⬜
+### Phase 2 — Implementation: Scripting Tools (#129, #291, #292) ⬜
 
 **Agent**: Executive Scripter
-**Issues**: #303
+**Issues**: #129, #291, #292
 **Deliverables**:
-- `scripts/mcp_server.py` — FastMCP server exposing governance tools (validate_agent_files, validate_synthesis, fetch_source, check_substrate_health)
-- `pyproject.toml` — MCP server entry point + dependencies
-- `docs/guides/mcp-server.md` — usage guide
-- Tests in `tests/test_mcp_server.py` (≥80% coverage)
+- `scripts/afs_index.py` — SQLite FTS5 B' hybrid index for scratchpad session content (#129)
+- `scripts/analyse_fleet_coupling.py` — NK K-coupling per agent, high-K nodes, modularity Q (#291)
+- `scripts/suggest_routing.py` — GPS-style delegation routing from task description (#292)
+- `data/task-type-classifier.yml` — keyword-to-task-type mapping for suggest_routing.py
+- Tests for each script in `tests/` (≥80% coverage)
+- `scripts/README.md` updated with new scripts
 
-**Depends on**: Phase 1 Review APPROVED
+**Depends on**: Phase 1 (pre-done)
 **Gate**: Phase 2 Review APPROVED before Phase 3 begins
 **CI**: Tests, Auto-validate
 **Status**: Not started
@@ -80,16 +78,20 @@ external use* — packaging, discoverability, and fleet intelligence tooling.
 
 ---
 
-### Phase 3 — Implementation: Pre-commit Bundle (#305) ⬜
+### Phase 3 — Implementation: MCP Server (#303) ⬜
 
 **Agent**: Executive Scripter
-**Issues**: #305
+**Issues**: #303
 **Deliverables**:
-- `pyproject.toml` updated — standalone installable `dogma-precommit` package or `.pre-commit-hooks.yaml` configuration
-- `docs/guides/precommit-bundle.md` — installation and usage guide
-- Tests verifying bundle configuration is valid
+- `mcp_server/dogma_server.py` — FastMCP server using official `mcp>=1.0` SDK
+- `mcp_server/tools/` — tool modules (validation, scaffolding, query)
+- `mcp_server/README.md` — quickstart (Claude Desktop + Cursor config snippets)
+- `mcp_server/.well-known/mcp-servers.json` — discovery stub
+- `.env.example` — `DOGMA_MCP_PORT`, `DOGMA_MCP_AUTH_TOKEN`
+- `pyproject.toml` updated — `[project.optional-dependencies] mcp = ["mcp>=1.0"]`
+- Tests in `tests/test_mcp_server.py` (≥80% coverage, mock MCP client)
 
-**Depends on**: Phase 2 Review APPROVED (shares pyproject.toml; coordinate edits)
+**Depends on**: Phase 2 Review APPROVED (scratchpad tools require #129 FTS5 index)
 **Gate**: Phase 3 Review APPROVED before Phase 4 begins
 **CI**: Tests, Auto-validate
 **Status**: Not started
@@ -105,19 +107,33 @@ external use* — packaging, discoverability, and fleet intelligence tooling.
 
 ---
 
-### Phase 4 — Implementation: AFS FTS5 Index + Scripting Tools (#129, #291, #292) ⬜
+### Phase 4 — Implementation: Pre-commit Bundle (#305) ⬜
 
 **Agent**: Executive Scripter
-**Issues**: #129, #291, #292
+**Issues**: #305
 **Deliverables**:
-- `scripts/afs_index.py` (or extend existing AFS scripts) — SQLite FTS5 keyword index for session content (#129)
-- `scripts/analyse_fleet_coupling.py` — NK K-coupling analysis per agent, high-K nodes, modularity Q (#291)
-- `scripts/suggest_routing.py` — GPS-style delegation routing from task description (#292)
-- Tests for each script in `tests/`
-- `scripts/README.md` updated with new scripts
+- `packages/dogma-governance/` — standalone Python package (Option A: embedded schemas, zero dogma-internal deps)
+- `packages/dogma-governance/dogma_governance/` — extracted validator modules
+- `packages/dogma-governance/dogma_governance/data/` — embedded YAML schema data
+- `packages/dogma-governance/pyproject.toml` — packaging metadata + CLI entry points
+- `packages/dogma-governance/.pre-commit-hooks.yaml` — hook definitions
+- `packages/dogma-governance/tests/` — full test suite (≥80% coverage)
+- `packages/dogma-governance/README.md` — installation + quickstart
+- `.github/workflows/release-governance-package.yml` — PyPI publish on tag
 
 **Depends on**: Phase 3 Review APPROVED
 **Gate**: Phase 4 Review APPROVED before Phase 5 begins
+**CI**: Tests, Auto-validate
+**Status**: Not started
+
+---
+
+### Phase 4 Review — Review Gate ⬜
+
+**Agent**: Review
+**Deliverables**: `## Phase 4 Review Output` in scratchpad, verdict: APPROVED
+**Depends on**: Phase 4 committed
+**Status**: Not started
 **CI**: Tests, Auto-validate
 **Status**: Not started
 
