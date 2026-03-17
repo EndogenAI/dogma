@@ -78,39 +78,12 @@ after all research resolves so their workplans can incorporate research findings
 
 ---
 
-## Phase 1B — #284: Claude Code CLI Productivity Patterns
-
-**Agent**: Research Scout → Research Synthesizer → Review Agent
-**Deliverable**: `docs/research/claude-code-cli-productivity-patterns.md` (D4 synthesis, Status: Final)
-**Closes**: #284
-**Depends on**: Phase 1A APPROVED + 20 min sleep
-
-**Acceptance criteria**:
-- [ ] Article cached: Joe Njenga, Medium, "Use These 6 CLI Tools to Make Working with Claude Code 3x Better"
-- [ ] All 6 tools evaluated against dogma's existing `scripts/` and pre-commit hooks
-- [ ] Overlap analysis: which tools already covered by existing scripts?
-- [ ] Adoption recommendations: which tools (if any) should be added? Which replaced?
-- [ ] Passes `uv run python scripts/validate_synthesis.py`
-- [ ] Review agent returns APPROVED
-
-**Post-phase**: SLEEP 20 MINUTES before Phase 1C Scout
-
----
-
-## Phase 1B Review Gate
-
-**Agent**: Review
-**Deliverable**: `## Phase 1B Review Output` in scratchpad, verdict: APPROVED
-**Status**: ⬜ Not started
-
----
-
-## Phase 1C — #304: Scratchpad Architecture Decision
+## Phase 1B — #304: Scratchpad Architecture Decision
 
 **Agent**: Research Scout → Research Synthesizer → Review Agent
 **Deliverable**: `docs/research/scratchpad-architecture-decision.md` (D4 synthesis, Status: Final)
 **Closes**: #304
-**Depends on**: Phase 1B APPROVED + 20 min sleep
+**Depends on**: Phase 1A APPROVED + 20 min sleep
 
 **Acceptance criteria**:
 - [ ] Three candidates fully evaluated: A (flat Markdown status quo), B (SQLite+FTS5), C (MCP-mediated/hybrid)
@@ -125,10 +98,10 @@ after all research resolves so their workplans can incorporate research findings
 
 ---
 
-## Phase 1C Review Gate
+## Phase 1B Review Gate
 
 **Agent**: Review
-**Deliverable**: `## Phase 1C Review Output` in scratchpad, verdict: APPROVED
+**Deliverable**: `## Phase 1B Review Output` in scratchpad, verdict: APPROVED
 **Status**: ⬜ Not started
 
 ---
@@ -138,7 +111,7 @@ after all research resolves so their workplans can incorporate research findings
 **Agent**: Research Scout → Research Synthesizer → Review Agent
 **Deliverable**: `docs/research/mcp-scratchpad-query.md` (D4 synthesis, Status: Final)
 **Closes**: #297
-**Depends on**: Phase 1C APPROVED (scratchpad architecture winner) + Phase 1A APPROVED (MCP pain points) + 20 min sleep
+**Depends on**: Phase 1B APPROVED (scratchpad architecture winner) + Phase 1A APPROVED (MCP pain points) + 20 min sleep
 
 **Acceptance criteria**:
 - [ ] MCP tool interface specified: tool name(s), input schema, output format
@@ -158,6 +131,32 @@ after all research resolves so their workplans can incorporate research findings
 
 ---
 
+## Phase 2B — #284: Claude Code CLI Productivity Patterns (N-1 before Phase 3)
+
+**Agent**: Research Scout → Research Synthesizer → Review Agent
+**Deliverable**: `docs/research/claude-code-cli-productivity-patterns.md` (D4 synthesis, Status: Final)
+**Closes**: #284
+**Depends on**: Phase 2 APPROVED + 20 min sleep
+**Rationale (N-1)**: #284 informs only Phase 3 (#303 tool surface design) — placed immediately before Phase 3 per AGENTS.md Sprint Phase Ordering Constraints.
+
+**Acceptance criteria**:
+- [ ] Article cached: Joe Njenga, Medium, "Use These 6 CLI Tools to Make Working with Claude Code 3x Better"
+- [ ] All 6 tools evaluated against dogma's existing `scripts/` and pre-commit hooks
+- [ ] Overlap analysis: which tools already covered by existing scripts?
+- [ ] Adoption recommendations: which tools (if any) should be added? Which replaced?
+- [ ] Passes `uv run python scripts/validate_synthesis.py`
+- [ ] Review agent returns APPROVED
+
+---
+
+## Phase 2B Review Gate
+
+**Agent**: Review
+**Deliverable**: `## Phase 2B Review Output` in scratchpad, verdict: APPROVED
+**Status**: ⬜ Not started
+
+---
+
 ## Phase 3 — Implementation Workplans (#294, #303, #305)
 
 **Agent**: Direct orchestration (workplan authoring, no Scout needed)
@@ -165,14 +164,22 @@ after all research resolves so their workplans can incorporate research findings
 - `docs/plans/2026-03-17-local-rag-companion-repo.md` — implementation workplan, closes #294
 - `docs/plans/2026-03-17-mcp-server-governance-tools.md` — implementation workplan, closes #303
 - `docs/plans/2026-03-17-governance-precommit-bundle.md` — implementation workplan, closes #305
-**Depends on**: Phase 2 APPROVED (MCP findings inform #303 scope)
+**Depends on**: Phase 2B APPROVED (Claude Code CLI informs #303 tool surface scope)
 
 **Acceptance criteria**:
 - [ ] Each workplan has: Objective, phases with agents/deliverables/gates, acceptance criteria per phase
 - [ ] #294 workplan references Sprint 12 LanceDB recommendation as starting point
-- [ ] #303 workplan incorporates MCP pain points (#285) and scratchpad architecture (#304) findings
+- [ ] #303 workplan incorporates MCP pain points (#285), scratchpad architecture (#304), and Claude Code CLI (#284) findings
 - [ ] #305 workplan specifies pip/uv installable bundle structure (pyproject.toml extras, pre-commit hooks)
 - [ ] All three workplans committed and pushed
+
+---
+
+## Phase 3 Review Gate
+
+**Agent**: Review
+**Deliverable**: `## Phase 3 Review Output` in scratchpad, verdict: APPROVED
+**Status**: ⬜ Not started
 
 ---
 
