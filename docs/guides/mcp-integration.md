@@ -64,7 +64,7 @@ The Endogenous-First principle (MANIFESTO.md § 1) prioritizes **local compute a
 **Status**: Implemented in Sprint 17 (`feat(mcp)`) and tested in `tests/test_mcp_server.py`.
 
 **Design notes**:
-- Server will be a Python subprocess (not Node.js; placeholder arg is a placeholder)
+- Server is a Python subprocess (not Node.js)
 - Must respect repository root boundary (no OWASP A01 — path traversal)
 - Must support capability gating (e.g., only Research Scout can fetch external URLs via `fetch_source.py`)
 
@@ -145,15 +145,15 @@ Early implementation focused on GitHub MCP; Sprint 17 now adds the local governa
 
 ---
 
-## Deferred Work
+## Follow-Up Work
 
-The following aspects are deferred to follow-up sprint issues:
+The following aspects are tracked as follow-up sprint work:
 
 | Item | Issue | Reason |
 |------|-------|--------|
 | Full generic Filesystem MCP server implementation | Follow-up sprint issue | Governance MCP server is shipped; generic file-server hardening remains |
 | Capability gating for MCP operations | Follow-up sprint issue | Depends on capability_gate.py maturation |
-| MCP server discovery and manifest | #158-adjacent follow-up | Deferred to fleet-wide agent capability registry continuity |
+| MCP server discovery and manifest | #158-adjacent follow-up | Align with fleet-wide agent capability registry continuity |
 | Multi-server coordination (e.g., GitHub + Filesystem in same agent) | Follow-up sprint issue | Depends on improved context window management |
 
 ---

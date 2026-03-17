@@ -143,7 +143,7 @@ external use* — packaging, discoverability, and fleet intelligence tooling.
 **Deliverables**:
 - `CHANGELOG.md` updated with Sprint 17 section
 - `docs/guides/` cross-references updated (MCP server, pre-commit bundle)
-- Sprint 17 workplan phases all marked ✅
+- Sprint 17 workplan execution phases (1–5) marked ✅
 - Issue body checkboxes updated for all 5 sprint issues
 
 **Depends on**: Phase 4 Review APPROVED
