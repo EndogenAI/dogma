@@ -151,10 +151,10 @@ The following aspects are tracked as follow-up sprint work:
 
 | Item | Issue | Reason |
 |------|-------|--------|
-| Full generic Filesystem MCP server implementation | Sprint planning backlog | Governance MCP server is shipped; generic file-server hardening remains |
-| Capability gating for MCP operations | Sprint planning backlog | Depends on capability_gate.py maturation |
-| MCP server discovery and manifest | Agent registry continuity stream | Align with fleet-wide agent capability registry continuity |
-| Multi-server coordination (e.g., GitHub + Filesystem in same agent) | Sprint planning backlog | Depends on improved context window management |
+| Full generic Filesystem MCP server implementation | #134 | Governance MCP server is shipped; generic file-server hardening remains |
+| Capability gating for MCP operations | #155 | Depends on capability_gate.py maturation |
+| MCP server discovery and manifest | #158 | Align with fleet-wide agent capability registry continuity |
+| Multi-server coordination (e.g., GitHub + Filesystem in same agent) | #297 | Depends on improved context window management |
 
 ---
 
