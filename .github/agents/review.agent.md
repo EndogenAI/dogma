@@ -95,6 +95,13 @@ Follows the **programmatic-first** principle from [`AGENTS.md`](../../AGENTS.md)
 - [ ] At least one MANIFESTO.md axiom cited in the body.
 - [ ] `AGENTS.md` governance constraint cited in the first substantive section.
 
+### D4 Research Documents (`docs/research/*.md`)
+
+- [ ] For each new or updated D4 doc with `status: Final`: every item in `## Recommendations` is either (a) linked to a GitHub issue (`#NNN` appears in the recommendation text or elsewhere in the PR), or (b) explicitly marked as intentionally deferred with inline rationale in the doc.
+- [ ] For each new or updated D4 doc: every actionable item in `## Open Questions` (containing "ADOPT", "IMPLEMENT", "UPDATE", or other imperative verbs) either has a `#NNN` issue reference or an explicit deferral note.
+- [ ] No `## Recommendations` heading is followed by an "ADOPT" / "IMPLEMENT" / "UPDATE" statement that has no corresponding `#NNN` anywhere in the PR context. Use `grep -n 'ADOPT\|IMPLEMENT\|UPDATE' docs/research/<file>.md` to enumerate items quickly.
+- [ ] PR body or a session comment lists every new issue seeded from this PR's research recommendations, using `Closes #NNN` for issues the PR directly resolves. *(Implements the Research Doc PR Merge Gate from [`AGENTS.md`](../../AGENTS.md))*
+
 ### Pre-commit Gate Compliance
 
 - [ ] `uv run pre-commit run --all-files` passes without errors (or the agent confirms hooks ran clean on the changed files).

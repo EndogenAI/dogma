@@ -115,6 +115,31 @@ See [`docs/toolchain/README.md`](docs/toolchain/README.md) for the full update w
 
 **Script execution safety**: Each toolchain script supports a Tier 0 → Tier 1 → Tier 3 validation ladder — a pre-execution existence check, a `--dry-run` or `--check` gate that previews side effects without writing, and a static CI gate on commit. For copy-paste-ready validation commands for `fetch_source.py`, `prune_scratchpad.py`, and `validate_agent_files.py`, see [`docs/toolchain/uv.md` § Script Execution Safety — Three-Tier Validation](docs/toolchain/uv.md#script-execution-safety--three-tier-validation).
 
+### `claude -p` Print Mode Policy
+
+This project uses Claude exclusively as its model. For single-query tasks that don't require interactive agent sessions, use print mode to reduce the ~50K per-session token overhead:
+
+```bash
+# Structured output (JSON schema-validated)
+claude -p "..." --output-format json --max-turns 1 --max-budget-usd 0.10
+
+# CI/non-interactive context — no session persistence
+claude -p "..." --no-session-persistence --output-format json
+```
+
+**Use print mode for** (single-query, no tool use needed):
+- Synthesis quality checks and doc lint evaluations
+- Structured output generation from known corpus
+- Single question-answer lookups
+
+**Use full interactive sessions for**:
+- Multi-step research or implementation (tool use, file reads/writes)
+- Tasks requiring multiple rounds of refinement
+
+**Always pair with** `--max-turns 1` and `--max-budget-usd` to prevent runaway costs. In CI pipelines, always add `--no-session-persistence`.
+
+See [`docs/guides/claude-code-integration.md`](docs/guides/claude-code-integration.md) for the full Claude Code lifecycle hooks integration guide. Source: `docs/research/claude-code-cli-productivity-patterns.md` (Sprint 15, Rec 1).
+
 ---
 
 ## Testing-First Requirement for Scripts
@@ -260,6 +285,7 @@ Rules:
 - At session end, the executive **posts a progress comment** on every GitHub issue that was actively worked during the session — summarising what phase completed, what was committed, and what comes next. Use `gh issue comment <num> --body-file <path>`. This is a non-negotiable close step, same as writing the Session Summary.
 - **For sprint-close sessions** (where a PR is opened): post a closure comment on *every* issue the PR closes, explaining what was implemented and how it resolves the issue. Include the PR number and commit SHA. This lets future sessions and contributors understand the resolution without reading the PR diff.
 - **Track follow-up items as issues**: At sprint close, review the sprint for any partial implementations, regressions introduced, or encoding gaps discovered during delivery. Each item must be seeded as a new GitHub issue (not kept in the scratchpad only). Use the `gh issue create` pattern from the Verify-after-act table. Untracked follow-ups are invisible to future sessions.
+- **Research Doc PR Merge Gate**: A PR that includes new D4 research documents (`docs/research/*.md`, Status: Final) **must not be merged** unless every item in each new doc's `## Recommendations` section is either (a) tracked as a GitHub issue (with `#NNN` reference in the PR, a comment, or the issue body), or (b) explicitly marked as intentionally deferred with an inline rationale in the doc. Open questions that are actionable (contain "ADOPT", "IMPLEMENT", "UPDATE", or similar imperative verbs) are subject to the same gate. This constraint applies regardless of CI status. The session executive confirms the gate is clear and posts a checklist in the PR thread before requesting merge.
 - **HGT Learning Slot**: At sprint close, classify each accumulated learning as Upstream (propagate back to `dogma` template) or Internal (keep in derived repo). See the full checklist and classification table in [`docs/guides/session-management.md` § HGT Learning Slot](docs/guides/session-management.md#hgt-learning-slot).
 - **Update issue acceptance criteria that received new knowledge** — if a session comment added quantitative data, a new mechanism, or a tightened recommendation to an existing issue, check whether the issue's acceptance criteria need updating to reflect the new knowledge. Where criteria are missing or stale, use `gh issue edit <num> --body-file <path>` to add them. This prevents useful context from living only in comments where it will be missed when the issue is picked up.
 - If the session produced novel patterns, efficiency observations, or techniques that outperformed prior expectations — run the **session-retrospective** skill before closing: `@session-retrospective What lessons did we learn this session?`

@@ -1,0 +1,71 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run python scripts/prune_scratchpad.py --init 2>&1 | head -5"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Before stopping, verify these phase-gate-sequence checks. Answer YES only if ALL pass, otherwise list what is failing:\n1. Are there no uncommitted changes? (run: git status --porcelain)\n2. Does today's scratchpad have a '## Pre-Compact Checkpoint' entry since the last ## Phase header?\n3. Have all changed scripts passed ruff check? (uv run ruff check scripts/ tests/ --quiet)\n4. If any docs/research/*.md was changed: does it have Status: Final and is every ## Recommendations item tracked as a #NNN issue or marked deferred?\nIf stop_hook_active is set, skip this check and proceed immediately."
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run python scripts/prune_scratchpad.py --check-size 2>&1 | head -3"
+          },
+          {
+            "type": "prompt",
+            "prompt": "Write a '## Pre-Compact Checkpoint' section to the active scratchpad (at .tmp/<branch>/$(date +%Y-%m-%d).md) capturing: (1) active phase name and status, (2) all deliverables committed so far with commit SHAs, (3) the single next concrete step, (4) any open blockers. Keep it under 200 words."
+          }
+        ]
+      }
+    ],
+    "PostCompact": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Context was just compacted. Before continuing: (1) read the active scratchpad from disk: cat .tmp/<branch-slug>/$(date +%Y-%m-%d).md, (2) read the active workplan from docs/plans/ if one exists, (3) run git log --oneline -5 and git status to confirm committed vs in-flight state. Only then write '## Post-Compact Reorientation' and continue."
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Session is ending. Complete these session close steps:\n1. Write '## Session Summary' to the active scratchpad — include: date range, branch, PR if open, all commits (SHA + one-line desc), issues closed, lessons learned, recommended next session action.\n2. Post a progress comment (gh issue comment <N> --body-file /tmp/comment_N.md) on every GitHub issue actively worked this session.\n3. Confirm all commits are pushed: git status && git log --oneline -5.\n4. Report: 'Session close complete — summary written, N comments posted, branch status: [clean/uncommitted changes]'."
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(uv run python scripts/*)",
+      "Bash(git status*)",
+      "Bash(git log*)",
+      "Bash(git add*)",
+      "Bash(git commit*)",
+      "Bash(git push*)",
+      "Bash(gh issue*)",
+      "Bash(gh pr*)",
+      "Bash(gh run*)"
+    ]
+  }
+}
