@@ -4,16 +4,16 @@ audit_provenance.py
 Purpose:
     Audits the endogenic substrate for value signal provenance. Reads agent
     files and checks whether each file's instructions trace their signal
-    provenance back to foundational MANIFESTO.md axioms via a 'governs:'
+    provenance back to foundational MANIFESTO.md axioms via a 'x-governs:'
     frontmatter annotation.
 
     Provenance annotation format (in .agent.md YAML frontmatter):
-        governs:
+        x-governs:
           - endogenous-first
           - programmatic-first
 
-    Orphaned files: .agent.md files with no 'governs:' frontmatter field.
-    Unverifiable citations: axiom names in 'governs:' not found in MANIFESTO.md.
+    Orphaned files: .agent.md files with no 'x-governs:' frontmatter field.
+    Unverifiable citations: axiom names in 'x-governs:' not found in MANIFESTO.md.
 
 Inputs:
     --agents-dir  PATH   Directory of .agent.md files (default: .github/agents/)
@@ -28,12 +28,12 @@ Outputs:
         "files": [
             {
                 "path": str,
-                "citations": [str],      # axiom names found in governs:
-                "orphaned": bool,        # True if no governs: field at all
+                "citations": [str],      # axiom names found in x-governs:
+                "orphaned": bool,        # True if no x-governs: field at all
                 "unverifiable": [str]    # axiom names not in MANIFESTO.md
             }
         ],
-        "fleet_citation_coverage_pct": float,  # % of files with governs:
+        "fleet_citation_coverage_pct": float,  # % of files with x-governs:
         "total_unverifiable": int
     }
     Exit code: 0 on success; non-zero on configuration or runtime errors.
@@ -91,7 +91,7 @@ def parse_simple_yaml(yaml_text: str) -> dict:
         if not line.strip() or line.strip().startswith("#"):
             i += 1
             continue
-        key_match = re.match(r"^([A-Za-z_][A-Za-z0-9_]*)\s*:\s*(.*)", line)
+        key_match = re.match(r"^([A-Za-z_][A-Za-z0-9_-]*)\s*:\s*(.*)", line)
         if key_match:
             key = key_match.group(1)
             value = key_match.group(2).strip()
@@ -168,10 +168,10 @@ def audit_file(agent_path: Path, known_axioms: set[str]) -> dict:
     fm_raw = extract_frontmatter(text)
     fm = parse_simple_yaml(fm_raw) if fm_raw else {}
 
-    governs_value = fm.get("governs")
+    governs_value = fm.get("x-governs")
 
     if governs_value is None:
-        # No 'governs:' key at all — orphaned
+        # No 'x-governs:' key at all — orphaned
         return {
             "path": str(agent_path),
             "citations": [],
@@ -179,7 +179,7 @@ def audit_file(agent_path: Path, known_axioms: set[str]) -> dict:
             "unverifiable": [],
         }
 
-    # governs: may be a scalar string (single axiom) or a list
+    # x-governs: may be a scalar string (single axiom) or a list
     if isinstance(governs_value, str):
         citations = [governs_value]
     else:
@@ -232,7 +232,7 @@ def format_summary(report: dict) -> str:
         path = entry["path"]
         if entry["orphaned"]:
             status = "✗"
-            detail = "no governs: field"
+            detail = "no x-governs: field"
         elif entry["unverifiable"]:
             status = "⚠️"
             detail = f"unverifiable: {', '.join(entry['unverifiable'])}"
@@ -257,7 +257,7 @@ def format_summary(report: dict) -> str:
 def main(argv: list[str] | None = None) -> int:
     repo_root = find_repo_root()
 
-    parser = argparse.ArgumentParser(description="Audit .agent.md files for governs: provenance annotations.")
+    parser = argparse.ArgumentParser(description="Audit .agent.md files for x-governs: provenance annotations.")
     parser.add_argument(
         "--agents-dir",
         type=Path,
