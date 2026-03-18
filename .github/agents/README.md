@@ -43,7 +43,7 @@ Orchestrate research sessions from question to committed synthesis. The Executiv
 | **Research Reviewer** | `research-reviewer.agent.md` | read-only | Foundation | M | (none) | N | Validate synthesis drafts against methodology standards; flag gaps and unsupported claims |
 | **Research Archivist** | `research-archivist.agent.md` | read + create | Foundation | S | (none) | N | Finalise approved drafts, commit to `docs/research/`, update issue |
 
-**Guardrail — Web Scouting is Mandatory**: Every research sprint must include an explicit Scout delegation to conduct aggressive web searches for external authoritative sources (academic papers, official documentation, standards, industry reports, practitioner knowledge). Skipping web searching to save time or tokens is an anti-pattern. Endogenous-First means local sources are consulted *first*, but web discovery is the core expansion activity. A research sprint with <7 primary external sources is incomplete. For detailed web scouting requirements, see [`research-scout.agent.md`](./research-scout.agent.md) and [`.github/skills/deep-research-sprint/SKILL.md`](../skills/deep-research-sprint/SKILL.md).
+**Guardrail — Web Scouting is Mandatory**: Every research sprint must include an explicit Scout delegation to conduct aggressive web searches for external authoritative sources (academic papers, official documentation, standards, industry reports, practitioner knowledge). Skipping web searching to save time or tokens is an anti-pattern. Endogenous-First means local sources are consulted *first*, but web discovery is the core expansion activity. A research sprint with <7 primary external sources is incomplete. For detailed web scouting requirements, see [`research-scout.agent.md`](./research-scout.agent.md) and [`.github/skills/deep-research-sprint/SKILL.md`](/.github/skills/deep-research-sprint/SKILL.md).
 
 ---
 
@@ -185,13 +185,13 @@ Agents focused on cost governance, documentation quality enforcement, research q
 | **Parallel research fleet** | Breadth-first research; independent sub-questions | Full per-agent isolation; no lateral communication | Token cost scales with N agents; 3–20 agents typical |
 | **Hybrid (orchestrator + specialist sub-fleet)** | Production pipelines; multi-phase long-horizon tasks | Per-specialist isolation; shared external memory for plan state | Highest cost; justified by quality requirements |
 
-Full topology comparison with context handoff mechanisms and source evidence: [`docs/research/agent-fleet-design-patterns.md §4`](../../docs/research/agents/agent-fleet-design-patterns.md).
+Full topology comparison with context handoff mechanisms and source evidence: [`docs/research/agent-fleet-design-patterns.md §4`](/docs/research/agents/agent-fleet-design-patterns.md).
 
 ---
 
 ### Named Patterns
 
-Eight patterns derived from production multi-agent systems research. Full treatment (Context / Forces / Solution / Consequences) in [`docs/research/agent-fleet-design-patterns.md §3`](../../docs/research/agents/agent-fleet-design-patterns.md).
+Eight patterns derived from production multi-agent systems research. Full treatment (Context / Forces / Solution / Consequences) in [`docs/research/agent-fleet-design-patterns.md §3`](/docs/research/agents/agent-fleet-design-patterns.md).
 
 - **Pattern 1 — Orchestrator-Workers**: lead decomposes task; workers execute in isolation; lead synthesises
 - **Pattern 2 — Evaluator-Optimizer Loop**: generator + evaluator in a bounded feedback cycle with explicit stopping conditions
@@ -210,7 +210,7 @@ If **any** of the following apply, **CREATE** a new specialist agent: (1) differ
 
 If **all** of the following apply, **EXTEND** an existing agent: (1) same objective function, (2) >70% shared task logic, (3) always invoked together in fixed sequence, (4) combined agent stays within context budget.
 
-When in doubt, prefer CREATE — isolation is easier to undo than entanglement. Full 9-criterion table: [`docs/guides/agents.md §Specialist-vs-Extend Heuristics`](../../docs/guides/agents.md).
+When in doubt, prefer CREATE — isolation is easier to undo than entanglement. Full 9-criterion table: [`docs/guides/agents.md §Specialist-vs-Extend Heuristics`](/docs/guides/agents.md).
 
 ---
 
