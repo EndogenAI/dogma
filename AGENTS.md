@@ -875,7 +875,7 @@ Heredocs (`cat >> file << 'EOF'`, Python inline `<< 'PYEOF'`) silently corrupt o
 - **D4 Synthesis Format**: Research outputs must follow the D4 (Distributed Dogma Discovery & Distillation) schema:
   - **Pass 1**: Per-source synthesis reports in `docs/research/sources/`. One file per surveyed source; standard synthesis note conventions: citation, research question, framework, methodology, key claims with quotes, critical assessment, cross-source connections, and project relevance.
   - **Pass 3**: Issue-level synthesis in `docs/research/`. Draws conclusions across all per-source synthesis documents for the issue.
-- **References**: Use relative links for all internal document citations.
+- **References**: Use relative links for all internal document citations. **Exception**: files inside `.github/agents/` and `.github/skills/` must use workspace-root-relative `/path` links (e.g. `/AGENTS.md`, `/docs/guides/agents.md`) for any link that exits the `.github/` subtree — VS Code's `prompts-diagnostics-provider` cannot resolve `../../` traversal from those locations. Within-directory links (`./sibling.md`) remain relative.
 
 ---
 
@@ -906,7 +906,7 @@ The authoring contract for `.agent.md` files (VS Code Custom Agents) is enforced
   - **Evaluator-Optimizer Loop**: Executive includes handoff buttons targeting itself for phase boundary review.
 - **Structure**: Markdown headings (`## Section`) with semantic XML wrappers (`<context>`, `<instructions>`, `<constraints>`, `<output>`).
   - **BDI Sections**: Action content grouped into **Beliefs & Context**, **Workflow & Intentions**, and **Desired Outcomes & Acceptance**.
-  - **Body Requirements**: 1. Bold role statement ("You are the..."), 2. Endogenous sources (relative links), 3. Workflow/checklist, 4. Guardrails.
+  - **Body Requirements**: 1. Bold role statement ("You are the..."), 2. Endogenous sources (use `/`-rooted links for all cross-directory references — see [Link Path Rule](#link-path-rule) in the `agent-file-authoring` skill), 3. Workflow/checklist, 4. Guardrails.
 
 ---
 

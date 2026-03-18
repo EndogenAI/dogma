@@ -233,7 +233,9 @@ You are the **My Agent** for the EndogenAI Workflows project.
 
 Skills are `SKILL.md` files stored in `.github/skills/<skill-name>/` and discovered automatically by GitHub Copilot. Only the `name` and `description` frontmatter (~100 tokens per skill) is loaded at startup; the full skill body loads only when a request matches its description. Skills sit at the tactical layer of the VS Code customization stack, beneath `.agent.md` files and above session behaviour.
 
-**For detailed skill authoring guidance**, see the [`skill-authoring` skill](../../.github/skills/skill-authoring/SKILL.md) — it parallels agent-file-authoring but documents the skill-specific YAML frontmatter (tier, type, effort, applies-to), relative path conventions (../../../ for skills vs ../../ for agents), and issue linkage patterns.
+**For detailed skill authoring guidance**, see the [`skill-authoring` skill](../../.github/skills/skill-authoring/SKILL.md) — it parallels agent-file-authoring but documents the skill-specific YAML frontmatter (tier, type, effort, applies-to), link path conventions (see below), and issue linkage patterns.
+
+**Link path convention for agent and skill files**: All links that exit `.github/agents/` or `.github/skills/<name>/` must use workspace-root-relative `/` paths (e.g. `/AGENTS.md`, `/docs/guides/agents.md`). VS Code's diagnostics provider cannot resolve `../../` traversal from these locations. Within-directory links (`./sibling.md`) remain relative. This replaces the earlier `../../` convention documented in older agent files. See Section 4 of the [`agent-file-authoring` skill](../../.github/skills/agent-file-authoring/SKILL.md) for the full rule, diagram, and migration pattern.
 
 For the full decision record, see [`docs/decisions/ADR-006-agent-skills-adoption.md`](../../docs/decisions/ADR-006-agent-skills-adoption.md).
 

@@ -132,29 +132,34 @@ This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](../../../MA
 
 ---
 
-## 5. Relative Path Rule
+## 5. Link Path Rule
 
-**All references to repo-root files must use `../../../` prefix.** Skill files are one level deeper than agent files.
-
-Skill files live at `.github/skills/<skill-name>/SKILL.md`. The repo root is three levels up:
+**All links in skill files that exit `.github/skills/<name>/` must use workspace-root-relative `/` paths.** This is consistent with the agent file convention and ensures VS Code's `prompts-diagnostics-provider` can resolve them.
 
 ```
-.github/skills/my-skill/SKILL.md          ← This is the skill file
+.github/skills/my-skill/SKILL.md
   │
-  ├─ ../              → .github/skills/   ← WRONG
-  ├─ ../../           → .github/          ← WRONG
-  └─ ../../../        → (repo root)       ← CORRECT
+  ├─ ../              → .github/skills/   ← WRONG (wrong target)
+  ├─ ../../           → .github/          ← WRONG (wrong target)
+  ├─ ../../../        → (repo root)       ← resolves on disk but fails VS Code diagnostics
+  └─ /                → (workspace root)  ← CORRECT (consistent with agent file rule)
 ```
 
-**Correct usage for skills** (use `../../../`):
+**Correct usage for skills**:
 
 ```markdown
-[`MANIFESTO.md`](../../../MANIFESTO.md)
-[`AGENTS.md`](../../../AGENTS.md)
-[`docs/guides/agents.md`](../../../docs/guides/agents.md)
+[`MANIFESTO.md`](/MANIFESTO.md)
+[`AGENTS.md`](/AGENTS.md)
+[`docs/guides/agents.md`](/docs/guides/agents.md)
+[`.github/agents/README.md`](/.github/agents/README.md)
 ```
 
-**Do not use `../../`** in skill files — that would resolve to `.github/`, not the repo root.
+**Within-directory links** (to sibling files in `.github/skills/<name>/`) remain relative:
+```markdown
+[`./other-file.md`](./other-file.md)   ← same directory: OK
+```
+
+**Do not use `../../../`** — consistent with agent file rule; `/` is the preferred form across all `.github/` files.
 
 ---
 
@@ -162,15 +167,15 @@ Skill files live at `.github/skills/<skill-name>/SKILL.md`. The repo root is thr
 
 Every skill file must contain at least one back-reference to the foundational document that governs it:
 
-- Pure procedural skills → reference `../../../AGENTS.md`
-- Research-oriented skills → reference `../../../MANIFESTO.md` (Endogenous-First axiom)
-- Automation/scripting skills → reference `../../../AGENTS.md` § Programmatic-First
+- Pure procedural skills → reference `/AGENTS.md`
+- Research-oriented skills → reference `/MANIFESTO.md` (Endogenous-First axiom)
+- Automation/scripting skills → reference `/AGENTS.md` § Programmatic-First
 
 **Minimum pattern** (place in Endogenous Sources):
 
 ```markdown
-This skill enacts the *<Axiom Name>* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md).
-It is governed by [`AGENTS.md`](../../../AGENTS.md) and associated procedural guidelines.
+This skill enacts the *<Axiom Name>* axiom from [`MANIFESTO.md`](/MANIFESTO.md).
+It is governed by [`AGENTS.md`](/AGENTS.md) and associated procedural guidelines.
 ```
 
 ---

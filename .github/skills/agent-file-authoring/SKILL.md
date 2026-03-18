@@ -116,50 +116,60 @@ Use `## Beliefs & Context`, `## Workflow & Intentions`, and `## Desired Outcomes
 This agent is defined by:
 - **Issue**: [#62 Implement Remaining Agent Skills](https://github.com/EndogenAI/dogma/issues/62)
 - **Milestone**: Wave 1: Agent Fleet Tier A+B
-- **Governing axiom**: *Endogenous-First* (from [`MANIFESTO.md`](../../../MANIFESTO.md))
+- **Governing axiom**: *Endogenous-First* (from [`MANIFESTO.md`](/MANIFESTO.md))
 - **Acceptance criteria**: All deliverables in the linked issue checklist
 
-Read [`AGENTS.md`](../../../AGENTS.md) and [`docs/guides/agents.md`](../../../docs/guides/agents.md) before modifying this agent.
+Read [`AGENTS.md`](/AGENTS.md) and [`docs/guides/agents.md`](/docs/guides/agents.md) before modifying this agent.
 ```
 
 ---
 
-## 4. Relative Path Rule
+## 4. Link Path Rule
 
-**All references to repo-root files must use `../../` as the prefix** — never `../`.
+**All links in `.github/agents/` files that point outside `.github/agents/` must use workspace-root-relative `/` paths** — never `../../` or `../`.
 
-Agent files live at `.github/agents/<file>.agent.md`. The repo root is two levels up:
+VS Code's `prompts-diagnostics-provider` cannot resolve multi-level `../` traversal from within `.github/agents/`. All referenced files exist on disk, but the Copilot extension validator has a path resolution limitation. Using `/`-rooted paths fixes resolution in both VS Code (workspace root) and GitHub (repo root).
 
 ```
 .github/agents/<file>.agent.md
            │
-           ├─ ../   → .github/       ← WRONG
-           └─ ../../ → (repo root)   ← CORRECT
+           ├─ ../   → .github/            ← WRONG (single-level, wrong target)
+           ├─ ../../ → (repo root)        ← WRONG (not resolved by VS Code diagnostics)
+           └─ /     → (workspace root)   ← CORRECT
 ```
 
 **Correct**:
 ```markdown
-[`AGENTS.md`](../../AGENTS.md)
-[`MANIFESTO.md`](../../MANIFESTO.md)
-[`docs/guides/agents.md`](../../docs/guides/agents.md)
+[`AGENTS.md`](/AGENTS.md)
+[`MANIFESTO.md`](/MANIFESTO.md)
+[`docs/guides/agents.md`](/docs/guides/agents.md)
+[`.github/skills/session-management/SKILL.md`](/.github/skills/session-management/SKILL.md)
 ```
 
-**Incorrect** (will fail link checks and encoding fidelity audit):
+**Incorrect** (will produce VS Code Problems panel errors):
 ```markdown
+[`AGENTS.md`](../../AGENTS.md)    ← fails VS Code diagnostics resolution
 [`AGENTS.md`](../AGENTS.md)       ← resolves to .github/AGENTS.md — does not exist
 ```
+
+**Within-directory links** (to sibling files in `.github/agents/`) remain relative:
+```markdown
+[`README.md`](./README.md)        ← same directory: OK
+```
+
+This convention is validated by the `Check relative file links in Markdown docs` pre-commit hook. A bulk migration script pattern: `re.sub(r'\]\(\.\./\.\./([^)]+)\)', r'](/\1)', text)` applied over all `.github/agents/*.agent.md`.
 
 ---
 
 ## 5. Cross-Reference Density
 
-Every agent file must contain at least one back-reference to `../../MANIFESTO.md` **or** `../../AGENTS.md` in the body. CI checks this as a proxy for encoding fidelity.
+Every agent file must contain at least one back-reference to `/MANIFESTO.md` **or** `/AGENTS.md` in the body. CI checks this as a proxy for encoding fidelity.
 
 **Minimum pattern** (place in the first substantive section):
 
 ```markdown
-This agent is governed by [`AGENTS.md`](../../AGENTS.md) and the foundational axioms
-in [`MANIFESTO.md`](../../MANIFESTO.md).
+This agent is governed by [`AGENTS.md`](/AGENTS.md) and the foundational axioms
+in [`MANIFESTO.md`](/MANIFESTO.md).
 ```
 
 Low cross-reference density is a signal of encoding drift — the agent has been authored without grounding in the inheritance chain.
@@ -173,8 +183,8 @@ The first substantive section (Beliefs & Context) of every agent file must name 
 ```markdown
 ## Beliefs & Context
 
-This agent enacts the *<Axiom Name>* axiom from [`MANIFESTO.md`](../../MANIFESTO.md).
-Read [`AGENTS.md`](../../AGENTS.md) before modifying any procedure in this file.
+This agent enacts the *<Axiom Name>* axiom from [`MANIFESTO.md`](/MANIFESTO.md).
+Read [`AGENTS.md`](/AGENTS.md) before modifying any procedure in this file.
 ```
 
 Governing axioms by agent type:
@@ -214,7 +224,7 @@ uv run python scripts/validate_agent_files.py --all
 The validator enforces:
 1. Valid YAML frontmatter (`name`, `description` ≥ 25 chars)
 2. Required sections present (fuzzy-matched)
-3. At least one cross-reference to `../../MANIFESTO.md` or `../../AGENTS.md`
+3. At least one cross-reference to `/MANIFESTO.md` or `/AGENTS.md`
 4. No heredoc patterns
 
 **Manual pre-commit checklist** (in addition to automated validation):
@@ -223,7 +233,7 @@ The validator enforces:
 - ✅ Endogenous Sources section references the defining GitHub issue number (e.g., `#62`)
 - ✅ Endogenous Sources section declares the governing axiom (one of the three core axioms from `MANIFESTO.md`)
 - ✅ Completion Criteria section mirrors the defining issue's acceptance checklist
-- ✅ All repo-root paths use `../../` prefix, not `../`
+- ✅ All links exiting `.github/agents/` use `/`-rooted paths (e.g. `/AGENTS.md`), not `../../`
 - ✅ No heredoc write patterns in workflow steps
 - ✅ No orphaned URLs or dead links to internal docs
 - ✅ Every agent has at least one handoff to a downstream agent
@@ -234,8 +244,8 @@ A file that fails validation or the manual checklist will also fail CI. Fix all 
 
 ## Guardrails
 
-- **Never use `../` for repo-root references** in agent files — always `../../`.
-- **Never omit the cross-reference density check** — at least one `../../MANIFESTO.md` or `../../AGENTS.md` link is required.
+- **Never use `../` or `../../` for cross-directory references** in agent files — always use `/`-rooted paths (e.g. `/AGENTS.md`). See [Section 4: Link Path Rule](#4-link-path-rule).
+- **Never omit the cross-reference density check** — at least one `/MANIFESTO.md` or `/AGENTS.md` link is required.
 - **Never embed heredoc write patterns** in workflow steps.
 - Do not add an agent without running `validate_agent_files.py --all` and passing.
 - Do not introduce a new governing axiom that is not grounded in an existing `MANIFESTO.md` principle.
