@@ -293,6 +293,36 @@ uv run python scripts/prune_scratchpad.py --dry-run
 
    Source: [`docs/research/biological-evolution-dogma-propagation.md`](../research/biological-evolution-dogma-propagation.md)
 
+5a. **Research Recommendation Audit** (if the session produced new D4 research docs) — MANDATORY SPRINT-CLOSE GATE:
+
+   For every new research document in `docs/research/*.md` with Status: Final added during this sprint:
+   - Extract all items from the `## Recommendations` section
+   - For each recommendation item, categorize it:
+     - **Explicit Action** (contains "ADOPT", "IMPLEMENT", "UPDATE", "CREATE", or similar imperative verb)
+     - **Open Question** (actionable but phrased as interrogative; still needs GitHub tracking)
+     - **Aspirational** (inspirational but not actionable; mark as "intentionally deferred" with rationale)
+   
+   - For each **Explicit Action** or **Open Question** item:
+     - Check `docs/research/` and open GitHub issues for existing coverage
+     - If an issue exists: add a comment linking the research doc (e.g., "Informed by [link to research doc]")
+     - If NO issue exists: create a new one with title derived from the recommendation, labels `type:follow-up`, `source:research`, body linking back to the research doc (e.g., "Recommendation from [link]")
+   
+   - Document the audit in the PR body as a checklist:
+     ```
+     ## Research Recommendations Status
+     
+     ### [Research Doc Title] (#XXX)
+     - [x] Rec 1: [title] → Tracked as #YYYY (or "Intentionally deferred: [rationale]")
+     - [x] Rec 2: [title] → Tracked as #ZZZZ
+     ...
+     ```
+   
+   - **Merge Gate**: The PR **must not merge** unless all actionable recommendations are either:
+     - (a) Tracked as GitHub issues with explicit issue numbers in the PR comment/body
+     - (b) Explicitly marked "intentionally deferred" with inline rationale in this audit section
+   
+   - Post the audit as a PR comment using `gh pr comment <num> --body-file <path>` before requesting final review
+
 6. Leave the session file intact — do **not** run `--force` for compression. Session files are per-day; historical days are naturally bounded.
    - If you need the `_index.md` stub written, run `uv run python scripts/prune_scratchpad.py --force` but expect a `DeprecationWarning` on stderr.
 7. Stop the scratchpad watcher (Ctrl-C)
