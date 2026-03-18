@@ -353,6 +353,46 @@ If **any** check fails → rewrite the prompt before delegating.
 
 **Batch-by-file**: When two issues target non-overlapping sections of the *same* file, batch them into a single delegation; when they target *different* files, split into separate delegations (parallelise only if phases are independent). Batching same-file edits preserves the single-review-per-file contract; splitting cross-file edits keeps each delegation accountable to a focused scope. *Grounded in corpus back-propagation sprint Phase 4 (2026-03-12): issues #225+#227 batched into Phase 4A because both targeted `workflows.md`; issue #226 kept as Phase 4B because it targeted `AGENTS.md`.* 
 
+#### Pre-Delegation Rate-Limit Gate (Sprint 18+)
+
+**Mandate** (from [`MANIFESTO.md#3-local-compute-first`](MANIFESTO.md#3-local-compute-first)):
+Rate-limit constraints are structural, not optional scaling concerns. Before every delegation, verify budget availability.
+
+**Workflow**:
+1. Check current token budget (from API or prior phase tracking)
+2. Call `uv run python scripts/rate_limit_gate.py <budget> <operation_type> --provider <provider> --audit-log`
+3. Parse JSON response: if `safe: true`, proceed; if `safe: false`, sleep or defer
+
+**Script**: [`scripts/rate_limit_gate.py`](scripts/rate_limit_gate.py) (issue #325)  
+**Config**: [`data/rate-limit-profiles.yml`](data/rate-limit-profiles.yml) (issue #323 — provider policies)  
+**Audit**: `.cache/rate-limit-audit.log` (circuit-breaker state tracking, issue #324)  
+**Documentation**: [`.github/skills/rate-limit-resilience/SKILL.md`](.github/skills/rate-limit-resilience/SKILL.md)
+
+**Example** (before delegating a research phase):
+```bash
+BUDGET=75000  # tokens remaining
+RESULT=$(uv run python scripts/rate_limit_gate.py "$BUDGET" delegation --provider claude --audit-log)
+if echo "$RESULT" | grep -q '"safe": true'; then
+    delegate_research_scout(...)
+else
+    sleep_sec=$(echo "$RESULT" | grep -o '"recommended_sleep_sec": [0-9]*' | cut -d: -f2)
+    echo "Rate-limited. Sleeping ${sleep_sec}s and retrying next session." >> scratchpad
+fi
+```
+
+**Gate Decision Logic** (see SKILL.md for full semantics):
+- **Circuit-Breaker**: If N consecutive rate-limits in last 5 minutes, return `safe: false` (N varies by provider/operation)
+- **Budget Check**: If remaining < 5000 tokens (safety margin), return `safe: false`
+- **Otherwise**: `safe: true` with recommended sleep = 0
+
+**Provider Policies** (from `data/rate-limit-profiles.yml`):
+- `claude` — conservative (60s delegation sleep, threshold=3)
+- `gpt-4` — moderate (30s, threshold=4)
+- `gpt-3.5` — permissive (20s, threshold=4)
+- `local-localhost` — unrestricted (0s, threshold=999)
+
+**Backward Compatibility**: This gate is new infrastructure (Phase 0, Sprint 18). Existing scripts remain functional; rate-limit checks are optional until integrated into phase-gate-sequence.
+
 **Broad-scope irreversible changes require a blocking question gate**: before delegating any task that would modify many files in bulk (e.g., renaming sections across all `.agent.md` files, restructuring a widely-referenced subsystem), surface the design decision to the user via an interactive question prompt and block delegation until confirmed. Do not guess the mapping and delegate speculatively — one wrong assumption propagates to every affected file.
 
 **Canonical Session Examples** (2026-03-11 Milestone 9 review):

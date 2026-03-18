@@ -436,6 +436,127 @@ class TestDetectRateLimitCLI:
         )
         assert result.returncode == 1
 
+    @pytest.mark.slow
+    def test_cli_provider_parameter_accepted(self):
+        """CLI should accept --provider parameter."""
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(SCRIPTS_DIR / "detect_rate_limit.py"),
+                "--check",
+                "50000",
+                "20000",
+                "--provider",
+                "gpt-4",
+            ],
+            capture_output=True,
+            text=True,
+        )
+        assert result.returncode == 0
+        assert result.stdout.strip() in ['OK', 'WARN', 'CRITICAL']
+
+    @pytest.mark.slow
+    def test_cli_dry_run_parameter_accepted(self):
+        """CLI should accept --dry-run parameter (issue #322 fix support)."""
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(SCRIPTS_DIR / "detect_rate_limit.py"),
+                "--check",
+                "0",
+                "30000",
+                "--dry-run",
+            ],
+            capture_output=True,
+            text=True,
+        )
+        assert result.returncode == 0
+        assert "SLEEP_REQUIRED_" in result.stdout.strip()
+
+
+# ============================================================================
+# Regression Tests (Issue #322 — Cap/Floor Conflict Fix)
+# ============================================================================
+
+
+class TestCapFloorFixIssue322:
+    """Regression tests for issue #322 cap/floor logic fix."""
+
+    def test_sleep_respects_floor_minimum(self):
+        """Sleep should never be below MIN_SLEEP_MS."""
+        from detect_rate_limit import MIN_SLEEP_MS
+        status, sleep_ms = detect_rate_limit(
+            remaining_tokens=-100,  # Minimal deficit
+            phase_cost_estimate=10_000,
+        )
+        assert sleep_ms is not None
+        assert sleep_ms >= MIN_SLEEP_MS, f"Sleep {sleep_ms} below floor {MIN_SLEEP_MS}"
+
+    def test_sleep_respects_cap_maximum(self):
+        """Sleep should never exceed PHASE_BOUNDARY_SLEEP_MS."""
+        from detect_rate_limit import PHASE_BOUNDARY_SLEEP_MS
+        status, sleep_ms = detect_rate_limit(
+            remaining_tokens=-1_000_000,  # Massive deficit
+            phase_cost_estimate=10_000,
+        )
+        assert sleep_ms is not None
+        assert sleep_ms <= PHASE_BOUNDARY_SLEEP_MS, f"Sleep {sleep_ms} exceeds cap {PHASE_BOUNDARY_SLEEP_MS}"
+
+    def test_cap_floor_range_all_deficits(self):
+        """Verify cap/floor logic across multiple deficit scenarios."""
+        from detect_rate_limit import MIN_SLEEP_MS, PHASE_BOUNDARY_SLEEP_MS
+        deficits = [-100, -1_000, -10_000, -100_000, -1_000_000]
+
+        for deficit in deficits:
+            status, sleep_ms = detect_rate_limit(
+                remaining_tokens=deficit,
+                phase_cost_estimate=10_000,
+            )
+            if sleep_ms is not None:
+                msg = f"Deficit {deficit}: sleep {sleep_ms}"
+                assert MIN_SLEEP_MS <= sleep_ms <= PHASE_BOUNDARY_SLEEP_MS, msg
+
+
+# ============================================================================
+# Provider Parameter Support (Issue #323 compatibility)
+# ============================================================================
+
+
+class TestProviderParameterSupport:
+    """Test provider parameter for issue #323 provider-aware policies."""
+
+    def test_provider_parameter_accepted_claude(self):
+        """Provider parameter 'claude' should be accepted."""
+        status, _ = detect_rate_limit(
+            remaining_tokens=50_000,
+            phase_cost_estimate=20_000,
+            provider='claude',
+        )
+        assert status in ['OK', 'WARN', 'CRITICAL']
+
+    def test_provider_parameter_accepted_gpt4(self):
+        """Provider parameter 'gpt-4' should be accepted."""
+        status, _ = detect_rate_limit(
+            remaining_tokens=50_000,
+            phase_cost_estimate=20_000,
+            provider='gpt-4',
+        )
+        assert status in ['OK', 'WARN', 'CRITICAL']
+
+    def test_provider_parameter_default_backward_compat(self):
+        """Provider parameter should default to 'claude' (backward compatible)."""
+        status1, _ = detect_rate_limit(
+            remaining_tokens=0,
+            phase_cost_estimate=20_000,
+        )
+        status2, sleep_ms2 = detect_rate_limit(
+            remaining_tokens=0,
+            phase_cost_estimate=20_000,
+            provider='claude',
+        )
+        # Both should produce identical results (same default behavior)
+        assert status1 == status2
+
 
 # ============================================================================
 # Coverage Targets
