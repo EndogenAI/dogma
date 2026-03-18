@@ -6,6 +6,11 @@
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "${env:GITHUB_TOKEN}"
       }
+    },
+    "dogma-governance": {
+      "command": "uv",
+      "args": ["run", "python", "-m", "mcp_server.dogma_server"],
+      "cwd": "${workspaceFolder}"
     }
   }
 }
