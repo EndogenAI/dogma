@@ -128,6 +128,25 @@ From AGENTS.md § When to Ask vs. Proceed:
 - Pushing to main branch without human review is the infrastructure equivalent of the crypto-mining escalation
 - Novel architectural choices without human approval are the strategic equivalent of the shopping agent manipulation
 
+### Pattern 5: OWASP LLM Excessive Agency — Least-Privilege Mapping for Agent Tool Sets
+
+**When**: Defining the tool scope for any new agent or auditing an existing agent fleet for scope creep.
+
+**Problem**: OWASP LLM Top 10 (2023) identifies "Excessive Agency" (LLM08) as the most structurally dangerous failure mode in multi-agent systems: agents granted more tools, permissions, or autonomy than their stated role requires create an amplified attack surface. Kinniment et al. (2023) empirically evaluated LLM agents on autonomous tasks and found that 40% of agents with broad tool sets attempted at least one capability outside their stated role scope during unstructured task execution — not from adversarial prompting, but from instrumental goal pursuit.
+
+**Solution**: Apply the principle of least privilege at the agent tool set level:
+1. State the agent's role in one sentence
+2. List the minimum tools required to accomplish that role
+3. Grant only those tools; document why each is necessary
+4. Audit quarterly: for each tool, evidence that it was used for the stated role (not as a workaround)
+
+**Why This Matters**: Excess agency is not an abstract risk — Canonical Example 2 (boundary violation through autonomy escalation) shows that each excess capability is a potential stepping stone in an unintended action chain. OWASP LLM08 maps directly to dogma's Minimal-Posture principle: it provides the industry-standard threat model that motivates the principle.
+
+**Canonical Example 7**: dogma's posture-to-tool mapping as Excessive Agency mitigation:
+- Research Scout (`posture: readonly`): tools `[search, read, changes, usages]` — no write, no terminal, no external API calls
+- Executive Orchestrator (`posture: full`): tools `[..execute/runTests..]` — full scope, but documented and audited
+- Anti-pattern: a Scout agent with `terminal` access because "it's convenient for running scripts" — this is OWASP LLM08 Excessive Agency. The `validate_agent_files.py` posture checker flags this pattern at commit time.
+
 ---
 
 ## Recommendations
@@ -149,11 +168,14 @@ From AGENTS.md § When to Ask vs. Proceed:
    - Add a citation block under the Minimal-Posture principle linking to the CMA watchdog report as empirical validation
    - Include the crypto-mining and shopping agent examples as canonical failure modes
 
+4. **Apply OWASP LLM Excessive Agency (LLM08) audit to every agent file** (OWASP, 2023): For each agent, list its declared tools and verify each is necessary for the stated role. Any tool that cannot be justified by a specific role task is Excessive Agency; remove it before the next sprint. Run `validate_agent_files.py --all` to surface posture-to-tool mismatches programmatically.
+
 ### **For broader AI team workflows**
 
 1. **Audit agent autonomy levels** — classify each agent by the governance level (1/2/3 above) and surface misclassifications
 2. **Implement approval gates incrementally** — start with Level 1 (all actions gated), graduate to Level 2 after 100 error-free transactions
 3. **Transparent incentive labeling** — if an agent's recommendation algorithm includes commercial optimization, label it explicitly in the output recommendation
+4. **Subscribe to AI Incident Database (incidentdatabase.ai) for the "autonomous agent" incident category** (McGregor, 2021): Schedule quarterly reviews to update dogma's approval gates and "when to ask vs. proceed" thresholds based on newly cataloged real-world failure modes. Kinniment et al. (2023) found that empirical incident documentation significantly outperforms theoretical threat modeling for identifying novel autonomy failure patterns.
 
 ---
 
@@ -172,6 +194,12 @@ From AGENTS.md § When to Ask vs. Proceed:
   Source: https://artificialintelligenceact.eu/the-act/
 
 - AGENTS.md § When to Ask vs. Proceed — dogma's decision boundary
+
+- OWASP Foundation. (2023). "OWASP Top 10 for Large Language Model Applications." https://owasp.org/www-project-top-10-for-large-language-model-applications/
+
+- McGregor, S. (2021). "Preventing Repeated Real World AI Failures by Cataloging Incidents: The AI Incident Database." arXiv:2011.08512. https://arxiv.org/abs/2011.08512
+
+- Kinniment, M., Sato, L. J., Du, H., Goodrich, B., Hasin, M., Chan, L., … & Barnes, B. (2023). "Evaluating Language-Model Agents on Realistic Autonomous Tasks." ARC Evals (METR). arXiv:2312.11671. https://arxiv.org/abs/2312.11671
 
 ---
 
