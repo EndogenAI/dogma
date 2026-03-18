@@ -123,6 +123,26 @@ Before invoking any subagent, verify all three. If any fails, rewrite the prompt
 - [ ] **Output Format Specified** — prompt names format (table/bullets/line) + token ceiling
 - [ ] **Success Criteria Clear** — agent can recognize success without guessing
 
+### 1.5 Pre-Task Commitment Checkpoint — Rate-Limit Gate
+
+**Before delegating any substantive domain work**, check rate-limit budget availability. This step implements the [Pre-Delegation Rate-Limit Gate](../../AGENTS.md#pre-delegation-rate-limit-gate-sprint-18) from AGENTS.md and operationalizes Phase 1 research findings on cognitive load and vendor lock-in risk.
+
+**Invoke the rate-limit gate**:
+```bash
+BUDGET=<current_token_budget>  # from tracking or API
+RESULT=$(uv run python scripts/rate_limit_gate.py "$BUDGET" delegation --provider claude --audit-log)
+if echo "$RESULT" | grep -q '"safe": true'; then
+  # Proceed with delegation
+  delegate_next_phase(...)
+else
+  # Gate blocked: defer to next session or sleep
+  echo "Rate-limited. Deferring this phase." >> .tmp/$(date +%Y-%m-%d).md
+  # OR sleep and retry (with circuit-breaker awareness)
+fi
+```
+
+**Reference**: [.github/skills/rate-limit-resilience/SKILL.md](.github/skills/rate-limit-resilience/SKILL.md) — full workflow, decision logic, provider profiles. This gate prevents cascading rate-limit failures mid-phase and enforces the Algorithms-Before-Tokens axiom by making token budgets deterministic rather than negotiated interactively.
+
 ### Delegation Prompt Template (Layer 2 — Prescriptive Structure)
 
 Every subagent prompt follows this 5-part shape to minimize context bleed:

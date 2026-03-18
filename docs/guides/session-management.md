@@ -377,6 +377,8 @@ The scratchpad exists on disk. Compaction cannot touch it. This is the core reas
 
 **Treat every important discovery as if the next token will trigger compaction.**
 
+**Research Context**: Phase 1 research on cognitive load (docs/research/ai-cognitive-load.md, issue #315) shows token-intensive workflows with >4 inter-agent handoffs exceed working memory capacity. Compaction frequency and context window fragmentation are metrics of cognitive overload. If `/compact` is triggered frequently (>1 per session), session structure needs redesign: fewer parallel delegations, earlier phase gates, or smaller scope per phase. Document the pattern in the scratchpad under `## Cognitive Load Alert` and review with Executive Orchestrator before next session resumes.
+
 ### Compaction Posture: Before It Happens
 
 When you see the context window is above 80% or before running `/compact` manually:
