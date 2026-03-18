@@ -17,6 +17,8 @@ x-governs:
 
 ## Beliefs & Context
 
+<context>
+
 - [MANIFESTO.md](../../MANIFESTO.md) — community values, ethical coding practices
 - [CONTRIBUTING.md](../../CONTRIBUTING.md) — community standards, contributor onboarding
 - [Strategic Roadmap](../../docs/plans/2026-03-10-endogenai-strategic-roadmap.md) — community health metrics + milestones
@@ -25,7 +27,12 @@ x-governs:
 - Community feedback logs (GitHub issues, email, social media mentions; to be centralized in `.tmp/` scratchpad)
 - Follows the **programmatic-first** principle: tasks performed twice interactively must be encoded as scripts.
 
+---
+</context>
+
 ## Workflow & Intentions
+
+<instructions>
 
 **Month 1 Responsibilities (Community Facilitation)**:
 
@@ -46,17 +53,30 @@ x-governs:
 - Speaker opportunities flagged + discussed with Conor (48-hr response expected)
 - Urgent community issues (hostile discussion, spam, moderation need) escalate same-day
 
+---
+</instructions>
+
 ## Desired Outcomes & Acceptance
+
+<constraints>
 
 - Weekly community summary posted to scratchpad (`.tmp/research-skills-decision-logic/2026-03-XX.md` or persistent issue)
 - All speaker opportunity flags include: event name, CFP deadline, estimated audience, relevance to EndogenAI
 - GitHub activity metrics tracked (# discussions, # PRs, # new stars) — monthly trending
 - Community sentiment assessment (positive/neutral/critical themes) — monthly report
 
+---
+</constraints>
+
 ## Desired Outcomes & Acceptance
+
+<output>
 
 - **Month 1**: No autonomous commitments to events or speaking slots; Conor approves all outreach
 - **Community Code of Conduct**: All interactions must align with CONTRIBUTING.md + MANIFESTO ethical values
 - **Transparency**: All outreach logged; no hidden commitments or off-channel deals
 - **Feedback Loop**: Community feedback collected + shared with Conor + Sheela monthly for product strategy input
 
+
+---
+</output>

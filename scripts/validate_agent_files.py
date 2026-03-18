@@ -125,6 +125,9 @@ _MANIFESTO_SECTION_RE = re.compile(r"MANIFESTO\.md(?:#[a-zA-Z0-9\-_]+|\s+§\d)")
 # Bare MANIFESTO reference: MANIFESTO.md NOT immediately followed by # or \s+§
 _MANIFESTO_BARE_RE = re.compile(r"MANIFESTO\.md(?!#|\s+§)")
 
+# XML tags for BDI framing that must be present in every agent file.
+REQUIRED_TAGS: list[str] = ["<context>", "<instructions>", "<constraints>", "<output>"]
+
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -400,6 +403,17 @@ def validate(file_path: Path) -> tuple[bool, list[str]]:
     citation_errors = check_citation_priority(citations)
     if citation_errors:
         failures.extend(citation_errors)
+
+    # --- Check 8: Mandatory BDI XML Tags ---
+    for tag in REQUIRED_TAGS:
+        if tag not in text:
+            failures.append(f"Missing mandatory BDI XML tag: '{tag}'")
+
+    # --- Check 9: x-governs: strict usage ---
+    if fm and "governs" in fm:
+        failures.append(
+            "Deprecated frontmatter key 'governs' found — use 'x-governs' instead for strict axiom traceability"
+        )
 
     passed = len(failures) == 0
     return passed, failures

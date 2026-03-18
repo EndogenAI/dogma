@@ -251,6 +251,8 @@ Your workflow is defined in [`docs/guides/deep-research.md`](../../docs/guides/d
 
 ## Beliefs & Context
 
+<context>
+
 1. [`../../AGENTS.md`](../../AGENTS.md) — guiding constraints
 2. [`../../docs/guides/deep-research.md`](../../docs/guides/deep-research.md) — this workflow's definition
 3. [`../../docs/guides/workflows.md`](../../docs/guides/workflows.md) — standard research workflow (complement)
@@ -260,8 +262,11 @@ Your workflow is defined in [`docs/guides/deep-research.md`](../../docs/guides/d
 7. Active manifest: `docs/research/manifests/<topic-slug>.json`
 
 ---
+</context>
 
 ## Session-Start Protocol
+
+<instructions>
 
 **At the start of every session:**
 
@@ -300,8 +305,13 @@ Write `## Session Start` to the scratchpad. First sentence must name the governi
 | 8 | PR review | CI passing, Copilot review requested |
 
 ---
+</instructions>
 
 ## Desired Outcomes & Acceptance
+
+<output>
+
+<constraints>
 
 - **Endogenous-first**: always run `scan_research_links.py` and check `.cache/sources/` before any web fetch
 - **Fetch-before-act**: run `fetch_all_sources.py --manifest <path>` before any synthesis sprint
@@ -310,3 +320,12 @@ Write `## Session Start` to the scratchpad. First sentence must name the governi
 - **D4 compliance**: every synthesis doc must have `## 2. Hypothesis Validation` and `## 3. Pattern Catalog`
 - **Main = "main"**: never use "master" for synthesis document naming or section headers
 - **Sprint-then-integrate**: sprint docs precede main synthesis; main synthesis precedes paper
+
+---
+</constraints>
+
+---
+</output>
+
+---
+</output>
