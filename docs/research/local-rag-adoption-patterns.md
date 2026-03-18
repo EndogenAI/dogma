@@ -114,6 +114,12 @@ def rag_reindex():
 
 ---
 
+## Cross-Cutting to Phase 3
+
+These findings inform agent knowledge grounding decisions in Phase 3 implementation. LanceDB + BGE-Small patterns should be considered when designing local compute inference for context augmentation. Embedding model versioning and multi-provider MCP tooling strategies are architecture-level decisions that will reduce token burn in Phase 3 agent workflows.
+
+---
+
 ## Sources
 
 - LanceDB Documentation: https://lancedb.github.io/lancedb/ — Embedded vector database
