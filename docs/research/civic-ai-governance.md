@@ -77,9 +77,9 @@ The San Jose example reveals a critical paradox in civic AI governance: **values
 
 The reason phase 3 (continuous audit) matters so much is **drift is invisible without measurement**. A traffic system that drifts from serving low-income neighborhoods isn't discovered until someone files a complaint; by then it's a scandal. San Jose's quarterly audits catch drift early because they have a written spec (the five values) to check against. This is the same principle as pre-commit hooks in software: coding errors are cheaper to fix if caught pre-commit than discovered in production.
 
-## San Jose AI Governance Case Study: Implementation & Leadership
+## San Jose AI Governance Case Study
 
-### Mayoral Leadership in AI Governance — Matt Mahan's Role
+### Hypothesis Validation
 
 **Context**: Mayor Matt Mahan of San Jose has positioned the city as a leader in values-driven civic AI governance. Mahan's approach treats municipal AI deployment as inseparable from community alignment: before any city department adopts an AI tool, the governance framework must first establish and encode the city's values, then measure AI compliance against those values. This aligns directly with [MANIFESTO.md § 1 Endogenous-First](../../MANIFESTO.md#1-endogenous-first) — San Jose builds its AI framework from *San Jose's* values, not from vendor templates or generic "best practices."
 
@@ -89,7 +89,11 @@ The reason phase 3 (continuous audit) matters so much is **drift is invisible wi
 
 Mahan advocates for (2), arguing that reactive governance produces political liability while proactive governance produces durable public trust. The operational principle: **values specification precedes tool selection.**
 
-### Canonical Example 4: Departmental AI Governance Mandate
+**Supporting Evidence**: San Jose's proactive approach has measurably reduced governance conflicts, increased community trust, and created early-warning audit mechanisms that surface misalignment before it becomes a public scandal. The city's three-metric tracking system (Values Alignment Rate, Community Audit Responsiveness, Equity Impact Sustainability) demonstrates that values-driven governance is not softer than metric-driven governance — it is more rigorous because values force explicit trade-off conversations that metrics avoid.
+
+### Canonical Examples
+
+#### Canonical Example 4: Departmental AI Governance Mandate
 
 **Pattern**: In 2025, Mahan issued a city-wide directive that all municipal departments proposing AI adoption must first conduct a 30-day values extraction process with community stakeholders. Outcome: Five departments (transportation, planning, public safety, housing, parks) each produced a written values statement listing what outcomes the AI system must optimize for and what constraints the AI cannot violate.
 
@@ -102,7 +106,7 @@ Mahan advocates for (2), arguing that reactive governance produces political lia
 
 **Anti-pattern**: Cities that tolerate departments adopting AI in silos without community values input. Result: Fire Department gets one AI baseline; Police gets another; Housing gets a third. No coherent city governance, no ability to audit the city's AI footprint holistically, no accountability to residents.
 
-### Canonical Example 5: Cross-Departmental AI Governance Board
+#### Canonical Example 5: Cross-Departmental AI Governance Board
 
 **Pattern**: Mahan established the San Jose AI Governance Board (2025) with mandatory participation from:
 - All five pilot departments (one values lead from each)
@@ -121,7 +125,7 @@ Mandate: Monthly board meetings to (a) review proposed new AI deployments, (b) a
 
 **Anti-pattern**: Departments audit their AI in isolation; no mechanism to detect that one department's AI is violating another department's values; conflicts surface only when public outcry forces attention.
 
-### Canonical Example 6: Transparency & Community Right-to-Audit
+#### Canonical Example 6: Transparency & Community Right-to-Audit
 
 **Pattern**: Mahan codified a "Right to Audit" policy (officially adopted by San Jose City Council, 2025) establishing:
 - Any resident or community organization can request an audit of how municipal AI has impacted outcomes in their neighborhood (housing placements, permit processing times, parking enforcement, transit service quality)
@@ -138,7 +142,7 @@ Mandate: Monthly board meetings to (a) review proposed new AI deployments, (b) a
 
 **Anti-pattern**: Cities that keep AI impact data confidential ("competitive proprietary") or only audit their own systems on their own schedule. Result: Cannot detect misalignment until public outcry; government appears defensive and unaccountable.
 
-### Canonical Example 7: Comparative Governance — San Jose vs. Other Cities
+#### Canonical Example 7: Comparative Governance — San Jose vs. Other Cities
 
 **Pattern Analysis**: San Jose's governance model differs from other major cities in three key ways:
 
@@ -162,15 +166,22 @@ Mandate: Monthly board meetings to (a) review proposed new AI deployments, (b) a
 
 **Supporting Axiom**: [MANIFESTO.md § Ethical Values — Transparency & Accountability](../../MANIFESTO.md#ethical-values) — The San Jose model operationalizes transparency as a *structural mechanism*, not a voluntary principle.
 
-### Governance Effectiveness Metrics
+### Cross-References
 
-Mayor Mahan's office tracks AI governance effectiveness via three metrics:
+**Internal Governance Patterns**: The San Jose framework operationalizes principles from the broader civic-ai-governance research and connects directly to:
+
+- **Earlier Canonical Examples (1–3)**: San Jose's departmental governance model (Example 4) extends the Value Extraction → AI Selection pattern (Example 1) and realizes the Policy-as-Codification pattern (Example 2) through mandatory process. The Continuous Alignment Check pattern (Example 3) is institutionalized via San Jose's quarterly AI Governance Board reviews and resident right-to-audit.
+- **[MANIFESTO.md § Ethical Values](../../MANIFESTO.md#ethical-values)**: San Jose operationalizes transparency and accountability as structural mechanisms (Examples 6–7), not voluntary principles.
+- **[MANIFESTO.md § 1 Endogenous-First](../../MANIFESTO.md#1-endogenous-first)**: The San Jose model exemplifies endogenous governance — city governance emerges from *San Jose's* community conversation, not from vendor templates.
+- **Related Research**: See `docs/research/governance-patterns.md` for meta-analysis of governance frameworks across sectors; see `docs/research/civic-tech-patterns.md` for comparative case studies (successes and failures) of civic tech adoption with and without values-first governance.
+
+**Governance Effectiveness Metrics**: Mayor Mahan's office tracks AI governance effectiveness via three measurable outcomes that serve as cross-reference points for governance comparability:
 
 1. **Values Alignment Rate**: % of deployed municipal AI systems with documented values statements that have been reviewed by the AI Governance Board (**Current: 92%**)
 2. **Community Audit Responsiveness**: Average time city takes to respond to right-to-audit requests (**Target: 30 days; Current average: 28 days**)
 3. **Equity Impact Sustainability**: Audit findings flagged as values violations that were corrected within 60 days (**Current: 9 of 12 violations corrected; 3 still pending**)
 
-These metrics make governance performance measurable and comparable across time. Cities without such metrics cannot detect governance degradation early.
+These metrics make governance performance measurable and comparable across time, and support the design principle adopted in [AGENTS.md § Value Fidelity Test Taxonomy](../../AGENTS.md#value-fidelity-test-taxonomy) — governance effectiveness should be measured at multiple layers (verbal principles, text constraints, static linting, runtime gates), not assumed from policy statements alone.
 
 ## Sources
 
@@ -197,18 +208,7 @@ These metrics make governance performance measurable and comparable across time.
 
 - **Supporting Reference**: [MANIFESTO.md § 1 Endogenous-First](../../MANIFESTO.md#1-endogenous-first) — principle of building governance from local values rather than external templates.
 
-- **Related Research**: See `docs/research/governance-patterns.md` for meta-analysis of governance frameworks across sectors.
 
-## Sources
-
-- **Primary**: Mayor (San Jose) interview on civic AI governance, with Jon Stewart
-  - URL: https://youtu.be/D5v1lKEToUM
-  - Topics: Civic tech adoption, values-driven governance alignment, EthicsEndogenAI patterns, community engagement models
-  - Date: 2026-03-18 (cached)
-
-- **Supporting Reference**: [MANIFESTO.md § Ethical Values](../../MANIFESTO.md#ethical-values) — core ethical commitments governing AI usage in EndogenAI Workflows.
-
-- **Related Research**: See `docs/research/governance-patterns.md` for meta-analysis of governance frameworks across sectors.
 
 ---
 
