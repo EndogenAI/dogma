@@ -48,6 +48,22 @@ L0–L2 engineers discover algorithmic shortcuts in their workflows (e.g., "use 
 
 **Signal**: Engineers proactively seek automation opportunities; AI adoption becomes intrinsic, not performative. New features land with Claude-augmented workflows built in from the start, not retrofitted later. The velocity delta between L2 and L3 teams is 50%+ on tasks amenable to AI augmentation.
 
+### Canonical Example 4: Non-Linear Maturity Pathways — SME Ecosystem Jump
+
+**Pattern**: A 30-person SaaS company skips the L1 individual-codification phase entirely by joining a vendor's AI partner program. Pre-built prompt libraries, shared fine-tuned models, and ecosystem tooling bring them to functional L2 overnight — before most engineers have formed personal habits. Their L2 is ecosystem-embedded rather than internally built.
+
+**Signal** (from Sawang & Sornlertlamvanich 2026, arXiv:2603.08728): SMEs with high ecosystem embeddedness consistently outperformed peers on AI maturity metrics *despite* lower internal capability scores across multiple dimensions. Non-linear jumps are not exceptions — they are a documented pathway. The Ramp L0→L1→L2→L3 linear model accurately describes enterprises that develop endogenously; it underestimates the speed of SME adoption via external ecosystem leverage.
+
+**Anti-pattern**: Assuming every organization must sequence L0→L1 before L2 is achievable. Teams that skip L1 via ecosystem adoption may have fragile, dependency-coupled capability — but they reach L2 velocity nonetheless, and the fragility can be addressed later as an internal capability gap.
+
+### Canonical Example 5: "Super Employee" as L3 Endpoint — Greenfield vs. Brownfield
+
+**Pattern**: A 5-person AI-native startup builds a product that in 2020 would have required 30 engineers: two backend engineers orchestrate Claude agents for infrastructure-as-code, testing, documentation, and code review. Each "Super Employee" spans full-stack, DevOps, PM, and QA roles that previously required separate personnel.
+
+**Signal** (from Zhang et al. 2026, arXiv:2601.22667): Empirical comparison of AI-native greenfield organizations vs. traditional brownfield shows 8x–33x reduction in resource consumption for equivalent feature output. The study introduces "Human-AI Collaboration Efficacy" as the appropriate optimization target — not raw output velocity. At L3, role boundaries dissolve: engineers orchestrate systems rather than write code, paralleling Parikh's (2025, arXiv:2507.01069) finding that PMs shift from delivery management to orchestration of socio-technical ecosystems.
+
+**Anti-pattern**: Applying brownfield L3 aspirations to a greenfield org. A startup that tries to replicate the enterprise L3 model (guilds, prompt registries, governance councils) before reaching 20 people is imposing organizational overhead that cancels the velocity benefit. L3 in a greenfield context looks like 2 people doing the work of 30, not 30 people with structured AI adoption governance.
+
 ## Recommendations
 
 1. **Formalize L0–L3 as an encoding ladder in AGENTS.md** — Map the framework to how Dogma's agent fleet matures from individual agent discovery (L0–L1) to standardized skills (L2) to enforced governance constraints (L3). Document the gate between each level. L0 agents are ad-hoc experiments; L1 agents have repeatable patterns; L2 agents are part of a standardized role taxonomy; L3 agents are operationalized in CI/CD gates. This ladder applies equally to skill development (discover → encode → standardize → enforce) and agent posture evolution.
@@ -55,6 +71,12 @@ L0–L2 engineers discover algorithmic shortcuts in their workflows (e.g., "use 
 2. **Create a "Prompt Template Registry"** — Encode high-value prompts discovered in prior sprints into a discoverable manifest (`docs/guides/prompt-templates.md`) so future sessions don't rediscover them. Treat prompts with the same version control discipline as code: frontmatter metadata (author, date discovered, applicable contexts), canonical examples (what problem does this solve?), anti-patterns (what goes wrong if you modify it?). Link each template to the research doc or session that discovered it, creating a traceable lineage.
 
 3. **Audit and encode "automate your job" instances** — Review session logs and GitHub issues for repetitive tasks teams have solved 2+ times interactively. Extract these as scripts (Programmatic-First § AGENTS.md) before the third occurrence, and log them in `docs/automations.md` as part of organizational memory. Each entry should reference the session and issue where the pattern was discovered, establishing a feedback loop: repeated work discovered → scripted → reused → refined.
+
+4. **Add an "ecosystem embeddedness" dimension to L1 gate criteria** — Sawang & Sornlertlamvanich (2026) demonstrate that SMEs can achieve functional L2 capability through ecosystem coupling before L1 internal knowledge is fully formed. Update the L0–L3 diagnostic checklist to include an `ecosystem_leverage` axis (vendor AI partnerships, shared prompt libraries, pre-built fine-tuned model access). Teams that score high on this axis may be able to skip or abbreviate L1, and should not be penalized in maturity assessments for doing so.
+
+5. **Instrument "value density" not commit volume as the L3 signal** — At L3, Activity (commits, PR count, tickets closed) may remain flat or dip while Performance (bug-free deploys, user-facing feature value, cycle time reduction) rises sharply. Measure Human-AI Collaboration Efficacy as the primary outcome metric, not throughput proxies. At L3 gate review, require teams to demonstrate flat or declining activity alongside measurable performance improvement — the combination is the signal; activity growth alone is not. See Tomaz et al. (2026, arXiv:2602.13766) for longitudinal validation of this pattern across 3 agile teams over 13 months.
+
+6. **Distinguish accountability from execution in PM role evolution** — Parikh (2025, arXiv:2507.01069) and Ulloa et al. (2025, arXiv:2510.02504) converge on the same constraint: at L3, PMs (and engineers) become orchestrators, but they do not abdicate accountability. "Accountability must not be delegated to non-human actors" (Ulloa et al.). The L3 gate should require evidence that AI adoption did not erode oversight: decision logs, human sign-off on AI-generated outputs for high-stakes changes, and governance policies scoped to the agent fleet. Orgs that reach L3 velocity without these controls are fragile, not mature.
 
 ## Framework Boundaries & Cross-Cutting Concerns
 
@@ -74,6 +96,36 @@ L0–L2 engineers discover algorithmic shortcuts in their workflows (e.g., "use 
   - Date: 2026-03-18 (cached)
 
 - **Supporting Reference**: [AGENTS.md § Programmatic-First Principle](../../AGENTS.md#programmatic-first-principle) — documents the third-iteration rule governing automation capture.
+
+- Sawang, Sukanlaya; Sornlertlamvanich, Virach. (2026, February 19). "Artificial Intelligence (AI) Maturity in Small and Medium-Sized Enterprises: A Framework of Internalized and Ecosystem-Embedded Capabilities." *arXiv:2603.08728 [cs.CY]*.
+  - URL: https://arxiv.org/abs/2603.08728
+  - DOI: 10.48550/arXiv.2603.08728
+  - Fetched: 2026-03-18
+  - Key finding: Proposes 5 maturity levels and 8 capability dimensions for AI adoption that are explicitly non-linear and ecosystem-embedded. Reframes AI maturity as multidimensional — not a single progression — which directly contrasts with the L0–L3 linear model.
+
+- Bandara, Eranga; et al. (2026, January 27). "A Practical Guide to Agentic AI Transition in Organizations." *arXiv:2602.10122 [cs.CY]*.
+  - URL: https://arxiv.org/abs/2602.10122
+  - DOI: 10.48550/arXiv.2602.10122
+  - Fetched: 2026-03-18
+  - Key finding: Proposes a transition framework for moving from manual to automated agentic workflows via domain-driven use case identification and human-as-orchestrator models. Parallels Ramp's L1→L2 transition, grounding the framework in multi-organization case evidence.
+
+- Zhang, Chi; Li, Zehan; Zhong, Ziqian; et al. (2026, January 30). "From Horizontal Layering to Vertical Integration: A Comparative Study of the AI-Driven Software Development Paradigm." *arXiv:2601.22667 [cs.SE]*.
+  - URL: https://arxiv.org/abs/2601.22667
+  - DOI: 10.48550/arXiv.2601.22667
+  - Fetched: 2026-03-18
+  - Key finding: AI-native startups (greenfield) show 8x–33x reductions in resource consumption relative to traditional enterprises (brownfield). Introduces "Super Employee" — an AI-augmented engineer spanning traditional role boundaries — as the L3-equivalent endpoint.
+
+- Parikh, Nishant A. (2025, July 1). "Agentic AI in Product Management: A Co-Evolutionary Model." *arXiv:2507.01069 [cs.CE]*.
+  - URL: https://arxiv.org/abs/2507.01069
+  - DOI: 10.48550/arXiv.2507.01069
+  - Fetched: 2026-03-18
+  - Key finding: Product managers at L3 become orchestrators of socio-technical ecosystems; required skills shift to AI literacy, governance, and systems thinking. Based on integrative review of 70+ sources including case studies from leading tech firms.
+
+- Ulloa, Mara; Butler, Jenna L.; et al. (2025, October 2). "Product Manager Practices for Delegating Work to Generative AI: 'Accountability must not be delegated to non-human actors'." *arXiv:2510.02504 [cs.SE]*.
+  - URL: https://arxiv.org/abs/2510.02504
+  - DOI: 10.48550/arXiv.2510.02504
+  - Fetched: 2026-03-18
+  - Key finding: Survey of 885 PMs at Microsoft identifies a framework for deciding which tasks to delegate to GenAI. Most PMs retain accountability for decisions while delegating execution — parallels the L2→L3 boundary where automation scope expands without abdicating oversight.
 
 ---
 
