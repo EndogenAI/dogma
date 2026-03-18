@@ -1,3 +1,12 @@
+## [0.12.2](https://github.com/EndogenAI/dogma/compare/v0.12.1...v0.12.2) (2026-03-18)
+
+
+### Bug Fixes
+
+* **scripts:** address Copilot PR [#384](https://github.com/EndogenAI/dogma/issues/384) review — fleet integration robustness and doc accuracy ([899979e](https://github.com/EndogenAI/dogma/commit/899979efdb6280900c8477eb9c3c2717468b7c5f))
+
+
+
 ## [0.12.1](https://github.com/EndogenAI/dogma/compare/v0.12.0...v0.12.1) (2026-03-18)
 
 
