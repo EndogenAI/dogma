@@ -846,17 +846,18 @@ RESULT=$(uv run python scripts/rate_limit_gate.py "$BUDGET" delegation --provide
 
 if echo "$RESULT" | grep -q '"safe": true'; then
   # Proceed with delegation to Scout
-elif echo "$RESULT" | grep -q '"circuit_breaker": true'; then
-  # Blocked: too many failures in short window
-  echo "## Rate-Limit Gate Output - Circuit Breaker\n$(date)\nBlocked: 3+ failures in 5 min. Recommended sleep: 60s. Deferring to next session." >> scratchpad
+elif echo "$RESULT" | python3 -c "import json,sys; d=json.load(sys.stdin); exit(0 if d.get('consecutive_failures',0) >= 3 else 1)"; then
+  # Blocked: circuit-breaker triggered (too many consecutive failures)
+  SLEEP=$(echo "$RESULT" | python3 -c "import json,sys; print(json.load(sys.stdin)['recommended_sleep_sec'])")
+  echo "## Rate-Limit Gate Output - Circuit Breaker\n$(date)\nBlocked: circuit-breaker open. Sleep ${SLEEP}s. Deferring to next session." >> scratchpad
 else
   # Blocked: insufficient budget
-  REMAINING=$(echo "$RESULT" | grep -o '"remaining_tokens": [0-9]*' | cut -d: -f2)
-  echo "## Rate-Limit Gate Output - Budget Alert\n$(date)\nRemaining: $REMAINING tokens (< 5K safety margin). Deferring phase to next session." >> scratchpad
+  REASON=$(echo "$RESULT" | python3 -c "import json,sys; print(json.load(sys.stdin)['reason'])")
+  echo "## Rate-Limit Gate Output - Budget Alert\n$(date)\n$REASON. Deferring phase to next session." >> scratchpad
 fi
 ```
 
-**Reference**: [.github/skills/rate-limit-resilience/SKILL.md](.github/skills/rate-limit-resilience/SKILL.md) — full skill documentation. [AGENTS.md § Pre-Delegation Rate-Limit Gate](../../AGENTS.md#pre-delegation-rate-limit-gate-sprint-18) — operational constraints and configuration. [AGENTS.md § Rate-Limit Resilience Throughout MANIFESTO Axioms](../../AGENTS.md#rate-limit-resilience-throughout-manifesto-axioms-sprint-18-research-validation) — research validation linking gate to Algorithms-Before-Tokens, Local-Compute-First, and Endogenous-First axioms.
+**Reference**: [.github/skills/rate-limit-resilience/SKILL.md](../../.github/skills/rate-limit-resilience/SKILL.md) — full skill documentation. [AGENTS.md § Pre-Delegation Rate-Limit Gate](../../AGENTS.md#pre-delegation-rate-limit-gate-sprint-18) — operational constraints and configuration. [AGENTS.md § Rate-Limit Resilience Throughout MANIFESTO Axioms](../../AGENTS.md#rate-limit-resilience-throughout-manifesto-axioms-sprint-18-research-validation) — research validation linking gate to Algorithms-Before-Tokens, Local-Compute-First, and Endogenous-First axioms.
 
 ---
 

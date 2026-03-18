@@ -117,7 +117,7 @@ Use this tree to decide which pattern to reach for:
 
 ### Pattern B: settings.json Hooks — Lifecycle Automation
 
-**File**: [.claude/settings.json](.../../.claude/settings.json) (committed); `.claude/settings.local.json` (gitignored)
+**File**: [.claude/settings.json](../../.claude/settings.json) (committed); `.claude/settings.local.json` (gitignored)
 
 **Hook structure** (example: SessionStart):
 ```json

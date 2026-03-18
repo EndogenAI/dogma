@@ -141,7 +141,7 @@ else
 fi
 ```
 
-**Reference**: [.github/skills/rate-limit-resilience/SKILL.md](.github/skills/rate-limit-resilience/SKILL.md) — full workflow, decision logic, provider profiles. This gate prevents cascading rate-limit failures mid-phase and enforces the Algorithms-Before-Tokens axiom by making token budgets deterministic rather than negotiated interactively.
+**Reference**: [.github/skills/rate-limit-resilience/SKILL.md](../skills/rate-limit-resilience/SKILL.md) — full workflow, decision logic, provider profiles. This gate prevents cascading rate-limit failures mid-phase and enforces the Algorithms-Before-Tokens axiom by making token budgets deterministic rather than negotiated interactively.
 
 ### Delegation Prompt Template (Layer 2 — Prescriptive Structure)
 

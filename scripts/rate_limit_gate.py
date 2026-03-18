@@ -37,8 +37,8 @@ Usage Examples:
     # With audit logging
     uv run python scripts/rate_limit_gate.py 20000 phase_boundary --provider gpt-4 --audit-log
 
-    # Dry-run mode (shows what would be logged without side effects)
-    uv run python scripts/rate_limit_gate.py 30000 fetch_source --provider claude --dry-run
+    # Without audit logging (default)
+    uv run python scripts/rate_limit_gate.py 30000 fetch_source --provider claude
 
 Notes:
     - Circuit-breaker: if N consecutive rate-limits in last M minutes, return safe=false
@@ -122,22 +122,21 @@ def _count_consecutive_failures(provider: str, operation: str, threshold_minutes
     consecutive_count = 0
 
     # Scan from most recent backward, count consecutive "rate_limit_blocked" entries
+    # for the specified provider+operation (ignoring entries for other operations)
     for entry in reversed(entries):
         try:
             entry_time = datetime.fromisoformat(entry.get("timestamp", "1970-01-01T00:00:00"))
             if entry_time < cutoff_time:
                 break
 
-            if (
-                entry.get("provider") == provider
-                and entry.get("operation") == operation
-                and entry.get("decision") == "rate_limit_blocked"
-            ):
-                consecutive_count += 1
-            else:
-                # Break on first non-matching or non-rate-limit entry
-                # This ensures we only count consecutive failures, not all-time failures
-                break
+            # Only consider entries for this specific provider+operation pair
+            if entry.get("provider") == provider and entry.get("operation") == operation:
+                if entry.get("decision") == "rate_limit_blocked":
+                    consecutive_count += 1
+                else:
+                    # A success for this provider+operation resets the streak
+                    break
+            # else: different operation/provider — skip without breaking the streak
         except (ValueError, KeyError):
             pass
 
