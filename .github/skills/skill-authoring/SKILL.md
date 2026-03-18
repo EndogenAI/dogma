@@ -153,7 +153,7 @@ This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](../../../MA
 [`MANIFESTO.md`](../../../MANIFESTO.md)
 [`AGENTS.md`](../../../AGENTS.md)
 [`docs/guides/agents.md`](../../../docs/guides/agents.md)
-[`.github/agents/README.md`](../agents/README.md)
+[`.github/agents/README.md`](../../agents/README.md)
 ```
 
 **Within-directory links** (to sibling files in `.github/skills/<name>/`) remain relative:
@@ -169,9 +169,9 @@ This convention is enforced by the `no-absolute-path-links-in-agent-files` pre-c
 
 Every skill file must contain at least one back-reference to the foundational document that governs it:
 
-- Pure procedural skills → reference `/AGENTS.md`
-- Research-oriented skills → reference `/MANIFESTO.md` (Endogenous-First axiom)
-- Automation/scripting skills → reference `/AGENTS.md` § Programmatic-First
+- Pure procedural skills → reference `AGENTS.md`
+- Research-oriented skills → reference `MANIFESTO.md` (Endogenous-First axiom)
+- Automation/scripting skills → reference `AGENTS.md` § Programmatic-First
 
 **Minimum pattern** (place in Endogenous Sources):
 

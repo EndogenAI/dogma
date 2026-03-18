@@ -7,7 +7,7 @@ argument-hint: "role slug for the agent (e.g. executive-docs)"
 
 # Agent File Authoring
 
-This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md): agent files are re-encodings of [`AGENTS.md`](../../../AGENTS.md), not independent inventions. Every `.agent.md` file derives its structure, posture, and governing constraints from `AGENTS.md` and `MANIFESTO.md`. Agents re-encode; they do not re-derive. Full authoring guidance is in [`docs/guides/agents.md`](../../../docs/guides/agents.md) and the fleet catalog in [`.github/agents/README.md`](../../../agents/README.md).
+This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md): agent files are re-encodings of [`AGENTS.md`](../../../AGENTS.md), not independent inventions. Every `.agent.md` file derives its structure, posture, and governing constraints from `AGENTS.md` and `MANIFESTO.md`. Agents re-encode; they do not re-derive. Full authoring guidance is in [`docs/guides/agents.md`](../../../docs/guides/agents.md) and the fleet catalog in [`.github/agents/README.md`](../../agents/README.md).
 
 ---
 
@@ -87,7 +87,7 @@ These fields are optional in syntax but **semantically required** for mature age
 - The effort estimate from the issue label (effort:s/m/l/xl)
 - The guiding axiom and acceptance criteria
 
-See [`.github/agents/README.md`](../../../agents/README.md) for the milestone structure and [docs/guides/agents.md](../../../docs/guides/agents.md) for issue linkage patterns.
+See [`.github/agents/README.md`](../../agents/README.md) for the milestone structure and [docs/guides/agents.md](../../../docs/guides/agents.md) for issue linkage patterns.
 
 ---
 
@@ -164,7 +164,7 @@ This convention is enforced by the `no-absolute-path-links-in-agent-files` pre-c
 
 ## 5. Cross-Reference Density
 
-Every agent file must contain at least one back-reference to `/MANIFESTO.md` **or** `/AGENTS.md` in the body. CI checks this as a proxy for encoding fidelity.
+Every agent file must contain at least one back-reference to `MANIFESTO.md` **or** `AGENTS.md` in the body. CI checks this as a proxy for encoding fidelity.
 
 **Minimum pattern** (place in the first substantive section; agent files are at depth 2 — use `../../`):
 
@@ -184,8 +184,8 @@ The first substantive section (Beliefs & Context) of every agent file must name 
 ```markdown
 ## Beliefs & Context
 
-This agent enacts the *<Axiom Name>* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md).
-Read [`AGENTS.md`](../../../AGENTS.md) before modifying any procedure in this file.
+This agent enacts the *<Axiom Name>* axiom from [`MANIFESTO.md`](../../MANIFESTO.md).
+Read [`AGENTS.md`](../../AGENTS.md) before modifying any procedure in this file.
 ```
 
 Governing axioms by agent type:
@@ -225,7 +225,7 @@ uv run python scripts/validate_agent_files.py --all
 The validator enforces:
 1. Valid YAML frontmatter (`name`, `description` ≥ 25 chars)
 2. Required sections present (fuzzy-matched)
-3. At least one cross-reference to `/MANIFESTO.md` or `/AGENTS.md`
+3. At least one cross-reference to `MANIFESTO.md` or `AGENTS.md`
 4. No heredoc patterns
 
 **Manual pre-commit checklist** (in addition to automated validation):
@@ -246,7 +246,7 @@ A file that fails validation or the manual checklist will also fail CI. Fix all 
 ## Guardrails
 
 - **Never use `/`-rooted paths for cross-directory references** in agent files — always use `../../`-relative paths (e.g. `../../AGENTS.md`). See [Section 4: Link Path Rule](#4-link-path-rule).
-- **Never omit the cross-reference density check** — at least one `/MANIFESTO.md` or `/AGENTS.md` link is required.
+- **Never omit the cross-reference density check** — at least one `MANIFESTO.md` or `AGENTS.md` link is required.
 - **Never embed heredoc write patterns** in workflow steps.
 - Do not add an agent without running `validate_agent_files.py --all` and passing.
 - Do not introduce a new governing axiom that is not grounded in an existing `MANIFESTO.md` principle.

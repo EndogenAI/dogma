@@ -9,8 +9,8 @@ Categories audited:
       Fix:    rename governs: → x-governs: (issue #390)
 
   B — `Unknown tool 'X'`  (Copilot Chat MCP tool static validation)
-      Source: tool references in `tools:` frontmatter that are not registered in
-              .vscode/mcp.json or are not built-in VS Code tool namespaces.
+      Source: tool references in `tools:` frontmatter whose namespaces are not
+              known built-ins and not MCP server names from .vscode/mcp.json.
       Fix:    remove inactive extension tool refs from tools: lists.
 
 Usage:
@@ -44,14 +44,27 @@ _KNOWN_NAMESPACES = frozenset(
         "agent",
         "browser",
         "vscode",
+        "write",
+        "terminal",
+        "changes",
+        "usages",
     ]
 )
 
-# Extension-namespaced tools that are conditionally available (fire when extension
-# is not active or MCP server is offline).
-_CONDITIONAL_PATTERNS = re.compile(
-    r"(github\.vscode-pull-request-github/|vscode\.mermaid-chat-features/|dogma-governance/|\btodo\b)"
-)
+
+def _load_mcp_server_names(repo_root: Path) -> set[str]:
+    """Load MCP server names declared in .vscode/mcp.json."""
+    mcp_path = repo_root / ".vscode" / "mcp.json"
+    if not mcp_path.exists():
+        return set()
+    try:
+        data = json.loads(mcp_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return set()
+    servers = data.get("mcpServers", {})
+    if isinstance(servers, dict):
+        return set(servers.keys())
+    return set()
 
 
 def _frontmatter(text: str) -> str:
@@ -81,6 +94,7 @@ def audit(repo_root: Path) -> dict:
     """Return counts and file lists for each diagnostic category."""
     cat_a: list[str] = []  # governs: present
     cat_b: list[tuple[str, list[str]]] = []  # (file, [unknown tools])
+    allowed_namespaces = _KNOWN_NAMESPACES | _load_mcp_server_names(repo_root)
 
     targets = list((repo_root / ".github" / "agents").glob("*.agent.md"))
     targets += list((repo_root / ".github" / "skills").rglob("SKILL.md"))
@@ -93,12 +107,12 @@ def audit(repo_root: Path) -> dict:
         if re.search(r"^governs\s*:", fm, re.MULTILINE):
             cat_a.append(str(fpath.relative_to(repo_root)))
 
-        # Category B: unknown / conditional tools
+        # Category B: unknown tools (namespace not built-in and not declared MCP)
         tools = _tools_from_frontmatter(fm)
         unknown = []
         for t in tools:
             namespace = t.split("/")[0] if "/" in t else t
-            if namespace not in _KNOWN_NAMESPACES and _CONDITIONAL_PATTERNS.search(t):
+            if namespace not in allowed_namespaces:
                 unknown.append(t)
         if unknown:
             cat_b.append((str(fpath.relative_to(repo_root)), unknown))
@@ -111,9 +125,9 @@ def audit(repo_root: Path) -> dict:
             "files": cat_a,
         },
         "category_b": {
-            "label": "Unknown tool references (extension tools / MCP offline)",
+            "label": "Unknown tool references",
             "count": sum(len(tools) for _, tools in cat_b),
-            "fix": "remove inactive extension tool refs from tools: lists",
+            "fix": "remove unknown tool refs or add their MCP server namespace to .vscode/mcp.json",
             "files": {f: tools for f, tools in cat_b},
         },
     }
