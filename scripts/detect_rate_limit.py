@@ -75,7 +75,7 @@ def detect_rate_limit(
     phase_cost_estimate: int,
     window_ms: int = DEFAULT_WINDOW_MS,
     safety_margin: int = DEFAULT_SAFETY_MARGIN,
-    provider: str = 'claude',
+    provider: str = "claude",
 ) -> tuple[str, int | None]:
     """
     Detect rate-limit status and compute protective action.
@@ -186,7 +186,7 @@ def main() -> int:
     parser.add_argument(
         "--provider",
         type=str,
-        default='claude',
+        default="claude",
         help="Provider name (default: claude; for future policy lookup)",
     )
     parser.add_argument(

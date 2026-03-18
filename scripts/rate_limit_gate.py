@@ -62,13 +62,13 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
 
-from rate_limit_config import get_policy, OperationType, OperationNotFound, PolicyNotFound
+from rate_limit_config import OperationNotFound, OperationType, PolicyNotFound, get_policy
 
 # ============================================================================
 # Constants
 # ============================================================================
 
-AUDIT_LOG_PATH = Path(__file__).parent.parent / '.cache' / 'rate-limit-audit.log'
+AUDIT_LOG_PATH = Path(__file__).parent.parent / ".cache" / "rate-limit-audit.log"
 CIRCUIT_BREAKER_WINDOW_MIN = 5  # Look back 5 minutes for consecutive failures
 MIN_BUDGET_SAFETY_MARGIN = 5000  # Reserve 5k tokens for overhead
 
@@ -77,6 +77,7 @@ MIN_BUDGET_SAFETY_MARGIN = 5000  # Reserve 5k tokens for overhead
 # Circuit Breaker
 # ============================================================================
 
+
 def _read_audit_log() -> list[dict]:
     """Read existing audit log entries."""
     if not AUDIT_LOG_PATH.exists():
@@ -84,7 +85,7 @@ def _read_audit_log() -> list[dict]:
 
     entries = []
     try:
-        with open(AUDIT_LOG_PATH, 'r') as f:
+        with open(AUDIT_LOG_PATH, "r") as f:
             for line in f:
                 line = line.strip()
                 if line:
@@ -110,7 +111,7 @@ def _count_consecutive_failures(provider: str, operation: str, threshold_minutes
     Stops counting on the first non-matching entry OR entry outside the time window.
     NOTE: This counts consecutive failures for the SAME provider/operation combination.
     If different operations are interspersed, the count resets.
-    
+
     Returns the count of consecutive "rate_limit_blocked" entries within threshold_minutes.
     """
     entries = _read_audit_log()
@@ -123,13 +124,15 @@ def _count_consecutive_failures(provider: str, operation: str, threshold_minutes
     # Scan from most recent backward, count consecutive "rate_limit_blocked" entries
     for entry in reversed(entries):
         try:
-            entry_time = datetime.fromisoformat(entry.get('timestamp', '1970-01-01T00:00:00'))
+            entry_time = datetime.fromisoformat(entry.get("timestamp", "1970-01-01T00:00:00"))
             if entry_time < cutoff_time:
                 break
 
-            if (entry.get('provider') == provider and
-                entry.get('operation') == operation and
-                entry.get('decision') == 'rate_limit_blocked'):
+            if (
+                entry.get("provider") == provider
+                and entry.get("operation") == operation
+                and entry.get("decision") == "rate_limit_blocked"
+            ):
                 consecutive_count += 1
             else:
                 # Break on first non-matching or non-rate-limit entry
@@ -145,10 +148,11 @@ def _count_consecutive_failures(provider: str, operation: str, threshold_minutes
 # Gate Logic
 # ============================================================================
 
+
 def check_rate_limit_gate(
     current_token_budget: int,
     operation_type: OperationType,
-    provider: str = 'claude',
+    provider: str = "claude",
 ) -> dict[str, Any]:
     """
     Check whether it's safe to proceed with an operation.
@@ -185,43 +189,47 @@ def check_rate_limit_gate(
         operation_type,
         CIRCUIT_BREAKER_WINDOW_MIN,
     )
-    circuit_breaker_threshold = policy['circuit_breaker_threshold']
+    circuit_breaker_threshold = policy["circuit_breaker_threshold"]
 
     if consecutive_failures >= circuit_breaker_threshold:
         return {
-            'safe': False,
-            'recommended_sleep_sec': policy['sleep_sec'] * 2,  # Double sleep for circuit break
-            'reason': f'Circuit breaker triggered: {consecutive_failures} consecutive failures in last {CIRCUIT_BREAKER_WINDOW_MIN}min',
-            'provider': provider,
-            'operation': operation_type,
-            'consecutive_failures': consecutive_failures,
+            "safe": False,
+            "recommended_sleep_sec": policy["sleep_sec"] * 2,  # Double sleep for circuit break
+            "reason": (
+                f"Circuit breaker triggered: {consecutive_failures} consecutive"
+                f" failures in last {CIRCUIT_BREAKER_WINDOW_MIN}min"
+            ),
+            "provider": provider,
+            "operation": operation_type,
+            "consecutive_failures": consecutive_failures,
         }
 
-    # Check budget
-    if current_token_budget < MIN_BUDGET_SAFETY_MARGIN:
+    # Check budget (≤ to treat exactly-at-margin as exhausted — margin must be reserved)
+    if current_token_budget <= MIN_BUDGET_SAFETY_MARGIN:
         return {
-            'safe': False,
-            'recommended_sleep_sec': policy['sleep_sec'],
-            'reason': f'Budget exhausted: {current_token_budget} < {MIN_BUDGET_SAFETY_MARGIN}',
-            'provider': provider,
-            'operation': operation_type,
-            'consecutive_failures': consecutive_failures,
+            "safe": False,
+            "recommended_sleep_sec": policy["sleep_sec"],
+            "reason": f"Budget exhausted: {current_token_budget} <= {MIN_BUDGET_SAFETY_MARGIN}",
+            "provider": provider,
+            "operation": operation_type,
+            "consecutive_failures": consecutive_failures,
         }
 
     # Safe to proceed
     return {
-        'safe': True,
-        'recommended_sleep_sec': 0,
-        'reason': f'Safe: {current_token_budget} tokens available, {policy["retry_limit"]} retries allowed',
-        'provider': provider,
-        'operation': operation_type,
-        'consecutive_failures': consecutive_failures,
+        "safe": True,
+        "recommended_sleep_sec": 0,
+        "reason": f"Safe: {current_token_budget} tokens available, {policy['retry_limit']} retries allowed",
+        "provider": provider,
+        "operation": operation_type,
+        "consecutive_failures": consecutive_failures,
     }
 
 
 # ============================================================================
 # Audit Logging
 # ============================================================================
+
 
 def _log_gate_decision(decision_dict: dict, audit_flag: bool = False) -> None:
     """Write gate decision to audit log (if audit_flag is True)."""
@@ -233,19 +241,19 @@ def _log_gate_decision(decision_dict: dict, audit_flag: bool = False) -> None:
 
     # Prepare log entry
     log_entry = {
-        'timestamp': datetime.now().isoformat(),
-        'decision': 'rate_limit_safe' if decision_dict['safe'] else 'rate_limit_blocked',
-        'provider': decision_dict['provider'],
-        'operation': decision_dict['operation'],
-        'consecutive_failures': decision_dict['consecutive_failures'],
-        'budget': decision_dict.get('current_budget'),
-        'reason': decision_dict['reason'],
+        "timestamp": datetime.now().isoformat(),
+        "decision": "rate_limit_safe" if decision_dict["safe"] else "rate_limit_blocked",
+        "provider": decision_dict["provider"],
+        "operation": decision_dict["operation"],
+        "consecutive_failures": decision_dict["consecutive_failures"],
+        "budget": decision_dict.get("current_budget"),
+        "reason": decision_dict["reason"],
     }
 
     # Append to audit log (JSONL format)
     try:
-        with open(AUDIT_LOG_PATH, 'a') as f:
-            f.write(json.dumps(log_entry) + '\n')
+        with open(AUDIT_LOG_PATH, "a") as f:
+            f.write(json.dumps(log_entry) + "\n")
     except Exception as e:
         print(f"Warning: Failed to write audit log: {e}", file=sys.stderr)
 
@@ -254,33 +262,34 @@ def _log_gate_decision(decision_dict: dict, audit_flag: bool = False) -> None:
 # CLI
 # ============================================================================
 
+
 def main() -> int:
     """Parse arguments and emit gate decision."""
 
     parser = argparse.ArgumentParser(
-        description='Pre-delegation rate-limit gate with circuit-breaker.',
+        description="Pre-delegation rate-limit gate with circuit-breaker.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__,
     )
 
     parser.add_argument(
-        'current_token_budget',
+        "current_token_budget",
         type=int,
-        help='Tokens remaining in current rate-limit window',
+        help="Tokens remaining in current rate-limit window",
     )
     parser.add_argument(
-        'operation_type',
-        help='Type of operation (fetch_source, delegation, phase_boundary, review_gate, commit)',
+        "operation_type",
+        help="Type of operation (fetch_source, delegation, phase_boundary, review_gate, commit)",
     )
     parser.add_argument(
-        '--provider',
-        default='claude',
-        help='Provider name (default: claude)',
+        "--provider",
+        default="claude",
+        help="Provider name (default: claude)",
     )
     parser.add_argument(
-        '--audit-log',
-        action='store_true',
-        help='Log gate decision to audit trail',
+        "--audit-log",
+        action="store_true",
+        help="Log gate decision to audit trail",
     )
 
     args = parser.parse_args()
@@ -293,7 +302,7 @@ def main() -> int:
         )
 
         # Add current budget to result for logging
-        result['current_budget'] = args.current_token_budget
+        result["current_budget"] = args.current_token_budget
 
         # Log if requested
         if args.audit_log:
@@ -305,21 +314,21 @@ def main() -> int:
 
     except (OperationNotFound, PolicyNotFound, ValueError) as e:
         error_result = {
-            'safe': False,
-            'error': str(e),
-            'provider': args.provider,
-            'operation': args.operation_type,
+            "safe": False,
+            "error": str(e),
+            "provider": args.provider,
+            "operation": args.operation_type,
         }
         print(json.dumps(error_result))
         return 1
     except Exception as e:
         error_result = {
-            'safe': False,
-            'error': f'Internal error: {e}',
+            "safe": False,
+            "error": f"Internal error: {e}",
         }
         print(json.dumps(error_result))
         return 1
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())
