@@ -113,6 +113,7 @@ jobs:
       - name: Check links
         uses: lycheeverse/lychee-action@v2
         with:
+          lycheeVersion: v0.15.1
           args: --no-progress --exclude-loopback --accept 200,403,429,502 docs/**/*.md README.md CHANGELOG.md CONTRIBUTING.md
           fail: true
 
