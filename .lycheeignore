@@ -133,3 +133,8 @@ https://www.xda-developers.com/youre-using-local-llm-wrong-if-youre-prompting-it
 # Site is live; referenced in docs/research/greenfield-repo-candidates.md.
 # Transient network/firewall issue in CI environment.
 https://monorepo.tools/
+
+# qdrant.tech — "Connection failed" from GitHub Actions CI runners.
+# Site is live; referenced in docs/research/local-inference-rag.md.
+# Transient network/firewall issue in CI environment.
+https://qdrant.tech/documentation/
