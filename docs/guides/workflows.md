@@ -802,6 +802,64 @@ Orient → Identify Trigger → Choose Surface → Design → Implement → Dry-
 
 ---
 
+## Rate-Limit Resilience Patterns
+
+**Purpose**: Prevent cascading rate-limit failures and token exhaustion mid-session by enforcing deterministic budget checks before delegation.
+
+**Why it matters**: Phase 1 research on cognitive load (docs/research/ai-cognitive-load.md, issue #315) quantifies token-heavy workflows increasing human error rates; Phase 1 platform lock-in research (docs/research/ai-platform-lock-in-risks.md, issue #317) shows vendor dependency creates forced interruption risk. Rate-limit gate infrastructure provides graceful degradation without token burn or platform dependency escalation.
+
+### When to Check Budget
+
+Before delegating any multi-agent phase or substantive research delegation, invoke the rate-limit gate (scripts/rate_limit_gate.py). This is a mandatory step in executive-orchestrator.agent.md § Pre-Task Commitment Checkpoint (step 1.5) and integrated into phase-gate-sequence/SKILL.md § Step 1.5.
+
+### Provider-Aware Policies
+
+Rate-limit profiles (data/rate-limit-profiles.yml, issue #323) encode conservative to permissive sleep policies:
+- `claude` — conservative: 60s delegation sleep, circuit-breaker threshold=3 consecutive failures
+- `gpt-4` — moderate: 30s, threshold=4
+- `gpt-3.5` — permissive: 20s, threshold=4
+- `local-localhost` — unrestricted: 0s sleep, threshold=999 (local compute has no rate-limits)
+
+**Circuit-Breaker Logic**: If ≥N consecutive rate-limits occur within 5 minutes, the gate returns `safe: false` with a recommended sleep duration (typically 60s). Retry within the same session is statistically likely to fail again; deferring to the next session is safer.
+
+### Graceful Degradation Pattern
+
+When rate-limit gate blocks a delegation:
+
+1. **If safe=false due to budget** (remaining tokens < 5K safety margin):
+   - Log to scratchpad: current budget, recommended next phase, open deliverables
+   - Defer delegation to next session
+   - User resumes via session continuation handoff prompt
+
+2. **If safe=false due to circuit-breaker** (≥3 failures in 5 min):
+   - Log timestamp, provider, failure count to scratchpad
+   - Recommended sleep duration from gate response
+   - Option: sleep and retry (monitor for repeated failures)
+   - Option: defer to next session (safer; avoids downstream cost)
+
+### Example Workflow
+
+```bash
+# Before research phase delegation
+BUDGET=75000
+RESULT=$(uv run python scripts/rate_limit_gate.py "$BUDGET" delegation --provider claude --audit-log)
+
+if echo "$RESULT" | grep -q '"safe": true'; then
+  # Proceed with delegation to Scout
+elif echo "$RESULT" | grep -q '"circuit_breaker": true'; then
+  # Blocked: too many failures in short window
+  echo "## Rate-Limit Gate Output - Circuit Breaker\n$(date)\nBlocked: 3+ failures in 5 min. Recommended sleep: 60s. Deferring to next session." >> scratchpad
+else
+  # Blocked: insufficient budget
+  REMAINING=$(echo "$RESULT" | grep -o '"remaining_tokens": [0-9]*' | cut -d: -f2)
+  echo "## Rate-Limit Gate Output - Budget Alert\n$(date)\nRemaining: $REMAINING tokens (< 5K safety margin). Deferring phase to next session." >> scratchpad
+fi
+```
+
+**Reference**: [.github/skills/rate-limit-resilience/SKILL.md](.github/skills/rate-limit-resilience/SKILL.md) — full skill documentation. [AGENTS.md § Pre-Delegation Rate-Limit Gate](../../AGENTS.md#pre-deployment-rate-limit-gate-sprint-18) — operational constraints and configuration. [AGENTS.md § Rate-Limit Resilience Throughout MANIFESTO Axioms](../../AGENTS.md#rate-limit-resilience-throughout-manifesto-axioms-sprint-18-research-validation) — research validation linking gate to Algorithms-Before-Tokens, Local-Compute-First, and Endogenous-First axioms.
+
+---
+
 ## Multi-Workflow Orchestration
 
 Triggered when a request spans two or more executive agents, or when phases have inter-agent

@@ -75,7 +75,9 @@ fi
 - Defer the delegation to the next session, OR
 - Sleep for recommended duration and monitor for consecutive failures (circuit-breaker)
 
-**Note**: This is a new workflow integration (Sprint 18). Not every session will use it initially, but all orchestrators should check before high-cost delegations (e.g., research scout with 3+ parallel scouts).
+**Note**: This is new infrastructure from Phase 0 (Sprint 18, issue #325). Phase 1 research (docs/research/ai-cognitive-load.md, issue #315) validates this gate: token-heavy workflows with >4 handoffs exceed working memory capacity; rate-limit gates reduce decision surface and human error. Integration point: AGENTS.md § Rate-Limit Resilience Throughout MANIFESTO Axioms shows how this gate operationalizes Algorithms-Before-Tokens (#319 trendslop research), Local-Compute-First (#317 vendor lock-in), and Endogenous-First (#315 cognitive load) axioms.
+
+All orchestrators must check before high-cost delegations (e.g., research scout with 3+ parallel scouts).
 
 ### Step 2 — Write Pre-Compact Checkpoint
 

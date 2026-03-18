@@ -400,6 +400,18 @@ fi
 - ✅ Docs delegation: "Apply 3 updates [specific list]; commit [msg]; return: 'Updated — [item 1], [item 2], [item 3]'" → 1-line confirmation
 - ✅ Review delegation: "Validate 4 checkpoints [list]; return: single line 'APPROVED' or 'REQUEST CHANGES — [issue]'" → 1-line verdict
 
+### Rate-Limit Resilience Throughout MANIFESTO Axioms (Sprint 18 Research Validation)
+
+Phase 1 research (Sprint 18A, Issues #319, #317, #315) validates that rate-limit constraints are not merely operational concerns — they are structural encodings of core axioms:
+
+**Algorithms-Before-Tokens (MANIFESTO § 2)**: [LLM Strategic Advice Quality](docs/research/llm-strategic-advice-quality.md) documents "trendslop" failure mode (68% of LLM outputs repackage trends without rigorous analysis). Rate-limiting interactive token burn and enforcing pre-delegation gates prevents cascading decision degradation that multiphase token-heavy workflows produce. Solution: encode orchestration logic into deterministic scripts and gatekeeping before token spend begins (validates Algorithms-Before-Tokens demand for deterministic solutions over interactive generation).
+
+**Local-Compute-First (MANIFESTO § 3)**: [AI Platform Lock-In Risks](docs/research/ai-platform-lock-in-risks.md) demonstrates vendor ToS volatility (Meta/Moltbook case study: liability shifted within 48 hours post-acquisition). Rate-limit gate infrastructure prevents vendor-lock dependency escalation by enforcing token-budget awareness and provider-aware policies (Circuit-breaker + recommended sleep enables graceful degradation to local-only fallback without platform dependency).
+
+**Endogenous-First (MANIFESTO § 1)**: [AI-Mediated Cognitive Load](docs/research/ai-cognitive-load.md) quantifies token-heavy workflows increase human error rates (40% increase reviewing >5 alternatives; >4 inter-agent handoffs exceed working memory). Rate-limit gate forces encoding of orchestration logic rather than interactive token burn, reducing human decision surface and lowering error risk. Canonical example: 50 min human effort + 40K tokens (token-heavy) vs 20 min effort + 42K tokens (automated gate enforcement) for same research outcome.
+
+**Integration Point**: The rate-limit gate (Phase 0, scripts/rate_limit_gate.py, .github/skills/rate-limit-resilience/SKILL.md) operationalizes these axioms by making token budgets deterministic and enforceable at delegation boundaries, eliminating the interactive negotiation risk that Phase 1 research flagged.
+
 #### Layer 2: Delegation Prompt Structure (Template)
 
 Every subagent prompt follows this 5-part shape:
