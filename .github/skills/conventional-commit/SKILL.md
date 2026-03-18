@@ -7,7 +7,7 @@ argument-hint: "type(scope): what changed"
 
 # Conventional Commit
 
-This skill enacts the *Algorithms Before Tokens* axiom from [`MANIFESTO.md`](/MANIFESTO.md) by encoding commit message conventions as a reusable procedure, eliminating per-session re-prompting overhead. Commit discipline is governed by [`AGENTS.md`](/AGENTS.md) § Commit Discipline and [`CONTRIBUTING.md`](/CONTRIBUTING.md) § Commit Discipline. When this skill and those documents conflict, the primary documents take precedence.
+This skill enacts the *Algorithms Before Tokens* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md) by encoding commit message conventions as a reusable procedure, eliminating per-session re-prompting overhead. Commit discipline is governed by [`AGENTS.md`](../../../AGENTS.md) § Commit Discipline and [`CONTRIBUTING.md`](../../../CONTRIBUTING.md) § Commit Discipline. When this skill and those documents conflict, the primary documents take precedence.
 
 ---
 
@@ -179,7 +179,7 @@ docs(guides): fix broken link to session-synthesis source stub
 
 ## 8. Commit Cadence
 
-Per [`CONTRIBUTING.md`](/CONTRIBUTING.md) § Commit Discipline: commit frequently as you complete each logical unit of work — not one giant commit at the end of a session.
+Per [`CONTRIBUTING.md`](../../../CONTRIBUTING.md) § Commit Discipline: commit frequently as you complete each logical unit of work — not one giant commit at the end of a session.
 
 | Unit of work | Commit timing |
 |---|---|
@@ -196,10 +196,10 @@ This repo uses **rebase and merge** only — squash merge is disabled. Every com
 
 ## 9. Governing Constraint
 
-This skill is governed by [`AGENTS.md`](/AGENTS.md) § Commit Discipline and [`CONTRIBUTING.md`](/CONTRIBUTING.md) § Commit Discipline. The Conventional Commits specification is at [conventionalcommits.org](https://www.conventionalcommits.org/).
+This skill is governed by [`AGENTS.md`](../../../AGENTS.md) § Commit Discipline and [`CONTRIBUTING.md`](../../../CONTRIBUTING.md) § Commit Discipline. The Conventional Commits specification is at [conventionalcommits.org](https://www.conventionalcommits.org/).
 
 The encoding inheritance chain is:
 
-[`MANIFESTO.md`](/MANIFESTO.md) → [`AGENTS.md`](/AGENTS.md) → agent files → this skill → session behaviour.
+[`MANIFESTO.md`](../../../MANIFESTO.md) → [`AGENTS.md`](../../../AGENTS.md) → agent files → this skill → session behaviour.
 
 A commit message is not decoration — it is the durable record of a logical change. Low-quality messages degrade the endogenic substrate: future sessions cannot reconstruct intent from history, and CI cannot identify regressions by type. Write commit messages as if a future agent will rely on them to understand the codebase.

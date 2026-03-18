@@ -7,7 +7,7 @@ argument-hint: "slug for the workplan (e.g. add-feature-x)"
 
 # Workplan Scaffold
 
-This skill enacts the *Algorithms Before Tokens* axiom from [`MANIFESTO.md`](/MANIFESTO.md): the plan is encoded once as a committed document and referenced by every subsequent delegation — never re-derived from scratch mid-session. Workplan discipline is governed by [`AGENTS.md`](/AGENTS.md) § Agent Communication → `docs/plans/`. When this skill and those documents conflict, the primary documents take precedence.
+This skill enacts the *Algorithms Before Tokens* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md): the plan is encoded once as a committed document and referenced by every subsequent delegation — never re-derived from scratch mid-session. Workplan discipline is governed by [`AGENTS.md`](../../../AGENTS.md) § Agent Communication → `docs/plans/`. When this skill and those documents conflict, the primary documents take precedence.
 
 ---
 
@@ -41,7 +41,7 @@ uv run python scripts/scaffold_workplan.py add-research-skill
 
 If the file already exists, the script exits with an error rather than overwriting. Use the existing file.
 
-The canonical template is [`docs/plans/2026-03-06-formalize-workflows.md`](/docs/plans/2026-03-06-formalize-workflows.md).
+The canonical template is [`docs/plans/2026-03-06-formalize-workflows.md`](../../../docs/plans/2026-03-06-formalize-workflows.md).
 
 ---
 
@@ -90,7 +90,7 @@ Every committed workplan must include the following sections:
 
 ## 4. Phase Ordering Prerequisite Check
 
-Before committing the workplan, audit phase ordering against the constraints in [`AGENTS.md` § Sprint Phase Ordering Constraints](/AGENTS.md#sprint-phase-ordering-constraints). This check prevents the primary source of re-review debt: implementation phases starting before the research or docs that should inform them.
+Before committing the workplan, audit phase ordering against the constraints in [`AGENTS.md` § Sprint Phase Ordering Constraints](../../../AGENTS.md#sprint-phase-ordering-constraints). This check prevents the primary source of re-review debt: implementation phases starting before the research or docs that should inform them.
 
 ### 4.1 Tag Every Research and Documentation Issue
 

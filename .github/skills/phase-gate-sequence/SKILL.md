@@ -18,7 +18,7 @@ status: active
 
 # Phase Gate Sequence
 
-This skill enacts the *Algorithms-Before-Tokens* axiom from [`MANIFESTO.md`](/MANIFESTO.md): the 6-step gate is a deterministic algorithm encoded once and shared across all executive agents, eliminating parallel re-derivation and enforcing consistent phase discipline fleet-wide.
+This skill enacts the *Algorithms-Before-Tokens* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md): the 6-step gate is a deterministic algorithm encoded once and shared across all executive agents, eliminating parallel re-derivation and enforcing consistent phase discipline fleet-wide.
 
 ---
 
@@ -26,11 +26,11 @@ This skill enacts the *Algorithms-Before-Tokens* axiom from [`MANIFESTO.md`](/MA
 
 - **Governing axiom**: Axiom 2 — *Algorithms Before Tokens* — deterministic procedure over repeated instruction
 - **GitHub issue**: [#79 — Skills as Decision Codifiers](https://github.com/EndogenAI/dogma/issues/79)
-- **Formal FSM spec**: [`data/phase-gate-fsm.yml`](/data/phase-gate-fsm.yml) — machine-readable state specification for this gate loop (states: INIT, PHASE_RUNNING, GATE_CHECK, COMPACT_CHECK, COMMIT, CLOSED)
+- **Formal FSM spec**: [`data/phase-gate-fsm.yml`](../../../data/phase-gate-fsm.yml) — machine-readable state specification for this gate loop (states: INIT, PHASE_RUNNING, GATE_CHECK, COMPACT_CHECK, COMMIT, CLOSED)
 - **Agents that use this skill**: Executive Orchestrator, Executive Researcher, Executive Fleet, Executive Docs
 - **Foundation docs**:
-  - [`AGENTS.md`](/AGENTS.md) — compaction-aware writing, commit discipline, Programmatic-First
-  - [`executive-orchestrator.agent.md`](/.github/agents/executive-orchestrator.agent.md) — canonical per-phase sequence (lines 169–196) and context window alert protocol (lines 198–242)
+  - [`AGENTS.md`](../../../AGENTS.md) — compaction-aware writing, commit discipline, Programmatic-First
+  - [`executive-orchestrator.agent.md`](../../../.github/agents/executive-orchestrator.agent.md) — canonical per-phase sequence (lines 169–196) and context window alert protocol (lines 198–242)
 
 ---
 
@@ -131,7 +131,7 @@ If the completed phase was a long research, synthesis, or multi-file editing del
 **When triggered:**
 1. Write `## Context Window Checkpoint` to the scratchpad: active phase + status, committed vs. in-progress deliverables (with SHAs), last agent delegated + ≤100-token return summary, single next concrete step, open blockers.
 2. Commit and push all in-progress changes.
-3. Present the session handoff prompt template from [`executive-orchestrator.agent.md`](/.github/agents/executive-orchestrator.agent.md) lines 215–236 — fill in bracketed fields from the scratchpad.
+3. Present the session handoff prompt template from [`executive-orchestrator.agent.md`](../../../.github/agents/executive-orchestrator.agent.md) lines 215–236 — fill in bracketed fields from the scratchpad.
 4. Do not proceed until the user resumes via the handoff prompt.
 
 ---

@@ -7,9 +7,9 @@ argument-hint: "phase or session that just completed (e.g. 'Phase 2 fleet audit'
 
 # Session Retrospective — Insight Discovery and Substrate Encoding
 
-This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](/MANIFESTO.md): new knowledge discovered during a session must flow back into the substrate, not remain as ephemeral chat context. It is governed by [`AGENTS.md`](/AGENTS.md) § Per-Phase Execution Checklists and § Session-End Closing Steps. This skill is the session-level enactment of Issue #82 (Dogma Neuroplasticity — back-propagation protocol).
+This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md): new knowledge discovered during a session must flow back into the substrate, not remain as ephemeral chat context. It is governed by [`AGENTS.md`](../../../AGENTS.md) § Per-Phase Execution Checklists and § Session-End Closing Steps. This skill is the session-level enactment of Issue #82 (Dogma Neuroplasticity — back-propagation protocol).
 
-Read [`docs/guides/session-management.md`](/docs/guides/session-management.md) and [`docs/guides/workflows.md`](/docs/guides/workflows.md) before deviating from any step below.
+Read [`docs/guides/session-management.md`](../../../docs/guides/session-management.md) and [`docs/guides/workflows.md`](../../../docs/guides/workflows.md) before deviating from any step below.
 
 ---
 
@@ -20,8 +20,8 @@ This skill implements the back-propagation protocol: new patterns discovered int
 **Implements**: Issue #82 — Dogma Neuroplasticity — back-propagation protocol
 
 **Governed by**:
-- [`AGENTS.md`](/AGENTS.md) § Per-Phase Execution Checklists — retrospective runs as the close step after the final phase
-- [`MANIFESTO.md`](/MANIFESTO.md) *Endogenous-First* axiom — endogenous knowledge compounds; chat-only knowledge evaporates
+- [`AGENTS.md`](../../../AGENTS.md) § Per-Phase Execution Checklists — retrospective runs as the close step after the final phase
+- [`MANIFESTO.md`](../../../MANIFESTO.md) *Endogenous-First* axiom — endogenous knowledge compounds; chat-only knowledge evaporates
 
 **Used by**:
 - Executive Orchestrator (runs retrospective at session close)
@@ -145,7 +145,7 @@ After all routing delegations complete, invoke the **Review agent** with:
 
 Pass the list of changed files. The Review agent returns a per-file verdict.
 
-If Review approves all changes, **Orchestrator commits via `git` operations** following [Conventional Commits](/CONTRIBUTING.md):
+If Review approves all changes, **Orchestrator commits via `git` operations** following [Conventional Commits](../../../CONTRIBUTING.md):
 
 ```
 docs(session): encode <topic> lessons from <date> retrospective

@@ -24,7 +24,7 @@ You do not make decisions about what to commit — that is the delegating agent'
 
 ## Beliefs & Context
 
-1. [`AGENTS.md`](/AGENTS.md) — commit discipline section.
+1. [`AGENTS.md`](../../AGENTS.md) — commit discipline section.
 
 Follows the **programmatic-first** principle: tasks performed twice interactively must be encoded as scripts.
 
@@ -163,7 +163,7 @@ Before returning from this agent, verify:
 - ✅ Push to origin succeeded with exit code 0
 - ✅ Current branch HEAD points to the new commit (verify with `git log --oneline -1`)
 
-All commits enforced by this agent follow [Conventional Commits discipline](/CONTRIBUTING.md#commit-discipline) and [.github/skills/conventional-commit/SKILL.md](/.github/skills/conventional-commit/SKILL.md).
+All commits enforced by this agent follow [Conventional Commits discipline](../../CONTRIBUTING.md#commit-discipline) and [.github/skills/conventional-commit/SKILL.md](../../.github/skills/conventional-commit/SKILL.md).
 
 ## Desired Outcomes & Acceptance
 

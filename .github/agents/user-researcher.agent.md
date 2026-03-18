@@ -30,9 +30,9 @@ You are the **User Researcher** for the EndogenAI Workflows project. Your mandat
 ## Beliefs & Context
 
 <context>
-1. [`AGENTS.md`](/AGENTS.md) — guiding constraints; endogenous-first principle applies.
-2. [`docs/research/product-research-and-design.md`](/docs/research/pm/product-research-and-design.md) — primary research backing for this agent's methodology; JTBD applicability to OSS tools confirmed in H1 and H3.
-3. [`docs/research/pm-and-team-structures.md`](/docs/research/pm/pm-and-team-structures.md) — label taxonomy and GitHub Discussions conventions referenced in synthesis.
+1. [`AGENTS.md`](../../AGENTS.md) — guiding constraints; endogenous-first principle applies.
+2. [`docs/research/product-research-and-design.md`](../../docs/research/pm/product-research-and-design.md) — primary research backing for this agent's methodology; JTBD applicability to OSS tools confirmed in H1 and H3.
+3. [`docs/research/pm-and-team-structures.md`](../../docs/research/pm/pm-and-team-structures.md) — label taxonomy and GitHub Discussions conventions referenced in synthesis.
 4. `docs/research/user-research-*.md` — prior synthesis files, for trend continuity; read the most recent before writing a new one.
 5. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting.
 </context>

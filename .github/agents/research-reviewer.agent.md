@@ -27,9 +27,9 @@ You are a **read-only** agent. You do not edit documents. You flag issues and re
 
 <context>
 
-1. [`MANIFESTO.md`](/MANIFESTO.md) — core project values; the primary validation reference.
-2. [`AGENTS.md`](/AGENTS.md) — guiding constraints.
-3. [`docs/research/OPEN_RESEARCH.md`](/docs/research/OPEN_RESEARCH.md) — gate deliverables for the topic under review.
+1. [`MANIFESTO.md`](../../MANIFESTO.md) — core project values; the primary validation reference.
+2. [`AGENTS.md`](../../AGENTS.md) — guiding constraints.
+3. [`docs/research/OPEN_RESEARCH.md`](../../docs/research/OPEN_RESEARCH.md) — gate deliverables for the topic under review.
 4. The active session scratchpad (`.tmp/<branch>/<date>.md`) — Scout output and synthesizer notes.
 
 ---

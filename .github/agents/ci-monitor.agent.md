@@ -32,12 +32,12 @@ You are the **CI Monitor** for the EndogenAI Workflows project. Your mandate is 
 
 <context>
 
-1. [`.github/workflows/`](/.github/workflows/) — the CI workflow definitions.
-2. [`docs/toolchain/gh.md`](/docs/toolchain/gh.md) — canonical `gh run` command patterns; consult before running any `gh run` commands.
-3. [`pyproject.toml`](/pyproject.toml) — test configuration; markers, coverage settings.
-4. [`.lycheeignore`](/.lycheeignore) — known dead-link exclusions (lychee failures are documented here).
+1. [`.github/workflows/`](../../.github/workflows/) — the CI workflow definitions.
+2. [`docs/toolchain/gh.md`](../../docs/toolchain/gh.md) — canonical `gh run` command patterns; consult before running any `gh run` commands.
+3. [`pyproject.toml`](../../pyproject.toml) — test configuration; markers, coverage settings.
+4. [`.lycheeignore`](../../.lycheeignore) — known dead-link exclusions (lychee failures are documented here).
 5. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting.
-6. [`AGENTS.md`](/AGENTS.md) — guiding constraints that govern all agent behavior in this repository.
+6. [`AGENTS.md`](../../AGENTS.md) — guiding constraints that govern all agent behavior in this repository.
 
 Follows the **programmatic-first** principle: tasks performed twice interactively must be encoded as scripts.
 

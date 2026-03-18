@@ -24,18 +24,18 @@ depends-on:
 
 ## Beliefs & Context
 
-**Governing Axiom** (from [`MANIFESTO.md#3-local-compute-first`](/MANIFESTO.md#3-local-compute-first)):
+**Governing Axiom** (from [`MANIFESTO.md#3-local-compute-first`](../../../MANIFESTO.md#3-local-compute-first)):
 Rate-limit constraints are structural constraints on token usage, not optional optimizations.
 Treating them as a first-class system property (not a post-hoc scaling concern) enables
 reliable multi-phase sessions without token exhaustion.
 
 **Integration Points**:
-- [`AGENTS.md#programmatic-first-principle`](/AGENTS.md#programmatic-first-principle) — Phase 0 ships four scripts instead of interactive workarounds
-- [`AGENTS.md#executive-fleet-privileges`](/AGENTS.md#executive-fleet-privileges) — Orchestrator holds rate-limit gate logic
+- [`AGENTS.md#programmatic-first-principle`](../../../AGENTS.md#programmatic-first-principle) — Phase 0 ships four scripts instead of interactive workarounds
+- [`AGENTS.md#executive-fleet-privileges`](../../../AGENTS.md#executive-fleet-privileges) — Orchestrator holds rate-limit gate logic
 - [`phase-gate-sequence` SKILL.md](../phase-gate-sequence/SKILL.md) — Pre-phase checkpoint integrates gate at step 2
 
 **Related Research**:
-- [`docs/research/rate-limit-detection-api.md`](/docs/research/rate-limit-detection-api.md) — Tier 1 budget tracking, Tier 2 circuit-breaker
+- [`docs/research/rate-limit-detection-api.md`](../../../docs/research/rate-limit-detection-api.md) — Tier 1 budget tracking, Tier 2 circuit-breaker
 
 ---
 
@@ -235,7 +235,7 @@ uv run python -m pytest tests/test_rate_limit_*.py -q
 
 ## Guardrails & Constraints
 
-**From [`AGENTS.md`](/AGENTS.md)**:
+**From [`AGENTS.md`](../../../AGENTS.md)**:
 - All scripts carry `--dry-run` flag for safe preview (on scripts that mutate state)
 - Python toolchain: always `uv run python`, never direct invocation
 - No heredocs for content writes (use `create_file` / `replace_string_in_file`)
@@ -281,8 +281,8 @@ A: Confirm `--audit-log` flag was used. Without it, no writes occur (intentional
 
 ## References
 
-- **MANIFESTO.md** § [Local Compute-First](/MANIFESTO.md#3-local-compute-first)
-- **AGENTS.md** § [Programmatic-First](/AGENTS.md#programmatic-first-principle)
-- **Research**: [rate-limit-detection-api.md](/docs/research/rate-limit-detection-api.md)
+- **MANIFESTO.md** § [Local Compute-First](../../../MANIFESTO.md#3-local-compute-first)
+- **AGENTS.md** § [Programmatic-First](../../../AGENTS.md#programmatic-first-principle)
+- **Research**: [rate-limit-detection-api.md](../../../docs/research/rate-limit-detection-api.md)
 - **Related Skills**: [phase-gate-sequence](./phase-gate-sequence/SKILL.md)
 - **Related Issues**: #322 (cap/floor fix), #323 (provider policies), #324 (circuit-breaker), #325 (audit logging)

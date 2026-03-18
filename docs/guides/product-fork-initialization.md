@@ -64,17 +64,37 @@ This runs interactively, prompts for `project_name`, `domain`, `team_size`, `ci`
 
 ### Path B: Fork-Based (Validation / Research Repo)
 
-Create a true fork with an upstream tracking relationship:
+Create a true fork with an upstream tracking relationship. Choose one method below:
+
+#### B1: Web Interface (Simpler, Recommended for One-Off Forks)
+
+1. Visit [https://github.com/EndogenAI/dogma](https://github.com/EndogenAI/dogma)
+2. Click **Fork** button (top right)
+3. Set the repository name to your project name (e.g., `rag`)
+4. Ensure **Copy the `main` branch only** is checked
+5. Click **Create fork**
+6. Clone locally:
+   ```bash
+   git clone https://github.com/your-org/your-project.git
+   cd your-project
+   git remote add upstream https://github.com/EndogenAI/dogma.git
+   ```
+
+GitHub's interface automatically shows your fork as `your-org/your-project` (forked from `EndogenAI/dogma`). The remote setup is straightforward: `origin` points to your fork, `upstream` to dogma.
+
+#### B2: CLI (Automated, Better for Scripts)
+
+For scripted fork creation (e.g., templates or bulk bootstrapping):
 
 ```bash
 gh repo fork EndogenAI/dogma --clone my-project
 cd my-project
 git remote add upstream https://github.com/EndogenAI/dogma.git
-git config branch.main.remote upstream
-git config branch.main.merge refs/heads/main
 ```
 
-This preserves the **fork relationship**: you can pull upstream improvements and push discoveries back as PRs. GitHub's interface will show your project as `EndogenAI/my-project` (forked from `EndogenAI/dogma`). The local folder is named `my-project` to match your project name.
+Both methods (B1 and B2) produce identical results. **Choose B1 if this is your first fork** and you want to see the fork relationship clearly in the GitHub UI. Choose B2 if you are scripting or prefer the CLI.
+
+---
 
 **Values inheritance for forks**: A fork-based repo *inherits* dogma's `MANIFESTO.md` axioms and extends them via `client-values.yml` — it does not replace them. When Step 2 runs the adoption wizard, treat your fork's `mission` and `priorities` as *specializations* of dogma's values, not replacements.
 

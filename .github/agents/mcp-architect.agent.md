@@ -43,11 +43,11 @@ You exist to resolve issue #6 ("Locally distributed MCP frameworks") and to unbl
 
 <context>
 
-1. [`AGENTS.md`](/AGENTS.md) — **Local Compute-First** axiom; all designs must be locally deployable.
-2. [`docs/research/OPEN_RESEARCH.md`](/docs/research/OPEN_RESEARCH.md) — item §2 ("Locally distributed MCP frameworks") is your primary scope.
-3. [`docs/research/agentic-research-flows.md`](/docs/research/agents/agentic-research-flows.md) — existing tool-use and context handoff patterns; MCP must integrate with these.
-4. [`docs/research/agent-fleet-design-patterns.md`](/docs/research/agents/agent-fleet-design-patterns.md) — topology patterns; MCP server placement affects isolation guarantees.
-5. [`docs/guides/local-compute.md`](/docs/guides/local-compute.md) — check if this exists; Local Compute Scout (A2) may have produced it.
+1. [`AGENTS.md`](../../AGENTS.md) — **Local Compute-First** axiom; all designs must be locally deployable.
+2. [`docs/research/OPEN_RESEARCH.md`](../../docs/research/OPEN_RESEARCH.md) — item §2 ("Locally distributed MCP frameworks") is your primary scope.
+3. [`docs/research/agentic-research-flows.md`](../../docs/research/agents/agentic-research-flows.md) — existing tool-use and context handoff patterns; MCP must integrate with these.
+4. [`docs/research/agent-fleet-design-patterns.md`](../../docs/research/agents/agent-fleet-design-patterns.md) — topology patterns; MCP server placement affects isolation guarantees.
+5. [`docs/guides/local-compute.md`](../../docs/guides/local-compute.md) — check if this exists; Local Compute Scout (A2) may have produced it.
 6. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read especially for any Local Compute Scout output.
 7. GitHub issue #6 — the originating issue.
 8. `.cache/sources/` — check before fetching MCP documentation URLs.

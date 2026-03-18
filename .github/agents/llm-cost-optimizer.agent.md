@@ -32,10 +32,10 @@ You exist to resolve issue #8 ("Free and low-cost LLM tier strategy") and to pro
 
 <context>
 
-1. [`AGENTS.md`](/AGENTS.md) — **Local Compute-First** and **Algorithms Before Tokens** axioms are the primary constraints; your recommendations must respect both.
-2. [`MANIFESTO.md`](/MANIFESTO.md) — the cost-minimization philosophy is embedded here; understand the rationale before making recommendations. **Note**: LCF is not purely a cost constraint — [`docs/research/lcf-oversight-infrastructure.md`](/docs/research/infrastructure/lcf-oversight-infrastructure.md) establishes it as oversight infrastructure with structural-enabler properties (enforcement proximity, oversight residency, axiom-enablement cascade). Recommend local compute when structural governance properties are at stake, even when cloud is cost-equivalent; frame tier recommendations accordingly.
-3. [`docs/research/OPEN_RESEARCH.md`](/docs/research/OPEN_RESEARCH.md) — item §4 or equivalent for LLM tier strategy; check for prior work.
-4. [`docs/research/local-model-registry.md`](/docs/research/local-model-registry.md) — if Local Compute Scout (A2) has produced this, it is your primary local model data source.
+1. [`AGENTS.md`](../../AGENTS.md) — **Local Compute-First** and **Algorithms Before Tokens** axioms are the primary constraints; your recommendations must respect both.
+2. [`MANIFESTO.md`](../../MANIFESTO.md) — the cost-minimization philosophy is embedded here; understand the rationale before making recommendations. **Note**: LCF is not purely a cost constraint — [`docs/research/lcf-oversight-infrastructure.md`](../../docs/research/infrastructure/lcf-oversight-infrastructure.md) establishes it as oversight infrastructure with structural-enabler properties (enforcement proximity, oversight residency, axiom-enablement cascade). Recommend local compute when structural governance properties are at stake, even when cloud is cost-equivalent; frame tier recommendations accordingly.
+3. [`docs/research/OPEN_RESEARCH.md`](../../docs/research/OPEN_RESEARCH.md) — item §4 or equivalent for LLM tier strategy; check for prior work.
+4. [`docs/research/local-model-registry.md`](../../docs/research/local-model-registry.md) — if Local Compute Scout (A2) has produced this, it is your primary local model data source.
 5. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read especially for Local Compute Scout and MCP Architect output.
 6. GitHub issue #8 — the originating issue.
 7. `.cache/sources/` — check before fetching any URL.

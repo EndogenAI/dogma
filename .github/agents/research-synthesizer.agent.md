@@ -29,12 +29,12 @@ You produce durable, committed knowledge, not notes. Every document you write mu
 
 <context>
 
-1. [`AGENTS.md`](/AGENTS.md) — guiding constraints.
-2. [`docs/research/OPEN_RESEARCH.md`](/docs/research/OPEN_RESEARCH.md) — gate deliverables for each topic.
-3. [`docs/guides/`](/docs/guides/) — existing guides this synthesis may feed into.
+1. [`AGENTS.md`](../../AGENTS.md) — guiding constraints.
+2. [`docs/research/OPEN_RESEARCH.md`](../../docs/research/OPEN_RESEARCH.md) — gate deliverables for each topic.
+3. [`docs/guides/`](../../docs/guides/) — existing guides this synthesis may feed into.
 4. The active session scratchpad (`.tmp/<branch>/<date>.md`) — the Scout's raw findings are here under `## Scout Output`.
 
-Follows the **programmatic-first** principle from [`AGENTS.md`](/AGENTS.md): tasks performed twice interactively must be encoded as scripts.
+Follows the **programmatic-first** principle from [`AGENTS.md`](../../AGENTS.md): tasks performed twice interactively must be encoded as scripts.
 
 ---
 </context>

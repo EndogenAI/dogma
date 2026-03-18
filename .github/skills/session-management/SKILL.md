@@ -7,7 +7,7 @@ argument-hint: "session phase (start|checkpoint|close)"
 
 # Session Management
 
-This skill enacts the *Algorithms Before Tokens* axiom from [`MANIFESTO.md`](/MANIFESTO.md) by encoding the full session lifecycle as a deterministic procedure. Session management is governed by [`AGENTS.md`](/AGENTS.md) § Agent Communication — every rule in this skill derives from that section. Read `AGENTS.md` before deviating from any step below.
+This skill enacts the *Algorithms Before Tokens* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md) by encoding the full session lifecycle as a deterministic procedure. Session management is governed by [`AGENTS.md`](../../../AGENTS.md) § Agent Communication — every rule in this skill derives from that section. Read `AGENTS.md` before deviating from any step below.
 
 ---
 
@@ -70,7 +70,7 @@ Primary endogenous source: `<path>` — <one sentence on why this source is cons
 - *Scripting session*: "This session is governed by Axiom 2 (Algorithms Before Tokens). Primary endogenous source: `scripts/watch_scratchpad.py` — canonical example of automating a repeated manual task."
 - *Documentation session*: "This session is governed by Axiom 1 (Endogenous-First). Primary endogenous source: `docs/guides/workflows.md` — existing patterns to extend rather than re-author."
 
-**Why this matters**: Low checkpoint-density in scratchpad history is a leading indicator of encoding drift. Auditors can verify whether the stated axiom is consistent with the actions taken. If it is not, the session has drifted from the governing constraint in [`AGENTS.md`](/AGENTS.md).
+**Why this matters**: Low checkpoint-density in scratchpad history is a leading indicator of encoding drift. Auditors can verify whether the stated axiom is consistent with the actions taken. If it is not, the session has drifted from the governing constraint in [`AGENTS.md`](../../../AGENTS.md).
 
 ### 2.3 Read Before Acting
 
@@ -230,7 +230,7 @@ uv run python scripts/prune_scratchpad.py --dry-run
 
 ### 5.1 Tracked Workplans (`docs/plans/`)
 
-For any multi-phase session (≥ 3 phases or ≥ 2 agent delegations, or spanning more than one day), create a **workplan** before execution begins and commit it to `docs/plans/`. Governed by [`AGENTS.md`](/AGENTS.md) § Agent Communication — Programmatic-First applied to session planning.
+For any multi-phase session (≥ 3 phases or ≥ 2 agent delegations, or spanning more than one day), create a **workplan** before execution begins and commit it to `docs/plans/`. Governed by [`AGENTS.md`](../../../AGENTS.md) § Agent Communication — Programmatic-First applied to session planning.
 
 **Naming**: `docs/plans/YYYY-MM-DD-<brief-slug>.md` (date-first for chronological sorting)
 
@@ -346,8 +346,8 @@ uv run python scripts/prune_scratchpad.py --force
 
 ## 8. Governing Constraint
 
-This skill is governed by [`AGENTS.md`](/AGENTS.md) § Agent Communication. All rules in this skill are re-encodings of that section. When `AGENTS.md` and this skill conflict, `AGENTS.md` takes precedence. The encoding inheritance chain is:
+This skill is governed by [`AGENTS.md`](../../../AGENTS.md) § Agent Communication. All rules in this skill are re-encodings of that section. When `AGENTS.md` and this skill conflict, `AGENTS.md` takes precedence. The encoding inheritance chain is:
 
-[`MANIFESTO.md`](/MANIFESTO.md) → [`AGENTS.md`](/AGENTS.md) → agent files → this skill → session behaviour.
+[`MANIFESTO.md`](../../../MANIFESTO.md) → [`AGENTS.md`](../../../AGENTS.md) → agent files → this skill → session behaviour.
 
 Cross-reference density (back-references to `MANIFESTO.md` or `AGENTS.md` in session output) is a proxy for encoding fidelity. Low density signals likely drift.

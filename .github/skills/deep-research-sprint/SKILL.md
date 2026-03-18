@@ -7,7 +7,7 @@ argument-hint: "research topic or issue number"
 
 # Deep Research Sprint
 
-This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](/MANIFESTO.md) by encoding the complete research sprint workflow as a reusable procedure. The full orchestration pattern is governed by [`AGENTS.md`](/AGENTS.md) and the executive fleet design in [`.github/agents/README.md`](/agents/README.md). Read `AGENTS.md` before modifying any step in this pipeline.
+This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md) by encoding the complete research sprint workflow as a reusable procedure. The full orchestration pattern is governed by [`AGENTS.md`](../../../AGENTS.md) and the executive fleet design in [`.github/agents/README.md`](../../../agents/README.md). Read `AGENTS.md` before modifying any step in this pipeline.
 
 ---
 
@@ -122,8 +122,8 @@ Every synthesis doc must contain at least one cross-reference to `MANIFESTO.md` 
 Minimum cross-reference pattern:
 
 ```markdown
-**Related**: [`AGENTS.md`](/AGENTS.md) (guiding constraints),
-[`MANIFESTO.md`](/MANIFESTO.md) (foundational axioms)
+**Related**: [`AGENTS.md`](../../../AGENTS.md) (guiding constraints),
+[`MANIFESTO.md`](../../../MANIFESTO.md) (foundational axioms)
 ```
 
 ### 3.3 Hypothesis Validation Format
@@ -257,10 +257,10 @@ Each agent appends output under its own scratchpad heading (`## Scout Output`, `
 
 ## 7. Governing Constraint
 
-This skill is governed by [`AGENTS.md`](/AGENTS.md). The research fleet and orchestration pattern are described in [`.github/agents/README.md`](/agents/README.md). The D4 document quality standard is enforced by `validate_synthesis.py`. When this skill and `AGENTS.md` conflict, `AGENTS.md` takes precedence.
+This skill is governed by [`AGENTS.md`](../../../AGENTS.md). The research fleet and orchestration pattern are described in [`.github/agents/README.md`](../../../agents/README.md). The D4 document quality standard is enforced by `validate_synthesis.py`. When this skill and `AGENTS.md` conflict, `AGENTS.md` takes precedence.
 
 The encoding inheritance chain is:
 
-[`MANIFESTO.md`](/MANIFESTO.md) → [`AGENTS.md`](/AGENTS.md) → agent files → this skill → session behaviour.
+[`MANIFESTO.md`](../../../MANIFESTO.md) → [`AGENTS.md`](../../../AGENTS.md) → agent files → this skill → session behaviour.
 
 Research docs produced by this sprint extend that chain by encoding institutional knowledge in a durable, CI-validated form.

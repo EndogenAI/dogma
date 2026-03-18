@@ -7,7 +7,7 @@ argument-hint: "file type changed (scripts|agents|skills|research|all)"
 
 # Validate Before Commit
 
-This skill enacts the *Algorithms Before Tokens* axiom from [`MANIFESTO.md`](/MANIFESTO.md): validation is encoded once as a deterministic gate and executed consistently, not re-checked interactively per session. The full guardrail sequence is governed by [`AGENTS.md`](/AGENTS.md) § Guardrails. When this skill and those documents conflict, the primary documents take precedence.
+This skill enacts the *Algorithms Before Tokens* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md): validation is encoded once as a deterministic gate and executed consistently, not re-checked interactively per session. The full guardrail sequence is governed by [`AGENTS.md`](../../../AGENTS.md) § Guardrails. When this skill and those documents conflict, the primary documents take precedence.
 
 ---
 
@@ -114,7 +114,7 @@ uv run pre-commit install --hook-type pre-push
 
 After installation, hooks run automatically on `git commit`. You do not need to run the manual checks above for files covered by the hooks — but running them proactively surfaces issues earlier in the workflow.
 
-**Never use `--no-verify`** to skip pre-commit hooks. Bypassing hooks is explicitly prohibited by [`AGENTS.md`](/AGENTS.md) § Guardrails.
+**Never use `--no-verify`** to skip pre-commit hooks. Bypassing hooks is explicitly prohibited by [`AGENTS.md`](../../../AGENTS.md) § Guardrails.
 
 ---
 

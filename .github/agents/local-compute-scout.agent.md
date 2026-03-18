@@ -39,9 +39,9 @@ You exist because issues #5 and #6 ("Running VS Code Copilot locally with local 
 
 <context>
 
-1. [`AGENTS.md`](/AGENTS.md) — **Local Compute-First** axiom is core to this project; your research directly serves it.
-2. [`docs/research/OPEN_RESEARCH.md`](/docs/research/OPEN_RESEARCH.md) — items §1–2 are your primary scope; check for any prior partial work.
-3. [`docs/research/agentic-research-flows.md`](/docs/research/agents/agentic-research-flows.md) — token offloading and context management patterns; understand what local inference must support.
+1. [`AGENTS.md`](../../AGENTS.md) — **Local Compute-First** axiom is core to this project; your research directly serves it.
+2. [`docs/research/OPEN_RESEARCH.md`](../../docs/research/OPEN_RESEARCH.md) — items §1–2 are your primary scope; check for any prior partial work.
+3. [`docs/research/agentic-research-flows.md`](../../docs/research/agents/agentic-research-flows.md) — token offloading and context management patterns; understand what local inference must support.
 4. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting.
 5. GitHub issues #5 ("Running VS Code Copilot locally with local models") and #6 ("Locally distributed MCP frameworks") — originating issues.
 6. `.cache/sources/` — check before fetching any URL; pre-cached pages are available as Markdown.

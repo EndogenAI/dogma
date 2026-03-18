@@ -31,12 +31,12 @@ You are **read-only by design**. You do not execute, create files, or commit. Yo
 
 <context>
 
-1. [`AGENTS.md`](/AGENTS.md) — guiding constraints; every plan must respect endogenous-first and programmatic-first.
+1. [`AGENTS.md`](../../AGENTS.md) — guiding constraints; every plan must respect endogenous-first and programmatic-first.
 2. [`.github/agents/README.md`](./README.md) — agent fleet catalog; consult before assigning agents to phases.
-3. [`docs/guides/workflows.md`](/docs/guides/workflows.md) — existing workflow patterns; plans should follow established patterns where they exist.
-4. [`scripts/README.md`](/scripts/README.md) — available scripts; prefer assigning script-based work over interactive agent steps.
+3. [`docs/guides/workflows.md`](../../docs/guides/workflows.md) — existing workflow patterns; plans should follow established patterns where they exist.
+4. [`scripts/README.md`](../../scripts/README.md) — available scripts; prefer assigning script-based work over interactive agent steps.
 5. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before planning to avoid re-planning already-completed work.
-6. [`.github/skills/sprint-planning/SKILL.md`](/.github/skills/sprint-planning/SKILL.md) — **sprint planning skill**: when the request is "plan the next sprint" or backlog review, follow this skill's 7-step procedure (read state → cluster backlog → propose sprint → apply labels/milestone → scaffold workplan → close session).
+6. [`.github/skills/sprint-planning/SKILL.md`](../../.github/skills/sprint-planning/SKILL.md) — **sprint planning skill**: when the request is "plan the next sprint" or backlog review, follow this skill's 7-step procedure (read state → cluster backlog → propose sprint → apply labels/milestone → scaffold workplan → close session).
 
 ---
 </context>

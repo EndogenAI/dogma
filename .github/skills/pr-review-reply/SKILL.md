@@ -7,7 +7,7 @@ argument-hint: "PR number"
 
 # PR Review Reply
 
-This skill enacts the *Algorithms Before Tokens* axiom from [`MANIFESTO.md`](/MANIFESTO.md): repetitive post-review response workflows are encoded as a script and executed deterministically, not performed manually through the UI with repeated token burn per comment. The post-review loop is governed by [`AGENTS.md`](/AGENTS.md) § Verify-After-Act for Remote Writes. When this skill and those documents conflict, the primary documents take precedence.
+This skill enacts the *Algorithms Before Tokens* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md): repetitive post-review response workflows are encoded as a script and executed deterministically, not performed manually through the UI with repeated token burn per comment. The post-review loop is governed by [`AGENTS.md`](../../../AGENTS.md) § Verify-After-Act for Remote Writes. When this skill and those documents conflict, the primary documents take precedence.
 
 ---
 

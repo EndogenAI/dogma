@@ -7,7 +7,7 @@ argument-hint: "role slug for the agent (e.g. executive-docs)"
 
 # Agent File Authoring
 
-This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](/MANIFESTO.md): agent files are re-encodings of [`AGENTS.md`](/AGENTS.md), not independent inventions. Every `.agent.md` file derives its structure, posture, and governing constraints from `AGENTS.md` and `MANIFESTO.md`. Agents re-encode; they do not re-derive. Full authoring guidance is in [`docs/guides/agents.md`](/docs/guides/agents.md) and the fleet catalog in [`.github/agents/README.md`](/agents/README.md).
+This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md): agent files are re-encodings of [`AGENTS.md`](../../../AGENTS.md), not independent inventions. Every `.agent.md` file derives its structure, posture, and governing constraints from `AGENTS.md` and `MANIFESTO.md`. Agents re-encode; they do not re-derive. Full authoring guidance is in [`docs/guides/agents.md`](../../../docs/guides/agents.md) and the fleet catalog in [`.github/agents/README.md`](../../../agents/README.md).
 
 ---
 
@@ -87,7 +87,7 @@ These fields are optional in syntax but **semantically required** for mature age
 - The effort estimate from the issue label (effort:s/m/l/xl)
 - The guiding axiom and acceptance criteria
 
-See [`.github/agents/README.md`](/agents/README.md) for the milestone structure and [docs/guides/agents.md](/docs/guides/agents.md) for issue linkage patterns.
+See [`.github/agents/README.md`](../../../agents/README.md) for the milestone structure and [docs/guides/agents.md](../../../docs/guides/agents.md) for issue linkage patterns.
 
 ---
 
@@ -104,7 +104,7 @@ CI fuzzy-matches for three required section types using Beliefs-Desires-Intentio
 Use `## Beliefs & Context`, `## Workflow & Intentions`, and `## Desired Outcomes & Acceptance` as the canonical heading names. Accept the listed variants for backward compatibility during migration.
 
 **Discipline rule for Beliefs & Context section**: Always encode:
-1. The governing axiom from [`MANIFESTO.md`](/MANIFESTO.md) this agent enacts
+1. The governing axiom from [`MANIFESTO.md`](../../../MANIFESTO.md) this agent enacts
 2. Link to the GitHub issue number that defines this agent (e.g., `#62 Implement Remaining Agent Skills`)
 3. The milestone this agent targets (from Optional Discipline Fields above)
 4. A reference to the issue's acceptance criteria (see docs/guides/agents.md for example)
@@ -116,40 +116,41 @@ Use `## Beliefs & Context`, `## Workflow & Intentions`, and `## Desired Outcomes
 This agent is defined by:
 - **Issue**: [#62 Implement Remaining Agent Skills](https://github.com/EndogenAI/dogma/issues/62)
 - **Milestone**: Wave 1: Agent Fleet Tier A+B
-- **Governing axiom**: *Endogenous-First* (from [`MANIFESTO.md`](/MANIFESTO.md))
+- **Governing axiom**: *Endogenous-First* (from [`MANIFESTO.md`](../../../MANIFESTO.md))
 - **Acceptance criteria**: All deliverables in the linked issue checklist
 
-Read [`AGENTS.md`](/AGENTS.md) and [`docs/guides/agents.md`](/docs/guides/agents.md) before modifying this agent.
+Read [`AGENTS.md`](../../../AGENTS.md) and [`docs/guides/agents.md`](../../../docs/guides/agents.md) before modifying this agent.
 ```
 
 ---
 
 ## 4. Link Path Rule
 
-**All links in `.github/agents/` files that point outside `.github/agents/` must use workspace-root-relative `/` paths** — never `../../` or `../`.
+**All links in `.github/agents/` files that point outside `.github/agents/` must use relative `../../` paths** — never `/`-rooted paths like `/AGENTS.md`.
 
-VS Code's `prompts-diagnostics-provider` cannot resolve multi-level `../` traversal from within `.github/agents/`. All referenced files exist on disk, but the Copilot extension validator has a path resolution limitation. Using `/`-rooted paths fixes resolution in both VS Code (workspace root) and GitHub (repo root).
+VS Code's `prompts-diagnostics-provider` resolves `/`-rooted paths against the OS filesystem root (`/`), not the workspace root. On macOS, `/AGENTS.md` resolves to `/AGENTS.md` on disk — a path that does not exist — producing VS Code Problems panel errors. Relative `../../` traversal resolves correctly from `.github/agents/` because `.github/agents/` is at depth 2 from the repo root.
 
 ```
 .github/agents/<file>.agent.md
            │
            ├─ ../   → .github/            ← WRONG (single-level, wrong target)
-           ├─ ../../ → (repo root)        ← WRONG (not resolved by VS Code diagnostics)
-           └─ /     → (workspace root)   ← CORRECT
+           ├─ /AGENTS.md → OS filesystem root ← WRONG (resolves to /AGENTS.md on macOS)
+           └─ ../../ → (repo root)        ← CORRECT
 ```
 
-**Correct**:
+**Correct** (depth 2 from repo root, so 2 `../` levels needed):
 ```markdown
-[`AGENTS.md`](/AGENTS.md)
-[`MANIFESTO.md`](/MANIFESTO.md)
-[`docs/guides/agents.md`](/docs/guides/agents.md)
-[`.github/skills/session-management/SKILL.md`](/.github/skills/session-management/SKILL.md)
+[`AGENTS.md`](../../AGENTS.md)
+[`MANIFESTO.md`](../../MANIFESTO.md)
+[`docs/guides/agents.md`](../../docs/guides/agents.md)
+[`.github/skills/session-management/SKILL.md`](./../skills/session-management/SKILL.md)
 ```
 
 **Incorrect** (will produce VS Code Problems panel errors):
-```markdown
-[`AGENTS.md`](/AGENTS.md)    ← fails VS Code diagnostics resolution
-[`AGENTS.md`](../AGENTS.md)       ← resolves to .github/AGENTS.md — does not exist
+```
+# Note: paths below use X as placeholder for / to avoid triggering the pre-commit hook
+[`AGENTS.md`](X/AGENTS.md)    ← /-rooted: resolves to /AGENTS.md on macOS — OS filesystem root
+[`AGENTS.md`](../AGENTS.md)   ← resolves to .github/AGENTS.md — does not exist
 ```
 
 **Within-directory links** (to sibling files in `.github/agents/`) remain relative:
@@ -157,7 +158,7 @@ VS Code's `prompts-diagnostics-provider` cannot resolve multi-level `../` traver
 [`README.md`](./README.md)        ← same directory: OK
 ```
 
-This convention is validated by the `Check relative file links in Markdown docs` pre-commit hook. A bulk migration script pattern: `re.sub(r'\]\(\.\./\.\./([^)]+)\)', r'](/\1)', text)` applied over all `.github/agents/*.agent.md`.
+This convention is enforced by the `no-absolute-path-links-in-agent-files` pre-commit hook which blocks `](` followed by `/` patterns in `.github/agents/` and `.github/skills/` files.
 
 ---
 
@@ -168,8 +169,8 @@ Every agent file must contain at least one back-reference to `/MANIFESTO.md` **o
 **Minimum pattern** (place in the first substantive section):
 
 ```markdown
-This agent is governed by [`AGENTS.md`](/AGENTS.md) and the foundational axioms
-in [`MANIFESTO.md`](/MANIFESTO.md).
+This agent is governed by [`AGENTS.md`](../../../AGENTS.md) and the foundational axioms
+in [`MANIFESTO.md`](../../../MANIFESTO.md).
 ```
 
 Low cross-reference density is a signal of encoding drift — the agent has been authored without grounding in the inheritance chain.
@@ -183,8 +184,8 @@ The first substantive section (Beliefs & Context) of every agent file must name 
 ```markdown
 ## Beliefs & Context
 
-This agent enacts the *<Axiom Name>* axiom from [`MANIFESTO.md`](/MANIFESTO.md).
-Read [`AGENTS.md`](/AGENTS.md) before modifying any procedure in this file.
+This agent enacts the *<Axiom Name>* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md).
+Read [`AGENTS.md`](../../../AGENTS.md) before modifying any procedure in this file.
 ```
 
 Governing axioms by agent type:
@@ -233,7 +234,7 @@ The validator enforces:
 - ✅ Endogenous Sources section references the defining GitHub issue number (e.g., `#62`)
 - ✅ Endogenous Sources section declares the governing axiom (one of the three core axioms from `MANIFESTO.md`)
 - ✅ Completion Criteria section mirrors the defining issue's acceptance checklist
-- ✅ All links exiting `.github/agents/` use `/`-rooted paths (e.g. `/AGENTS.md`), not `../../`
+- ✅ All links exiting `.github/agents/` use `../../`-relative paths (e.g. `../../AGENTS.md`), not `/`-rooted paths
 - ✅ No heredoc write patterns in workflow steps
 - ✅ No orphaned URLs or dead links to internal docs
 - ✅ Every agent has at least one handoff to a downstream agent
@@ -244,7 +245,7 @@ A file that fails validation or the manual checklist will also fail CI. Fix all 
 
 ## Guardrails
 
-- **Never use `../` or `../../` for cross-directory references** in agent files — always use `/`-rooted paths (e.g. `/AGENTS.md`). See [Section 4: Link Path Rule](#4-link-path-rule).
+- **Never use `/`-rooted paths for cross-directory references** in agent files — always use `../../`-relative paths (e.g. `../../AGENTS.md`). See [Section 4: Link Path Rule](#4-link-path-rule).
 - **Never omit the cross-reference density check** — at least one `/MANIFESTO.md` or `/AGENTS.md` link is required.
 - **Never embed heredoc write patterns** in workflow steps.
 - Do not add an agent without running `validate_agent_files.py --all` and passing.

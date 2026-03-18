@@ -51,14 +51,14 @@ Documentation is not decoration. In the endogenic methodology, documentation lay
 
 <context>
 
-1. [`MANIFESTO.md`](/MANIFESTO.md) — core project dogma; the primary value reference.
-2. [`AGENTS.md`](/AGENTS.md) — guiding constraints for all agents and contributors.
-3. [`CONTRIBUTING.md`](/CONTRIBUTING.md) — contributor guidance.
-4. [`docs/guides/`](/docs/guides/) — formalized workflow and methodology guides.
-5. [`docs/research/`](/docs/research/) — research outputs to be synthesized into guides.
+1. [`MANIFESTO.md`](../../MANIFESTO.md) — core project dogma; the primary value reference.
+2. [`AGENTS.md`](../../AGENTS.md) — guiding constraints for all agents and contributors.
+3. [`CONTRIBUTING.md`](../../CONTRIBUTING.md) — contributor guidance.
+4. [`docs/guides/`](../../docs/guides/) — formalized workflow and methodology guides.
+5. [`docs/research/`](../../docs/research/) — research outputs to be synthesized into guides.
 6. [`.github/agents/README.md`](./README.md) — agent fleet catalog.
 7. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting.
-8. [`docs/research/oss-documentation-best-practices.md`](/docs/research/oss-documentation-best-practices.md) — OSS documentation research; CHANGELOG conventions, MkDocs Material, docs-as-code gates, README structure, CONTRIBUTING.md standards.
+8. [`docs/research/oss-documentation-best-practices.md`](../../docs/research/oss-documentation-best-practices.md) — OSS documentation research; CHANGELOG conventions, MkDocs Material, docs-as-code gates, README structure, CONTRIBUTING.md standards.
 
 ---
 </context>

@@ -17,9 +17,9 @@ governs:
 
 ## Beliefs & Context
 
-- [EndogenAI Product Discovery](/docs/research/pm/endogenai-product-discovery.md) — product positioning, go-to-market messaging
-- [MANIFESTO.md](/MANIFESTO.md) — core axioms that shape brand voice and values
-- [Strategic Roadmap](/docs/plans/2026-03-10-endogenai-strategic-roadmap.md) — timeline + milestones determine messaging cadence
+- [EndogenAI Product Discovery](../../docs/research/pm/endogenai-product-discovery.md) — product positioning, go-to-market messaging
+- [MANIFESTO.md](../../MANIFESTO.md) — core axioms that shape brand voice and values
+- [Strategic Roadmap](../../docs/plans/2026-03-10-endogenai-strategic-roadmap.md) — timeline + milestones determine messaging cadence
 - [GitHub Public Issues](https://github.com/EndogenAI/dogma) — community discussions, feature requests, sentiment
 - Competitor messaging analysis (external research; surfaced to Conor + Sheela monthly)
 - Brand voice guide (TBD during Month 1; to be documented in `docs/brand-voice.md`)

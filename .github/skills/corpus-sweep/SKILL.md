@@ -9,7 +9,7 @@ argument-hint: "index path and keyword to sweep for"
 
 ## Governing Axiom
 
-This skill enacts the **Endogenous-First** axiom from [`MANIFESTO.md`](/MANIFESTO.md#1-endogenous-first) and is governed by [`AGENTS.md`](/AGENTS.md) § Programmatic-First Principle. Before sweeping any corpus, check whether a prior sweep result is already cached in `.cache/sources/` or recorded in the active session scratchpad — re-sweeping a cached corpus wastes tokens and violates *Local Compute-First*.
+This skill enacts the **Endogenous-First** axiom from [`MANIFESTO.md`](../../../MANIFESTO.md#1-endogenous-first) and is governed by [`AGENTS.md`](../../../AGENTS.md) § Programmatic-First Principle. Before sweeping any corpus, check whether a prior sweep result is already cached in `.cache/sources/` or recorded in the active session scratchpad — re-sweeping a cached corpus wastes tokens and violates *Local Compute-First*.
 
 > *"Scaffold from existing system knowledge and external best practices."*
 > — MANIFESTO.md § 1 Endogenous-First
@@ -55,7 +55,7 @@ Do **not** use this skill for:
    ```
    Write incrementally after each batch; do not accumulate all findings in memory before writing.
 
-5. **Compress and return** — after all batches complete, produce a ≤2000-token compressed summary and return it to the Orchestrator. Follow the compression rules in [`AGENTS.md`](/AGENTS.md) § Focus-on-Descent / Compression-on-Ascent.
+5. **Compress and return** — after all batches complete, produce a ≤2000-token compressed summary and return it to the Orchestrator. Follow the compression rules in [`AGENTS.md`](../../../AGENTS.md) § Focus-on-Descent / Compression-on-Ascent.
 
 ---
 

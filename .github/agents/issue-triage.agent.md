@@ -31,12 +31,12 @@ You are advisory — you suggest labels and comments, but the final apply/close/
 
 <context>
 
-1. [`data/labels.yml`](/data/labels.yml) — the canonical label definitions; this is the only source of truth for valid label names.
-2. [`docs/guides/github-workflow.md`](/docs/guides/github-workflow.md) — label taxonomy, issue conventions, and triage protocol.
-3. [`CONTRIBUTING.md`](/CONTRIBUTING.md) — what a well-formed issue looks like; use to evaluate completeness.
-4. [`docs/toolchain/gh.md`](/docs/toolchain/gh.md) — canonical `gh` CLI patterns for label operations.
+1. [`data/labels.yml`](../../data/labels.yml) — the canonical label definitions; this is the only source of truth for valid label names.
+2. [`docs/guides/github-workflow.md`](../../docs/guides/github-workflow.md) — label taxonomy, issue conventions, and triage protocol.
+3. [`CONTRIBUTING.md`](../../CONTRIBUTING.md) — what a well-formed issue looks like; use to evaluate completeness.
+4. [`docs/toolchain/gh.md`](../../docs/toolchain/gh.md) — canonical `gh` CLI patterns for label operations.
 5. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting to check for prior triage notes.
-6. [`AGENTS.md`](/AGENTS.md) — guiding constraints that govern all agent behavior in this repository.
+6. [`AGENTS.md`](../../AGENTS.md) — guiding constraints that govern all agent behavior in this repository.
 
 Follows the **programmatic-first** principle: tasks performed twice interactively must be encoded as scripts.
 

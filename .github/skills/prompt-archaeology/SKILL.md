@@ -20,25 +20,25 @@ closes_issue: "#146"
 
 ## Governing Axiom
 
-This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](/MANIFESTO.md#1-endogenous-first):
+This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md#1-endogenous-first):
 
 > Session artifacts — scratchpads, commit messages, issue comments, session summaries — are endogenous knowledge. Mining them before reaching outward satisfies the axiom that existing system knowledge must be exhausted before generating new tokens.
 
-It also enacts the *Programmatic-First* principle from [`AGENTS.md`](/AGENTS.md#programmatic-first-principle):
+It also enacts the *Programmatic-First* principle from [`AGENTS.md`](../../../AGENTS.md#programmatic-first-principle):
 
 > Constraints discovered interactively more than twice must be encoded programmatically before the third time. Prompt archaeology is the mechanism that catches constraints that survived two sessions interactively but were never promoted to a script, guide, or skill.
 
 **Implements**: Issue [#146 — Implement prompt archaeology as a post-sprint ritual](https://github.com/EndogenAI/dogma/issues/146)
 
 **Governed by**:
-- [`AGENTS.md`](/AGENTS.md) § Session-Start Encoding Checkpoint — archaeology findings feed the encoding checkpoint for the next sprint
-- [`MANIFESTO.md`](/MANIFESTO.md) *Endogenous-First* axiom — session artifacts are the first-order endogenous source
+- [`AGENTS.md`](../../../AGENTS.md) § Session-Start Encoding Checkpoint — archaeology findings feed the encoding checkpoint for the next sprint
+- [`MANIFESTO.md`](../../../MANIFESTO.md) *Endogenous-First* axiom — session artifacts are the first-order endogenous source
 
 **Companion skill**: [`session-retrospective`](../session-retrospective/SKILL.md) — retrospective harvests this session's lessons; archaeology mines older sessions. They feed each other: retrospective findings accumulate as future archaeology targets.
 
 **Foundation documents**:
-- [`docs/research/scratchpad-architecture-maturation.md`](/docs/research/infrastructure/scratchpad-architecture-maturation.md) — R1 recommendation: `docs/sessions/` curated archive (the primary persistent archaeology substrate)
-- [`docs/guides/session-management.md`](/docs/guides/session-management.md) — session lifecycle this skill extends
+- [`docs/research/scratchpad-architecture-maturation.md`](../../../docs/research/infrastructure/scratchpad-architecture-maturation.md) — R1 recommendation: `docs/sessions/` curated archive (the primary persistent archaeology substrate)
+- [`docs/guides/session-management.md`](../../../docs/guides/session-management.md) — session lifecycle this skill extends
 
 ---
 
@@ -107,7 +107,7 @@ Key sections to target: `## Session Summary`, `## Executive Handoff`, `## Retros
 
 ### 4.2 Archived Session Summaries (`docs/sessions/`)
 
-Committed to git per R1 of [`scratchpad-architecture-maturation.md`](/docs/research/infrastructure/scratchpad-architecture-maturation.md). Naming convention: `YYYY-MM-DD-<branch-slug>-summary.md`.
+Committed to git per R1 of [`scratchpad-architecture-maturation.md`](../../../docs/research/infrastructure/scratchpad-architecture-maturation.md). Naming convention: `YYYY-MM-DD-<branch-slug>-summary.md`.
 
 ```bash
 ls docs/sessions/

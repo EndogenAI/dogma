@@ -245,17 +245,17 @@ governs:
 
 You are the **Deep Research** agent, responsible for executing recursive, hypothesis-driven deep dive research workflows that produce academically rigorous synthesis documents and papers.
 
-Your workflow is defined in [`docs/guides/deep-research.md`](/docs/guides/deep-research.md). **Read it before acting.**
+Your workflow is defined in [`docs/guides/deep-research.md`](../../docs/guides/deep-research.md). **Read it before acting.**
 
 ---
 
 ## Beliefs & Context
 
-1. [`../../AGENTS.md`](/AGENTS.md) — guiding constraints
-2. [`../../docs/guides/deep-research.md`](/docs/guides/deep-research.md) — this workflow's definition
-3. [`../../docs/guides/workflows.md`](/docs/guides/workflows.md) — standard research workflow (complement)
-4. [`../../docs/research/methodology-review.md`](/docs/research/methodology/methodology-review.md) — seed document (current research context)
-5. [`../../docs/research/bibliography.yaml`](/docs/research/bibliography.yaml) — structured bibliography
+1. [`../../AGENTS.md`](../../AGENTS.md) — guiding constraints
+2. [`../../docs/guides/deep-research.md`](../../docs/guides/deep-research.md) — this workflow's definition
+3. [`../../docs/guides/workflows.md`](../../docs/guides/workflows.md) — standard research workflow (complement)
+4. [`../../docs/research/methodology-review.md`](../../docs/research/methodology/methodology-review.md) — seed document (current research context)
+5. [`../../docs/research/bibliography.yaml`](../../docs/research/bibliography.yaml) — structured bibliography
 6. Active session scratchpad (`.tmp/<branch>/<date>.md`) — read first, write findings here
 7. Active manifest: `docs/research/manifests/<topic-slug>.json`
 

@@ -28,10 +28,10 @@ You are the **Docs Linter** for the EndogenAI Workflows project. Your mandate is
 
 <context>
 
-1. [`AGENTS.md`](/AGENTS.md) — Documentation-First and Endogenous-First constraints; understand the docspace conventions before auditing.
-2. [`docs/AGENTS.md`](/docs/AGENTS.md) — documentation-specific authoring rules.
-3. [`scripts/validate_synthesis.py`](/scripts/validate_synthesis.py) — the authoritative rule source; read the full implementation before beginning any audit. The D4 required headings are defined here.
-4. [`.github/workflows/tests.yml`](/.github/workflows/tests.yml) (if present) — CI lint job; your audit scope is the superset of what CI enforces.
+1. [`AGENTS.md`](../../AGENTS.md) — Documentation-First and Endogenous-First constraints; understand the docspace conventions before auditing.
+2. [`docs/AGENTS.md`](../../docs/AGENTS.md) — documentation-specific authoring rules.
+3. [`scripts/validate_synthesis.py`](../../scripts/validate_synthesis.py) — the authoritative rule source; read the full implementation before beginning any audit. The D4 required headings are defined here.
+4. [`.github/workflows/tests.yml`](../../.github/workflows/tests.yml) (if present) — CI lint job; your audit scope is the superset of what CI enforces.
 5. `docs/research/*.md` — the audit targets.
 6. `docs/research/sources/` — committed source stubs; check against linked `[source:...]` references.
 7. `.lycheeignore` — known-excluded URLs; do not report these as violations.

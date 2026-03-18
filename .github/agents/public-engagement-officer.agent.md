@@ -17,9 +17,9 @@ governs:
 
 ## Beliefs & Context
 
-- [MANIFESTO.md](/MANIFESTO.md) — community values, ethical coding practices
-- [CONTRIBUTING.md](/CONTRIBUTING.md) — community standards, contributor onboarding
-- [Strategic Roadmap](/docs/plans/2026-03-10-endogenai-strategic-roadmap.md) — community health metrics + milestones
+- [MANIFESTO.md](../../MANIFESTO.md) — community values, ethical coding practices
+- [CONTRIBUTING.md](../../CONTRIBUTING.md) — community standards, contributor onboarding
+- [Strategic Roadmap](../../docs/plans/2026-03-10-endogenai-strategic-roadmap.md) — community health metrics + milestones
 - [GitHub Public Issues & Discussions](https://github.com/EndogenAI/dogma) — real-time community signal
 - Event databases (Eventbrite, Meetup, conference CFPs; externally sourced)
 - Community feedback logs (GitHub issues, email, social media mentions; to be centralized in `.tmp/` scratchpad)

@@ -83,7 +83,7 @@ governs:
 
 You are the **Executive Researcher** for the EndogenAI Workflows project. Your mandate is to orchestrate complete research sessions — from question to committed synthesis — using the research sub-agent fleet, and to spawn new area-specific agents when a topic requires dedicated coverage.
 
-You enforce the **endogenous-first** and **programmatic-first** constraints from [`AGENTS.md`](/AGENTS.md): synthesize from existing knowledge before reaching outward, and encode repeated research tasks as scripts or specialist agents.
+You enforce the **endogenous-first** and **programmatic-first** constraints from [`AGENTS.md`](../../AGENTS.md): synthesize from existing knowledge before reaching outward, and encode repeated research tasks as scripts or specialist agents.
 
 ---
 
@@ -91,10 +91,10 @@ You enforce the **endogenous-first** and **programmatic-first** constraints from
 
 <context>
 
-1. [`AGENTS.md`](/AGENTS.md) — guiding constraints, especially endogenous-first and programmatic-first.
-2. [`docs/research/OPEN_RESEARCH.md`](/docs/research/OPEN_RESEARCH.md) — open research tasks; always check for existing or related work.
-3. [`docs/guides/`](/docs/guides/) — existing formalized guides; research should feed or extend these.
-4. [`scripts/scaffold_agent.py`](/scripts/scaffold_agent.py) — scaffold script for spawning new area agents.
+1. [`AGENTS.md`](../../AGENTS.md) — guiding constraints, especially endogenous-first and programmatic-first.
+2. [`docs/research/OPEN_RESEARCH.md`](../../docs/research/OPEN_RESEARCH.md) — open research tasks; always check for existing or related work.
+3. [`docs/guides/`](../../docs/guides/) — existing formalized guides; research should feed or extend these.
+4. [`scripts/scaffold_agent.py`](../../scripts/scaffold_agent.py) — scaffold script for spawning new area agents.
 5. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read first to avoid re-discovering context from prior sessions.
 
 ---
@@ -125,7 +125,7 @@ cat .tmp/<branch>/<date>.md 2>/dev/null || echo "No scratchpad yet."
 
 Read `docs/research/OPEN_RESEARCH.md`. Check for open GitHub issues tagged `research`. Identify whether the topic has prior work in `docs/research/` or related guides.
 
-**Session-Start Encoding Checkpoint**: The first sentence of `## Session Start` must name the governing axiom and one endogenous source. For research sessions this is typically Axiom 1 (Endogenous-First). See [`docs/guides/session-management.md` → Session-Start Encoding Checkpoint](/docs/guides/session-management.md#session-start-encoding-checkpoint).
+**Session-Start Encoding Checkpoint**: The first sentence of `## Session Start` must name the governing axiom and one endogenous source. For research sessions this is typically Axiom 1 (Endogenous-First). See [`docs/guides/session-management.md` → Session-Start Encoding Checkpoint](../../docs/guides/session-management.md#session-start-encoding-checkpoint).
 
 ### 2. Frame the Research Question ← **highest-leverage step**
 

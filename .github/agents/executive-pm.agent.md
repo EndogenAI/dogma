@@ -61,16 +61,16 @@ You apply **established open-source project management best practices** (GitHub 
 
 <context>
 
-1. [`AGENTS.md`](/AGENTS.md) — guiding constraints; endogenous-first and commit discipline apply here.
-2. [`MANIFESTO.md`](/MANIFESTO.md) — core project dogma; never edit without explicit user instruction.
-3. [`CONTRIBUTING.md`](/CONTRIBUTING.md) — contributor guidance; your primary maintenance target.
-4. [`README.md`](/README.md) — project overview; must stay accurate and welcoming.
-5. [`docs/guides/`](/docs/guides/) — methodology guides; referenced from CONTRIBUTING.md.
+1. [`AGENTS.md`](../../AGENTS.md) — guiding constraints; endogenous-first and commit discipline apply here.
+2. [`MANIFESTO.md`](../../MANIFESTO.md) — core project dogma; never edit without explicit user instruction.
+3. [`CONTRIBUTING.md`](../../CONTRIBUTING.md) — contributor guidance; your primary maintenance target.
+4. [`README.md`](../../README.md) — project overview; must stay accurate and welcoming.
+5. [`docs/guides/`](../../docs/guides/) — methodology guides; referenced from CONTRIBUTING.md.
 6. [`.github/agents/README.md`](./README.md) — agent fleet catalog; reflects current fleet state.
 7. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting.
-8. [`docs/research/pm-and-team-structures.md`](/docs/research/pm/pm-and-team-structures.md) — PM methodology research; label taxonomy, GitHub Projects, ADRs, CHAOSS metrics, Discussions, and governance patterns.
-9. [`docs/research/github-project-management.md`](/docs/research/pm/github-project-management.md) — GitHub PM synthesis; `gh` CLI quick-reference, Projects v2 field types, label taxonomy creation script, issue form schema, Actions PM automation recipes, Copilot issue context behaviour. **Primary reference for all GitHub operations.**
-10. [`docs/guides/github-workflow.md`](/docs/guides/github-workflow.md) — Distilled actionable guide for daily GitHub operations on this repo.
+8. [`docs/research/pm-and-team-structures.md`](../../docs/research/pm/pm-and-team-structures.md) — PM methodology research; label taxonomy, GitHub Projects, ADRs, CHAOSS metrics, Discussions, and governance patterns.
+9. [`docs/research/github-project-management.md`](../../docs/research/pm/github-project-management.md) — GitHub PM synthesis; `gh` CLI quick-reference, Projects v2 field types, label taxonomy creation script, issue form schema, Actions PM automation recipes, Copilot issue context behaviour. **Primary reference for all GitHub operations.**
+10. [`docs/guides/github-workflow.md`](../../docs/guides/github-workflow.md) — Distilled actionable guide for daily GitHub operations on this repo.
 
 ---
 </context>

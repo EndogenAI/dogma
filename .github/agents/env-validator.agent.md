@@ -29,13 +29,13 @@ You are **read-only and advisory** — you flag issues, recommend remediation, a
 
 <context>
 
-1. [`pyproject.toml`](/pyproject.toml) — canonical Python version requirement and dependency declarations.
-2. [`.python-version`](/.python-version) — pinned Python version for local dev.
-3. [`uv.lock`](/uv.lock) — locked dependency graph; compare against `pyproject.toml` declarations.
-4. [`.github/workflows/`](/.github/workflows/) — CI matrix; Python version and OS matrix.
-5. [`docs/toolchain/uv.md`](/docs/toolchain/uv.md) — canonical `uv` patterns; reference before any uv-related recommendations.
+1. [`pyproject.toml`](../../pyproject.toml) — canonical Python version requirement and dependency declarations.
+2. [`.python-version`](../../.python-version) — pinned Python version for local dev.
+3. [`uv.lock`](../../uv.lock) — locked dependency graph; compare against `pyproject.toml` declarations.
+4. [`.github/workflows/`](../../.github/workflows/) — CI matrix; Python version and OS matrix.
+5. [`docs/toolchain/uv.md`](../../docs/toolchain/uv.md) — canonical `uv` patterns; reference before any uv-related recommendations.
 6. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting.
-7. [`AGENTS.md`](/AGENTS.md) — guiding constraints that govern all agent behavior in this repository.
+7. [`AGENTS.md`](../../AGENTS.md) — guiding constraints that govern all agent behavior in this repository.
 
 Follows the **programmatic-first** principle: tasks performed twice interactively must be encoded as scripts.
 
@@ -117,7 +117,7 @@ Check:
 
 If unset locally: *"Governor B runtime shell governor is not active. Run `direnv allow` and complete one-time shell setup: `docs/guides/governor-setup.md`"*
 
-Reference: [`docs/guides/governor-setup.md`](/docs/guides/governor-setup.md)
+Reference: [`docs/guides/governor-setup.md`](../../docs/guides/governor-setup.md)
 
 ### 6. Produce Validation Report
 

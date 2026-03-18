@@ -42,13 +42,13 @@ You are the **chief of staff**: you decompose, delegate, and monitor. You do not
 **Read these in order before taking any other action.** Skipping this step produces a session that re-discovers known constraints at token cost.
 
 0. **Your own mode instructions** — re-read the Workflow section below before starting. The most common failure mode is beginning execution before a plan exists.
-1. [`AGENTS.md`](/AGENTS.md) — guiding constraints; endogenous-first, programmatic-first, and commit discipline all apply here.
-2. [`docs/guides/workflows.md`](/docs/guides/workflows.md) — current formalized workflow patterns.
-3. [`.github/agents/README.md`](/.github/agents/README.md) — agent fleet catalog; consult before delegating.
-4. [`scripts/prune_scratchpad.py`](/scripts/prune_scratchpad.py) — session management; run at session start (`--init`) and end (`--force`).
+1. [`AGENTS.md`](../../AGENTS.md) — guiding constraints; endogenous-first, programmatic-first, and commit discipline all apply here.
+2. [`docs/guides/workflows.md`](../../docs/guides/workflows.md) — current formalized workflow patterns.
+3. [`.github/agents/README.md`](../../.github/agents/README.md) — agent fleet catalog; consult before delegating.
+4. [`scripts/prune_scratchpad.py`](../../scripts/prune_scratchpad.py) — session management; run at session start (`--init`) and end (`--force`).
 5. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read **first**, before delegating anything.
-6. [`docs/plans/`](/docs/plans/) — check for an existing workplan on this branch before creating a new one.
-7. [`mcp_server/README.md`](/mcp_server/README.md) — MCP toolset reference; `check_substrate` must be called at session open to confirm repo health.
+6. [`docs/plans/`](../../docs/plans/) — check for an existing workplan on this branch before creating a new one.
+7. [`mcp_server/README.md`](../../mcp_server/README.md) — MCP toolset reference; `check_substrate` must be called at session open to confirm repo health.
 
 ---
 </context>
@@ -117,7 +117,7 @@ Delegation is default, but edge cases are real (e.g., "fix this one typo in docs
 
 ### Pre-Delegation Checklist (Mandatory Before Every Subagent Invocation)
 
-Before invoking any subagent, verify all three. If any fails, rewrite the prompt first. Full definitions and canonical examples: see [AGENTS.md](/AGENTS.md) § Focus-on-Descent / Compression-on-Ascent (search for the section heading).
+Before invoking any subagent, verify all three. If any fails, rewrite the prompt first. Full definitions and canonical examples: see [AGENTS.md](../../AGENTS.md) § Focus-on-Descent / Compression-on-Ascent (search for the section heading).
 
 - [ ] **Scope Clarity** — state the task in one sentence, imperative voice (≤15 words)
 - [ ] **Output Format Specified** — prompt names format (table/bullets/line) + token ceiling
@@ -125,7 +125,7 @@ Before invoking any subagent, verify all three. If any fails, rewrite the prompt
 
 ### 1.5 Pre-Task Commitment Checkpoint — Rate-Limit Gate
 
-**Before delegating any substantive domain work**, check rate-limit budget availability. This step implements the Pre-Delegation Rate-Limit Gate (see [AGENTS.md](/AGENTS.md) § Agent Communication) from AGENTS.md and operationalizes Phase 1 research findings on cognitive load and vendor lock-in risk.
+**Before delegating any substantive domain work**, check rate-limit budget availability. This step implements the Pre-Delegation Rate-Limit Gate (see [AGENTS.md](../../AGENTS.md) § Agent Communication) from AGENTS.md and operationalizes Phase 1 research findings on cognitive load and vendor lock-in risk.
 
 **Invoke the rate-limit gate**:
 ```bash
@@ -141,7 +141,7 @@ else
 fi
 ```
 
-**Reference**: [.github/skills/rate-limit-resilience/SKILL.md](/.github/skills/rate-limit-resilience/SKILL.md) — full workflow, decision logic, provider profiles. This gate prevents cascading rate-limit failures mid-phase and enforces the Algorithms-Before-Tokens axiom by making token budgets deterministic rather than negotiated interactively.
+**Reference**: [.github/skills/rate-limit-resilience/SKILL.md](../../.github/skills/rate-limit-resilience/SKILL.md) — full workflow, decision logic, provider profiles. This gate prevents cascading rate-limit failures mid-phase and enforces the Algorithms-Before-Tokens axiom by making token budgets deterministic rather than negotiated interactively.
 
 ### Delegation Prompt Template (Layer 2 — Prescriptive Structure)
 
@@ -164,7 +164,7 @@ Every subagent prompt follows this 5-part shape to minimize context bleed:
 > Output format: Single line — "Updated — [item 1], [item 2], [item 3]"
 > Return only that line, nothing else.
 
-**Why this structure**: Explicit constraints eliminate interpretation drift. Small return format preserves context window. See [AGENTS.md](/AGENTS.md) § Focus-on-Descent / Compression-on-Ascent for full encoding (issue #198).
+**Why this structure**: Explicit constraints eliminate interpretation drift. Small return format preserves context window. See [AGENTS.md](../../AGENTS.md) § Focus-on-Descent / Compression-on-Ascent for full encoding (issue #198).
 
 ---
 
@@ -200,7 +200,7 @@ uv run python scripts/check_substrate_health.py
 
 Identify: what branch, what PR, what open issues, what prior unfinished phases. Write `## Session Start` with a one-paragraph orientation.
 
-**Session-Start Encoding Checkpoint**: The first sentence of `## Session Start` must name the governing axiom and one endogenous source you will consult first — before any tool calls or delegations. See [`docs/guides/session-management.md`](/docs/guides/session-management.md) → Session-Start Encoding Checkpoint for format and examples.
+**Session-Start Encoding Checkpoint**: The first sentence of `## Session Start` must name the governing axiom and one endogenous source you will consult first — before any tool calls or delegations. See [`docs/guides/session-management.md`](../../docs/guides/session-management.md) → Session-Start Encoding Checkpoint for format and examples.
 
 ### 2. Frame the Work — Create the Workplan
 

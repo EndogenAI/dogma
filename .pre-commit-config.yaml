@@ -61,10 +61,10 @@ repos:
         types_or: [python, shell]
         exclude: scripts/validate_agent_files\.py|tests/test_validate_agent_files\.py|packages/dogma-governance/dogma_governance/validate_agent\.py|packages/dogma-governance/tests/test_governance_package\.py
         pass_filenames: true
-      - id: no-relative-traversal-in-agent-files
-        name: Block ../../ relative links in .github/agents/ and .github/skills/ (use /-rooted paths)
+      - id: no-absolute-path-links-in-agent-files
+        name: Block /-rooted absolute path links in .github/agents/ and .github/skills/ (use ../../ relative paths instead)
         language: pygrep
-        entry: '\]\(\.\./\.\.'
+        entry: '\]\(/'
         types: [markdown]
         files: ^\.github/(agents/|skills/)
         pass_filenames: true

@@ -28,8 +28,8 @@ You operate in the **expansion phase** of the research workflow.
 
 <context>
 
-1. [`AGENTS.md`](/AGENTS.md) — guiding constraints, especially endogenous-first.
-2. [`docs/research/OPEN_RESEARCH.md`](/docs/research/OPEN_RESEARCH.md) — seed references and resources for each topic.
+1. [`AGENTS.md`](../../AGENTS.md) — guiding constraints, especially endogenous-first.
+2. [`docs/research/OPEN_RESEARCH.md`](../../docs/research/OPEN_RESEARCH.md) — seed references and resources for each topic.
 3. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read the research question and any prior Scout output before searching.
 
 ---

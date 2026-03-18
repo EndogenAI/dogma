@@ -40,10 +40,10 @@ You exist to resolve issues #9 ("Endogenic methodology — literature review") a
 
 <context>
 
-1. [`MANIFESTO.md`](/MANIFESTO.md) — the primary output consumer; understand what values are already encoded and how.
-2. [`AGENTS.md`](/AGENTS.md) — the operational encoding of values into agent constraints; your research should make these more precise.
-3. [`docs/research/OPEN_RESEARCH.md`](/docs/research/OPEN_RESEARCH.md) — items for issues #9 and #32; check for any prior partial work.
-4. [`docs/research/agentic-research-flows.md`](/docs/research/agents/agentic-research-flows.md) — prior research on how context and instructions propagate in agent workflows.
+1. [`MANIFESTO.md`](../../MANIFESTO.md) — the primary output consumer; understand what values are already encoded and how.
+2. [`AGENTS.md`](../../AGENTS.md) — the operational encoding of values into agent constraints; your research should make these more precise.
+3. [`docs/research/OPEN_RESEARCH.md`](../../docs/research/OPEN_RESEARCH.md) — items for issues #9 and #32; check for any prior partial work.
+4. [`docs/research/agentic-research-flows.md`](../../docs/research/agents/agentic-research-flows.md) — prior research on how context and instructions propagate in agent workflows.
 5. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting.
 6. GitHub issues #9 and #32 — the originating issues.
 7. `.cache/sources/` — check before fetching any URL.

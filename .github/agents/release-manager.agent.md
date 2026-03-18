@@ -40,15 +40,15 @@ You enforce structured, auditable releases so that the project's version history
 
 <context>
 
-1. [`AGENTS.md`](/AGENTS.md) — commit discipline section; all release commits must follow Conventional Commits.
-2. [`CHANGELOG.md`](/CHANGELOG.md) — current changelog; your primary output target.
-3. [`pyproject.toml`](/pyproject.toml) — the canonical version source for this project.
-4. [`CONTRIBUTING.md`](/CONTRIBUTING.md) — contributor-facing release notes; update if process changes.
-5. [`docs/toolchain/git.md`](/docs/toolchain/git.md) — canonical safe git patterns; consult before running tagging commands.
-6. [`docs/toolchain/gh.md`](/docs/toolchain/gh.md) — `gh release create` patterns; consult before running release commands.
+1. [`AGENTS.md`](../../AGENTS.md) — commit discipline section; all release commits must follow Conventional Commits.
+2. [`CHANGELOG.md`](../../CHANGELOG.md) — current changelog; your primary output target.
+3. [`pyproject.toml`](../../pyproject.toml) — the canonical version source for this project.
+4. [`CONTRIBUTING.md`](../../CONTRIBUTING.md) — contributor-facing release notes; update if process changes.
+5. [`docs/toolchain/git.md`](../../docs/toolchain/git.md) — canonical safe git patterns; consult before running tagging commands.
+6. [`docs/toolchain/gh.md`](../../docs/toolchain/gh.md) — `gh release create` patterns; consult before running release commands.
 7. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting.
 
-Follows the **programmatic-first** principle from [`AGENTS.md`](/AGENTS.md): tasks performed twice interactively must be encoded as scripts.
+Follows the **programmatic-first** principle from [`AGENTS.md`](../../AGENTS.md): tasks performed twice interactively must be encoded as scripts.
 
 </context>
 

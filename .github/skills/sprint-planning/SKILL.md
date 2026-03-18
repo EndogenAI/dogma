@@ -20,23 +20,23 @@ effort: m
 
 # Sprint Planning
 
-This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](/MANIFESTO.md):
+This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md):
 before proposing any new sprint, the agent reads the full open-issue backlog, existing
 milestones, and prior workplans — so the sprint is scaffolded from known committed context,
 not invented interactively. Sprint planning discipline is governed by
-[`AGENTS.md`](/AGENTS.md) § Sprint Phase Ordering Constraints and
+[`AGENTS.md`](../../../AGENTS.md) § Sprint Phase Ordering Constraints and
 § Agent Communication → `docs/plans/`. When this skill and those documents conflict, the
 primary documents take precedence.
 
-**Canonical workplan template**: [`docs/plans/2026-03-08-value-encoding-fidelity.md`](/docs/plans/2026-03-08-value-encoding-fidelity.md)
+**Canonical workplan template**: [`docs/plans/2026-03-08-value-encoding-fidelity.md`](../../../docs/plans/2026-03-08-value-encoding-fidelity.md)
 
 ---
 
 ## Beliefs & Context
 
 This skill implements the sprint-planning workflow as a repeatable procedure for the
-[`Executive PM`](/.github/agents/executive-pm.agent.md) and
-[`Executive Planner`](/.github/agents/executive-planner.agent.md).
+[`Executive PM`](../../../.github/agents/executive-pm.agent.md) and
+[`Executive Planner`](../../../.github/agents/executive-planner.agent.md).
 
 **Used by**:
 - **Executive PM** — owns milestone creation, issue assignment, label taxonomy
@@ -44,10 +44,10 @@ This skill implements the sprint-planning workflow as a repeatable procedure for
 - **Executive Orchestrator** — delegates when user requests "plan the next sprint"
 
 **Foundation documents**:
-- [`AGENTS.md`](/AGENTS.md) — sprint ordering constraints and commit discipline
-- [`docs/guides/github-workflow.md`](/docs/guides/github-workflow.md) — labels, milestones, `gh` CLI patterns
-- [`docs/plans/`](/docs/plans/) — prior workplans as canonical templates
-- [`data/labels.yml`](/data/labels.yml) — canonical label taxonomy
+- [`AGENTS.md`](../../../AGENTS.md) — sprint ordering constraints and commit discipline
+- [`docs/guides/github-workflow.md`](../../../docs/guides/github-workflow.md) — labels, milestones, `gh` CLI patterns
+- [`docs/plans/`](../../../docs/plans/) — prior workplans as canonical templates
+- [`data/labels.yml`](../../../data/labels.yml) — canonical label taxonomy
 
 ---
 

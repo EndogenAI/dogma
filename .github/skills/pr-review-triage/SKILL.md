@@ -15,9 +15,9 @@ governs:
 
 # PR Review Triage
 
-This skill enacts the *Algorithms Before Tokens* axiom from [`MANIFESTO.md`](/MANIFESTO.md):
+This skill enacts the *Algorithms Before Tokens* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md):
 the post-review triage and response workflow is encoded as a repeatable procedure, not re-derived
-interactively on each PR. It is governed by [`AGENTS.md`](/AGENTS.md)
+interactively on each PR. It is governed by [`AGENTS.md`](../../../AGENTS.md)
 § Verify-After-Act for Remote Writes and § Agent Communication. When this skill conflicts
 with those documents, the primary documents take precedence.
 
@@ -25,7 +25,7 @@ with those documents, the primary documents take precedence.
 
 ## 1. Governing Constraint
 
-Per [`AGENTS.md`](/AGENTS.md) § Verify-After-Act for Remote Writes:
+Per [`AGENTS.md`](../../../AGENTS.md) § Verify-After-Act for Remote Writes:
 - Every reply posted to a review comment is a remote write — Tier 0 validation applies before
   sending.
 - Every thread resolved is irreversible — only resolve threads whose change is confirmed

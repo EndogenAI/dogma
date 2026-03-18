@@ -43,14 +43,14 @@ You are the **keeper of agent standards**: every agent file must have explicit g
 
 <context>
 
-1. [`AGENTS.md`](/AGENTS.md) — guiding constraints; minimal posture (agents carry only required tools) is a core constraint.
+1. [`AGENTS.md`](../../AGENTS.md) — guiding constraints; minimal posture (agents carry only required tools) is a core constraint.
 2. [`.github/agents/README.md`](./README.md) — fleet catalog; the primary output of your maintenance work.
 3. [`.github/agents/AGENTS.md`](./AGENTS.md) — agent authoring guide; read before creating or updating any agent.
-4. [`scripts/scaffold_agent.py`](/scripts/scaffold_agent.py) — the canonical agent creation tool; always use `--dry-run` first.
-5. [`scripts/generate_agent_manifest.py`](/scripts/generate_agent_manifest.py) — generates a manifest from all agent files; run after any fleet change.
+4. [`scripts/scaffold_agent.py`](../../scripts/scaffold_agent.py) — the canonical agent creation tool; always use `--dry-run` first.
+5. [`scripts/generate_agent_manifest.py`](../../scripts/generate_agent_manifest.py) — generates a manifest from all agent files; run after any fleet change.
 6. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting.
 
-Follows the **programmatic-first** principle from [`AGENTS.md`](/AGENTS.md): tasks performed twice interactively must be encoded as scripts.
+Follows the **programmatic-first** principle from [`AGENTS.md`](../../AGENTS.md): tasks performed twice interactively must be encoded as scripts.
 
 ---
 </context>

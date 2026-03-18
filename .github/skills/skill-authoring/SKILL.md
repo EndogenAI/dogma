@@ -7,7 +7,7 @@ argument-hint: "skill name slug (e.g. deep-research-sprint)"
 
 # SKILL.md Authoring
 
-This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](/MANIFESTO.md): skills are re-encodings of documented procedures and patterns from [`AGENTS.md`](/AGENTS.md), not independent inventions.
+This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md): skills are re-encodings of documented procedures and patterns from [`AGENTS.md`](../../../AGENTS.md), not independent inventions.
 
 Skills are tactical-layer knowledge artifacts that encode *how a task is done*. They sit beneath agents (who encode *who does a task*) and above session behavior.
 
@@ -88,7 +88,7 @@ Every skill file must contain at least one of each:
 
 **Discipline rule for Endogenous Sources section**: Always encode:
 
-1. The governing axiom this skill enacts (from [`MANIFESTO.md`](/MANIFESTO.md))
+1. The governing axiom this skill enacts (from [`MANIFESTO.md`](../../../MANIFESTO.md))
 2. The pattern or GitHub issue this skill implements (e.g., `#45 Research: Product Definition`)
 3. Which agents and tools depend on this skill
 4. Citation chain to foundational documents
@@ -98,7 +98,7 @@ Every skill file must contain at least one of each:
 ```markdown
 ## Beliefs & Context
 
-This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](/MANIFESTO.md) by encoding the complete research sprint workflow as a reusable procedure.
+This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md) by encoding the complete research sprint workflow as a reusable procedure.
 
 **Implements**: The research orchestration pattern from issue [#45 (Research: Product Definition)](https://github.com/EndogenAI/dogma/issues/45)
 
@@ -110,9 +110,9 @@ This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](/MANIFESTO.
 - Research Archivist (commits deliverables)
 
 **Foundation documents**:
-- [`AGENTS.md`](/AGENTS.md) — governance constraints
-- [`docs/guides/deep-research.md`](/docs/guides/deep-research.md) — full investigation methodology
-- [`docs/research/methodology-review.md`](/docs/research/methodology/methodology-review.md) — prior art survey
+- [`AGENTS.md`](../../../AGENTS.md) — governance constraints
+- [`docs/guides/deep-research.md`](../../../docs/guides/deep-research.md) — full investigation methodology
+- [`docs/research/methodology-review.md`](../../../docs/research/methodology/methodology-review.md) — prior art survey
 ```
 
 ---
@@ -134,24 +134,26 @@ This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](/MANIFESTO.
 
 ## 5. Link Path Rule
 
-**All links in skill files that exit `.github/skills/<name>/` must use workspace-root-relative `/` paths.** This is consistent with the agent file convention and ensures VS Code's `prompts-diagnostics-provider` can resolve them.
+**All links in skill files that exit `.github/skills/<name>/` must use `../../../` relative paths.** This is consistent with the agent file convention (`../../` for depth-2 files) and ensures VS Code's `prompts-diagnostics-provider` can resolve them.
+
+`/`-rooted paths (e.g. `/AGENTS.md`) resolve to the OS filesystem root on macOS, not the workspace root — they produce VS Code Problems panel errors.
 
 ```
 .github/skills/my-skill/SKILL.md
   │
   ├─ ../              → .github/skills/   ← WRONG (wrong target)
   ├─ ../../           → .github/          ← WRONG (wrong target)
-  ├─ ../../../        → (repo root)       ← resolves on disk but fails VS Code diagnostics
-  └─ /                → (workspace root)  ← CORRECT (consistent with agent file rule)
+  ├─ /AGENTS.md       → OS filesystem root ← WRONG (resolves to /AGENTS.md on macOS)
+  └─ ../../../        → (repo root)       ← CORRECT (depth 3 from repo root)
 ```
 
 **Correct usage for skills**:
 
 ```markdown
-[`MANIFESTO.md`](/MANIFESTO.md)
-[`AGENTS.md`](/AGENTS.md)
-[`docs/guides/agents.md`](/docs/guides/agents.md)
-[`.github/agents/README.md`](/.github/agents/README.md)
+[`MANIFESTO.md`](../../../MANIFESTO.md)
+[`AGENTS.md`](../../../AGENTS.md)
+[`docs/guides/agents.md`](../../../docs/guides/agents.md)
+[`.github/agents/README.md`](../agents/README.md)
 ```
 
 **Within-directory links** (to sibling files in `.github/skills/<name>/`) remain relative:
@@ -159,7 +161,7 @@ This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](/MANIFESTO.
 [`./other-file.md`](./other-file.md)   ← same directory: OK
 ```
 
-**Do not use `../../../`** — consistent with agent file rule; `/` is the preferred form across all `.github/` files.
+This convention is enforced by the `no-absolute-path-links-in-agent-files` pre-commit hook.
 
 ---
 
@@ -174,8 +176,8 @@ Every skill file must contain at least one back-reference to the foundational do
 **Minimum pattern** (place in Endogenous Sources):
 
 ```markdown
-This skill enacts the *<Axiom Name>* axiom from [`MANIFESTO.md`](/MANIFESTO.md).
-It is governed by [`AGENTS.md`](/AGENTS.md) and associated procedural guidelines.
+This skill enacts the *<Axiom Name>* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md).
+It is governed by [`AGENTS.md`](../../../AGENTS.md) and associated procedural guidelines.
 ```
 
 ---
@@ -187,13 +189,13 @@ The skill's first substantive section must ground it in the encoding chain:
 ```markdown
 ## Beliefs & Context
 
-This skill enacts the *<Axiom>* axiom from [`MANIFESTO.md`](/MANIFESTO.md).
+This skill enacts the *<Axiom>* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md).
 
 **Implements**: [Pattern or issue reference]
 
-**Governed by**: [`AGENTS.md`](/AGENTS.md) § [relevant section]
+**Governed by**: [`AGENTS.md`](../../../AGENTS.md) § [relevant section]
 
-Read [`docs/guides/agents.md`](/docs/guides/agents.md) before modifying this skill.
+Read [`docs/guides/agents.md`](../../../docs/guides/agents.md) before modifying this skill.
 ```
 
 Governing axioms by skill type:

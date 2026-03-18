@@ -17,7 +17,7 @@ status: active
 
 # Delegation Routing
 
-This skill enacts the *Algorithms-Before-Tokens* axiom from [`MANIFESTO.md`](/MANIFESTO.md): a static routing table replaces per-session re-derivation of which agent handles which domain, eliminating redundant token burn and preventing scope drift into direct execution.
+This skill enacts the *Algorithms-Before-Tokens* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md): a static routing table replaces per-session re-derivation of which agent handles which domain, eliminating redundant token burn and preventing scope drift into direct execution.
 
 ---
 
@@ -27,8 +27,8 @@ This skill enacts the *Algorithms-Before-Tokens* axiom from [`MANIFESTO.md`](/MA
 - **GitHub issue**: [#79 — Skills as Decision Codifiers](https://github.com/EndogenAI/dogma/issues/79)
 - **Agents that use this skill**: Executive Orchestrator, Executive Researcher, Executive Planner
 - **Foundation docs**:
-  - [`AGENTS.md`](/AGENTS.md) — guiding constraints; Minimal Posture, Programmatic-First, delegation-first
-  - [`executive-orchestrator.agent.md`](/.github/agents/executive-orchestrator.agent.md) — canonical Delegation Decision Gate (lines 137–165)
+  - [`AGENTS.md`](../../../AGENTS.md) — guiding constraints; Minimal Posture, Programmatic-First, delegation-first
+  - [`executive-orchestrator.agent.md`](../../../.github/agents/executive-orchestrator.agent.md) — canonical Delegation Decision Gate (lines 137–165)
 
 ---
 
@@ -63,7 +63,7 @@ This skill enacts the *Algorithms-Before-Tokens* axiom from [`MANIFESTO.md`](/MA
 
 **If the work does not appear in the "Act directly" list, delegate it.**
 
-**Step 4 — Form a narrow delegation prompt.** Outbound prompts must be task-scoped, not bulk session context. Inbound returns must be ≤ 2,000 tokens (Focus-on-Descent / Compression-on-Ascent — see [`AGENTS.md`](/AGENTS.md) § Agent Communication).
+**Step 4 — Form a narrow delegation prompt.** Outbound prompts must be task-scoped, not bulk session context. Inbound returns must be ≤ 2,000 tokens (Focus-on-Descent / Compression-on-Ascent — see [`AGENTS.md`](../../../AGENTS.md) § Agent Communication).
 
 ---
 

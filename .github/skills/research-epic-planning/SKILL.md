@@ -7,9 +7,9 @@ argument-hint: "milestone name or anchor issue number (e.g. 'Value Encoding & Fi
 
 # Research Epic Planning
 
-This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](/MANIFESTO.md): before planning begins, the agent reads all prior research, existing issues, and endogenous sources — so the plan is scaffolded from known context, not guessed. Epic planning discipline is governed by [`AGENTS.md`](/AGENTS.md) § Agent Communication → `docs/plans/`. Read both documents before deviating from any step.
+This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md): before planning begins, the agent reads all prior research, existing issues, and endogenous sources — so the plan is scaffolded from known context, not guessed. Epic planning discipline is governed by [`AGENTS.md`](../../../AGENTS.md) § Agent Communication → `docs/plans/`. Read both documents before deviating from any step.
 
-**Canonical template**: [`docs/plans/2026-03-08-value-encoding-fidelity.md`](/docs/plans/2026-03-08-value-encoding-fidelity.md) — the reference implementation of a well-formed research epic workplan.
+**Canonical template**: [`docs/plans/2026-03-08-value-encoding-fidelity.md`](../../../docs/plans/2026-03-08-value-encoding-fidelity.md) — the reference implementation of a well-formed research epic workplan.
 
 ---
 
@@ -91,7 +91,7 @@ uv run python scripts/scaffold_workplan.py <brief-slug>
 # Creates: docs/plans/YYYY-MM-DD-<brief-slug>.md
 ```
 
-Then populate using `replace_string_in_file` (never heredocs — see [`AGENTS.md`](/AGENTS.md) guardrails).
+Then populate using `replace_string_in_file` (never heredocs — see [`AGENTS.md`](../../../AGENTS.md) guardrails).
 
 ### 4.2 Required Structure
 
@@ -156,7 +156,7 @@ before acting. Always includes:
 - **One phase = one branch + PR**. Never combine phases that produce different output types (research doc vs. script vs. agent file) in a single branch unless they are trivially small.
 - **Every domain phase must be followed by a Review gate** before the next domain phase begins. The Review gate is not a separate phase section — it is the `**Review gate:**` line at the end of each phase section.
 - **Effort-size phases appropriately**: if a phase contains `effort:l` or `effort:xl` issues, split into sub-phases or flag that the phase may itself need an internal workplan.
-- **Name the executing agent explicitly**: use the delegation routing table in [`AGENTS.md`](/AGENTS.md) to identify the correct specialist. Do not assign domain work to the Orchestrator.
+- **Name the executing agent explicitly**: use the delegation routing table in [`AGENTS.md`](../../../AGENTS.md) to identify the correct specialist. Do not assign domain work to the Orchestrator.
 
 ---
 

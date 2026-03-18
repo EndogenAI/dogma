@@ -34,11 +34,11 @@ You are **read-only** — you query GitHub's API and present findings. You do no
 
 <context>
 
-1. [`docs/toolchain/gh.md`](/docs/toolchain/gh.md) — canonical `gh api` and `gh` CLI patterns; consult before constructing any API query.
-2. [`docs/research/pm-and-team-structures.md`](/docs/research/pm/pm-and-team-structures.md) — community health metrics research basis.
-3. [`docs/research/comms-marketing-bizdev.md`](/docs/research/pm/comms-marketing-bizdev.md) — DevRel context; signals inform content strategy.
+1. [`docs/toolchain/gh.md`](../../docs/toolchain/gh.md) — canonical `gh api` and `gh` CLI patterns; consult before constructing any API query.
+2. [`docs/research/pm-and-team-structures.md`](../../docs/research/pm/pm-and-team-structures.md) — community health metrics research basis.
+3. [`docs/research/comms-marketing-bizdev.md`](../../docs/research/pm/comms-marketing-bizdev.md) — DevRel context; signals inform content strategy.
 4. The active session scratchpad (`.tmp/<branch>/<date>.md`) — check for prior pulse reports; compare trends over time.
-5. [`AGENTS.md`](/AGENTS.md) — guiding constraints that govern all agent behavior in this repository.
+5. [`AGENTS.md`](../../AGENTS.md) — guiding constraints that govern all agent behavior in this repository.
 
 Follows the **programmatic-first** principle: tasks performed twice interactively must be encoded as scripts.
 

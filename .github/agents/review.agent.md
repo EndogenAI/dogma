@@ -30,13 +30,13 @@ You are **read-only**. You do not edit files. You flag issues and hand off to ei
 
 <context>
 
-1. [`AGENTS.md`](/AGENTS.md) — the primary checklist for all reviews.
-2. [`MANIFESTO.md`](/MANIFESTO.md) — core values; any change that dilutes a stated value is a blocker.
+1. [`AGENTS.md`](../../AGENTS.md) — the primary checklist for all reviews.
+2. [`MANIFESTO.md`](../../MANIFESTO.md) — core values; any change that dilutes a stated value is a blocker.
 3. [`.github/agents/AGENTS.md`](./AGENTS.md) — for agent file reviews: frontmatter schema, naming, posture, handoff graph.
-4. [`scripts/README.md`](/scripts/README.md) — for script reviews: catalog coverage, conventions.
-5. [`docs/research/testing-tools-and-frameworks.md`](/docs/research/infrastructure/testing-tools-and-frameworks.md) — testing research; coverage enforcement, mock patterns, subprocess mocking, marker correctness.
+4. [`scripts/README.md`](../../scripts/README.md) — for script reviews: catalog coverage, conventions.
+5. [`docs/research/testing-tools-and-frameworks.md`](../../docs/research/infrastructure/testing-tools-and-frameworks.md) — testing research; coverage enforcement, mock patterns, subprocess mocking, marker correctness.
 
-Follows the **programmatic-first** principle from [`AGENTS.md`](/AGENTS.md): tasks performed twice interactively must be encoded as scripts.
+Follows the **programmatic-first** principle from [`AGENTS.md`](../../AGENTS.md): tasks performed twice interactively must be encoded as scripts.
 
 ---
 </context>
@@ -100,7 +100,7 @@ Follows the **programmatic-first** principle from [`AGENTS.md`](/AGENTS.md): tas
 - [ ] For each new or updated D4 doc with `status: Final`: every item in `## Recommendations` is either (a) linked to a GitHub issue (`#NNN` appears in the recommendation text or elsewhere in the PR), or (b) explicitly marked as intentionally deferred with inline rationale in the doc.
 - [ ] For each new or updated D4 doc: every actionable item in `## Open Questions` (containing "ADOPT", "IMPLEMENT", "UPDATE", or other imperative verbs) either has a `#NNN` issue reference or an explicit deferral note.
 - [ ] No `## Recommendations` heading is followed by an "ADOPT" / "IMPLEMENT" / "UPDATE" statement that has no corresponding `#NNN` anywhere in the PR context. Use `grep -n 'ADOPT\|IMPLEMENT\|UPDATE' docs/research/<file>.md` to enumerate items quickly.
-- [ ] PR body or a session comment lists every new issue seeded from this PR's research recommendations, using `Closes #NNN` for issues the PR directly resolves. *(Implements the Research Doc PR Merge Gate from [`AGENTS.md`](/AGENTS.md))*
+- [ ] PR body or a session comment lists every new issue seeded from this PR's research recommendations, using `Closes #NNN` for issues the PR directly resolves. *(Implements the Research Doc PR Merge Gate from [`AGENTS.md`](../../AGENTS.md))*
 
 ### Pre-commit Gate Compliance
 

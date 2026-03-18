@@ -34,11 +34,11 @@ You produce **plans and drafts only** — you do not write final blog posts or p
 
 <context>
 
-1. [`README.md`](/README.md) — the current public face of the project; your strategy must align with and extend this narrative.
-2. [`MANIFESTO.md`](/MANIFESTO.md) — the values and principles; DevRel content must reflect these authentically.
-3. [`docs/research/comms-marketing-bizdev.md`](/docs/research/pm/comms-marketing-bizdev.md) — the research basis for this agent's work; read all findings and open questions.
-4. [`docs/research/oss-documentation-best-practices.md`](/docs/research/oss-documentation-best-practices.md) — OSS community growth patterns.
-5. [`CONTRIBUTING.md`](/CONTRIBUTING.md) — what the contributor experience currently looks like; a key input to DevRel narrative.
+1. [`README.md`](../../README.md) — the current public face of the project; your strategy must align with and extend this narrative.
+2. [`MANIFESTO.md`](../../MANIFESTO.md) — the values and principles; DevRel content must reflect these authentically.
+3. [`docs/research/comms-marketing-bizdev.md`](../../docs/research/pm/comms-marketing-bizdev.md) — the research basis for this agent's work; read all findings and open questions.
+4. [`docs/research/oss-documentation-best-practices.md`](../../docs/research/oss-documentation-best-practices.md) — OSS community growth patterns.
+5. [`CONTRIBUTING.md`](../../CONTRIBUTING.md) — what the contributor experience currently looks like; a key input to DevRel narrative.
 6. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read before acting.
 
 </context>
