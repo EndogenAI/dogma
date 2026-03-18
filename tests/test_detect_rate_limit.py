@@ -456,8 +456,9 @@ class TestDetectRateLimitCLI:
         assert result.stdout.strip() in ["OK", "WARN", "CRITICAL"]
 
     @pytest.mark.slow
-    def test_cli_dry_run_parameter_accepted(self):
-        """CLI should accept --dry-run parameter (issue #322 fix support)."""
+    def test_cli_dry_run_parameter_removed(self):
+        """CLI rejects --dry-run: the flag was removed in Phase 2 as non-functional.
+        Callers must remove --dry-run from any invocations targeting this script."""
         result = subprocess.run(
             [
                 sys.executable,
@@ -470,8 +471,9 @@ class TestDetectRateLimitCLI:
             capture_output=True,
             text=True,
         )
-        assert result.returncode == 0
-        assert "SLEEP_REQUIRED_" in result.stdout.strip()
+        # argparse returns exit code 2 for unrecognised arguments
+        assert result.returncode == 2
+        assert "unrecognized arguments" in result.stderr
 
 
 # ============================================================================

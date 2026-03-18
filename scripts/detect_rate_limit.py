@@ -129,24 +129,16 @@ def detect_rate_limit(
 
     else:
         # Budget exhausted (remaining <= 0)
-        # Compute how long to sleep based on the deficit
-        deficit = total_needed - remaining_tokens
-        # Conservative estimate: assume ~500 tokens/second in rate-limited state
-        # This is a rough heuristic from Sprint 17 observations
-        avg_tokens_per_sec = 500
-        computed_sleep_ms = int((deficit / avg_tokens_per_sec) * 1000)
+        # Issue #322 fix: Policy clamp for budget-exhausted state.
+        # When remaining_tokens <= 0, always sleep PHASE_BOUNDARY_SLEEP_MS (120s).
+        # Rationale:
+        #   - Floor: even a modest computed sleep (e.g. 110s) must be rounded up
+        #     to the full window boundary; partial sleeps waste the window reset.
+        #   - Cap: very large deficits would compute multi-minute sleeps; capping
+        #     at 120s avoids hanging sessions while still respecting the window.
+        # Result: sleep_ms is always exactly PHASE_BOUNDARY_SLEEP_MS at exhaustion.
 
-        # Issue #322 fix: Apply floor THEN cap (not strict max over all)
-        # Floor: minimum sleep must be at least MIN_SLEEP_MS
-        # Cap: sleep must not exceed window duration (window reset boundary)
-        # Previous broken logic: max(computed, PHASE_BOUNDARY_SLEEP_MS, window_ms)
-        # New logic: max(MIN_SLEEP_MS, min(computed_sleep_ms, PHASE_BOUNDARY_SLEEP_MS))
-        # with window_ms as an informational constraint (logged but not enforced)
-
-        # Apply floor
-        sleep_ms = max(computed_sleep_ms, MIN_SLEEP_MS)
-        # Apply cap (PHASE_BOUNDARY_SLEEP_MS is the strict policy cap, not window_ms)
-        sleep_ms = min(sleep_ms, PHASE_BOUNDARY_SLEEP_MS)
+        sleep_ms = PHASE_BOUNDARY_SLEEP_MS
 
         status = f"SLEEP_REQUIRED_{sleep_ms}"
         return (status, sleep_ms)
