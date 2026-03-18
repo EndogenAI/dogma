@@ -15,22 +15,35 @@ scripts/
   watch_scratchpad.py          # File watcher — auto-annotates .tmp/*.md on change (uses watchdog)
   scaffold_agent.py            # Scaffold a new .agent.md stub from a validated template
   scaffold_workplan.py         # Scaffold a docs/plans/YYYY-MM-DD-<slug>.md workplan from template
+  scaffold_manifest.py         # Scaffold a new research manifest.json for a topic; idempotent
   generate_agent_manifest.py   # Emit a JSON or Markdown skills manifest of all .agent.md files
   fetch_source.py              # Fetch a URL into .cache/sources/ and maintain a manifest (no re-fetching)
   fetch_all_sources.py         # Batch-fetch all URLs from OPEN_RESEARCH.md + research doc frontmatter
+  add_source_to_manifest.py    # Append a single source URL to an existing research manifest; rejects duplicates
   link_source_stubs.py         # Populate ## Referenced By sections in per-source stubs (bidirectional link graph)
+  scan_research_links.py       # Scan research docs for broken links to sources and suggest fixes
   validate_synthesis.py        # Quality gate for D3/D4 synthesis documents — run before any Archivist commit (exit 0 = pass, 1 = fail)
   validate_agent_files.py      # Encoding fidelity gate for .agent.md AND SKILL.md files — agent (4 checks) + skill (7 checks); --skills flag; run in CI
+  validate_skill_files.py      # Specialised validator for .github/skills/ SKILL.md files (7 mandatory checks)
+  validate_adr.py              # Validate Architectural Decision Records (ADR) in docs/decisions/ against template and numbering rules
+  validate_session.py          # Validate a session scratchpad against schema and consistency rules
+  validate_session_state.py    # Validate the ## Session State YAML block in scratchpads
+  validate_delegation_routing.py # Cross-check agent handoffs against the delegation routing table in data/delegation-gate.yml
   migrate_agent_xml.py         # Bulk-migrate .agent.md body sections to hybrid Markdown + XML format (--dry-run safe)
   pr_review_reply.py           # Post replies to PR inline review comments and resolve threads (--reply-to, --resolve, --batch)
   seed_labels.py               # Idempotent GitHub label seeder — reads data/labels.yml and syncs via gh label create --force (--dry-run, --delete-legacy)
+  seed_action_items.py         # Seed GitHub issues from action items extracted from research docs
   fetch_toolchain_docs.py      # Cache gh CLI help output as structured Markdown under .cache/toolchain/ (--check, --force, --dry-run)
   wait_for_unblock.py          # Poll a GitHub issue until status:blocked is removed; writes trigger file on exit 0 (--issue, --interval, --timeout, --dry-run)
+  wait_for_github_run.py       # Poll a GitHub Actions run until completion; exits 0 on success, 1 on failure
   detect_drift.py              # Detect value-encoding drift in .agent.md files via watermark-phrase analysis (--agents-dir, --threshold, --fail-below, --format, --output)
   detect_rate_limit.py         # Detect rate-limit budget exhaustion and recommend protective action (sleep injection, phase deferral) — command: --check <remaining_tokens> <phase_cost_estimate>; outputs: OK|WARN|CRITICAL|SLEEP_REQUIRED_NNN
   check_substrate_health.py    # CRD health check for startup-loaded substrate files — reports PASS/WARN/BLOCK per file; exits 1 if any file is below the block threshold (--warn-below, --block-below, --files)
-  audit_provenance.py          # Audit .agent.md files for governs: provenance annotations; report orphaned files and unverifiable axiom citations (--agents-dir, --scope, --manifesto, --format, --output)
-  annotate_provenance.py       # Scan Markdown and .agent.md files for MANIFESTO.md axiom mentions and write governs: frontmatter annotations (--scope, --dry-run, --registry, --manifesto, --no-recurse)
+  check_problems_panel.py      # Audit and count VS Code Problems panel diagnostics; exits 1 if count > 0; --check-only
+  check_doc_links.py           # Validate that relative file links in Markdown docs resolve to existing files
+  audit_provenance.py          # Audit .agent.md files for x-governs: provenance annotations; report orphaned files and unverifiable axiom citations (--agents-dir, --scope, --manifesto, --format, --output)
+  audit_structural_compliance.py # Audit agent fleet for mandatory BDI XML tag compliance and section heading alignment (--target-dir, --format)
+  annotate_provenance.py       # Scan Markdown and .agent.md files for MANIFESTO.md axiom mentions and write x-governs: frontmatter annotations (--scope, --dry-run, --registry, --manifesto, --no-recurse)
   propose_dogma_edit.py        # Programmatic enforcer of the back-propagation protocol — generate ADR-style dogma edit proposals from session evidence (--input, --tier, --affected-axiom, --proposed-delta, --output)
   query_docs.py                # BM25 query CLI over the documentation corpus — scoped retrieval without bulk context loading (query, --scope [manifesto|agents|guides|research|toolchain|skills|all], --top-n, --output text|json)
   weave_links.py               # Inject Markdown cross-reference links across the corpus via a YAML concept registry (--scope, --dry-run, --registry); idempotent
@@ -39,6 +52,7 @@ scripts/
   export_project_state.py      # Export GitHub issue and label state to a local JSON snapshot (.cache/github/project_state.json); --check for cache freshness, --output for custom path
   extract_action_items.py      # Extract and deduplicate action items from D4 research docs (docs/research/*.md); outputs Markdown table; --output FILE, --threshold 0.8
   generate_script_docs.py      # Generate per-script Markdown docs from module docstrings into scripts/docs/; --check for staleness, --dry-run
+  generate_sweep_table.py      # Generate the corpus sweep table for back-propagation planning from research doc metadata
   encoding_coverage.py         # Check MANIFESTO F1-F4 encoding coverage for named principles/axioms; outputs Markdown table (--manifesto, --agents)
   adopt_wizard.py              # Dogma framework onboarding wizard — generates client-values.yml and scaffolds AGENTS.md for new adopters; --org, --repo required; --non-interactive, --load-values, --output-dir flags; runs validate_agent_files.py before reporting success (closes #56, #125)
   orientation_snapshot.py      # Pre-computed session orientation digest — writes .cache/github/orientation-snapshot.md with open issue counts, recent commits, active branches, milestone summary; --branch includes scratchpad ## Session Summary (closes #241)
@@ -52,6 +66,21 @@ scripts/
   afs_index.py                 # B' hybrid SQLite FTS5 keyword index for .tmp/ session scratchpads — commands: init, index, query, status; --q, --field, --format json|table (closes #129)
   analyse_fleet_coupling.py    # NK K-coupling analysis for the agent fleet — reads .agent.md handoffs + data/delegation-gate.yml; computes K per agent, Louvain modularity Q, flags high-K bottlenecks; --format json|table|summary; --threshold (default 6); --output (closes #291)
   suggest_routing.py           # GPS-style delegation routing from free-text task description — keyword match → topo sort → annotated delegation sequence; reads data/task-type-classifier.yml; --format table|json|markdown; --all-steps (closes #292)
+  amplify_context.py           # Context-Sensitive Axiom Amplification — looks up the amplification table in data/amplification-table.yml (closes #142)
+  agent_registry.py            # Local registry of all .agent.md role files; supports posture derivation and attribute filtering (closess #195)
+  correlate_health_metrics.py  # Measure Pearson correlation between health metrics (test coverage, lint density) and cross-reference density (closes #220)
+  create_phase1_research_issues.py # Batch-create Phase 1 Research issues from a structured YAML backlog (closes #225)
+  format_citations.py          # Render ACM-style citations from a bibliography YAML file (closes #180)
+  measure_cross_reference_density.py # Measure MANIFESTO.md axiom citation density across the corpus; outputs metrics for validate_synthesis.py (closes #219)
+  pre_review_sweep.py          # Pre-review checklist automation — checks ruff, pytest, and substrate validation before human review (closes #299)
+  preexec_audit_log.py         # Format and filter the shell pre-execution governor audit log; calculates compliance rate (closes #305)
+  rate_limit_config.py         # CLI manager for data/rate-limit-profiles.yml — add/update provider profiles (closes #323)
+  rate_limit_gate.py           # Pre-delegation rate-limit circuit breaker — checks budget and provider policy before orchestration (closes #325)
+  repaired_audit.py            # Post-audit repair validator — checks that identified gaps in a prior audit result have been resolved (closes #301)
+  token_spin_detector.py       # Detect "token spinning" (repeated loops with no progress) in session logs using Hamming distance and regex entropy (closes #310)
+  test_newlines.py             # Internal utility to test newline handling in terminal scripts
+  test_quotes.py               # Internal utility to test character escaping in terminal scripts
+  test_small.py                # Internal utility for fast shell execution testing
   docs/                        # Per-script generated Markdown documentation (see scripts/docs/README.md)
 ```
 
@@ -954,18 +983,18 @@ automatically when a PR containing `Unblocks #N` in its body is merged to `main`
 
 **Job**: Enable fleet maintainers to verify that every `.agent.md` file traces its instructions back to a MANIFESTO.md axiom, so orphaned or unverifiable provenance chains are detected before merging.
 
-**Purpose**: Audit `.agent.md` files in `.github/agents/` for `governs:` frontmatter annotations that trace each file's instructions back to foundational MANIFESTO.md axioms. Extends `detect_drift.py` (phrasal watermark alignment) and `generate_agent_manifest.py` (cross-reference density) with chain-of-custody tracing at the file level.
+**Purpose**: Audit `.agent.md` files in `.github/agents/` for `x-governs:` frontmatter annotations that trace each file's instructions back to foundational MANIFESTO.md axioms. Extends `detect_drift.py` (phrasal watermark alignment) and `generate_agent_manifest.py` (cross-reference density) with chain-of-custody tracing at the file level.
 
 **Output fields per file**:
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `path` | `str` | Filesystem path to the `.agent.md` file (typically an absolute path under `.github/agents/`) |
-| `citations` | `list[str]` | Normalised axiom names found in `governs:` |
-| `orphaned` | `bool` | `True` if no `governs:` key in frontmatter |
+| `citations` | `list[str]` | Normalised axiom names found in `x-governs:` |
+| `orphaned` | `bool` | `True` if no `x-governs:` key in frontmatter |
 | `unverifiable` | `list[str]` | Axiom names not found as H2/H3 headings in MANIFESTO.md |
 
-**Report-level fields**: `fleet_citation_coverage_pct` (% of files with `governs:`), `total_unverifiable`.
+**Report-level fields**: `fleet_citation_coverage_pct` (% of files with `x-governs:`), `total_unverifiable`.
 
 **Axiom vocabulary** (validated against MANIFESTO.md H2/H3 headings):
 `endogenous-first`, `algorithms-before-tokens`, `local-compute-first`,
