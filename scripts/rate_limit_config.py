@@ -105,7 +105,11 @@ def _load_profiles() -> dict:
     if not data or 'providers' not in data:
         raise ValueError("rate-limit-profiles.yml must have a 'providers' key")
 
-    return data['providers']
+    # Load providers and merge in top-level fallback if present
+    profiles = data['providers'].copy()
+    if 'fallback' in data:
+        profiles['fallback'] = data['fallback']
+    return profiles
 
 
 # Global profiles cache (loaded once at module import)
