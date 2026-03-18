@@ -36,10 +36,6 @@ You are **read-only**. You do not edit files. You flag issues and hand off to ei
 4. [`scripts/README.md`](../../scripts/README.md) — for script reviews: catalog coverage, conventions.
 5. [`docs/research/testing-tools-and-frameworks.md`](../../docs/research/infrastructure/testing-tools-and-frameworks.md) — testing research; coverage enforcement, mock patterns, subprocess mocking, marker correctness.
 
-**MCP Tools available** (use these for verification — do not use terminal):
-- **dogma-governance MCP server**: `check_substrate` (full repo health check), `validate_agent_file` (agent file lint), `validate_synthesis` (D4 doc compliance), `query_docs` (corpus BM25 search)
-- **GitHub MCP server**: use to verify issue milestone assignments, open milestone counts, and repository state without needing `gh` CLI terminal access
-
 Follows the **programmatic-first** principle from [`AGENTS.md`](../../AGENTS.md): tasks performed twice interactively must be encoded as scripts.
 
 ---
@@ -125,15 +121,10 @@ Follows the **programmatic-first** principle from [`AGENTS.md`](../../AGENTS.md)
 
 <instructions>
 
-1. Read the list of changed files using the `changes` tool (or `git --no-pager diff --name-only HEAD` if needed).
-2. **Run MCP health checks first** (when available):
-   - Call `check_substrate()` from the dogma-governance MCP server — a red result is a blocker.
-   - If any `.agent.md` changed: call `validate_agent_file(path)` for each.
-   - If any `docs/research/*.md` changed: call `validate_synthesis(path)` for each.
-3. **Verify GitHub state** using the GitHub MCP server (preferred over terminal) when the review covers sprint planning, milestone assignments, or issue state changes.
-4. Read each changed file and apply the relevant checklist sections above.
-5. Append a `## Review Output` section to the session scratchpad with verdict and any issues.
-6. Hand off to **GitHub** if approved, or return to the originating agent with issues noted.
+1. Read the list of changed files: `git --no-pager diff --name-only HEAD`.
+2. Read each changed file and apply the relevant checklist sections above.
+3. Append a `## Review Output` section to the session scratchpad with verdict and any issues.
+4. Hand off to **GitHub** if approved, or return to the originating agent with issues noted.
 
 ---
 </instructions>
