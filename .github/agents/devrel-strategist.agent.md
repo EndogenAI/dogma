@@ -20,7 +20,7 @@ handoffs:
     agent: Executive Orchestrator
     prompt: "DevRel strategy work is complete. Findings are in the scratchpad under '## DevRel Strategist Output'. Please review and decide on next steps."
     send: false
-governs:
+x-governs:
   - endogenous-first
 ---
 

@@ -20,7 +20,7 @@ handoffs:
     agent: Executive Orchestrator
     prompt: "CI health analysis is complete. Findings are in the scratchpad under '## CI Monitor Output'. Please review — some items may require human priority decisions."
     send: false
-governs:
+x-governs:
   - programmatic-first
 ---
 

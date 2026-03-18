@@ -16,7 +16,7 @@ handoffs:
     prompt: "Review found issues that must be addressed before committing. Please see the review notes in the session scratchpad under '## Review Output'."
     send: false
 
-governs:
+x-governs:
   - programmatic-first
 ---
 

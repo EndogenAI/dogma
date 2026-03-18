@@ -10,7 +10,7 @@ description: |
   DO NOT USE FOR: same-session insight capture (use session-retrospective instead);
   mid-phase check-ins; tasks where no prior session artifacts exist for the branch.
 argument-hint: "branch or sprint name to mine (e.g. feat/issue-146 or milestone-9)"
-governs:
+x-governs:
   - session-retrospective
   - session-management
 closes_issue: "#146"

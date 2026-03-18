@@ -26,7 +26,7 @@ handoffs:
     agent: Executive Orchestrator
     prompt: "Release work is complete. Please review and decide on next steps."
     send: false
-governs:
+x-governs:
   - algorithms-before-tokens
 ---
 

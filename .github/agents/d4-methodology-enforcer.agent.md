@@ -19,7 +19,7 @@ handoffs:
     agent: Executive Orchestrator
     prompt: "Methodology review complete. Verdict and findings in `## D4 Methodology Enforcer Output`. Please decide on remediation."
     send: false
-governs:
+x-governs:
   - endogenous-first
   - programmatic-first
   - minimal-posture

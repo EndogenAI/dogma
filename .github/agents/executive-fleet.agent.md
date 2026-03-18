@@ -29,7 +29,7 @@ handoffs:
     prompt: "A fleet change requires a documentation update beyond README.md — guides, AGENTS.md, or CONTRIBUTING.md may need to reflect a new agent or deprecated one. Please apply documentation updates and commit."
     send: false
 
-governs:
+x-governs:
   - minimal-posture
 ---
 

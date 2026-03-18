@@ -76,7 +76,7 @@ handoffs:
     agent: Executive Scripter
     prompt: "Research is complete. If any research tasks should be scripted, please assess."
     send: false
-governs:
+x-governs:
   - endogenous-first
   - programmatic-first
 ---

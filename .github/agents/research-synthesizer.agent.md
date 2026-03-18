@@ -13,7 +13,7 @@ handoffs:
     prompt: "Synthesis draft is complete and saved to docs/research/. Please review and decide whether to send to Research Reviewer or cycle back for additional scouting."
     send: false
 
-governs:
+x-governs:
   - programmatic-first
 ---
 

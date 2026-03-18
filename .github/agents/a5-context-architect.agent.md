@@ -19,7 +19,7 @@ handoffs:
     agent: Executive Docs
     prompt: "Context layering conventions are approved. Please encode them in `docs/guides/session-management.md` and `AGENTS.md`."
     send: false
-governs:
+x-governs:
   - endogenous-first
 ---
 

@@ -29,7 +29,7 @@ handoffs:
     agent: Executive Researcher
     prompt: "MCP architecture research is complete. Findings are in the scratchpad under '## MCP Architect Output'. Please review and decide next steps."
     send: false
-governs:
+x-governs:
   - local-compute-first
 ---
 

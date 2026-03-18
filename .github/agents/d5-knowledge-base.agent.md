@@ -19,7 +19,7 @@ handoffs:
     agent: Executive Orchestrator
     prompt: "Knowledge base audit complete. Queue status is in `## D5 Knowledge Base Output` in the scratchpad."
     send: false
-governs:
+x-governs:
   - endogenous-first
 ---
 

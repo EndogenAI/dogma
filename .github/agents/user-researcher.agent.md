@@ -19,7 +19,7 @@ handoffs:
     agent: Executive PM
     prompt: "User research synthesis is complete. A JTBD summary and friction report have been written to docs/research/user-research-<YYYY-MM>.md. Please review the findings and decide on follow-up actions — label taxonomy updates, Discussion thread update, or issue triage based on friction findings."
     send: false
-governs:
+x-governs:
   - endogenous-first
 ---
 

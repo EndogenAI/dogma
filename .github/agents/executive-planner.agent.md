@@ -16,7 +16,7 @@ handoffs:
     prompt: "Planning is complete. The structured plan is in the scratchpad under '## Plan — <title>'. Please review and approve before any execution begins."
     send: false
 
-governs:
+x-governs:
   - endogenous-first
   - programmatic-first
 ---

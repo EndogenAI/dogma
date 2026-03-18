@@ -17,7 +17,7 @@ handoffs:
     agent: Executive Orchestrator
     prompt: "Issue triage is complete. Findings are in the scratchpad under '## Issue Triage Output'. Please review and decide next steps."
     send: false
-governs:
+x-governs:
   - programmatic-first
 ---
 

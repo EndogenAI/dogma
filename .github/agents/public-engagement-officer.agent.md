@@ -11,7 +11,7 @@ handoffs:
     agent: executive-orchestrator
     prompt: ""
     send: false
-governs:
+x-governs:
   - ethical-values
 ---
 

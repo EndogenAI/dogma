@@ -29,7 +29,7 @@ handoffs:
     agent: Review
     prompt: "Security research output is ready for final review before committing. Please check the changed files against AGENTS.md constraints."
     send: false
-governs:
+x-governs:
   - minimal-posture
 ---
 

@@ -3,10 +3,10 @@ annotate_provenance.py
 ----------------------
 Purpose:
     Scans Markdown and .agent.md files in a given scope for MANIFESTO.md axiom
-    name mentions in the file body and suggests (or writes in-place) a 'governs:'
+    name mentions in the file body and suggests (or writes in-place) a 'x-governs:'
     YAML frontmatter annotation linking the file to the axioms it references.
 
-    Enacts Pattern P1 (File-Level Provenance via governs: Annotation) from
+    Enacts Pattern P1 (File-Level Provenance via x-governs: Annotation) from
     docs/research/value-provenance.md: makes the chain-of-custody relationship
     between agent files and foundational axioms explicit and machine-checkable.
 
@@ -23,10 +23,10 @@ Inputs:
     --no-recurse         Process only files directly in --scope (no subdirectories)
 
 Outputs:
-    For each file that receives (or would receive) a governs: annotation:
-        [ANNOTATE] path/to/file.md  governs: [axiom-one, axiom-two]
+    For each file that receives (or would receive) a x-governs: annotation:
+        [ANNOTATE] path/to/file.md  x-governs: [axiom-one, axiom-two]
     For files already annotated:
-        [SKIP] path/to/file.md  already has governs:
+        [SKIP] path/to/file.md  already has x-governs:
     For files with no axiom mentions:
         [SKIP] path/to/file.md  no axiom mentions found
     Summary line: "N files annotated (or would annotate), M files skipped"
@@ -73,7 +73,7 @@ def find_repo_root() -> Path:
 
 class Axiom(NamedTuple):
     display_name: str  # original heading text after stripping numeric prefix
-    norm_name: str  # lowercase-hyphenated form used in governs: values
+    norm_name: str  # lowercase-hyphenated form used in x-governs: values
 
 
 def _strip_numeric_prefix(heading: str) -> str:
@@ -139,8 +139,8 @@ def extract_frontmatter(text: str) -> tuple[str | None, int]:
     return None, 0
 
 
-def has_governs_annotation(text: str) -> bool:
-    """Return True if text has a non-empty governs: frontmatter field."""
+def has_x_governs_annotation(text: str) -> bool:
+    """Return True if text has a non-empty x-governs: frontmatter field."""
     fm_raw, _ = extract_frontmatter(text)
     if fm_raw is None:
         return False
@@ -148,13 +148,13 @@ def has_governs_annotation(text: str) -> bool:
         fm_data = yaml.safe_load(fm_raw) or {}
     except yaml.YAMLError:
         # Fallback: regex check
-        return bool(re.search(r"^governs\s*:", fm_raw, re.MULTILINE))
-    governs = fm_data.get("governs")
-    if governs is None:
+        return bool(re.search(r"^x-governs\s*:", fm_raw, re.MULTILINE))
+    x_governs = fm_data.get("x-governs")
+    if x_governs is None:
         return False
-    if isinstance(governs, list):
-        return len(governs) > 0
-    return bool(str(governs).strip())
+    if isinstance(x_governs, list):
+        return len(x_governs) > 0
+    return bool(str(x_governs).strip())
 
 
 # ---------------------------------------------------------------------------
@@ -177,37 +177,37 @@ def find_axiom_mentions(body: str, axioms: list[Axiom]) -> list[Axiom]:
 # ---------------------------------------------------------------------------
 
 
-def build_governs_block(axioms: list[Axiom]) -> str:
-    """Build a YAML governs: block string (without trailing newline)."""
-    lines = ["governs:"]
+def build_x_governs_block(axioms: list[Axiom]) -> str:
+    """Build a YAML x-governs: block string (without trailing newline)."""
+    lines = ["x-governs:"]
     for a in axioms:
         lines.append(f"  - {a.norm_name}")
     return "\n".join(lines)
 
 
-def insert_governs_into_frontmatter(text: str, governs_block: str) -> str:
-    """Insert governs: block before the closing --- of existing frontmatter."""
+def insert_x_governs_into_frontmatter(text: str, x_governs_block: str) -> str:
+    """Insert x-governs: block before the closing --- of existing frontmatter."""
     match = re.match(r"^(---\r?\n.*?)(\r?\n---\r?\n?)", text, re.DOTALL)
     if match:
         fm_content = match.group(1)
         closing = match.group(2)
         rest = text[match.end() :]
-        return fm_content + "\n" + governs_block + closing + rest
+        return fm_content + "\n" + x_governs_block + closing + rest
     return text
 
 
-def prepend_frontmatter(text: str, governs_block: str) -> str:
+def prepend_frontmatter(text: str, x_governs_block: str) -> str:
     """Prepend a new frontmatter block to a file that has none."""
-    return f"---\n{governs_block}\n---\n\n" + text
+    return f"---\n{x_governs_block}\n---\n\n" + text
 
 
-def apply_governs_annotation(text: str, axioms: list[Axiom]) -> str:
-    """Add governs: annotation to file content. Returns modified text."""
-    governs_block = build_governs_block(axioms)
+def apply_x_governs_annotation(text: str, axioms: list[Axiom]) -> str:
+    """Add x-governs: annotation to file content. Returns modified text."""
+    x_governs_block = build_x_governs_block(axioms)
     fm_raw, _ = extract_frontmatter(text)
     if fm_raw is not None:
-        return insert_governs_into_frontmatter(text, governs_block)
-    return prepend_frontmatter(text, governs_block)
+        return insert_x_governs_into_frontmatter(text, x_governs_block)
+    return prepend_frontmatter(text, x_governs_block)
 
 
 # ---------------------------------------------------------------------------
@@ -220,11 +220,11 @@ def process_file(
     axioms: list[Axiom],
     dry_run: bool,
 ) -> tuple[str, list[str]]:
-    """Process a single file for governs: annotation.
+    """Process a single file for x-governs: annotation.
 
     Returns (status, suggested_axiom_norms) where status is one of:
       'annotated'            — annotation written (or would be, if dry_run)
-      'skipped_existing'     — file already has governs:
+      'skipped_existing'     — file already has x-governs:
       'skipped_no_mentions'  — no axiom mentions found in body
       'error'                — I/O or read error
     """
@@ -234,7 +234,7 @@ def process_file(
         print(f"WARNING: cannot read {filepath}: {exc}", file=sys.stderr)
         return "error", []
 
-    if has_governs_annotation(text):
+    if has_x_governs_annotation(text):
         return "skipped_existing", []
 
     _, fm_end = extract_frontmatter(text)
@@ -245,7 +245,7 @@ def process_file(
         return "skipped_no_mentions", []
 
     if not dry_run:
-        new_text = apply_governs_annotation(text, found)
+        new_text = apply_x_governs_annotation(text, found)
         try:
             filepath.write_text(new_text, encoding="utf-8")
         except OSError as exc:
@@ -271,7 +271,7 @@ def collect_files(scope: Path, no_recurse: bool) -> list[Path]:
 def main(argv: list[str] | None = None) -> int:
     repo_root = find_repo_root()
     parser = argparse.ArgumentParser(
-        description="Annotate files with governs: frontmatter based on MANIFESTO.md axiom mentions."
+        description="Annotate files with x-governs: frontmatter based on MANIFESTO.md axiom mentions."
     )
     parser.add_argument(
         "--scope",
@@ -333,10 +333,10 @@ def main(argv: list[str] | None = None) -> int:
         if status == "annotated":
             annotated += 1
             label = "[DRY RUN] Would annotate" if args.dry_run else "[ANNOTATE]"
-            print(f"{label} {display_path}  governs: [{', '.join(suggested)}]")
+            print(f"{label} {display_path}  x-governs: [{', '.join(suggested)}]")
         elif status == "skipped_existing":
             skipped += 1
-            print(f"[SKIP] {display_path}  already has governs:")
+            print(f"[SKIP] {display_path}  already has x-governs:")
         elif status == "skipped_no_mentions":
             skipped += 1
             print(f"[SKIP] {display_path}  no axiom mentions found")

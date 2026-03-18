@@ -17,7 +17,7 @@ handoffs:
     prompt: "Archiving is complete. The research document has been committed. Please decide on next steps — update guides, notify Executive Docs, or close the GitHub issue."
     send: false
 
-governs:
+x-governs:
   - documentation-first
 ---
 

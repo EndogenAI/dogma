@@ -25,7 +25,7 @@ handoffs:
     agent: Review
     prompt: "Local compute research output is ready for review. Please check changed files against AGENTS.md constraints before committing."
     send: false
-governs:
+x-governs:
   - local-compute-first
 ---
 

@@ -20,7 +20,7 @@ handoffs:
     agent: Executive Orchestrator
     prompt: "Community health pulse is complete. Report is in the scratchpad under '## Community Pulse Output'. Please review and surface any signals that require executive action."
     send: false
-governs:
+x-governs:
   - programmatic-first
 ---
 

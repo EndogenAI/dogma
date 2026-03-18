@@ -17,7 +17,7 @@ handoffs:
     agent: Executive Orchestrator
     prompt: "LLM cost optimization analysis is complete. Findings are in the scratchpad under '## LLM Cost Optimizer Output'. Please review and decide which model tier recommendations to adopt as project defaults."
     send: false
-governs:
+x-governs:
   - algorithms-before-tokens
   - local-compute-first
 ---

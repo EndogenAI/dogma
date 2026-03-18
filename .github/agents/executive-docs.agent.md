@@ -36,7 +36,7 @@ handoffs:
     agent: Executive Fleet
     prompt: "Documentation complete. Please audit agent files for consistency."
     send: false
-governs:
+x-governs:
   - endogenous-first
   - documentation-first
 ---

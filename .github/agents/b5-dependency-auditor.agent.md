@@ -19,7 +19,7 @@ handoffs:
     agent: Executive Orchestrator
     prompt: "Dependency audit complete. Findings are in `## B5 Dependency Auditor Output`. Please decide on remediation approach."
     send: false
-governs:
+x-governs:
   - minimal-posture
 ---
 

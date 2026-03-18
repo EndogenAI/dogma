@@ -15,7 +15,7 @@ handoffs:
     agent: Executive Orchestrator
     prompt: "Environment validation is complete. Findings are in the scratchpad under '## Env Validator Output'. Please review — some items may require human decision on version pinning."
     send: false
-governs:
+x-governs:
   - programmatic-first
 ---
 

@@ -15,7 +15,7 @@ handoffs:
     agent: Review
     prompt: "Docs lint audit complete. Advisory report is in the scratchpad under '## Docs Linter Output'. Please validate that changed docs now pass all listed checks before any commit."
     send: false
-governs:
+x-governs:
   - endogenous-first
   - documentation-first
 ---

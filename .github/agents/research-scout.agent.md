@@ -12,7 +12,7 @@ handoffs:
     prompt: "Source survey is complete. Raw findings have been appended to the session scratchpad under '## Scout Output'. Please review and decide on the next step."
     send: false
 
-governs:
+x-governs:
   - endogenous-first
 ---
 

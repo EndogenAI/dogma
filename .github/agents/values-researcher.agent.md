@@ -25,7 +25,7 @@ handoffs:
     agent: Executive Researcher
     prompt: "Values research is complete. Findings are in the scratchpad under '## Values Researcher Output'. Please review and decide next steps."
     send: false
-governs:
+x-governs:
   - endogenous-first
   - programmatic-first
 ---

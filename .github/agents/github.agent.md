@@ -12,7 +12,7 @@ handoffs:
     prompt: "All commits for this session are complete. Please do a final summary review of all changes on this branch before a pull request is opened."
     send: false
 
-governs:
+x-governs:
   - algorithms-before-tokens
 ---
 

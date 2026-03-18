@@ -37,7 +37,7 @@ handoffs:
     prompt: "If automation involves agent workflows, please audit."
     send: false
 
-governs:
+x-governs:
   - programmatic-first
 ---
 

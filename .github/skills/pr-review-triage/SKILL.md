@@ -8,7 +8,7 @@ description: |
   committed; distinguishing nits to acknowledge from blockers that gate merge. DO NOT USE FOR:
   posting individual replies one-by-one (use pr-review-reply skill instead); authoring the
   initial PR description; re-requesting review before replies are posted.
-governs:
+x-governs:
   - review-response
   - pr-workflow
 ---

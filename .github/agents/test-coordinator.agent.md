@@ -15,7 +15,7 @@ handoffs:
     agent: Executive Orchestrator
     prompt: "Test coordination is complete. Findings and recommendations are in the scratchpad under '## Test Coordinator Output'. Please review — some items may require updating CI config."
     send: false
-governs:
+x-governs:
   - programmatic-first
 ---
 

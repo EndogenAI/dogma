@@ -1,10 +1,10 @@
 """
 tests/test_annotate_provenance.py
 ----------------------------------
-Tests for scripts/annotate_provenance.py — governs: frontmatter annotation tool.
+Tests for scripts/annotate_provenance.py — x-governs: frontmatter annotation tool.
 
 Covers:
-- Happy path: file without governs: gets annotated when body mentions an axiom
+- Happy path: file without x-governs: gets annotated when body mentions an axiom
 - Idempotency: file already annotated is skipped unchanged
 - --dry-run: no files written; stdout shows proposed annotation
 - Missing registry: exits with code 1
@@ -106,7 +106,7 @@ def _make_axioms(ap_mod, manifesto, registry):
 
 
 # ---------------------------------------------------------------------------
-# Happy path: file without governs: gets annotated
+# Happy path: file without x-governs: gets annotated
 # ---------------------------------------------------------------------------
 
 
@@ -121,7 +121,7 @@ class TestHappyPath:
         assert status == "annotated"
         assert any("endogenous-first" in s for s in suggested)
         content = target.read_text()
-        assert "governs:" in content
+        assert "x-governs:" in content
         assert "endogenous-first" in content
 
     def test_suggested_axioms_include_at_least_one(self, ap_mod, manifesto, registry, tmp_path):
@@ -146,7 +146,7 @@ class TestHappyPath:
         content = target.read_text()
 
         assert content.startswith("---\n")
-        assert "governs:" in content
+        assert "x-governs:" in content
         assert "endogenous-first" in content
         # Original frontmatter keys preserved
         assert "name: myagent" in content
@@ -160,7 +160,7 @@ class TestHappyPath:
         content = target.read_text()
 
         assert content.startswith("---\n")
-        assert "governs:" in content
+        assert "x-governs:" in content
 
     def test_multiple_axioms_annotated(self, ap_mod, manifesto, registry, tmp_path):
         target = tmp_path / "multi.md"
@@ -183,7 +183,7 @@ class TestHappyPath:
 
 class TestIdempotency:
     def test_skips_file_with_existing_governs(self, ap_mod, manifesto, registry, tmp_path):
-        original = "---\ngoverns:\n  - endogenous-first\n---\n\nBody with Endogenous-First.\n"
+        original = "---\nx-governs:\n  - endogenous-first\n---\n\nBody with Endogenous-First.\n"
         target = tmp_path / "annotated.md"
         target.write_text(original, encoding="utf-8")
 
@@ -194,7 +194,7 @@ class TestIdempotency:
         assert suggested == []
 
     def test_file_content_unchanged_when_skipped(self, ap_mod, manifesto, registry, tmp_path):
-        original = "---\ngoverns:\n  - programmatic-first\n---\n\nBody.\n"
+        original = "---\nx-governs:\n  - programmatic-first\n---\n\nBody.\n"
         target = tmp_path / "annotated.md"
         target.write_text(original, encoding="utf-8")
 
@@ -212,7 +212,7 @@ class TestIdempotency:
         ap_mod.process_file(target, axioms, dry_run=False)
 
         content = target.read_text()
-        assert content.count("governs:") == 1
+        assert content.count("x-governs:") == 1
 
 
 # ---------------------------------------------------------------------------
@@ -350,7 +350,7 @@ class TestNoAxiomMentions:
 
         assert status == "skipped_no_mentions"
         assert suggested == []
-        assert "governs:" not in target.read_text()
+        assert "x-governs:" not in target.read_text()
 
     def test_no_mentions_cli_exits_0(self, ap_mod, manifesto, registry, tmp_path, capsys):
         scope_dir = tmp_path / "scope"
@@ -389,21 +389,21 @@ class TestNoAxiomMentions:
 
 
 class TestHelpers:
-    def test_has_governs_annotation_list_form(self, ap_mod):
-        text = "---\ngoverns:\n  - endogenous-first\n---\n\nBody.\n"
-        assert ap_mod.has_governs_annotation(text) is True
+    def test_has_x_governs_annotation_list_form(self, ap_mod):
+        text = "---\nx-governs:\n  - endogenous-first\n---\n\nBody.\n"
+        assert ap_mod.has_x_governs_annotation(text) is True
 
-    def test_has_governs_annotation_scalar_form(self, ap_mod):
-        text = "---\ngoverns: endogenous-first\n---\n\nBody.\n"
-        assert ap_mod.has_governs_annotation(text) is True
+    def test_has_x_governs_annotation_scalar_form(self, ap_mod):
+        text = "---\nx-governs: endogenous-first\n---\n\nBody.\n"
+        assert ap_mod.has_x_governs_annotation(text) is True
 
-    def test_has_governs_annotation_false_when_missing(self, ap_mod):
+    def test_has_x_governs_annotation_false_when_missing(self, ap_mod):
         text = "---\nname: foo\n---\n\nBody.\n"
-        assert ap_mod.has_governs_annotation(text) is False
+        assert ap_mod.has_x_governs_annotation(text) is False
 
-    def test_has_governs_annotation_false_when_no_frontmatter(self, ap_mod):
+    def test_has_x_governs_annotation_false_when_no_frontmatter(self, ap_mod):
         text = "# Title\n\nNo frontmatter.\n"
-        assert ap_mod.has_governs_annotation(text) is False
+        assert ap_mod.has_x_governs_annotation(text) is False
 
     def test_load_axioms_from_manifesto(self, ap_mod, manifesto):
         axioms = ap_mod.load_axioms_from_manifesto(manifesto)

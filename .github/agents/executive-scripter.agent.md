@@ -37,7 +37,7 @@ handoffs:
     agent: Executive Researcher
     prompt: "Research task identified for scripting. Please hand off if needed."
     send: false
-governs:
+x-governs:
   - programmatic-first
 ---
 

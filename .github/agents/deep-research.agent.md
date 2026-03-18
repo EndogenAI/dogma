@@ -237,7 +237,7 @@ handoffs:
       Update status to Final, route through Review agent for commit gate, commit, push.
       Closes issue referenced in frontmatter.
     send: false
-governs:
+x-governs:
   - endogenous-first
 ---
 

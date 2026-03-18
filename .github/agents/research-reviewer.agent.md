@@ -12,7 +12,7 @@ handoffs:
     prompt: "Review is complete. Findings have been appended to the session scratchpad under '## Reviewer Output'. If issues were found, please cycle back to the Synthesizer. If approved, delegate to the Research Archivist."
     send: false
 
-governs:
+x-governs:
   - endogenous-first
   - programmatic-first
 ---
