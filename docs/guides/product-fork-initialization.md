@@ -67,15 +67,14 @@ This runs interactively, prompts for `project_name`, `domain`, `team_size`, `ci`
 Create a true fork with an upstream tracking relationship:
 
 ```bash
-gh repo fork EndogenAI/dogma --clone
-cd dogma
-git remote rename origin rag  # Rename origin to your project name
+gh repo fork EndogenAI/dogma --clone my-project
+cd my-project
 git remote add upstream https://github.com/EndogenAI/dogma.git
 git config branch.main.remote upstream
 git config branch.main.merge refs/heads/main
 ```
 
-This preserves the **fork relationship**: you can pull upstream improvements and push discoveries back as PRs. GitHub's interface will show RAG as `EndogenAI/rag` (forked from `EndogenAI/dogma`).
+This preserves the **fork relationship**: you can pull upstream improvements and push discoveries back as PRs. GitHub's interface will show your project as `EndogenAI/my-project` (forked from `EndogenAI/dogma`). The local folder is named `my-project` to match your project name.
 
 **Values inheritance for forks**: A fork-based repo *inherits* dogma's `MANIFESTO.md` axioms and extends them via `client-values.yml` — it does not replace them. When Step 2 runs the adoption wizard, treat your fork's `mission` and `priorities` as *specializations* of dogma's values, not replacements.
 
@@ -111,7 +110,7 @@ uv run python scripts/adopt_wizard.py --org MyOrg --repo myproject
 **For fork-based repos**, add the `--fork` flag to signal upstream tracking:
 
 ```bash
-uv run python scripts/adopt_wizard.py --org EndogenAI --repo rag --fork
+uv run python scripts/adopt_wizard.py --org MyOrg --repo my-project --fork
 ```
 
 The wizard:
@@ -213,7 +212,7 @@ If the remotes are missing or incorrect, re-run the setup from Step 1B.
 Create a `.github/FORK_LEARNINGS.md` file to track discoveries during validation that should inform dogma's future iterations:
 
 ```markdown
-# RAG Fork Learnings
+# Fork Learnings
 
 ## Discoveries
 
@@ -223,16 +222,16 @@ Create a `.github/FORK_LEARNINGS.md` file to track discoveries during validation
 - [ ] How should agent tools/postures differ when operating in a fork vs. a standalone repo?
 
 ### Execution Insights (Inform dogma's agent design)
-- [ ] What new skills or agents did we need to add for RAG that aren't in dogma yet?
-- [ ] Did any dogma workflows need simplification or restructuring to scale to RAG's scope?
-- [ ] What domain patterns in RAG discovery could become reusable SKILL.md files in dogma?
+- [ ] What new skills or agents did we need to add for this project that aren't in dogma yet?
+- [ ] Did any dogma workflows need simplification or restructuring to scale to this project's scope?
+- [ ] What domain patterns in this project's discovery could become reusable SKILL.md files in dogma?
 
 ### Research Findings (Seed dogma doc updates)
 - [ ] What did we learn about [topic] that should update docs/research/?
 - [ ] Are there failure modes in the dogma workflow that we discovered but dogma hasn't documented?
 
 ## Commits That Discovered Changes
-- #420: "agents: add rag-specific skills" → dogma PR potential
+- #420: "agents: add project-specific skills" → dogma PR potential
 - #435: "fix: adoption wizard fork-awareness" → dogma patch candidate
 
 ## Pending Pull Requests to dogma
@@ -273,11 +272,33 @@ For **fork-based repos only**, also push an initial tracking branch to make the 
 ```bash
 git push upstream main:main --force-with-lease  # Ensure you're not accidentally overwriting upstream
 # If you've made changes, create a feature branch instead:
-git checkout -b fork/initialize-rag
-git push rag fork/initialize-rag
+git checkout -b fork/initialize
+git push origin fork/initialize
 ```
 
 Then verify the fork relationship is visible on GitHub: navigate to your fork's page and confirm the "forked from EndogenAI/dogma" link appears.
+
+### 6A — For Agents Automating Fork Initialization
+
+If an agent is automating this fork setup, **before your session ends**, verify and restore repo state:
+
+```bash
+# Verify remotes are correct
+git remote -v  # should show origin → your fork, upstream → EndogenAI/dogma
+
+# Confirm you haven't modified upstream or origin during work
+git config branch.main.remote  # should output "upstream"
+```
+
+If you modified these during your session, reset them before exiting:
+
+```bash
+# Fix if you accidentally changed them
+git remote set-url origin <your-fork-url>
+git remote set-url upstream https://github.com/EndogenAI/dogma.git
+```
+
+**Why this matters**: Leaving remotes in an incorrect state breaks the fork relationship for future sessions and human contributors. This guardrail prevents the class of errors that occurred during prior fork setup (upstream remotes accidentally pointing to wrong origins, breaking subsequent agent and human workflows).
 
 ---
 
@@ -313,19 +334,18 @@ Then verify the fork relationship is visible on GitHub: navigate to your fork's 
 
 ### (Fork-Based) Upstream remote is not set up
 
-**Cause**: Step 1B was skipped or executed incorrectly, or the remotes were renamed incorrectly.
+**Cause**: Step 1B was skipped or executed incorrectly.
 
 **Fix**: Manually configure remotes:
 
 ```bash
-git remote rename origin rag  # if not already done
 git remote add upstream https://github.com/EndogenAI/dogma.git
 git config branch.main.remote upstream
 git config branch.main.merge refs/heads/main
 git fetch upstream
 ```
 
-Verify: `git remote -v` should show `rag` and `upstream` separately.
+Verify: `git remote -v` should show `origin` (your fork) and `upstream` (dogma) separately.
 
 ---
 
