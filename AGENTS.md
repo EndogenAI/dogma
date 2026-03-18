@@ -142,6 +142,16 @@ Exit codes: 0 if all new files are documented, 1 if integration gaps found, 2 if
 
 Gaps are warnings at review time (via Review agent criterion 8) and enforcement points at CI.
 
+### New Tool Encoding Gate
+
+**Before adopting any external tool** (GitHub Actions action, PyPI package, third-party API), agents must confirm all three criteria below — in order — before writing any implementation code. This gate instantiates [MANIFESTO.md § 1 Endogenous-First](MANIFESTO.md#1-endogenous-first) and the [Programmatic-First Principle](#programmatic-first-principle). See also the [Research-before-implement for external tools](#programmatic-first-principle) rule in that section.
+
+1. **No internal overlap** — confirm no existing script covers ≥ 60% of the use case by checking `scripts/` and running `uv run python scripts/check_fleet_integration.py`. If overlap is found, extend the existing script rather than adopting the external tool.
+2. **Ethics rubric pass** — confirm the tool satisfies ≥ 3 criteria from the ethical-values procurement rubric in [`docs/governance/ethical-values-procurement.md`](docs/governance/ethical-values-procurement.md). Document the qualifying criteria explicitly in the D4 research doc (see criterion 3).
+3. **D4 research doc first** — document the adoption decision in a D4 research doc under `docs/research/` before writing any implementation code. The research doc is the gate; implementation cannot begin until the doc is committed and criteria 1 and 2 are recorded in it.
+
+**Failure mode**: Skipping criterion 1 produces redundant tooling and encoding fragmentation. Skipping criterion 2 introduces unvetted external dependencies that may violate governance constraints. Skipping criterion 3 means the adoption rationale is not encoded — making it invisible to future agents who re-encounter the same decision.
+
 ### `claude -p` Print Mode Policy
 
 This project uses Claude exclusively as its model. For single-query tasks that don't require interactive agent sessions, use print mode to reduce the ~50K per-session token overhead:
