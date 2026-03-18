@@ -20,6 +20,7 @@
         "git fetch": true,
         "uniq": true,
         "git check-ignore": true,
-        "git remote": true
+        "git remote": true,
+        "timeout": true
     }
 }
