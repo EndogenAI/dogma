@@ -89,13 +89,11 @@ VS Code documentation states "If a given tool is not available when using the cu
 
 ## Recommendations
 
-### RQ-A: `governs:` attribute errors — ACCEPT AS PERMANENT NON-BLOCKING
+### RQ-A: `governs:` attribute errors — RENAME TO `x-governs:` (issue #390)
 
 **Finding**: No VS Code user setting suppresses `prompts-diagnostics-provider` frontmatter validation. The `governs:` key is not in the official custom-agent schema and will never be recognized unless GitHub ships a schema update or adds `additionalProperties: true`.
 
-**Recommendation**: Accept the 38 `Attribute 'governs' is not supported` errors as permanent non-blocking informational warnings. Document this in `AGENTS.md` (§ Guardrails) so future contributors are not misled into attempting to suppress them. Do not remove `governs:` from frontmatter — it provides governance traceability and is consumed by `scripts/validate_agent_files.py`.
-
-**Optional path**: If the noise is operationally disruptive, migrate `governs:` from YAML frontmatter to a YAML code block in the agent body (e.g. `<!-- governs: [endogenous-first] -->`). This removes the frontmatter attribute without losing the governance signal. Requires updating `validate_agent_files.py` to parse the body instead of frontmatter for this key. Defer until it becomes a real workflow blocker.
+**Recommendation**: Rename `governs:` to `x-governs:` in all `.agent.md` and `SKILL.md` frontmatter (tracked as issue #390). This eliminates all 40 Category A errors at the source. The previous recommendation to accept these as permanent non-blocking was wrong: it only asked whether VS Code settings could suppress the errors, not whether our own files could be changed to avoid them entirely. Update `scripts/validate_agent_files.py` to read `x-governs:` after the rename.
 
 ---
 
@@ -119,8 +117,7 @@ The glob syntax change is a net improvement regardless: it reduces frontmatter v
 
 **Recommendation**: Do not attempt further settings-based suppression. The only durable remediation paths are:
 - Fix the root cause of each error category (recommendations for RQ-A, RQ-B, RQ-D)
-- Accept residual errors that cannot be fixed at the source (Category A `governs:`)
-- Add a project documentation note (in `docs/guides/` or AGENTS.md) that Documents: "After all fixes: ~38 `Copilot Chat schema` warnings for `governs:` are expected and non-blocking."
+- Rename `governs:` → `x-governs:` in all agent/skill frontmatter to eliminate Category A errors at the source (issue #390)
 
 ---
 

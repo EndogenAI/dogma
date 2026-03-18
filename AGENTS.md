@@ -784,6 +784,8 @@ find . -name 'AGENTS.md' | grep -v node_modules
 
 **Default posture: stop and ask before any ambiguous or irreversible action.**
 
+**Research framing**: When a research question asks "can we suppress X in tool Y?", also ask "can we change our own files to avoid X entirely?"
+
 ### Session Continuation Handoff
 
 When starting a new session on an existing branch, **always reference the scratchpad before delegating**. Use this standard prompt:

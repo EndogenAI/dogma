@@ -433,7 +433,8 @@ After compaction, the new session starts with the `<conversation-summary>` block
 1. **Re-read the scratchpad** — `read_file .tmp/<branch>/<date>.md`
 2. **Re-read the workplan** — `read_file docs/plans/<current-plan>.md`
 3. **Run `git status`** — confirms what is committed vs. in-flight
-4. **Do not assume the compaction summary captured everything** — verify from files, not from the summary
+4. **Run `git stash list`** — surface any pre-existing stashed changes that may contain relevant fixes
+5. **Do not assume the compaction summary captured everything** — verify from files, not from the summary
 
 ### Writing Habits for Compaction Resilience
 
