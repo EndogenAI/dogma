@@ -38,7 +38,7 @@ jobs:
         run: uv sync --extra dev --extra mcp
 
       - name: Run pytest with coverage
-        run: uv run pytest tests/ --cov=scripts --cov-report=term-missing --cov-report=xml -v
+        run: uv run pytest tests/ --cov=scripts --cov=mcp_server --cov-report=term-missing --cov-report=xml -v
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3

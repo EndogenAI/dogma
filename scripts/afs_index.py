@@ -222,6 +222,11 @@ def index_files(db_path: Path, md_files: list[Path]) -> int:
         # Delete existing rows for this file (keyed by date+branch)
         date_str = md.stem
         branch = md.parent.name
+        # Skip files whose stem does not match YYYY-MM-DD — parse_scratchpad()
+        # sets date to "" for non-conforming filenames, which would accumulate
+        # orphaned duplicate rows on re-index.
+        if not re.match(r"^\d{4}-\d{2}-\d{2}$", date_str):
+            continue
         conn.execute(
             "DELETE FROM sessions WHERE date = ? AND branch = ?",
             (date_str, branch),

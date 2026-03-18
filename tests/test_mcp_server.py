@@ -68,10 +68,17 @@ class TestValidateRepoPath:
 
 
 class TestValidateUrl:
-    def test_https_public_url_passes(self):
+    def test_https_public_url_passes(self, monkeypatch):
+        import socket
+
         from mcp_server._security import validate_url
 
-        # Use a well-known public hostname; DNS should be resolvable
+        # Mock DNS resolution so the test is hermetic and not network-dependent.
+        monkeypatch.setattr(
+            socket,
+            "getaddrinfo",
+            lambda *a, **kw: [(socket.AF_INET, socket.SOCK_STREAM, 0, "", ("93.184.216.34", 0))],
+        )
         result = validate_url("https://www.example.com/page")
         assert result == "https://www.example.com/page"
 

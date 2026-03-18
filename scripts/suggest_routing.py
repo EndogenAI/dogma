@@ -57,6 +57,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -134,7 +135,7 @@ def match_categories(task_desc: str, classifier: list[dict]) -> list[dict]:
         if entry["category"] in seen_categories:
             continue
         for kw in entry.get("keywords", []):
-            if kw.lower() in task_lower:
+            if re.search(r"\b" + re.escape(kw.lower()) + r"\b", task_lower):
                 matched.append(entry)
                 seen_categories.add(entry["category"])
                 break
@@ -154,7 +155,7 @@ def get_axiom_for_category(amplification_table: list[dict], category: str) -> st
 # Topological sort
 # ---------------------------------------------------------------------------
 
-# Fixed agent ordering derived from delegation topology (Orchestrator → specialsts → GitHub)
+# Fixed agent ordering derived from delegation topology (Orchestrator → specialists → GitHub)
 # This is the canonical topo order for the EndogenAI fleet DAG.
 AGENT_TOPO_ORDER = [
     "Executive Planner",
@@ -224,7 +225,7 @@ def topo_sort_agents(matched_entries: list[dict], delegation_gate: dict[str, lis
     # Kahn with canonical order as deterministic tie-breaker.
     queue = [a for a in AGENT_TOPO_ORDER if a in matched and indegree[a] == 0]
     seen = set(queue)
-    for a in matched:
+    for a in sorted(matched):
         if indegree[a] == 0 and a not in seen:
             queue.append(a)
             seen.add(a)
@@ -240,7 +241,7 @@ def topo_sort_agents(matched_entries: list[dict], delegation_gate: dict[str, lis
 
     # Cycle safety: append remaining in canonical order.
     remaining = [a for a in AGENT_TOPO_ORDER if a in matched and a not in sorted_agents]
-    for a in matched:
+    for a in sorted(matched):
         if a not in sorted_agents and a not in remaining:
             remaining.append(a)
     sorted_agents.extend(remaining)

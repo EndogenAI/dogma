@@ -31,7 +31,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
-from mcp_server._security import REPO_ROOT
+from mcp_server._security import REPO_ROOT, validate_repo_path
 
 
 def _current_branch() -> str:
@@ -75,6 +75,10 @@ def prune_scratchpad(branch: str = "", dry_run: bool = False) -> dict:
     # branch's per-day file via --file so branch selection is explicit.
     if branch.strip():
         file_path = Path(REPO_ROOT) / ".tmp" / slug / f"{date.today().isoformat()}.md"
+        try:
+            validate_repo_path(str(file_path))
+        except ValueError as exc:
+            return {"ok": False, "file_path": None, "exists": False, "lines": None, "errors": [str(exc)]}
         args.extend(["--file", str(file_path)])
 
     if dry_run:

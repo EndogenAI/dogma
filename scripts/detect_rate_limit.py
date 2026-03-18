@@ -40,9 +40,9 @@ Usage Examples:
     uv run python scripts/detect_rate_limit.py --check 22000 30000
     # Output: CRITICAL
 
-    # Check with negative margin (must sleep)
-    uv run python scripts/detect_rate_limit.py --check 5000 30000
-    # Output: SLEEP_REQUIRED_30000
+    # Check with negative margin (must sleep; budget exhausted)
+    uv run python scripts/detect_rate_limit.py --check 0 30000
+    # Output: SLEEP_REQUIRED_120000
 
     # Custom window and margin
     uv run python scripts/detect_rate_limit.py --check 50000 30000 --window-ms 120000 --safety-margin 10000
@@ -140,8 +140,9 @@ def detect_rate_limit(
         # Conservative estimate: assume ~500 tokens/second in rate-limited state
         avg_tokens_per_sec = 500
         computed_sleep_ms = max(MIN_SLEEP_MS, int((deficit / avg_tokens_per_sec) * 1000))
-        # Enforce strict policy floor even when window_ms is smaller.
-        sleep_ms = max(computed_sleep_ms, PHASE_BOUNDARY_SLEEP_MS)
+        # Enforce strict policy floor; also respect the rate-limit window duration
+        # so --window-ms is meaningful (sleep at least one full window).
+        sleep_ms = max(computed_sleep_ms, PHASE_BOUNDARY_SLEEP_MS, window_ms)
         status = f"SLEEP_REQUIRED_{sleep_ms}"
         return (status, sleep_ms)
 

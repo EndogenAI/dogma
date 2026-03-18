@@ -1316,7 +1316,7 @@ uv run python scripts/detect_rate_limit.py --check 10000 30000
 
 # Exhausted budget (must sleep)
 uv run python scripts/detect_rate_limit.py --check 0 30000
-# Output: SLEEP_REQUIRED_30000
+# Output: SLEEP_REQUIRED_120000
 
 # With custom rate-limit window (default 60,000 ms)
 uv run python scripts/detect_rate_limit.py --check 50000 30000 --window-ms 120000
