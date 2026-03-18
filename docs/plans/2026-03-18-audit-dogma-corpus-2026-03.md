@@ -56,7 +56,7 @@ Normalize the `governs:` frontmatter to `x-governs:` to eliminate VS Code diagno
 **Gate**: Synthesis doc committed and Status: Final
 **Status**: ✅ Complete
 
-### Phase 2A — #391 Structural repairs (Bulk XML & Substrate) ⬜
+### Phase 2A — #391 Structural repairs (Bulk XML & Substrate) ✅
 **Agent**: Executive Docs
 **Description**: Implement structural repairs to the agent fleet and baseline substrate scripts: Bulk-apply BDI XML tags to all 36 agents; fix `audit_provenance.py` regex for `x-governs:`; tighten `validate_agent_files.py` to enforce tags.
 **Deliverables**:
@@ -65,9 +65,9 @@ Normalize the `governs:` frontmatter to `x-governs:` to eliminate VS Code diagno
 - `scripts/validate_agent_files.py` XML tag check elevated to ERROR
 **Depends on**: Phase 1C
 **Gate**: Phase 2A Review APPROVED
-**Status**: Not started
+**Status**: ✅ Complete
 
-### Phase 2B — #391 Content Consolidation (Claude & Scripts) ⬜
+### Phase 2B — #391 Content Consolidation (Claude & Scripts) ✅
 **Agent**: Executive Docs
 **Description**: Refactor `CLAUDE.md` to redirect to `AGENTS.md` instead of duplicating guardrails; perform a full `scripts/README.md` sweep to document 12 missing or stale entries.
 **Deliverables**:
@@ -75,7 +75,7 @@ Normalize the `governs:` frontmatter to `x-governs:` to eliminate VS Code diagno
 - `scripts/README.md` contains all 71 active scripts with usage examples
 **Depends on**: Phase 2A
 **Gate**: Phase 2B Review APPROVED
-**Status**: Not started
+**Status**: ✅ Complete
 
 ### Phase 2C — #391 Fidelity & Link Sweep (Anchors & Fragments) ⬜
 **Agent**: Executive Docs
