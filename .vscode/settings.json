@@ -36,5 +36,12 @@
             "**/*.agent.md": false
         }
     },
-    "yaml.validate": false
+    "problems.exclude": {
+        "**/.github/agents/*.agent.md": {
+            "pattern": "Attribute 'governs' is not supported"
+        },
+        "**/.github/agents/executive-orchestrator.agent.md": {
+            "pattern": "Unknown tool 'dogma-governance/"
+        }
+    }
 }
