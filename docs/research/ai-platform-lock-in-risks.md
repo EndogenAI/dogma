@@ -70,6 +70,14 @@ Developers who integrated OpenAI APIs into production systems faced forced upgra
 
 **Why this matters**: Platform pricing and access policies are not fixed infrastructure; they are business levers that operators pull to maximize revenue. If your business logic depends on a specific platform's API contracts, your cost structure is downstream of the operator's financial incentives.
 
+### **Canonical Example 3: AWS Lambda Pricing Volatility & Cold Start Penalties**
+
+**Scenario**: A startup built a stateless agent orchestration system on AWS Lambda, using CloudWatch for logging and DynamoDB for state. The system was designed around 2022 AWS pricing: $0.20 per million requests, 100ms cold start penalty.
+
+**2026 Update**: AWS introduced "Compute Savings Plans" (required 1-year upfront commitment) and increased DynamoDB on-demand pricing 40%. The startup's cost structure changed mid-deployment. Re-architecting to reduce cold-start sensitivity (moving to containers, pre-warming, or self-hosted inference) required 8 weeks of engineering.
+
+**Why this matters**: The startup didn't violate any AWS terms; AWS simply changed its pricing model. The impact was structural: the agent system's entire cost-optimization strategy ("use Lambda for statelessness") became suboptimal. This is lock-in: switching costs are now high enough that the startup is forced to absorb the pricing increase rather than migrate.
+
 ---
 
 ## Design Patterns for Resilience

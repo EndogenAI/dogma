@@ -55,6 +55,16 @@ Domain expert analysis: For a $2M nonprofit, investing 5–10% of budget in AI i
 
 **Why this matters**: The LLM optimized for "comprehensive strategic advice" rather than "advice constrained by organizational reality." The trendslop produces consultant-speak; the expert produces actionable guidance.
 
+### **Canonical Example 3: Risk Assessment Without Scenario Testing**
+
+Q: "Our manufacturing supply chain depends on semiconductors from Taiwan. What risks should we be aware of?"
+
+Trendslop response: "Taiwan faces geopolitical risks. Diversify across Japan, South Korea, and Vietnam. Consider nearshoring to Mexico."
+
+Domain expert analysis: Taiwan accounts for 92% of advanced-node chip production. Substituting with current Japanese or Korean capacity is infeasible (they don't have excess capacity). The real risk is concentration, not geographic diversity per se. A rigorous analysis would quantify: (1) what happens if Taiwan production drops 50%? (2) what buffer inventory (cost, shelf-life) is economical? (3) which product lines can tolerate 3-month supply gaps? The trendslop skips this and offers a surface-level playbook.
+
+**Why this matters**: The LLM produced internally plausible guidance (diversification is always mentioned in supply-chain strategy), but failed to validate whether the recommended mitigations are actually available. Expert analysis includes falsifiability: "If production drops X%, we lose Y revenue; that's unacceptable, so we need Z." The LLM cannot articulate that chain of reasoning.
+
 ---
 
 ## Mechanisms of Trendslop

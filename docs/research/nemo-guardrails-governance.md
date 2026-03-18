@@ -14,6 +14,8 @@ NVIDIA's NeMo Guardrails (NemoClaw) enforces behavioral constraints on LLM outpu
 
 **Finding**: Neither architecture is strictly superior; rather, they operate at different enforcement layers. dogma's T2+T4 stack governs **agent behavior** (what agents are allowed to do); NeMo's L1–L3 governs **LLM behavior** (what models are allowed to output). For agentic workflows, T2+T4 is sufficient if agent code is audited. Adding an LLM-level gate (equiv to NeMo's L1) would provide defense-in-depth, but is not critical if agent tools are scoped tightly.
 
+From MANIFESTO.md § Guiding Principles, **Enforcement-Proximity** (enforcing governance locally, not in cloud) and **Programmatic-First** (encoding policies as deterministic rules, not interactive guidelines) are the constraints that NeMo Guardrails implements at the runtime LLM level.
+
 ---
 
 ## Hypothesis Validation
