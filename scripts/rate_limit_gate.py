@@ -102,8 +102,16 @@ def _count_consecutive_failures(provider: str, operation: str, threshold_minutes
     """
     Count consecutive rate-limit failures in recent audit log.
 
-    Returns the number of consecutive "rate_limit_detected" entries
-    for the given provider/operation within the last threshold_minutes.
+    Scans the audit log from most recent backward and counts consecutive entries where:
+    - provider matches the given provider
+    - operation matches the given operation
+    - decision is 'rate_limit_blocked' (circuit-breaker triggered, not safe)
+
+    Stops counting on the first non-matching entry OR entry outside the time window.
+    NOTE: This counts consecutive failures for the SAME provider/operation combination.
+    If different operations are interspersed, the count resets.
+    
+    Returns the count of consecutive "rate_limit_blocked" entries within threshold_minutes.
     """
     entries = _read_audit_log()
     if not entries:
@@ -112,7 +120,7 @@ def _count_consecutive_failures(provider: str, operation: str, threshold_minutes
     cutoff_time = datetime.now() - timedelta(minutes=threshold_minutes)
     consecutive_count = 0
 
-    # Scan from most recent backward, count consecutive "rate_limit_detected" entries
+    # Scan from most recent backward, count consecutive "rate_limit_blocked" entries
     for entry in reversed(entries):
         try:
             entry_time = datetime.fromisoformat(entry.get('timestamp', '1970-01-01T00:00:00'))
@@ -121,10 +129,11 @@ def _count_consecutive_failures(provider: str, operation: str, threshold_minutes
 
             if (entry.get('provider') == provider and
                 entry.get('operation') == operation and
-                entry.get('decision') == 'rate_limit_detected'):
+                entry.get('decision') == 'rate_limit_blocked'):
                 consecutive_count += 1
             else:
                 # Break on first non-matching or non-rate-limit entry
+                # This ensures we only count consecutive failures, not all-time failures
                 break
         except (ValueError, KeyError):
             pass
@@ -273,11 +282,6 @@ def main() -> int:
         action='store_true',
         help='Log gate decision to audit trail',
     )
-    parser.add_argument(
-        '--dry-run',
-        action='store_true',
-        help='Compute gate decision but do not write audit log',
-    )
 
     args = parser.parse_args()
 
@@ -291,8 +295,8 @@ def main() -> int:
         # Add current budget to result for logging
         result['current_budget'] = args.current_token_budget
 
-        # Log if requested (and not dry-run)
-        if args.audit_log and not args.dry_run:
+        # Log if requested
+        if args.audit_log:
             _log_gate_decision(result, audit_flag=True)
 
         # Emit result as JSON
