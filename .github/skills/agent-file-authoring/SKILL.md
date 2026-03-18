@@ -7,7 +7,7 @@ argument-hint: "role slug for the agent (e.g. executive-docs)"
 
 # Agent File Authoring
 
-This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](../../../MANIFESTO.md): agent files are re-encodings of [`AGENTS.md`](../../../AGENTS.md), not independent inventions. Every `.agent.md` file derives its structure, posture, and governing constraints from `AGENTS.md` and `MANIFESTO.md`. Agents re-encode; they do not re-derive. Full authoring guidance is in [`docs/guides/agents.md`](../../../docs/guides/agents.md) and the fleet catalog in [`.github/agents/README.md`](../../agents/README.md).
+This skill enacts the *Endogenous-First* axiom from [`MANIFESTO.md`](/MANIFESTO.md): agent files are re-encodings of [`AGENTS.md`](/AGENTS.md), not independent inventions. Every `.agent.md` file derives its structure, posture, and governing constraints from `AGENTS.md` and `MANIFESTO.md`. Agents re-encode; they do not re-derive. Full authoring guidance is in [`docs/guides/agents.md`](/docs/guides/agents.md) and the fleet catalog in [`.github/agents/README.md`](/agents/README.md).
 
 ---
 
@@ -87,7 +87,7 @@ These fields are optional in syntax but **semantically required** for mature age
 - The effort estimate from the issue label (effort:s/m/l/xl)
 - The guiding axiom and acceptance criteria
 
-See [`.github/agents/README.md`](../../agents/README.md) for the milestone structure and [docs/guides/agents.md](../../../docs/guides/agents.md) for issue linkage patterns.
+See [`.github/agents/README.md`](/agents/README.md) for the milestone structure and [docs/guides/agents.md](/docs/guides/agents.md) for issue linkage patterns.
 
 ---
 
@@ -104,7 +104,7 @@ CI fuzzy-matches for three required section types using Beliefs-Desires-Intentio
 Use `## Beliefs & Context`, `## Workflow & Intentions`, and `## Desired Outcomes & Acceptance` as the canonical heading names. Accept the listed variants for backward compatibility during migration.
 
 **Discipline rule for Beliefs & Context section**: Always encode:
-1. The governing axiom from [`MANIFESTO.md`](../../../MANIFESTO.md) this agent enacts
+1. The governing axiom from [`MANIFESTO.md`](/MANIFESTO.md) this agent enacts
 2. Link to the GitHub issue number that defines this agent (e.g., `#62 Implement Remaining Agent Skills`)
 3. The milestone this agent targets (from Optional Discipline Fields above)
 4. A reference to the issue's acceptance criteria (see docs/guides/agents.md for example)
@@ -148,7 +148,7 @@ VS Code's `prompts-diagnostics-provider` cannot resolve multi-level `../` traver
 
 **Incorrect** (will produce VS Code Problems panel errors):
 ```markdown
-[`AGENTS.md`](../../AGENTS.md)    ← fails VS Code diagnostics resolution
+[`AGENTS.md`](/AGENTS.md)    ← fails VS Code diagnostics resolution
 [`AGENTS.md`](../AGENTS.md)       ← resolves to .github/AGENTS.md — does not exist
 ```
 
