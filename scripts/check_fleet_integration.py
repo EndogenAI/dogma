@@ -7,7 +7,7 @@ Purpose:
     the Fleet Integration Checklist as a programmatic gate.
 
 Inputs:
-    --branch <branch>  — Optional. Git branch to check against main (default: current branch).
+    --branch <branch>  — Optional. Git branch to compare against (default: main).
     --dry-run          — Optional. Show what would be validated without modifying state.
 
 Outputs:
@@ -47,23 +47,30 @@ def _get_root() -> Path:
     return Path(__file__).resolve().parent.parent
 
 
-def _git_diff_names(branch: str) -> list[str]:
+def _git_diff_names(branch: str) -> list[str] | None:
     """Return list of file paths added in current branch compared to branch.
 
-    Returns empty list on error.
+    Returns None on git error or timeout; returns [] when diff is clean (no new files).
+    The caller should treat None as a fatal git error (exit code 2) rather than
+    as an empty diff.
     """
+    # Strip any user-supplied `origin/` prefix to avoid `origin/origin/main`.
+    bare_branch = branch.removeprefix("origin/")
     try:
         result = subprocess.run(
-            ["git", "diff", "--name-only", "--diff-filter=A", f"origin/{branch}...HEAD"],
+            ["git", "diff", "--name-only", "--diff-filter=A", f"origin/{bare_branch}...HEAD"],
             capture_output=True,
             text=True,
             timeout=10,
         )
         if result.returncode == 0:
             return [line.strip() for line in result.stdout.splitlines() if line.strip()]
-    except Exception:
-        pass
-    return []
+        # Non-zero exit from git — this is a real error, not an empty diff
+        print(f"ERROR: git diff exited with code {result.returncode}: {result.stderr.strip()}", file=sys.stderr)
+        return None
+    except Exception as exc:
+        print(f"ERROR: git diff failed: {exc}", file=sys.stderr)
+        return None
 
 
 def _read_agents_md(root: Path) -> str:
@@ -74,35 +81,43 @@ def _read_agents_md(root: Path) -> str:
         return ""
 
 
-def _find_agent_names(agent_file_path: str, root: Path) -> list[str]:
+def _find_agent_names(agent_file_path: str, root: Path) -> list[str] | None:
     """Extract agent names from a .agent.md file's frontmatter.
 
-    Returns empty list if file doesn't exist or can't be parsed.
+    Returns:
+        [name]  — frontmatter parsed successfully
+        []      — file readable but no `name:` found in frontmatter
+        None    — file could not be read (I/O error)
     """
     try:
         content = (root / agent_file_path).read_text(encoding="utf-8")
-        # Match YAML frontmatter name: value
-        match = re.search(r'^name:\s*["\']?([^"\'\n]+)["\']?\s*$', content, re.MULTILINE)
-        if match:
-            return [match.group(1).strip()]
-    except Exception:
-        pass
+    except Exception as exc:
+        print(f"ERROR: could not read {agent_file_path}: {exc}", file=sys.stderr)
+        return None
+    # Match YAML frontmatter name: value
+    match = re.search(r'^name:\s*["\']?([^"\'\n]+)["\']?\s*$', content, re.MULTILINE)
+    if match:
+        return [match.group(1).strip()]
     return []
 
 
-def _find_skill_names(skill_file_path: str, root: Path) -> list[str]:
+def _find_skill_names(skill_file_path: str, root: Path) -> list[str] | None:
     """Extract skill names from a SKILL.md file's frontmatter.
 
-    Returns empty list if file doesn't exist or can't be parsed.
+    Returns:
+        [name]  — frontmatter parsed successfully
+        []      — file readable but no `name:` found in frontmatter
+        None    — file could not be read (I/O error)
     """
     try:
         content = (root / skill_file_path).read_text(encoding="utf-8")
-        # Match YAML frontmatter name: value
-        match = re.search(r'^name:\s*["\']?([^"\'\n]+)["\']?\s*$', content, re.MULTILINE)
-        if match:
-            return [match.group(1).strip()]
-    except Exception:
-        pass
+    except Exception as exc:
+        print(f"ERROR: could not read {skill_file_path}: {exc}", file=sys.stderr)
+        return None
+    # Match YAML frontmatter name: value
+    match = re.search(r'^name:\s*["\']?([^"\'\n]+)["\']?\s*$', content, re.MULTILINE)
+    if match:
+        return [match.group(1).strip()]
     return []
 
 
@@ -152,6 +167,13 @@ def main() -> int:
 
     # Get list of newly added files
     new_files = _git_diff_names(branch)
+    if new_files is None:
+        # Git error — distinguish from clean empty diff
+        print(
+            "ERROR: Could not determine new files from git. Check that the branch exists and git is available.",
+            file=sys.stderr,
+        )
+        return 2
     if not new_files:
         print("INFO: No new files detected in this branch.")
         return 0
@@ -176,19 +198,31 @@ def main() -> int:
 
     for agent_file in new_agents:
         agent_names = _find_agent_names(agent_file, root)
-        for name in agent_names:
-            if _check_reference_in_agents(name, agents_md):
-                referenced.append((agent_file, name, "agent"))
-            else:
-                gaps.append((agent_file, name, "agent"))
+        if agent_names is None:
+            # File unreadable — treat as gap so it can't silently bypass the gate
+            gaps.append((agent_file, "<unreadable>", "agent"))
+        elif not agent_names:
+            # File readable but no `name:` frontmatter — explicit gap
+            gaps.append((agent_file, "<no name: in frontmatter>", "agent"))
+        else:
+            for name in agent_names:
+                if _check_reference_in_agents(name, agents_md):
+                    referenced.append((agent_file, name, "agent"))
+                else:
+                    gaps.append((agent_file, name, "agent"))
 
     for skill_file in new_skills:
         skill_names = _find_skill_names(skill_file, root)
-        for name in skill_names:
-            if _check_reference_in_agents(name, agents_md):
-                referenced.append((skill_file, name, "skill"))
-            else:
-                gaps.append((skill_file, name, "skill"))
+        if skill_names is None:
+            gaps.append((skill_file, "<unreadable>", "skill"))
+        elif not skill_names:
+            gaps.append((skill_file, "<no name: in frontmatter>", "skill"))
+        else:
+            for name in skill_names:
+                if _check_reference_in_agents(name, agents_md):
+                    referenced.append((skill_file, name, "skill"))
+                else:
+                    gaps.append((skill_file, name, "skill"))
 
     # Print summary
     print("## Fleet Integration Check")

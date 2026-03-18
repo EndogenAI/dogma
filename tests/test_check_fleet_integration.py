@@ -86,10 +86,10 @@ class TestFindAgentNames:
         assert names == ["Quoted Agent"]
 
     def test_find_agent_names_missing_file(self, tmp_path):
-        """Test with missing agent file."""
+        """Test with missing agent file — returns None (I/O error)."""
         with patch("scripts.check_fleet_integration._get_root", return_value=tmp_path):
             names = _find_agent_names(".github/agents/nonexistent.agent.md", tmp_path)
-        assert names == []
+        assert names is None
 
     def test_find_agent_names_no_frontmatter(self, tmp_path):
         """Test with file missing frontmatter."""
@@ -120,10 +120,10 @@ class TestFindSkillNames:
         assert names == ["test-skill"]
 
     def test_find_skill_names_missing_file(self, tmp_path):
-        """Test with missing skill file."""
+        """Test with missing skill file — returns None (I/O error)."""
         with patch("scripts.check_fleet_integration._get_root", return_value=tmp_path):
             names = _find_skill_names(".github/skills/nonexistent/SKILL.md", tmp_path)
-        assert names == []
+        assert names is None
 
 
 class TestCheckReferenceInAgents:
@@ -175,7 +175,6 @@ class TestCheckReferenceInAgents:
 class TestGitDiffNames:
     """Test _git_diff_names()."""
 
-    @pytest.mark.integration
     def test_git_diff_names_success(self, mocker):
         """Test successful git diff parsing."""
         output = ".github/agents/new-agent.agent.md\n.github/skills/new-skill/SKILL.md\n"
@@ -184,31 +183,49 @@ class TestGitDiffNames:
         assert ".github/agents/new-agent.agent.md" in result
         assert ".github/skills/new-skill/SKILL.md" in result
 
-    @pytest.mark.integration
     def test_git_diff_names_no_new_files(self, mocker):
         """Test when git diff has no output."""
         mocker.patch("subprocess.run", return_value=MagicMock(returncode=0, stdout=""))
         result = _git_diff_names("main")
         assert result == []
 
-    @pytest.mark.integration
     def test_git_diff_names_git_error(self, mocker):
-        """Test when git command fails."""
-        mocker.patch("subprocess.run", return_value=MagicMock(returncode=1, stdout=""))
+        """Test when git command fails — returns None to distinguish from empty diff."""
+        mocker.patch("subprocess.run", return_value=MagicMock(returncode=1, stdout="", stderr="fatal: not a git repo"))
         result = _git_diff_names("main")
-        assert result == []
+        assert result is None
 
-    @pytest.mark.integration
     def test_git_diff_names_git_timeout(self, mocker):
-        """Test when git command times out."""
+        """Test when git command times out — returns None."""
         mocker.patch("subprocess.run", side_effect=subprocess.TimeoutExpired("git", 10))
         result = _git_diff_names("main")
-        assert result == []
+        assert result is None
+
+    def test_git_diff_names_strips_origin_prefix(self, mocker):
+        """Test that user-supplied origin/ prefix is stripped to avoid doubling."""
+        output = ".github/agents/new-agent.agent.md\n"
+        mock_run = mocker.patch("subprocess.run", return_value=MagicMock(returncode=0, stdout=output))
+        _git_diff_names("origin/main")
+        called_args = mock_run.call_args[0][0]
+        assert "origin/origin/main" not in " ".join(called_args)
+        assert "origin/main...HEAD" in " ".join(called_args)
 
 
 @pytest.mark.io
 class TestMain:
     """Test main() entry point."""
+
+    def test_main_git_error_returns_exit_2(self, mocker, capsys):
+        """Test main returns exit code 2 when git diff fails (None return)."""
+        mocker.patch(
+            "scripts.check_fleet_integration._git_diff_names",
+            return_value=None,
+        )
+        mocker.patch.object(sys, "argv", ["check_fleet_integration.py"])
+        exit_code = main()
+        captured = capsys.readouterr()
+        assert exit_code == 2
+        assert "Could not determine new files from git" in captured.err
 
     def test_main_no_new_files(self, mocker, capsys):
         """Test main with no new files."""

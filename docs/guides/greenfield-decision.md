@@ -16,7 +16,7 @@ Before creating any new component from scratch, evaluate it against the five cri
 
 Does an existing script or agent cover ≥ 60% of the use case?
 
-**Check**: Search `scripts/` and `.github/agents/` for overlap. Run `uv run python scripts/check_fleet_integration.py --dry-run` to surface existing fleet members with related scope.
+**Check**: Search `scripts/` and `.github/agents/` for overlap using `uv run python scripts/query_docs.py <use-case-keywords>` or `grep -r <keyword> scripts/ .github/agents/`. (`scripts/check_fleet_integration.py` validates agent/skill AGENTS.md references — it does not detect use-case overlap.)
 
 **Decision**: If yes → **Extend** the existing component. Do not create a new file.
 

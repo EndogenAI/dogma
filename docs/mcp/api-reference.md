@@ -59,9 +59,10 @@ Validate a D4 research synthesis document before archiving.
 ```
 
 **Error codes**:
-- Missing required headings (Executive Summary, Pattern Catalog, Recommendations, Sources)
-- Insufficient content (<min_lines)
-- Broken citations or missing parenthetical references
+- Missing required headings (`## 1. Executive Summary`, `## 2. Hypothesis Validation`, `## 3. Pattern Catalog`)
+- Insufficient H2 heading count (minimum 4 required)
+- Insufficient non-blank line count (<min_lines)
+- Bare axiom names without `MANIFESTO.md §` reference on the same line
 
 ---
 
