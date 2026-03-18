@@ -26,25 +26,64 @@ Normalize the `governs:` frontmatter to `x-governs:` to eliminate VS Code diagno
 **Gate**: Phase 1 does not start until `grep -r "governs:" .` (frontmatter only) returns zero matches outside of documentation.
 **Status**: Not started
 
-### Phase 1 — #391 Corpus Sweep & Research ⬜
+### Phase 1A — #391 Agentic Fleet Sweep ⬜
 **Agent**: Executive Researcher
-**Description**: Execute a full corpus sweep to identify clarity gaps, stale guides, deprecation needs, and consolidation opportunities.
+**Description**: Audit the agent fleet substrate: `.github/agents/` and `.github/skills/`. Identify missing provenance, tool/permission drift, and redundant help prose.
 **Deliverables**:
-- `docs/research/dogma-corpus-audit-2026-03.md` (Status: Final)
-- Synthesis table of all 60+ documents with status (Stable/Stale/Deprecate)
+- Detailed audit findings for the fleet in scratchpad
+- List of consolidate/deprecate candidates for agents and skills
 **Depends on**: Phase 0
-**Gate**: Phase 2 does not start until the synthesis doc is committed and Status is set to Final.
+**Gate**: Phase 1A Review APPROVED
 **Status**: Not started
 
-### Phase 2 — #391 Implementation (Repairs & Consolidation) ⬜
-**Agent**: Executive Docs
-**Description**: Implement the repairs identified in the Phase 1 audit—fixing clarity, consolidating redundant guides, and marking stale content as deprecated.
+### Phase 1B — #391 Docs Substrate Sweep ⬜
+**Agent**: Executive Researcher
+**Description**: Audit the documentation substrate: `docs/guides/` and `docs/research/`. Identify stale guides, lack of D4 synthesis compliance, and orphan files.
 **Deliverables**:
-- Repaired guides in `docs/guides/`
-- Consolidated skill or agent documentation
-- All broken markdown fragment links (`#fragment`) identified in recent sessions fixed
-**Depends on**: Phase 1
-**Gate**: Phase 3 does not start until Reviewer returns APPROVED verdict on the repairs.
+- Detailed audit findings for documentation in scratchpad
+- Synthesis table of all 60+ documents with status (Stable/Stale/Deprecate)
+**Depends on**: Phase 1A
+**Gate**: Phase 1B Review APPROVED
+**Status**: Not started
+
+### Phase 1C — #391 Synthesis & Implementation Roadmap ⬜
+**Agent**: Executive Researcher
+**Description**: Synthesize findings from 1A and 1B into a final audit report and prioritized repair backlog.
+**Deliverables**:
+- `docs/research/dogma-corpus-audit-2026-03.md` (Status: Final)
+- Finalized Repair Backlog mapped to Phase 2 sub-phases
+**Depends on**: Phase 1B
+**Gate**: Synthesis doc committed and Status: Final
+**Status**: Not started
+
+### Phase 2A — #391 Structural Repairs (Governance Layer) ⬜
+**Agent**: Executive Docs
+**Description**: Implement repairs to high-level governance files: `AGENTS.md`, `MANIFESTO.md`, and core guides. Fix structural hierarchy and missing cross-references.
+**Deliverables**:
+- Updated root `AGENTS.md` and `MANIFESTO.md`
+- Core guide restructuring complete
+**Depends on**: Phase 1C
+**Gate**: Phase 2A Review APPROVED
+**Status**: Not started
+
+### Phase 2B — #391 Content Repairs (Consolidation) ⬜
+**Agent**: Executive Docs
+**Description**: Consolidate stale or redundant guides into authoritative versions as mapped in Phase 1C. Mark remaining stale files as `[Deprecated]`.
+**Deliverables**:
+- Consolidated skills/agents documentation
+- Deprecated files moved or tagged correctly
+**Depends on**: Phase 2A
+**Gate**: Phase 2B Review APPROVED
+**Status**: Not started
+
+### Phase 2C — #391 Fidelity Repairs (Link Integrity) ⬜
+**Agent**: Executive Docs
+**Description**: Execute a comprehensive fix for all broken markdown fragment links (`#fragment`) and path links identified across the corpus.
+**Deliverables**:
+- All broken links in `docs/` and `.github/` resolved
+- Final `validate_synthesis` pass across all research docs
+**Depends on**: Phase 2B
+**Gate**: Phase 2C Review APPROVED
 **Status**: Not started
 
 ### Phase 3 — Validation & Session Close ⬜
@@ -55,14 +94,14 @@ Normalize the `governs:` frontmatter to `x-governs:` to eliminate VS Code diagno
 - Session Summary in scratchpad
 - All changes pushed to origin
 - PR body updated with `Closes #390, Closes #391`
-**Depends on**: Phase 2
+**Depends on**: Phase 2C
 **Status**: Not started
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] All phases complete and committed
+- [ ] All sub-phases complete and committed
 - [ ] No instances of `governs:` remain in frontmatter
 - [ ] Sweep report cites 100% of files in `docs/` and `.github/agents/`
 - [ ] `uv run python scripts/check_substrate_health.py` returns green
