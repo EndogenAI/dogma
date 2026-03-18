@@ -817,7 +817,7 @@ Before delegating any multi-agent phase or substantive research delegation, invo
 Rate-limit profiles (data/rate-limit-profiles.yml, issue #323) encode conservative to permissive sleep policies:
 - `claude` — conservative: 60s delegation sleep, circuit-breaker threshold=3 consecutive failures
 - `gpt-4` — moderate: 30s, threshold=4
-- `gpt-3.5` — permissive: 20s, threshold=4
+- `gpt-3.5` — permissive: 20s, threshold=5
 - `local-localhost` — unrestricted: 0s sleep, threshold=999 (local compute has no rate-limits)
 
 **Circuit-Breaker Logic**: If ≥N consecutive rate-limits occur within 5 minutes, the gate returns `safe: false` with a recommended sleep duration (typically 60s). Retry within the same session is statistically likely to fail again; deferring to the next session is safer.
@@ -856,7 +856,7 @@ else
 fi
 ```
 
-**Reference**: [.github/skills/rate-limit-resilience/SKILL.md](.github/skills/rate-limit-resilience/SKILL.md) — full skill documentation. [AGENTS.md § Pre-Delegation Rate-Limit Gate](../../AGENTS.md#pre-deployment-rate-limit-gate-sprint-18) — operational constraints and configuration. [AGENTS.md § Rate-Limit Resilience Throughout MANIFESTO Axioms](../../AGENTS.md#rate-limit-resilience-throughout-manifesto-axioms-sprint-18-research-validation) — research validation linking gate to Algorithms-Before-Tokens, Local-Compute-First, and Endogenous-First axioms.
+**Reference**: [.github/skills/rate-limit-resilience/SKILL.md](.github/skills/rate-limit-resilience/SKILL.md) — full skill documentation. [AGENTS.md § Pre-Delegation Rate-Limit Gate](../../AGENTS.md#pre-delegation-rate-limit-gate-sprint-18) — operational constraints and configuration. [AGENTS.md § Rate-Limit Resilience Throughout MANIFESTO Axioms](../../AGENTS.md#rate-limit-resilience-throughout-manifesto-axioms-sprint-18-research-validation) — research validation linking gate to Algorithms-Before-Tokens, Local-Compute-First, and Endogenous-First axioms.
 
 ---
 
