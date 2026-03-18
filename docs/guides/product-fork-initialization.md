@@ -2,7 +2,30 @@
 
 ## Overview
 
-This guide explains how to initialize a product fork from the dogma repository — the canonical source for endogenic agentic workflow practices. It covers the full adoption sequence from forking to validated, axiom-aligned baseline. It is written for engineers and teams who want to adopt dogma's governance substrate in a new or existing project.
+This guide explains how to initialize a product from the dogma repository — the canonical source for endogenic agentic workflow practices. It covers two distinct adoption paths: **template-based** for independent products adopting dogma patterns, and **fork-based** for validation or research repositories tightly integrated with dogma's governance substrate.
+
+The guide is written for engineers and teams who want to adopt dogma's governance substrate in a new or existing project.
+
+---
+
+## Which Path Should You Choose?
+
+### Choose **Template** (`gh repo create --template`)
+
+- Your project is a **standalone product** that adopts dogma's philosophy but may evolve independently
+- You will rarely (if ever) open PRs back to dogma
+- You want a clean snapshot of dogma's structure at a point in time, but divergence is expected
+- Example: A customer's proprietary AI system, a commercial product fork, a university research project
+
+### Choose **Fork** (`gh repo fork`)
+
+- Your project is a **validation layer** for dogma itself (e.g., RAG system proving dogma's patterns at scale)
+- You will discover gaps in dogma's workflows and open PRs feeding findings back upstream
+- You need bidirectional tracking: upstream dogma improvements → your fork, your learnings → upstream PRs
+- Agents working on your fork should inherit dogma's values and *extend* them, not replace them
+- Example: EndogenAI's internal RAG system validating dogma's agent architecture; a research fork testing dogma's governance model
+
+**Key insight**: Fork-based adoption generates learnings that improve dogma itself. Template-based adoption is final — template = snapshot.
 
 ---
 
@@ -18,44 +41,43 @@ Before starting, ensure the following are in place:
 
 ---
 
-## Step 1 — Fork or Template the Repo
+## Step 1 — Choose and Initialize Your Path
 
-Use the GitHub UI or the `gh` CLI to create your fork:
+### Path A: Template-Based (Independent Product)
 
-```bash
-gh repo fork EndogenAI/dogma --clone
-cd dogma
-```
-
-Or create from the template (Greenfield):
+Use the GitHub UI or the `gh` CLI to create a standalone copy:
 
 ```bash
 gh repo create my-org/my-project --template EndogenAI/dogma --clone
 cd my-project
 ```
 
-**Alternatively, scaffold directly with the cookiecutter template** (no GitHub fork required):
+This creates a **new standalone repository** with no tracking relationship to dogma. Your project can diverge freely.
+
+Alternatively, scaffold directly with the cookiecutter template:
 
 ```bash
 uvx cookiecutter gh:EndogenAI/dogma
 ```
 
-This runs interactively, prompts for `project_name`, `domain`, `team_size`, `ci`, and
-`pre_commit` preferences, then generates a minimal dogma-aligned project directory with
-`AGENTS.md`, `client-values.yml`, `pyproject.toml`, and CI workflow stubs. After generation,
-continue from Step 2 to complete the Deployment Layer configuration.
+This runs interactively, prompts for `project_name`, `domain`, `team_size`, `ci`, and `pre_commit` preferences, then generates a minimal dogma-aligned project directory with `AGENTS.md`, `client-values.yml`, `pyproject.toml`, and CI workflow stubs.
 
-> **Anti-pattern**: Stopping here without completing Step 2.
-> - **Raw GitHub fork or `gh repo create --template` copy**: contains no `client-values.yml`,
->   no Deployment Layer comment, and no axiom emphasis. Agents operate against dogma's
->   own Core Layer defaults rather than your project's priorities. The `validate-agent-files`
->   pre-commit hook will fail on first commit.
-> - **`uvx cookiecutter gh:EndogenAI/dogma` output**: *does* generate `client-values.yml`
->   and the template stubs, but those stubs are empty placeholders — `mission`, `priorities`,
->   and `axiom_emphasis` are all blank. Agents still have no project-specific values to act on
->   until Step 2 populates them.
->
-> *In both cases, Step 2 is required before the fork is usable.*
+### Path B: Fork-Based (Validation / Research Repo)
+
+Create a true fork with an upstream tracking relationship:
+
+```bash
+gh repo fork EndogenAI/dogma --clone
+cd dogma
+git remote rename origin rag  # Rename origin to your project name
+git remote add upstream https://github.com/EndogenAI/dogma.git
+git config branch.main.remote upstream
+git config branch.main.merge refs/heads/main
+```
+
+This preserves the **fork relationship**: you can pull upstream improvements and push discoveries back as PRs. GitHub's interface will show RAG as `EndogenAI/rag` (forked from `EndogenAI/dogma`).
+
+**Values inheritance for forks**: A fork-based repo *inherits* dogma's `MANIFESTO.md` axioms and extends them via `client-values.yml` — it does not replace them. When Step 2 runs the adoption wizard, treat your fork's `mission` and `priorities` as *specializations* of dogma's values, not replacements.
 
 ---
 
@@ -78,24 +100,71 @@ The wizard:
 
 ---
 
-## Step 3 — Customize `client-values.yml`
+## Step 2 — Run the Adoption Wizard
 
-`client-values.yml` is your fork's **Deployment Layer** file — it specializes dogma's Core Layer axioms for your project without overriding them.
+Run the adoption wizard to generate your Deployment Layer configuration:
 
-Open the generated `client-values.yml` and review or extend:
+```bash
+uv run python scripts/adopt_wizard.py --org MyOrg --repo myproject
+```
 
-- `mission` — one sentence describing your project's purpose
-- `priorities` — ordered list of your team's primary concerns (e.g., security, cost, latency)
-- `axiom_emphasis` — which of dogma's axioms to amplify (e.g., `local-compute-first` for cost-sensitive projects)
-- `constraints` — any domain-specific guardrails (e.g., `no-external-api-calls`)
+**For fork-based repos**, add the `--fork` flag to signal upstream tracking:
 
-**Constraint**: `client-values.yml` may NOT override MANIFESTO.md Core Layer constraints (Endogenous-First, Algorithms Before Tokens, Local Compute-First). It may only specialize or add priorities at the Deployment Layer.
+```bash
+uv run python scripts/adopt_wizard.py --org EndogenAI --repo rag --fork
+```
 
-Refer to [`AGENTS.md`](../../AGENTS.md) (§ Deployment Layer integration) for the full interpretation rules agents apply when reading this file and the schema for the full external-value schema and Supremacy constraint reference.
+The wizard:
+
+1. Elicits your project's mission, priorities, and axiom emphasis interactively
+2. Writes `client-values.yml` with `mission`, `priorities`, `axiom_emphasis`, and `constraints` fields
+3. For fork-based repos: writes a `.dogma.json` file tracking the initialization commit, axiom emphasis, and upstream dogma version for later drift detection
+4. Copies and annotates `AGENTS.md` with a Deployment Layer comment instructing agents to read `client-values.yml` before their first action
+5. Runs `validate_agent_files.py` automatically; exit code 0 confirms the repo starts with a valid, axiom-aligned configuration
+
+**Canonical example**: Running the wizard produces `client-values.yml` (and `.dogma.json` for forks), annotates `AGENTS.md`, and validates. Without the wizard, `client-values.yml` is absent, agents cannot read the Deployment Layer, and the first commit fails the validate-agent-files pre-commit hook.
+
+> **Anti-pattern**: Stopping after Step 1 without running the wizard.
+> - Template repos and fork repos alike arrive with empty or missing `client-values.yml`
+> - The Deployment Layer comment is not yet added to `AGENTS.md`
+> - Agents operate against dogma's own Core Layer defaults rather than your project's priorities
+> - The `validate-agent-files` pre-commit hook will fail on first commit
+>
+> *The wizard is required before the repo is usable.*
 
 ---
 
-## Step 4 — Validate the Fork
+## Step 3 — Customize `client-values.yml`
+
+`client-values.yml` is your project's **Deployment Layer** file — it specializes dogma's Core Layer axioms for your project.
+
+### For Template-Based Projects
+
+`client-values.yml` defines your project's independent values:
+
+- `mission` — one sentence describing your project's purpose
+- `priorities` — ordered list of your team's primary concerns (e.g., security, cost, latency)
+- `axiom_emphasis` — which of dogma's axioms to amplify for your domain
+- `constraints` — any domain-specific guardrails (e.g., `no-external-api-calls`)
+
+### For Fork-Based Projects
+
+`client-values.yml` *extends* dogma's Core Layer axioms rather than replacing them:
+
+- **Inherit** dogma's MANIFESTO.md axioms (Endogenous-First, Algorithms Before Tokens, Local Compute-First)
+- **Specialize** them for your validation domain:
+  - `mission` — how your project validates or extends dogma (e.g., "Validate dogma's agent architecture at scale via retrieval tasks")
+  - `priorities` — your fork's specific focus: speed of discovery, coverage of agent patterns, etc.
+  - `axiom_emphasis` — if your fork emphasizes one axiom more than dogma default (e.g., `local-compute-first` if testing inference on edge devices)
+  - `constraints` — fork-specific limitations or requirements that discovery sessions must respect
+
+**Constraint**: Neither template nor fork may override MANIFESTO.md Core Layer constraints (Endogenous-First, Algorithms Before Tokens, Local Compute-First). Either may only specialize or add priorities at the Deployment Layer.
+
+Refer to [`AGENTS.md`](../../AGENTS.md) (§ Deployment Layer integration) for the full interpretation rules agents apply when reading this file.
+
+---
+
+## Step 4 — Validate the Installation
 
 Install pre-commit hooks and run the full validation suite:
 
@@ -122,29 +191,93 @@ If `validate_agent_files.py` reports failures, re-run `adopt_wizard.py` or manua
 
 ---
 
-## Step 5 — Track Upstream Changes (optional)
+## Step 5 — Fork-Specific: Set Up Upstream Tracking and Document Learnings
 
-To keep your fork synchronized with upstream dogma governance improvements, use the `--track` flag when running the wizard:
+This step applies only to **fork-based repos**. Skip if you chose the template path.
+
+### 5A — Verify Upstream Remote
+
+Confirm your remotes are correctly configured:
 
 ```bash
-uv run python scripts/adopt_wizard.py --org MyOrg --repo myrepo --track
+git remote -v
+# Should show:
+#   rag        https://github.com/EndogenAI/rag.git (fetch/push)
+#   upstream   https://github.com/EndogenAI/dogma.git (fetch/only)
 ```
 
-This writes a `.dogma.json` file at the repo root containing:
+If the remotes are missing or incorrect, re-run the setup from Step 1B.
 
-- The upstream dogma commit SHA at initialization time
-- The `adopt_wizard.py` version used
-- The `axiom_emphasis` recorded at initialization
+### 5B — Create a Fork Learnings Log
 
-To check for governance drift later:
+Create a `.github/FORK_LEARNINGS.md` file to track discoveries during validation that should inform dogma's future iterations:
+
+```markdown
+# RAG Fork Learnings
+
+## Discoveries
+
+### Process Gaps (Inform AGENTS.md / dogma governance)
+- [ ] When `client-values.yml` is inherited rather than replaced, do agents correctly prioritize fork-specific constraints?
+- [ ] Does the adoption wizard need fork-aware branching for `mission` field guidance?
+- [ ] How should agent tools/postures differ when operating in a fork vs. a standalone repo?
+
+### Execution Insights (Inform dogma's agent design)
+- [ ] What new skills or agents did we need to add for RAG that aren't in dogma yet?
+- [ ] Did any dogma workflows need simplification or restructuring to scale to RAG's scope?
+- [ ] What domain patterns in RAG discovery could become reusable SKILL.md files in dogma?
+
+### Research Findings (Seed dogma doc updates)
+- [ ] What did we learn about [topic] that should update docs/research/?
+- [ ] Are there failure modes in the dogma workflow that we discovered but dogma hasn't documented?
+
+## Commits That Discovered Changes
+- #420: "agents: add rag-specific skills" → dogma PR potential
+- #435: "fix: adoption wizard fork-awareness" → dogma patch candidate
+
+## Pending Pull Requests to dogma
+- #NNN (pending): "docs: fork-based adoption workflow guidance"
+```
+
+As you work on the fork, update `FORK_LEARNINGS.md` with:
+- **Process gaps**: differences between template and fork initialization that suggest dogma needs to update its guidance
+- **Execution insights**: agent patterns or skills your fork needed that aren't yet in dogma
+- **Research findings**: discoveries that should flow back as updates to dogma's research docs
+
+When you encounter something you think dogma should adopt, record it here **before opening a PR**. This creates a discoverable record of what the fork validated or extended in dogma.
+
+### 5C — Check for Governance Drift
+
+To detect when upstream dogma has improved and your fork is behind:
 
 ```bash
 uv run python scripts/adopt_wizard.py --check
 ```
 
-This compares your `.dogma.json` against the current upstream dogma schema and reports any new required fields or governance changes you have not yet absorbed. A non-zero exit code means your fork is behind — review the diff and apply relevant changes manually.
+This compares your `.dogma.json` (written during Step 2) against the current upstream dogma schema and reports any new required fields or governance changes. A non-zero exit code means your fork is behind — review the diff and apply relevant changes manually in a new feature branch.
 
-> **Note**: The `--track` flag and `--check` mode are pending implementation (tracked in the dogma backlog). Until available, record your initialization commit SHA manually in a `FORK_PROVENANCE.md` at the repo root.
+---
+
+## Step 6 — First Commit and Push
+
+After validation passes in Step 4:
+
+```bash
+git add -A
+git commit -m "chore: initialize dogma adoption with client-values and fork tracking"
+git push
+```
+
+For **fork-based repos only**, also push an initial tracking branch to make the fork relationship discoverable:
+
+```bash
+git push upstream main:main --force-with-lease  # Ensure you're not accidentally overwriting upstream
+# If you've made changes, create a feature branch instead:
+git checkout -b fork/initialize-rag
+git push rag fork/initialize-rag
+```
+
+Then verify the fork relationship is visible on GitHub: navigate to your fork's page and confirm the "forked from EndogenAI/dogma" link appears.
 
 ---
 
@@ -178,8 +311,39 @@ This compares your `.dogma.json` against the current upstream dogma schema and r
 
 ---
 
+### (Fork-Based) Upstream remote is not set up
+
+**Cause**: Step 1B was skipped or executed incorrectly, or the remotes were renamed incorrectly.
+
+**Fix**: Manually configure remotes:
+
+```bash
+git remote rename origin rag  # if not already done
+git remote add upstream https://github.com/EndogenAI/dogma.git
+git config branch.main.remote upstream
+git config branch.main.merge refs/heads/main
+git fetch upstream
+```
+
+Verify: `git remote -v` should show `rag` and `upstream` separately.
+
+---
+
+### (Fork-Based) `.dogma.json` is missing after Step 2
+
+**Cause**: The adoption wizard was run without the `--fork` flag, so `.dogma.json` was not created.
+
+**Fix**: Delete the created `client-values.yml` and re-run the wizard with the flag:
+
+```bash
+rm client-values.yml
+uv run python scripts/adopt_wizard.py --org EndogenAI --repo rag --fork
+```
+
+---
+
 ## Related
 
 - [`docs/research/product-fork-initialization.md`](../research/product-fork-initialization.md) — research synthesis underlying this guide
-- [`AGENTS.md`](../../AGENTS.md) — root agent constraints; Deployment Layer integration rules
+- [`AGENTS.md`](../../AGENTS.md) — root agent constraints; Deployment Layer integration rules; fork-based values inheritance
 - [`MANIFESTO.md`](../../MANIFESTO.md) — core dogma; Endogenous-First axiom (§1); Deployment Layer constraint model
