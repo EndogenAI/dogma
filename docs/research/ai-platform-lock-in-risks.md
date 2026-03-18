@@ -78,6 +78,26 @@ Developers who integrated OpenAI APIs into production systems faced forced upgra
 
 **Why this matters**: The startup didn't violate any AWS terms; AWS simply changed its pricing model. The impact was structural: the agent system's entire cost-optimization strategy ("use Lambda for statelessness") became suboptimal. This is lock-in: switching costs are now high enough that the startup is forced to absorb the pricing increase rather than migrate.
 
+### **Canonical Example 4: ENISA/NIST Lock-In Risk Taxonomy Applied to AI APIs**
+
+**Scenario**: A financial services team deploys a document classification agent powered by an external AI inference API. When the provider introduces rate limits and new tiered pricing 18 months into production, the team discovers they lack internal capability to switch providers — their fine-tuned prompt templates are deeply coupled to the provider's system prompt format, their codebase has no abstraction layer, and their team has no experience with alternative providers.
+
+**Framing** (from ENISA 2009, mapped to AI): ENISA's Cloud Risk Assessment identifies 8 lock-in sub-risk dimensions: (1) Data portability, (2) Application portability, (3) Skills lock-in, (4) Organizational lock-in, (5) Policy lock-in, (6) Legal lock-in, (7) Process lock-in, (8) Technology lock-in. The team above has been hit by dimensions 2 (application portability), 3 (skills), and 8 (technology) simultaneously. NIST AI RMF GOVERN 6.1 calls for periodic review of policies for third-party AI dependency risks — this team had no such policy.
+
+**Why this matters**: Lock-in is not a single risk — it is a compound of 8 independent sub-risks that accumulate at different rates. An organization can be protected on data portability (using open formats) while being completely exposed on skills lock-in (no internal ML capability). Both the ENISA framework (2009) and the NIST AI RMF (2023) provide structured approaches to auditing all 8 dimensions. Platform migration guides must address each dimension separately.
+
+**Anti-pattern**: Treating lock-in solely as a data or contractual risk. Skills lock-in and process lock-in are harder to undo than API dependencies.
+
+### **Canonical Example 5: Distributed Architecture as Exit Ramp**
+
+**Scenario**: A platform team building agent infrastructure adopts the multi-provider design from Pattern 3 (above), but goes further: they define all inference requests using an OpenAPI-compatible schema and run provider adapters as local microservices behind a standard HTTP interface. Switching from Provider A to Provider B requires deploying a new adapter container — the business logic layer never changes.
+
+**Grounding** (from Westerlund & Kratzke 2018, arXiv:1805.04657): The paper derives a unified technology stack combining cloud computing and distributed ledger technologies specifically to avoid platform lock-in. The key insight: decoupling at the network layer (using open standards for all service interfaces) is more durable than decoupling at the application layer (writing adapter classes in code). When the interface spec is the contract, any new provider that conforms to the spec is a drop-in replacement.
+
+**Why this matters**: This maps directly to the Design Patterns in this doc. Pattern 1 (Vendor-Agnostic API Abstraction) is correctly implemented at the application layer; Westerlund & Kratzke argue it should be reinforced at the network/infrastructure layer too. An OpenAPI-spec interface for inference endpoints means: migration requires only a new container deployment, not application logic changes. This is Local-Compute-First (MANIFESTO.md § 3) made structurally durable: the local inference endpoint and the vendor endpoint speak the same language.
+
+**Anti-pattern**: Building provider abstraction only inside application code. If the abstraction lives only in a Python class, it depends on that class being maintained and the developers who built it still being present. A network-layer interface conforming to an open standard survives developer turnover and framework upgrades.
+
 ---
 
 ## Design Patterns for Resilience
@@ -168,6 +188,12 @@ Scenario B is not theoretically superior; it's structurally more robust because 
 2. **Monitor Vendor ToS Changes**: Subscribe to ToS update notifications for any platform your agents depend on
 3. **Budget for Migration Costs**: Assume one major platform will become unavailable or unaffordable every 3–5 years; design for switchover cost ≤ 2 weeks engineering
 
+### **Technical De-Risking Recommendations** (from NIST AI RMF + Westerlund & Kratzke)
+
+4. **Conduct annual third-party AI dependency audits using NIST AI RMF GOVERN 6.1** — GOVERN 6.1 requires policies for third-party AI risk. Operationalize this as an annual audit of all external AI API dependencies, mapped against the 8 ENISA lock-in dimensions (data portability, application portability, skills, organizational, policy, legal, process, technology). Output: a dependency heat map showing which dimensions carry the highest current risk. File the audit result in `docs/infra/dependency-audit-<year>.md`. This converts a vague "monitor ToS changes" directive into a structured annual deliverable.
+
+5. **Implement provider abstraction at the network layer, not only the application layer** — Per Westerlund & Kratzke (2018, arXiv:1805.04657): define all AI inference interfaces using OpenAPI-compatible schemas. This means migration from Provider A to Provider B requires deploying a new adapter container — no application business logic changes. Concrete implementation: define an `InferenceEndpoint` OpenAPI schema specifying request/response shape; implement dogma agent adapters against this spec rather than vendor SDKs directly. Store the schema in `docs/infra/inference-endpoint-spec.yaml`; CI validates that all adapters conform. When a new provider is needed, write a new conforming container — not a new adapter class.
+
 ---
 
 ## Sources
@@ -178,7 +204,31 @@ Scenario B is not theoretically superior; it's structurally more robust because 
 
 - OpenAI Terms of Use Evolution (2022–2026)  
   Source: https://openai.com/policies/terms-of-use  
-  Note: Archived versions available via Internet Archive Wayback Machine
+  Archived versions: https://web.archive.org/web/20220101000000*/openai.com/policies/terms-of-use  
+  Note: Wayback Machine crawl history preserves sequential ToS versions from 2022; use these to document specific liability changes over time
+
+- Westerlund, Mord; Kratzke, Nane. (2018, May 11). "Towards Distributed Clouds." *arXiv:1805.04657 [cs.DC, cs.CR]*.
+  - URL: https://arxiv.org/abs/1805.04657
+  - DOI: 10.48550/arXiv.1805.04657
+  - Fetched: 2026-03-18
+  - Key finding: Reviews cloud computing and distributed ledger/blockchain platforms in parallel and derives a unified technology stack that avoids vendor lock-in and platform dependencies. Provides the highest-quality academic grounding for multi-provider abstraction architecture (directly maps to Design Pattern 3 in this doc).
+
+- European Network and Information Security Agency (ENISA). (2009). "Cloud Computing Risk Assessment." *ENISA Report.*
+  - URL: https://www.enisa.europa.eu/publications/cloud-computing-risk-assessment
+  - Fetched: 2026-03-18
+  - Key finding: Foundational risk taxonomy for cloud adoption, identifying vendor lock-in as a documented top-level risk category with 8 sub-risk dimensions (data lock-in, API lock-in, skills lock-in, organizational lock-in, etc.). Predates AI-specific lock-in concerns but the risk taxonomy maps directly and remains authoritative.
+
+- NIST AI Risk Management Framework 1.0. (2023, January). *NIST AI 100-1.* National Institute of Standards and Technology.
+  - URL: https://doi.org/10.6028/NIST.AI.100-1
+  - Playbook: https://airc.nist.gov/docs/AI_RMF_Playbook.pdf
+  - Fetched: 2026-03-18
+  - Key finding: Voluntary framework for AI risk management covering GOVERN, MAP, MEASURE, MANAGE functions. GOVERN 6.1 addresses third-party AI dependency risks and calls for policies that track and periodically review external AI dependencies. Being revised to v1.1; current 1.0 version is the published, citable standard.
+
+- Bandara, Eranga; et al. (2026, January 27). "A Practical Guide to Agentic AI Transition in Organizations." *arXiv:2602.10122 [cs.CY]*.
+  - URL: https://arxiv.org/abs/2602.10122
+  - DOI: 10.48550/arXiv.2602.10122
+  - Fetched: 2026-03-18
+  - Key finding: Documents organizational AI transition risks including dependency formation on external platforms. Emphasizes the need to maintain human oversight and organizational adaptability — directly germane to fallback design patterns and lock-in avoidance.
 
 - MANIFESTO.md § 3 — Local-Compute-First axiom  
 
