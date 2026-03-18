@@ -55,11 +55,11 @@ Sprints 18A/18B form a coherent two-phase delivery cycle bridging research (9 cr
 
 ---
 
-### Phase 1A — Research: Issues #326–328
+### Phase 1A — Research: Issues #319, #318, #317
 
 **Agent**: Executive Researcher → Research Scout fleet  
-**Issues**: #326 (LLM strategic advice quality), #327 (Algorithms-Before-Tokens evidence), #328 (TBD)  
-**Scope**: 3 independent research questions; cross-disciplinary  
+**Issues**: #319 (LLM strategic advice quality), #318 (AI autonomy governance), #317 (AI platform lock-in risks)  
+**Scope**: 3 independent research questions; strategy & governance focus  
 **Deliverables**: 3 D4 research docs (Status: Final) committed to `docs/research/`  
 **Depends on**: Phase 0 Review APPROVED  
 **Gate**: Phase 1 Review does not start until all 3 docs committed  
@@ -68,11 +68,11 @@ Sprints 18A/18B form a coherent two-phase delivery cycle bridging research (9 cr
 
 ---
 
-### Phase 1B — Research: Issues #329–331
+### Phase 1B — Research: Issues #316, #315, #314
 
 **Agent**: Executive Researcher → Research Scout fleet  
-**Issues**: #329 (AI autonomy governance), #330 (AI platform lock-in risks), #331 (AI workload observability)  
-**Scope**: 3 independent research questions; vendor/infrastructure focus  
+**Issues**: #316 (AI workload observability), #315 (AI cognitive load), #314 (GitHub Copilot ecosystem)  
+**Scope**: 3 independent research questions; infrastructure & tooling focus  
 **Deliverables**: 3 D4 research docs (Status: Final) committed to `docs/research/`  
 **Depends on**: Phase 0 Review APPROVED  
 **Gate**: Phase 1 Review does not start until all 3 docs committed  
@@ -81,14 +81,14 @@ Sprints 18A/18B form a coherent two-phase delivery cycle bridging research (9 cr
 
 ---
 
-### Phase 1C — Research: Issues #332–334
+### Phase 1C — Research: Issues #313, #312, #294
 
 **Agent**: Executive Researcher → Research Scout fleet  
-**Issues**: #332 (AI cognitive load), #333 (GitHub Copilot ecosystem), #334 (Local RAG adoption)  
-**Scope**: 3 independent research questions; tooling & patterns focus  
+**Issues**: #313 (NeMo Guardrails), #312 (Copilot collaboration effects), #294 (Local RAG adoption)  
+**Scope**: 3 independent research questions; guardrails, patterns & local compute focus  
 **Deliverables**: 3 D4 research docs (Status: Final) committed to `docs/research/`  
 **Depends on**: Phase 0 Review APPROVED  
-**Potential Cross-Cutting**: #334 (Local RAG) findings may inform implementation patterns for Phase 3  
+**Potential Cross-Cutting**: #294 (Local RAG) findings may inform implementation patterns for Phase 3  
 **Gate**: Phase 1 Review does not start until all 3 docs committed  
 **Parallel**: Can run in parallel with Phase 1A/1B (independent topics)  
 **Status**: ⬜ Not started
@@ -185,10 +185,10 @@ Sprints 18A/18B form a coherent two-phase delivery cycle bridging research (9 cr
 ## Acceptance Criteria
 
 - [x] Phase 0 Review: APPROVED (rate-limit resilience gates all downstream)
-- [ ] Phase 1 Review: APPROVED (all 9 research docs validated)
+- [ ] Phase 1 Review: APPROVED (all 9 research docs validated — #319, #318, #317, #316, #315, #314, #313, #312, #294)
 - [ ] Phase 2 Review: APPROVED (hooks documentation validated)
 - [ ] Phase 3A Review: APPROVED (integration points validated)
-- [ ] All 14 sprint issues marked closed
+- [ ] All 14 sprint issues marked closed (#319–#313, #312, #294, #310 + #322–#325)
 - [ ] PR #X merged
 - [ ] v0.11.0 tagged and released
 
@@ -197,11 +197,11 @@ Sprints 18A/18B form a coherent two-phase delivery cycle bridging research (9 cr
 ## Parallel Execution Strategy
 
 **Phase 1 (Research)**: All three sub-phases (1A/1B/1C) can execute in parallel because:
-- Topics are independent (no cross-phase dependencies)
+- Topics are independent (no cross-phase dependencies among #319, #318, #317, #316, #315, #314, #313, #312, #294)
 - Each delegation to Executive Researcher is isolated (different URL/topic)
 - Review gate (Phase 1 Review) aggregates all 9 findings before Phase 3 begins
 
-**Execution Recommendation**: Delegate Phase 1A, 1B, 1C simultaneously after Phase 0 Review APPROVED, with 30s sleeps between delegations to avoid rate-limit acceleration.
+**Execution Recommendation**: Delegate Phase 1A (#319–#317), 1B (#316–#314), 1C (#313–#312, #294) simultaneously after Phase 0 Review APPROVED, with 30s sleeps between delegations to avoid rate-limit acceleration.
 
 ---
 
