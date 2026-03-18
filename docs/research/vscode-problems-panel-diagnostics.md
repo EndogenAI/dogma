@@ -13,7 +13,7 @@ governs:
 
 The VS Code Problems panel surfaces three distinct error categories in this repository's `.agent.md` and `SKILL.md` files. This document synthesizes the root causes, VS Code's internal diagnostic architecture, and concrete fix recommendations for each category.
 
-**Category A** (38 errors): `Attribute 'governs' is not supported` — Copilot Chat's `prompts-diagnostics-provider` uses a hardcoded internal schema for `.agent.md` frontmatter that does not include `governs:`. The `yaml.schemas` workspace setting does not affect this validator. No VS Code user setting suppresses a specific diagnostic provider. Accept as permanent non-blocking warnings; `governs:` remains valid governance metadata.
+**Category A** (38 errors): `Attribute 'governs' is not supported` — Copilot Chat's `prompts-diagnostics-provider` uses a hardcoded internal schema for `.agent.md` frontmatter that does not include `governs:`. The `yaml.schemas` workspace setting does not affect this validator. No VS Code user setting suppresses a specific diagnostic provider. These warnings are expected until issue #390 is implemented (`governs:` → `x-governs:`).
 
 **Category B** (8 errors): `Unknown tool 'dogma-governance/*'` — MCP tool names listed in `.agent.md` frontmatter are validated statically at edit time against the set of currently registered tools. When the `dogma-governance` MCP server is not running, its tools are unrecognized. Runtime behavior silently ignores unavailable tools. Consolidating to the `dogma-governance/*` glob syntax may suppress these errors; if not, accept as non-blocking warnings.
 
@@ -59,7 +59,7 @@ VS Code documentation states "If a given tool is not available when using the cu
 
 **Anti-pattern**: Assuming that providing a custom JSON Schema via `yaml.schemas` will prevent all frontmatter-related diagnostics across all VS Code validators. Different validators maintain independent schema registries; workspace settings only configure the YAML extension, not the Copilot Chat extension's internal validator.
 
-**Implication for suppression**: There is no documented VS Code user-facing setting to suppress diagnostics from a specific named provider (`prompts-diagnostics-provider`). Settings like `editor.problems.visibility`, and the non-existent `problems.exclude`, do not offer per-provider filtering. The only mechanism available to extension authors — the `DiagnosticCollection` API — is not user-configurable. Therefore, Category A errors must be accepted as permanent non-blocking noise.
+**Implication for suppression**: There is no documented VS Code user-facing setting to suppress diagnostics from a specific named provider (`prompts-diagnostics-provider`). Settings like `editor.problems.visibility`, and the non-existent `problems.exclude`, do not offer per-provider filtering. The only mechanism available to extension authors — the `DiagnosticCollection` API — is not user-configurable. Therefore, suppression is not viable; Category A warnings should be treated as temporary until the frontmatter rename in issue #390 lands.
 
 ---
 

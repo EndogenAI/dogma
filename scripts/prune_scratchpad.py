@@ -559,13 +559,14 @@ def main() -> int:
         try:
             import subprocess as _sp
 
-            stash_out = _sp.run(
+            result = _sp.run(
                 ["git", "stash", "list"],
                 capture_output=True,
                 text=True,
                 timeout=5,
-            ).stdout.strip()
-            if stash_out:
+            )
+            stash_out = result.stdout.strip()
+            if result.returncode == 0 and stash_out:
                 stash_count = len(stash_out.splitlines())
                 print(
                     f"\nWARNING: {stash_count} git stash(es) exist — review before proceeding:\n"
@@ -573,8 +574,19 @@ def main() -> int:
                     "Pre-existing fixes may be stashed. Run `git stash show -p stash@{0}` to inspect.",
                     file=sys.stderr,
                 )
-        except Exception:
+            elif result.returncode not in (0, 128):
+                err = result.stderr.strip() or "unknown error"
+                print(
+                    f"WARNING: could not inspect git stashes (exit {result.returncode}): {err}",
+                    file=sys.stderr,
+                )
+        except FileNotFoundError:
+            # git is unavailable in this environment; skip stash warning.
             pass
+        except _sp.TimeoutExpired:
+            print("WARNING: git stash list timed out; skipping stash warning.", file=sys.stderr)
+        except Exception as exc:
+            print(f"WARNING: unexpected error while checking stashes: {exc}", file=sys.stderr)
         return 0
 
     if args.file:

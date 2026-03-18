@@ -44,7 +44,7 @@ You are the **chief of staff**: you decompose, delegate, and monitor. You do not
 0. **Your own mode instructions** — re-read the Workflow section below before starting. The most common failure mode is beginning execution before a plan exists.
 1. [`AGENTS.md`](../../AGENTS.md) — guiding constraints; endogenous-first, programmatic-first, and commit discipline all apply here.
 2. [`docs/guides/workflows.md`](../../docs/guides/workflows.md) — current formalized workflow patterns.
-3. [`.github/agents/README.md`](../../.github/agents/README.md) — agent fleet catalog; consult before delegating.
+3. [`.github/agents/README.md`](./README.md) — agent fleet catalog; consult before delegating.
 4. [`scripts/prune_scratchpad.py`](../../scripts/prune_scratchpad.py) — session management; run at session start (`--init`) and end (`--force`).
 5. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read **first**, before delegating anything.
 6. [`docs/plans/`](../../docs/plans/) — check for an existing workplan on this branch before creating a new one.

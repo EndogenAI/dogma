@@ -287,10 +287,10 @@ git commit -m "chore: initialize dogma adoption with client-values and fork trac
 git push
 ```
 
-For **fork-based repos only**, also push an initial tracking branch to make the fork relationship discoverable:
+For **fork-based repos only**, also push an initial tracking branch to your fork (`origin`) to make the fork relationship discoverable:
 
 ```bash
-git push upstream main:main --force-with-lease  # Ensure you're not accidentally overwriting upstream
+git push origin main
 # If you've made changes, create a feature branch instead:
 git checkout -b fork/initialize
 git push origin fork/initialize
@@ -307,7 +307,7 @@ If an agent is automating this fork setup, **before your session ends**, verify 
 git remote -v  # should show origin → your fork, upstream → EndogenAI/dogma
 
 # Confirm you haven't modified upstream or origin during work
-git config branch.main.remote  # should output "upstream"
+git config branch.main.remote  # should output "origin"
 ```
 
 If you modified these during your session, reset them before exiting:
@@ -360,7 +360,7 @@ git remote set-url upstream https://github.com/EndogenAI/dogma.git
 
 ```bash
 git remote add upstream https://github.com/EndogenAI/dogma.git
-git config branch.main.remote upstream
+git config branch.main.remote origin
 git config branch.main.merge refs/heads/main
 git fetch upstream
 ```

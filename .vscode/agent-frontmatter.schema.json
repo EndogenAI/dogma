@@ -13,21 +13,12 @@
       "description": "Agent description"
     },
     "tools": {
-      "oneOf": [
-        {
-          "type": "array",
-          "description": "List of tools available to this agent",
-          "items": {
-            "type": "string",
-            "pattern": "^[a-zA-Z0-9/_.-]+$"
-          }
-        },
-        {
-          "type": "string",
-          "description": "Flow sequence of tools",
-          "pattern": "^\\[.*\\]$"
-        }
-      ]
+      "type": "array",
+      "description": "List of tools available to this agent",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9/_.-]+$"
+      }
     },
     "governs": {
       "type": "array",
