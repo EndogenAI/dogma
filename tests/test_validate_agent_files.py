@@ -45,21 +45,29 @@ name: Test Agent
 description: A minimal passing agent file.
 ---
 
+<context>
 ## Beliefs & Context — Read Before Acting
 
 1. [`AGENTS.md`](../../AGENTS.md) — guiding constraints.
+</context>
 
----
-
+<instructions>
 ## Workflow & Intentions
 
 Do some work.
+</instructions>
 
----
+<constraints>
+## Guardrails & Constraints
 
+No heredocs.
+</constraints>
+
+<output>
 ## Desired Outcomes & Acceptance
 
 All tasks done.
+</output>
 """
 
 
@@ -154,7 +162,12 @@ class TestValidateFailureCases:
 
     @pytest.mark.io
     def test_missing_frontmatter(self, tmp_path):
-        content = "## Endogenous Sources\n\n## Workflow\n\n## Completion Criteria\n\nReferences AGENTS.md."
+        content = (
+            "<context>\n## Endogenous Sources\n</context>\n"
+            "\n<instructions>\n## Workflow\n</instructions>\n"
+            "\n<output>\n## Completion Criteria\n\nReferences AGENTS.md.\n</output>\n"
+            "\n<constraints>\n## Guardrails\n</constraints>"
+        )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
         assert passed is False
@@ -164,7 +177,10 @@ class TestValidateFailureCases:
     def test_missing_name_field(self, tmp_path):
         content = (
             "---\ndescription: No name here.\n---\n\n"
-            "## Endogenous Sources\n\n## Workflow\n\n## Completion Criteria\n\nReferences AGENTS.md."
+            "<context>\n## Endogenous Sources\n</context>\n"
+            "\n<instructions>\n## Workflow\n</instructions>\n"
+            "\n<output>\n## Completion Criteria\n\nReferences AGENTS.md.\n</output>\n"
+            "\n<constraints>\n## Guardrails\n</constraints>"
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
@@ -175,7 +191,8 @@ class TestValidateFailureCases:
     def test_missing_description_field(self, tmp_path):
         content = (
             "---\nname: Test Agent\n---\n\n"
-            "## Endogenous Sources\n\n## Workflow\n\n## Completion Criteria\n\nReferences AGENTS.md."
+            "<context>\n## Endogenous Sources\n</context>\n\n<instructions>\n## Workflow\n</instructions>\n\n"
+            "<output>\n## Completion Criteria\n\nReferences AGENTS.md.\n</output>\n\n<constraints>\n## Guardrails\n</constraints>"
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
@@ -186,8 +203,8 @@ class TestValidateFailureCases:
     def test_missing_endogenous_sources_section(self, tmp_path):
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Workflow & Intentions\n\n## Desired Outcomes & Acceptance"
-            "\n\nReferences AGENTS.md."
+            "<instructions>\n## Workflow & Intentions\n</instructions>\n\n<output>\n## Desired Outcomes & Acceptance\n"
+            "</output>\n\n<constraints>\n## Guardrails\n</constraints>\n\nReferences AGENTS.md."
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
@@ -198,7 +215,7 @@ class TestValidateFailureCases:
     def test_missing_action_section(self, tmp_path):
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Beliefs & Context\n\n## Desired Outcomes & Acceptance\n\nReferences AGENTS.md."
+            "<context>\n## Beliefs & Context\n</context>\n\n<output>\n## Desired Outcomes & Acceptance\n\nReferences AGENTS.md.\n</output>\n\n<constraints>\n## Guardrails\n</constraints>"
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
@@ -208,8 +225,8 @@ class TestValidateFailureCases:
     @pytest.mark.io
     def test_missing_quality_gate_section(self, tmp_path):
         content = (
-            "---\nname: A\ndescription: B\n---\n\n## Beliefs & Context\n\n"
-            "## Workflow & Intentions\n\nReferences AGENTS.md."
+            "---\nname: A\ndescription: B\n---\n\n<context>\n## Beliefs & Context\n</context>\n\n"
+            "<instructions>\n## Workflow & Intentions\n\nReferences AGENTS.md.\n</instructions>\n\n<constraints>\n## Guardrails\n</constraints>"
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
@@ -219,8 +236,8 @@ class TestValidateFailureCases:
     @pytest.mark.io
     def test_missing_cross_reference(self, tmp_path):
         content = (
-            "---\nname: A\ndescription: B\n---\n\n## Beliefs & Context\n\n## Workflow & Intentions"
-            "\n\n## Desired Outcomes & Acceptance\n"
+            "---\nname: A\ndescription: B\n---\n\n<context>\n## Beliefs & Context\n</context>\n\n<instructions>\n## Workflow & Intentions\n"
+            "</instructions>\n\n<output>\n## Desired Outcomes & Acceptance\n</output>\n\n<constraints>\n## Guardrails\n</constraints>\n"
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
@@ -239,10 +256,12 @@ class TestHeredocDetection:
         """An agent file that instructs using heredoc must be flagged."""
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Beliefs & Context\n\n## Workflow & Intentions\n\n"
+            "<context>\n## Beliefs & Context\n</context>\n\n"
+            "<instructions>\n## Workflow & Intentions\n\n"
             "Run: `cat >> output.md << 'EOF'`\n"
-            "write stuff\nEOF\n\n"
-            "## Desired Outcomes & Acceptance\n\nReferences AGENTS.md."
+            "write stuff\nEOF\n</instructions>\n\n"
+            "<output>\n## Desired Outcomes & Acceptance\n\nReferences AGENTS.md.\n</output>\n\n"
+            "<constraints>\n## Guardrails\n</constraints>"
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
@@ -254,10 +273,10 @@ class TestHeredocDetection:
         """A guardrail saying 'never use cat >> ... << EOF' must NOT be flagged."""
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Beliefs & Context\n\n## Workflow & Intentions\n\n"
-            "## Desired Outcomes & Acceptance\n\nReferences AGENTS.md.\n\n"
-            "## Guardrails\n\n"
-            "- **Never use heredocs** (`cat >> file << 'EOF'`) — use built-in file tools.\n"
+            "<context>\n## Beliefs & Context\n</context>\n\n<instructions>\n## Workflow & Intentions\n</instructions>\n\n"
+            "<output>\n## Desired Outcomes & Acceptance\n\nReferences AGENTS.md.\n</output>\n\n"
+            "<constraints>\n## Guardrails\n\n"
+            "- **Never use heredocs** (`cat >> file << 'EOF'`) — use built-in file tools.\n</constraints>"
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
@@ -268,10 +287,10 @@ class TestHeredocDetection:
         """Line with 'avoid' + heredoc pattern must NOT be flagged."""
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Beliefs & Context\n\n## Workflow & Intentions\n\n"
-            "## Desired Outcomes & Acceptance\n\nReferences AGENTS.md.\n\n"
-            "## Guardrails\n\n"
-            "Avoid `cat >> file << 'EOF'` — it corrupts Markdown.\n"
+            "<context>\n## Beliefs & Context\n</context>\n\n<instructions>\n## Workflow & Intentions\n</instructions>\n\n"
+            "<output>\n## Desired Outcomes & Acceptance\n\nReferences AGENTS.md.\n</output>\n\n"
+            "<constraints>\n## Guardrails\n\n"
+            "Avoid `cat >> file << 'EOF'` — it corrupts Markdown.\n</constraints>"
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
@@ -288,8 +307,8 @@ class TestActionSectionVariants:
     def test_checklist_satisfies_action_section(self, tmp_path):
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Beliefs & Context\n\n## Validation Checklist\n\n"
-            "## Desired Outcomes & Acceptance\n\nReferences AGENTS.md."
+            "<context>\n## Beliefs & Context\n</context>\n\n<instructions>\n## Validation Checklist\n</instructions>\n\n"
+            "<output>\n## Desired Outcomes & Acceptance\n\nReferences AGENTS.md.\n</output>\n\n<constraints>\n## Guardrails\n</constraints>"
         )
         f = _make_agent_file(tmp_path, content)
         passed, _ = vaf.validate(f)
@@ -299,8 +318,8 @@ class TestActionSectionVariants:
     def test_scope_satisfies_action_section(self, tmp_path):
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Beliefs & Context\n\n## Threat Model Scope\n\n"
-            "## Desired Outcomes & Acceptance\n\nReferences AGENTS.md."
+            "<context>\n## Beliefs & Context\n</context>\n\n<instructions>\n## Threat Model Scope\n</instructions>\n\n"
+            "<output>\n## Desired Outcomes & Acceptance\n\nReferences AGENTS.md.\n</output>\n\n<constraints>\n## Guardrails\n</constraints>"
         )
         f = _make_agent_file(tmp_path, content)
         passed, _ = vaf.validate(f)
@@ -310,8 +329,8 @@ class TestActionSectionVariants:
     def test_playbook_satisfies_action_section(self, tmp_path):
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Beliefs & Context\n\n## Metrics Playbook\n\n"
-            "## Desired Outcomes & Acceptance\n\nReferences AGENTS.md."
+            "<context>\n## Beliefs & Context\n</context>\n\n<instructions>\n## Metrics Playbook\n</instructions>\n\n"
+            "<output>\n## Desired Outcomes & Acceptance\n\nReferences AGENTS.md.\n</output>\n\n<constraints>\n## Guardrails\n</constraints>"
         )
         f = _make_agent_file(tmp_path, content)
         passed, _ = vaf.validate(f)
@@ -338,7 +357,8 @@ class TestCLI:
     @pytest.mark.io
     def test_single_file_fail_exit_1(self, tmp_path):
         bad_content = (
-            "---\nname: A\ndescription: B\n---\n\n## Workflow & Intentions\n\n## Desired Outcomes & Acceptance\n"
+            "---\nname: A\ndescription: B\n---\n\n<context>\n## Beliefs & Context\n</context>\n\n<instructions>\n## Workflow & Intentions"
+            "\n</instructions>\n\n<output>\n## Desired Outcomes & Acceptance\n</output>\n\n<constraints>\n## Guardrails\n</constraints>\n"
         )
         f = _make_agent_file(tmp_path, bad_content)
         result = subprocess.run(
@@ -575,10 +595,10 @@ class TestFetchBeforeCheckAndPhaseNReview:
         """An agent file with 'Fetch-before-check' guardrail label is flagged."""
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Endogenous Sources\n\n## Workflow\n\n"
-            "## Completion Criteria\n\nReferences AGENTS.md.\n\n"
-            "## Guardrails\n\n"
-            "- **Fetch-before-check**: Always fetch before checking.\n"
+            "<context>\n## Endogenous Sources\n</context>\n\n<instructions>\n## Workflow\n</instructions>\n\n"
+            "<output>\n## Completion Criteria\n\nReferences AGENTS.md.\n</output>\n\n"
+            "<constraints>\n## Guardrails\n\n"
+            "- **Fetch-before-check**: Always fetch before checking.\n</constraints>"
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
@@ -590,10 +610,10 @@ class TestFetchBeforeCheckAndPhaseNReview:
         """A line prohibiting 'Fetch-before-check' must NOT be flagged."""
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Beliefs & Context\n\n## Workflow & Intentions\n\n"
-            "## Desired Outcomes & Acceptance\n\nReferences AGENTS.md.\n\n"
-            "## Guardrails\n\n"
-            "- Never label a guardrail `Fetch-before-check` — correct is `Check-before-fetch`.\n"
+            "<context>\n## Beliefs & Context\n</context>\n\n<instructions>\n## Workflow & Intentions\n</instructions>\n\n"
+            "<output>\n## Desired Outcomes & Acceptance\n\nReferences AGENTS.md.\n</output>\n\n"
+            "<constraints>\n## Guardrails\n\n"
+            "- Never label a guardrail `Fetch-before-check` — correct is `Check-before-fetch`.\n</constraints>"
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
@@ -604,9 +624,9 @@ class TestFetchBeforeCheckAndPhaseNReview:
         """An agent file with '## Phase N Review Output' heading is flagged."""
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Beliefs & Context\n\n## Workflow & Intentions\n\n"
-            "## Desired Outcomes & Acceptance\n\nReferences AGENTS.md.\n\n"
-            "## Phase N Review Output\n\nReview notes here.\n"
+            "<context>\n## Beliefs & Context\n</context>\n\n<instructions>\n## Workflow & Intentions\n</instructions>\n\n"
+            "<output>\n## Desired Outcomes & Acceptance\n\nReferences AGENTS.md.\n</output>\n\n"
+            "<constraints>\n## Guardrails\n\n## Phase N Review Output\n\nReview notes here.\n</constraints>"
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
@@ -634,10 +654,10 @@ class TestFetchBeforeCheckAndPhaseNReview:
         """A line using grep to *detect* 'Fetch-before-check' must NOT be flagged."""
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Beliefs & Context\n\n## Workflow & Intentions\n\n"
-            "## Desired Outcomes & Acceptance\n\nReferences AGENTS.md.\n\n"
-            "## Guardrails\n\n"
-            '- Run: `grep -r "Fetch-before-check" .github/` to detect violations.\n'
+            "<context>\n## Beliefs & Context\n</context>\n\n<instructions>\n## Workflow & Intentions\n</instructions>\n\n"
+            "<output>\n## Desired Outcomes & Acceptance\n\nReferences AGENTS.md.\n</output>\n\n"
+            "<constraints>\n## Guardrails\n\n"
+            '- Run: `grep -r "Fetch-before-check" .github/` to detect violations.\n</constraints>'
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
@@ -648,9 +668,9 @@ class TestFetchBeforeCheckAndPhaseNReview:
         """Inline prose mentioning '## Phase N Review Output' (not an actual heading) must NOT be flagged."""
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Beliefs & Context\n\n## Workflow & Intentions\n\n"
-            "Do not use `## Phase N Review Output` — use `## Review Output` instead.\n\n"
-            "## Desired Outcomes & Acceptance\n\nReferences AGENTS.md."
+            "<context>\n## Beliefs & Context\n</context>\n\n<instructions>\n## Workflow & Intentions\n\n"
+            "Do not use `## Phase N Review Output` — use `## Review Output` instead.\n</instructions>\n\n"
+            "<output>\n## Desired Outcomes & Acceptance\n\nReferences AGENTS.md.\n</output>\n\n<constraints>\n## Guardrails\n</constraints>"
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
@@ -793,11 +813,12 @@ class TestCitationOrderImpermeability:
         """Full validate() detects citation order violation in Beliefs & Context."""
         content = (
             "---\nname: Test Agent\ndescription: Violates priority.\n---\n\n"
-            "## Beliefs & Context\n\n"
+            "<context>\n## Beliefs & Context\n\n"
             "Read [`client-values.yml`](client-values.yml) first.\n"
-            "Then [`MANIFESTO.md`](../../MANIFESTO.md).\n\n"
-            "## Workflow\n\nDo work.\n\n"
-            "## Completion Criteria\n\nAll done."
+            "Then [`MANIFESTO.md`](../../MANIFESTO.md).\n</context>\n\n"
+            "<instructions>\n## Workflow\n\nDo work.\n</instructions>\n\n"
+            "<output>\n## Completion Criteria\n\nAll done.\n</output>\n\n"
+            "<constraints>\n## Guardrails\n</constraints>"
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
@@ -809,12 +830,13 @@ class TestCitationOrderImpermeability:
         """Correct citation order in Beliefs & Context passes."""
         content = (
             "---\nname: Test Agent\ndescription: Correct priority.\n---\n\n"
-            "## Beliefs & Context\n\n"
+            "<context>\n## Beliefs & Context\n\n"
             "Read [`MANIFESTO.md`](../../MANIFESTO.md) first.\n"
             "Then [`AGENTS.md`](../../AGENTS.md).\n"
-            "Then [`client-values.yml`](client-values.yml).\n\n"
-            "## Workflow\n\nDo work.\n\n"
-            "## Completion Criteria\n\nAll done."
+            "Then [`client-values.yml`](client-values.yml).\n</context>\n\n"
+            "<instructions>\n## Workflow\n\nDo work.\n</instructions>\n\n"
+            "<output>\n## Completion Criteria\n\nAll done.\n</output>\n\n"
+            "<constraints>\n## Guardrails\n</constraints>"
         )
         f = _make_agent_file(tmp_path, content)
         passed, failures = vaf.validate(f)
@@ -833,9 +855,10 @@ class TestManifestoAnchoring:
         """File with bare MANIFESTO.md (no anchor) produces the specificity metric warning."""
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Beliefs & Context\n\nSee MANIFESTO.md for axioms.\n\n"
-            "## Workflow & Intentions\n\nDo work.\n\n"
-            "## Desired Outcomes & Acceptance\n\nDone. References AGENTS.md."
+            "<context>\n## Beliefs & Context\n\nSee MANIFESTO.md for axioms.\n</context>\n\n"
+            "<instructions>\n## Workflow & Intentions\n\nDo work.\n</instructions>\n\n"
+            "<output>\n## Desired Outcomes & Acceptance\n\nDone. References AGENTS.md.\n</output>\n\n"
+            "<constraints>\n## Guardrails\n</constraints>"
         )
         warnings = vaf.manifesto_warnings(content)
         assert any("specificity metric" in w for w in warnings)
@@ -844,9 +867,10 @@ class TestManifestoAnchoring:
         """File with MANIFESTO.md#section anchor produces no specificity metric warning."""
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Beliefs & Context\n\nSee [MANIFESTO.md#1-endogenous-first](MANIFESTO.md#1-endogenous-first).\n\n"
-            "## Workflow & Intentions\n\nDo work.\n\n"
-            "## Desired Outcomes & Acceptance\n\nDone. References AGENTS.md."
+            "<context>\n## Beliefs & Context\n\nSee [MANIFESTO.md#1-endogenous-first](MANIFESTO.md#1-endogenous-first).\n</context>\n\n"
+            "<instructions>\n## Workflow & Intentions\n\nDo work.\n</instructions>\n\n"
+            "<output>\n## Desired Outcomes & Acceptance\n\nDone. References AGENTS.md.\n</output>\n\n"
+            "<constraints>\n## Guardrails\n</constraints>"
         )
         warnings = vaf.manifesto_warnings(content)
         assert not any("specificity metric" in w for w in warnings)
@@ -855,9 +879,10 @@ class TestManifestoAnchoring:
         """File with no MANIFESTO.md reference at all produces no warnings from either check."""
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Beliefs & Context\n\nSee [AGENTS.md](../../AGENTS.md).\n\n"
-            "## Workflow & Intentions\n\nDo work.\n\n"
-            "## Desired Outcomes & Acceptance\n\nDone."
+            "<context>\n## Beliefs & Context\n\nSee [AGENTS.md](../../AGENTS.md).\n</context>\n\n"
+            "<instructions>\n## Workflow & Intentions\n\nDo work.\n</instructions>\n\n"
+            "<output>\n## Desired Outcomes & Acceptance\n\nDone.\n</output>\n\n"
+            "<constraints>\n## Guardrails\n</constraints>"
         )
         warnings = vaf.manifesto_warnings(content)
         assert warnings == []
@@ -866,9 +891,10 @@ class TestManifestoAnchoring:
         """Bare MANIFESTO.md prose reference (without anchor) triggers the bare citation warning."""
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Beliefs & Context\n\nReads MANIFESTO.md to understand axioms.\n\n"
-            "## Workflow & Intentions\n\nDo work.\n\n"
-            "## Desired Outcomes & Acceptance\n\nDone. References AGENTS.md."
+            "<context>\n## Beliefs & Context\n\nReads MANIFESTO.md to understand axioms.\n</context>\n\n"
+            "<instructions>\n## Workflow & Intentions\n\nDo work.\n</instructions>\n\n"
+            "<output>\n## Desired Outcomes & Acceptance\n\nDone. References AGENTS.md.\n</output>\n\n"
+            "<constraints>\n## Guardrails\n</constraints>"
         )
         warnings = vaf.manifesto_warnings(content)
         assert any("Bare MANIFESTO" in w for w in warnings)
@@ -877,9 +903,10 @@ class TestManifestoAnchoring:
         """A line with a negation word + bare MANIFESTO.md does not trigger the bare citation warning."""
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Beliefs & Context\n\nNever cite MANIFESTO.md without an anchor.\n\n"
-            "## Workflow & Intentions\n\nDo work.\n\n"
-            "## Desired Outcomes & Acceptance\n\nDone. See MANIFESTO.md#1-endogenous-first."
+            "<context>\n## Beliefs & Context\n\nNever cite MANIFESTO.md without an anchor.\n</context>\n\n"
+            "<instructions>\n## Workflow & Intentions\n\nDo work.\n</instructions>\n\n"
+            "<output>\n## Desired Outcomes & Acceptance\n\nDone. See MANIFESTO.md#1-endogenous-first.\n</output>\n\n"
+            "<constraints>\n## Guardrails\n</constraints>"
         )
         warnings = vaf.manifesto_warnings(content)
         # "never" negation on the bare-ref line should suppress bare-citation warning
@@ -891,9 +918,10 @@ class TestManifestoAnchoring:
         """MANIFESTO.md §N notation counts as section-anchored — no warnings produced."""
         content = (
             "---\nname: A\ndescription: B\n---\n\n"
-            "## Beliefs & Context\n\nEnacts `MANIFESTO.md §1` (Endogenous-First).\n\n"
-            "## Workflow & Intentions\n\nDo work.\n\n"
-            "## Desired Outcomes & Acceptance\n\nDone. References AGENTS.md."
+            "<context>\n## Beliefs & Context\n\nEnacts `MANIFESTO.md §1` (Endogenous-First).\n</context>\n\n"
+            "<instructions>\n## Workflow & Intentions\n\nDo work.\n</instructions>\n\n"
+            "<output>\n## Desired Outcomes & Acceptance\n\nDone. References AGENTS.md.\n</output>\n\n"
+            "<constraints>\n## Guardrails\n</constraints>"
         )
         warnings = vaf.manifesto_warnings(content)
         assert not any("specificity metric" in w for w in warnings)
