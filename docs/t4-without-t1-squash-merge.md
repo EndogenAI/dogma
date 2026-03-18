@@ -78,7 +78,7 @@ PR adds the same hook _plus_ governance updates:
 
 | Layer | Artifact | Example | Governance Check |
 |-------|----------|---------|------------------|
-| **T1** (Principles) | MANIFESTO.md | Algorithms-Before-Tokens | Does it derive from core axion? |
+| **T1** (Principles) | MANIFESTO.md | Algorithms-Before-Tokens | Does it derive from core axiom? |
 | **T2** (Constraints) | AGENTS.md | File Writing Guardrails | Does AGENTS.md cite the constraint? |
 | **T3** (Static)  | .pre-commit-config.yaml | no-heredoc-writes | Does CI enforce it? |
 | **T4** (Runtime) | Shell preexec / hook | Governor B | Does execution respect it? |

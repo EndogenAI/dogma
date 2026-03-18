@@ -119,7 +119,7 @@ See [`docs/toolchain/README.md`](docs/toolchain/README.md) for the full update w
 
 **Purpose**: Validate that new agents, skills, and scripts enter the fleet with documented integration into AGENTS.md and the agent catalog.
 
-New fleet members (`.agent.md` files, `SKILL.md` files, or new scripts) must be cross-referenced in AGENTS.md before commit. Use `scripts/check_fleet_integration.py` to automate this check:
+New fleet members (`.agent.md` and `SKILL.md` files) must be cross-referenced in AGENTS.md before commit. New scripts must be documented in `scripts/README.md`. Use `scripts/check_fleet_integration.py` to automate the agent and skill check:
 
 ```bash
 # Check new files against AGENTS.md for references
@@ -146,7 +146,7 @@ Gaps are warnings at review time (via Review agent criterion 8) and enforcement 
 
 **Before adopting any external tool** (GitHub Actions action, PyPI package, third-party API), agents must confirm all three criteria below — in order — before writing any implementation code. This gate instantiates [MANIFESTO.md § 1 Endogenous-First](MANIFESTO.md#1-endogenous-first) and the [Programmatic-First Principle](#programmatic-first-principle). See also the [Research-before-implement for external tools](#programmatic-first-principle) rule in that section.
 
-1. **No internal overlap** — confirm no existing script covers ≥ 60% of the use case by checking `scripts/` and running `uv run python scripts/check_fleet_integration.py`. If overlap is found, extend the existing script rather than adopting the external tool.
+1. **No internal overlap** — confirm no existing script covers ≥ 60% of the use case by checking `scripts/` and searching with `uv run python scripts/query_docs.py <use-case-keywords>` or `grep -r <keyword> scripts/`. If overlap is found, extend the existing script rather than adopting the external tool. (Note: `check_fleet_integration.py` validates agent/skill documentation — it does not detect use-case overlap.)
 2. **Ethics rubric pass** — confirm the tool satisfies ≥ 3 criteria from the ethical-values procurement rubric in [`docs/governance/ethical-values-procurement.md`](docs/governance/ethical-values-procurement.md). Document the qualifying criteria explicitly in the D4 research doc (see criterion 3).
 3. **D4 research doc first** — document the adoption decision in a D4 research doc under `docs/research/` before writing any implementation code. The research doc is the gate; implementation cannot begin until the doc is committed and criteria 1 and 2 are recorded in it.
 

@@ -126,7 +126,7 @@ TEMPLATE = """\
 **Agent**: <Agent Name>
 **Deliverables**:
 - Fleet integration (if adding new agents/skills: run `uv run python scripts/check_fleet_integration.py --dry-run`)
-- Session startup integration (archive session, update scratchpad summary)
+- Session close (archive session, update scratchpad summary, push branch)
 - <!-- add other deliverables -->
 
 **Depends on**: Phase 4
