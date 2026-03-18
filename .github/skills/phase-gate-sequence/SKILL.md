@@ -45,6 +45,38 @@ If the scratchpad exceeds 2000 lines:
 uv run python scripts/prune_scratchpad.py
 ```
 
+### Step 1.5 — Pre-Delegation Rate-Limit Gate (Sprint 18+)
+
+**Before delegating the next phase, check the rate-limit budget gate** (see [`rate-limit-resilience` SKILL](../rate-limit-resilience/SKILL.md), issue #325):
+
+```bash
+# Get current token budget (from tracking or API)
+CURRENT_BUDGET=75000  # example
+OPERATION='delegation'  # or 'phase_boundary', 'fetch_source', etc.
+PROVIDER='claude'
+
+GATE_RESULT=$(uv run python scripts/rate_limit_gate.py "$CURRENT_BUDGET" "$OPERATION" --provider "$PROVIDER" --audit-log)
+
+if echo "$GATE_RESULT" | grep -q '"safe": true'; then
+    # Safe: proceed with delegation
+    echo "Gate APPROVED: safe to proceed"
+else
+    # Blocked: defer or sleep
+    SLEEP_SEC=$(echo "$GATE_RESULT" | grep -o '"recommended_sleep_sec": [0-9]*' | cut -d: -f2)
+    echo "Gate BLOCKED: Rate-limited. Recommended sleep: ${SLEEP_SEC}s"
+    echo "Defer this delegation to next session or sleep and retry"
+    # Option 1: Write to scratchpad and stop
+    # Option 2: Sleep and retry (caution: uses token budget)
+fi
+```
+
+**Integration**: This check prevents cascading rate-limit failures mid-phase. If blocked:
+- Log the gate decision to scratchpad under `## Rate-Limit Gate Output`
+- Defer the delegation to the next session, OR
+- Sleep for recommended duration and monitor for consecutive failures (circuit-breaker)
+
+**Note**: This is a new workflow integration (Sprint 18). Not every session will use it initially, but all orchestrators should check before high-cost delegations (e.g., research scout with 3+ parallel scouts).
+
 ### Step 2 — Write Pre-Compact Checkpoint
 
 Append `## Pre-Compact Checkpoint` to the scratchpad with:

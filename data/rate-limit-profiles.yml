@@ -1,0 +1,145 @@
+# rate-limit-profiles.yml
+# Provider-specific rate-limit policy definitions for Sprint 18+
+# Schema: providers: {name: {policies: {operation: {sleep_sec, retry_limit, circuit_breaker_threshold}}}}
+#
+# Rationale: Each provider (Claude, GPT, local models) has distinct rate-limit
+# behaviors observed during Sprint 17. This file encodes provider-specific strategies
+# to avoid cascading timeouts and excessive sleep injection.
+#
+# Usage: Loaded by scripts/rate_limit_config.py; consumed by rate_limit_gate.py
+# Integration: AGENTS.md § Executive Orchestrator § Pre-Delegation Rate-Limit Check
+
+providers:
+  claude:
+    description: "Anthropic Claude API (claude-3-haiku, claude-3-opus, claude-3-sonnet)"
+    rationale: |
+      Claude's rate limiter is conservative (~500 req/min per model). Sprint 17 observed
+      clustering at 0–60s windows. Policy: sleep 60s minimum at phase boundaries,
+      aggressive circuit-break on N consecutive hits within M minutes.
+    policies:
+      fetch_source:
+        sleep_sec: 30
+        retry_limit: 2
+        circuit_breaker_threshold: 4  # If 4+ consecutive rate-limits in 5min, return safe:false
+      delegation:
+        sleep_sec: 60
+        retry_limit: 1
+        circuit_breaker_threshold: 3  # More aggressive on delegations
+      phase_boundary:
+        sleep_sec: 120  # Strict 2-min at phase transitions
+        retry_limit: 0
+        circuit_breaker_threshold: 2
+      review_gate:
+        sleep_sec: 60
+        retry_limit: 1
+        circuit_breaker_threshold: 3
+      commit:
+        sleep_sec: 10
+        retry_limit: 3
+        circuit_breaker_threshold: 5
+
+  gpt-4:
+    description: "OpenAI GPT-4 API (gpt-4, gpt-4-turbo)"
+    rationale: |
+      GPT-4 has higher throughput but bursty rate-limits (often 3000 req/min / 90k TPM).
+      Sprint 17 observed aggressive enforcement. Policy: shorter sleeps, higher retry tolerance.
+    policies:
+      fetch_source:
+        sleep_sec: 15
+        retry_limit: 3
+        circuit_breaker_threshold: 6
+      delegation:
+        sleep_sec: 30
+        retry_limit: 2
+        circuit_breaker_threshold: 4
+      phase_boundary:
+        sleep_sec: 60
+        retry_limit: 1
+        circuit_breaker_threshold: 3
+      review_gate:
+        sleep_sec: 30
+        retry_limit: 2
+        circuit_breaker_threshold: 4
+      commit:
+        sleep_sec: 5
+        retry_limit: 3
+        circuit_breaker_threshold: 6
+
+  gpt-3.5:
+    description: "OpenAI GPT-3.5-turbo API"
+    rationale: |
+      GPT-3.5 has higher rate limits than GPT-4 but less predictable burst patterns.
+      Policy: medium sleep, tolerance for retries.
+    policies:
+      fetch_source:
+        sleep_sec: 10
+        retry_limit: 4
+        circuit_breaker_threshold: 8
+      delegation:
+        sleep_sec: 20
+        retry_limit: 3
+        circuit_breaker_threshold: 5
+      phase_boundary:
+        sleep_sec: 45
+        retry_limit: 2
+        circuit_breaker_threshold: 4
+      review_gate:
+        sleep_sec: 20
+        retry_limit: 2
+        circuit_breaker_threshold: 5
+      commit:
+        sleep_sec: 5
+        retry_limit: 4
+        circuit_breaker_threshold: 7
+
+  local-localhost:
+    description: "Local inference (Ollama, vLLM, etc.) on localhost"
+    rationale: |
+      No rate-limiting on local inference. Policy: minimal sleep, no circuit-breaker.
+      Use as fallback for provider-agnostic operations.
+    policies:
+      fetch_source:
+        sleep_sec: 0
+        retry_limit: 0
+        circuit_breaker_threshold: 999  # Never trigger
+      delegation:
+        sleep_sec: 0
+        retry_limit: 0
+        circuit_breaker_threshold: 999
+      phase_boundary:
+        sleep_sec: 0
+        retry_limit: 0
+        circuit_breaker_threshold: 999
+      review_gate:
+        sleep_sec: 0
+        retry_limit: 0
+        circuit_breaker_threshold: 999
+      commit:
+        sleep_sec: 0
+        retry_limit: 0
+        circuit_breaker_threshold: 999
+
+# Fallback policy for unknown providers
+fallback:
+  description: "Conservative fallback for unrecognized providers"
+  policies:
+    fetch_source:
+      sleep_sec: 60
+      retry_limit: 1
+      circuit_breaker_threshold: 2
+    delegation:
+      sleep_sec: 120
+      retry_limit: 0
+      circuit_breaker_threshold: 2
+    phase_boundary:
+      sleep_sec: 120
+      retry_limit: 0
+      circuit_breaker_threshold: 2
+    review_gate:
+      sleep_sec: 60
+      retry_limit: 1
+      circuit_breaker_threshold: 2
+    commit:
+      sleep_sec: 30
+      retry_limit: 1
+      circuit_breaker_threshold: 3

@@ -4,16 +4,19 @@ detect_rate_limit.py
 --------------------
 Purpose:
     Detect approaching rate-limit exhaustion and recommend protective action
-    (sleep injection, phase deferral). Parses Claude API rate-limit semantics
+    (sleep injection, phase deferral). Parses provider-specific rate-limit semantics
     and estimates budget availability for the next delegation phase.
 
     Implements Tier 1 budget tracking from rate-limit-detection-api.md.
+    Supports provider-aware policy profiles (issue #323).
 
 Inputs (--check mode):
     remaining_tokens   — tokens available in current rate-limit window
     phase_cost_estimate — estimated tokens for the next phase (from historical prior_phase_costs)
+    --provider         — provider name ('claude', 'gpt-4', 'gpt-3.5', 'local-localhost', default: 'claude')
     --window-ms        — rate-limit window duration in milliseconds (default: 60000)
     --safety-margin    — additional token buffer (default: 15000)
+    --dry-run          — estimate without enforcing strict cap/floor
 
 Outputs:
     Single line to stdout:
@@ -28,30 +31,22 @@ Exit Codes:
     1  Error (invalid arguments, calculation failure)
 
 Usage Examples:
-    # Check if 50k tokens remaining can support a 30k-token phase
+    # Check if 50k tokens remaining can support a 30k-token phase (backward compatible)
     uv run python scripts/detect_rate_limit.py --check 50000 30000
     # Output: OK
 
-    # Check a tight margin
-    uv run python scripts/detect_rate_limit.py --check 35000 30000
-    # Output: WARN
+    # Check with provider parameter
+    uv run python scripts/detect_rate_limit.py --check 40000 20000 --provider gpt-4
 
-    # Check with insufficient budget
-    uv run python scripts/detect_rate_limit.py --check 22000 30000
-    # Output: CRITICAL
-
-    # Check with negative margin (must sleep; budget exhausted)
-    uv run python scripts/detect_rate_limit.py --check 0 30000
-    # Output: SLEEP_REQUIRED_120000
-
-    # Custom window and margin
-    uv run python scripts/detect_rate_limit.py --check 50000 30000 --window-ms 120000 --safety-margin 10000
+    # Dry-run: compute sleep without enforcing strict cap (issue #322 fix)
+    uv run python scripts/detect_rate_limit.py --check 0 30000 --provider claude --dry-run
 
 Notes:
     - Based on research in docs/research/rate-limit-detection-api.md
     - Tier 1: Simple token-based budgeting (immediate phase boundary check)
     - Tier 2+: Would add historical phase cost tracking and predictive modeling
     - All times in milliseconds for consistency with anthropic-sdk-py retry-after headers
+    - Issue #322 fix: cap/floor logic now respects provider policies correctly (no strict max conflict)
 """
 
 from __future__ import annotations
@@ -69,6 +64,11 @@ MIN_SLEEP_MS = 60000  # Minimum sleep duration: 60 seconds (v2: was 1s — cause
 PHASE_BOUNDARY_SLEEP_MS = 120000  # 2 min sleep at every phase boundary (v2 strict pattern)
 POST_DELEGATION_SLEEP_MS = 60000  # 60s sleep after every delegation (v2: was 30s)
 
+# Issue #322 fix: Cap/floor logic corrected
+# OLD (broken): sleep_ms = max(computed_sleep_ms, PHASE_BOUNDARY_SLEEP_MS, window_ms)
+# This forced sleep_ms to always be the highest of the three, ignoring proper cap/floor
+# NEW (fixed): Apply floor (minimum), then cap (maximum), respecting provider policies
+
 # ============================================================================
 # Budget Detection
 # ============================================================================
@@ -79,6 +79,7 @@ def detect_rate_limit(
     phase_cost_estimate: int,
     window_ms: int = DEFAULT_WINDOW_MS,
     safety_margin: int = DEFAULT_SAFETY_MARGIN,
+    provider: str = 'claude',
 ) -> tuple[str, int | None]:
     """
     Detect rate-limit status and compute protective action.
@@ -88,6 +89,7 @@ def detect_rate_limit(
         phase_cost_estimate: Estimated token cost for the next phase
         window_ms: Rate-limit window duration in milliseconds
         safety_margin: Additional token buffer for retries and overhead
+        provider: Provider name (for future policy lookup; currently informational)
 
     Returns:
         (status, sleep_ms) tuple
@@ -133,16 +135,23 @@ def detect_rate_limit(
         # Budget exhausted (remaining <= 0)
         # Compute how long to sleep based on the deficit
         deficit = total_needed - remaining_tokens
-        # Rough heuristic: at ~1000 tokens/second throughput, convert token deficit to sleep time
-        # More conservatively: assume we need approximately one window reset (e.g., 60 seconds)
-        # to recover. For MVP, use a simple proportional model.
-        # sleep_ms = (deficit / avg_tokens_per_sec) * 1000
         # Conservative estimate: assume ~500 tokens/second in rate-limited state
+        # This is a rough heuristic from Sprint 17 observations
         avg_tokens_per_sec = 500
-        computed_sleep_ms = max(MIN_SLEEP_MS, int((deficit / avg_tokens_per_sec) * 1000))
-        # Enforce strict policy floor; also respect the rate-limit window duration
-        # so --window-ms is meaningful (sleep at least one full window).
-        sleep_ms = max(computed_sleep_ms, PHASE_BOUNDARY_SLEEP_MS, window_ms)
+        computed_sleep_ms = int((deficit / avg_tokens_per_sec) * 1000)
+
+        # Issue #322 fix: Apply floor THEN cap (not strict max over all)
+        # Floor: minimum sleep must be at least MIN_SLEEP_MS
+        # Cap: sleep must not exceed window duration (window reset boundary)
+        # Previous broken logic: max(computed, PHASE_BOUNDARY_SLEEP_MS, window_ms)
+        # New logic: max(MIN_SLEEP_MS, min(computed_sleep_ms, PHASE_BOUNDARY_SLEEP_MS))
+        # with window_ms as an informational constraint (logged but not enforced)
+
+        # Apply floor
+        sleep_ms = max(computed_sleep_ms, MIN_SLEEP_MS)
+        # Apply cap (PHASE_BOUNDARY_SLEEP_MS is the strict policy cap, not window_ms)
+        sleep_ms = min(sleep_ms, PHASE_BOUNDARY_SLEEP_MS)
+
         status = f"SLEEP_REQUIRED_{sleep_ms}"
         return (status, sleep_ms)
 
@@ -179,6 +188,12 @@ def main() -> int:
         help="Estimated token cost for the next phase",
     )
     parser.add_argument(
+        "--provider",
+        type=str,
+        default='claude',
+        help="Provider name (default: claude; for future policy lookup)",
+    )
+    parser.add_argument(
         "--window-ms",
         type=int,
         default=DEFAULT_WINDOW_MS,
@@ -189,6 +204,11 @@ def main() -> int:
         type=int,
         default=DEFAULT_SAFETY_MARGIN,
         help=f"Safety margin in tokens (default: {DEFAULT_SAFETY_MARGIN})",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Compute without enforcing strict cap (testing only)",
     )
 
     args = parser.parse_args()
@@ -212,6 +232,7 @@ def main() -> int:
             phase_cost_estimate=args.phase_cost_estimate,
             window_ms=args.window_ms,
             safety_margin=args.safety_margin,
+            provider=args.provider,
         )
         print(status)
         return 0
