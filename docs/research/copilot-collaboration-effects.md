@@ -84,6 +84,25 @@ This research informs dogma's design principle that **Endogenous-First workflows
 - Tests are objective; code review on top of tests has higher ROI than code review alone
 - Distributed review load prevents single-reviewer bottleneck
 
+### Pattern 3: Automation Bias — Acceleration Mode vs. Exploration Mode
+
+**When**: Developers or agents use AI code generation on tasks with varying levels of ambiguity or risk.
+
+**Problem**: Barke et al. (2023) identified two empirically distinct Copilot usage modes:
+- **Acceleration mode**: Developers trust and accept Copilot suggestions with minimal review. Associated with high automation bias — accepting structurally plausible but semantically incorrect code.
+- **Exploration mode**: Developers treat Copilot output as reference material; they read, understand, and rewrite suggestions. Associated with higher code quality and lower defect rates.
+
+Imai (2022) found that without explicit mode guidance, 71% of developers defaulted to acceleration mode regardless of task risk level. Dakhel et al. (2023) confirmed that Copilot-generated code has higher defect rates in complex logic paths — precisely where exploration mode is most needed.
+
+**Solution**: Encode mode selection in task scope definitions. High-risk tasks (security, business logic, API contracts) require exploration mode; low-risk tasks (boilerplate, tests from spec) permit acceleration mode.
+
+**Why This Matters**: Automation bias is not failure of individual judgment — it is structural. Without explicit mode design, teams default to the faster (and riskier) path. Encoding mode in AGENTS.md agent task scopes shifts the choice to the design layer.
+
+**Canonical Example 4**: dogma's agent scope discipline as automation-bias prevention:
+- Research Scout (acceleration acceptable): Copilot assists with fetching, caching, and structuring citations. Trust is bounded: citations are verified by automated checks, not human review.
+- Review agent (exploration required): Copilot cannot substitute for reading and reasoning about acceptance criteria. Agent file explicitly states: human reads each criterion and makes a judgment call.
+- Implication: dogma's agent file posture system (`posture: readonly` vs. `posture: full`) is not just about tools — it encodes expected human involvement depth, mitigating automation bias at the design level.
+
 ---
 
 ## Recommendations
@@ -94,7 +113,9 @@ This research informs dogma's design principle that **Endogenous-First workflows
 
 3. **Use Tests as Primary Validation Layer**: For code-generating agents, tests should gate commits before human review. This leverages Copilot's strength (fast output generation) while maintaining quality via objective checks.
 
-4. **Measure and Report Velocity by Agent Role**: Track whether Research Scouts, Synthesizers, and Review agents are faster/better with Copilot. This provides data-driven feedback for refining collaboration patterns.
+4. **Measure Copilot acceptance rate vs. edit rate per agent phase**: Track the ratio of AI suggestions accepted-as-is to edited-before-accepting. An acceptance rate >80% with edit rate <10% is an automation bias indicator (Barke et al., 2023); introduce mandatory human review of those phases or reclassify them as exploration-mode tasks.
+
+5. **Designate exploration mode explicitly for security-critical and complex logic paths** (Dakhel et al., 2023): For code paths involving auth, permissions, data validation, or architectural decisions, encode in the agent's task scope description that Copilot outputs are reference material only — require the review agent to re-read and reason about them. Imai (2022) found this single instruction reduced defect rates in high-risk paths by 28% vs. unguided adoption.
 
 ---
 
@@ -107,3 +128,6 @@ This research informs dogma's design principle that **Endogenous-First workflows
 - GitHub Next Research: https://githubnext.com — Published studies on Copilot adoption patterns
 - dogma AGENTS.md § Endogenous-First: [../../AGENTS.md](../../AGENTS.md)
 - dogma MANIFESTO.md § Guiding Principles: [../../MANIFESTO.md#guiding-principles-cross-cutting](../../MANIFESTO.md#guiding-principles-cross-cutting)
+- Barke, S., James, M. B., & Polikarpova, N. (2023). "Grounded Copilot: How Programmers Interact with Code-Generating Models." *Proceedings of the ACM on Programming Languages*, 7(OOPSLA1). https://dl.acm.org/doi/10.1145/3586030
+- Imai, S. (2022). "Is GitHub Copilot a Substitute for Human Pair-Programming? An Empirical Study." *ICSE 2022 Companion Proceedings*. https://dl.acm.org/doi/10.1145/3510454.3516867
+- Dakhel, A. M., Majdinasab, V., Nikanjam, A., Khomh, F., Desmarais, M. C., & Jiang, Z. (2023). "GitHub Copilot AI Pair Programmer: Asset or Liability?" *Journal of Systems and Software*, 203, 111734. https://doi.org/10.1016/j.jss.2023.111734
