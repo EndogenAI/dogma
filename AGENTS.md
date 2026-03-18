@@ -784,7 +784,21 @@ find . -name 'AGENTS.md' | grep -v node_modules
 
 **Default posture: stop and ask before any ambiguous or irreversible action.**
 
-**Research framing**: When a research question asks "can we suppress X in tool Y?", also ask "can we change our own files to avoid X entirely?"
+### Anti-pattern: Outward-facing research framing
+
+When a research question asks "can we suppress X in tool Y?", **first ask whether our own files can be changed to avoid X entirely**. VS Code settings, schema extensions, and tool suppression are rarely the right lever — the fix is usually a rename, removal, or restructure within the repo. Only accept "permanent non-blocking" conclusions after the inward path has been **explicitly evaluated and ruled out**. Use `scripts/check_problems_panel.py` as the authoritative programmatic baseline rather than ad-hoc grep ([MANIFESTO.md § 2 Algorithms-Before-Tokens](MANIFESTO.md#2-algorithms-before-tokens)).
+
+*Grounded in Problems Panel sprint retrospective (2026-03-18): research asked "can VS Code suppress governs: errors?" but never formally posed "can we rename the key?" — the rename was obvious once framed correctly but took an additional sprint to surface.*
+
+### Anti-pattern: Burying decision options in footnotes (Augmentive Partnership violation)
+
+When research surfaces ≥2 viable options, **all options must be presented to the human as an explicit decision menu** — not left as footnotes or "optional future paths". Burying an option in a footnote and recommending against it without presenting it to the human violates the **Augmentive Partnership** principle ([MANIFESTO.md § Foundational Principle: Augmentive Partnership](MANIFESTO.md#foundational-principle-augmentive-partnership)):
+
+> *"Augmentive, not autonomous: agents surface information and options for human decision-making; they do not make strategic choices."*
+
+**Canonical failure (2026-03-18)**: The `governs:` → `x-governs:` rename was identified during research but consigned to a footnote as "optional future path". The recommendation stated "accept as permanent (non-blocking)" without presenting the rename as an explicit option. This was a **strategic framing choice made by the agent, not the human** — a direct violation of Augmentive Partnership.
+
+**Required posture**: After any research that surfaces ≥2 viable paths, present them as a numbered option table (option, tradeoff, effort) before recommending one. The human decides; the agent recommends.
 
 ### Session Continuation Handoff
 

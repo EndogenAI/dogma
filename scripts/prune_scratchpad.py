@@ -555,6 +555,26 @@ def main() -> int:
                     "Run with --check-only to inspect without modifying.",
                     file=sys.stderr,
                 )
+        # Warn if git stashes exist — pre-existing fixes may be stashed and missed
+        try:
+            import subprocess as _sp
+
+            stash_out = _sp.run(
+                ["git", "stash", "list"],
+                capture_output=True,
+                text=True,
+                timeout=5,
+            ).stdout.strip()
+            if stash_out:
+                stash_count = len(stash_out.splitlines())
+                print(
+                    f"\nWARNING: {stash_count} git stash(es) exist — review before proceeding:\n"
+                    f"{stash_out}\n"
+                    "Pre-existing fixes may be stashed. Run `git stash show -p stash@{0}` to inspect.",
+                    file=sys.stderr,
+                )
+        except Exception:
+            pass
         return 0
 
     if args.file:
