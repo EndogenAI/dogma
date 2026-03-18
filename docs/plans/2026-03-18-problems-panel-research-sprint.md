@@ -32,13 +32,7 @@ The branch currently has ~327 Problems panel errors in 3 categories:
 **Deliverables**: `docs/research/vscode-problems-panel-diagnostics.md` committed, Status: Final  
 **Depends on**: nothing  
 **Gate**: Phase 1 Review does not start until deliverable is committed  
-**Status**: ⬜ Not started
-
-Research questions:
-- **RQ-A**: Can Copilot Chat `prompts-diagnostics-provider` be extended/configured to accept `governs:`?
-- **RQ-B**: Can MCP tool names be validated statically without a running server?
-- **RQ-C**: What VS Code settings legitimately suppress diagnostics from a specific provider?
-- **RQ-D**: What is the exact resolution behaviour of `prompts-diagnostics-provider` for `../../` vs `/`-rooted paths? (Partly answered: `/`-rooted = filesystem root on macOS)
+**Status**: ✅ Complete — commit `09e5d91`
 
 ### Phase 1 Review — Review Gate
 
@@ -46,24 +40,23 @@ Research questions:
 **Deliverables**: `## Phase 1 Review Output` in scratchpad, verdict: APPROVED  
 **Depends on**: Phase 1 deliverable committed  
 **Gate**: Phase 2 does not start until APPROVED  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED
 
 ### Phase 2 — Implementation
 
 **Agent**: Executive Docs (convention doc updates) + direct implementation for pre-commit hook + stash pop  
 **Deliverables**:
-- [ ] `no-relative-traversal-in-agent-files` hook inverted (block `/`-rooted paths, not `../../`) or removed
-- [ ] `stash@{0}` popped and committed (281 link reversions: 36 agents + 18 skills + 1 doc)
-- [ ] `.github/skills/agent-file-authoring/SKILL.md` § Link Path Rule updated
-- [ ] `.github/skills/skill-authoring/SKILL.md` § Link Path Rule updated
-- [ ] `AGENTS.md` § Agent authoring conventions updated (remove `/`-rooted path carve-out)
-- [ ] `docs/guides/agents.md` line 238 updated
-- [ ] Any configuration fix from Phase 1 research applied to `.vscode/settings.json` or `.vscode/agent-frontmatter.schema.json`
-- [ ] If no fix for Category A/B: note added to `docs/guides/agents.md` explaining expected IDE warnings are non-blocking
+- [x] `no-relative-traversal-in-agent-files` hook inverted → `no-absolute-path-links-in-agent-files`
+- [x] `stash@{0}` popped and committed (281 link reversions: 36 agents + 18 skills + 1 doc)
+- [x] `.github/skills/agent-file-authoring/SKILL.md` § 4 Link Path Rule updated + depth fix
+- [x] `.github/skills/skill-authoring/SKILL.md` § 5 Link Path Rule updated
+- [x] `AGENTS.md` § Documentation Standards + § Agent authoring conventions updated
+- [x] `docs/guides/agents.md` updated with correct convention + expected non-blocking warnings note
+- [x] `docs/plans/2026-03-18-problems-panel-research-sprint.md` workplan committed
 
 **Depends on**: Phase 1 Review APPROVED  
 **Gate**: Phase 2 Review does not start until all deliverables committed  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — commits `338c685`, `4a4a861`
 
 ### Phase 2 Review — Review Gate
 
@@ -71,14 +64,14 @@ Research questions:
 **Deliverables**: `## Phase 2 Review Output` in scratchpad, verdict: APPROVED  
 **Depends on**: Phase 2 deliverables committed  
 **Gate**: Phase 3 does not start until APPROVED  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED
 
 ### Phase 3 — Push + Issue Close
 
 **Agent**: GitHub  
 **Deliverables**: Branch pushed, PR updated, issue #389 acceptance criteria checked  
 **Depends on**: Phase 2 Review APPROVED  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — pushed `4a4a861` → origin/triage/problems-panel-cleanup
 
 ---
 
