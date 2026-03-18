@@ -95,6 +95,44 @@ TEMPLATE = """\
 **CI**: {ci}
 **Status**: Not started
 
+### Phase 2 — <Name> ⬜
+**Agent**: <Agent Name>
+**Deliverables**:
+- <!-- list deliverables -->
+
+**Depends on**: Phase 1
+**CI**: {ci}
+**Status**: Not started
+
+### Phase 3 — <Name> ⬜
+**Agent**: <Agent Name>
+**Deliverables**:
+- <!-- list deliverables -->
+
+**Depends on**: Phase 2
+**CI**: {ci}
+**Status**: Not started
+
+### Phase 4 — <Name> ⬜
+**Agent**: <Agent Name>
+**Deliverables**:
+- <!-- list deliverables -->
+
+**Depends on**: Phase 3
+**CI**: {ci}
+**Status**: Not started
+
+### Phase 5 — <Name> ⬜
+**Agent**: <Agent Name>
+**Deliverables**:
+- Fleet integration (if adding new agents/skills: run `uv run python scripts/check_fleet_integration.py --dry-run`)
+- Session startup integration (archive session, update scratchpad summary)
+- <!-- add other deliverables -->
+
+**Depends on**: Phase 4
+**CI**: {ci}
+**Status**: Not started
+
 ---
 
 ## Acceptance Criteria

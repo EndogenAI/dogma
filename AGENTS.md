@@ -40,7 +40,7 @@ When writing the encoding checkpoint sentence in `## Session Start`, consult thi
 
 Additional operational constraints:
 
-- **Minimal Posture** — agents carry only the tools required for their stated role
+- **Minimal Posture** — agents carry only the tools required for their stated role. See [Consumer Mobility Act case study](https://www.gov.uk/orp/CARS-2024) for regulatory precedent that minimal API surface reduces compliance risk.
 - **Programmatic-First** — if you have done a task twice interactively, the third time is a script. See [Programmatic-First Principle](#programmatic-first-principle).
 - **Documentation-First** — every change to a workflow, agent, or script must be accompanied by clear documentation
 - **Commit Discipline** — small, incremental commits following [Conventional Commits](https://www.conventionalcommits.org/) — see [`CONTRIBUTING.md#commit-discipline`](CONTRIBUTING.md#commit-discipline)
@@ -115,6 +115,33 @@ See [`docs/toolchain/README.md`](docs/toolchain/README.md) for the full update w
 
 **Script execution safety**: Each toolchain script supports a Tier 0 → Tier 1 → Tier 3 validation ladder — a pre-execution existence check, a `--dry-run` or `--check` gate that previews side effects without writing, and a static CI gate on commit. For copy-paste-ready validation commands for `fetch_source.py`, `prune_scratchpad.py`, and `validate_agent_files.py`, see [`docs/toolchain/uv.md` § Script Execution Safety — Three-Tier Validation](docs/toolchain/uv.md#script-execution-safety--three-tier-validation).
 
+### Fleet Integration Checklist
+
+**Purpose**: Validate that new agents, skills, and scripts enter the fleet with documented integration into AGENTS.md and the agent catalog.
+
+New fleet members (`.agent.md` files, `SKILL.md` files, or new scripts) must be cross-referenced in AGENTS.md before commit. Use `scripts/check_fleet_integration.py` to automate this check:
+
+```bash
+# Check new files against AGENTS.md for references
+uv run python scripts/check_fleet_integration.py
+
+# Preview without enforcing
+uv run python scripts/check_fleet_integration.py --dry-run
+
+# Check against a different branch
+uv run python scripts/check_fleet_integration.py --branch main
+```
+
+Exit codes: 0 if all new files are documented, 1 if integration gaps found, 2 if I/O error.
+
+**Integration gates** — every new agent or skill must appear in one of:
+- The agent catalog in [`.github/agents/README.md`](.github/agents/README.md)
+- The key agents table in [`Agent Fleet Overview`](#agent-fleet-overview)
+- A reference in [`Agent Skills`](#agent-skills) or [`VS Code Customization Taxonomy`](#vs-code-customization-taxonomy) sections
+- A cross-reference in any relevant SKILL.md frontmatter
+
+Gaps are warnings at review time (via Review agent criterion 8) and enforcement points at CI.
+
 ### `claude -p` Print Mode Policy
 
 This project uses Claude exclusively as its model. For single-query tasks that don't require interactive agent sessions, use print mode to reduce the ~50K per-session token overhead:
@@ -139,6 +166,32 @@ claude -p "..." --no-session-persistence --output-format json --max-turns 1 --ma
 **Always pair with** `--max-turns 1` and `--max-budget-usd` to prevent runaway costs. In CI pipelines, always add `--no-session-persistence`.
 
 See [`docs/guides/claude-code-integration.md`](docs/guides/claude-code-integration.md) for the full Claude Code lifecycle hooks integration guide. Source: `docs/research/claude-code-cli-productivity-patterns.md` (Sprint 15, Rec 1).
+
+---
+
+## Agent Fleet Maturity (L0–L3)
+
+**Purpose**: Track how the agent fleet and scripting substrate maturity progress from ad-hoc discovery toward programmatic enforcement.
+
+The L0–L3 framework (introduced by Ramp CPO Geoff Cha per [`docs/research/ramp-l0l3-framework.md`](docs/research/ramp-l0l3-framework.md)) defines a maturity progression for embedding AI in workflows at organizational scale. This framework maps directly to how Dogma's agent fleet matures across individual discovery (L0–L1) → standardized skills (L2) → enforced governance constraints (L3).
+
+**Implementing [MANIFESTO.md § 1 Endogenous-First](MANIFESTO.md#1-endogenous-first) and [MANIFESTO.md § 2 Algorithms-Before-Tokens](MANIFESTO.md#2-algorithms-before-tokens)**: L0–L3 progression encodes knowledge from tacit (individuals know but don't document) → encoded (teams use standardized prompts/templates) → organizational policy (all agents adopt as default). By moving from tokens (interactive AI queries per task) to algorithms (structured workflows applied automatically), the fleet reduces both cost per phase and cognitive load on human orchestrators.
+
+| Level | Signal | Artifacts | Gate to Next | Example |
+|-------|--------|-----------|-------------|---------|
+| **L0** | Ad-hoc experiments | Session notes, scattered discord messages | Document pattern in a commit message; recognize "did that twice" | Agent discovers Claude works for schema design; uses it in one session |
+| **L1** | Individual reproducible shortcuts | Personal `.prompts/` files, template notes in ticket | Extract template to team repo; reference in onboarding | Engineer documents migration template; shares with 2 peers; they copy it |
+| **L2** | Team standardization | Committed `docs/guides/` procedures, `.github/skills/` | Create CI gate that enforces skill adoption across team; add to new-agent training | Team consolidates 3 independent migration templates into `.github/skills/db-migration/SKILL.md`; new agents read it at onboarding |
+| **L3** | Organizational policy + enforcement | AGENTS.md constraints, pre-commit hooks, CI gates, phase templates | Measure organizational velocity; audit for drift; update constraints based on observed failures | Migration patterns become Phase 1 requirement in all workplans; scaffold_workplan.py Phase 1 template includes migration deliverable checkbox; lychee + validate_synthesis gates prevent broken docs |
+
+**Programmatic gates between levels**:
+- **L0→L1**: Manual — a session reviewer flags "this pattern is worth keeping" and suggests documenting it in the next sprint
+- **L1→L2**: Manual — a tech lead identifies that 2+ agents independently created the same shortcut and consolidates them into `.github/skills/`
+- **L2→L3**: Programmatic — `scripts/check_fleet_integration.py` warns when a new agent or skill is not referenced in AGENTS.md; Review agent criterion 8 flags integration gaps; CI block prevents merge until gap is resolved
+
+**When L0–L3 does NOT apply**: Task domains with high expertise variance (ML model training, cryptographic protocol design) where templating loses nuance. The framework is most useful for domains where 80%+ of engineers encounter the same problem repeatedly.
+
+See [`docs/research/ramp-l0l3-framework.md`](docs/research/ramp-l0l3-framework.md) for the full framework, canonical examples, and cross-organizational adoption patterns.
 
 ---
 
@@ -674,6 +727,18 @@ Only **Executive Orchestrator** and **Executive Docs** agents commit to the repo
 
 **Delegation rule**: Any action involving `git commit`, `git push`, `gh issue`, `gh pr`, or any other GitHub API write must be delegated to the GitHub Agent — not performed directly by the delegating agent.
 
+### Accountability vs. Execution — L3 PM Pattern
+
+At L3 (organizational policy), PM authority is **accountable** (decides label strategy, milestone assignments, issue prioritization) but not **executive** (does not commit or push). GitHub Agent executes. This separates decision authority from execution authority:
+
+| Responsibility | Agent | Authority |
+|---|---|---|
+| **Decision** | PM | Proposes label strategy, blocks issues with violations, audits label coverage |
+| **Execution** | GitHub | Runs label mutations, confirms changes, audits log |
+| **Escalation** | PM → GitHub | PM proposes; GitHub approves + executes live command |
+
+**Example**: PM runs `gh issue edit --labels` prep script with `--dry-run`; GitHub Agent validates the output and runs the live command; PM spot-checks a sample of updated labels. This posture applies equally to milestone assignments, release tagging, and any other label/metadata operation.
+
 ### GitHub Label and Issue Conventions
 
 All issues must use the colon-prefixed label namespace from `docs/guides/github-workflow.md`:
@@ -727,6 +792,30 @@ Full prompt library entry and protocol: `docs/guides/workflows.md` → **Orchest
 
 ---
 
+### Ethical Values Procurement Rubric
+
+**Purpose**: Operationalize [`MANIFESTO.md § Ethical Values`](MANIFESTO.md#ethical-values) into a procurement checklist for any new tool, agent capability, or external service before adoption.
+
+Derived from [`docs/research/civic-ai-governance.md`](docs/research/civic-ai-governance.md) and [`MANIFESTO.md § Ethical Values`](MANIFESTO.md#ethical-values), every tool integration must satisfy at least **three** of the following criteria before adoption:
+
+1. **Transparency** — Can the system's decision-making be inspected and explained to a non-technical person in < 2 minutes? [MANIFESTO.md § Ethical Values](MANIFESTO.md#ethical-values)
+
+2. **Human Oversight** — Does the tool provide mechanisms for human review or veto? Can a human stop execution without reimplementing the tool? [MANIFESTO.md § Ethical Values](MANIFESTO.md#ethical-values)
+
+3. **Reproducibility** — Are outputs deterministic given the same inputs? Can a decision made on day one be reproduced on day 100 identically? [MANIFESTO.md § Ethical Values](MANIFESTO.md#ethical-values)
+
+4. **Auditability** — Can we trace what the tool did, why it did it, and gather evidence for review? Is there a log? [docs/research/civic-ai-governance.md § Canonical Example 2](docs/research/civic-ai-governance.md#canonical-example-2-policy-as-codification)
+
+5. **Reversibility** — If the tool causes harm or violates a constraint, can we disable it or roll back its decisions? [docs/research/civic-ai-governance.md § Canonical Example 3](docs/research/civic-ai-governance.md#canonical-example-3-continuous-alignment-check)
+
+**Procurement Workflow**:
+- Draft a values statement (which outcomes must this tool optimize for? what constraints can it never violate?)
+- Run the rubric: do at least 3 criteria pass?
+- If no: reject or send back for redesign
+- If yes: proceed to Review gate for approval
+
+This operationalizes the endogenous principle: externally adopted tools are *vetted against endogenous values* before integration.
+
 ### Compaction-Aware Writing
 
 VS Code Copilot Chat can compact the conversation history at any time — either automatically when the context window is full, or manually via the `/compact` command or "Compact Conversation" button. **Write as if the next message will trigger compaction.**
@@ -744,6 +833,7 @@ Ask when:
 - A change would delete, rename, or restructure existing files
 - The correct approach involves a genuine trade-off the user should decide
 - A workflow phase writes edits to authoritative synthesis papers (`docs/research/` docs with `status: Final` or designated primary papers) — surface the diff for human review before committing, even if Review agent has approved
+- **Governance level context**: Is this decision a governance boundary (spans ≥2 agents or sets organizational policy)? If yes: ask; otherwise: proceed (standard)
 
 Proceed when:
 - The task is unambiguous and reversible
@@ -813,6 +903,12 @@ The authoring contract for `.agent.md` files (VS Code Custom Agents) is enforced
 ## Agent Fleet Overview
 
 See [`.github/agents/README.md`](.github/agents/README.md) for the full agent catalog.
+
+### Agent Fleet Maturity (L0–L3)
+
+**Diagnostic**: If >2 agents independently created the same shortcut, consolidate into L2. Transition readiness is tracked in [docs/governance/governance-metrics.md](docs/governance/governance-metrics.md); full framework is in [`docs/research/ramp-l0l3-framework.md`](docs/research/ramp-l0l3-framework.md); FSM encoding at [data/phase-gate-fsm.yml](data/phase-gate-fsm.yml).
+
+**L0–L3 Progression**: Knowledge flows from tacit (L0–L1: individuals use shortcuts) → encoded (L2: team adopts standardized skills) → organizational policy (L3: all agents or scripts enforce via CI gates, pre-commit hooks, or phase requirements).
 
 ### VS Code Customization Taxonomy
 
