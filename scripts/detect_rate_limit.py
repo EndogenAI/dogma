@@ -16,7 +16,6 @@ Inputs (--check mode):
     --provider         — provider name ('claude', 'gpt-4', 'gpt-3.5', 'local-localhost', default: 'claude')
     --window-ms        — rate-limit window duration in milliseconds (default: 60000)
     --safety-margin    — additional token buffer (default: 15000)
-    --dry-run          — estimate without enforcing strict cap/floor
 
 Outputs:
     Single line to stdout:
@@ -37,9 +36,6 @@ Usage Examples:
 
     # Check with provider parameter
     uv run python scripts/detect_rate_limit.py --check 40000 20000 --provider gpt-4
-
-    # Dry-run: compute sleep without enforcing strict cap (issue #322 fix)
-    uv run python scripts/detect_rate_limit.py --check 0 30000 --provider claude --dry-run
 
 Notes:
     - Based on research in docs/research/rate-limit-detection-api.md
@@ -204,11 +200,6 @@ def main() -> int:
         type=int,
         default=DEFAULT_SAFETY_MARGIN,
         help=f"Safety margin in tokens (default: {DEFAULT_SAFETY_MARGIN})",
-    )
-    parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Compute without enforcing strict cap (testing only)",
     )
 
     args = parser.parse_args()
