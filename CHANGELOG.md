@@ -1,3 +1,12 @@
+## [0.12.1](https://github.com/EndogenAI/dogma/compare/v0.12.0...v0.12.1) (2026-03-18)
+
+
+### Reverts
+
+* **agents:** revert Review agent MCP tool additions ([2cdd713](https://github.com/EndogenAI/dogma/commit/2cdd713fac2406c69f1353d4836f68cf5be7deb1))
+
+
+
 # [0.12.0](https://github.com/EndogenAI/dogma/compare/v0.11.0...v0.12.0) (2026-03-18)
 
 
