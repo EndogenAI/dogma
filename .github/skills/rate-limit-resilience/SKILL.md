@@ -32,7 +32,7 @@ reliable multi-phase sessions without token exhaustion.
 **Integration Points**:
 - [`AGENTS.md#programmatic-first-principle`](../../AGENTS.md#programmatic-first-principle) — Phase 0 ships four scripts instead of interactive workarounds
 - [`AGENTS.md#executive-fleet-privileges`](../../AGENTS.md#executive-fleet-privileges) — Orchestrator holds rate-limit gate logic
-- [`phase-gate-sequence` SKILL.md](./phase-gate-sequence/SKILL.md) — Pre-phase checkpoint integrates gate at step 2
+- [`phase-gate-sequence` SKILL.md](../phase-gate-sequence/SKILL.md) — Pre-phase checkpoint integrates gate at step 2
 
 **Related Research**:
 - [`docs/research/rate-limit-detection-api.md`](../../docs/research/rate-limit-detection-api.md) — Tier 1 budget tracking, Tier 2 circuit-breaker
