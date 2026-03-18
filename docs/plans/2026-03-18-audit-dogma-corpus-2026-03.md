@@ -26,7 +26,7 @@ Normalize the `governs:` frontmatter to `x-governs:` to eliminate VS Code diagno
 **Gate**: Phase 1 does not start until `grep -r "governs:" .` (frontmatter only) returns zero matches outside of documentation.
 **Status**: ✅ Complete
 
-### Phase 1A — #391 Agentic Fleet Sweep ⬜
+### Phase 1A — #391 Agentic Fleet Sweep ✅
 **Agent**: Executive Researcher
 **Description**: Audit the agent fleet substrate: `.github/agents/` and `.github/skills/`. Identify missing provenance, tool/permission drift, and redundant help prose.
 **Deliverables**:
@@ -34,9 +34,9 @@ Normalize the `governs:` frontmatter to `x-governs:` to eliminate VS Code diagno
 - List of consolidate/deprecate candidates for agents and skills
 **Depends on**: Phase 0
 **Gate**: Phase 1A Review APPROVED
-**Status**: Not started
+**Status**: ✅ Complete
 
-### Phase 1B — #391 Docs Substrate Sweep ⬜
+### Phase 1B — #391 Docs Substrate Sweep ✅
 **Agent**: Executive Researcher
 **Description**: Audit the documentation substrate: `docs/guides/` and `docs/research/`. Identify stale guides, lack of D4 synthesis compliance, and orphan files.
 **Deliverables**:
@@ -44,9 +44,9 @@ Normalize the `governs:` frontmatter to `x-governs:` to eliminate VS Code diagno
 - Synthesis table of all 60+ documents with status (Stable/Stale/Deprecate)
 **Depends on**: Phase 1A
 **Gate**: Phase 1B Review APPROVED
-**Status**: Not started
+**Status**: ✅ Complete
 
-### Phase 1C — #391 Synthesis & Implementation Roadmap ⬜
+### Phase 1C — #391 Synthesis & Implementation Roadmap ✅
 **Agent**: Executive Researcher
 **Description**: Synthesize findings from 1A and 1B into a final audit report and prioritized repair backlog.
 **Deliverables**:
@@ -54,34 +54,36 @@ Normalize the `governs:` frontmatter to `x-governs:` to eliminate VS Code diagno
 - Finalized Repair Backlog mapped to Phase 2 sub-phases
 **Depends on**: Phase 1B
 **Gate**: Synthesis doc committed and Status: Final
-**Status**: Not started
+**Status**: ✅ Complete
 
-### Phase 2A — #391 Structural Repairs (Governance Layer) ⬜
+### Phase 2A — #391 Structural repairs (Bulk XML & Substrate) ⬜
 **Agent**: Executive Docs
-**Description**: Implement repairs to high-level governance files: `AGENTS.md`, `MANIFESTO.md`, and core guides. Fix structural hierarchy and missing cross-references.
+**Description**: Implement structural repairs to the agent fleet and baseline substrate scripts: Bulk-apply BDI XML tags to all 36 agents; fix `audit_provenance.py` regex for `x-governs:`; tighten `validate_agent_files.py` to enforce tags.
 **Deliverables**:
-- Updated root `AGENTS.md` and `MANIFESTO.md`
-- Core guide restructuring complete
+- All 36 `.agent.md` files wrapped in BDI XML tags (`<context>`, etc.)
+- `scripts/audit_provenance.py` fixed for `x-governs:`
+- `scripts/validate_agent_files.py` XML tag check elevated to ERROR
 **Depends on**: Phase 1C
 **Gate**: Phase 2A Review APPROVED
 **Status**: Not started
 
-### Phase 2B — #391 Content Repairs (Consolidation) ⬜
+### Phase 2B — #391 Content Consolidation (Claude & Scripts) ⬜
 **Agent**: Executive Docs
-**Description**: Consolidate stale or redundant guides into authoritative versions as mapped in Phase 1C. Mark remaining stale files as `[Deprecated]`.
+**Description**: Refactor `CLAUDE.md` to redirect to `AGENTS.md` instead of duplicating guardrails; perform a full `scripts/README.md` sweep to document 12 missing or stale entries.
 **Deliverables**:
-- Consolidated skills/agents documentation
-- Deprecated files moved or tagged correctly
+- `CLAUDE.md` reduced and redirected
+- `scripts/README.md` contains all 71 active scripts with usage examples
 **Depends on**: Phase 2A
 **Gate**: Phase 2B Review APPROVED
 **Status**: Not started
 
-### Phase 2C — #391 Fidelity Repairs (Link Integrity) ⬜
+### Phase 2C — #391 Fidelity & Link Sweep (Anchors & Fragments) ⬜
 **Agent**: Executive Docs
-**Description**: Execute a comprehensive fix for all broken markdown fragment links (`#fragment`) and path links identified across the corpus.
+**Description**: Repair "Fragment Ghosts" by standardizing hidden HTML anchors in `AGENTS.md` and fixing broken markdown links repo-wide. Update `MANIFESTO.md` citations to include § references.
 **Deliverables**:
-- All broken links in `docs/` and `.github/` resolved
+- All broken `#fragment` links resolved repo-wide
 - Final `validate_synthesis` pass across all research docs
+- Added anchors to `AGENTS.md` for stable targeting
 **Depends on**: Phase 2B
 **Gate**: Phase 2C Review APPROVED
 **Status**: Not started
