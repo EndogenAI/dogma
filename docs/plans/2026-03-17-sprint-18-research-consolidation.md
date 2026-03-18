@@ -184,7 +184,7 @@ Sprints 18A/18B form a coherent two-phase delivery cycle bridging research (9 cr
 
 ## Acceptance Criteria
 
-- [x] Phase 0 Review: APPROVED (rate-limit resilience gates all downstream)
+- [ ] Phase 0 Review: APPROVED (rate-limit resilience gates all downstream)
 - [ ] Phase 1 Review: APPROVED (all 9 research docs validated — #319, #318, #317, #316, #315, #314, #313, #312, #294)
 - [ ] Phase 2 Review: APPROVED (hooks documentation validated)
 - [ ] Phase 3A Review: APPROVED (integration points validated)
