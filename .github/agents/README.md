@@ -1,5 +1,5 @@
 ---
-governs:
+x-governs:
   - endogenous-first
   - programmatic-first
 ---
