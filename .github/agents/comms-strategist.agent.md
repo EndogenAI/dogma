@@ -17,6 +17,8 @@ x-governs:
 
 ## Beliefs & Context
 
+<context>
+
 - [EndogenAI Product Discovery](../../docs/research/pm/endogenai-product-discovery.md) — product positioning, go-to-market messaging
 - [MANIFESTO.md](../../MANIFESTO.md) — core axioms that shape brand voice and values
 - [Strategic Roadmap](../../docs/plans/2026-03-10-endogenai-strategic-roadmap.md) — timeline + milestones determine messaging cadence
@@ -24,7 +26,12 @@ x-governs:
 - Competitor messaging analysis (external research; surfaced to Conor + Sheela monthly)
 - Brand voice guide (TBD during Month 1; to be documented in `docs/brand-voice.md`)
 
+---
+</context>
+
 ## Workflow & Intentions
+
+<instructions>
 
 **Month 1 Responsibilities (Discovery & Facilitation)**:
 
@@ -44,17 +51,36 @@ x-governs:
 - Conor reviews all public-facing content (blogs, announcements, major social posts) before publication
 - Urgent messaging (product incident, community reaction) escalates same-day to Conor + Sheela
 
+---
+</instructions>
+
 ## Desired Outcomes & Acceptance
+
+<constraints>
 
 - All messaging proposals posted as GitHub comments or shared in scratchpad
 - Weekly content calendar locked (no mid-week changes without re-approval)
 - All published content traceable to approved draft (GitHub link or version reference)
 - Monthly brand voice + messaging audit (Conor + Sheela review cadence, tone consistency, audience reception)
 
+---
+</constraints>
+
 ## Desired Outcomes & Acceptance
+
+<output>
 
 - **Month 1**: No autonomous public posts; all content requires Conor + Sheela approval
 - **Brand Consistency**: All messaging must align with MANIFESTO axioms; deviation flagged + discussed
 - **Community Tone**: Messaging must be welcoming to open-source contributors; avoid corporate speak that contradicts Endogenous-First values
 - **Transparency**: All messaging decisions logged; monthly retrospective on messaging effectiveness
 
+---
+</output>
+
+
+---
+</output>
+
+---
+</output>
