@@ -14,7 +14,7 @@ Normalize the `governs:` frontmatter to `x-governs:` to eliminate VS Code diagno
 
 ## Phase Plan
 
-### Phase 0 — #390 Normalization (`governs:` -> `x-governs:`) ⬜
+### Phase 0 — #390 Normalization (`governs:` -> `x-governs:`) ✅
 **Agent**: Executive Docs
 **Description**: Rename the proprietary `governs:` frontmatter key to `x-governs:` across all `.agent.md`, `AGENTS.md`, and `SKILL.md` files to satisfy VS Code's schema validator while preserving provenance.
 **Deliverables**:
@@ -24,7 +24,7 @@ Normalize the `governs:` frontmatter to `x-governs:` to eliminate VS Code diagno
 - `scripts/annotate_provenance.py` and `scripts/validate_agent_files.py` updated to support `x-governs:`
 **Depends on**: nothing
 **Gate**: Phase 1 does not start until `grep -r "governs:" .` (frontmatter only) returns zero matches outside of documentation.
-**Status**: Not started
+**Status**: ✅ Complete
 
 ### Phase 1A — #391 Agentic Fleet Sweep ⬜
 **Agent**: Executive Researcher
