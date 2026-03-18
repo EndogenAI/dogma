@@ -166,11 +166,11 @@ This convention is enforced by the `no-absolute-path-links-in-agent-files` pre-c
 
 Every agent file must contain at least one back-reference to `/MANIFESTO.md` **or** `/AGENTS.md` in the body. CI checks this as a proxy for encoding fidelity.
 
-**Minimum pattern** (place in the first substantive section):
+**Minimum pattern** (place in the first substantive section; agent files are at depth 2 — use `../../`):
 
 ```markdown
-This agent is governed by [`AGENTS.md`](../../../AGENTS.md) and the foundational axioms
-in [`MANIFESTO.md`](../../../MANIFESTO.md).
+This agent is governed by [`AGENTS.md`](../../AGENTS.md) and the foundational axioms
+in [`MANIFESTO.md`](../../MANIFESTO.md).
 ```
 
 Low cross-reference density is a signal of encoding drift — the agent has been authored without grounding in the inheritance chain.
