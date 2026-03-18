@@ -10,7 +10,6 @@ import pytest
 import json
 import sys
 from pathlib import Path
-from datetime import datetime, timedelta
 
 # Add scripts/ to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent / 'scripts'))
@@ -18,11 +17,23 @@ sys.path.insert(0, str(Path(__file__).parent.parent / 'scripts'))
 from rate_limit_gate import (
     check_rate_limit_gate,
     _count_consecutive_failures,
-    _read_audit_log,
     _log_gate_decision,
     AUDIT_LOG_PATH,
     MIN_BUDGET_SAFETY_MARGIN,
 )
+
+
+# ============================================================================
+# Fixtures for test isolation
+# ============================================================================
+
+@pytest.fixture
+def isolated_audit_log(tmp_path, monkeypatch):
+    """Provide isolated audit log path per test using tmp_path."""
+    import rate_limit_gate
+    temp_log = tmp_path / "rate-limit-audit.log"
+    monkeypatch.setattr(rate_limit_gate, 'AUDIT_LOG_PATH', temp_log)
+    return temp_log
 
 
 class TestGateSafety:
@@ -91,13 +102,9 @@ class TestProviderDifferencesClaude:
 class TestCircuitBreaker:
     """Test circuit-breaker logic."""
 
-    def test_circuit_breaker_not_triggered_clean_log(self):
+    def test_circuit_breaker_not_triggered_clean_log(self, isolated_audit_log):
         """Test circuit-breaker with clean audit log."""
-        # Clear audit log first
-        if AUDIT_LOG_PATH.exists():
-            AUDIT_LOG_PATH.unlink()
-
-        # With clean log, gate should allow
+        # With clean log (isolated tmp_path), gate should allow
         result = check_rate_limit_gate(100000, 'delegation', provider='claude')
         assert result['safe'] is True
         assert result['consecutive_failures'] == 0
@@ -130,8 +137,8 @@ class TestEdgeCases:
             current_token_budget=MIN_BUDGET_SAFETY_MARGIN,
             operation_type='fetch_source',
         )
-        # At or below threshold should be unsafe
-        assert result['safe'] is False or result['consecutive_failures'] == 0
+        # Exactly at threshold should be unsafe (use < MIN_BUDGET_SAFETY_MARGIN check)
+        assert result['safe'] is False
 
     def test_gate_just_above_safety_margin(self):
         """Test behavior when budget is just above safety margin."""
@@ -170,20 +177,16 @@ class TestErrorHandling:
 class TestAuditLogIntegration:
     """Test audit logging integration."""
 
-    def test_log_gate_decision_creates_file(self):
+    def test_log_gate_decision_creates_file(self, isolated_audit_log):
         """Test that logging creates audit log file."""
-        # Clean slate
-        if AUDIT_LOG_PATH.exists():
-            AUDIT_LOG_PATH.unlink()
-
+        # isolated_audit_log provides a clean tmp_path-backed audit log
         result = check_rate_limit_gate(50000, 'delegation', provider='claude')
         result['current_budget'] = 50000
 
         _log_gate_decision(result, audit_flag=True)
 
-        # File should exist now
-        # Note: We don't check AUDIT_LOG_PATH.exists() because it may not
-        # persist in the test environment, but the function should not raise
+        # File should exist now (in isolated tmp_path)
+        assert isolated_audit_log.exists()
 
 
 # ============================================================================
