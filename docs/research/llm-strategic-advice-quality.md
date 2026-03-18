@@ -110,7 +110,7 @@ Domain expert analysis: Taiwan accounts for 92% of advanced-node chip production
   Source: https://share.google/hsTSK72tIoy9LHE02  
   Fetched: 2026-03-18  
 
-- arvix.org search query: "LLM strategic advice quality"  
+- arxiv.org search query: "LLM strategic advice quality"  
 
 - MANIFESTO.md § 2 — Algorithms-Before-Tokens axiom  
 
