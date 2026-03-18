@@ -22,5 +22,19 @@
         "git check-ignore": true,
         "git remote": true,
         "timeout": true
-    }
+    },
+    "yaml.schemas": {
+        ".vscode/agent-frontmatter.schema.json": [
+            ".github/agents/*.agent.md",
+            ".github/skills/*/SKILL.md"
+        ]
+    },
+    "markdown.validate.enabled": true,
+    "markdown.validate.ignoreLinkToSection": true,
+    "[markdown]": {
+        "files.exclude": {
+            "**/*.agent.md": false
+        }
+    },
+    "yaml.validate": false
 }
