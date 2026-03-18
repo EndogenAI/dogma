@@ -355,8 +355,8 @@ If **any** check fails → rewrite the prompt before delegating.
 
 #### Pre-Delegation Rate-Limit Gate (Sprint 18+)
 
-**Mandate** (from [`MANIFESTO.md#3-local-compute-first`](MANIFESTO.md#3-local-compute-first)):
-Rate-limit constraints are structural, not optional scaling concerns. Before every delegation, verify budget availability.
+**Mandate** (from [`MANIFESTO.md#3-local-compute-first`](MANIFESTO.md#3-local-compute-first) and [`MANIFESTO.md#2-algorithms-before-tokens`](MANIFESTO.md#2-algorithms-before-tokens)):
+Rate-limit constraints are structural, not optional scaling concerns — they instantiate Algorithms-Before-Tokens by making token budgets deterministic and enforceable rather than left to interactive negotiation. Before every delegation, verify budget availability.
 
 **Workflow**:
 1. Check current token budget (from API or prior phase tracking)
