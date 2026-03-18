@@ -96,10 +96,15 @@ def parse_simple_yaml(yaml_text: str) -> dict:
             key = key_match.group(1)
             value = key_match.group(2).strip()
             if value:
-                result[key] = value.strip("\"'")
+                # Key: value — if it matches x-governs, we want to support both keys
+                # for backward compatibility during normalization phase (Phase 0)
+                # but we'll normalize them to 'x-governs' internally
+                target_key = "x-governs" if key in ("governs", "x-governs") else key
+                result[target_key] = value.strip("\"'")
                 i += 1
             else:
                 items: list[str] = []
+                target_key = "x-governs" if key in ("governs", "x-governs") else key
                 i += 1
                 while i < len(lines):
                     item_match = re.match(r"^\s+-\s+(.*)", lines[i])
@@ -112,7 +117,7 @@ def parse_simple_yaml(yaml_text: str) -> dict:
                         i += 1
                     else:
                         break
-                result[key] = items
+                result[target_key] = items
         else:
             i += 1
     return result
