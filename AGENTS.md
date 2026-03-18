@@ -388,7 +388,7 @@ fi
 **Provider Policies** (from `data/rate-limit-profiles.yml`):
 - `claude` — conservative (60s delegation sleep, threshold=3)
 - `gpt-4` — moderate (30s, threshold=4)
-- `gpt-3.5` — permissive (20s, threshold=4)
+- `gpt-3.5` — permissive (20s, threshold=5)
 - `local-localhost` — unrestricted (0s, threshold=999)
 
 **Backward Compatibility**: This gate is new infrastructure (Phase 0, Sprint 18). Existing scripts remain functional; rate-limit checks are optional until integrated into phase-gate-sequence.
