@@ -73,7 +73,7 @@ class TestHappyPath:
         agent = _write_agent(
             tmp_path,
             "good.agent.md",
-            "---\nname: Good\ndescription: x\ntools: []\ngoverns:\n  - endogenous-first\n---\nBody.\n",
+            "---\nname: Good\ndescription: x\ntools: []\nx-governs:\n  - endogenous-first\n---\nBody.\n",
         )
         known = prov_mod.extract_manifesto_axioms(manifesto)
         result = prov_mod.audit_file(agent, known)
@@ -83,7 +83,7 @@ class TestHappyPath:
 
 
 class TestOrphanedFile:
-    """test_orphaned_file: no governs: field -> orphaned=True."""
+    """test_orphaned_file: no x-governs: field -> orphaned=True."""
 
     @pytest.mark.io
     def test_orphaned_file(self, prov_mod, tmp_path):
@@ -101,7 +101,7 @@ class TestOrphanedFile:
 
 
 class TestUnverifiableCitation:
-    """test_unverifiable_citation: governs: [fake-axiom-xyz] -> unverifiable non-empty."""
+    """test_unverifiable_citation: x-governs: [fake-axiom-xyz] -> unverifiable non-empty."""
 
     @pytest.mark.io
     def test_unverifiable_citation(self, prov_mod, tmp_path):
@@ -109,7 +109,7 @@ class TestUnverifiableCitation:
         agent = _write_agent(
             tmp_path,
             "bad.agent.md",
-            "---\nname: Bad\ndescription: z\ntools: []\ngoverns:\n  - fake-axiom-xyz\n---\nBody.\n",
+            "---\nname: Bad\ndescription: z\ntools: []\nx-governs:\n  - fake-axiom-xyz\n---\nBody.\n",
         )
         known = prov_mod.extract_manifesto_axioms(manifesto)
         result = prov_mod.audit_file(agent, known)
@@ -128,7 +128,7 @@ class TestJsonOutputSchema:
         _write_agent(
             agents_dir,
             "a.agent.md",
-            "---\nname: A\ndescription: a\ntools: []\ngoverns:\n  - endogenous-first\n---\nBody.\n",
+            "---\nname: A\ndescription: a\ntools: []\nx-governs:\n  - endogenous-first\n---\nBody.\n",
         )
         report = prov_mod.build_report(agents_dir, manifesto)
         assert "files" in report
@@ -166,7 +166,7 @@ class TestMainExits0Advisory:
 
 
 class TestFleetCoveragePct:
-    """test_fleet_coverage_pct: 1 file with governs, 1 without -> 50.0%."""
+    """test_fleet_coverage_pct: 1 file with x-governs, 1 without -> 50.0%."""
 
     @pytest.mark.io
     def test_fleet_coverage_pct(self, prov_mod, tmp_path):
@@ -176,7 +176,7 @@ class TestFleetCoveragePct:
         _write_agent(
             agents_dir,
             "governed.agent.md",
-            "---\nname: G\ndescription: g\ntools: []\ngoverns:\n  - endogenous-first\n---\nBody.\n",
+            "---\nname: G\ndescription: g\ntools: []\nx-governs:\n  - endogenous-first\n---\nBody.\n",
         )
         _write_agent(
             agents_dir,
@@ -198,7 +198,7 @@ class TestSummaryFormat:
         _write_agent(
             agents_dir,
             "myagent.agent.md",
-            "---\nname: M\ndescription: m\ntools: []\ngoverns:\n  - endogenous-first\n---\nBody.\n",
+            "---\nname: M\ndescription: m\ntools: []\nx-governs:\n  - endogenous-first\n---\nBody.\n",
         )
         exit_code = prov_mod.main(
             [
