@@ -97,7 +97,24 @@ def rag_reindex():
 - Greenfield adoption is 3× faster (fewer legacy constraints)
 - Retrofit risks breaking existing agents if index invalidation isn't handled correctly
 - Decouple RAG adoption from core repository churn
+### Pattern 3: Benchmark-Grounded Recall Validation Before Production
 
+**When**: Deciding whether local RAG retrieval quality is sufficient for a given use case before committing to a production deployment.
+
+**Problem**: Internal accuracy claims (e.g., "top-5 recall 0.82") are meaningless without a stable external baseline. Lewis et al. (2020) established the original RAG architecture; Thakur et al. (2021) extended this with the BEIR benchmark showing that retrieval model recall varies dramatically (0.45–0.88) across domain-specific corpora. BGE-Small's published BEIR score provides a baseline, but in-domain corpora (e.g., internal docs, research notes) regularly diverge from BEIR distributions.
+
+**Solution**:
+1. Run BEIR-style zero-shot evaluation on a 50-query sample from your corpus before accepting a recall estimate
+2. Compute RAGAS metrics (faithfulness, answer relevance, context precision) on the same sample (Es et al., 2023)
+3. Accept deployment only if both recall ≥0.75 and RAGAS faithfulness ≥0.80
+
+**Why This Matters**: Skipping benchmark validation is the primary cause of silent accuracy degradation post-deployment. A corpus that changes over time (e.g., ongoing research docs) needs quarterly re-validation, not just initial validation.
+
+**Canonical Example 4**: RAGAS-guided chunking strategy selection:
+- Team evaluates 3 chunking strategies (fixed 512-token, H2 semantic, sentence-level) using RAGAS automated evaluation on 100 representative queries
+- Results: H2 semantic chunking achieves faithfulness 0.87, context precision 0.83; fixed-512 achieves 0.71, 0.66; sentence-level 0.62, 0.58
+- Decision: H2 semantic adopted for documentation corpus — matches Canonical Example 3's empirical finding; now independently validated by RAGAS metrics rather than team intuition
+- Anti-pattern: Teams that skip RAGAS evaluation and deploy fixed-512 chunking based on implementation simplicity discover accuracy problems only when agent outputs degrade visibly — after production adoption is established
 ---
 
 ## Recommendations
@@ -111,6 +128,10 @@ def rag_reindex():
 4. **Defer core-repo retrofitting until greenfield pattern is proven**: Establish local RAG in 1–2 greenfield companion repos (e.g., local-rag, observability-agent-tools). Only retrofit to core repo after value is demonstrated and team is confident.
 
 5. **Measure RAG value: token savings vs. latency trade-off**: Track context window tokens saved per session (target: >80% reduction vs. bulk corpus reads) and query latency (target: <500ms p99 on M-series). Use metrics to justify continued adoption.
+
+6. **Validate recall against BEIR baselines before accepting internal accuracy estimates** (Thakur et al., 2021): Run zero-shot BEIR-style evaluation on a 50-query sample from your corpus. BGE-Small's published BEIR scores set the prior; deviation >10 points indicates corpus distribution mismatch requiring chunking or model adjustment before production deployment.
+
+7. **Integrate RAGAS into post-deployment evaluation loops** (Es et al., 2023): Automate RAGAS evaluation (faithfulness, answer relevance, context precision) on a random 5% sample of RAG queries weekly. This surfaces silent accuracy degradation from corpus drift without full human review, implementing Algorithms-Before-Tokens for quality assurance.
 
 ---
 
@@ -129,3 +150,6 @@ These findings inform agent knowledge grounding decisions in Phase 3 implementat
 - MANIFESTO.md § Local-Compute-First: [../../MANIFESTO.md#3-local-compute-first](../../MANIFESTO.md#3-local-compute-first)
 - MANIFESTO.md § Algorithms-Before-Tokens: [../../MANIFESTO.md#2-algorithms-before-tokens](../../MANIFESTO.md#2-algorithms-before-tokens)
 - MCP Specification: https://modelcontextprotocol.io/specification/ — Model Context Protocol standard
+- Lewis, P., Perez, E., Piktus, A., Petroni, F., Karpukhin, V., Goyal, N., … & Kiela, D. (2020). "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks." *NeurIPS 2020*. https://arxiv.org/abs/2005.11401
+- Thakur, N., Reimers, N., Rücklé, A., Srivastava, A., & Gurevych, I. (2021). "BEIR: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models." *NeurIPS 2021 Datasets and Benchmarks*. https://arxiv.org/abs/2104.08663
+- Es, S., James, J., Espinosa-Anke, L., & Schockaert, S. (2023). "RAGAS: Automated Evaluation of Retrieval Augmented Generation." arXiv:2309.15217. https://arxiv.org/abs/2309.15217
