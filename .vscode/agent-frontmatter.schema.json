@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "VS Code Agent File Frontmatter Schema",
+  "description": "Extended schema for EndogenAI custom agent and skill fields",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Agent display name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Agent description"
+    },
+    "tools": {
+      "oneOf": [
+        {
+          "type": "array",
+          "description": "List of tools available to this agent",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9/_.-]+$"
+          }
+        },
+        {
+          "type": "string",
+          "description": "Flow sequence of tools",
+          "pattern": "^\\[.*\\]$"
+        }
+      ]
+    },
+    "governs": {
+      "type": "array",
+      "description": "Internal provenance encoding: which AGENTS.md axioms or principles govern this agent",
+      "items": {
+        "type": "string",
+        "enum": [
+          "endogenous-first",
+          "algorithms-before-tokens",
+          "local-compute-first",
+          "minimal-posture",
+          "programmatic-first",
+          "documentation-first",
+          "commit-discipline",
+          "enforcement-proximity"
+        ]
+      }
+    },
+    "handoffs": {
+      "type": "array",
+      "description": "Handoff options for this agent",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "agent": {
+            "type": "string"
+          },
+          "prompt": {
+            "type": "string"
+          },
+          "send": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "model": {
+      "type": "string",
+      "description": "Model specification"
+    },
+    "target": {
+      "type": "string",
+      "description": "Target scope"
+    },
+    "user-invocable": {
+      "type": "boolean",
+      "description": "Whether this agent is user-invocable"
+    },
+    "disable-model-invocation": {
+      "type": "boolean",
+      "description": "Whether to disable model invocation"
+    }
+  },
+  "patternProperties": {
+    "^(dogma-governance|vscode|execute|read|search|edit|web|browser|github|todo|agent)/": {
+      "type": "string",
+      "description": "Tool reference (allows custom namespace prefixes like dogma-governance/)"
+    }
+  }
+}
