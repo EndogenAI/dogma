@@ -46,7 +46,7 @@ The Redux-analogue pattern is partially present: the `.tmp/` scratchpad function
 
 In the EndogenAI fleet, MCP servers exposed via stdio (filesystem tools, git tools, script execution) should remain stateless: they receive a complete request, execute, and return a result. Session identity (which branch, which user) should be passed as part of the tool call arguments, not stored in server memory.
 
-**Canonical example**: The `git` MCP server receives `{"op": "log", "args": ["--oneline", "-5"]}` and returns the output. No session state is needed because the working directory is implicitly scoped by how the server was launched. This is identical to a REST endpoint — stateless, idempotent, composable.
+**Canonical example**: The `git` MCP server receives `{"op": "log", "args": ["--oneline", "-5"]}` and returns the output. No session state is needed because the working directory is implicitly scoped by how the server was launched. This is identical to a REST endpoint — stateless, idempotent, composable. This adheres to the **MANIFESTO.md §3** ([MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first)).
 
 **Anti-pattern**: A MCP server that accumulates agent intent across multiple tool calls in a local Python dict and changes its behavior based on prior calls within the session. When a session is resumed from a new VS Code window, the server starts fresh with no memory of the prior session's accumulated state — silently producing inconsistent behavior.
 

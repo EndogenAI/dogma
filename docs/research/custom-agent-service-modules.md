@@ -31,7 +31,7 @@ This research surveyed four frameworks (LangChain Tools, AutoGen Tool Use, A2A A
 
 **Key finding**: A formal `services/` directory is **not yet warranted**. The three-layer boundary — SKILL.md (when/why), scripts/ (how), MCP server tools (what is callable) — covers the current fleet's needs without introducing a new architectural primitive. The escalation path from inline agent instructions → SKILL.md → scripts/ utility → MCP-exposed tool already models service complexity correctly. Per-agent API layers (as in A2A's Agent Card pattern) are premature until agent-to-agent REST communication is required; that is a Wave 3+ consideration.
 
-The most actionable finding is the **SKILL-as-specification, script-as-implementation** boundary: when a workflow procedure in a SKILL.md references a specific external system call that runs more than twice interactively, that call must be encoded in a `scripts/` utility (Programmatic-First) and the SKILL.md updated to cite it. This prevents service logic from accumulating silently in agent instruction prose.
+The most actionable finding is the **SKILL-as-specification, script-as-implementation** boundary: when a workflow procedure in a SKILL.md references a specific external system call that runs more than twice interactively, that call must be encoded in a `scripts/` utility (**MANIFESTO.md §2**) and the SKILL.md updated to cite it. This prevents service logic from accumulating silently in agent instruction prose.
 
 ---
 

@@ -149,7 +149,7 @@ From MANIFESTO.md § Guiding Principles, **Enforcement-Proximity** (enforcing go
 - NeMo Guardrails Docs: https://docs.nvidia.com/nemo/guardrails/ — Official documentation
 - "NVIDIA's NemoClaw is OpenClaw with Guardrails": The New Stack article on NeMo's architecture
 - dogma AGENTS.md § Programmatic Governors: [../../AGENTS.md#programmatic-governors](../../AGENTS.md#programmatic-governors)
-- dogma MANIFESTO.md § Enforcement-Proximity: [../../MANIFESTO.md#enforcement-proximity](../../MANIFESTO.md#enforcement-proximity)
+- [MANIFESTO.md § Self-Governance & Guardrails](../../MANIFESTO.md#self-governance--guardrails)
 - Anthropic Constitutional AI: https://arxiv.org/abs/2212.04092 — Related constraint-based safety work
 - Rebedea, T., Dinu, R., Hari, M., Parisien, C., & Cohen, J. (2023). "NeMo Guardrails: A Toolkit for Controllable and Safe LLM Applications with Programmable Rails." arXiv:2310.10501. https://arxiv.org/abs/2310.10501
 - Inan, H., Upasani, K., Chi, J., Rungta, R., Iyer, K., Mao, Y., … & Khabsa, M. (2023). "Llama Guard: LLM-based Input-Output Safeguard for Human-AI Conversations." arXiv:2312.06674. https://arxiv.org/abs/2312.06674

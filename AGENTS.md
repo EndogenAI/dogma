@@ -8,6 +8,7 @@ Guidance for AI coding agents working in this repository.
 
 ---
 
+<a name="guiding-constraints"></a>
 ## Guiding Constraints
 
 These constraints govern all agent behavior. They derive from three core axioms in [`MANIFESTO.md`](MANIFESTO.md):
@@ -18,10 +19,13 @@ These constraints govern all agent behavior. They derive from three core axioms 
 
 **Encoding Inheritance Chain**: Values flow through MANIFESTO.md (foundational axioms) → AGENTS.md (operational constraints) → role files (.agent.md; VS Code: Custom Agents) → SKILL.md files (reusable tactical knowledge) → session prompts (enacted behavior). Each layer is a re-encoding of the layer above it. Agents must minimise lossy re-encoding: prefer direct quotation or explicit citation over paraphrase when invoking a foundational principle. Cross-reference density (back-references to MANIFESTO.md in your output) is a proxy for encoding fidelity. Low density signals likely drift. See [docs/research/values-encoding.md](./docs/research/methodology/values-encoding.md) for the cross-sectoral evidence base. [AGENTS.md](AGENTS.md) is the central authority for all operational constraints; subdirectory redirection notices point back here for global governance.
 
+<a name="session-start-encoding-checkpoint"></a>
 **Session-Start Encoding Checkpoint**: At the start of every session, the first sentence of `## Session Start` in the scratchpad must name the governing axiom and one primary endogenous source. See [`docs/guides/session-management.md` → Session-Start Encoding Checkpoint](docs/guides/session-management.md#session-start-encoding-checkpoint) for format and examples. The agent fleet is the pressurizing medium — it gives each substrate coherent form but does not own the membrane or the bucket. Agents are tools that shape how values flow through the system, but they neither create nor control the values themselves.
 
+<a name="deployment-layer-integration"></a>
 **Deployment Layer integration**: If `client-values.yml` exists in the workspace root, it must be read after `AGENTS.md` and before any first action. Treat it as a Deployment Layer external-values file: note any Deployment Layer constraints in `## Session Start`, and interpret its contents using [`docs/research/external-value-architecture.md`](../../docs/research/external-value-architecture.md) (schema, Deployment Layer rules, and Supremacy constraints). Do **not** treat `client-values.yml` as overriding Core Layer constraints in `MANIFESTO.md` or this `AGENTS.md`; it can only specialize them at the Deployment Layer.
 
+<a name="context-sensitive-amplification"></a>
 ### Context-Sensitive Amplification
 
 When writing the encoding checkpoint sentence in `## Session Start`, consult this table and name the amplified principle or axiom for your session's primary task type.
@@ -53,6 +57,7 @@ For the **interpretation framework** — axiom priority ordering, novel-situatio
 
 ---
 
+<a name="programmatic-first-principle"></a>
 ## Programmatic-First Principle
 
 **Every repeated or automatable task must be encoded as a script before it is performed a third time interactively.**
@@ -94,6 +99,7 @@ The scratchpad auto-annotator (`scripts/watch_scratchpad.py`) exemplifies this p
 The terminal file I/O redirection rule (`no-terminal-file-io-redirect` pre-commit hook) exemplifies this principle: agents' text-level instructions to avoid terminal I/O are shifted into a deterministic T2 (static linting) layer. See [docs/research/shifting-constraints-from-tokens.md](./docs/research/methodology/shifting-constraints-from-tokens.md) § Recommendations for the theoretical foundation.
 
 ---
+<a name="toolchain-reference"></a>
 
 ## Toolchain Reference
 
@@ -179,6 +185,7 @@ See [`docs/guides/claude-code-integration.md`](docs/guides/claude-code-integrati
 
 ---
 
+<a name="agent-fleet-maturity"></a>
 ## Agent Fleet Maturity (L0–L3)
 
 **Purpose**: Track how the agent fleet and scripting substrate maturity progress from ad-hoc discovery toward programmatic enforcement.
@@ -205,6 +212,7 @@ See [`docs/research/ramp-l0l3-framework.md`](docs/research/ramp-l0l3-framework.m
 
 ---
 
+<a name="mcp-toolset"></a>
 ## MCP Toolset
 
 The dogma repository ships a local MCP (Model Context Protocol) server that exposes 8 governance tools to any connected MCP client (VS Code Copilot, Claude Desktop, Cursor). The server is defined in [`mcp_server/dogma_server.py`](mcp_server/dogma_server.py); full setup instructions are in [`mcp_server/README.md`](mcp_server/README.md).
@@ -243,6 +251,7 @@ uv sync --extra mcp --extra dev
 The server is pre-configured for VS Code in [`.vscode/mcp.json`](.vscode/mcp.json). For Claude Desktop or Cursor, see [`mcp_server/README.md`](mcp_server/README.md) for the config block.
 
 ---
+<a name="testing-first-requirement"></a>
 
 ## Testing-First Requirement for Scripts
 
@@ -300,6 +309,7 @@ python scripts/prune_scratchpad.py
 `uv run` ensures the correct locked environment is used regardless of shell state.
 
 ---
+<a name="async-process-handling"></a>
 
 ## Async Process Handling
 
@@ -362,6 +372,7 @@ When updating `docs/toolchain/*.md`, run `uv run python scripts/fetch_toolchain_
 For a full pattern reference including polling algorithms, observable status APIs, and detailed timeout guidance, see [`docs/research/async-process-handling.md`](./docs/research/infrastructure/async-process-handling.md).
 
 ---
+<a name="agent-communication"></a>
 
 ## Agent Communication
 
@@ -614,6 +625,7 @@ When writing prompts for the **Review agent**, use explicit numbered binary acce
 - ✅ Preserved: All citations resolve (no 404s) in committed bibliography
 - ✅ Preserved: Frontmatter matches schema (title, status, closes_issue when applicable)
 
+<a name="size-guard"></a>
 ### Size Guard and Archive Convention
 
 Full scratchpad size management protocol: see [`session-management` SKILL.md](.github/skills/session-management/SKILL.md) § 5 Size Management.
@@ -627,11 +639,13 @@ Preferred session-close posture:
 
 If you are mid-sprint and the scratchpad is genuinely over 2000 lines, use `--dry-run` to inspect first, then prune only the clearly completed sections manually.
 
+<a name="tracked-workplans"></a>
 ### `docs/plans/` — Tracked Workplans
 
 For any multi-phase session (≥ 3 phases or ≥ 2 agent delegations), create a workplan before execution begins and commit it to `docs/plans/`.
 Full protocol: see [`session-management` SKILL.md](.github/skills/session-management/SKILL.md) § 5.1 Tracked Workplans.
 
+<a name="sprint-phase-constraints"></a>
 ### Sprint Phase Ordering Constraints
 
 These constraints govern the phase ordering of every committed workplan. Violating them is the primary cause of re-review debt: implementation phases completed before their informing research or documentation must be re-examined once those inputs land.
@@ -654,11 +668,13 @@ These constraints govern the phase ordering of every committed workplan. Violati
 
 Record the chicken-and-egg decision and its rationale in the workplan's Objective section whenver it arises.
 
+<a name="per-phase-checklists"></a>
 ### Per-Phase Execution Checklists
 
 Delegate per-phase checklists to the **Executive Planner** before each domain phase. The checklist is the shared coherence artifact for the execution fleet.
 Full protocol: see [`session-management` SKILL.md](.github/skills/session-management/SKILL.md) § 5.2 Per-Phase Execution Checklists.
 
+<a name="scope-narrowing"></a>
 ### Scope-Narrowing in Delegations
 
 When delegating with a restricted scope, **state exclusions explicitly** in the delegation prompt. Agents default to full scope; they need explicit constraints to narrow it.
@@ -666,6 +682,7 @@ When delegating with a restricted scope, **state exclusions explicitly** in the 
 Good example:
 > "Edit `.md` files only — do not modify scripts, config, or agent files."
 
+<a name="pre-use-validation"></a>
 ### Pre-Use Validation (Tier 0)
 
 **Always validate temp files before passing to downstream commands.** Validation catches silent truncation, encoding errors, and incomplete writes before they corrupt remote state.
@@ -677,6 +694,7 @@ Good example:
 
 **When validation fails**: Print debug info (`cat /tmp/file`) and fix the issue before attempting the gh command again.
 
+<a name="verify-after-act"></a>
 ### Verify-After-Act for Remote Writes
 
 Any command that creates or modifies a remote side effect must be immediately preceded by Tier 0 pre-use validation, then followed by a verification read:
@@ -699,6 +717,7 @@ Any command that creates or modifies a remote side effect must be immediately pr
 
 **CI must pass before requesting review.** After every `git push` to a PR branch: check CI status with `gh run list --limit 3` before requesting or re-requesting Copilot review. A passing push with failing CI is a broken PR — fix CI before doing anything else. Common CI failure modes: lychee dead link (add to `.lycheeignore`), ruff format (run `uv run ruff format scripts/ tests/`), validate_synthesis missing headings.
 
+<a name="subagent-commit-authority"></a>
 ### Subagent Commit Authority
 
 Only **Executive Orchestrator** and **Executive Docs** agents commit to the repository. All other agents (Research Scout, Synthesizer, etc.) return work to their executive for review and commit gatekeeping:
@@ -706,11 +725,12 @@ Only **Executive Orchestrator** and **Executive Docs** agents commit to the repo
 - **Executive Docs** commits updates to governance documentation (AGENTS.md, guides, MANIFESTO.md) independently; coordinates timing with Orchestrator for phase gates
 - Subagents do not invoke GitHub agent directly; they route through their executive
 
+<a name="executive-fleet-privileges"></a>
 ---
 
 ## Executive Fleet Privileges
 
-**Terminal Access Model**: The nine executive-tier agents (Orchestrator, Docs, Researcher, Scripter, Automator, PM, Fleet, Planner, GitHub) hold terminal and remote-write authority proportional to their domain. This design instantiates the [Endogenous-First](../MANIFESTO.md#1-endogenous-first) principle: executives responsible for scripts, agents, and documentation are treated as endogenous knowledge infrastructure — their tool scope is scoped to their domain, not restricted by default. Terminal access **is not full shell access**; it is scoped to the agent's function:
+**Terminal Access Model**: The nine executive-tier agents (Orchestrator, Docs, Researcher, Scripter, Automator, PM, Fleet, Planner, GitHub) hold terminal and remote-write authority proportional to their domain. This design instantiates the [MANIFESTO.md §1](MANIFESTO.md#1-endogenous-first) principle: executives responsible for scripts, agents, and documentation are treated as endogenous knowledge infrastructure — their tool scope is scoped to their domain, not restricted by default. Terminal access **is not full shell access**; it is scoped to the agent's function:
 
 | Executive | Terminal Access Scope | Functions |
 |-----------|----------------------|----------| 
@@ -733,7 +753,7 @@ Only **Executive Orchestrator** and **Executive Docs** agents commit to the repo
 
 **File Write Discipline**: All file writes route through the established VS Code tools (`create_file`, `replace_string_in_file`, `multi_replace_string_in_file`). No agent uses heredocs, terminal I/O redirection, or inline Python file operations — these patterns corrupt content containing backticks and special characters. Enforced by pre-commit hook `no-heredoc-writes`.
 
-**Commit Discipline**: Every commit message follows [Conventional Commits](https://www.conventionalcommits.org/) format. All git and GitHub API operations (commits, pushes, PR creation, issue updates, labels) route through the **GitHub Agent** — it is the sole executor of remote writes. All other agents return work to the GitHub Agent after Review approval; they do not invoke `git` or `gh` directly. This centralizes the audit trail of all remote state changes in one specialist and applies the [Algorithms Before Tokens](../MANIFESTO.md#2-algorithms-before-tokens) principle: deterministic single-channel commit authority prevents distributed re-commitment and audit gaps. See [`CONTRIBUTING.md#commit-discipline`](CONTRIBUTING.md#commit-discipline) for format and examples.
+**Commit Discipline**: Every commit message follows [Conventional Commits](https://www.conventionalcommits.org/) format. All git and GitHub API operations (commits, pushes, PR creation, issue updates, labels) route through the **GitHub Agent** — it is the sole executor of remote writes. All other agents return work to the GitHub Agent after Review approval; they do not invoke `git` or `gh` directly. This centralizes the audit trail of all remote state changes in one specialist and applies the [MANIFESTO.md §2](MANIFESTO.md#2-algorithms-before-tokens) principle: deterministic single-channel commit authority prevents distributed re-commitment and audit gaps. See [`CONTRIBUTING.md#commit-discipline`](CONTRIBUTING.md#commit-discipline) for format and examples.
 
 **Delegation rule**: Any action involving `git commit`, `git push`, `gh issue`, `gh pr`, or any other GitHub API write must be delegated to the GitHub Agent — not performed directly by the delegating agent.
 
@@ -778,6 +798,7 @@ Check for remaining subdirectory files with:
 find . -name 'AGENTS.md' | grep -v node_modules
 ```
 
+<a name="when-to-ask-vs-proceed"></a>
 ---
 
 ## When to Ask vs. Proceed
@@ -868,6 +889,7 @@ Proceed when:
 
 When proceeding under ambiguity, **document the assumption inline** (code comment or commit message body) so it can be reviewed and corrected.
 
+<a name="file-writing-guardrails"></a>
 ---
 
 ## File Writing Guardrails
@@ -904,6 +926,7 @@ Heredocs (`cat >> file << 'EOF'`, Python inline `<< 'PYEOF'`) silently corrupt o
   - Fleet executive: `<area>-executive.agent.md` (Name: `<Area> Executive`)
   - Fleet sub-agent: `<area>-<role>.agent.md` (Name: `<Area> <Role>`)
   - Workflow agent: `<verb|noun>.agent.md` (Name: `<Verb|Noun>`)
+<a name="agent-authoring-conventions"></a>
 
 ---
 
@@ -923,6 +946,7 @@ The authoring contract for `.agent.md` files (VS Code Custom Agents) is enforced
 - **Structure**: Markdown headings (`## Section`) with semantic XML wrappers (`<context>`, `<instructions>`, `<constraints>`, `<output>`).
   - **BDI Sections**: Action content grouped into **Beliefs & Context**, **Workflow & Intentions**, and **Desired Outcomes & Acceptance**.
   - **Body Requirements**: 1. Bold role statement ("You are the..."), 2. Endogenous sources (use relative `../../` links for all cross-directory references from `.github/agents/` — see [Link Path Rule](#link-path-rule) in the `agent-file-authoring` skill), 3. Workflow/checklist, 4. Guardrails.
+<a name="agent-fleet-overview"></a>
 
 ---
 
@@ -980,7 +1004,7 @@ uv run python scripts/validate_agent_files.py --skills
 CI enforces this check on every PR that touches `.github/skills/`.
 
 For full authoring guidance, see [`docs/guides/agents.md`](docs/guides/agents.md#agent-skills). For the formal decision, see [`docs/decisions/ADR-006-agent-skills-adoption.md`](docs/decisions/ADR-006-agent-skills-adoption.md).
-
+<a name="security-guardrails"></a>
 ---
 
 ## Security Guardrails
@@ -1019,6 +1043,7 @@ are in scope, or URLs are passed to scripts.
 - Do not construct URLs dynamically from user input or fetched content and pass them to
   fetch scripts.
 
+<a name="programmatic-governors"></a>
 ---
 
 ## Programmatic Governors
@@ -1043,6 +1068,7 @@ The heredoc write anti-pattern is enforced by a two-tier programmatic stack. Tex
 
 For the full setup guide, pattern details, and acceptance test: [`docs/guides/governor-setup.md`](docs/guides/governor-setup.md)  
 For the bash-preexec adoption decision: [`docs/decisions/ADR-007-bash-preexec.md`](docs/decisions/ADR-007-bash-preexec.md)  
+<a name="value-fidelity-test-taxonomy"></a>
 Research synthesis: [`docs/research/shell-preexec-governor.md`](./docs/research/infrastructure/shell-preexec-governor.md)
 
 ---
@@ -1066,6 +1092,7 @@ Research synthesis: [`docs/research/shell-preexec-governor.md`](./docs/research/
 - If session behavior drifts (e.g., agents not reading AGENTS.md before acting), check the T4 (runtime) layer first — governors may be misconfigured
 - Document any signal loss in a session summary; escalate patterns to Executive Docs for substrate updates
 
+<a name="guardrails"></a>
 ---
 
 ## Guardrails

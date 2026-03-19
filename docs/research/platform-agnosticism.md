@@ -187,9 +187,9 @@ The agent fleet's coherence derives from VS Code Custom Agent properties (handof
 - [`docs/research/mcp-state-architecture.md`](mcp-state-architecture.md) — MCP server integration patterns; portability via MCP (P3 above)
 - [`AGENTS.md` §Agent Fleet Overview](../../AGENTS.md#agent-fleet-overview) — VS Code customization taxonomy (agent vs. skill vs. fleet constraints)
 - [`AGENTS.md` §Agent authoring conventions](../../AGENTS.md#agent-authoring-conventions) — `.agent.md` format requirements
-- [`MANIFESTO.md` §1 — Endogenous-First](../../MANIFESTO.md#1-endogenous-first) — knowledge synthesis from existing substrate
-- [`MANIFESTO.md` §2 — Algorithms Before Tokens](../../MANIFESTO.md#2-algorithms-before-tokens) — deterministic solutions over abstractions
-- [`MANIFESTO.md` §3 — Local Compute-First](../../MANIFESTO.md#3-local-compute-first) — local-first infrastructure preference
+- [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first) — knowledge synthesis from existing substrate
+- [MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens) — deterministic solutions over abstractions
+- [MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first) — local-first infrastructure preference
 - [`.github/agents/`](../../.github/agents/) — 18 `.agent.md` files forming the current fleet
 
 ### External

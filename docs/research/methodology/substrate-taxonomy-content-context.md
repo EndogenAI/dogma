@@ -74,7 +74,7 @@ The optimal policy per substrate balances:
 - Context + Regenerable: IMPOSSIBLE — regenerable provenance is recovered, context is discarded
 - Hybrid + Regenerable: IMPOSSIBLE (almost) — hybrid is reconstructed with cost, regenerable is deterministic
 
-**Endogenic alignment**: This four-category taxonomy directly reflects [MANIFESTO.md § 1 Endogenous-First](../../../MANIFESTO.md#1-endogenous-first) — encoding knowledge of the substrate's structure for durability and reuse. Rather than applying a one-size-fits-all compaction policy, we scaffold the retention strategy from the substrate's intrinsic properties (permanence, regenerability, loss impact). Content categories that require different preservation policies get explicit encoding; agents executing the preservation gate read this taxonomy to apply the right policy.
+**Endogenic alignment**: This four-category taxonomy directly reflects [MANIFESTO.md §1](../../../MANIFESTO.md#1-endogenous-first) — encoding knowledge of the substrate's structure for durability and reuse. Rather than applying a one-size-fits-all compaction policy, we scaffold the retention strategy from the substrate's intrinsic properties (permanence, regenerability, loss impact). Content categories that require different preservation policies get explicit encoding; agents executing the preservation gate read this taxonomy to apply the right policy.
 
 ---
 
@@ -144,7 +144,7 @@ Where:
 
 The metric explains why we do not compact scripts (regenerability = 1.0, worth every byte) but do aggressively compact scratchpad context (regenerability = 0.5, easy to lose).
 
-**Algorithmic alignment**: The regenerability metric embodies [MANIFESTO.md § 2 Algorithms Before Tokens](../../../MANIFESTO.md#2-algorithms-before-tokens) — deterministic cost models (fidelity, determinism, latency) that are reusable across sessions, rather than subjective token-burn estimates that change each time a substrate is accessed. By encoding the metric once, every agent that encounters the substrate applies the same compaction decision without re-debating the trade-off.
+**Algorithmic alignment**: The regenerability metric embodies [MANIFESTO.md §2](../../../MANIFESTO.md#2-algorithms-before-tokens) — deterministic cost models (fidelity, determinism, latency) that are reusable across sessions, rather than subjective token-burn estimates that change each time a substrate is accessed. By encoding the metric once, every agent that encounters the substrate applies the same compaction decision without re-debating the trade-off.
 
 ---
 

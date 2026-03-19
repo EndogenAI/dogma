@@ -36,14 +36,14 @@ types (`SessionStart`, `SessionEnd`, `Stop`, `TaskCompleted`, `PreCompact`,
 counterpart script. Encoding these mappings converts dogma's existing T2
 (text-constraint) layer into a T4 (runtime-enforcement) layer. This aligns with
 the [Programmatic-First](../../MANIFESTO.md#programmatic-first-principle-cross-cutting)
-principle: tasks performed twice interactively must be encoded as scripts; hooks
+(Programmatic-First) principle: tasks performed twice interactively must be encoded as scripts; hooks
 are the mechanism that binds those scripts to the agent lifecycle automatically.
 
 Print mode (`claude -p`) is the lower-risk, immediately adoptable primitive.
 It produces deterministic, auditable output from a single CLI invocation with no
 interactive session overhead. Combined with `--output-format json` and
-`--json-schema`, it satisfies the [Algorithms-Before-Tokens](../../MANIFESTO.md#2-algorithms-before-tokens)
-requirement for structured, deterministic outputs over token-burning interactive
+`--json-schema`, it satisfies the [MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens)
+(Algorithms-Before-Tokens) requirement for structured, deterministic outputs over token-burning interactive
 exchanges. Cost and context-window implications are non-trivial: practitioner
 reports document ~50K tokens of system prompt overhead per Claude Code
 subprocess, making per-query subagent invocation impractical for batch workloads.
@@ -65,8 +65,8 @@ JSON Schema object, enabling downstream scripts to consume outputs without
 defensive parsing. The `--max-turns 1` flag prevents multi-turn escalation in
 batch contexts. Together these three flags (`-p`, `--output-format json`,
 `--json-schema`) produce a deterministic, script-consumable output primitive that
-directly satisfies the [Algorithms-Before-Tokens](../../MANIFESTO.md#2-algorithms-before-tokens)
-axiom: encode the task once; get a deterministic result each run.
+directly satisfies the [MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens)
+(Algorithms-Before-Tokens) axiom: encode the task once; get a deterministic result each run.
 
 ### H2: Claude Code hooks can encode dogma's phase-gate constraints programmatically, reducing reliance on agent-level prompt reminders
 
@@ -110,8 +110,8 @@ represents a significant per-invocation floor that makes a 24/7 wrapper pattern
 frequency pipelines. The recommended pattern is print mode (`claude -p`) for
 single-pass queries and reserved full-agent sessions only for multi-step
 automation where interactive context accumulation justifies the overhead. This
-finding directly supports the [Local-Compute-First](../../MANIFESTO.md#3-local-compute-first)
-principle: minimize token usage; prefer local script execution over agent
+finding directly supports the [MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first)
+(Local-Compute-First) principle: minimize token usage; prefer local script execution over agent
 invocation wherever a deterministic script can handle the task.
 
 ---
@@ -213,7 +213,8 @@ these guards, a misbehaving agent can exhaust quota.
 Where agent interaction isn't needed — synthesis quality checks, doc lint
 evaluations, structured output generation — replace full interactive sessions
 with `claude -p` + `--output-format json` + `--json-schema`. This aligns with
-[Local-Compute-First](../../MANIFESTO.md#3-local-compute-first): minimize token usage;
+[MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first)
+(Local-Compute-First): minimize token usage;
 run locally whenever possible. Always pair with `--max-turns 1` and
 `--max-budget-usd` to prevent runaway invocations.
 

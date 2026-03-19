@@ -16,11 +16,11 @@ Successful civic AI deployments share a three-phase arc: (1) stakeholder engagem
 
 ## Hypothesis Validation
 
-**Supporting Axiom**: [MANIFESTO.md § Ethical Values — Transparency & Accountability](../../MANIFESTO.md#ethical-values)
+**Supporting Axiom**: [MANIFESTO.md §Ethical Values](../../MANIFESTO.md#ethical-values)
 
 San Jose's AI governance model (as discussed with Mayor in context of Jon Stewart interview) demonstrates that transparent, community-engaged AI deployment reduces both technical and political risk. The pattern: **engage stakeholders first, encode their values into policy, then select/audit AI tools against that policy.** When governance is transparent, the public understands *why* an AI system was chosen and what constraints it operates under; when it's opaque ("we bought this optimization AI because it's state-of-the-art"), citizens have no basis to consent and the system becomes a political liability.
 
-**Supporting Axiom**: [MANIFESTO.md § 1 Endogenous-First](../../MANIFESTO.md#1-endogenous-first)
+**Supporting Axiom**: **MANIFESTO.md §1** ([MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first))
 
 Cities that successfully adopt AI start with endogenous knowledge: What does *this* community value? What are its existing decision-making norms? Rather than importing generic "AI governance frameworks," successful civic tech systems extract local governance principles and encode them as AI selection criteria. San Jose's framework emerged from *San Jose's* community conversation, not from a consulting firm's template. This localization is what makes the framework durable — it's legible to citizens, reflects their priorities, and survives political transitions because it's rooted in community input, not external expertise.
 
@@ -89,7 +89,7 @@ The reason phase 3 (continuous audit) matters so much is **drift is invisible wi
 
 ### Hypothesis Validation
 
-**Context**: Mayor Matt Mahan of San Jose has positioned the city as a leader in values-driven civic AI governance. Mahan's approach treats municipal AI deployment as inseparable from community alignment: before any city department adopts an AI tool, the governance framework must first establish and encode the city's values, then measure AI compliance against those values. This aligns directly with [MANIFESTO.md § 1 Endogenous-First](../../MANIFESTO.md#1-endogenous-first) — San Jose builds its AI framework from *San Jose's* values, not from vendor templates or generic "best practices."
+**Context**: Mayor Matt Mahan of San Jose has positioned the city as a leader in values-driven civic AI governance. Mahan's approach treats municipal AI deployment as inseparable from community alignment: before any city department adopts an AI tool, the governance framework must first establish and encode the city's values, then measure AI compliance against those values. This aligns directly with [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first) — San Jose builds its AI framework from *San Jose's* values, not from vendor templates or generic "best practices."
 
 **Mahan's Governance Model** (from Mayor interview with Jon Stewart, 2026-03): Cities face a choice between two AI governance postures:
 1. **Reactive** — Deploy AI tools quickly, wait for public complaints, then retrofit governance
@@ -180,7 +180,7 @@ Mandate: Monthly board meetings to (a) review proposed new AI deployments, (b) a
 
 - **Earlier Canonical Examples (1–3)**: San Jose's departmental governance model (Example 4) extends the Value Extraction → AI Selection pattern (Example 1) and realizes the Policy-as-Codification pattern (Example 2) through mandatory process. The Continuous Alignment Check pattern (Example 3) is institutionalized via San Jose's quarterly AI Governance Board reviews and resident right-to-audit.
 - **[MANIFESTO.md § Ethical Values](../../MANIFESTO.md#ethical-values)**: San Jose operationalizes transparency and accountability as structural mechanisms (Examples 6–7), not voluntary principles.
-- **[MANIFESTO.md § 1 Endogenous-First](../../MANIFESTO.md#1-endogenous-first)**: The San Jose model exemplifies endogenous governance — city governance emerges from *San Jose's* community conversation, not from vendor templates.
+- **[MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first)**: The San Jose model exemplifies endogenous governance — city governance emerges from *San Jose's* community conversation, not from vendor templates.
 - **Related Research**: See `docs/research/governance-patterns.md` for meta-analysis of governance frameworks across sectors; see `docs/research/civic-tech-patterns.md` for comparative case studies (successes and failures) of civic tech adoption with and without values-first governance.
 
 **Governance Effectiveness Metrics**: Mayor Mahan's office tracks AI governance effectiveness via three measurable outcomes that serve as cross-reference points for governance comparability:
@@ -214,7 +214,7 @@ These metrics make governance performance measurable and comparable across time,
 
 - **Supporting Reference**: [MANIFESTO.md § Ethical Values](../../MANIFESTO.md#ethical-values) — core ethical commitments governing AI usage in EndogenAI Workflows.
 
-- **Supporting Reference**: [MANIFESTO.md § 1 Endogenous-First](../../MANIFESTO.md#1-endogenous-first) — principle of building governance from local values rather than external templates.
+- **Supporting Reference**: [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first) — principle of building governance from local values rather than external templates.
 
 
 

@@ -1,6 +1,24 @@
-# Research Hub
+---
+title: Research Hub
+status: WIP
+governs: [endogenous-first]
+---
 
-This directory contains research synthesis documents, gap analyses, and exploratory findings for the EndogenAI Workflows project. Documents follow the **D4 Diátaxis-Agentic Hybrid** standard.
+# Research Hub (DRAFT)
+
+## 1. Executive Summary
+
+This directory contains research synthesis documents, gap analyses, and exploratory findings for the EndogenAI Workflows project. Documents follow the **D4 Diátaxis-Agentic Hybrid** standard to ensure traceability from sources to recommendations.
+
+## 2. Hypothesis Validation
+
+The research corpus validates the [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first) axiom by prioritizing system-internal knowledge and local benchmarks over generic external hype.
+
+## 3. Pattern Catalog
+
+See the `## Pattern Catalog` section in individual synthesis documents for reusable implementations.
+
+---
 
 ## Agent Navigation Guide
 

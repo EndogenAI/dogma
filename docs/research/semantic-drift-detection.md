@@ -15,7 +15,7 @@ The hardened T3+ enforcement core covers **structural** compliance — required 
 
 This draft maps the current T3+ structural coverage precisely, identifies the semantic detection gap at T1–T2, and documents two research paths — **embedding-similarity scoring** and **watermark calibration** — as candidate approaches for closing the gap.
 
-**Governing axiom**: `MANIFESTO.md §2. Algorithms Before Tokens` — encoding drift detection as a deterministic algorithm (T1–T3) is more reliable than relying on human reviewers to notice value erosion in session prompts. `MANIFESTO.md §1. Endogenous-First` — the current `detect_drift.py` methodology and the audit baselines are evaluated before proposing new approaches.
+**Governing axiom**: [MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens) — encoding drift detection as a deterministic algorithm (T1–T3) is more reliable than relying on human reviewers to notice value erosion in session prompts. [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first) — the current `detect_drift.py` methodology and the audit baselines are evaluated before proposing new approaches.
 
 ---
 
@@ -56,12 +56,12 @@ All four are structural. None check whether the content under those headings fai
 
 The deeper semantic drift detection mechanism — checking whether the operational meaning of an agent file's instructions is semantically close to the operational meaning of MANIFESTO.md axiom sections — requires vector-space comparison. The approach:
 
-1. **Embed axiom sections**: Compute dense vector representations of MANIFESTO.md §1 (Endogenous-First), §2 (Algorithms Before Tokens), §3 (Local Compute-First).
+1. **Embed axiom sections**: Compute dense vector representations of [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first), [MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens), [MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first).
 2. **Embed agent file sections**: Compute dense vector representations of each agent file's instruction/action sections.
 3. **Compute cosine similarity**: Each agent section vs. its most relevant axiom. Low similarity (< threshold) signals semantic drift.
 4. **Gate at T2 or T1**: Run as a CI check; annotate per-file similarity scores in the drift report.
 
-**Prior art from `values-encoding.md`**: Pattern H3 (Programmatic Encoding is Immune to Semantic Drift) establishes that scripts and CI gates are the strongest defense against drift. The embedding similarity approach would operate at T2 — more semantic than string matching, deterministic once the embedding model is pinned, and runnable locally (`Local Compute-First` — `MANIFESTO.md §3`).
+**Prior art from `values-encoding.md`**: Pattern H3 (Programmatic Encoding is Immune to Semantic Drift) establishes that scripts and CI gates are the strongest defense against drift. The embedding similarity approach would operate at T2 — more semantic than string matching, deterministic once the embedding model is pinned, and runnable locally (`Local Compute-First` — [MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first)).
 
 **Open questions**:
 - Which embedding model? For local execution, `sentence-transformers/all-MiniLM-L6-v2` (384-dim, ~23MB) is a strong candidate.
@@ -144,7 +144,7 @@ Adding these 5 phrases raises the detectable surface without requiring embedding
 3. **R3 — D4 watermark validation in `validate_synthesis.py`** (T3 enforcement, XS effort): Add assertion: each D4 document must contain at least one of {"Endogenous-First", "Algorithms Before Tokens", "Local Compute-First"} in the document body. Already identified in `values-enforcement-tier-mapping.md` §H2 as feasible and prioritized.
    → *Not yet implemented — tracked in Phase 10 scripting sprint (#197).*
 
-4. **R4 — Embedding similarity proof-of-concept** (research sprint, M effort): Implement `scripts/measure_semantic_drift.py` using a local embedding model (sentence-transformers). Compute similarity scores for all current `.agent.md` files vs. MANIFESTO.md §1–§3. Produce distribution report. No CI integration in first pass — observation only. This fulfills the calibration corpus requirement in Pattern SD2.
+4. **R4 — Embedding similarity proof-of-concept** (research sprint, M effort): Implement `scripts/measure_semantic_drift.py` using a local embedding model (sentence-transformers). Compute similarity scores for all current `.agent.md` files vs. [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first)–[MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first). Produce distribution report. No CI integration in first pass — observation only. This fulfills the calibration corpus requirement in Pattern SD2.
    → *Not yet implemented — requires dedicated Phase 10 research sprint (#197).*
 
 5. **R5 — Calibration corpus** (Phase 2 prerequisite for R4): Identify positive and negative reference sets from the current fleet and recent Review agent outputs. Document the sets in `docs/research/semantic-drift-detection.md` (this file) before running the similarity experiment.
@@ -154,6 +154,7 @@ Adding these 5 phrases raises the detectable surface without requiring embedding
 
 ## Sources
 
+- [MANIFESTO.md](../../MANIFESTO.md)
 - [`docs/research/methodology/values-encoding.md`](methodology/values-encoding.md) — H3 (Programmatic Encoding), B8 Degradation Table, Pattern 2 (structural encoding), baseline values fidelity research
 - [`docs/research/methodology/enforcement-tier-mapping.md`](methodology/enforcement-tier-mapping.md) — 68 behavioral constraints, T0–T5 tier distribution, T5 gap inventory
 - [`docs/research/methodology/values-enforcement-tier-mapping.md`](methodology/values-enforcement-tier-mapping.md) — 112 constraints (44 values-specific), 91% T5 ratio for values constraints, Watermark phrase gap item

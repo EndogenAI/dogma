@@ -10,7 +10,7 @@ date: 2026-03-18
 
 ## Executive Summary
 
-Civic AI governance research — including the UK Competition and Markets Authority (CMA) watchdog report (2026) and values-driven civic tech deployments — produces two recurring structural patterns: **Minimal-Posture Enforcement** (gate-based scope restriction validates that agents performing irreversible actions must ask before acting) and **Policy-as-Codification** (civic governance patterns map directly onto AGENTS.md constraint layers). Both patterns empirically validate core dogma axioms: Minimal Posture ([MANIFESTO.md § Cross-Cutting Principles](../../MANIFESTO.md#guiding-principles-cross-cutting)) and Endogenous-First ([MANIFESTO.md § 1](../../MANIFESTO.md#1-endogenous-first)).
+Civic AI governance research — including the UK Competition and Markets Authority (CMA) watchdog report (2026) and values-driven civic tech deployments — produces two recurring structural patterns: **Minimal-Posture Enforcement** (gate-based scope restriction validates that agents performing irreversible actions must ask before acting) and **Policy-as-Codification** (civic governance patterns map directly onto AGENTS.md constraint layers). Both patterns empirically validate core dogma axioms: Minimal Posture ([MANIFESTO.md § Cross-Cutting Principles](../../MANIFESTO.md#guiding-principles-cross-cutting)) and Endogenous-First ([MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first)).
 
 The convergence finding is significant: the governance practices that make civic AI systems trustworthy in the public sector are structurally analogous to the constraint architecture already encoded in this project. AGENTS.md is not a proprietary invention — it is an instantiation of governance patterns with cross-sectoral empirical support. This makes the constraints more durable: they are not arbitrary rules but expressions of validated governance principles.
 
@@ -51,7 +51,7 @@ The convergence finding is significant: the governance practices that make civic
 
 **Anti-pattern**: Agents that act on high-stakes decisions without a gate because "the user implicitly authorized it by running the session." Implicit authorization is not a gate; it produces the CMA's loss-of-control failure mode.
 
-**Dogma mapping**: [MANIFESTO.md § Minimal Posture](../../MANIFESTO.md#guiding-principles-cross-cutting) + [AGENTS.md § When to Ask vs. Proceed](../../AGENTS.md#when-to-ask-vs-proceed)
+**Dogma mapping**: [MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first) + [AGENTS.md § When to Ask vs. Proceed](../../AGENTS.md#when-to-ask-vs-proceed)
 
 ---
 
@@ -96,9 +96,9 @@ The three patterns above are independently derived from at least two institution
 **Significance**: The strength of a governance constraint is proportional to the number of independent institutional sources from which it can be derived. All three dogma axioms — Endogenous-First, Algorithms-Before-Tokens, and Local-Compute-First (see [MANIFESTO.md § Guiding Principles](../../MANIFESTO.md#guiding-principles-cross-cutting)) — are now backed by cross-sectoral institutional evidence, not just internal design decisions. This cross-sectoral convergence increases the axioms' resistance to challenge and dilution over time.
 
 Specifically:
-- **Endogenous-First** ([MANIFESTO.md § 1](../../MANIFESTO.md#1-endogenous-first)): San Jose's Policy-as-Codification pattern shows that durable governance must be derived from the system's own value commitments — not imported wholesale from external frameworks. The city that successfully encoded community values into procurement criteria was doing Endogenous-First by another name.
-- **Algorithms-Before-Tokens**: CMA's Minimal-Posture finding validates that programmatic gates (algorithms) prevent the failure modes that arise from relying on agent discretion (tokens) for high-stakes decisions. See [MANIFESTO.md § 2](../../MANIFESTO.md#2-algorithms-before-tokens).
-- **Local-Compute-First**: The Continuous Audit Cycles pattern validates that governance enforcement must be local — built into the development process rather than delegated to external auditors whose cadence is too slow to catch in-session drift. See [MANIFESTO.md § 3](../../MANIFESTO.md#3-local-compute-first).
+- **Endogenous-First** ([MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first)): San Jose's Policy-as-Codification pattern shows that durable governance must be derived from the system's own value commitments — not imported wholesale from external frameworks. The city that successfully encoded community values into procurement criteria was doing Endogenous-First by another name.
+- **Algorithms-Before-Tokens**: CMA's Minimal-Posture finding validates that programmatic gates (algorithms) prevent the failure modes that arise from relying on agent discretion (tokens) for high-stakes decisions. See [MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens).
+- **Local-Compute-First**: The Continuous Audit Cycles pattern validates that governance enforcement must be local — built into the development process rather than delegated to external auditors whose cadence is too slow to catch in-session drift. See [MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first).
 
 ---
 

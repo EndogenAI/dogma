@@ -1,7 +1,23 @@
+---
+title: Open Research Tasks
+status: Final
+governs: [endogenous-first]
+---
+
 # Open Research Tasks
 
+## 1. Executive Summary
+
 This document tracks open research questions for the endogenic development methodology.
-Each section corresponds to a GitHub Issue that should be opened using the **Research** issue template.
+Each section corresponds to a GitHub Issue representing a discrete search for endogenous knowledge or external best practices.
+
+## 2. Hypothesis Validation
+
+The research tasks listed below test the viability of scaling the agent fleet while maintaining [MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first) constraints.
+
+## 3. Pattern Catalog
+
+(No patterns defined in this aggregate document)
 
 > **Action required**: Open each section below as a GitHub Issue in this repository using the
 > [Research template](../../.github/ISSUE_TEMPLATE/research.yml). Labels: `research`.
@@ -16,7 +32,7 @@ Each section corresponds to a GitHub Issue that should be opened using the **Res
 How do we configure VS Code GitHub Copilot to use local LLM inference (Ollama, LM Studio, llama.cpp) instead of cloud APIs?
 
 ### Why This Matters
-Cloud inference is expensive in tokens, money, and environmental impact. Running inference locally enables the **local-compute-first** principle from `MANIFESTO.md` and can significantly reduce per-session costs.
+Cloud inference is expensive in tokens, money, and environmental impact. Running inference locally enables the **local-compute-first** principle ([MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first)) and can significantly reduce per-session costs.
 
 ### Resources to Survey
 - [ ] https://ollama.ai — local model serving, OpenAI-compatible API

@@ -10,17 +10,17 @@ date: 2026-03-18
 
 ## Executive Summary
 
-The L0-L3 framework (introduced by Ramp CPO Geoff Cha) defines a maturity progression for embedding AI (specifically Claude Code) into engineering workflows at organizational scale. The framework moves beyond tool adoption toward cultural transformation: from isolated AI use (L0) to company-wide "automate your job" ethos (L3). This addresses a critical gap in [MANIFESTO.md § 1 Endogenous-First](../../MANIFESTO.md#1-endogenous-first) — encoding internal best practices before seeking external validation.
+The L0-L3 framework (introduced by Ramp CPO Geoff Cha) defines a maturity progression for embedding AI (specifically Claude Code) into engineering workflows at organizational scale. The framework moves beyond tool adoption toward cultural transformation: from isolated AI use (L0) to company-wide "automate your job" ethos (L3). This addresses a critical gap in [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first) — encoding internal best practices before seeking external validation.
 
 The research validates two core hypotheses: (1) AI-native teams that systematize tool adoption into repeatable processes (L1–L2) outship those relying on ad-hoc experimentation, and (2) organizational adoption of "automate your job" as a core value (L3) predicts sustained AI productivity gains across multiple product domains.
 
 ## Hypothesis Validation
 
-**Supporting Axiom**: [MANIFESTO.md § 1 Endogenous-First](../../MANIFESTO.md#1-endogenous-first)
+**Supporting Axiom**: [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first)
 
-The L0-L3 framework instantiates [MANIFESTO.md § 1 Endogenous-First](../../MANIFESTO.md#1-endogenous-first) by systematizing how organizations extract and codify internal knowledge about AI adoption. Rather than importing templates, successful AI-native companies build their playbook inductively: observing what their engineers naturally discover works (L0–L1), encoding it as team patterns (L2), then distributing it as organizational policy (L3). The pattern moves from tacit knowledge (individuals know but don't document) → encoded knowledge (teams use standardized prompts/templates) → organizational policy (all engineers adopt as default).
+The L0-L3 framework instantiates [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first) by systematizing how organizations extract and codify internal knowledge about AI adoption. Rather than importing templates, successful AI-native companies build their playbook inductively: observing what their engineers naturally discover works (L0–L1), encoding it as team patterns (L2), then distributing it as organizational policy (L3). The pattern moves from tacit knowledge (individuals know but don't document) → encoded knowledge (teams use standardized prompts/templates) → organizational policy (all engineers adopt as default).
 
-**Supporting Axiom**: [MANIFESTO.md § 2 Algorithms-Before-Tokens](../../MANIFESTO.md#2-algorithms-before-tokens)
+**Supporting Axiom**: [MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens)
 
 L0–L2 engineers discover algorithmic shortcuts in their workflows (e.g., "use Claude for schema design before writing the implementation"; "generate test cases first, then code"). The L3 phase encodes these shortcuts as deterministic processes (scripts, prompts, decision trees) so they don't re-require human insight each cycle. By moving from tokens (interactive AI queries per task) to algorithms (structured workflows applied automatically), teams reduce both cost per feature and cognitive load on engineers.
 

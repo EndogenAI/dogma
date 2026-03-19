@@ -126,7 +126,7 @@ Imai (2022) found that without explicit mode guidance, 71% of developers default
 - GitLab/Google Meta-Analysis: "Code Review Time with LLM-Generated Code" (2026)
 - Stack Overflow + GitHub Data: "Defect Rates in Copilot-Generated Code" (2026 analysis)
 - GitHub Next Research: https://githubnext.com — Published studies on Copilot adoption patterns
-- dogma AGENTS.md § Endogenous-First: [../../AGENTS.md](../../AGENTS.md)
+- dogma AGENTS.md § Guiding Constraints: [../../AGENTS.md](../../AGENTS.md#guiding-constraints)
 - dogma MANIFESTO.md § Guiding Principles: [../../MANIFESTO.md#guiding-principles-cross-cutting](../../MANIFESTO.md#guiding-principles-cross-cutting)
 - Barke, S., James, M. B., & Polikarpova, N. (2023). "Grounded Copilot: How Programmers Interact with Code-Generating Models." *Proceedings of the ACM on Programming Languages*, 7(OOPSLA1). https://dl.acm.org/doi/10.1145/3586030
 - Imai, S. (2022). "Is GitHub Copilot a Substitute for Human Pair-Programming? An Empirical Study." *ICSE 2022 Companion Proceedings*. https://dl.acm.org/doi/10.1145/3510454.3516867

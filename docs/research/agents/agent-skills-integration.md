@@ -170,7 +170,7 @@ Skills implement this directly: a session management skill encodes the scratchpa
 
 Each SKILL.md body should cite `AGENTS.md` as its governing constraint document. This makes the skill encoding-fidelity-auditable in the same way that agent files are — a future `validate_skill_files.py` cross-reference check would catch drift at CI time.
 
-**Cross-reference density note**: `MANIFESTO.md` [`§Algorithms Before Tokens`](../../../MANIFESTO.md#2-algorithms-before-tokens) names the `scripts/watch_scratchpad.py` watcher as the canonical ABT example. Skills are an equal-or-higher-tier canonical example: they cover the entire *instruction class* of repeated tasks (not just one script), are agent-agnostic, and require zero runtime token cost below the description threshold.
+**Cross-reference density note**: `MANIFESTO.md` [MANIFESTO.md §2](../../../MANIFESTO.md#2-algorithms-before-tokens) names the `scripts/watch_scratchpad.py` watcher as the canonical ABT example. Skills are an equal-or-higher-tier canonical example: they cover the entire *instruction class* of repeated tasks (not just one script), are agent-agnostic, and require zero runtime token cost below the description threshold.
 
 ---
 
