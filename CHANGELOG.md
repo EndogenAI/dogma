@@ -1,3 +1,12 @@
+## [Unreleased]
+
+
+### Bug Fixes
+
+* **agents:** require explicit `Desired Outcomes & Acceptance` section in `validate_agent_files.py` ([67404ad](https://github.com/EndogenAI/dogma/commit/67404ad))
+* **docs,research:** complete Phase 2C anchor and MANIFESTO citation normalization sweep ([dc045f0](https://github.com/EndogenAI/dogma/commit/dc045f0))
+
+
 ## [0.12.3](https://github.com/EndogenAI/dogma/compare/v0.12.2...v0.12.3) (2026-03-18)
 
 

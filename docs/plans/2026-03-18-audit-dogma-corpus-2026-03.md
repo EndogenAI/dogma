@@ -77,7 +77,7 @@ Normalize the `governs:` frontmatter to `x-governs:` to eliminate VS Code diagno
 **Gate**: Phase 2B Review APPROVED
 **Status**: ✅ Complete
 
-### Phase 2C — #391 Fidelity & Link Sweep (Anchors & Fragments) ⬜
+### Phase 2C — #391 Fidelity & Link Sweep (Anchors & Fragments) ✅
 **Agent**: Executive Docs
 **Description**: Repair "Fragment Ghosts" by standardizing hidden HTML anchors in `AGENTS.md` and fixing broken markdown links repo-wide. Update `MANIFESTO.md` citations to include § references.
 **Deliverables**:
@@ -86,9 +86,9 @@ Normalize the `governs:` frontmatter to `x-governs:` to eliminate VS Code diagno
 - Added anchors to `AGENTS.md` for stable targeting
 **Depends on**: Phase 2B
 **Gate**: Phase 2C Review APPROVED
-**Status**: Not started
+**Status**: ✅ Complete
 
-### Phase 3 — Validation & Session Close ⬜
+### Phase 3 — Validation & Session Close ✅
 **Agent**: Executive Orchestrator → GitHub
 **Description**: Run final programmatic substrate checks, synthesize session results, and commit/push.
 **Deliverables**:
@@ -97,14 +97,14 @@ Normalize the `governs:` frontmatter to `x-governs:` to eliminate VS Code diagno
 - All changes pushed to origin
 - PR body updated with `Closes #390, Closes #391`
 **Depends on**: Phase 2C
-**Status**: Not started
+**Status**: ✅ Complete
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] All sub-phases complete and committed
-- [ ] No instances of `governs:` remain in frontmatter
-- [ ] Sweep report cites 100% of files in `docs/` and `.github/agents/`
-- [ ] `uv run python scripts/check_substrate_health.py` returns green
-- [ ] All changes pushed and PR is up to date
+- [x] All sub-phases complete and committed
+- [x] No instances of `governs:` remain in frontmatter
+- [x] Sweep report cites 100% of files in `docs/` and `.github/agents/`
+- [x] `uv run python scripts/check_substrate_health.py` returns green
+- [x] All changes pushed and PR is up to date
