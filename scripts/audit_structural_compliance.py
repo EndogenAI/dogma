@@ -1,3 +1,19 @@
+"""scripts/audit_structural_compliance.py
+
+Audit `.agent.md` files for mandatory BDI XML wrappers and heading alignment.
+
+Inputs:
+    --target-dir: directory to scan (default `.github/agents/`)
+    --format: `text` or `json`
+
+Outputs:
+    Report of files with missing tag pairs or misaligned section headings.
+
+Usage:
+    uv run python scripts/audit_structural_compliance.py
+    uv run python scripts/audit_structural_compliance.py --format json
+"""
+
 import argparse
 import json
 import re
@@ -8,7 +24,8 @@ from typing import List
 
 def find_repo_root() -> Path:
     """Walk up from this file until pyproject.toml is found."""
-    for parent in [Path(__file__).resolve(), *Path(__file__).resolve().parents]:
+    start = Path(__file__).resolve().parent
+    for parent in [start, *start.parents]:
         if (parent / "pyproject.toml").exists():
             return parent
     return Path.cwd()
@@ -40,12 +57,15 @@ def audit_agent_file(file_path: Path) -> List[str]:
             missing_tags.append(tag)
             continue
 
-        # Alignment check: heading should follow opening tag soon after
-        # Non-greedy match or just line-by-line check would be safer, but
-        # for a quick audit, we use a simpler pattern to avoid catastrophic backtracking.
-        # Check if the heading exists anywhere after the opening tag.
+        # Alignment check: heading must appear inside this tag block.
         tag_index = content.find(opening_tag)
-        heading_match = re.search(heading_pattern, content[tag_index:], re.IGNORECASE | re.MULTILINE)
+        close_index = content.find(closing_tag, tag_index)
+        if close_index == -1:
+            missing_tags.append(f"{tag} (alignment)")
+            continue
+
+        block = content[tag_index : close_index + len(closing_tag)]
+        heading_match = re.search(heading_pattern, block, re.IGNORECASE | re.MULTILINE)
         if not heading_match:
             missing_tags.append(f"{tag} (alignment)")
 

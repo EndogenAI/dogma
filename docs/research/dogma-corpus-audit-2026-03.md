@@ -113,5 +113,5 @@ The March 2026 Audit confirms that the `dogma` repository has scaled its knowled
 - **Session Scratchpad**: `[.tmp/audit-dogma-corpus-2026-03/2026-03-18.md](../../.tmp/audit-dogma-corpus-2026-03/2026-03-18.md)`
 - **Audit Scripts**: `[scripts/check_substrate_health.py](../../scripts/check_substrate_health.py)`, `[scripts/validate_agent_files.py](../../scripts/validate_agent_files.py)`, `[scripts/audit_provenance.py](../../scripts/audit_provenance.py)`
 - **Workplan**: `[docs/plans/2026-03-18-audit-dogma-corpus-2026-03.md](../plans/2026-03-18-audit-dogma-corpus-2026-03.md)`
-- **Govenance Axioms**: `[MANIFESTO.md](../../MANIFESTO.md)`, `[AGENTS.md](../../AGENTS.md)`
+- **Governance Axioms**: `[MANIFESTO.md](../../MANIFESTO.md)`, `[AGENTS.md](../../AGENTS.md)`
 

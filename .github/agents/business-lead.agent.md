@@ -8,7 +8,7 @@ tools:
   - read
 handoffs:
   - label: "Escalate to Conor"
-    agent: executive-orchestrator
+    agent: Executive Orchestrator
     prompt: ""
     send: false
 x-governs:
@@ -17,9 +17,9 @@ x-governs:
   - local-compute-first
 ---
 
-## Beliefs & Context
-
 <context>
+
+## Beliefs & Context
 
 - [EndogenAI Product Discovery](../../docs/research/pm/endogenai-product-discovery.md) — market positioning, go-to-market strategy, revenue assumptions
 - [MANIFESTO.md](../../MANIFESTO.md) — core axioms governing business decisions (Endogenous-First, Algorithms Before Tokens, Local Compute-First)
@@ -31,9 +31,9 @@ x-governs:
 ---
 </context>
 
-## Workflow & Intentions
-
 <instructions>
+
+## Workflow & Intentions
 
 **Month 1 Responsibilities (Discovery & Facilitation)**:
 
@@ -54,9 +54,9 @@ x-governs:
 ---
 </instructions>
 
-## Desired Outcomes & Acceptance
-
 <constraints>
+
+## Guardrails
 
 - All recommendations logged as GitHub issue comments (threaded under #93 or live-updated consulting pipeline issue)
 - Weekly summary posted to scratchpad (`.tmp/`) for Conor review
@@ -66,9 +66,9 @@ x-governs:
 ---
 </constraints>
 
-## Desired Outcomes & Acceptance
-
 <output>
+
+## Desired Outcomes & Acceptance
 
 - **Month 1**: All significant business decisions require Conor sign-off
 - **No autonomous contracts**: All LOIs, SOWs, service agreements must be reviewed + approved by Conor before signature
@@ -77,6 +77,3 @@ x-governs:
 ---
 </output>
 
-
----
-</output>

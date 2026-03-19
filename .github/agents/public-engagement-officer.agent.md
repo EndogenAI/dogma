@@ -8,16 +8,16 @@ tools:
   - read
 handoffs:
   - label: "Escalate to Conor + Sheela"
-    agent: executive-orchestrator
+    agent: Executive Orchestrator
     prompt: ""
     send: false
 x-governs:
   - ethical-values
 ---
 
-## Beliefs & Context
-
 <context>
+
+## Beliefs & Context
 
 - [MANIFESTO.md](../../MANIFESTO.md) — community values, ethical coding practices
 - [CONTRIBUTING.md](../../CONTRIBUTING.md) — community standards, contributor onboarding
@@ -30,9 +30,9 @@ x-governs:
 ---
 </context>
 
-## Workflow & Intentions
-
 <instructions>
+
+## Workflow & Intentions
 
 **Month 1 Responsibilities (Community Facilitation)**:
 
@@ -56,9 +56,9 @@ x-governs:
 ---
 </instructions>
 
-## Desired Outcomes & Acceptance
-
 <constraints>
+
+## Guardrails
 
 - Weekly community summary posted to scratchpad (`.tmp/research-skills-decision-logic/2026-03-XX.md` or persistent issue)
 - All speaker opportunity flags include: event name, CFP deadline, estimated audience, relevance to EndogenAI
@@ -68,9 +68,9 @@ x-governs:
 ---
 </constraints>
 
-## Desired Outcomes & Acceptance
-
 <output>
+
+## Desired Outcomes & Acceptance
 
 - **Month 1**: No autonomous commitments to events or speaking slots; Conor approves all outreach
 - **Community Code of Conduct**: All interactions must align with CONTRIBUTING.md + MANIFESTO ethical values

@@ -12,7 +12,7 @@ Checks:
     2. Required section headings present (fuzzy keyword matching):
        - Beliefs & Context section (confirms the agent reads before acting)
        - Workflow & Intentions section (Workflow, Checklist, Conventions, or equivalent)
-       - Desired Outcomes & Acceptance section (Completion Criteria or Guardrails)
+    - Desired Outcomes & Acceptance section (Desired Outcomes, Acceptance, or Completion Criteria)
     3. At least one back-reference to MANIFESTO.md or AGENTS.md (cross-reference
        density ≥ 1).  Low density signals likely encoding drift.
     4. No heredoc-based file writes (``cat >> ... << 'EOF'`` patterns), which
@@ -125,8 +125,8 @@ _MANIFESTO_SECTION_RE = re.compile(r"MANIFESTO\.md(?:#[a-zA-Z0-9\-_]+|\s+§\d)")
 # Bare MANIFESTO reference: MANIFESTO.md NOT immediately followed by # or \s+§
 _MANIFESTO_BARE_RE = re.compile(r"MANIFESTO\.md(?!#|\s+§)")
 
-# XML tags for BDI framing that must be present in every agent file.
-REQUIRED_TAGS: list[str] = ["<context>", "<instructions>", "<constraints>", "<output>"]
+# XML tag names for BDI framing that must be present in every agent file.
+REQUIRED_TAG_NAMES: list[str] = ["context", "instructions", "constraints", "output"]
 
 
 # ---------------------------------------------------------------------------
@@ -405,9 +405,13 @@ def validate(file_path: Path) -> tuple[bool, list[str]]:
         failures.extend(citation_errors)
 
     # --- Check 8: Mandatory BDI XML Tags ---
-    for tag in REQUIRED_TAGS:
-        if tag not in text:
-            failures.append(f"Missing mandatory BDI XML tag: '{tag}'")
+    for tag_name in REQUIRED_TAG_NAMES:
+        opening_tag = f"<{tag_name}>"
+        closing_tag = f"</{tag_name}>"
+        has_opening = opening_tag in text
+        has_closing = closing_tag in text
+        if not has_opening or not has_closing:
+            failures.append(f"Missing mandatory BDI XML tag pair: '{opening_tag}' and '{closing_tag}'")
 
     # --- Check 9: x-governs: strict usage ---
     if fm and "governs" in fm:

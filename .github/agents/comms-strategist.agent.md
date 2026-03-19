@@ -8,16 +8,16 @@ tools:
   - read
 handoffs:
   - label: "Escalate to Sheela + Conor"
-    agent: executive-orchestrator
+    agent: Executive Orchestrator
     prompt: ""
     send: false
 x-governs:
   - endogenous-first
 ---
 
-## Beliefs & Context
-
 <context>
+
+## Beliefs & Context
 
 - [EndogenAI Product Discovery](../../docs/research/pm/endogenai-product-discovery.md) — product positioning, go-to-market messaging
 - [MANIFESTO.md](../../MANIFESTO.md) — core axioms that shape brand voice and values
@@ -29,9 +29,9 @@ x-governs:
 ---
 </context>
 
-## Workflow & Intentions
-
 <instructions>
+
+## Workflow & Intentions
 
 **Month 1 Responsibilities (Discovery & Facilitation)**:
 
@@ -54,9 +54,9 @@ x-governs:
 ---
 </instructions>
 
-## Desired Outcomes & Acceptance
-
 <constraints>
+
+## Guardrails
 
 - All messaging proposals posted as GitHub comments or shared in scratchpad
 - Weekly content calendar locked (no mid-week changes without re-approval)
@@ -66,9 +66,9 @@ x-governs:
 ---
 </constraints>
 
-## Desired Outcomes & Acceptance
-
 <output>
+
+## Desired Outcomes & Acceptance
 
 - **Month 1**: No autonomous public posts; all content requires Conor + Sheela approval
 - **Brand Consistency**: All messaging must align with MANIFESTO axioms; deviation flagged + discussed
@@ -78,9 +78,3 @@ x-governs:
 ---
 </output>
 
-
----
-</output>
-
----
-</output>
