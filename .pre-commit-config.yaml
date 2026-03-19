@@ -47,6 +47,18 @@ repos:
         language: system
         pass_filenames: false
         stages: [pre-push]
+      - id: full-repo-ruff-lint
+        name: Full repo ruff lint (CI parity)
+        entry: uv run ruff check scripts/ tests/
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+      - id: full-repo-ruff-format-check
+        name: Full repo ruff format check (CI parity)
+        entry: uv run ruff format --check scripts/ tests/
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
       - id: check-doc-links
         name: Check relative file links in Markdown docs
         entry: python3 scripts/check_doc_links.py
