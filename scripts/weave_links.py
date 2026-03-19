@@ -265,8 +265,9 @@ def _normalise_concept_name(name: str) -> str:
 
 
 def parse_frontmatter_governs(text: str) -> list[str]:
-    """Extract x-governs: list values from YAML frontmatter.
+    """Extract governs values from YAML frontmatter.
 
+    Supports both preferred `x-governs` and legacy `governs` keys.
     Handles list form (- item), scalar, and inline [a, b] forms.
     Returns plain string values; does not parse Markdown link syntax.
     """
@@ -275,32 +276,33 @@ def parse_frontmatter_governs(text: str) -> list[str]:
         return []
     fm = match.group(1)
 
-    # List form: x-governs:\n  - value
-    block_match = re.search(r"^x-governs\s*:\s*$", fm, re.MULTILINE)
-    if block_match:
-        after = fm[block_match.end() :]
-        items = []
-        for line in after.splitlines():
-            if not line.strip():
-                if items:
-                    break  # blank line after items signals end of block
-                continue  # blank line before first item (newline after x-governs:)
-            m = re.match(r"^\s+-\s+(.+)$", line)
-            if m:
-                items.append(m.group(1).strip().strip("\"'"))
-            else:
-                break  # next YAML key or non-list line — stop
-        return items
+    for key in ("x-governs", "governs"):
+        # List form: <key>:\n  - value
+        block_match = re.search(rf"^{key}\s*:\s*$", fm, re.MULTILINE)
+        if block_match:
+            after = fm[block_match.end() :]
+            items = []
+            for line in after.splitlines():
+                if not line.strip():
+                    if items:
+                        break  # blank line after items signals end of block
+                    continue  # blank line before first item (newline after key)
+                m = re.match(r"^\s+-\s+(.+)$", line)
+                if m:
+                    items.append(m.group(1).strip().strip("\"'"))
+                else:
+                    break  # next YAML key or non-list line — stop
+            return items
 
-    # Inline list: x-governs: [val1, val2]
-    inline_match = re.search(r"^x-governs\s*:\s*\[(.+)\]", fm, re.MULTILINE)
-    if inline_match:
-        return [v.strip().strip("\"'") for v in inline_match.group(1).split(",")]
+        # Inline list: <key>: [val1, val2]
+        inline_match = re.search(rf"^{key}\s*:\s*\[(.+)\]", fm, re.MULTILINE)
+        if inline_match:
+            return [v.strip().strip("\"'") for v in inline_match.group(1).split(",")]
 
-    # Scalar: x-governs: value
-    scalar_match = re.search(r"^x-governs\s*:\s*(\S.+)$", fm, re.MULTILINE)
-    if scalar_match:
-        return [scalar_match.group(1).strip().strip("\"'")]
+        # Scalar: <key>: value
+        scalar_match = re.search(rf"^{key}\s*:\s*(\S.+)$", fm, re.MULTILINE)
+        if scalar_match:
+            return [scalar_match.group(1).strip().strip("\"'")]
 
     return []
 
