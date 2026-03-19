@@ -265,7 +265,7 @@ def _normalise_concept_name(name: str) -> str:
 
 
 def parse_frontmatter_governs(text: str) -> list[str]:
-    """Extract governs: list values from YAML frontmatter.
+    """Extract x-governs: list values from YAML frontmatter.
 
     Handles list form (- item), scalar, and inline [a, b] forms.
     Returns plain string values; does not parse Markdown link syntax.
@@ -275,8 +275,8 @@ def parse_frontmatter_governs(text: str) -> list[str]:
         return []
     fm = match.group(1)
 
-    # List form: governs:\n  - value
-    block_match = re.search(r"^governs\s*:\s*$", fm, re.MULTILINE)
+    # List form: x-governs:\n  - value
+    block_match = re.search(r"^x-governs\s*:\s*$", fm, re.MULTILINE)
     if block_match:
         after = fm[block_match.end() :]
         items = []
@@ -284,7 +284,7 @@ def parse_frontmatter_governs(text: str) -> list[str]:
             if not line.strip():
                 if items:
                     break  # blank line after items signals end of block
-                continue  # blank line before first item (newline after governs:)
+                continue  # blank line before first item (newline after x-governs:)
             m = re.match(r"^\s+-\s+(.+)$", line)
             if m:
                 items.append(m.group(1).strip().strip("\"'"))
@@ -292,13 +292,13 @@ def parse_frontmatter_governs(text: str) -> list[str]:
                 break  # next YAML key or non-list line — stop
         return items
 
-    # Inline list: governs: [val1, val2]
-    inline_match = re.search(r"^governs\s*:\s*\[(.+)\]", fm, re.MULTILINE)
+    # Inline list: x-governs: [val1, val2]
+    inline_match = re.search(r"^x-governs\s*:\s*\[(.+)\]", fm, re.MULTILINE)
     if inline_match:
         return [v.strip().strip("\"'") for v in inline_match.group(1).split(",")]
 
-    # Scalar: governs: value
-    scalar_match = re.search(r"^governs\s*:\s*(\S.+)$", fm, re.MULTILINE)
+    # Scalar: x-governs: value
+    scalar_match = re.search(r"^x-governs\s*:\s*(\S.+)$", fm, re.MULTILINE)
     if scalar_match:
         return [scalar_match.group(1).strip().strip("\"'")]
 
@@ -308,7 +308,7 @@ def parse_frontmatter_governs(text: str) -> list[str]:
 def find_governs_annotation_candidates(
     text: str, registry: list[dict], filepath: Path, repo_root: Path
 ) -> list[tuple[str, str]]:
-    """Scan frontmatter governs: values for registry concepts marked with governs_source.
+    """Scan frontmatter x-governs: values for registry concepts marked with governs_source.
 
     Returns list of (governs_value, candidate_link) tuples for any governs value
     that matches a registry entry with a 'governs_source' key and is not already
@@ -506,12 +506,14 @@ def main() -> None:
                 total_injections += len(diffs_all) // 2
                 files_modified += 1
 
-            # Governs annotation candidates (governs_annotation entry type)
+            # x-governs annotation candidates (governs_annotation entry type)
             governs_candidates = find_governs_annotation_candidates(text, registry, md_file, repo_root)
             for governs_val, suggested_link in governs_candidates:
-                print(
-                    f"[GOVERNS CANDIDATE] {md_file.relative_to(repo_root)}: governs: '{governs_val}' → {suggested_link}"
+                message = (
+                    f"[GOVERNS CANDIDATE] {md_file.relative_to(repo_root)}: "
+                    f"x-governs: '{governs_val}' -> {suggested_link}"
                 )
+                print(message)
         else:
             # Non-dry-run: actually write the file
             # When scope-filter is active, use dry-run for the full-file pass so
