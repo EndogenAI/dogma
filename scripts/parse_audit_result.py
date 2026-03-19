@@ -120,10 +120,10 @@ def assess_agent_risk(
 
     Args:
         name: Agent name
-        axiom_cites: Count of MANIFESTO.md citations in 'governs:' field
+        axiom_cites: Count of MANIFESTO.md citations in 'x-governs:' field
         test_coverage: % coverage of associated tests, or None if unknown
         threshold: Baseline citation count threshold (0–1 normalized)
-        orphaned: True if agent missing 'governs:' field
+        orphaned: True if agent missing 'x-governs:' field
         unverifiable: True if agent has unverifiable axiom citations
 
     Returns:
@@ -132,7 +132,7 @@ def assess_agent_risk(
     """
 
     if orphaned:
-        return ("red", "Orphaned: no 'governs:' field in agent spec. Cannot verify grounding in MANIFESTO.md.")
+        return ("red", "Orphaned: no 'x-governs:' field in agent spec. Cannot verify grounding in MANIFESTO.md.")
 
     if unverifiable:
         return ("red", f"Unverifiable axiom citations. References {axiom_cites} axiom(s) not found in MANIFESTO.md.")
@@ -333,7 +333,7 @@ def generate_recommendations(
     if avg_cite_intensity < 0.5:
         recommendations.append(
             f"Low average axiom cite intensity ({avg_cite_intensity:.1f}). "
-            f"Consider citing specific MANIFESTO.md sections in agent 'governs:' fields."
+            f"Consider citing specific MANIFESTO.md sections in agent 'x-governs:' fields."
         )
 
     return recommendations
