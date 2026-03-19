@@ -25,9 +25,9 @@ sources:
 
 The MCP 2026 roadmap, authored by David Soria Parra (Anthropic MCP lead maintainer) and reported by The New Stack, identifies four production pain points: transport scalability (P1), agent communication / async task gaps (P2), governance bottlenecks (P3), and enterprise readiness (P4). Of the four, only P2 introduces a concrete deferral risk for dogma's planned MCP server implementations. P1 validates the architectural stance already encoded in [`docs/research/mcp-state-architecture.md`](mcp-state-architecture.md). P3 and P4 are effectively negligible for dogma at its current phase.
 
-The roadmap's most strategically important signal for dogma is the explicit trend away from long-lived stateful sessions toward **stateless horizontal scaling via `.well-known` server discovery**. This is not a future risk — it is a present confirmation that dogma's proposed MCP servers (`scratchpad-query` #297, governance tools #303) should be designed as stateless stdio processes from the outset. The [Local Compute-First axiom (MANIFESTO.md §3)](../../MANIFESTO.md#3-local-compute-first) is directly aligned with this direction: local stdio processes have no horizontal-scaling burden by design.
+The roadmap's most strategically important signal for dogma is the explicit trend away from long-lived stateful sessions toward **stateless horizontal scaling via `.well-known` server discovery**. This is not a future risk — it is a present confirmation that dogma's proposed MCP servers (`scratchpad-query` #297, governance tools #303) should be designed as stateless stdio processes from the outset. The [MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first) axiom is directly aligned with this direction: local stdio processes have no horizontal-scaling burden by design.
 
-The Tier 3 recommendation from [`docs/research/intelligence-architecture-synthesis.md`](intelligence-architecture-synthesis.md) — implementing an MCP-mediated scratchpad query pattern as the A2A-minimal viable surface (#297) — **remains the correct strategic direction**. The roadmap does not invalidate it. The only operational adjustment is to defer any use of the MCP `Tasks` API in dogma servers until the lifecycle regression (retry semantics, result persistence duration) is resolved upstream. Simple synchronous request/response patterns are sufficient for dogma's MVP MCP servers and are safer under [Algorithms Before Tokens (MANIFESTO.md §2)](../../MANIFESTO.md#2-algorithms-before-tokens): prefer the deterministic synchronous path over the partially-specified async one.
+The Tier 3 recommendation from [`docs/research/intelligence-architecture-synthesis.md`](intelligence-architecture-synthesis.md) — implementing an MCP-mediated scratchpad query pattern as the A2A-minimal viable surface (#297) — **remains the correct strategic direction**. The roadmap does not invalidate it. The only operational adjustment is to defer any use of the MCP `Tasks` API in dogma servers until the lifecycle regression (retry semantics, result persistence duration) is resolved upstream. Simple synchronous request/response patterns are sufficient for dogma's MVP MCP servers and are safer under [MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens): prefer the deterministic synchronous path over the partially-specified async one.
 
 ---
 
@@ -64,7 +64,7 @@ The explicit roadmap movement toward stateless servers confirms that designing #
 
 The MCP maintainers are explicitly solving P1 by evolving transport **toward** stateless horizontal scaling, not away from it. Parra's statement — "We are NOT adding new official transports this cycle — evolve existing transport instead" — signals that the spec will mature its existing transport model to eliminate the in-memory session-state constraint that prevents horizontal scaling. Dogma's planned stdio servers have never had that constraint, placing them structurally ahead of the problematic patterns the roadmap is resolving.
 
-This is a direct empirical grounding for [Endogenous-First (MANIFESTO.md §1)](../../MANIFESTO.md#1-endogenous-first): the system's existing architectural choices — stateless tool calls, local stdio processes — are validated by external roadmap evidence, not derived from it. The architecture was encoded correctly. The roadmap is confirmation, not instruction.
+This is a direct empirical grounding for [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first): the system's existing architectural choices — stateless tool calls, local stdio processes — are validated by external roadmap evidence, not derived from it. The architecture was encoded correctly. The roadmap is confirmation, not instruction.
 
 ---
 
@@ -82,7 +82,7 @@ This is a direct empirical grounding for [Endogenous-First (MANIFESTO.md §1)](.
 
 **Dogma stance**: ADOPT. This pattern is already the declared baseline in [`mcp-state-architecture.md` §P1](mcp-state-architecture.md). The 2026 roadmap independently reinforces it. All planned dogma MCP servers (#297, #303) must implement this pattern.
 
-**Alignment**: [Local Compute-First (MANIFESTO.md §3)](../../MANIFESTO.md#3-local-compute-first) — local stdio processes have no horizontal-scaling surface by design; stateless-first eliminates the one architectural gap that could reintroduce it.
+**Alignment**: [MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first) — local stdio processes have no horizontal-scaling surface by design; stateless-first eliminates the one architectural gap that could reintroduce it.
 
 ---
 
@@ -96,7 +96,7 @@ This is a direct empirical grounding for [Endogenous-First (MANIFESTO.md §1)](.
 
 > **Anti-pattern**: Adopting the `Tasks` API in a dogma MCP server during Sprint 13-14 to support a corpus-scan operation, discovering during integration testing that retry-on-failure behavior is undefined, and encoding compensatory logic that the spec will later contradict once lifecycle definitions land.
 
-**Dogma stance**: DEFER. The [Algorithms Before Tokens axiom (MANIFESTO.md §2)](../../MANIFESTO.md#2-algorithms-before-tokens) applies directly: prefer the deterministic, fully-specified synchronous path over the partially-specified async one. Re-evaluate when the MCP roadmap marks Task lifecycle definitions as stable.
+**Dogma stance**: DEFER. The [MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens) applies directly: prefer the deterministic, fully-specified synchronous path over the partially-specified async one. Re-evaluate when the MCP roadmap marks Task lifecycle definitions as stable.
 
 **Monitoring signal**: Watch the `modelcontextprotocol/specification` changelog for a `Task` lifecycle section addition. That is the gate event to re-evaluate.
 
@@ -118,7 +118,7 @@ This is a direct empirical grounding for [Endogenous-First (MANIFESTO.md §1)](.
 
 **1. Codify stateless-first as a required design constraint for all dogma MCP servers.**
 
-Update the `docs/research/mcp-state-architecture.md` and any forthcoming MCP server design docs (for #297, #303) to explicitly state that the stateless-first Pattern 1 is mandatory, not advisory. The [Endogenous-First axiom (MANIFESTO.md §1)](../../MANIFESTO.md#1-endogenous-first) is satisfied here: dogma arrived at this stance before the roadmap confirmed it. Encoding it formally prevents future implementers from treating it as optional.
+Update the `docs/research/mcp-state-architecture.md` and any forthcoming MCP server design docs (for #297, #303) to explicitly state that the stateless-first Pattern 1 is mandatory, not advisory. The [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first) axiom is satisfied here: dogma arrived at this stance before the roadmap confirmed it. Encoding it formally prevents future implementers from treating it as optional.
 
 **2. Add a "Tasks API" adoption gate to #297 and #303 issue acceptance criteria.**
 

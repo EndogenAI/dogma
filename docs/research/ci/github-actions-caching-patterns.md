@@ -16,7 +16,7 @@ governs: [ci, caching, orientation, project-state-export]
 
 ## Executive Summary
 
-GitHub Actions provides two complementary persistence mechanisms — `actions/cache` for cross-run reuse of stable files, and `actions/upload-artifact` for immutable job-produced outputs — with distinct guarantees and failure modes. The EndogenAI Workflows project can exploit these primitives to eliminate redundant API calls during Orchestrator orientation sessions (aligning with [Local Compute-First, §3](../../../MANIFESTO.md#3-local-compute-first)) and to encode the project-state snapshot workflow as a deterministic scheduled job rather than a per-session interactive token burn (aligning with [Algorithms Before Tokens, §2](../../../MANIFESTO.md#2-algorithms-before-tokens)).
+GitHub Actions provides two complementary persistence mechanisms — `actions/cache` for cross-run reuse of stable files, and `actions/upload-artifact` for immutable job-produced outputs — with distinct guarantees and failure modes. The EndogenAI Workflows project can exploit these primitives to eliminate redundant API calls during Orchestrator orientation sessions (aligning with [MANIFESTO.md §3](../../../MANIFESTO.md#3-local-compute-first)) and to encode the project-state snapshot workflow as a deterministic scheduled job rather than a per-session interactive token burn (aligning with [MANIFESTO.md §2](../../../MANIFESTO.md#2-algorithms-before-tokens)).
 
 Two patterns are immediately actionable: a **date-keyed cache** for same-day orientation hits across concurrent CI runs, and an **artifact-as-snapshot** pattern for a canonical named project-state artifact retrievable by logical name without requiring the artifact ID. A third pattern — **centralized producer / read-only consumer** — provides the structural separation between the scheduled exporter job and any Orchestrator-triggered consumer. Security risks from cache poisoning via fork PRs are the primary constraint shaping key-design decisions; all recommendations below incorporate the mitigations documented in GitHub's security guidance.
 
@@ -65,7 +65,7 @@ Two patterns are immediately actionable: a **date-keyed cache** for same-day ori
     key: ${{ runner.os }}-project-state-${{ steps.get-date.outputs.date }}
 ```
 
-**Rationale**: The date key auto-invalidates at UTC midnight. The split `restore@v5` / `save@v5` sub-actions (rather than the composite `actions/cache@v5`) allow the save step to be conditioned on a cache miss, avoiding an unnecessary upload when the cache already exists. This is the [Algorithms Before Tokens (§2)](../../../MANIFESTO.md#2-algorithms-before-tokens) principle applied directly: the cached result is a deterministic output; regenerating it on every run wastes tokens and API quota unnecessarily.
+**Rationale**: The date key auto-invalidates at UTC midnight. The split `restore@v5` / `save@v5` sub-actions (rather than the composite `actions/cache@v5`) allow the save step to be conditioned on a cache miss, avoiding an unnecessary upload when the cache already exists. This is the [MANIFESTO.md §2](../../../MANIFESTO.md#2-algorithms-before-tokens) principle applied directly: the cached result is a deterministic output; regenerating it on every run wastes tokens and API quota unnecessarily.
 
 **Constraints**:
 - Key must include `runner.os` to prevent cross-OS path pollution.
@@ -102,7 +102,7 @@ Two patterns are immediately actionable: a **date-keyed cache** for same-day ori
     echo "provenance_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
 ```
 
-**Rationale**: The `?name=project-state` filter on the artifacts REST API retrieves the latest artifact by logical name, making this resilient to artifact ID rotation when `overwrite: true` produces a new ID on each upload. `retention-days: 1` auto-expires stale orientation data, preventing a consumer from inadvertently reading week-old project state. The `workflow_run.head_sha` field provides provenance tracing without additional API calls — this is [Local Compute-First (§3)](../../../MANIFESTO.md#3-local-compute-first): the provenance is embedded in the artifact metadata rather than requiring a separate lookup.
+**Rationale**: The `?name=project-state` filter on the artifacts REST API retrieves the latest artifact by logical name, making this resilient to artifact ID rotation when `overwrite: true` produces a new ID on each upload. `retention-days: 1` auto-expires stale orientation data, preventing a consumer from inadvertently reading week-old project state. The `workflow_run.head_sha` field provides provenance tracing without additional API calls — this is [MANIFESTO.md §3](../../../MANIFESTO.md#3-local-compute-first): the provenance is embedded in the artifact metadata rather than requiring a separate lookup.
 
 **Digest validation** (optional integrity gate):
 ```yaml
@@ -151,7 +151,7 @@ jobs:
           fail-on-cache-miss: true   # abort if snapshot absent; do not silently proceed
 ```
 
-**Rationale**: Confining write authority to a single producer job on the default branch closes the primary cache-poisoning vector: a fork PR workflow cannot trigger the producer job and cannot write to the default-branch cache namespace. The `fail-on-cache-miss: true` option acts as a correctness gate — the consumer aborts rather than silently operating without orientation context, which aligns with the [Endogenous-First axiom](../../../MANIFESTO.md#1-endogenous-first): prefer halting to operating on absent internal knowledge.
+**Rationale**: Confining write authority to a single producer job on the default branch closes the primary cache-poisoning vector: a fork PR workflow cannot trigger the producer job and cannot write to the default-branch cache namespace. The `fail-on-cache-miss: true` option acts as a correctness gate — the consumer aborts rather than silently operating without orientation context, which aligns with the [MANIFESTO.md §1](../../../MANIFESTO.md#1-endogenous-first): prefer halting to operating on absent internal knowledge.
 
 The `lookup-only: true` variant (on `restore@v5`) enables a "check before act" gate — verify the cache exists before downloading it, supporting conditional branching without incurring download cost:
 ```yaml
@@ -216,7 +216,7 @@ These recommendations are ordered by implementation priority for the EndogenAI W
 
 ### R1 — Adopt the Artifact-as-Snapshot pattern for `export_project_state.py` outputs
 
-Modify the `export-project-state.yml` workflow to upload `project_state.json` as a named artifact (`project-state`) with `retention-days: 1` and `overwrite: true`. The Orchestrator-triggered orientation step should retrieve it via the name-filtered REST API. This eliminates per-session GitHub API calls for project state — a direct application of [Algorithms Before Tokens (§2)](../../../MANIFESTO.md#2-algorithms-before-tokens).
+Modify the `export-project-state.yml` workflow to upload `project_state.json` as a named artifact (`project-state`) with `retention-days: 1` and `overwrite: true`. The Orchestrator-triggered orientation step should retrieve it via the name-filtered REST API. This eliminates per-session GitHub API calls for project state — a direct application of [MANIFESTO.md §2](../../../MANIFESTO.md#2-algorithms-before-tokens).
 
 Acceptance: `export-project-state.yml` uploads artifact on success; `.github/workflows/` consumer reads via `?name=project-state` query; no session makes a live API call for project state when a same-day artifact exists.
 
@@ -234,7 +234,7 @@ Acceptance: No `actions/cache/save` step targeting `.cache/github/` exists in an
 
 ### R4 — Add `fail-on-cache-miss: true` to all orientation restore steps
 
-Consumer workflows that need project state for correct operation must abort rather than silently proceed with stale or absent context. Add `fail-on-cache-miss: true` to every `actions/cache/restore@v5` step that is a hard dependency for the job's correctness. This is a direct encoding of the [Endogenous-First axiom (§1)](../../../MANIFESTO.md#1-endogenous-first): operating without internal knowledge is worse than halting.
+Consumer workflows that need project state for correct operation must abort rather than silently proceed with stale or absent context. Add `fail-on-cache-miss: true` to every `actions/cache/restore@v5` step that is a hard dependency for the job's correctness. This is a direct encoding of the [MANIFESTO.md §1](../../../MANIFESTO.md#1-endogenous-first): operating without internal knowledge is worse than halting.
 
 Acceptance: If the orientation cache is absent, the consumer job exits with a non-zero code and surfaces a clear failure message.
 

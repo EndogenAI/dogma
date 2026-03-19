@@ -12,7 +12,7 @@ governs: []
 > **Status**: Final
 > **Research Question**: Which biological evolutionary models apply to dogma propagation via cookiecutter? How should derived repos manage local mutations vs. upstream inheritance? How does learning flow back from a derived repo to the parent?
 > **Date**: 2026-03-15
-> **Related**: [`docs/research/substrate-atlas.md`](substrate-atlas.md) · [`docs/research/greenfield-repo-candidates.md`](greenfield-repo-candidates.md) · [`docs/research/platform-agnosticism.md`](platform-agnosticism.md) · [`MANIFESTO.md` §1 Endogenous-First](../../MANIFESTO.md#1-endogenous-first) · [Issue #273](https://github.com/EndogenAI/dogma/issues/273)
+> **Related**: [`docs/research/substrate-atlas.md`](substrate-atlas.md) · [`docs/research/greenfield-repo-candidates.md`](greenfield-repo-candidates.md) · [`docs/research/platform-agnosticism.md`](platform-agnosticism.md) · [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first) · [Issue #273](https://github.com/EndogenAI/dogma/issues/273)
 
 ---
 
@@ -29,7 +29,7 @@ Key findings:
 1. **Inheritance via cookiecutter is a spore, not a graft** — once the template renders, the derived repo is genetically independent. There is no automatic upstream sync; mutations accumulate silently unless a learning-flow mechanism is designed in.
 2. **HGT is the most valuable evolutionary model** for upstream learning return: discrete, transferable learnings can be grafted into the parent without merging the entire derived repo history.
 3. **Successful framework ecosystems** (React, Rails, Django) manage this through RFC processes, plugin registries, and contrib workflows — all of which are endogenous to the project's governance rather than enforced by tooling.
-4. **The Endogenous-First axiom** (MANIFESTO.md §1) provides the correct tension point: derived repos must be free to develop local adaptations (adaptive fitness), while upstream must selectively absorb only learnings that generalise across the fleet.
+4. **The Endogenous-First axiom** ([MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first)) provides the correct tension point: derived repos must be free to develop local adaptations (adaptive fitness), while upstream must selectively absorb only learnings that generalise across the fleet.
 5. **The adoption methodology** (currently a one-time process) needs a lightweight **divergence health check** — a periodic audit that surfaces how far a derived repo has drifted from its parent template.
 
 **Recommendation: Adopt HGT-based learning-flow with a divergence health check cadence. Amend the adoption methodology to include an upstream-learning slot in each sprint close.**
@@ -48,7 +48,7 @@ Memetics adds one critical insight: **fidelity of copying matters more than freq
 
 The MANIFESTO.md axiom chain (Values → Principles → Operational Constraints) maps to memetic hierarchy: axioms are high-fidelity, slow-mutating genes; the AGENTS.md constraints are regulatory sequences that modulate expression; the `.agent.md` files are expressed phenotypes.
 
-**Canonical example**: A derived repo (`dogma-rag`) renders from the cookiecutter template with all MANIFESTO.md axioms, AGENTS.md, and `.github/agents/` intact. The Endogenous-First axiom (MANIFESTO.md §1) — encoded verbatim in the template — propagates at 100% fidelity. Six months later, a new agent added by the derived repo's maintainers may not cite the axiom at all — the regulatory sequence mutated without genome repair. The divergence health check (see R3) would catch this.
+**Canonical example**: A derived repo (`dogma-rag`) renders from the cookiecutter template with all MANIFESTO.md axioms, AGENTS.md, and `.github/agents/` intact. The Endogenous-First axiom ([MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first)) — encoded verbatim in the template — propagates at 100% fidelity. Six months later, a new agent added by the derived repo's maintainers may not cite the axiom at all — the regulatory sequence mutated without genome repair. The divergence health check (see R3) would catch this.
 
 **Anti-pattern**: Treating the cookiecutter render as a permanent licence to diverge — the recipient repo never looks back at the parent for updates. After 12 months, the derived repo's AGENTS.md is three constraints behind the parent, two of which are security guardrails. A downstream incident that would have been prevented by the upstream guardrail represents a memetic fidelity failure.
 
@@ -87,7 +87,7 @@ Framework analogies:
 
 **Verdict**: CONFIRMED — Endogenous-First is a selection-pressure analogue that prevents premature external contamination
 
-**Evidence**: Endogenous-First (MANIFESTO.md §1) states: *scaffold from existing system knowledge and external best practices.* Applied to derived repos, this means: before adopting a new external library, check whether an endogenous pattern already covers the need. This is a **conserving force** — it slows mutation by requiring internal justification first.
+**Evidence**: Endogenous-First ([MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first)) states: *scaffold from existing system knowledge and external best practices.* Applied to derived repos, this means: before adopting a new external library, check whether an endogenous pattern already covers the need. This is a **conserving force** — it slows mutation by requiring internal justification first.
 
 Biological analogy: Endogenous-First is the cellular proofreading mechanism. Just as DNA polymerase checks each base pair before committing (reducing error rate to ~1 in 10⁹ base pairs), Endogenous-First requires agents to check the existing substrate before introducing new external dependencies.
 
@@ -144,7 +144,7 @@ A divergence score > 3 (on a 0–10 scale where 0 = identical, 10 = speciated) t
 | R1 | **Encode HGT protocol in the adoption methodology** — add an "Upstream Learning Slot" to the sprint-close checklist: review all research docs produced this sprint for generalisability; open an upstream issue for any that qualify | Adopt | greenfield-repo-candidates.md §R5 |
 | R2 | **Adopt D4 doc as the formal HGT transfer medium** — derived repos submit upstream learnings as D4 research docs (not PRs) until the learning is validated by the upstream Review gate | Adopt | AGENTS.md §Documentation Standards |
 | R3 | **Commission `scripts/check_divergence.py`** as a divergence health check — runs in CI of derived repos and in the monthly dogma health check | Investigate | substrate-atlas.md §T5 |
-| R4 | **Document the Endogenous-First relaxation rule for derived repos** in AGENTS.md: strict for governance/process; relaxed for domain-specific technology in the derived repo's specialty | Adopt | MANIFESTO.md §1 |
+| R4 | **Document the Endogenous-First relaxation rule for derived repos** in AGENTS.md: strict for governance/process; relaxed for domain-specific technology in the derived repo's specialty | Adopt | [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first) |
 | R5 | **HGT ingestion sprint cadence** — schedule in the `dogma` roadmap every 3–6 months; review all open upstream issues tagged `hgt:candidate` created by derived repo maintainers | Future | AGENTS.md §Sprint Phase Ordering Constraints |
 | R6 | **Classify `dogma-rag` learnings at first sprint close** — MCP integration patterns → upstream HGT candidates; LanceDB configuration, chunking parameters → internal, do not propagate | Adopt | greenfield-repo-candidates.md §R1 |
 
@@ -160,7 +160,7 @@ A divergence score > 3 (on a 0–10 scale where 0 = identical, 10 = speciated) t
 - [`docs/research/greenfield-repo-candidates.md`](greenfield-repo-candidates.md) — Wave 2 5-criterion framework; `dogma-rag` as first greenfield; learning-flow question deferred to this issue (Wave 2, Sprint 12)
 - [`docs/research/platform-agnosticism.md`](platform-agnosticism.md) — Wave 2 embrace + document posture; 23 VS Code–coupled artefacts; migration path framework (Wave 2, Sprint 12)
 - [`docs/research/custom-agent-service-modules.md`](custom-agent-service-modules.md) — Wave 1 SKILL=spec boundary; D4 doc as governance artefact (Wave 1, Sprint 12)
-- [`MANIFESTO.md` §1 Endogenous-First](../../MANIFESTO.md#1-endogenous-first) — scaffold from system knowledge before reaching outward
-- [`MANIFESTO.md` §3 Local Compute-First](../../MANIFESTO.md#3-local-compute-first) — minimise infrastructure; prefer local scripts over continuous services
+- [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first) — scaffold from system knowledge before reaching outward
+- [MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first) — minimise infrastructure; prefer local scripts over continuous services
 - [`AGENTS.md` §Documentation Standards](../../AGENTS.md#documentation-standards) — D4 synthesis format; `governs:` frontmatter field
 - `cookiecutter.json`, `hooks/post_gen_project.py` — template render mechanics; post-gen hook as epigenetic marking analogue

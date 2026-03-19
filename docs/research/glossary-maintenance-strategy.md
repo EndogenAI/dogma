@@ -139,5 +139,5 @@ Prioritised next action: commission `scripts/check_glossary_coverage.py`, integr
 - [`docs/research/reading-level-assessment-framework.md`](reading-level-assessment-framework.md) — per-audience encoding targets (issue #274)
 - [`docs/research/platform-agnosticism.md`](platform-agnosticism.md) — multi-contributor, multi-tool context and vocabulary variance
 - Hunt, A. and Thomas, D. (1999). *The Pragmatic Programmer*. Addison-Wesley. (DRY principle)
-- [MANIFESTO.md §1 Endogenous-First](../../MANIFESTO.md#1-endogenous-first) — glossary is an existing endogenous asset; extend, do not replace
-- [MANIFESTO.md §2 Algorithms Before Tokens](../../MANIFESTO.md#2-algorithms-before-tokens) — programmatic term-presence and drift detection over human review
+- [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first) — glossary is an existing endogenous asset; extend, do not replace
+- [MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens) — programmatic term-presence and drift detection over human review

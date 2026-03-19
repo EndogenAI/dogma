@@ -214,9 +214,9 @@ Score 2.5/5 — borderline. The key trigger: if the Platform Migration Guide fro
 - [`cookiecutter.json`](../../cookiecutter.json) — Dogma cookiecutter template schema
 - [`{{cookiecutter.project_slug}}/AGENTS.md`](../../{{cookiecutter.project_slug}}/AGENTS.md) — Companion repo governance inheritance template
 - [`AGENTS.md` §Programmatic-First Principle](../../AGENTS.md#programmatic-first-principle) — encode decision methods before third application
-- [`MANIFESTO.md` §1 — Endogenous-First](../../MANIFESTO.md#1-endogenous-first) — synthesize from existing knowledge; upstream-pull enrichment
-- [`MANIFESTO.md` §2 — Algorithms Before Tokens](../../MANIFESTO.md#2-algorithms-before-tokens) — deterministic YAML registry over index services
-- [`MANIFESTO.md` §3 — Local Compute-First](../../MANIFESTO.md#3-local-compute-first) — minimal local file preferred over external index
+- [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first) — synthesize from existing knowledge; upstream-pull enrichment
+- [MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens) — deterministic YAML registry over index services
+- [MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first) — minimal local file preferred over external index
 
 ### External
 

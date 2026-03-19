@@ -135,6 +135,6 @@ A 0–100 composite score (higher is better) maps to: ≥ 75 = High encoding con
 - [`docs/research/substrate-atlas.md`](substrate-atlas.md) — corpus scope and substrate layer definitions
 - [`docs/research/reading-level-assessment-framework.md`](reading-level-assessment-framework.md) — per-substrate reading level targets (issue #274)
 - [`AGENTS.md` §Toolchain Reference](../../AGENTS.md#toolchain-reference) — three-tier validation ladder
-- [MANIFESTO.md §1 Endogenous-First](../../MANIFESTO.md#1-endogenous-first) — extend existing enforcement infrastructure before adding new tooling
-- [MANIFESTO.md §2 Algorithms Before Tokens](../../MANIFESTO.md#2-algorithms-before-tokens) — deterministic assessment over LLM-based quality review
-- [MANIFESTO.md §3 Local Compute-First](../../MANIFESTO.md#3-local-compute-first) — corpus scan must complete locally without external API calls
+- [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first) — extend existing enforcement infrastructure before adding new tooling
+- [MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens) — deterministic assessment over LLM-based quality review
+- [MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first) — corpus scan must complete locally without external API calls

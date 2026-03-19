@@ -131,5 +131,5 @@ Cross-reference: [`docs/research/custom-agent-service-modules.md`](custom-agent-
 - [`data/delegation-gate.yml`](../../data/delegation-gate.yml) — endogenous coupling graph source data
 - [`scripts/validate_delegation_routing.py`](../../scripts/validate_delegation_routing.py) — existing delegation graph parser
 - [`AGENTS.md` §Executive Fleet Privileges](../../AGENTS.md#executive-fleet-privileges) — handoff topology and K-reduction via commit authority concentration
-- [MANIFESTO.md §1 Endogenous-First](../../MANIFESTO.md#1-endogenous-first) — K-reduction patterns already exist in the fleet; this research formalises them
-- [MANIFESTO.md §2 Algorithms Before Tokens](../../MANIFESTO.md#2-algorithms-before-tokens) — coupling K and modularity Q are deterministic computations from delegation-gate.yml
+- [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first) — K-reduction patterns already exist in the fleet; this research formalises them
+- [MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens) — coupling K and modularity Q are deterministic computations from delegation-gate.yml

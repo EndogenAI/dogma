@@ -22,7 +22,7 @@ H1 is **directionally supported**: every surveyed system that incorporates pre-e
 
 Three patterns emerge across sources — pre-encoded procedural skill libraries, constructor-phase context assembly, and unconditional rules-file pre-loading — each with direct implications for EndogenAI session management. The primary action item is designing and running the missing A/B experiment. The secondary action is formalising the existing CheckpointProtocol compliance gain (0/7 → 20/20) as a controlled internal benchmark.
 
-This synthesis operationalises the [Endogenous-First](../../../MANIFESTO.md#1-endogenous-first) axiom — drawing on existing internal compliance data and adjacent empirical work before reaching outward — and the [Algorithms Before Tokens](../../../MANIFESTO.md#2-algorithms-before-tokens) axiom, which motivates replacing reactive reconstruction with deterministic pre-load operations that encode knowledge before token burn begins.
+This synthesis operationalises the **MANIFESTO.md §1** ([MANIFESTO.md §1](../../../MANIFESTO.md#1-endogenous-first)) — drawing on existing internal compliance data and adjacent empirical work before reaching outward — and the **MANIFESTO.md §2** ([MANIFESTO.md §2](../../../MANIFESTO.md#2-algorithms-before-tokens)), which motivates replacing reactive reconstruction with deterministic pre-load operations that encode knowledge before token burn begins.
 
 ---
 
@@ -73,7 +73,7 @@ Agents maintain a persistent library of verified, reusable procedures. Before ea
 
 **Applicable to EndogenAI via**: [`../../../.github/skills/session-management/SKILL.md`](../../../.github/skills/session-management/SKILL.md) — session-start encoding checkpoint; [`../../../AGENTS.md`](../../../AGENTS.md) → encode-before-act posture at the top of each session.
 
-**Operationalises**: [Algorithms Before Tokens](../../../MANIFESTO.md#2-algorithms-before-tokens) — the skill library is a deterministic, pre-computed encoding; retrieval replaces interactive token burn.
+**Operationalises**: [MANIFESTO.md §2](../../../MANIFESTO.md#2-algorithms-before-tokens) — the skill library is a deterministic, pre-computed encoding; retrieval replaces interactive token burn.
 
 ---
 
@@ -85,7 +85,7 @@ Before reasoning or action loops begin, a dedicated Constructor phase selects, c
 
 **Applicable to EndogenAI via**: [`../../../scripts/orientation_snapshot.py`](../../../scripts/orientation_snapshot.py) — pre-computes orientation state for session start; [`../../../data/phase-gate-fsm.yml`](../../../data/phase-gate-fsm.yml) — could encode a Constructor phase as a mandatory session FSM gate.
 
-**Operationalises**: [Endogenous-First](../../../MANIFESTO.md#1-endogenous-first) — the Constructor reads internal sources (scratchpad, issue tracker snapshots, prior research docs) and synthesises them before reaching outward.
+**Operationalises**: [MANIFESTO.md §1](../../../MANIFESTO.md#1-endogenous-first) — the Constructor reads internal sources (scratchpad, issue tracker snapshots, prior research docs) and synthesises them before reaching outward.
 
 ---
 
@@ -161,7 +161,7 @@ Pattern 1 (Pre-Encoded Procedural Skill Library) shows the highest empirical lev
 2. Extend `scripts/orientation_snapshot.py` to accept a `--task-type` flag and return only the skill files semantically closest to the stated task type.
 3. The executive-level session-start prompt should specify `--task-type` so the injected skill list is pre-filtered before the session begins.
 
-This operationalises [Algorithms Before Tokens](../../../MANIFESTO.md#2-algorithms-before-tokens): the skill selection is a deterministic, pre-computed filter — not an interactive token burn to discover which skill applies.
+This operationalises [MANIFESTO.md §2](../../../MANIFESTO.md#2-algorithms-before-tokens): the skill selection is a deterministic, pre-computed filter — not an interactive token burn to discover which skill applies.
 
 ### R4 — Add Constructor Phase to the Phase-Gate FSM
 
@@ -180,7 +180,7 @@ Add a **Context Rot** subsection to [`../../../.github/skills/session-management
 - Specifies the mitigation: scratchpad size guard triggers compression at ≥2,000 lines; `prune_scratchpad.py` removes completed sections before the next phase begins.
 - References this document as the evidential grounding.
 
-This converts a research finding into an operationalised skill constraint — the [Endogenous-First](../../../MANIFESTO.md#1-endogenous-first) principle applied to documentation: encode into the substrate before it can be forgotten.
+This converts a research finding into an operationalised skill constraint — the [MANIFESTO.md §1](../../../MANIFESTO.md#1-endogenous-first) principle applied to documentation: encode into the substrate before it can be forgotten.
 
 ---
 

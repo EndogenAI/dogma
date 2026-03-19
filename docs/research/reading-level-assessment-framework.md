@@ -30,7 +30,7 @@ Key findings:
 
 3. **The dual-audience constraint is the primary design challenge.** A document that is clear to a human contributor (narrative, contextual, motivational) may be ambiguous to an LLM agent that expects procedural, constraint-first structure. The solution is **layered encoding**: constraint-first (agent-readable) + narrative context (human-readable) in the same document, separated by structural signals.
 
-4. **Endogenous-First** (MANIFESTO.md §1): the dogma substrate already uses layered encoding in several places (e.g., AGENTS.md uses decision tables for agent-facing constraints and prose paragraphs for rationale). The framework codifies and extends this existing pattern.
+4. **Endogenous-First** ([MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first)): the dogma substrate already uses layered encoding in several places (e.g., AGENTS.md uses decision tables for agent-facing constraints and prose paragraphs for rationale). The framework codifies and extends this existing pattern.
 
 ---
 
@@ -120,7 +120,7 @@ This framework directly unblocks issue #275 (programmatic writing assessment too
 
 The dual-audience constraint (human contributor + LLM agent) is unique to AI-assisted governance repositories and is not addressed by existing readability standards, which assume a single human reader. This framework's layered encoding pattern (constraint-first + narrative context) is an endogenous solution that emerged from the **Endogenous-First** axiom (MANIFESTO.md §1): the dogma substrate already uses layered encoding; this document names and formalises it.
 
-The **Algorithms Before Tokens** axiom (MANIFESTO.md §2) applies directly to the CI enforcement recommendation: encoding reading-level baselines as `validate_synthesis.py` thresholds replaces per-PR human style review, reducing both review latency and token burn on re-review cycles.
+The **Algorithms Before Tokens** axiom ([MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens)) applies directly to the CI enforcement recommendation: encoding reading-level baselines as `validate_synthesis.py` thresholds replaces per-PR human style review, reducing both review latency and token burn on re-review cycles.
 
 Cross-reference: [`docs/research/semantic-encoding-modes-contextual-routing.md`](semantic-encoding-modes-contextual-routing.md) §P1 identifies the CSS specificity model as the correct analogy for annotation resolution; this framework extends that model to document-layer encoding, where constraint-first blocks hold higher specificity than narrative-context blocks and must always be parseable at Grade ≤ 12.
 
@@ -136,5 +136,5 @@ Cross-reference: [`docs/research/semantic-encoding-modes-contextual-routing.md`]
 - [`docs/research/platform-agnosticism.md`](platform-agnosticism.md) — audience diversity and multi-contributor context
 - [`docs/research/semantic-encoding-modes-contextual-routing.md`](semantic-encoding-modes-contextual-routing.md) — structural encoding modes and routing by audience
 - [`AGENTS.md` §Documentation Standards](../../AGENTS.md#documentation-standards) — existing substrate conventions
-- [MANIFESTO.md §1 Endogenous-First](../../MANIFESTO.md#1-endogenous-first) — synthesise from existing substrate knowledge first
-- [MANIFESTO.md §2 Algorithms Before Tokens](../../MANIFESTO.md#2-algorithms-before-tokens) — prefer deterministic enforcement over prose guidance
+- [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first) — synthesise from existing substrate knowledge first
+- [MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens) — prefer deterministic enforcement over prose guidance

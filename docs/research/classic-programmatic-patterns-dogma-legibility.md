@@ -136,5 +136,6 @@ Decision tables, FSMs, guard clauses, and DbC contracts are each independently v
 - [`data/phase-gate-fsm.yml`](../../data/phase-gate-fsm.yml) — endogenous FSM implementation
 - [`scripts/validate_session_state.py`](../../scripts/validate_session_state.py) — FSM enforcement script
 - [`AGENTS.md` §Programmatic-First Principle](../../AGENTS.md#programmatic-first-principle) — decision table canonical example
-- [MANIFESTO.md §1 Endogenous-First](../../MANIFESTO.md#1-endogenous-first) — formalise patterns already present in substrate
-- [MANIFESTO.md §2 Algorithms Before Tokens](../../MANIFESTO.md#2-algorithms-before-tokens) — decision tables and FSMs are algorithms applied to documentation encoding
+- [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first) — formalise patterns already present in substrate
+- [MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens) — decision tables and FSMs are algorithms applied to documentation encoding
+- [MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first) — minimise infrastructure costs; run local FSM/validators

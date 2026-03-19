@@ -59,7 +59,7 @@ A key strategic question — whether the RAG implementation should live in this 
 
 LanceDB is the only candidate requiring **zero running processes** beyond the Python process executing the RAG query — it opens the database file directly, like SQLite. On Apple Silicon, this translates to faster cold starts (no server ping-pong), no Docker dependency, and no port management. The `lancedb` Python package ships arm64 wheels with Rust extensions compiled for arm64 architecture.
 
-ChromaDB requires a persistent HTTP server process, disqualifying it on the **Local Compute-First** axiom ([MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first)): a background server adds infrastructure overhead the dogma posture explicitly rejects. Qdrant requires a Rust binary or Docker container. pgvector requires a full PostgreSQL installation.
+ChromaDB requires a persistent HTTP server process, disqualifying it on the **MANIFESTO.md §3** ([MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first)): a background server adds infrastructure overhead the dogma posture explicitly rejects. Qdrant requires a Rust binary or Docker container. pgvector requires a full PostgreSQL installation.
 
 **Canonical example**: A developer opens VS Code on a MacBook Pro M3. The RAG MCP server initialises by calling `lancedb.connect("./rag-index")` — that is the entirety of database startup. No port binding, no background process, no Docker socket check. First `rag_query` call returns grounded chunks in ~40ms. This is the zero-footprint local-first posture the dogma requires.
 
@@ -186,9 +186,9 @@ After any commit touching `docs/`, `AGENTS.md`, or `MANIFESTO.md`, automatically
 - [`docs/research/custom-agent-service-modules.md`](custom-agent-service-modules.md) — service module vs. MCP server decision criteria (H3 above)
 - [`docs/research/substrate-atlas.md`](substrate-atlas.md) — corpus structural inventory; 63 H2-scoped knowledge units (P3 evidence)
 - [`AGENTS.md` §Programmatic-First Principle](../../AGENTS.md#programmatic-first-principle) — scripts-over-tokens grounding
-- [`MANIFESTO.md` §1 — Endogenous-First](../../MANIFESTO.md#1-endogenous-first) — synthesize from existing knowledge before reaching outward
-- [`MANIFESTO.md` §2 — Algorithms Before Tokens](../../MANIFESTO.md#2-algorithms-before-tokens) — prefer deterministic encoded solutions
-- [`MANIFESTO.md` §3 — Local Compute-First](../../MANIFESTO.md#3-local-compute-first) — minimise token usage; run locally
+- [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first) — synthesize from existing knowledge before reaching outward
+- [MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens) — prefer deterministic encoded solutions
+- [MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first) — minimise token usage; run locally
 - [`scripts/annotate_provenance.py`](../../scripts/annotate_provenance.py) — `governs:` frontmatter annotation
 
 ### External

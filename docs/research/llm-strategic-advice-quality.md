@@ -15,7 +15,7 @@ Recent research by organizational scholars (Romasanta, Thomas, Levina, *Harvard 
 
 **Key Finding**: LLMs are unreliable consultants for strategic decisions precisely because they optimize for plausible, trend-compliant outputs rather than rigorous analysis grounded in first principles.
 
-This validates the core claim of the **Algorithms-Before-Tokens** axiom (MANIFESTO.md § 2): for high-confidence decisions, encoded deterministic solutions outperform interactive generation.
+This validates the core claim of the **MANIFESTO.md §2** ([MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens)): for high-confidence decisions, encoded deterministic solutions outperform interactive generation.
 
 ---
 
@@ -160,7 +160,7 @@ A dev team adopts an AI coding assistant. After 6 months: PR volume is up 40%, d
   - Fetched: 2026-03-18
   - Key finding: Microsoft study of 885 PMs identifies practices for deciding which tasks to delegate to GenAI. Key constraint: "Accountability must not be delegated to non-human actors." PMs delegate execution while retaining strategic decision authority.
 
-- MANIFESTO.md § 2 — Algorithms-Before-Tokens axiom  
+- [MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens)
 
 ---
 

@@ -56,7 +56,7 @@ Backus-Naur Form (BNF) provides a context-free metasyntax suitable for encoding 
    - Rule D2: `formula-gate ::= [pre-condition] "?" decision ":" alt-decision`
      - Maps: conditional gates → if-else pseudocode
 
-**Rationale**: These rules implement the Algorithms-Before-Tokens principle from [MANIFESTO.md § 2](../../../MANIFESTO.md#2-algorithms-before-tokens) — the grammar is deterministic and parse-able, not token-dependent. A workflow formula can be executed or verified without re-interpreting intent.
+**Rationale**: These rules implement the **MANIFESTO.md §2** principle from [MANIFESTO.md §2](../../../MANIFESTO.md#2-algorithms-before-tokens) — the grammar is deterministic and parse-able, not token-dependent. A workflow formula can be executed or verified without re-interpreting intent.
 
 **Evidence**: EBNF is the ISO/IEC 14977 standard for context-free language definition; its usage in programming language specifications (Python, Java, SQL) confirms that complex executable semantics can be captured with compact ruleset.
 
@@ -517,7 +517,7 @@ Extend `scripts/validate_synthesis.py`:
 
 ## 7. Grounding in Foundational Axioms
 
-**[MANIFESTO.md § 1 — Endogenous-First](../../../MANIFESTO.md#1-endogenous-first)**:
+**[MANIFESTO.md §1](../../../MANIFESTO.md#1-endogenous-first)**:
 > "Scaffold from existing system knowledge. Absorb and encode the best of what exists externally."
 
 *Application*: The DSL absorbs best practices from three external systems:
@@ -527,7 +527,7 @@ Extend `scripts/validate_synthesis.py`:
 
 The three case studies (Session Orchestration, Agent Routing, Conflict Resolution) are endogenous: they encode workflows that already exist in the codebase.
 
-**[MANIFESTO.md § 2 — Algorithms Before Tokens](../../../MANIFESTO.md#2-algorithms-before-tokens)**:
+**[MANIFESTO.md §2](../../../MANIFESTO.md#2-algorithms-before-tokens)**:
 > "Prefer deterministic, encoded solutions over interactive token burn."
 
 *Application*: The DSL is fully deterministic: parser is context-free (no ambiguity), encoder/decoder are linear-time algorithms (no NP-hard search), round-trip validation is syntactic (no semantic interpretation).

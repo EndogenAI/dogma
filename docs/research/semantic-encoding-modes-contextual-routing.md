@@ -206,5 +206,5 @@ These annotations are not yet machine-readable in the AGENTS.md prose. Encoding 
 - [`docs/research/mcp-state-architecture.md`](mcp-state-architecture.md) — Wave 1 three-layer state; stateless MCP tool model; avoid continuously-running servers (Wave 1, Sprint 12)
 - [`AGENTS.md` §Context-Sensitive Amplification](../../AGENTS.md#context-sensitive-amplification) — existing semantic mode table; 5-row task-type → amplified-principle mapping
 - [`AGENTS.md` §Algorithms Before Tokens](../../AGENTS.md) — prefer deterministic, encoded solutions over interactive token burn (MANIFESTO.md §2)
-- [`MANIFESTO.md` §2 Algorithms Before Tokens](../../MANIFESTO.md#2-algorithms-before-tokens) — encode solutions, prefer deterministic over LLM-generated each session
-- [`MANIFESTO.md` §3 Local Compute-First](../../MANIFESTO.md#3-local-compute-first) — prefer scripts over services; no infrastructure per-sprint
+- [MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens) — encode solutions, prefer deterministic over LLM-generated each session
+- [MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first) — prefer scripts over services; no infrastructure per-sprint

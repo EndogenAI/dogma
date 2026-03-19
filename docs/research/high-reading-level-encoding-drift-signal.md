@@ -28,7 +28,7 @@ Key findings:
 
 3. **The complexity delta is more informative than absolute reading level.** A research doc legitimately written at Grade 16 for a specialist audience is not under-encoded; the same doc at Grade 16 against a Grade 10 target represents a delta of +6 grades — a strong encoding drift signal. The delta normalises for substrate type and author register variation.
 
-4. **Endogenous-First** (MANIFESTO.md §1): `scripts/detect_drift.py` already exists in the repository and computes encoding coverage metrics. The reading level drift analysis extends this existing infrastructure rather than duplicating it.
+4. **Endogenous-First** ([MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first)): `scripts/detect_drift.py` already exists in the repository and computes encoding coverage metrics. The reading level drift analysis extends this existing infrastructure rather than duplicating it.
 
 ---
 
@@ -96,7 +96,7 @@ This is a scripted implementation of the **Algorithms Before Tokens** principle 
 
 **Description**: Run a retrospective reading-level drift audit at the start of each research sprint over the corpus of governance docs modified in the prior sprint. The audit identifies sections where sprint activity introduced encoding drift — before the drift compounds over additional sprints. This is a maintenance discipline, not a one-time fix.
 
-**Canonical example**: At the start of Research Sprint 13, run `assess_doc_quality.py --delta --since <Sprint 12 start commit>` over all modified governance docs. Output: list of sections with delta > +2, sorted by delta descending. Top 3 entries become backlog items for the current sprint. The audit budget is < 30 minutes per sprint (automated script + human triage of results) and prevents cumulative drift from reaching a point where a full document restructuring is required. This implements the **Endogenous-First** axiom (MANIFESTO.md §1): audit the existing corpus before generating new content, and course-correct incrementally.
+**Canonical example**: At the start of Research Sprint 13, run `assess_doc_quality.py --delta --since <Sprint 12 start commit>` over all modified governance docs. Output: list of sections with delta > +2, sorted by delta descending. Top 3 entries become backlog items for the current sprint. The audit budget is < 30 minutes per sprint (automated script + human triage of results) and prevents cumulative drift from reaching a point where a full document restructuring is required. This implements the **Endogenous-First** axiom ([MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first)): audit the existing corpus before generating new content, and course-correct incrementally.
 
 **Anti-pattern**: Allowing drift to accumulate across sprints without a regular audit cycle. After 3–4 unchecked sprints, a governance document that began as Grade 10–12 prose may reach Grade 16+. At that point, the remediation requires a full structural rewrite — a high-effort, high-risk change that touches many lines and risks altering the substantive constraints while restructuring the prose. Incremental delta audits prevent this by catching single-sprint additions before they compound.
 
@@ -120,7 +120,7 @@ This is a scripted implementation of the **Algorithms Before Tokens** principle 
 
 ## 5. Project Relevance
 
-This research provides the observability layer for encoding fidelity measurement across the governance corpus. The complexity delta metric (§P1) closes the measurement gap identified in the **Endogenous-First** axiom (MANIFESTO.md §1): the dogma substrate must be self-correcting, and self-correction requires a detectable signal. Without a measurable drift indicator, under-encoding accumulates silently across sprints until it becomes a structural rewrite problem.
+This research provides the observability layer for encoding fidelity measurement across the governance corpus. The complexity delta metric (§P1) closes the measurement gap identified in the **Endogenous-First** axiom ([MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first)): the dogma substrate must be self-correcting, and self-correction requires a detectable signal. Without a measurable drift indicator, under-encoding accumulates silently across sprints until it becomes a structural rewrite problem.
 
 The time-series reconstruction (§H2) provides historical accountability: every governance doc has an auditable quality trajectory. Combined with the composite quality score from issue #275 (`programmatic-writing-assessment-tooling.md`), this surface a complete quality stack: static assessment (current state) + temporal assessment (drift rate) + attribution (commit-level causation).
 
@@ -138,5 +138,5 @@ Cross-reference: [`docs/research/reading-level-assessment-framework.md`](reading
 - [`docs/research/reading-level-assessment-framework.md`](reading-level-assessment-framework.md) — per-substrate baseline targets (issue #274)
 - [`docs/research/programmatic-writing-assessment-tooling.md`](programmatic-writing-assessment-tooling.md) — tooling suite implementation (issue #275)
 - [`AGENTS.md` §Value Fidelity Test Taxonomy](../../AGENTS.md#value-fidelity-test-taxonomy) — existing encoding fidelity measurement framework
-- [MANIFESTO.md §1 Endogenous-First](../../MANIFESTO.md#1-endogenous-first) — extend `detect_drift.py`; audit the corpus before generating new content
-- [MANIFESTO.md §2 Algorithms Before Tokens](../../MANIFESTO.md#2-algorithms-before-tokens) — git-history time-series is deterministic; prefer it over LLM-based drift assessment
+- [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first) — extend `detect_drift.py`; audit the corpus before generating new content
+- [MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens) — git-history time-series is deterministic; prefer it over LLM-based drift assessment

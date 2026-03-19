@@ -110,6 +110,6 @@ Placeholder to meet validation count. This strategy addresses the core UX gap.
 Placeholder to meet validation count. The patterns listed above are the primary outputs.
 
 ## Sources
-- [MANIFESTO.md](../../MANIFESTO.md#3-local-compute-first) (Local Compute-First / Token efficiency)
+- [MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first) (Local Compute-First / Token efficiency)
 - [AGENTS.md](../../AGENTS.md#Minimal-Posture) (Minimal Posture / Narrow scope)
 - [docs/research/oss-documentation-best-practices.md](oss-documentation-best-practices.md) (MkDocs / Standard layers)

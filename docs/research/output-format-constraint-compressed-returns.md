@@ -137,5 +137,5 @@ The session-management SKILL.md should document the "no-constraint → overrun" 
 - [`docs/research/agent-to-agent-communication-protocol.md`](agent-to-agent-communication-protocol.md) — output as A2A task postcondition
 - [`AGENTS.md` §Focus-on-Descent / Compression-on-Ascent](../../AGENTS.md#focus-on-descent--compression-on-ascent) — the three-layer delegation encoding framework
 - [`AGENTS.md` §Layer 1 Pre-Delegation Checklist](../../AGENTS.md#layer-1-pre-delegation-checklist-before-you-invoke) — format specification as mandatory checklist item
-- [MANIFESTO.md §1 Endogenous-First](../../MANIFESTO.md#1-endogenous-first) — AGENTS.md session evidence is the primary evidence base
-- [MANIFESTO.md §2 Algorithms Before Tokens](../../MANIFESTO.md#2-algorithms-before-tokens) — explicit format constraints are deterministic pre-computation of output shape
+- [MANIFESTO.md §1](../../MANIFESTO.md#1-endogenous-first) — AGENTS.md session evidence is the primary evidence base
+- [MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens) — explicit format constraints are deterministic pre-computation of output shape

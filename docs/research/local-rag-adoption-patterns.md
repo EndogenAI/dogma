@@ -147,8 +147,8 @@ These findings inform agent knowledge grounding decisions in Phase 3 implementat
 - BGE-Small Embedding Model: https://huggingface.co/BAAI/bge-small-en-v1.5 — Lightweight English embedding
 - dogma Local Inference Research: [./local-inference-rag.md](./local-inference-rag.md) — Prior synthesis on optimal RAG stack
 - dogma Greenfield Repo Candidates: [./greenfield-repo-candidates.md](./greenfield-repo-candidates.md) — Greenfield decision framework
-- MANIFESTO.md § Local-Compute-First: [../../MANIFESTO.md#3-local-compute-first](../../MANIFESTO.md#3-local-compute-first)
-- MANIFESTO.md § Algorithms-Before-Tokens: [../../MANIFESTO.md#2-algorithms-before-tokens](../../MANIFESTO.md#2-algorithms-before-tokens)
+- MANIFESTO.md § Local-Compute-First: [MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first)
+- MANIFESTO.md § Algorithms-Before-Tokens: [MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens)
 - MCP Specification: https://modelcontextprotocol.io/specification/ — Model Context Protocol standard
 - Lewis, P., Perez, E., Piktus, A., Petroni, F., Karpukhin, V., Goyal, N., … & Kiela, D. (2020). "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks." *NeurIPS 2020*. https://arxiv.org/abs/2005.11401
 - Thakur, N., Reimers, N., Rücklé, A., Srivastava, A., & Gurevych, I. (2021). "BEIR: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models." *NeurIPS 2021 Datasets and Benchmarks*. https://arxiv.org/abs/2104.08663
