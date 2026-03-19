@@ -89,7 +89,7 @@ REQUIRED_SECTIONS: list[tuple[str, list[str]]] = [
         "Workflow & Intentions",
         ["workflow", "intentions", "checklist", "conventions", "playbook", "scope", "methodology"],
     ),
-    ("Desired Outcomes & Acceptance", ["desired outcomes", "acceptance", "completion criteria", "guardrails"]),
+    ("Desired Outcomes & Acceptance", ["desired outcomes", "acceptance", "completion criteria"]),
 ]
 
 # Negation words that indicate a heredoc pattern is being *prohibited*, not instructed.
