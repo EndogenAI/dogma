@@ -67,7 +67,7 @@ scripts/
   analyse_fleet_coupling.py    # NK K-coupling analysis for the agent fleet — reads .agent.md handoffs + data/delegation-gate.yml; computes K per agent, Louvain modularity Q, flags high-K bottlenecks; --format json|table|summary; --threshold (default 6); --output (closes #291)
   suggest_routing.py           # GPS-style delegation routing from free-text task description — keyword match → topo sort → annotated delegation sequence; reads data/task-type-classifier.yml; --format table|json|markdown; --all-steps (closes #292)
   amplify_context.py           # Context-Sensitive Axiom Amplification — looks up the amplification table in data/amplification-table.yml (closes #142)
-  agent_registry.py            # Local registry of all .agent.md role files; supports posture derivation and attribute filtering (closess #195)
+  agent_registry.py            # Local registry of all .agent.md role files; supports posture derivation and attribute filtering (closes #195)
   correlate_health_metrics.py  # Measure Pearson correlation between health metrics (test coverage, lint density) and cross-reference density (closes #220)
   create_phase1_research_issues.py # Batch-create Phase 1 Research issues from a structured YAML backlog (closes #225)
   format_citations.py          # Render ACM-style citations from a bibliography YAML file (closes #180)
