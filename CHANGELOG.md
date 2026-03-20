@@ -1,3 +1,18 @@
+# [0.14.0](https://github.com/EndogenAI/dogma/compare/v0.13.0...v0.14.0) (2026-03-20)
+
+
+### Bug Fixes
+
+* **docs:** repair baseline links and enforce pre-push link scan ([2312973](https://github.com/EndogenAI/dogma/commit/2312973866a0bfb65d6a88fb6a9541c8b5a4f422))
+* **review:** address PR [#405](https://github.com/EndogenAI/dogma/issues/405) reviewer comments ([441e81f](https://github.com/EndogenAI/dogma/commit/441e81f5be668d3a970f91f6de6905a61a8aa40f))
+
+
+### Features
+
+* **scripts:** add substrate distiller with RDI checks ([a2d258f](https://github.com/EndogenAI/dogma/commit/a2d258fd98a12e3a93e4e974d63ed5bed70b9c4d))
+
+
+
 # [0.13.0](https://github.com/EndogenAI/dogma/compare/v0.12.3...v0.13.0) (2026-03-19)
 
 
