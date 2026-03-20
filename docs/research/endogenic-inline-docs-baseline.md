@@ -1,6 +1,6 @@
 ---
 title: Endogenic Inline Documentation as Connective Tissue
-status: Draft
+status: Final
 closes_issue: 401
 x-governs: [endogenous-first, documentation-first]
 ---

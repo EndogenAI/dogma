@@ -1,7 +1,7 @@
 """Distill governance/rationale signals from Python sources.
 
 Extracts substrate metadata from module, class, and function docstrings using the
-Python AST and computes RDI (Rationale Density Index):
+Python AST and computes RDI (Rationale Density Indicator):
 
     RDI = rationale_token_count / max(implementation_token_count, 1)
 
@@ -139,12 +139,19 @@ def _classify_rdi(rdi: float) -> str:
 
 
 def _iter_targets(path: Path) -> list[Path]:
+    excluded_dirs = {".venv", "venv", ".pixi", "__pycache__"}
+
     if path.is_file():
         if path.suffix != ".py":
             raise ValueError(f"Path is not a Python file: {path}")
         return [path]
     if path.is_dir():
-        return sorted(path.rglob("*.py"))
+        results: list[Path] = []
+        for candidate in path.rglob("*.py"):
+            if any(part in excluded_dirs for part in candidate.parts):
+                continue
+            results.append(candidate)
+        return sorted(results)
     raise ValueError(f"Path does not exist: {path}")
 
 

@@ -11,7 +11,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
-from substrate_distiller import _classify_rdi, distill_path, main
+from substrate_distiller import _classify_rdi, _iter_targets, distill_path, main
 
 
 @pytest.mark.io
@@ -246,3 +246,23 @@ Rationale text.
     payload = distill_path(target, threshold=0.08, include_private=False)
     module_record = next(item for item in payload["records"] if item["kind"] == "module")
     assert module_record["x_governs"] == ["endogenous-first", "documentation-first"]
+
+
+@pytest.mark.io
+def test_iter_targets_excludes_common_env_and_cache_dirs(tmp_path: Path):
+    keep = tmp_path / "scripts" / "keep.py"
+    skip_venv = tmp_path / ".venv" / "lib.py"
+    skip_cache = tmp_path / "scripts" / "__pycache__" / "cached.py"
+
+    keep.parent.mkdir(parents=True, exist_ok=True)
+    skip_venv.parent.mkdir(parents=True, exist_ok=True)
+    skip_cache.parent.mkdir(parents=True, exist_ok=True)
+
+    keep.write_text("VALUE = 1\n", encoding="utf-8")
+    skip_venv.write_text("VALUE = 2\n", encoding="utf-8")
+    skip_cache.write_text("VALUE = 3\n", encoding="utf-8")
+
+    targets = _iter_targets(tmp_path)
+    assert keep in targets
+    assert skip_venv not in targets
+    assert skip_cache not in targets
