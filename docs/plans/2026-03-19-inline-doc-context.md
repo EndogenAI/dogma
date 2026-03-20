@@ -85,4 +85,4 @@ This session introduces the concept of **inline documentation as endogenic conte
 ## Acceptance Criteria
 
 - [x] Phases 1-5 complete and committed
-- [ ] All changes pushed and PR is up to date
+- [x] All changes pushed and PR is up to date
