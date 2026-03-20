@@ -97,9 +97,9 @@ The Substrate Distiller also serves as a security sentinel. By verifying that ev
 
 ## 7. Sources
 
-- [Anthropic: Effective Context Engineering](anthropic-com-engineering-effective-context-engineering-for-.md)
-- [Literate Programming (Wikipedia)](literate-programming.md)
-- [Living Documentation (Martraire)](informit-com-store-living-documentation-continuous-knowledge.md)
+- [Anthropic: Effective Context Engineering](sources/anthropic-com-engineering-effective-context-engineering-for-.md)
+- [Literate Programming (Wikipedia)](https://en.wikipedia.org/wiki/Literate_programming)
+- [Living Documentation (Martraire)](sources/informit-com-store-living-documentation-continuous-knowledge.md)
 - [EndogenAI MANIFESTO.md](../../MANIFESTO.md)
 - [Cyrille Martraire: Living Documentation Patterns](https://www.cyrille.martraire.com/2016/03/living-documentation-patterns/)
 - [Donald Knuth: Literate Programming (1984)](https://doi.org/10.1093/comjnl/27.2.97)

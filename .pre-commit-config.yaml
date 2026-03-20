@@ -66,6 +66,12 @@ repos:
         types: [markdown]
         files: ^(docs/(?!research/sources/).*\.md|README\.md|CONTRIBUTING\.md|CHANGELOG\.md)$
         pass_filenames: true
+      - id: check-doc-links-full-repo
+        name: Check relative file links across full repo (CI parity)
+        entry: python3 scripts/check_doc_links.py
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
       - id: no-heredoc-writes
         name: Block heredoc file-write commands (use create_file / replace_string_in_file tools instead)
         language: pygrep
