@@ -1,3 +1,12 @@
+# [0.15.0](https://github.com/EndogenAI/dogma/compare/v0.14.0...v0.15.0) (2026-03-20)
+
+
+### Features
+
+* **scripts:** add transcript extraction tooling and skill ([853647e](https://github.com/EndogenAI/dogma/commit/853647e339790fe830a80b57c0a422d42727f1ad))
+
+
+
 # [0.14.0](https://github.com/EndogenAI/dogma/compare/v0.13.0...v0.14.0) (2026-03-20)
 
 
