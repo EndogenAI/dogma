@@ -76,6 +76,7 @@ scripts/
   preexec_audit_log.py         # Format and filter the shell pre-execution governor audit log; calculates compliance rate (closes #305)
   rate_limit_config.py         # CLI manager for data/rate-limit-profiles.yml — add/update provider profiles (closes #323)
   rate_limit_gate.py           # Pre-delegation rate-limit circuit breaker — checks budget and provider policy before orchestration (closes #325)
+  substrate_distiller.py       # AST-based distiller for x-governs/Intent/Rationale extraction; computes RDI and outputs json|markdown|table summaries for Review/CI gates
   repaired_audit.py            # Post-audit repair validator — checks that identified gaps in a prior audit result have been resolved (closes #301)
   token_spin_detector.py       # Detect "token spinning" (repeated loops with no progress) in session logs using Hamming distance and regex entropy (closes #310)
   test_newlines.py             # Internal utility to test newline handling in terminal scripts
@@ -284,6 +285,37 @@ uv run python scripts/scaffold_workplan.py formalize-workflows --ci "Tests" --is
 
 **After running**: fill in the `## Objective` section and at least one `## Phase Plan` entry,
 then commit with `docs(plans): add workplan for <slug>`.
+
+---
+
+## scripts/substrate_distiller.py
+
+**Job**: Enable maintainers and agents to quantify governance/rationale coverage from Python code so Review gates can block low-signal or ungoverned changes deterministically.
+
+**Purpose**: Parse Python module/class/function docstrings via AST to extract `x-governs`, `## Intent`, and `## Rationale` blocks; compute RDI and classify records as green/yellow/red. Emits machine-readable JSON or human-readable table/markdown summaries.
+
+**Tests**: [`tests/test_substrate_distiller.py`](../tests/test_substrate_distiller.py)
+
+**Usage**:
+
+```bash
+uv run python scripts/substrate_distiller.py --path scripts --format json
+uv run python scripts/substrate_distiller.py --path scripts --format markdown --summary-only
+uv run python scripts/substrate_distiller.py --path scripts --threshold 0.08 --fail-on-debt
+```
+
+**Flags**:
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--path` | yes | Python file or directory to scan recursively for `.py` files |
+| `--format` | no | Output format: `json`, `markdown`, or `table` (default `table`) |
+| `--threshold` | no | RDI debt threshold used for debt classification (default `0.08`) |
+| `--fail-on-debt` | no | Exit with code `1` when any debt records are found |
+| `--include-private` | no | Include private symbols (`_name`) in extraction |
+| `--summary-only` | no | Emit only aggregate summary metrics |
+
+**Exit codes**: `0` success/no blocking debt; `1` debt present with `--fail-on-debt`; `2` invalid args or parse/path errors.
 
 ---
 
