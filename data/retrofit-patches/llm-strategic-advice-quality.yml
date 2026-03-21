@@ -2,111 +2,113 @@
 # Review and edit before applying with Phase 6 patch application
 doc: docs/research/llm-strategic-advice-quality.md
 doc_slug: llm-strategic-advice-quality
-generated_at: '2026-03-21T01:18:00.137892+00:00'
-match_confidence: low
+generated_at: '2026-03-21T01:23:14.211032+00:00'
+match_confidence: medium
 recommendations:
 - id: rec-llm-strategic-advice-quality-001
   title: Encode Decision Tables for High-Stakes Strategy
-  status: deferred
-  linked_issue: null
+  status: accepted
+  linked_issue: 331
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
-  _confidence: low
+  _match_note: 'Matched issue #331: ''feat(decision-logic): encode decision tables
+    for s'' (consecutive word overlap: 4)'
+  _confidence: medium
 - id: rec-llm-strategic-advice-quality-002
   title: For agent recommendation tasks in critical domains (vendo...
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-llm-strategic-advice-quality-003
   title: 'Canonical dogma instance: the Delegation Decision Gate ro...'
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-llm-strategic-advice-quality-004
   title: When LLMs Are Acceptable for Strategic Input
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-llm-strategic-advice-quality-005
   title: Summarization of known facts (e.
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-llm-strategic-advice-quality-006
   title: Brainstorming within a constrained namespace (e.
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-llm-strategic-advice-quality-007
   title: 'NOT appropriate: asking LLMs for novel strategic diagnose...'
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-llm-strategic-advice-quality-008
   title: 'Pattern: Encode, Then LLM'
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-llm-strategic-advice-quality-009
   title: First encode your known-good decision logic (as scripts, ...
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-llm-strategic-advice-quality-010
   title: Then use LLMs only for execution within that encoded fram...
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-llm-strategic-advice-quality-011
   title: Never use LLMs for the decision frame itself
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-llm-strategic-advice-quality-012
   title: Add "Trendslop Failure Mode" as a canonical example of wh...
-  status: deferred
-  linked_issue: null
+  status: accepted
+  linked_issue: 386
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
-  _confidence: low
+  _match_note: 'Matched issue #386: ''feat(ci): scheduled quarterly audit workflow
+    — enc'' (consecutive word overlap: 3)'
+  _confidence: medium
 - id: rec-llm-strategic-advice-quality-013
   title: Link to this synthesis doc in the ABT axiom statement
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-llm-strategic-advice-quality-014
   title: Use adversarial prompting for any trend-adjacent strategy...
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-llm-strategic-advice-quality-015
   title: Instrument for value density, not output volume — Per Tom...
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low

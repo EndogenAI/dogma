@@ -2,83 +2,84 @@
 # Review and edit before applying with Phase 6 patch application
 doc: docs/research/dogma-corpus-audit-2026-03.md
 doc_slug: dogma-corpus-audit-2026-03
-generated_at: '2026-03-21T01:18:00.131397+00:00'
-match_confidence: low
+generated_at: '2026-03-21T01:23:14.170955+00:00'
+match_confidence: medium
 recommendations:
 - id: rec-dogma-corpus-audit-2026-03-001
   title: 'Action: Bulk-apply BDI XML tags (`<context>`, `<instructi...'
-  status: deferred
-  linked_issue: null
+  status: accepted
+  linked_issue: 386
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
-  _confidence: low
+  _match_note: 'Matched issue #386: ''feat(ci): scheduled quarterly audit workflow
+    — enc'' (consecutive word overlap: 3)'
+  _confidence: medium
 - id: rec-dogma-corpus-audit-2026-03-002
   title: 'Action: Update `scripts/validate_agent_files.'
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-dogma-corpus-audit-2026-03-003
   title: 'Action: Fix `scripts/audit_provenance.'
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-dogma-corpus-audit-2026-03-004
   title: 'Action: Seed newly discovered agents (`business-lead`, `c...'
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-dogma-corpus-audit-2026-03-005
   title: 'Action: Refactor `CLAUDE.'
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-dogma-corpus-audit-2026-03-006
   title: 'Action: Extract shared rule blocks (Conventional Commits,...'
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-dogma-corpus-audit-2026-03-007
   title: 'Action: Complete the `scripts/README.'
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-dogma-corpus-audit-2026-03-008
   title: 'Action: Update the Executive Planner to detect "Verbatim ...'
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-dogma-corpus-audit-2026-03-009
   title: 'Action: Run a repository-wide sweep using `lychee` or a c...'
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-dogma-corpus-audit-2026-03-010
   title: 'Action: Standardize anchor naming for core sections (e.'
   status: deferred
-  linked_issue: null
+  linked_issue: 387
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: 'Multiple matches: #387, #341 — manual review needed'
   _confidence: low
 - id: rec-dogma-corpus-audit-2026-03-011
   title: 'Action: Update the Executive Researcher to include § refe...'
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low

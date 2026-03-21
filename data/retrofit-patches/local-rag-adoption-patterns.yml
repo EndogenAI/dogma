@@ -2,55 +2,60 @@
 # Review and edit before applying with Phase 6 patch application
 doc: docs/research/local-rag-adoption-patterns.md
 doc_slug: local-rag-adoption-patterns
-generated_at: '2026-03-21T01:18:00.141079+00:00'
-match_confidence: low
+generated_at: '2026-03-21T01:23:14.238861+00:00'
+match_confidence: medium
 recommendations:
 - id: rec-local-rag-adoption-patterns-001
   title: Adopt LanceDB + BGE-Small-EN-v1.
-  status: deferred
-  linked_issue: null
+  status: accepted
+  linked_issue: 352
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
-  _confidence: low
+  _match_note: 'Matched issue #352: ''feat(rag): adopt LanceDB + BGE-Small for greenfiel''
+    (consecutive word overlap: 4)'
+  _confidence: medium
 - id: rec-local-rag-adoption-patterns-002
   title: 'Implement embedding model versioning in the MCP server: S...'
-  status: deferred
-  linked_issue: null
+  status: accepted
+  linked_issue: 353
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
-  _confidence: low
+  _match_note: 'Matched issue #353: ''feat(rag): implement embedding model version
+    track'' (consecutive word overlap: 4)'
+  _confidence: medium
 - id: rec-local-rag-adoption-patterns-003
   title: 'Define chunking strategy as part of adoption onboarding: ...'
-  status: deferred
-  linked_issue: null
+  status: accepted
+  linked_issue: 387
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
-  _confidence: low
+  _match_note: 'Matched issue #387: ''docs(agents): add civic-tech-patterns.md to
+    AGENTS'' (consecutive word overlap: 3)'
+  _confidence: medium
 - id: rec-local-rag-adoption-patterns-004
   title: Defer core-repo retrofitting until greenfield pattern is ...
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-local-rag-adoption-patterns-005
   title: 'Measure RAG value: token savings vs.'
-  status: deferred
-  linked_issue: null
+  status: accepted
+  linked_issue: 355
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
-  _confidence: low
+  _match_note: 'Matched issue #355: ''feat(rag): measure RAG value via token savings
+    + l'' (consecutive word overlap: 3)'
+  _confidence: medium
 - id: rec-local-rag-adoption-patterns-006
   title: Validate recall against BEIR baselines before accepting i...
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-local-rag-adoption-patterns-007
   title: Integrate RAGAS into post-deployment evaluation loops (Es...
-  status: deferred
-  linked_issue: null
+  status: accepted
+  linked_issue: 386
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
-  _confidence: low
+  _match_note: 'Matched issue #386: ''feat(ci): scheduled quarterly audit workflow
+    — enc'' (consecutive word overlap: 3)'
+  _confidence: medium

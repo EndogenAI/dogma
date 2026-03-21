@@ -2,62 +2,64 @@
 # Review and edit before applying with Phase 6 patch application
 doc: docs/research/ai-cognitive-load.md
 doc_slug: ai-cognitive-load
-generated_at: '2026-03-21T01:18:00.121225+00:00'
-match_confidence: low
+generated_at: '2026-03-21T01:23:14.047141+00:00'
+match_confidence: medium
 recommendations:
 - id: rec-ai-cognitive-load-001
   title: Encode long-running orchestration as scripts, not interac...
-  status: deferred
-  linked_issue: null
+  status: accepted
+  linked_issue: 344
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
-  _confidence: low
+  _match_note: 'Matched issue #344: ''refactor(scripts): encode phase-gating orchestrati''
+    (consecutive word overlap: 3)'
+  _confidence: medium
 - id: rec-ai-cognitive-load-002
   title: Minimize human decision points to ≤3 per session using au...
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-ai-cognitive-load-003
   title: 'Return compression: All subagent returns capped at 300 to...'
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-ai-cognitive-load-004
   title: Track verification effort (human time per phase).
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-ai-cognitive-load-005
   title: 'Monitor delay-to-decision: If discovery of a phase error ...'
-  status: deferred
-  linked_issue: null
+  status: accepted
+  linked_issue: 346
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
-  _confidence: low
+  _match_note: 'Matched issue #346: ''feat(metrics): detect slow error discovery in
+    toke'' (consecutive word overlap: 4)'
+  _confidence: medium
 - id: rec-ai-cognitive-load-006
   title: Trigger Reflection phase (session-retrospective skill) if...
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-ai-cognitive-load-007
   title: 'Apply Miller''s Law ceiling to agent tool count: Cap each ...'
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-ai-cognitive-load-008
   title: Batch AI output review into scheduled 30-minute deep work...
   status: deferred
   linked_issue: null
   decision_ref: ''
-  _match_note: GitHub API calls skipped (--no-github mode)
+  _match_note: No matching issue found
   _confidence: low
