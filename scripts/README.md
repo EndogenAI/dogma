@@ -79,6 +79,7 @@ scripts/
   substrate_distiller.py       # AST-based distiller for x-governs/Intent/Rationale extraction; computes RDI and outputs json|markdown|table summaries for Review/CI gates
   repaired_audit.py            # Post-audit repair validator — checks that identified gaps in a prior audit result have been resolved (closes #301)
   token_spin_detector.py       # Detect "token spinning" (repeated loops with no progress) in session logs using Hamming distance and regex entropy (closes #310)
+  index_recommendations.py     # Scan finalized synthesis docs and write data/recommendations-registry.yml; --dry-run, --check, --docs-dir (closes #407)
   test_newlines.py             # Internal utility to test newline handling in terminal scripts
   test_quotes.py               # Internal utility to test character escaping in terminal scripts
   test_small.py                # Internal utility for fast shell execution testing
@@ -1456,6 +1457,44 @@ fi
 ```
 
 **Research basis**: [`docs/research/rate-limit-detection-api.md`](../docs/research/rate-limit-detection-api.md) — specifications for Claude API error codes, rate-limit headers, retry-after semantics, per-key scoping, model-switching myth, and Tier 1–3 mitigation strategies.
+
+---
+
+## scripts/index_recommendations.py
+
+**Job**: Enable agents and CI to query the provenance of every recommendation in the synthesis corpus — answering "was this adopted?", "which issue tracks it?", and "is any recommendation untracked?" — without reading through issue threads manually.
+
+**Purpose**: Scans all `status: Final` D4 synthesis documents in `docs/research/` and writes a structured YAML registry (`data/recommendations-registry.yml`) of every `recommendations:` frontmatter entry. Implements the Programmatic-First principle from `AGENTS.md`: provenance data previously inferred interactively is now encoded as structured YAML and kept in sync by CI.
+
+**Tests**: [`tests/test_index_recommendations.py`](../tests/test_index_recommendations.py)
+
+**Usage**:
+
+```bash
+# Write the registry (default)
+uv run python scripts/index_recommendations.py
+
+# Preview without writing
+uv run python scripts/index_recommendations.py --dry-run
+
+# CI gate: exit 1 if registry is stale
+uv run python scripts/index_recommendations.py --check
+
+# Override docs directory (useful for testing)
+uv run python scripts/index_recommendations.py --docs-dir /tmp/test-docs
+```
+
+**Flags**:
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--dry-run` | no | Print what would be written without writing the registry |
+| `--check` | no | Exit 0 if registry is up to date; exit 1 if stale or missing |
+| `--docs-dir` | no | Override docs/research directory (default: repo-root/docs/research) |
+
+**Output**: `data/recommendations-registry.yml` — YAML registry with `generated_at`, `docs_scanned`, `docs_with_recommendations`, and `recommendations` list.
+
+**Exit codes**: `0` success / up-to-date; `1` stale (--check) or missing docs-dir.
 
 ---
 
