@@ -3,7 +3,7 @@ title: "Sprint 23 — Recommendation Provenance"
 status: Draft
 branch: feat/recommendation-provenance-sprint
 milestone: "Sprint 23 — Recommendation Provenance"
-issues: []
+issues: [406, 407, 408, 409, 410, 411]
 date: 2026-03-20
 governing_axiom: "Endogenous-First — primary source: AGENTS.md § Sprint Phase Ordering Constraints"
 ---
@@ -51,6 +51,7 @@ Build a complete recommendation provenance system for the dogma repository: defi
 - D3: #398, #399, #400 triaged and labelled or deferred; #402 deferred to backlog; #403, #404 slotted as Phase 8 stretch
 **Depends on**: nothing
 **Gate**: `gh issue list --limit 10` confirms NEW-A–F created; `gh milestone list` confirms Sprint 23
+**Status**: ✅ Complete — Milestone #25, Issues #406–#411 created and verified
 
 ---
 
