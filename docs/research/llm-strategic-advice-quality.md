@@ -1,10 +1,91 @@
 ---
-title: LLM Strategic Advice Quality — Trendslop Evidence and the Algorithms-Before-Tokens Axiom
+title: LLM Strategic Advice Quality — Trendslop Evidence and the Algorithms-Before-Tokens
+  Axiom
 status: Final
 closes_issue: 319
 date_published: 2026-03-18
 authors: Executive Researcher
-abstract: "Research into LLM-generated strategic advice reveals a consistent failure mode: 'trendslop' — shallow, trend-following recommendations lacking rigorous analysis. This finding provides direct empirical support for the Algorithms-Before-Tokens axiom: deterministic, encoded solutions outperform interactive AI generation for high-stakes decision tasks."
+abstract: 'Research into LLM-generated strategic advice reveals a consistent failure
+  mode: ''trendslop'' — shallow, trend-following recommendations lacking rigorous
+  analysis. This finding provides direct empirical support for the Algorithms-Before-Tokens
+  axiom: deterministic, encoded solutions outperform interactive AI generation for
+  high-stakes decision tasks.'
+recommendations:
+- id: rec-llm-strategic-advice-quality-001
+  title: Encode Decision Tables for High-Stakes Strategy
+  status: accepted
+  linked_issue: 331
+  decision_ref: ''
+- id: rec-llm-strategic-advice-quality-002
+  title: For agent recommendation tasks in critical domains (vendo...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-llm-strategic-advice-quality-003
+  title: 'Canonical dogma instance: the Delegation Decision Gate ro...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-llm-strategic-advice-quality-004
+  title: When LLMs Are Acceptable for Strategic Input
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-llm-strategic-advice-quality-005
+  title: Summarization of known facts (e.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-llm-strategic-advice-quality-006
+  title: Brainstorming within a constrained namespace (e.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-llm-strategic-advice-quality-007
+  title: 'NOT appropriate: asking LLMs for novel strategic diagnose...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-llm-strategic-advice-quality-008
+  title: 'Pattern: Encode, Then LLM'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-llm-strategic-advice-quality-009
+  title: First encode your known-good decision logic (as scripts, ...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-llm-strategic-advice-quality-010
+  title: Then use LLMs only for execution within that encoded fram...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-llm-strategic-advice-quality-011
+  title: Never use LLMs for the decision frame itself
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-llm-strategic-advice-quality-012
+  title: Add "Trendslop Failure Mode" as a canonical example of wh...
+  status: accepted
+  linked_issue: 386
+  decision_ref: ''
+- id: rec-llm-strategic-advice-quality-013
+  title: Link to this synthesis doc in the ABT axiom statement
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-llm-strategic-advice-quality-014
+  title: Use adversarial prompting for any trend-adjacent strategy...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-llm-strategic-advice-quality-015
+  title: Instrument for value density, not output volume — Per Tom...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # LLM Strategic Advice Quality — Trendslop Evidence

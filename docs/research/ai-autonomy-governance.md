@@ -4,7 +4,81 @@ status: Final
 closes_issue: 318
 date_published: 2026-03-18
 authors: Executive Researcher
-abstract: "Recent governance reports on AI agent autonomy failures (UK CMA watchdog, 2026) identify systematic risks: manipulation, unintended escalation, and loss of human control. These findings empirically validate dogma's Minimal-Posture principle and inform the 'when to ask vs. proceed' decision boundary for agentic workflows."
+abstract: 'Recent governance reports on AI agent autonomy failures (UK CMA watchdog,
+  2026) identify systematic risks: manipulation, unintended escalation, and loss of
+  human control. These findings empirically validate dogma''s Minimal-Posture principle
+  and inform the ''when to ask vs. proceed'' decision boundary for agentic workflows.'
+recommendations:
+- id: rec-ai-autonomy-governance-001
+  title: Enforce Approval Gates in `.
+  status: accepted
+  linked_issue: 332
+  decision_ref: ''
+- id: rec-ai-autonomy-governance-002
+  title: Every `.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-ai-autonomy-governance-003
+  title: 'Example: "Before any `git push` to main, the executive mu...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-ai-autonomy-governance-004
+  title: CI should validate that every agent with write permission...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-ai-autonomy-governance-005
+  title: Update "When to Ask vs.
+  status: completed
+  linked_issue: 339
+  decision_ref: ''
+- id: rec-ai-autonomy-governance-006
+  title: 'Add explicit guidance on: - High-stakes vs.'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-ai-autonomy-governance-007
+  title: Link CMA Report in AGENTS.
+  status: deferred
+  linked_issue: 341
+  decision_ref: ''
+- id: rec-ai-autonomy-governance-008
+  title: Add a citation block under the Minimal-Posture principle ...
+  status: completed
+  linked_issue: 341
+  decision_ref: ''
+- id: rec-ai-autonomy-governance-009
+  title: Include the crypto-mining and shopping agent examples as ...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-ai-autonomy-governance-010
+  title: Apply OWASP LLM Excessive Agency (LLM08) audit to every a...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-ai-autonomy-governance-011
+  title: Audit agent autonomy levels — classify each agent by the ...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-ai-autonomy-governance-012
+  title: Implement approval gates incrementally — start with Level...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-ai-autonomy-governance-013
+  title: Transparent incentive labeling — if an agent's recommenda...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-ai-autonomy-governance-014
+  title: Subscribe to AI Incident Database (incidentdatabase.
+  status: completed
+  linked_issue: 339
+  decision_ref: ''
 ---
 
 # AI Autonomy Governance — Watchdog Evidence

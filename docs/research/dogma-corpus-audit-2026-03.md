@@ -1,7 +1,63 @@
 ---
 title: Dogma Corpus Audit & Structural Alignment (March 2026)
 status: Final
-closes_issue: "#391"
+closes_issue: '#391'
+recommendations:
+- id: rec-dogma-corpus-audit-2026-03-001
+  title: 'Action: Bulk-apply BDI XML tags (`<context>`, `<instructi...'
+  status: accepted
+  linked_issue: 386
+  decision_ref: ''
+- id: rec-dogma-corpus-audit-2026-03-002
+  title: 'Action: Update `scripts/validate_agent_files.'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-dogma-corpus-audit-2026-03-003
+  title: 'Action: Fix `scripts/audit_provenance.'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-dogma-corpus-audit-2026-03-004
+  title: 'Action: Seed newly discovered agents (`business-lead`, `c...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-dogma-corpus-audit-2026-03-005
+  title: 'Action: Refactor `CLAUDE.'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-dogma-corpus-audit-2026-03-006
+  title: 'Action: Extract shared rule blocks (Conventional Commits,...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-dogma-corpus-audit-2026-03-007
+  title: 'Action: Complete the `scripts/README.'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-dogma-corpus-audit-2026-03-008
+  title: 'Action: Update the Executive Planner to detect "Verbatim ...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-dogma-corpus-audit-2026-03-009
+  title: 'Action: Run a repository-wide sweep using `lychee` or a c...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-dogma-corpus-audit-2026-03-010
+  title: 'Action: Standardize anchor naming for core sections (e.'
+  status: deferred
+  linked_issue: 387
+  decision_ref: ''
+- id: rec-dogma-corpus-audit-2026-03-011
+  title: 'Action: Update the Executive Researcher to include § refe...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 ## Executive Summary

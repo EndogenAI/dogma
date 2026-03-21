@@ -1,5 +1,5 @@
 ---
-title: Synthesis: Endogenic Inline Documentation as the Substrate Connective Tissue
+title: "Synthesis: Endogenic Inline Documentation as the Substrate Connective Tissue"
 status: Final
 closes_issue: 401
 x-governs: [endogenous-first, documentation-first, local-compute-first, programmatic-first]

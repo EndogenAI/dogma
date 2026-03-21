@@ -1,10 +1,95 @@
 ---
-title: AI Platform Lock-In Risks — Vendor ToS Volatility and Platform Migration Design Patterns
+title: AI Platform Lock-In Risks — Vendor ToS Volatility and Platform Migration Design
+  Patterns
 status: Final
 closes_issue: 317
 date_published: 2026-03-18
 authors: Executive Researcher
-abstract: "Meta's acquisition of Moltbook and subsequent Terms-of-Service changes illustrate structural vendor lock-in risks in AI agent platforms. Design patterns for platform-agnostic infrastructure, local compute fallbacks, and data portability reduce these risks and align with dogma's Local-Compute-First axiom."
+abstract: Meta's acquisition of Moltbook and subsequent Terms-of-Service changes illustrate
+  structural vendor lock-in risks in AI agent platforms. Design patterns for platform-agnostic
+  infrastructure, local compute fallbacks, and data portability reduce these risks
+  and align with dogma's Local-Compute-First axiom.
+recommendations:
+- id: rec-ai-platform-lock-in-risks-001
+  title: Document Platform Dependencies
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-ai-platform-lock-in-risks-002
+  title: Audit all hardcoded dependencies on Copilot, GitHub, or o...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-ai-platform-lock-in-risks-003
+  title: For each dependency, design and document a fallback or lo...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-ai-platform-lock-in-risks-004
+  title: Add to `.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-ai-platform-lock-in-risks-005
+  title: Implement Multi-Provider Agent Abstraction
+  status: accepted
+  linked_issue: 333
+  decision_ref: ''
+- id: rec-ai-platform-lock-in-risks-006
+  title: Create `dogma.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-ai-platform-lock-in-risks-007
+  title: 'Implement adapters for: Claude (Copilot + Claude Desktop)...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-ai-platform-lock-in-risks-008
+  title: Agents route through `AgentRouter` to choose providers ba...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-ai-platform-lock-in-risks-009
+  title: Strengthen Local-Compute-First in Onboarding
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-ai-platform-lock-in-risks-010
+  title: Document how to run dogma's full agent fleet locally (vs.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-ai-platform-lock-in-risks-011
+  title: Link to Moltbook/Meta case study as motivation
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-ai-platform-lock-in-risks-012
+  title: 'Apply Data Portability Design: If your organization is bu...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-ai-platform-lock-in-risks-013
+  title: 'Monitor Vendor ToS Changes: Subscribe to ToS update notif...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-ai-platform-lock-in-risks-014
+  title: 'Budget for Migration Costs: Assume one major platform wil...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-ai-platform-lock-in-risks-015
+  title: Conduct annual third-party AI dependency audits using NIS...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-ai-platform-lock-in-risks-016
+  title: Implement provider abstraction at the network layer, not ...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # AI Platform Lock-In Risks

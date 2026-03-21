@@ -612,6 +612,7 @@ When writing prompts for the **Review agent**, use explicit numbered binary acce
 - Approved D4 document (with all Reviewer flags resolved)
 - Git commit metadata (author, date)
 - Link registry updates (if new URL targets added)
+- Recommendation registry update (run `uv run python scripts/index_recommendations.py`)
 
 **Output permeability** (what Archivist publishes):
 - Committed research file in `docs/research/`
