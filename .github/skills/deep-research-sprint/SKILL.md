@@ -96,10 +96,27 @@ The Synthesizer produces a `docs/research/<slug>.md` file. Every D4 research doc
 ---
 title: "<Research Topic> — Research Synthesis"
 status: Draft
+date: "<YYYY-MM-DD>"
+closes_issue: <issue-number>
+# recommendations: block is REQUIRED before status transitions to Final.
+# Add one entry per item in the ## Recommendations section.
+# See docs/governance/recommendations-schema.md for the full schema.
+recommendations:
+  - id: rec-<doc-slug>-001
+    title: "First recommendation title"
+    status: accepted          # one of: accepted, accepted-for-adoption, adopted, completed, rejected, not-accepted, deferred
+    linked_issue: <issue-number>
+    decision_ref: ""          # required (non-empty URL) when status is rejected or not-accepted
 ---
 ```
 
 Required `status` values: `Draft` (initial), `Final` (after Reviewer approval).
+
+**`recommendations:` block is required in all `status: Final` synthesis docs** —
+`validate_synthesis.py` hard-fails if it is absent. Draft docs should have the
+block stubbed out (entries can use `status: accepted` as placeholder). See
+[`docs/governance/recommendations-schema.md`](../../../docs/governance/recommendations-schema.md)
+for the full field definitions, status taxonomy, and validation rules.
 
 **Required headings** (in order):
 

@@ -337,3 +337,209 @@ class TestFinalEditWarning:
         vs = self._mock_git_diff(monkeypatch, [])  # empty diff
         vs.check_final_status_modified(d4_file, allow_final_edit=False)
         assert "WARNING" not in capsys.readouterr().out
+
+
+# ---------------------------------------------------------------------------
+# Tests for _validate_recommendations_block (Sprint 23, issue #406)
+# ---------------------------------------------------------------------------
+
+
+def _import_vs():
+    """Import validate_synthesis module."""
+    import sys
+    from pathlib import Path
+
+    sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
+    import validate_synthesis as vs
+
+    return vs
+
+
+def _minimal_d4_text(*, status="Final", extra_frontmatter="", body_lines=80):
+    """Return minimal D4 synthesis text with enough lines to pass line-count gate."""
+    body = (
+        "\n## 1. Executive Summary\n\nSummary.\n\n"
+        "## 2. Hypothesis Validation\n\nValidation.\n\n"
+        "## 3. Pattern Catalog\n\nPatterns.\n\n"
+        "## 4. Recommendations\n\nRecommendations.\n\n"
+    )
+    padding = "\n".join(f"Line {i}." for i in range(body_lines))
+    return f"---\ntitle: Test Synthesis\nstatus: {status}\n{extra_frontmatter}\n---\n{body}{padding}\n"
+
+
+class TestValidateRecommendationsBlock:
+    """Tests for _validate_recommendations_block (issue #406)."""
+
+    def _call(self, tmp_path, text, is_synthesis=True, *, filename="test-synthesis.md"):
+        vs = _import_vs()
+        doc_path = tmp_path / "docs" / "research" / filename
+        doc_path.parent.mkdir(parents=True, exist_ok=True)
+        doc_path.write_text(text)
+        fm = vs.parse_frontmatter(text)
+        return vs._validate_recommendations_block(doc_path, text, fm, is_synthesis)
+
+    # --- hard-fail cases ---
+
+    @pytest.mark.io
+    def test_finalized_synthesis_missing_recommendations_block_fails(self, tmp_path):
+        """status: Final synthesis doc without recommendations: block → hard fail."""
+        text = _minimal_d4_text(status="Final", extra_frontmatter="")
+        errors = self._call(tmp_path, text, is_synthesis=True)
+        assert any("recommendations" in e.lower() for e in errors), errors
+
+    @pytest.mark.io
+    def test_finalized_synthesis_with_valid_recommendations_passes(self, tmp_path):
+        """status: Final with a valid 3-entry recommendations block → no errors."""
+        block = (
+            "recommendations:\n"
+            "  - id: rec-test-synthesis-001\n"
+            "    title: First recommendation\n"
+            "    status: adopted\n"
+            "    linked_issue: 101\n"
+            '    decision_ref: ""\n'
+            "  - id: rec-test-synthesis-002\n"
+            "    title: Second recommendation\n"
+            "    status: completed\n"
+            "    linked_issue: 102\n"
+            '    decision_ref: ""\n'
+            "  - id: rec-test-synthesis-003\n"
+            "    title: Third recommendation\n"
+            "    status: deferred\n"
+            "    linked_issue: 103\n"
+            '    decision_ref: ""\n'
+        )
+        text = _minimal_d4_text(status="Final", extra_frontmatter=block)
+        errors = self._call(tmp_path, text, is_synthesis=True)
+        assert errors == [], errors
+
+    @pytest.mark.io
+    def test_rejected_entry_missing_decision_ref_fails(self, tmp_path):
+        """Entry with status: rejected and no decision_ref → hard fail."""
+        block = (
+            "recommendations:\n"
+            "  - id: rec-test-synthesis-001\n"
+            "    title: Rejected thing\n"
+            "    status: rejected\n"
+            "    linked_issue: 101\n"
+            '    decision_ref: ""\n'
+        )
+        text = _minimal_d4_text(status="Final", extra_frontmatter=block)
+        errors = self._call(tmp_path, text, is_synthesis=True)
+        assert any("decision_ref" in e for e in errors), errors
+
+    @pytest.mark.io
+    def test_not_accepted_entry_missing_decision_ref_fails(self, tmp_path):
+        """Entry with status: not-accepted and no decision_ref → hard fail."""
+        block = (
+            "recommendations:\n"
+            "  - id: rec-test-synthesis-001\n"
+            "    title: Not accepted thing\n"
+            "    status: not-accepted\n"
+            "    linked_issue: 202\n"
+            '    decision_ref: ""\n'
+        )
+        text = _minimal_d4_text(status="Final", extra_frontmatter=block)
+        errors = self._call(tmp_path, text, is_synthesis=True)
+        assert any("decision_ref" in e for e in errors), errors
+
+    @pytest.mark.io
+    def test_rejected_entry_with_decision_ref_passes(self, tmp_path):
+        """Entry with status: rejected and a valid decision_ref URL → no error."""
+        block = (
+            "recommendations:\n"
+            "  - id: rec-test-synthesis-001\n"
+            "    title: Rejected with ref\n"
+            "    status: rejected\n"
+            "    linked_issue: 101\n"
+            '    decision_ref: "https://github.com/EndogenAI/dogma/issues/101#issuecomment-1"\n'
+        )
+        text = _minimal_d4_text(status="Final", extra_frontmatter=block)
+        errors = self._call(tmp_path, text, is_synthesis=True)
+        assert errors == [], errors
+
+    # --- warning-only cases (no errors returned) ---
+
+    @pytest.mark.io
+    def test_deferred_entry_without_linked_issue_passes(self, tmp_path, capsys):
+        """Deferred entry with no linked_issue → warning printed, no error returned."""
+        block = (
+            "recommendations:\n"
+            "  - id: rec-test-synthesis-001\n"
+            "    title: Deferred item\n"
+            "    status: deferred\n"
+            '    decision_ref: ""\n'
+        )
+        text = _minimal_d4_text(status="Final", extra_frontmatter=block)
+        errors = self._call(tmp_path, text, is_synthesis=True)
+        # No hard-fail errors for a deferred entry missing linked_issue.
+        assert errors == [], errors
+
+    @pytest.mark.io
+    def test_non_deferred_entry_without_linked_issue_warns(self, tmp_path, capsys):
+        """Non-deferred entry with no linked_issue → WARN printed, no error returned."""
+        block = (
+            "recommendations:\n"
+            "  - id: rec-test-synthesis-001\n"
+            "    title: Accepted without issue\n"
+            "    status: accepted\n"
+            '    decision_ref: ""\n'
+        )
+        text = _minimal_d4_text(status="Final", extra_frontmatter=block)
+        errors = self._call(tmp_path, text, is_synthesis=True)
+        out = capsys.readouterr().out
+        assert errors == [], errors
+        assert "WARN" in out
+
+    @pytest.mark.io
+    def test_non_synthesis_finalized_doc_missing_block_warns_not_fails(self, tmp_path, capsys):
+        """status: Final non-synthesis doc missing recommendations: → WARN only, no error."""
+        text = _minimal_d4_text(status="Final", extra_frontmatter="")
+        errors = self._call(tmp_path, text, is_synthesis=False)
+        out = capsys.readouterr().out
+        assert errors == [], errors
+        assert "WARN" in out
+
+    @pytest.mark.io
+    def test_draft_doc_skipped_entirely(self, tmp_path):
+        """status: Draft doc → no errors regardless of recommendations presence."""
+        text = _minimal_d4_text(status="Draft", extra_frontmatter="")
+        errors = self._call(tmp_path, text, is_synthesis=True)
+        assert errors == [], errors
+
+    @pytest.mark.io
+    def test_entry_missing_id_fails(self, tmp_path):
+        """Entry missing 'id' field → hard fail."""
+        block = (
+            "recommendations:\n"
+            "  - title: No id entry\n"
+            "    status: adopted\n"
+            "    linked_issue: 101\n"
+            '    decision_ref: ""\n'
+        )
+        text = _minimal_d4_text(status="Final", extra_frontmatter=block)
+        errors = self._call(tmp_path, text, is_synthesis=True)
+        assert any("'id'" in e for e in errors), errors
+
+    @pytest.mark.io
+    def test_entry_missing_title_fails(self, tmp_path):
+        """Entry missing 'title' field → hard fail."""
+        block = (
+            'recommendations:\n  - id: rec-test-001\n    status: adopted\n    linked_issue: 101\n    decision_ref: ""\n'
+        )
+        text = _minimal_d4_text(status="Final", extra_frontmatter=block)
+        errors = self._call(tmp_path, text, is_synthesis=True)
+        assert any("'title'" in e for e in errors), errors
+
+    @pytest.mark.io
+    def test_entry_missing_required_field_fails(self, tmp_path):
+        """Entry missing 'status' field → hard fail (exercises the required-field loop)."""
+        block = (
+            "recommendations:\n"
+            "  - id: rec-test-synthesis-001\n"
+            "    title: Entry without status\n"
+            "    linked_issue: 101\n"
+            '    decision_ref: ""\n'
+        )
+        text = _minimal_d4_text(status="Final", extra_frontmatter=block)
+        errors = self._call(tmp_path, text, is_synthesis=True)
+        assert any("'status'" in e for e in errors), errors
