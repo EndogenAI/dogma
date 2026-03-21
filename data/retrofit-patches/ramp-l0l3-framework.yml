@@ -1,0 +1,49 @@
+# Suggested patch for docs/research/ramp-l0l3-framework.md
+# Review and edit before applying with Phase 6 patch application
+doc: docs/research/ramp-l0l3-framework.md
+doc_slug: ramp-l0l3-framework
+generated_at: '2026-03-21T01:18:00.147730+00:00'
+match_confidence: low
+recommendations:
+- id: rec-ramp-l0l3-framework-001
+  title: Formalize L0–L3 as an encoding ladder in AGENTS.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ramp-l0l3-framework-002
+  title: Create a "Prompt Template Registry" — Encode high-value p...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ramp-l0l3-framework-003
+  title: Audit and encode "automate your job" instances — Review s...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ramp-l0l3-framework-004
+  title: Add an "ecosystem embeddedness" dimension to L1 gate crit...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ramp-l0l3-framework-005
+  title: Instrument "value density" not commit volume as the L3 si...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ramp-l0l3-framework-006
+  title: Distinguish accountability from execution in PM role evol...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
