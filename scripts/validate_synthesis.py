@@ -61,6 +61,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import yaml
+
 # ---------------------------------------------------------------------------
 # Required section headings
 # ---------------------------------------------------------------------------
@@ -139,6 +141,130 @@ def is_d3(file_path: Path) -> bool:
     """True if *file_path* points to a D3 per-source synthesis document."""
     # D3 files live under .../sources/
     return "sources" in file_path.parts
+
+
+def _parse_frontmatter_yaml(text: str) -> dict:
+    """Parse the full YAML frontmatter block using pyyaml.
+
+    Returns the parsed dict, or {} if no frontmatter is found or parsing fails.
+    Used when structured fields (e.g. ``recommendations:`` lists) are needed beyond
+    what the flat regex-based ``parse_frontmatter`` can extract.
+    """
+    match = _FRONTMATTER_RE.match(text)
+    if not match:
+        return {}
+    try:
+        return yaml.safe_load(match.group(1)) or {}
+    except yaml.YAMLError:
+        return {}
+
+
+# Valid recommendation status values.
+_VALID_REC_STATUSES: frozenset[str] = frozenset(
+    {
+        "accepted",
+        "accepted-for-adoption",
+        "adopted",
+        "completed",
+        "rejected",
+        "not-accepted",
+        "deferred",
+    }
+)
+
+# Statuses that require a non-empty decision_ref.
+_STATUSES_REQUIRING_DECISION_REF: frozenset[str] = frozenset({"rejected", "not-accepted"})
+
+
+def _validate_recommendations_block(doc_path: Path, text: str, fm: dict[str, str], is_synthesis: bool) -> list[str]:
+    """Validate the ``recommendations:`` frontmatter block of a synthesis doc.
+
+    Args:
+        doc_path:     Path to the document (used in error messages).
+        text:         Full document text (needed for YAML list parsing).
+        fm:           Flat frontmatter dict from ``parse_frontmatter``.
+        is_synthesis: True for D4 synthesis docs; False for non-synthesis
+                      docs that happen to have ``status: Final``.
+
+    Returns:
+        A list of error strings.  Empty list = no hard-fail errors.
+        Warnings are printed to stdout but do not appear in the returned list.
+    """
+    errors: list[str] = []
+
+    # Use the full YAML parse to get top-level fields reliably — the flat
+    # parse_frontmatter dict is unreliable when recommendations: entries contain
+    # sub-keys (e.g. status:) that would overwrite top-level keys.
+    full_fm = _parse_frontmatter_yaml(text)
+    status = str(full_fm.get("status", "")).strip()
+
+    # Only relevant for Final documents.
+    if status.lower() != "final":
+        return errors
+
+    # Check presence of the recommendations: key.
+    rec_key_present = "recommendations" in full_fm
+
+    if not is_synthesis:
+        # Non-synthesis doc with status: Final — warning only, no fail.
+        if not rec_key_present:
+            print(
+                f"WARN: {doc_path}: status: Final but no recommendations: block — "
+                "this file does not look like a synthesis doc; skipping hard check."
+            )
+        return errors
+
+    # --- is_synthesis=True, status=Final from here ---
+
+    if not rec_key_present:
+        errors.append(
+            "Missing 'recommendations:' block in frontmatter — required for all "
+            "status: Final synthesis docs. "
+            "See docs/governance/recommendations-schema.md."
+        )
+        return errors
+
+    # Parse full YAML to inspect list entries.
+    entries = full_fm.get("recommendations")
+
+    if entries is None:
+        # Key present but no list content — treat as empty list.
+        entries = []
+
+    if not isinstance(entries, list):
+        errors.append("frontmatter 'recommendations:' must be a YAML list; found a scalar value.")
+        return errors
+
+    for i, entry in enumerate(entries, start=1):
+        if not isinstance(entry, dict):
+            errors.append(f"recommendations[{i}]: expected a mapping (dict), found {type(entry).__name__}")
+            continue
+
+        # Required fields.
+        for required_field in ("id", "status", "title"):
+            if not entry.get(required_field):
+                errors.append(f"recommendations[{i}]: missing or empty required field '{required_field}'")
+
+        # decision_ref required for rejected / not-accepted.
+        entry_status = str(entry.get("status", "")).strip()
+        if entry_status in _STATUSES_REQUIRING_DECISION_REF:
+            if not entry.get("decision_ref"):
+                errors.append(
+                    f"recommendations[{i}] (status: {entry_status}): "
+                    "'decision_ref' must be a non-empty URL — record the issue comment "
+                    "where this decision was logged."
+                )
+
+        # Warning: non-deferred entries without linked_issue.
+        if entry_status and entry_status != "deferred":
+            if not entry.get("linked_issue"):
+                print(
+                    f"WARN: {doc_path}: recommendations[{i}] "
+                    f"(status: {entry_status}) has no linked_issue — "
+                    "the recommendation may be untracked."
+                )
+
+    return errors
 
 
 # Axiom names that must have an adjacent MANIFESTO.md §N reference on the same line.
@@ -271,6 +397,17 @@ def validate(file_path: Path, min_lines: int) -> tuple[bool, list[str]]:
             for key in D4_REQUIRED_FRONTMATTER:
                 if not fm.get(key):
                     failures.append(f"Missing or empty frontmatter field: '{key}'")
+
+        # --- Check 5: recommendations provenance block (D4 only) ---
+        if not is_d3(file_path):
+            # Determine if this is a synthesis doc (vs. tracking/meta doc).
+            # Use resolved path string to handle both relative and absolute paths;
+            # check adjacency of "docs/research" to avoid false positives from
+            # paths like docs/guides/research/foo.md.
+            _resolved_str = str(file_path.resolve())
+            is_synthesis = "/docs/research/" in _resolved_str and file_path.name not in {"OPEN_RESEARCH.md", "sources"}
+            rec_errors = _validate_recommendations_block(file_path, text, fm, is_synthesis=is_synthesis)
+            failures.extend(rec_errors)
 
     passed = len(failures) == 0
     return passed, failures
