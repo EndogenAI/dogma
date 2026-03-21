@@ -1,0 +1,105 @@
+# Suggested patch for docs/research/ai-autonomy-governance.md
+# Review and edit before applying with Phase 6 patch application
+doc: docs/research/ai-autonomy-governance.md
+doc_slug: ai-autonomy-governance
+generated_at: '2026-03-21T01:18:00.117990+00:00'
+match_confidence: low
+recommendations:
+- id: rec-ai-autonomy-governance-001
+  title: Enforce Approval Gates in `.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ai-autonomy-governance-002
+  title: Every `.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ai-autonomy-governance-003
+  title: 'Example: "Before any `git push` to main, the executive mu...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ai-autonomy-governance-004
+  title: CI should validate that every agent with write permission...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ai-autonomy-governance-005
+  title: Update "When to Ask vs.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ai-autonomy-governance-006
+  title: 'Add explicit guidance on: - High-stakes vs.'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ai-autonomy-governance-007
+  title: Link CMA Report in AGENTS.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ai-autonomy-governance-008
+  title: Add a citation block under the Minimal-Posture principle ...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ai-autonomy-governance-009
+  title: Include the crypto-mining and shopping agent examples as ...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ai-autonomy-governance-010
+  title: Apply OWASP LLM Excessive Agency (LLM08) audit to every a...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ai-autonomy-governance-011
+  title: Audit agent autonomy levels — classify each agent by the ...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ai-autonomy-governance-012
+  title: Implement approval gates incrementally — start with Level...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ai-autonomy-governance-013
+  title: Transparent incentive labeling — if an agent's recommenda...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ai-autonomy-governance-014
+  title: Subscribe to AI Incident Database (incidentdatabase.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low

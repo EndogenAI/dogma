@@ -1,0 +1,42 @@
+# Suggested patch for docs/research/nemo-guardrails-governance.md
+# Review and edit before applying with Phase 6 patch application
+doc: docs/research/nemo-guardrails-governance.md
+doc_slug: nemo-guardrails-governance
+generated_at: '2026-03-21T01:18:00.144466+00:00'
+match_confidence: low
+recommendations:
+- id: rec-nemo-guardrails-governance-001
+  title: 'Adopt L1 output validation for multi-agent workflows: Int...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-nemo-guardrails-governance-002
+  title: 'Encode L2 constraints as machine-readable YAML: Extract t...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-nemo-guardrails-governance-003
+  title: 'Defer T3 (model-level runtime enforcement): dogma''s curre...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-nemo-guardrails-governance-004
+  title: Combine rule-based and LLM-based safety in a two-stage pi...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-nemo-guardrails-governance-005
+  title: Schedule quarterly red-team evaluations against guardrail...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low

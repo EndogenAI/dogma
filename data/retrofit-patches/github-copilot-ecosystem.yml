@@ -1,0 +1,63 @@
+# Suggested patch for docs/research/github-copilot-ecosystem.md
+# Review and edit before applying with Phase 6 patch application
+doc: docs/research/github-copilot-ecosystem.md
+doc_slug: github-copilot-ecosystem
+generated_at: '2026-03-21T01:18:00.134002+00:00'
+match_confidence: low
+recommendations:
+- id: rec-github-copilot-ecosystem-001
+  title: 'Use MCP for all cross-platform tools: If building tools f...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-github-copilot-ecosystem-002
+  title: 'Define platform bindings separately from core roles: Keep...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-github-copilot-ecosystem-003
+  title: 'Document Copilot-specific limitations explicitly: If usin...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-github-copilot-ecosystem-004
+  title: Apply the protocol stability gate before adopting any new...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-github-copilot-ecosystem-005
+  title: 'Preference: Copilot chat agents for interactive tasks; VS...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-github-copilot-ecosystem-006
+  title: 'Caution: Copilot-specific skills (extensions using `provi...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-github-copilot-ecosystem-007
+  title: 'MCP complementation: Pair Copilot Chat agents with MCP to...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-github-copilot-ecosystem-008
+  title: Reference Stack Overflow 2024 Survey data when justifying...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low

@@ -1,0 +1,56 @@
+# Suggested patch for docs/research/ai-workload-observability.md
+# Review and edit before applying with Phase 6 patch application
+doc: docs/research/ai-workload-observability.md
+doc_slug: ai-workload-observability
+generated_at: '2026-03-21T01:18:00.125735+00:00'
+match_confidence: low
+recommendations:
+- id: rec-ai-workload-observability-001
+  title: 'Adopt OpenTelemetry for all inter-agent calls: Record cor...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ai-workload-observability-002
+  title: Implement circuit-breaker per provider (rate-limit-resili...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ai-workload-observability-003
+  title: 'Observable APIs for long-running services: Ollama, Docker...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ai-workload-observability-004
+  title: Implement OpenTelemetry GenAI semantic convention attribu...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ai-workload-observability-005
+  title: 'Per-session trace collection: Each session scratchpad inc...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ai-workload-observability-006
+  title: 'Post-session automated analysis: `scripts/correlate_healt...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-ai-workload-observability-007
+  title: Profile hidden technical debt via retry attribution (Scul...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low

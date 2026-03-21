@@ -80,6 +80,7 @@ scripts/
   repaired_audit.py            # Post-audit repair validator — checks that identified gaps in a prior audit result have been resolved (closes #301)
   token_spin_detector.py       # Detect "token spinning" (repeated loops with no progress) in session logs using Hamming distance and regex entropy (closes #310)
   index_recommendations.py     # Scan finalized synthesis docs and write data/recommendations-registry.yml; --dry-run, --check, --docs-dir (closes #407)
+  audit_recommendation_status.py  # Audit recommendation status across finalized docs; fuzzy-match to GitHub issues; write data/retrofit-patches/<slug>.yml patch files; --dry-run, --doc, --no-github (closes #409)
   test_newlines.py             # Internal utility to test newline handling in terminal scripts
   test_quotes.py               # Internal utility to test character escaping in terminal scripts
   test_small.py                # Internal utility for fast shell execution testing
@@ -1495,6 +1496,48 @@ uv run python scripts/index_recommendations.py --docs-dir /tmp/test-docs
 **Output**: `data/recommendations-registry.yml` — YAML registry with `generated_at`, `docs_scanned`, `docs_with_recommendations`, and `recommendations` list.
 
 **Exit codes**: `0` success / up-to-date; `1` stale (--check) or missing docs-dir.
+
+---
+
+## scripts/audit_recommendation_status.py
+
+**Job**: Cross-reference every `## Recommendations` section in the finalized synthesis corpus against GitHub issues, suggest a provenance status for each item, and write human-reviewable patch files to `data/retrofit-patches/` ready for Phase 6 application.
+
+**Purpose**: Implements Phase 4 of the Recommendation Provenance sprint (issue #409). Reads each `status: Final` D4 synthesis document, extracts numbered/bulleted recommendation items from the body text (not frontmatter), fuzzy-matches each item against GitHub issues with the `source:research` label (≥ 3 consecutive shared words = candidate match), and outputs one `data/retrofit-patches/<doc-slug>.yml` patch file per doc. Patch entries include `_match_note` and `_confidence` reviewer-only keys (underscore-prefixed) that must be stripped before frontmatter application.
+
+**Tests**: [`tests/test_audit_recommendation_status.py`](../tests/test_audit_recommendation_status.py)
+
+**Usage**:
+
+```bash
+# Audit all finalized docs and write patch files
+uv run python scripts/audit_recommendation_status.py
+
+# Preview without writing files
+uv run python scripts/audit_recommendation_status.py --dry-run
+
+# Audit a single doc
+uv run python scripts/audit_recommendation_status.py --doc docs/research/civic-ai-governance.md
+
+# Offline / CI mode — skip GitHub API calls
+uv run python scripts/audit_recommendation_status.py --no-github
+```
+
+**Flags**:
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--dry-run` | no | Print patch YAML to stdout; do not write files |
+| `--doc PATH` | no | Audit a single doc instead of all finalized docs |
+| `--no-github` | no | Skip gh CLI calls; mark all recommendations as deferred |
+| `--docs-dir PATH` | no | Override docs/research directory |
+| `--patches-dir PATH` | no | Override data/retrofit-patches directory |
+
+**Output**: `data/retrofit-patches/<doc-slug>.yml` — one YAML patch file per audited doc, with `doc`, `doc_slug`, `generated_at`, `match_confidence`, and `recommendations` list. Each recommendation entry includes `id`, `title`, `status` (suggested), `linked_issue`, `decision_ref`, `_match_note`, `_confidence`.
+
+**Confidence levels**: `high` = single match, ≥ 5 consecutive shared words; `medium` = single match (3–4 words) or multiple ambiguous matches; `low` = no match found.
+
+**Exit codes**: `0` success (including --dry-run); `1` fatal error (missing docs-dir or --doc path).
 
 ---
 

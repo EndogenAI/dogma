@@ -1,0 +1,70 @@
+# Suggested patch for docs/research/scratchpad-architecture-decision.md
+# Review and edit before applying with Phase 6 patch application
+doc: docs/research/scratchpad-architecture-decision.md
+doc_slug: scratchpad-architecture-decision
+generated_at: '2026-03-21T01:18:00.149708+00:00'
+match_confidence: low
+recommendations:
+- id: rec-scratchpad-architecture-decision-001
+  title: '`prune_scratchpad.'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-scratchpad-architecture-decision-002
+  title: '`validate_session_state.'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-scratchpad-architecture-decision-003
+  title: '`watch_scratchpad.'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-scratchpad-architecture-decision-004
+  title: The `.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-scratchpad-architecture-decision-005
+  title: No agent behaviour changes — all agents continue to write...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-scratchpad-architecture-decision-006
+  title: Use stdio transport exclusively (no HTTP server); the MCP...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-scratchpad-architecture-decision-007
+  title: 'Expose three tool calls: `session_status` (active phase, ...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-scratchpad-architecture-decision-008
+  title: Back all three tool calls against the B' SQLite index, no...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-scratchpad-architecture-decision-009
+  title: Treat atomic write coordination (the gap identified in ag...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low

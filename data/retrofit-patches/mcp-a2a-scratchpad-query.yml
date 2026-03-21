@@ -1,0 +1,28 @@
+# Suggested patch for docs/research/mcp-a2a-scratchpad-query.md
+# Review and edit before applying with Phase 6 patch application
+doc: docs/research/mcp-a2a-scratchpad-query.md
+doc_slug: mcp-a2a-scratchpad-query
+generated_at: '2026-03-21T01:18:00.142746+00:00'
+match_confidence: low
+recommendations:
+- id: rec-mcp-a2a-scratchpad-query-001
+  title: 'Path allowlist: validate `scratchpad_path` against `.'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-mcp-a2a-scratchpad-query-002
+  title: 'Parameterized FTS5 queries: all `MATCH` clauses must use ...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
+- id: rec-mcp-a2a-scratchpad-query-003
+  title: '`audience: ["user"]` annotations: apply to all three tool...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: GitHub API calls skipped (--no-github mode)
+  _confidence: low
