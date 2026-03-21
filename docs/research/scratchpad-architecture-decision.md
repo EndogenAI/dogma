@@ -1,17 +1,63 @@
 ---
-title: "Scratchpad Architecture Decision — Structured Store vs Flat Markdown"
-status: "Final"
+title: Scratchpad Architecture Decision — Structured Store vs Flat Markdown
+status: Final
 research_issue: 304
 closes_issue: 304
 date: 2026-03-17
 sources:
-  - docs/research/mcp-state-architecture.md
-  - docs/research/agent-to-agent-communication-protocol.md
-  - docs/research/intelligence-architecture-synthesis.md
-  - https://modelcontextprotocol.io/specification/2025-03-26/basic/transports
-  - https://www.sqlite.org/fts5.html
-  - AGENTS.md
-  - MANIFESTO.md
+- docs/research/mcp-state-architecture.md
+- docs/research/agent-to-agent-communication-protocol.md
+- docs/research/intelligence-architecture-synthesis.md
+- https://modelcontextprotocol.io/specification/2025-03-26/basic/transports
+- https://www.sqlite.org/fts5.html
+- AGENTS.md
+- MANIFESTO.md
+recommendations:
+- id: rec-scratchpad-architecture-decision-001
+  title: '`prune_scratchpad.'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-scratchpad-architecture-decision-002
+  title: '`validate_session_state.'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-scratchpad-architecture-decision-003
+  title: '`watch_scratchpad.'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-scratchpad-architecture-decision-004
+  title: The `.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-scratchpad-architecture-decision-005
+  title: No agent behaviour changes — all agents continue to write...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-scratchpad-architecture-decision-006
+  title: Use stdio transport exclusively (no HTTP server); the MCP...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-scratchpad-architecture-decision-007
+  title: 'Expose three tool calls: `session_status` (active phase, ...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-scratchpad-architecture-decision-008
+  title: Back all three tool calls against the B' SQLite index, no...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-scratchpad-architecture-decision-009
+  title: Treat atomic write coordination (the gap identified in ag...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # Scratchpad Architecture Decision — Structured Store vs Flat Markdown

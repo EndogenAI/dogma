@@ -4,6 +4,42 @@ status: Final
 closes_issue: 294
 date_published: 2026-03-18
 author: Executive Researcher
+recommendations:
+- id: rec-local-rag-adoption-patterns-001
+  title: Adopt LanceDB + BGE-Small-EN-v1.
+  status: accepted
+  linked_issue: 352
+  decision_ref: ''
+- id: rec-local-rag-adoption-patterns-002
+  title: 'Implement embedding model versioning in the MCP server: S...'
+  status: accepted
+  linked_issue: 353
+  decision_ref: ''
+- id: rec-local-rag-adoption-patterns-003
+  title: 'Define chunking strategy as part of adoption onboarding: ...'
+  status: accepted
+  linked_issue: 387
+  decision_ref: ''
+- id: rec-local-rag-adoption-patterns-004
+  title: Defer core-repo retrofitting until greenfield pattern is ...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-local-rag-adoption-patterns-005
+  title: 'Measure RAG value: token savings vs.'
+  status: accepted
+  linked_issue: 355
+  decision_ref: ''
+- id: rec-local-rag-adoption-patterns-006
+  title: Validate recall against BEIR baselines before accepting i...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-local-rag-adoption-patterns-007
+  title: Integrate RAGAS into post-deployment evaluation loops (Es...
+  status: accepted
+  linked_issue: 386
+  decision_ref: ''
 ---
 
 # Local RAG Adoption Patterns — LanceDB + BGE-Small Design Patterns & Barriers

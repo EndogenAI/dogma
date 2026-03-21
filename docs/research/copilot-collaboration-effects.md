@@ -4,6 +4,32 @@ status: Final
 closes_issue: 312
 date_published: 2026-03-18
 author: Executive Researcher
+recommendations:
+- id: rec-copilot-collaboration-effects-001
+  title: Document Collaboration Norms in AGENTS.
+  status: deferred
+  linked_issue: 348
+  decision_ref: ''
+- id: rec-copilot-collaboration-effects-002
+  title: 'Strengthen Review Gates with Objective Criteria: Move fro...'
+  status: accepted
+  linked_issue: 349
+  decision_ref: ''
+- id: rec-copilot-collaboration-effects-003
+  title: 'Use Tests as Primary Validation Layer: For code-generatin...'
+  status: accepted
+  linked_issue: 350
+  decision_ref: ''
+- id: rec-copilot-collaboration-effects-004
+  title: Measure Copilot acceptance rate vs.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-copilot-collaboration-effects-005
+  title: Designate exploration mode explicitly for security-critic...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # GitHub Copilot Collaboration Effects — Empirical Evidence Synthesis

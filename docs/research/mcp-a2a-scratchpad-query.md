@@ -1,18 +1,34 @@
 ---
-title: "MCP-Mediated Scratchpad Query — A2A Minimal Viable Surface"
-status: "Final"
+title: MCP-Mediated Scratchpad Query — A2A Minimal Viable Surface
+status: Final
 research_issue: 297
 closes_issue: 297
 date: 2026-03-17
 sources:
-  - docs/research/agent-to-agent-communication-protocol.md
-  - docs/research/mcp-state-architecture.md
-  - docs/research/scratchpad-architecture-decision.md
-  - docs/research/mcp-production-pain-points.md
-  - https://modelcontextprotocol.io/docs/concepts/tools
-  - https://github.com/modelcontextprotocol/python-sdk
-  - AGENTS.md
-  - MANIFESTO.md
+- docs/research/agent-to-agent-communication-protocol.md
+- docs/research/mcp-state-architecture.md
+- docs/research/scratchpad-architecture-decision.md
+- docs/research/mcp-production-pain-points.md
+- https://modelcontextprotocol.io/docs/concepts/tools
+- https://github.com/modelcontextprotocol/python-sdk
+- AGENTS.md
+- MANIFESTO.md
+recommendations:
+- id: rec-mcp-a2a-scratchpad-query-001
+  title: 'Path allowlist: validate `scratchpad_path` against `.'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-mcp-a2a-scratchpad-query-002
+  title: 'Parameterized FTS5 queries: all `MATCH` clauses must use ...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-mcp-a2a-scratchpad-query-003
+  title: '`audience: ["user"]` annotations: apply to all three tool...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # MCP-Mediated Scratchpad Query — A2A Minimal Viable Surface
