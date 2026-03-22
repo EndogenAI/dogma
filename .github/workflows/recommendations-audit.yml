@@ -27,8 +27,6 @@ jobs:
       - name: Install dependencies
         run: uv sync --all-extras --dev
 
-      - name: Run recommendations audit
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run substrate distillation audit
         run: |
-          uv run python scripts/audit_recommendation_status.py --check
+          uv run python scripts/substrate_distiller.py --check
