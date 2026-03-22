@@ -140,7 +140,13 @@ def non_blank_line_count(text: str) -> int:
 def is_d3(file_path: Path) -> bool:
     """True if *file_path* points to a D3 per-source synthesis document."""
     # D3 files live under .../sources/
-    return "sources" in file_path.parts
+    return "sources" in file_path.as_posix().split("/")
+
+
+def is_synthesis(file_path: Path) -> bool:
+    """True if *file_path* points to a synthesis document (D3 or D4)."""
+    p = file_path.as_posix()
+    return "/research/" in p or "/sources/" in p
 
 
 def _parse_frontmatter_yaml(text: str) -> dict:
@@ -245,8 +251,16 @@ def _validate_recommendations_block(doc_path: Path, text: str, fm: dict[str, str
             if not entry.get(required_field):
                 errors.append(f"recommendations[{i}]: missing or empty required field '{required_field}'")
 
+        entry_status = str(entry.get("status", "")).strip().lower()
+
+        # Check status is in the canonical set.
+        if entry_status and entry_status not in _VALID_REC_STATUSES:
+            errors.append(
+                f"recommendations[{i}]: invalid status '{entry_status}'; "
+                f"must be one of: {', '.join(sorted(_VALID_REC_STATUSES))}"
+            )
+
         # decision_ref required for rejected / not-accepted.
-        entry_status = str(entry.get("status", "")).strip()
         if entry_status in _STATUSES_REQUIRING_DECISION_REF:
             if not entry.get("decision_ref"):
                 errors.append(

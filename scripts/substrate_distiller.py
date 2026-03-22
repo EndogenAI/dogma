@@ -23,7 +23,7 @@ import yaml
 def load_registry(registry_path: Path) -> List[Dict[str, Any]]:
     """Load the recommendations registry."""
     if not registry_path.exists():
-        print(f"Error: Registry not found at {registry_path}")
+        print(f"Error: Registry not found at {registry_path}", file=sys.stderr)
         sys.exit(2)
 
     try:
@@ -31,7 +31,7 @@ def load_registry(registry_path: Path) -> List[Dict[str, Any]]:
             data = yaml.safe_load(f)
             return data.get("recommendations", [])
     except Exception as e:
-        print(f"Error reading registry: {e}")
+        print(f"Error reading registry: {e}", file=sys.stderr)
         sys.exit(2)
 
 
