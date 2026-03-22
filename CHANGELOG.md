@@ -1,3 +1,22 @@
+# [0.16.0](https://github.com/EndogenAI/dogma/compare/v0.15.0...v0.16.0) (2026-03-22)
+
+
+### Bug Fixes
+
+* **audit:** use numbered.group(2) for recommendation text extraction ([ebe3345](https://github.com/EndogenAI/dogma/commit/ebe334543fd73be1ee49b851f73cd96d762fd76d))
+* **provenance:** address all remaining PR [#412](https://github.com/EndogenAI/dogma/issues/412) review comments ([1972582](https://github.com/EndogenAI/dogma/commit/1972582bca836e349ea9860c0a602d5702a0fa65))
+* **provenance:** address PR [#412](https://github.com/EndogenAI/dogma/issues/412) review feedback regarding path portability and status validation ([219a495](https://github.com/EndogenAI/dogma/commit/219a49539f2c3432294edaa374f7211a0f849a0f))
+
+
+### Features
+
+* **governance:** add recommendations provenance schema and CI hard-fail validation ([eaf3068](https://github.com/EndogenAI/dogma/commit/eaf306865845b2f3fe4463d84c21cb6967ff8a01)), closes [#406](https://github.com/EndogenAI/dogma/issues/406)
+* **provenance:** complete sprint 23 recommendation retrofit execution [forced sync] ([47c7e17](https://github.com/EndogenAI/dogma/commit/47c7e1723e85aaa2258b4fd58fdaeeb627637511))
+* **scripts:** add audit_recommendation_status.py to suggest provenance patches ([9667109](https://github.com/EndogenAI/dogma/commit/96671091362d313600786e3824a8cd014fbc68b3)), closes [#409](https://github.com/EndogenAI/dogma/issues/409)
+* **scripts:** add index_recommendations.py to generate recommendations registry ([61949b2](https://github.com/EndogenAI/dogma/commit/61949b2b029dae31943a4310192eb91523c1f154)), closes [#407](https://github.com/EndogenAI/dogma/issues/407)
+
+
+
 # [0.15.0](https://github.com/EndogenAI/dogma/compare/v0.14.0...v0.15.0) (2026-03-20)
 
 
