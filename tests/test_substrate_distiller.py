@@ -8,14 +8,13 @@ import yaml
 # Add scripts to path for importing
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
-from substrate_distiller import get_substrate_files, load_registry, main
+from substrate_distiller import RegistryError, get_substrate_files, load_registry, main
 
 
 def test_load_registry_not_found(tmp_path):
     registry = tmp_path / "missing.yml"
-    with pytest.raises(SystemExit) as exc:
+    with pytest.raises(RegistryError, match="Registry not found"):
         load_registry(registry)
-    assert exc.value.code == 2
 
 
 def test_load_registry_valid(tmp_path):

@@ -1,25 +1,47 @@
 ---
-title: "Platform Agnosticism — VS Code and GitHub Coupling Surface in the EndogenAI Dogma"
-status: "Final"
+title: Platform Agnosticism — VS Code and GitHub Coupling Surface in the EndogenAI
+  Dogma
+status: Final
 research_issue: 270
 closes_issue: 270
 date: 2026-03-15
 sources:
-  - https://code.visualstudio.com/docs/copilot/copilot-customization
-  - https://docs.cursor.com/context/rules-for-ai
-  - https://www.jetbrains.com/help/idea/ai-assistant.html
-  - https://zed.dev/docs/assistant/ai-improvement
-  - https://zed.dev/docs/assistant/context-servers
-  - https://survey.stackoverflow.com/2024/
-  - https://stateofjs.com/en-US/
-  - https://github.blog/2024-06-20-survey-reveals-ai-coding-tools-are-in-wide-use/
-  - https://docs.github.com/en/actions/
-  - https://pre-commit.com/
-  - docs/research/custom-agent-service-modules.md
-  - docs/research/substrate-atlas.md
-  - AGENTS.md
-  - MANIFESTO.md
-  - .github/agents/
+- https://code.visualstudio.com/docs/copilot/copilot-customization
+- https://docs.cursor.com/context/rules-for-ai
+- https://www.jetbrains.com/help/idea/ai-assistant.html
+- https://zed.dev/docs/assistant/ai-improvement
+- https://zed.dev/docs/assistant/context-servers
+- https://survey.stackoverflow.com/2024/
+- https://stateofjs.com/en-US/
+- https://github.blog/2024-06-20-survey-reveals-ai-coding-tools-are-in-wide-use/
+- https://docs.github.com/en/actions/
+- https://pre-commit.com/
+- docs/research/custom-agent-service-modules.md
+- docs/research/substrate-atlas.md
+- AGENTS.md
+- MANIFESTO.md
+- .github/agents/
+recommendations:
+- id: rec-platform-agnosticism-001
+  title: Add a "Platform Infrastructure" section to MANIFESTO.
+  status: deferred
+  linked_issue: 386
+  decision_ref: ''
+- id: rec-platform-agnosticism-002
+  title: Publish a Platform Migration Guide in `docs/guides/` Crea...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-platform-agnosticism-003
+  title: Implement cross-platform capabilities as MCP servers (ong...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-platform-agnosticism-004
+  title: Do not abstract `.
+  status: accepted
+  linked_issue: 386
+  decision_ref: ''
 ---
 
 # Platform Agnosticism — VS Code and GitHub Coupling Surface in the EndogenAI Dogma

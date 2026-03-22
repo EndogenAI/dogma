@@ -2,63 +2,60 @@
 # Review and edit before applying with Phase 6 patch application
 doc: docs/research/github-copilot-ecosystem.md
 doc_slug: github-copilot-ecosystem
-generated_at: '2026-03-21T01:23:14.189354+00:00'
-match_confidence: high
+generated_at: '2026-03-22T20:41:09.785094+00:00'
+match_confidence: low
 recommendations:
 - id: rec-github-copilot-ecosystem-001
-  title: 'Use MCP for all cross-platform tools: If building tools f...'
-  status: accepted
-  linked_issue: 336
+  title: '1'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
-  _match_note: 'Matched issue #336: ''refactor(mcp): standardize cross-platform tools
-    vi'' (consecutive word overlap: 6)'
-  _confidence: high
+  _match_note: No matching issue found
+  _confidence: low
 - id: rec-github-copilot-ecosystem-002
-  title: 'Define platform bindings separately from core roles: Keep...'
-  status: completed
-  linked_issue: 347
+  title: '2'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
-  _match_note: 'Matched issue #347: ''docs(agents): document platform binding separation''
-    (consecutive word overlap: 4)'
-  _confidence: medium
+  _match_note: No matching issue found
+  _confidence: low
 - id: rec-github-copilot-ecosystem-003
-  title: 'Document Copilot-specific limitations explicitly: If usin...'
-  status: completed
-  linked_issue: 340
+  title: '3'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
-  _match_note: 'Matched issue #340: ''docs(guides): add Copilot ecosystem limitations
-    gu'' (consecutive word overlap: 4)'
-  _confidence: medium
+  _match_note: No matching issue found
+  _confidence: low
 - id: rec-github-copilot-ecosystem-004
-  title: Apply the protocol stability gate before adopting any new...
+  title: '4'
   status: deferred
   linked_issue: null
   decision_ref: ''
   _match_note: No matching issue found
   _confidence: low
 - id: rec-github-copilot-ecosystem-005
-  title: 'Preference: Copilot chat agents for interactive tasks; VS...'
+  title: '1'
   status: deferred
   linked_issue: null
   decision_ref: ''
   _match_note: No matching issue found
   _confidence: low
 - id: rec-github-copilot-ecosystem-006
-  title: 'Caution: Copilot-specific skills (extensions using `provi...'
+  title: '2'
   status: deferred
   linked_issue: null
   decision_ref: ''
   _match_note: No matching issue found
   _confidence: low
 - id: rec-github-copilot-ecosystem-007
-  title: 'MCP complementation: Pair Copilot Chat agents with MCP to...'
+  title: '3'
   status: deferred
   linked_issue: null
   decision_ref: ''
   _match_note: No matching issue found
   _confidence: low
 - id: rec-github-copilot-ecosystem-008
-  title: Reference Stack Overflow 2024 Survey data when justifying...
+  title: '4'
   status: deferred
   linked_issue: null
   decision_ref: ''

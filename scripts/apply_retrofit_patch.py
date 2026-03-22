@@ -8,9 +8,8 @@ def patch_docs():
     docs_dir = Path("docs/research")
 
     patches = list(patch_dir.glob("*.yml"))
-    results = []
 
-    for patch_path in patches:
+    for patch_path in sorted(patches):
         doc_filename = patch_path.name.replace(".yml", ".md")
         doc_path = docs_dir / doc_filename
 
@@ -18,8 +17,13 @@ def patch_docs():
             print(f"Warning: Document {doc_path} does not exist.")
             continue
 
+        print(f"Applying {patch_path.name}...")
         with open(patch_path, "r") as f:
-            patch_data = yaml.safe_load(f)
+            try:
+                patch_data = yaml.safe_load(f)
+            except yaml.YAMLError as e:
+                print(f"Error parsing {patch_path}: {e}")
+                continue
 
         recs = patch_data.get("recommendations", [])
         if not recs:
@@ -41,14 +45,20 @@ def patch_docs():
             continue
 
         frontmatter_text = parts[1]
-        body = parts[2]
 
-        frontmatter = yaml.safe_load(frontmatter_text)
+        try:
+            frontmatter = yaml.safe_load(frontmatter_text)
+        except yaml.YAMLError as e:
+            print(f"Error parsing frontmatter in {doc_path}: {e}")
+            print("Frontmatter content:")
+            print(frontmatter_text)
+            continue
+
         frontmatter["recommendations"] = clean_recs
 
         # Re-encode frontmatter
         new_frontmatter_text = yaml.dump(frontmatter, sort_keys=False, allow_unicode=True)
-        new_content = f"---\n{new_frontmatter_text}---{parts[2]}"
+        new_content = f"---\n{new_frontmatter_text}---" + "".join(parts[2:])
 
         doc_path.write_text(new_content)
         print(f"Patched {doc_filename}")

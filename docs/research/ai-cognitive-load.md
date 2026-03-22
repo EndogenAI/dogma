@@ -6,42 +6,42 @@ date_published: 2026-03-18
 author: Executive Researcher
 recommendations:
 - id: rec-ai-cognitive-load-001
-  title: Encode long-running orchestration as scripts, not interac...
-  status: accepted
-  linked_issue: 344
+  title: '1'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 - id: rec-ai-cognitive-load-002
-  title: Minimize human decision points to ≤3 per session using au...
+  title: '2'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-cognitive-load-003
-  title: 'Return compression: All subagent returns capped at 300 to...'
+  title: '3'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-cognitive-load-004
-  title: Track verification effort (human time per phase).
+  title: '1'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-cognitive-load-005
-  title: 'Monitor delay-to-decision: If discovery of a phase error ...'
-  status: accepted
-  linked_issue: 346
+  title: '2'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 - id: rec-ai-cognitive-load-006
-  title: Trigger Reflection phase (session-retrospective skill) if...
+  title: '3'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-cognitive-load-007
-  title: 'Apply Miller''s Law ceiling to agent tool count: Cap each ...'
+  title: '4'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-cognitive-load-008
-  title: Batch AI output review into scheduled 30-minute deep work...
+  title: '5'
   status: deferred
   linked_issue: null
   decision_ref: ''

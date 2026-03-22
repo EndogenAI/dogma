@@ -1,0 +1,42 @@
+# Suggested patch for docs/research/h2-nk-model-formalization.md
+# Review and edit before applying with Phase 6 patch application
+doc: docs/research/h2-nk-model-formalization.md
+doc_slug: h2-nk-model-formalization
+generated_at: '2026-03-22T20:41:09.832913+00:00'
+match_confidence: low
+recommendations:
+- id: rec-h2-nk-model-formalization-001
+  title: '1'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-h2-nk-model-formalization-002
+  title: '2'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-h2-nk-model-formalization-003
+  title: '3'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-h2-nk-model-formalization-004
+  title: '4'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-h2-nk-model-formalization-005
+  title: '5'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low

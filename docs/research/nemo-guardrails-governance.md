@@ -6,27 +6,27 @@ date_published: 2026-03-18
 author: Executive Researcher
 recommendations:
 - id: rec-nemo-guardrails-governance-001
-  title: 'Adopt L1 output validation for multi-agent workflows: Int...'
-  status: accepted
-  linked_issue: 337
+  title: '1'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 - id: rec-nemo-guardrails-governance-002
-  title: 'Encode L2 constraints as machine-readable YAML: Extract t...'
-  status: accepted
-  linked_issue: 338
+  title: '2'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 - id: rec-nemo-guardrails-governance-003
-  title: 'Defer T3 (model-level runtime enforcement): dogma''s curre...'
+  title: '3'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-nemo-guardrails-governance-004
-  title: Combine rule-based and LLM-based safety in a two-stage pi...
+  title: '4'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-nemo-guardrails-governance-005
-  title: Schedule quarterly red-team evaluations against guardrail...
+  title: '5'
   status: deferred
   linked_issue: null
   decision_ref: ''

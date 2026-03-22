@@ -1,0 +1,98 @@
+# Suggested patch for docs/research/claude-code-cli-productivity-patterns.md
+# Review and edit before applying with Phase 6 patch application
+doc: docs/research/claude-code-cli-productivity-patterns.md
+doc_slug: claude-code-cli-productivity-patterns
+generated_at: '2026-03-22T20:41:09.707384+00:00'
+match_confidence: low
+recommendations:
+- id: rec-claude-code-cli-productivity-patterns-001
+  title: ADOPT `claude -p` print mode for batch synthesis tasks
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-claude-code-cli-productivity-patterns-002
+  title: ENCODE dogmas phase-gate-sequence as Claude Code `Stop`/`...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-claude-code-cli-productivity-patterns-003
+  title: MAP dogma scripts to the SessionStart/SessionEnd hook lif...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-claude-code-cli-productivity-patterns-004
+  title: Claude Code hook
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-claude-code-cli-productivity-patterns-005
+  title: '---'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-claude-code-cli-productivity-patterns-006
+  title: '`SessionStart` + `additionalContext`'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-claude-code-cli-productivity-patterns-007
+  title: '`Stop` (type: prompt) or `TaskCompleted`'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-claude-code-cli-productivity-patterns-008
+  title: '`PreCompact` + `PostCompact`'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-claude-code-cli-productivity-patterns-009
+  title: '`UserPromptSubmit` + `additionalContext`'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-claude-code-cli-productivity-patterns-010
+  title: '`InstructionsLoaded`'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-claude-code-cli-productivity-patterns-011
+  title: '`PostToolUse` on `Edit'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-claude-code-cli-productivity-patterns-012
+  title: '`SessionEnd`'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-claude-code-cli-productivity-patterns-013
+  title: DEFER Claude Code subagent architecture as a future compa...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low

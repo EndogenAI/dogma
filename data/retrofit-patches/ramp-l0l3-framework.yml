@@ -2,47 +2,46 @@
 # Review and edit before applying with Phase 6 patch application
 doc: docs/research/ramp-l0l3-framework.md
 doc_slug: ramp-l0l3-framework
-generated_at: '2026-03-21T01:23:14.285168+00:00'
-match_confidence: medium
+generated_at: '2026-03-22T20:41:09.991401+00:00'
+match_confidence: low
 recommendations:
 - id: rec-ramp-l0l3-framework-001
-  title: Formalize L0–L3 as an encoding ladder in AGENTS.
+  title: '1'
   status: deferred
-  linked_issue: 387
+  linked_issue: null
   decision_ref: ''
-  _match_note: 'Multiple matches: #387, #341 — manual review needed'
+  _match_note: No matching issue found
   _confidence: low
 - id: rec-ramp-l0l3-framework-002
-  title: Create a "Prompt Template Registry" — Encode high-value p...
+  title: '2'
   status: deferred
   linked_issue: null
   decision_ref: ''
   _match_note: No matching issue found
   _confidence: low
 - id: rec-ramp-l0l3-framework-003
-  title: Audit and encode "automate your job" instances — Review s...
-  status: accepted
-  linked_issue: 387
+  title: '3'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
-  _match_note: 'Matched issue #387: ''docs(agents): add civic-tech-patterns.md to
-    AGENTS'' (consecutive word overlap: 3)'
-  _confidence: medium
+  _match_note: No matching issue found
+  _confidence: low
 - id: rec-ramp-l0l3-framework-004
-  title: Add an "ecosystem embeddedness" dimension to L1 gate crit...
+  title: '4'
   status: deferred
   linked_issue: null
   decision_ref: ''
   _match_note: No matching issue found
   _confidence: low
 - id: rec-ramp-l0l3-framework-005
-  title: Instrument "value density" not commit volume as the L3 si...
+  title: '5'
   status: deferred
   linked_issue: null
   decision_ref: ''
   _match_note: No matching issue found
   _confidence: low
 - id: rec-ramp-l0l3-framework-006
-  title: Distinguish accountability from execution in PM role evol...
+  title: '6'
   status: deferred
   linked_issue: null
   decision_ref: ''

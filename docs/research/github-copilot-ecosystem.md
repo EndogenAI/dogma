@@ -6,42 +6,42 @@ date_published: 2026-03-18
 author: Executive Researcher
 recommendations:
 - id: rec-github-copilot-ecosystem-001
-  title: 'Use MCP for all cross-platform tools: If building tools f...'
-  status: accepted
-  linked_issue: 336
+  title: '1'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 - id: rec-github-copilot-ecosystem-002
-  title: 'Define platform bindings separately from core roles: Keep...'
-  status: completed
-  linked_issue: 347
+  title: '2'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 - id: rec-github-copilot-ecosystem-003
-  title: 'Document Copilot-specific limitations explicitly: If usin...'
-  status: completed
-  linked_issue: 340
+  title: '3'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 - id: rec-github-copilot-ecosystem-004
-  title: Apply the protocol stability gate before adopting any new...
+  title: '4'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-github-copilot-ecosystem-005
-  title: 'Preference: Copilot chat agents for interactive tasks; VS...'
+  title: '1'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-github-copilot-ecosystem-006
-  title: 'Caution: Copilot-specific skills (extensions using `provi...'
+  title: '2'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-github-copilot-ecosystem-007
-  title: 'MCP complementation: Pair Copilot Chat agents with MCP to...'
+  title: '3'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-github-copilot-ecosystem-008
-  title: Reference Stack Overflow 2024 Survey data when justifying...
+  title: '4'
   status: deferred
   linked_issue: null
   decision_ref: ''

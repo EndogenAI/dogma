@@ -1,9 +1,134 @@
 ---
-title: "Intelligence & Architecture Synthesis: Cross-Cutting Findings from Sprint 12"
+title: 'Intelligence & Architecture Synthesis: Cross-Cutting Findings from Sprint
+  12'
 status: Final
 date: 2026-03-16
-closes_issues: [264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 230, 232]
-governs: [intelligence-architecture, mcp-architecture, substrate-governance, platform-strategy, evolutionary-propagation, content-encoding, fleet-coupling]
+closes_issues:
+- 264
+- 265
+- 266
+- 267
+- 268
+- 269
+- 270
+- 271
+- 272
+- 273
+- 274
+- 275
+- 276
+- 277
+- 230
+- 232
+governs:
+- intelligence-architecture
+- mcp-architecture
+- substrate-governance
+- platform-strategy
+- evolutionary-propagation
+- content-encoding
+- fleet-coupling
+recommendations:
+- id: rec-intelligence-architecture-synthesis-001
+  title: Rationale
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-intelligence-architecture-synthesis-002
+  title: '-----------'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-intelligence-architecture-synthesis-003
+  title: 60–70% variance reduction; zero infrastructure cost; alre...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-intelligence-architecture-synthesis-004
+  title: Extends existing script; closes gap where phases lack str...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-intelligence-architecture-synthesis-005
+  title: Prevents reading-level gate from rejecting valid research...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-intelligence-architecture-synthesis-006
+  title: 7 substrates have no programmatic validation; atlas is th...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-intelligence-architecture-synthesis-007
+  title: Prevents silent divergence in companion repos; low-effort...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-intelligence-architecture-synthesis-008
+  title: Rationale
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-intelligence-architecture-synthesis-009
+  title: '-----------'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-intelligence-architecture-synthesis-010
+  title: Calibrate on 10–15 labeled docs before CI enforcement; `d...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-intelligence-architecture-synthesis-011
+  title: Quarterly cadence; high-K nodes are structural risk; curr...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-intelligence-architecture-synthesis-012
+  title: GPS-like contextual routing reduces agent selection error...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-intelligence-architecture-synthesis-013
+  title: Required for HGT protocol; detects when derived repos hav...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-intelligence-architecture-synthesis-014
+  title: 1,500× token reduction; zero-server footprint; deferred t...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-intelligence-architecture-synthesis-015
+  title: Rationale
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-intelligence-architecture-synthesis-016
+  title: '-----------'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-intelligence-architecture-synthesis-017
+  title: 23 hard-coupled artefacts identified; migration path docu...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-intelligence-architecture-synthesis-018
+  title: Proof-of-concept for companion repo model; `companion-repos.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-intelligence-architecture-synthesis-019
+  title: Defers full A2A until security threat model is addressed;...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-intelligence-architecture-synthesis-020
+  title: Long-term evolutionary health; task-regime annotation ena...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # Intelligence & Architecture Synthesis: Cross-Cutting Findings from Sprint 12

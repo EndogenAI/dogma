@@ -1,10 +1,52 @@
 ---
-title: "Biological Evolution & Dogma Propagation — Inheritance, Mutation, and Learning-Flow Between Repos"
+title: Biological Evolution & Dogma Propagation — Inheritance, Mutation, and Learning-Flow
+  Between Repos
 status: Final
-research_sprint: "Sprint 12 — Intelligence & Architecture"
+research_sprint: Sprint 12 — Intelligence & Architecture
 wave: 3
 closes_issue: 273
 governs: []
+recommendations:
+- id: rec-biological-evolution-dogma-propagation-001
+  title: Recommendation
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-biological-evolution-dogma-propagation-002
+  title: '---------------'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-biological-evolution-dogma-propagation-003
+  title: Encode HGT protocol in the adoption methodology — add an ...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-biological-evolution-dogma-propagation-004
+  title: Adopt D4 doc as the formal HGT transfer medium — derived ...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-biological-evolution-dogma-propagation-005
+  title: Commission `scripts/check_divergence.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-biological-evolution-dogma-propagation-006
+  title: Document the Endogenous-First relaxation rule for derived...
+  status: deferred
+  linked_issue: 387
+  decision_ref: ''
+- id: rec-biological-evolution-dogma-propagation-007
+  title: HGT ingestion sprint cadence — schedule in the `dogma` ro...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-biological-evolution-dogma-propagation-008
+  title: Classify `dogma-rag` learnings at first sprint close — MC...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # Biological Evolution & Dogma Propagation — Inheritance, Mutation, and Learning-Flow Between Repos

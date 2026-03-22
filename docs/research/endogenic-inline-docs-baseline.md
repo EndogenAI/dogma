@@ -2,7 +2,30 @@
 title: Endogenic Inline Documentation as Connective Tissue
 status: Final
 closes_issue: 401
-x-governs: [endogenous-first, documentation-first]
+x-governs:
+- endogenous-first
+- documentation-first
+recommendations:
+- id: rec-endogenic-inline-docs-baseline-001
+  title: '1'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-endogenic-inline-docs-baseline-002
+  title: '2'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-endogenic-inline-docs-baseline-003
+  title: '3'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-endogenic-inline-docs-baseline-004
+  title: '4'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # Endogenic Inline Documentation as Connective Tissue

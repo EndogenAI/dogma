@@ -1,0 +1,46 @@
+# Suggested patch for docs/research/greenfield-repo-candidates.md
+# Review and edit before applying with Phase 6 patch application
+doc: docs/research/greenfield-repo-candidates.md
+doc_slug: greenfield-repo-candidates
+generated_at: '2026-03-22T20:41:09.795872+00:00'
+match_confidence: high
+recommendations:
+- id: rec-greenfield-repo-candidates-001
+  title: Adopt the 5-criterion framework as the canonical greenfie...
+  status: completed
+  linked_issue: 339
+  decision_ref: ''
+  _match_note: 'Matched issue #339: ''docs(agents): update "when to ask" decision
+    bounda'' (consecutive word overlap: 3)'
+  _confidence: medium
+- id: rec-greenfield-repo-candidates-002
+  title: Launch the Local RAG repo (`dogma-rag`) as the first gree...
+  status: accepted
+  linked_issue: 352
+  decision_ref: ''
+  _match_note: 'Matched issue #352: ''feat(rag): adopt LanceDB + BGE-Small for greenfiel''
+    (consecutive word overlap: 3)'
+  _confidence: medium
+- id: rec-greenfield-repo-candidates-003
+  title: Add `companion-repos.
+  status: accepted
+  linked_issue: 386
+  decision_ref: ''
+  _match_note: 'Matched issue #386: ''feat(ci): scheduled quarterly audit workflow
+    — enc'' (consecutive word overlap: 6)'
+  _confidence: high
+- id: rec-greenfield-repo-candidates-004
+  title: Keep service modules and substrate navigator as in-repo a...
+  status: accepted
+  linked_issue: 387
+  decision_ref: ''
+  _match_note: 'Matched issue #387: ''docs(agents): add civic-tech-patterns.md to
+    AGENTS'' (consecutive word overlap: 3)'
+  _confidence: medium
+- id: rec-greenfield-repo-candidates-005
+  title: Revisit platform coverage tooling (R7/#270) after the Emb...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low

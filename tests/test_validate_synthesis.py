@@ -461,7 +461,11 @@ class TestValidateRecommendationsBlock:
 
     @pytest.mark.io
     def test_deferred_entry_without_linked_issue_passes(self, tmp_path, capsys):
-        """Deferred entry with no linked_issue → warning printed, no error returned."""
+        """Deferred entry with no linked_issue → no warning, no error returned.
+
+        Only non-deferred entries missing linked_issue emit a WARN.  Deferred
+        entries are intentionally exempt because they have not yet been actioned.
+        """
         block = (
             "recommendations:\n"
             "  - id: rec-test-synthesis-001\n"

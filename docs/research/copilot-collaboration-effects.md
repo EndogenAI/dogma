@@ -6,27 +6,27 @@ date_published: 2026-03-18
 author: Executive Researcher
 recommendations:
 - id: rec-copilot-collaboration-effects-001
-  title: Document Collaboration Norms in AGENTS.
+  title: '1'
   status: deferred
-  linked_issue: 348
+  linked_issue: null
   decision_ref: ''
 - id: rec-copilot-collaboration-effects-002
-  title: 'Strengthen Review Gates with Objective Criteria: Move fro...'
-  status: accepted
-  linked_issue: 349
+  title: '2'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 - id: rec-copilot-collaboration-effects-003
-  title: 'Use Tests as Primary Validation Layer: For code-generatin...'
-  status: accepted
-  linked_issue: 350
+  title: '3'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 - id: rec-copilot-collaboration-effects-004
-  title: Measure Copilot acceptance rate vs.
+  title: '4'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-copilot-collaboration-effects-005
-  title: Designate exploration mode explicitly for security-critic...
+  title: '5'
   status: deferred
   linked_issue: null
   decision_ref: ''

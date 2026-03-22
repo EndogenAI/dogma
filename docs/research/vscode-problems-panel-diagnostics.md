@@ -7,24 +7,24 @@ governs:
 - documentation-first
 recommendations:
 - id: rec-vscode-problems-panel-diagnostics-001
-  title: In `executive-orchestrator.
+  title: '1'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-vscode-problems-panel-diagnostics-002
-  title: Observe whether static validation clears the errors when ...
+  title: '2'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-vscode-problems-panel-diagnostics-003
-  title: If the glob syntax passes static validation → 8 errors re...
+  title: '3'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-vscode-problems-panel-diagnostics-004
-  title: If the glob syntax still errors → accept as non-blocking ...
-  status: accepted
-  linked_issue: 386
+  title: '4'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 - id: rec-vscode-problems-panel-diagnostics-005
   title: Fix the root cause of each error category (recommendation...
@@ -37,27 +37,27 @@ recommendations:
   linked_issue: null
   decision_ref: ''
 - id: rec-vscode-problems-panel-diagnostics-007
-  title: Remove the `no-relative-traversal-in-agent-files` hook fr...
+  title: '1'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-vscode-problems-panel-diagnostics-008
-  title: Pop `stash@{0}` which already contains the correct revers...
+  title: '2'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-vscode-problems-panel-diagnostics-009
-  title: Update the AGENTS.
-  status: accepted
-  linked_issue: 387
+  title: '3'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 - id: rec-vscode-problems-panel-diagnostics-010
-  title: Update any other guides, agent files, or skill files that...
+  title: '4'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-vscode-problems-panel-diagnostics-011
-  title: This resolves ~281 link errors (Category C) completely.
+  title: '5'
   status: deferred
   linked_issue: null
   decision_ref: ''

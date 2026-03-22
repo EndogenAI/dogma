@@ -1,0 +1,35 @@
+# Suggested patch for docs/research/mcp-state-architecture.md
+# Review and edit before applying with Phase 6 patch application
+doc: docs/research/mcp-state-architecture.md
+doc_slug: mcp-state-architecture
+generated_at: '2026-03-22T20:41:09.926841+00:00'
+match_confidence: low
+recommendations:
+- id: rec-mcp-state-architecture-001
+  title: Maintain file-based state; add programmatic query (HIGH P...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-mcp-state-architecture-002
+  title: Document the Three-Layer State model in session-management.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-mcp-state-architecture-003
+  title: Keep MCP servers stateless Add a guardrail to `.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-mcp-state-architecture-004
+  title: Defer Redux-style middleware and time-travel (LOW PRIORIT...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low

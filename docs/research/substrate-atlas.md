@@ -1,17 +1,43 @@
 ---
-title: "Substrate Atlas — Full Taxonomic Breakdown of All Dogma Substrates"
-status: "Final"
+title: Substrate Atlas — Full Taxonomic Breakdown of All Dogma Substrates
+status: Final
 research_issue: 268
 closes_issue: 268
 date: 2026-03-15
 sources:
-  - https://diataxis.fr/
-  - https://c4model.com/
-  - https://arc42.org/overview/
-  - MANIFESTO.md
-  - AGENTS.md
-  - docs/glossary.md
-  - docs/research/methodology/substrate-taxonomy-content-context.md
+- https://diataxis.fr/
+- https://c4model.com/
+- https://arc42.org/overview/
+- MANIFESTO.md
+- AGENTS.md
+- docs/glossary.md
+- docs/research/methodology/substrate-taxonomy-content-context.md
+recommendations:
+- id: rec-substrate-atlas-001
+  title: Create `data/substrate-atlas.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-substrate-atlas-002
+  title: Add ADR validation to CI (HIGH PRIORITY) Create or extend...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-substrate-atlas-003
+  title: Add workplan validation to CI (MEDIUM PRIORITY) Add a `va...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-substrate-atlas-004
+  title: Extend `check_substrate_health.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-substrate-atlas-005
+  title: Update `docs/glossary.
+  status: accepted
+  linked_issue: 387
+  decision_ref: ''
 ---
 
 # Substrate Atlas — Full Taxonomic Breakdown of All Dogma Substrates

@@ -1,17 +1,39 @@
 ---
-title: "Custom Agent Service Modules — Per-Agent API Layers and the Skills/Service Boundary"
-status: "Final"
+title: Custom Agent Service Modules — Per-Agent API Layers and the Skills/Service
+  Boundary
+status: Final
 research_issue: 265
 closes_issue: 265
 date: 2026-03-15
 sources:
-  - https://python.langchain.com/docs/concepts/tools/
-  - https://a2aproject.github.io/A2A/latest/specification/
-  - https://code.visualstudio.com/docs/copilot/chat/mcp-servers
-  - https://microsoft.github.io/autogen/stable/user-guide/agentchat-user-guide/tool-use.html
-  - .github/skills/agent-file-authoring/SKILL.md
-  - docs/decisions/ADR-006-agent-skills-adoption.md
-  - AGENTS.md
+- https://python.langchain.com/docs/concepts/tools/
+- https://a2aproject.github.io/A2A/latest/specification/
+- https://code.visualstudio.com/docs/copilot/chat/mcp-servers
+- https://microsoft.github.io/autogen/stable/user-guide/agentchat-user-guide/tool-use.html
+- .github/skills/agent-file-authoring/SKILL.md
+- docs/decisions/ADR-006-agent-skills-adoption.md
+- AGENTS.md
+recommendations:
+- id: rec-custom-agent-service-modules-001
+  title: Enforce SKILL-as-Specification by SKILL.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-custom-agent-service-modules-002
+  title: Document the current service module inventory in `scripts...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-custom-agent-service-modules-003
+  title: Establish MCP escalation criteria in `docs/guides/` Docum...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-custom-agent-service-modules-004
+  title: Defer A2A Agent Card pattern (LOW PRIORITY) A2A per-agent...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # Custom Agent Service Modules — Per-Agent API Layers and the Skills/Service Boundary

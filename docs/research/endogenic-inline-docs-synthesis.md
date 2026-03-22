@@ -1,8 +1,48 @@
 ---
-title: "Synthesis: Endogenic Inline Documentation as the Substrate Connective Tissue"
+title: 'Synthesis: Endogenic Inline Documentation as the Substrate Connective Tissue'
 status: Final
 closes_issue: 401
-x-governs: [endogenous-first, documentation-first, local-compute-first, programmatic-first]
+x-governs:
+- endogenous-first
+- documentation-first
+- local-compute-first
+- programmatic-first
+recommendations:
+- id: rec-endogenic-inline-docs-synthesis-001
+  title: '1'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-endogenic-inline-docs-synthesis-002
+  title: '2'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-endogenic-inline-docs-synthesis-003
+  title: '3'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-endogenic-inline-docs-synthesis-004
+  title: '4'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-endogenic-inline-docs-synthesis-005
+  title: '5'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-endogenic-inline-docs-synthesis-006
+  title: '6'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-endogenic-inline-docs-synthesis-007
+  title: '7'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # Synthesis: Endogenic Inline Documentation as the Substrate Connective Tissue

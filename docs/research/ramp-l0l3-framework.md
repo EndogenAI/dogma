@@ -7,32 +7,32 @@ closes_issue: 320
 date: 2026-03-18
 recommendations:
 - id: rec-ramp-l0l3-framework-001
-  title: Formalize L0–L3 as an encoding ladder in AGENTS.
+  title: '1'
   status: deferred
-  linked_issue: 387
+  linked_issue: null
   decision_ref: ''
 - id: rec-ramp-l0l3-framework-002
-  title: Create a "Prompt Template Registry" — Encode high-value p...
+  title: '2'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-ramp-l0l3-framework-003
-  title: Audit and encode "automate your job" instances — Review s...
-  status: accepted
-  linked_issue: 387
+  title: '3'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 - id: rec-ramp-l0l3-framework-004
-  title: Add an "ecosystem embeddedness" dimension to L1 gate crit...
+  title: '4'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-ramp-l0l3-framework-005
-  title: Instrument "value density" not commit volume as the L3 si...
+  title: '5'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-ramp-l0l3-framework-006
-  title: Distinguish accountability from execution in PM role evol...
+  title: '6'
   status: deferred
   linked_issue: null
   decision_ref: ''

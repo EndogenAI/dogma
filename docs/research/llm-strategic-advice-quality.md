@@ -12,9 +12,9 @@ abstract: 'Research into LLM-generated strategic advice reveals a consistent fai
   high-stakes decision tasks.'
 recommendations:
 - id: rec-llm-strategic-advice-quality-001
-  title: Encode Decision Tables for High-Stakes Strategy
-  status: accepted
-  linked_issue: 331
+  title: '1'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 - id: rec-llm-strategic-advice-quality-002
   title: For agent recommendation tasks in critical domains (vendo...
@@ -27,7 +27,7 @@ recommendations:
   linked_issue: null
   decision_ref: ''
 - id: rec-llm-strategic-advice-quality-004
-  title: When LLMs Are Acceptable for Strategic Input
+  title: '2'
   status: deferred
   linked_issue: null
   decision_ref: ''
@@ -47,7 +47,7 @@ recommendations:
   linked_issue: null
   decision_ref: ''
 - id: rec-llm-strategic-advice-quality-008
-  title: 'Pattern: Encode, Then LLM'
+  title: '3'
   status: deferred
   linked_issue: null
   decision_ref: ''
@@ -77,12 +77,12 @@ recommendations:
   linked_issue: null
   decision_ref: ''
 - id: rec-llm-strategic-advice-quality-014
-  title: Use adversarial prompting for any trend-adjacent strategy...
+  title: '4'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-llm-strategic-advice-quality-015
-  title: Instrument for value density, not output volume — Per Tom...
+  title: '5'
   status: deferred
   linked_issue: null
   decision_ref: ''
