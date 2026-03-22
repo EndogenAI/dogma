@@ -170,7 +170,7 @@ def _extract_recommendation_items(section_text: str) -> list[str]:
             elif h3_numbered:
                 text = h3_numbered.group(1)
             else:
-                text = (numbered or bulleted).group(1)  # type: ignore[union-attr]
+                text = numbered.group(2) if numbered else bulleted.group(1)  # type: ignore[union-attr]
 
             # YAML safety: Remove common problematic characters for hand-rolled single quoting
             # though yaml.dump() is used later, we prepare the string here.
