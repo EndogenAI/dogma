@@ -1,18 +1,84 @@
 ---
-title: "Claude Code CLI Productivity Patterns for Multi-Agent Research Pipelines"
-status: "Final"
+title: Claude Code CLI Productivity Patterns for Multi-Agent Research Pipelines
+status: Final
 research_issue: 284
 closes_issue: 284
 date: 2026-03-17
 sources:
-  - https://code.claude.com/docs/en/hooks
-  - https://code.claude.com/docs/en/sub-agents
-  - https://code.claude.com/docs/en/cli-reference
-  - https://code.claude.com/docs/en/settings
-  - https://code.claude.com/docs/en/common-workflows
-  - https://github.com/anthropics/claude-code
-  - AGENTS.md
-  - MANIFESTO.md
+- https://code.claude.com/docs/en/hooks
+- https://code.claude.com/docs/en/sub-agents
+- https://code.claude.com/docs/en/cli-reference
+- https://code.claude.com/docs/en/settings
+- https://code.claude.com/docs/en/common-workflows
+- https://github.com/anthropics/claude-code
+- AGENTS.md
+- MANIFESTO.md
+recommendations:
+- id: rec-claude-code-cli-productivity-patterns-001
+  title: ADOPT `claude -p` print mode for batch synthesis tasks
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-claude-code-cli-productivity-patterns-002
+  title: ENCODE dogma's phase-gate-sequence as Claude Code `Stop`/...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-claude-code-cli-productivity-patterns-003
+  title: MAP dogma scripts to the SessionStart/SessionEnd hook lif...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-claude-code-cli-productivity-patterns-004
+  title: Claude Code hook
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-claude-code-cli-productivity-patterns-005
+  title: '---'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-claude-code-cli-productivity-patterns-006
+  title: '`SessionStart` + `additionalContext`'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-claude-code-cli-productivity-patterns-007
+  title: '`Stop` (type: prompt) or `TaskCompleted`'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-claude-code-cli-productivity-patterns-008
+  title: '`PreCompact` + `PostCompact`'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-claude-code-cli-productivity-patterns-009
+  title: '`UserPromptSubmit` + `additionalContext`'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-claude-code-cli-productivity-patterns-010
+  title: '`InstructionsLoaded`'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-claude-code-cli-productivity-patterns-011
+  title: '`PostToolUse` on `Edit\'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-claude-code-cli-productivity-patterns-012
+  title: '`SessionEnd`'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-claude-code-cli-productivity-patterns-013
+  title: DEFER Claude Code subagent architecture as a future compa...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # Claude Code CLI Productivity Patterns for Multi-Agent Research Pipelines

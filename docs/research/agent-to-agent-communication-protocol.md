@@ -1,10 +1,52 @@
 ---
-title: "Agent-to-Agent Communication Protocol — Synchronous Coordination for the EndogenAI Fleet"
+title: Agent-to-Agent Communication Protocol — Synchronous Coordination for the EndogenAI
+  Fleet
 status: Final
-research_sprint: "Sprint 12 — Intelligence & Architecture"
+research_sprint: Sprint 12 — Intelligence & Architecture
 wave: 3
 closes_issue: 272
 governs: []
+recommendations:
+- id: rec-agent-to-agent-communication-protocol-001
+  title: Recommendation
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-agent-to-agent-communication-protocol-002
+  title: '---------------'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-agent-to-agent-communication-protocol-003
+  title: Defer full A2A adoption — the fleet's current serialised ...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-agent-to-agent-communication-protocol-004
+  title: Investigate shared `.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-agent-to-agent-communication-protocol-005
+  title: Extend `validate_session_state.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-agent-to-agent-communication-protocol-006
+  title: Standardise `.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-agent-to-agent-communication-protocol-007
+  title: Extend AGENTS.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-agent-to-agent-communication-protocol-008
+  title: When fleet grows to ≥4 concurrent sessions, evaluate A2A'...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # Agent-to-Agent Communication Protocol — Synchronous Coordination for the EndogenAI Fleet

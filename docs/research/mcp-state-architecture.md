@@ -1,18 +1,39 @@
 ---
-title: "MCP State Architecture — Stateless vs. Stateful Agent Coordination"
-status: "Final"
+title: MCP State Architecture — Stateless vs. Stateful Agent Coordination
+status: Final
 research_issue: 264
 closes_issue: 264
 date: 2026-03-15
 sources:
-  - https://modelcontextprotocol.io/specification/2025-03-26/basic/lifecycle
-  - https://langchain-ai.github.io/langgraph/concepts/persistence/
-  - https://microsoft.github.io/autogen/stable/user-guide/agentchat-user-guide/memory.html
-  - https://platform.openai.com/docs/assistants/overview
-  - https://redux.js.org/introduction/motivation
-  - docs/guides/session-management.md
-  - AGENTS.md
-  - .github/agents/executive-orchestrator.agent.md
+- https://modelcontextprotocol.io/specification/2025-03-26/basic/lifecycle
+- https://langchain-ai.github.io/langgraph/concepts/persistence/
+- https://microsoft.github.io/autogen/stable/user-guide/agentchat-user-guide/memory.html
+- https://platform.openai.com/docs/assistants/overview
+- https://redux.js.org/introduction/motivation
+- docs/guides/session-management.md
+- AGENTS.md
+- .github/agents/executive-orchestrator.agent.md
+recommendations:
+- id: rec-mcp-state-architecture-001
+  title: Maintain file-based state; add programmatic query (HIGH P...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-mcp-state-architecture-002
+  title: Document the Three-Layer State model in session-management.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-mcp-state-architecture-003
+  title: Keep MCP servers stateless Add a guardrail to `.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-mcp-state-architecture-004
+  title: Defer Redux-style middleware and time-travel (LOW PRIORIT...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # MCP State Architecture — Stateless vs. Stateful Agent Coordination

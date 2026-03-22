@@ -1,10 +1,37 @@
 ---
-title: "Output Format Constraint as the Primary Driver of Compressed Agent Returns — Evidence and Alternatives"
+title: Output Format Constraint as the Primary Driver of Compressed Agent Returns
+  — Evidence and Alternatives
 status: Final
-research_sprint: "Sprint 12 — Intelligence & Architecture"
+research_sprint: Sprint 12 — Intelligence & Architecture
 wave: 4
 closes_issue: 230
 governs: []
+recommendations:
+- id: rec-output-format-constraint-compressed-returns-001
+  title: '1'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-output-format-constraint-compressed-returns-002
+  title: '2'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-output-format-constraint-compressed-returns-003
+  title: '3'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-output-format-constraint-compressed-returns-004
+  title: '4'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-output-format-constraint-compressed-returns-005
+  title: '5'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # Output Format Constraint as the Primary Driver of Compressed Agent Returns — Evidence and Alternatives

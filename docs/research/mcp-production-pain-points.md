@@ -1,15 +1,31 @@
 ---
-title: "MCP Production Pain Points — 2026 Roadmap Analysis"
-status: "Final"
+title: MCP Production Pain Points — 2026 Roadmap Analysis
+status: Final
 research_issue: 285
 closes_issue: 285
 date: 2026-03-17
 sources:
-  - https://thenewstack.io/mcps-biggest-growing-pains-for-production-use-will-soon-be-solved/
-  - docs/research/mcp-state-architecture.md
-  - docs/research/intelligence-architecture-synthesis.md
-  - AGENTS.md
-  - MANIFESTO.md
+- https://thenewstack.io/mcps-biggest-growing-pains-for-production-use-will-soon-be-solved/
+- docs/research/mcp-state-architecture.md
+- docs/research/intelligence-architecture-synthesis.md
+- AGENTS.md
+- MANIFESTO.md
+recommendations:
+- id: rec-mcp-production-pain-points-001
+  title: Codify stateless-first as a required design constraint fo...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-mcp-production-pain-points-002
+  title: 'Add a "Tasks API" adoption gate to #297 and #303 issue ac...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-mcp-production-pain-points-003
+  title: Add a `.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # MCP Production Pain Points — 2026 Roadmap Analysis

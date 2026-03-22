@@ -1,24 +1,50 @@
 ---
-title: "Local Inference & RAG — Optimal RAG Stack for the Dogma Corpus on Apple Silicon"
-status: "Final"
+title: Local Inference & RAG — Optimal RAG Stack for the Dogma Corpus on Apple Silicon
+status: Final
 research_issue: 269
 closes_issue: 269
 date: 2026-03-15
 sources:
-  - https://docs.trychroma.com/
-  - https://qdrant.tech/documentation/
-  - https://lancedb.github.io/lancedb/
-  - https://github.com/pgvector/pgvector
-  - https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2
-  - https://huggingface.co/BAAI/bge-small-en-v1.5
-  - https://modelcontextprotocol.io/specification/2025-03-26/server/tools
-  - https://www.sbert.net/docs/pretrained_models.html
-  - https://developer.apple.com/metal/pytorch/
-  - docs/research/mcp-state-architecture.md
-  - docs/research/custom-agent-service-modules.md
-  - docs/research/substrate-atlas.md
-  - AGENTS.md
-  - MANIFESTO.md
+- https://docs.trychroma.com/
+- https://qdrant.tech/documentation/
+- https://lancedb.github.io/lancedb/
+- https://github.com/pgvector/pgvector
+- https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2
+- https://huggingface.co/BAAI/bge-small-en-v1.5
+- https://modelcontextprotocol.io/specification/2025-03-26/server/tools
+- https://www.sbert.net/docs/pretrained_models.html
+- https://developer.apple.com/metal/pytorch/
+- docs/research/mcp-state-architecture.md
+- docs/research/custom-agent-service-modules.md
+- docs/research/substrate-atlas.md
+- AGENTS.md
+- MANIFESTO.md
+recommendations:
+- id: rec-local-inference-rag-001
+  title: Adopt LanceDB + BGE-Small-EN-v1.
+  status: deferred
+  linked_issue: 386
+  decision_ref: ''
+- id: rec-local-inference-rag-002
+  title: Implement as MCP server with `rag_query` + `rag_reindex` ...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-local-inference-rag-003
+  title: Defer in-repo vs.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-local-inference-rag-004
+  title: Add `rag-index/` to `.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-local-inference-rag-005
+  title: Consider `rag_reindex` as a post-commit hook trigger Afte...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # Local Inference & RAG — Optimal RAG Stack for the Dogma Corpus on Apple Silicon

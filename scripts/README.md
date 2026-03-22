@@ -76,7 +76,7 @@ scripts/
   preexec_audit_log.py         # Format and filter the shell pre-execution governor audit log; calculates compliance rate (closes #305)
   rate_limit_config.py         # CLI manager for data/rate-limit-profiles.yml — add/update provider profiles (closes #323)
   rate_limit_gate.py           # Pre-delegation rate-limit circuit breaker — checks budget and provider policy before orchestration (closes #325)
-  substrate_distiller.py       # AST-based distiller for x-governs/Intent/Rationale extraction; computes RDI and outputs json|markdown|table summaries for Review/CI gates
+  substrate_distiller.py       # Audit accepted recommendations against the substrate (agents, skills, guides); exits 1 if any accepted rec ID is absent from substrate files; --check, --id, --registry (closes #409)
   repaired_audit.py            # Post-audit repair validator — checks that identified gaps in a prior audit result have been resolved (closes #301)
   token_spin_detector.py       # Detect "token spinning" (repeated loops with no progress) in session logs using Hamming distance and regex entropy (closes #310)
   index_recommendations.py     # Scan finalized synthesis docs and write data/recommendations-registry.yml; --dry-run, --check, --docs-dir (closes #407)
@@ -292,32 +292,30 @@ then commit with `docs(plans): add workplan for <slug>`.
 
 ## scripts/substrate_distiller.py
 
-**Job**: Enable maintainers and agents to quantify governance/rationale coverage from Python code so Review gates can block low-signal or ungoverned changes deterministically.
+**Job**: Audit the implementation state of accepted recommendations — confirm that every recommendation marked `accepted` or `accepted-for-adoption` in `data/recommendations-registry.yml` is explicitly referenced by its ID somewhere in the agent/skill/guide substrate.
 
-**Purpose**: Parse Python module/class/function docstrings via AST to extract `x-governs`, `## Intent`, and `## Rationale` blocks; compute RDI and classify records as green/yellow/red. Emits machine-readable JSON or human-readable table/markdown summaries.
+**Purpose**: Scans `.github/agents/**/*.agent.md`, `.github/skills/**/SKILL.md`, and `docs/guides/**/*.md` for each accepted recommendation ID. Exits `1` if any accepted recommendation is missing from the substrate, making it suitable as a CI enforcement gate.
 
 **Tests**: [`tests/test_substrate_distiller.py`](../tests/test_substrate_distiller.py)
 
 **Usage**:
 
 ```bash
-uv run python scripts/substrate_distiller.py --path scripts --format json
-uv run python scripts/substrate_distiller.py --path scripts --format markdown --summary-only
-uv run python scripts/substrate_distiller.py --path scripts --threshold 0.08 --fail-on-debt
+uv run python scripts/substrate_distiller.py --check
+uv run python scripts/substrate_distiller.py --id rec-llm-cost-001 --check
+uv run python scripts/substrate_distiller.py --registry path/to/registry.yml --check
 ```
 
 **Flags**:
 
 | Flag | Required | Description |
 |------|----------|-------------|
-| `--path` | yes | Python file or directory to scan recursively for `.py` files |
-| `--format` | no | Output format: `json`, `markdown`, or `table` (default `table`) |
-| `--threshold` | no | RDI debt threshold used for debt classification (default `0.08`) |
-| `--fail-on-debt` | no | Exit with code `1` when any debt records are found |
-| `--include-private` | no | Include private symbols (`_name`) in extraction |
-| `--summary-only` | no | Emit only aggregate summary metrics |
+| `--check` | no | Exit `1` if any accepted recommendations are missing from the substrate |
+| `--dry_run` | no | Preview results without enforcing exit code `1` |
+| `--id` | no | Filter audit to a single recommendation ID |
+| `--registry` | no | Path to the recommendations registry (default: `data/recommendations-registry.yml`) |
 
-**Exit codes**: `0` success/no blocking debt; `1` debt present with `--fail-on-debt`; `2` invalid args or parse/path errors.
+**Exit codes**: `0` all accepted recommendations are distilled; `1` one or more are missing (with `--check`); `2` registry not found or malformed.
 
 ---
 

@@ -11,7 +11,7 @@ abstract: Meta's acquisition of Moltbook and subsequent Terms-of-Service changes
   and align with dogma's Local-Compute-First axiom.
 recommendations:
 - id: rec-ai-platform-lock-in-risks-001
-  title: Document Platform Dependencies
+  title: '1'
   status: deferred
   linked_issue: null
   decision_ref: ''
@@ -31,9 +31,9 @@ recommendations:
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-platform-lock-in-risks-005
-  title: Implement Multi-Provider Agent Abstraction
-  status: accepted
-  linked_issue: 333
+  title: '2'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 - id: rec-ai-platform-lock-in-risks-006
   title: Create `dogma.
@@ -51,12 +51,12 @@ recommendations:
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-platform-lock-in-risks-009
-  title: Strengthen Local-Compute-First in Onboarding
+  title: '3'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-platform-lock-in-risks-010
-  title: Document how to run dogma's full agent fleet locally (vs.
+  title: Document how to run dogmas full agent fleet locally (vs.
   status: deferred
   linked_issue: null
   decision_ref: ''
@@ -66,27 +66,27 @@ recommendations:
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-platform-lock-in-risks-012
-  title: 'Apply Data Portability Design: If your organization is bu...'
+  title: '1'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-platform-lock-in-risks-013
-  title: 'Monitor Vendor ToS Changes: Subscribe to ToS update notif...'
+  title: '2'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-platform-lock-in-risks-014
-  title: 'Budget for Migration Costs: Assume one major platform wil...'
+  title: '3'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-platform-lock-in-risks-015
-  title: Conduct annual third-party AI dependency audits using NIS...
+  title: '4'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-platform-lock-in-risks-016
-  title: Implement provider abstraction at the network layer, not ...
+  title: '5'
   status: deferred
   linked_issue: null
   decision_ref: ''

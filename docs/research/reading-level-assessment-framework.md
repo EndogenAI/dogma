@@ -1,10 +1,41 @@
 ---
-title: "Reading Level Assessment Framework — Calibrating Substrate Depth by Audience"
+title: Reading Level Assessment Framework — Calibrating Substrate Depth by Audience
 status: Final
-research_sprint: "Sprint 12 — Intelligence & Architecture"
+research_sprint: Sprint 12 — Intelligence & Architecture
 wave: 4
 closes_issue: 274
 governs: []
+recommendations:
+- id: rec-reading-level-assessment-framework-001
+  title: '1'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-reading-level-assessment-framework-002
+  title: '2'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-reading-level-assessment-framework-003
+  title: '3'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-reading-level-assessment-framework-004
+  title: '4'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-reading-level-assessment-framework-005
+  title: '5'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-reading-level-assessment-framework-006
+  title: '6'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # Reading Level Assessment Framework — Calibrating Substrate Depth by Audience

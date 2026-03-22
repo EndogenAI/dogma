@@ -20,19 +20,27 @@ from typing import Any, Dict, List
 import yaml
 
 
+class RegistryError(Exception):
+    """Raised when the recommendations registry cannot be loaded."""
+
+
 def load_registry(registry_path: Path) -> List[Dict[str, Any]]:
-    """Load the recommendations registry."""
+    """Load the recommendations registry.
+
+    Raises:
+        RegistryError: if the registry file is missing or malformed.  The
+            caller (``main``) owns the ``sys.exit`` call so this helper
+            remains reusable in tests without terminating the process.
+    """
     if not registry_path.exists():
-        print(f"Error: Registry not found at {registry_path}", file=sys.stderr)
-        sys.exit(2)
+        raise RegistryError(f"Registry not found at {registry_path}")
 
     try:
         with open(registry_path, "r", encoding="utf-8") as f:
             data = yaml.safe_load(f)
             return data.get("recommendations", [])
     except Exception as e:
-        print(f"Error reading registry: {e}", file=sys.stderr)
-        sys.exit(2)
+        raise RegistryError(f"Error reading registry: {e}") from e
 
 
 def get_substrate_files(root: Path) -> List[Path]:
@@ -62,7 +70,11 @@ def main():
     root = Path.cwd()
     registry_path = root / args.registry
 
-    recommendations = load_registry(registry_path)
+    try:
+        recommendations = load_registry(registry_path)
+    except RegistryError as exc:
+        print(str(exc), file=sys.stderr)
+        sys.exit(2)
 
     accepted_statuses = {"accepted", "accepted-for-adoption"}
     targets = [r for r in recommendations if r.get("status") in accepted_statuses]

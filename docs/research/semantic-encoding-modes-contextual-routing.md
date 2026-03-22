@@ -1,10 +1,52 @@
 ---
-title: "Semantic Encoding Modes & Contextual Routing — Priority Annotations and GPS-Like Delegation Sequencing"
+title: Semantic Encoding Modes & Contextual Routing — Priority Annotations and GPS-Like
+  Delegation Sequencing
 status: Final
-research_sprint: "Sprint 12 — Intelligence & Architecture"
+research_sprint: Sprint 12 — Intelligence & Architecture
 wave: 3
 closes_issue: 277
 governs: []
+recommendations:
+- id: rec-semantic-encoding-modes-contextual-routing-001
+  title: Recommendation
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-semantic-encoding-modes-contextual-routing-002
+  title: '---------------'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-semantic-encoding-modes-contextual-routing-003
+  title: Commission `scripts/suggest_routing.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-semantic-encoding-modes-contextual-routing-004
+  title: Add `data/task-type-classifier.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-semantic-encoding-modes-contextual-routing-005
+  title: Encode annotation schema in `data/amplification-table.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-semantic-encoding-modes-contextual-routing-006
+  title: Update AGENTS.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-semantic-encoding-modes-contextual-routing-007
+  title: Add `suggest_routing.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-semantic-encoding-modes-contextual-routing-008
+  title: Defer MCP routing tool — implement CLI first; promote to ...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # Semantic Encoding Modes & Contextual Routing — Priority Annotations and GPS-Like Delegation Sequencing

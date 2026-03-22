@@ -58,6 +58,51 @@ recommendations:
   status: deferred
   linked_issue: null
   decision_ref: ''
+- id: rec-dogma-corpus-audit-2026-03-012
+  title: Component
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-dogma-corpus-audit-2026-03-013
+  title: :---
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-dogma-corpus-audit-2026-03-014
+  title: Substrate Fix
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-dogma-corpus-audit-2026-03-015
+  title: BDI Tagging
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-dogma-corpus-audit-2026-03-016
+  title: Gate Tightening
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-dogma-corpus-audit-2026-03-017
+  title: Index Repair
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-dogma-corpus-audit-2026-03-018
+  title: Anchor Sync
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-dogma-corpus-audit-2026-03-019
+  title: Handoff Clean
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-dogma-corpus-audit-2026-03-020
+  title: Axiom Audit
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 ## Executive Summary

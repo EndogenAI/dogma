@@ -7,39 +7,39 @@ closes_issue: 329
 date: 2026-03-18
 recommendations:
 - id: rec-civic-ai-governance-001
-  title: Document Dogma's Ethical Values as Operational Policy — E...
+  title: '1'
   status: deferred
-  linked_issue: 387
+  linked_issue: null
   decision_ref: ''
 - id: rec-civic-ai-governance-002
-  title: Civic Tech Case Study Registry — Create `docs/research/ci...
+  title: '2'
   status: deferred
-  linked_issue: 387
+  linked_issue: null
   decision_ref: ''
 - id: rec-civic-ai-governance-003
-  title: Implement Values Audit Cycle — For any multi-month engage...
+  title: '3'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-civic-ai-governance-004
-  title: Adopt a 30-Day Values Extraction Process Before AI Tool A...
+  title: '4'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-civic-ai-governance-005
-  title: Institute Cross-Domain Conflict Detection for AI Decision...
+  title: '5'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-civic-ai-governance-006
-  title: Create a Resident Right-to-Audit Equivalent for Agent Act...
+  title: '6'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-civic-ai-governance-007
-  title: Measure Governance Effectiveness with Three Outcome Metri...
-  status: accepted
-  linked_issue: 387
+  title: '7'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 ---
 

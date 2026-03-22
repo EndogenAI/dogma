@@ -10,9 +10,9 @@ abstract: 'Recent governance reports on AI agent autonomy failures (UK CMA watch
   and inform the ''when to ask vs. proceed'' decision boundary for agentic workflows.'
 recommendations:
 - id: rec-ai-autonomy-governance-001
-  title: Enforce Approval Gates in `.
-  status: accepted
-  linked_issue: 332
+  title: '1'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 - id: rec-ai-autonomy-governance-002
   title: Every `.
@@ -30,9 +30,9 @@ recommendations:
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-autonomy-governance-005
-  title: Update "When to Ask vs.
-  status: completed
-  linked_issue: 339
+  title: '2'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 - id: rec-ai-autonomy-governance-006
   title: 'Add explicit guidance on: - High-stakes vs.'
@@ -40,9 +40,9 @@ recommendations:
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-autonomy-governance-007
-  title: Link CMA Report in AGENTS.
+  title: '3'
   status: deferred
-  linked_issue: 341
+  linked_issue: null
   decision_ref: ''
 - id: rec-ai-autonomy-governance-008
   title: Add a citation block under the Minimal-Posture principle ...
@@ -55,29 +55,29 @@ recommendations:
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-autonomy-governance-010
-  title: Apply OWASP LLM Excessive Agency (LLM08) audit to every a...
+  title: '4'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-autonomy-governance-011
-  title: Audit agent autonomy levels — classify each agent by the ...
+  title: '1'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-autonomy-governance-012
-  title: Implement approval gates incrementally — start with Level...
+  title: '2'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-autonomy-governance-013
-  title: Transparent incentive labeling — if an agent's recommenda...
+  title: '3'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-autonomy-governance-014
-  title: Subscribe to AI Incident Database (incidentdatabase.
-  status: completed
-  linked_issue: 339
+  title: '4'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 ---
 

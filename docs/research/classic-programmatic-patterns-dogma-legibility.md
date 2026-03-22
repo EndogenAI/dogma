@@ -1,10 +1,37 @@
 ---
-title: "Classic Programmatic Patterns for Dogma Legibility — Decision Tables, State Machines, Guard Clauses, and Design-by-Contract in Governance Documents"
+title: Classic Programmatic Patterns for Dogma Legibility — Decision Tables, State
+  Machines, Guard Clauses, and Design-by-Contract in Governance Documents
 status: Final
-research_sprint: "Sprint 12 — Intelligence & Architecture"
+research_sprint: Sprint 12 — Intelligence & Architecture
 wave: 4
 closes_issue: 266
 governs: []
+recommendations:
+- id: rec-classic-programmatic-patterns-dogma-legibility-001
+  title: '1'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-classic-programmatic-patterns-dogma-legibility-002
+  title: '2'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-classic-programmatic-patterns-dogma-legibility-003
+  title: '3'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-classic-programmatic-patterns-dogma-legibility-004
+  title: '4'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-classic-programmatic-patterns-dogma-legibility-005
+  title: '5'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # Classic Programmatic Patterns for Dogma Legibility — Decision Tables, State Machines, Guard Clauses, and Design-by-Contract in Governance Documents

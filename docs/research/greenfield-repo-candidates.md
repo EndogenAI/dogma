@@ -1,24 +1,50 @@
 ---
-title: "Greenfield Repo Candidates — Decision Framework and First Launch Recommendation"
-status: "Final"
+title: Greenfield Repo Candidates — Decision Framework and First Launch Recommendation
+status: Final
 research_issue: 271
 closes_issue: 271
 date: 2026-03-15
 sources:
-  - https://github.com/cookiecutter/cookiecutter
-  - https://github.com/EndogenAI/dogma
-  - https://semver.org/
-  - https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository
-  - https://matklad.github.io/2021/08/22/large-rust-workspaces.html
-  - https://monorepo.tools/
-  - docs/research/local-inference-rag.md
-  - docs/research/platform-agnosticism.md
-  - docs/research/custom-agent-service-modules.md
-  - docs/research/substrate-atlas.md
-  - docs/research/mcp-state-architecture.md
-  - cookiecutter.json
-  - AGENTS.md
-  - MANIFESTO.md
+- https://github.com/cookiecutter/cookiecutter
+- https://github.com/EndogenAI/dogma
+- https://semver.org/
+- https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository
+- https://matklad.github.io/2021/08/22/large-rust-workspaces.html
+- https://monorepo.tools/
+- docs/research/local-inference-rag.md
+- docs/research/platform-agnosticism.md
+- docs/research/custom-agent-service-modules.md
+- docs/research/substrate-atlas.md
+- docs/research/mcp-state-architecture.md
+- cookiecutter.json
+- AGENTS.md
+- MANIFESTO.md
+recommendations:
+- id: rec-greenfield-repo-candidates-001
+  title: Adopt the 5-criterion framework as the canonical greenfie...
+  status: completed
+  linked_issue: 339
+  decision_ref: ''
+- id: rec-greenfield-repo-candidates-002
+  title: Launch the Local RAG repo (`dogma-rag`) as the first gree...
+  status: accepted
+  linked_issue: 352
+  decision_ref: ''
+- id: rec-greenfield-repo-candidates-003
+  title: Add `companion-repos.
+  status: accepted
+  linked_issue: 386
+  decision_ref: ''
+- id: rec-greenfield-repo-candidates-004
+  title: Keep service modules and substrate navigator as in-repo a...
+  status: accepted
+  linked_issue: 387
+  decision_ref: ''
+- id: rec-greenfield-repo-candidates-005
+  title: Revisit platform coverage tooling (R7/#270) after the Emb...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # Greenfield Repo Candidates — Decision Framework and First Launch Recommendation

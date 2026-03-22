@@ -6,37 +6,37 @@ date_published: 2026-03-18
 author: Executive Researcher
 recommendations:
 - id: rec-ai-workload-observability-001
-  title: 'Adopt OpenTelemetry for all inter-agent calls: Record cor...'
-  status: accepted
-  linked_issue: 334
+  title: '1'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 - id: rec-ai-workload-observability-002
-  title: Implement circuit-breaker per provider (rate-limit-resili...
+  title: '2'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-workload-observability-003
-  title: 'Observable APIs for long-running services: Ollama, Docker...'
-  status: accepted
-  linked_issue: 342
+  title: '3'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 - id: rec-ai-workload-observability-004
-  title: Implement OpenTelemetry GenAI semantic convention attribu...
+  title: '4'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-workload-observability-005
-  title: 'Per-session trace collection: Each session scratchpad inc...'
+  title: '1 ``` Phases: 4 | Tokens Planned: 15000 | Tokens Spent: 1...'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-workload-observability-006
-  title: 'Post-session automated analysis: `scripts/correlate_healt...'
+  title: '2'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-ai-workload-observability-007
-  title: Profile hidden technical debt via retry attribution (Scul...
+  title: '3'
   status: deferred
   linked_issue: null
   decision_ref: ''

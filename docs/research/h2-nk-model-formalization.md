@@ -1,10 +1,37 @@
 ---
-title: "NK Model Formalisation of the EndogenAI Fleet — Coupling, Fragility, and Resilience in the Agent Knowledge Network"
+title: NK Model Formalisation of the EndogenAI Fleet — Coupling, Fragility, and Resilience
+  in the Agent Knowledge Network
 status: Final
-research_sprint: "Sprint 12 — Intelligence & Architecture"
+research_sprint: Sprint 12 — Intelligence & Architecture
 wave: 4
 closes_issue: 232
 governs: []
+recommendations:
+- id: rec-h2-nk-model-formalization-001
+  title: '1'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-h2-nk-model-formalization-002
+  title: '2'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-h2-nk-model-formalization-003
+  title: '3'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-h2-nk-model-formalization-004
+  title: '4'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-h2-nk-model-formalization-005
+  title: '5'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # NK Model Formalisation of the EndogenAI Fleet — Coupling, Fragility, and Resilience in the Agent Knowledge Network

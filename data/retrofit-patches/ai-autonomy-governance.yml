@@ -2,17 +2,16 @@
 # Review and edit before applying with Phase 6 patch application
 doc: docs/research/ai-autonomy-governance.md
 doc_slug: ai-autonomy-governance
-generated_at: '2026-03-21T01:23:14.014115+00:00'
-match_confidence: high
+generated_at: '2026-03-22T20:41:09.638853+00:00'
+match_confidence: medium
 recommendations:
 - id: rec-ai-autonomy-governance-001
-  title: Enforce Approval Gates in `.
-  status: accepted
-  linked_issue: 332
+  title: '1'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
-  _match_note: 'Matched issue #332: ''feat(governance): enforce approval gates for
-    file/'' (consecutive word overlap: 3)'
-  _confidence: medium
+  _match_note: No matching issue found
+  _confidence: low
 - id: rec-ai-autonomy-governance-002
   title: Every `.
   status: deferred
@@ -35,13 +34,12 @@ recommendations:
   _match_note: No matching issue found
   _confidence: low
 - id: rec-ai-autonomy-governance-005
-  title: Update "When to Ask vs.
-  status: completed
-  linked_issue: 339
+  title: '2'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
-  _match_note: 'Matched issue #339: ''docs(agents): update "when to ask" decision
-    bounda'' (consecutive word overlap: 5)'
-  _confidence: high
+  _match_note: No matching issue found
+  _confidence: low
 - id: rec-ai-autonomy-governance-006
   title: 'Add explicit guidance on: - High-stakes vs.'
   status: deferred
@@ -50,12 +48,12 @@ recommendations:
   _match_note: No matching issue found
   _confidence: low
 - id: rec-ai-autonomy-governance-007
-  title: Link CMA Report in AGENTS.
+  title: '3'
   status: deferred
-  linked_issue: 341
+  linked_issue: null
   decision_ref: ''
-  _match_note: 'Multiple matches: #341, #387 — manual review needed'
-  _confidence: medium
+  _match_note: No matching issue found
+  _confidence: low
 - id: rec-ai-autonomy-governance-008
   title: Add a citation block under the Minimal-Posture principle ...
   status: completed
@@ -72,38 +70,37 @@ recommendations:
   _match_note: No matching issue found
   _confidence: low
 - id: rec-ai-autonomy-governance-010
-  title: Apply OWASP LLM Excessive Agency (LLM08) audit to every a...
+  title: '4'
   status: deferred
   linked_issue: null
   decision_ref: ''
   _match_note: No matching issue found
   _confidence: low
 - id: rec-ai-autonomy-governance-011
-  title: Audit agent autonomy levels — classify each agent by the ...
+  title: '1'
   status: deferred
   linked_issue: null
   decision_ref: ''
   _match_note: No matching issue found
   _confidence: low
 - id: rec-ai-autonomy-governance-012
-  title: Implement approval gates incrementally — start with Level...
+  title: '2'
   status: deferred
   linked_issue: null
   decision_ref: ''
   _match_note: No matching issue found
   _confidence: low
 - id: rec-ai-autonomy-governance-013
-  title: Transparent incentive labeling — if an agent's recommenda...
+  title: '3'
   status: deferred
   linked_issue: null
   decision_ref: ''
   _match_note: No matching issue found
   _confidence: low
 - id: rec-ai-autonomy-governance-014
-  title: Subscribe to AI Incident Database (incidentdatabase.
-  status: completed
-  linked_issue: 339
+  title: '4'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
-  _match_note: 'Matched issue #339: ''docs(agents): update "when to ask" decision
-    bounda'' (consecutive word overlap: 3)'
-  _confidence: medium
+  _match_note: No matching issue found
+  _confidence: low

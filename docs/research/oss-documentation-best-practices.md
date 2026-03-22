@@ -1,18 +1,49 @@
 ---
-title: "OSS Documentation Best Practices"
-research_issue: "#18"
+title: OSS Documentation Best Practices
+research_issue: '#18'
 status: Final
 date: 2026-03-07
 closes_issue: 18
 sources:
-  - .cache/sources/makeareadme-com.md
-  - .cache/sources/keepachangelog-com-en-1-1-0.md
-  - .cache/sources/writethedocs-org-guide.md
-  - .cache/sources/squidfunk-github-io-mkdocs-material.md
-  - .cache/sources/docusaurus-io-docs.md
-  - .cache/sources/docs-github-com-en-communities-setting-up-your-project-for-h.md
-  - .cache/sources/github-com-matiassingers-awesome-readme.md
-  - .cache/sources/pdoc-dev.md
+- .cache/sources/makeareadme-com.md
+- .cache/sources/keepachangelog-com-en-1-1-0.md
+- .cache/sources/writethedocs-org-guide.md
+- .cache/sources/squidfunk-github-io-mkdocs-material.md
+- .cache/sources/docusaurus-io-docs.md
+- .cache/sources/docs-github-com-en-communities-setting-up-your-project-for-h.md
+- .cache/sources/github-com-matiassingers-awesome-readme.md
+- .cache/sources/pdoc-dev.md
+recommendations:
+- id: rec-oss-documentation-best-practices-001
+  title: Add `CHANGELOG.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-oss-documentation-best-practices-002
+  title: Add CI badge + TOC to `README.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-oss-documentation-best-practices-003
+  title: Add development environment setup to `CONTRIBUTING.
+  status: accepted
+  linked_issue: 385
+  decision_ref: ''
+- id: rec-oss-documentation-best-practices-004
+  title: Add MkDocs Material docsite (near-term, 1–2 hours) Add `m...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-oss-documentation-best-practices-005
+  title: Add link checker to CI (near-term, 30 minutes) Add `lyche...
+  status: deferred
+  linked_issue: 386
+  decision_ref: ''
+- id: rec-oss-documentation-best-practices-006
+  title: Run `validate_synthesis.
+  status: accepted
+  linked_issue: 386
+  decision_ref: ''
 ---
 
 # OSS Documentation Best Practices

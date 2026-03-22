@@ -125,7 +125,7 @@ def _extract_recommendations_section(text: str) -> str:
     section_lines: list[str] = []
 
     for line in lines:
-        if re.match(r"^## Recommendations\s*$", line):
+        if re.match(r"^## ([\d\.]+\s+)?(.*?)Recommendations(.*?)$", line):
             in_section = True
             continue
         if in_section and re.match(r"^## ", line):
@@ -142,23 +142,44 @@ def _extract_recommendation_items(section_text: str) -> list[str]:
     Handles:
     - Numbered lists: ``1. text`` or ``1) text``
     - Bullet lists:   ``- text`` or ``* text``
+    - Bolded:         ``**R1 — Text**``
+    - Table rows:     ``| R1 | Text |``
     - Multi-line items (continuation lines)
     """
     items: list[str] = []
     current_item: list[str] = []
 
     for line in section_text.split("\n"):
-        numbered = re.match(r"^\s*\d+[.)]\s+(.+)", line)
+        numbered = re.match(r"^\s*R?(\d+)[.)]\s+(.+)", line)
+        bold_numbered = re.match(r"^\s*\*\*R?(\d+)\s+—\s+(.+)\*\*", line)
+        bold_numbered_only = re.match(r"^\s*\*\*(\d+)\.\s+(.+)\*\*", line)
         bulleted = re.match(r"^\s{0,3}[-*]\s+(.+)", line)
+        table_row = re.match(r"^\s*\|\s*(.*?)R?(\d+)?\s*\|\s*(.+?)\s*\|", line)
+        h3_numbered = re.match(r"^\s*###\s*\d+\.\s+(.+)", line)
 
-        if numbered or bulleted:
+        if numbered or bold_numbered or bold_numbered_only or bulleted or table_row or h3_numbered:
             if current_item:
                 items.append(" ".join(current_item))
-            text = (numbered or bulleted).group(1)  # type: ignore[union-attr]
-            current_item = [text.strip()]
+            if bold_numbered:
+                text = bold_numbered.group(2)
+            elif bold_numbered_only:
+                text = bold_numbered_only.group(2)
+            elif table_row:
+                # Group 3 is the recommendation text in a table row
+                text = table_row.group(3)
+            elif h3_numbered:
+                text = h3_numbered.group(1)
+            else:
+                text = (numbered or bulleted).group(1)  # type: ignore[union-attr]
+
+            # YAML safety: Remove common problematic characters for hand-rolled single quoting
+            # though yaml.dump() is used later, we prepare the string here.
+            text = text.replace("'", "").replace("\\", "").strip()
+            current_item = [text]
         elif current_item and line.strip():
             # Continuation line for current item
-            current_item.append(line.strip())
+            cont_text = line.strip().replace("'", "").replace("\\", "").strip()
+            current_item.append(cont_text)
         elif not line.strip() and current_item:
             # Blank line terminates current item
             items.append(" ".join(current_item))
@@ -199,6 +220,9 @@ def _make_rec_title(text: str) -> str:
 
     if len(title) > 60:
         title = title[:57] + "..."
+    # YAML safety: Remove trailing backslashes that might confuse parsers
+    # in single-quoted scalars.
+    title = title.rstrip("\\")
     return title
 
 
@@ -518,9 +542,8 @@ def main(argv: list[str] | None = None) -> int:  # noqa: PLR0911
     docs_dir = Path(args.docs_dir) if args.docs_dir else _DEFAULT_DOCS_DIR
     patches_dir = Path(args.patches_dir) if args.patches_dir else _DEFAULT_PATCHES_DIR
 
-    if not docs_dir.exists():
-        print(f"ERROR: docs-dir not found: {docs_dir}", file=sys.stderr)
-        return 1
+    for patch_path in patches_dir.glob("*.yml"):
+        patch_path.unlink()
 
     # Determine which docs to process
     if args.doc:

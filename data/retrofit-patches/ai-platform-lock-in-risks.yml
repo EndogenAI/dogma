@@ -2,11 +2,11 @@
 # Review and edit before applying with Phase 6 patch application
 doc: docs/research/ai-platform-lock-in-risks.md
 doc_slug: ai-platform-lock-in-risks
-generated_at: '2026-03-21T01:23:14.065515+00:00'
-match_confidence: high
+generated_at: '2026-03-22T20:41:09.665982+00:00'
+match_confidence: low
 recommendations:
 - id: rec-ai-platform-lock-in-risks-001
-  title: Document Platform Dependencies
+  title: '1'
   status: deferred
   linked_issue: null
   decision_ref: ''
@@ -34,13 +34,12 @@ recommendations:
   _match_note: No matching issue found
   _confidence: low
 - id: rec-ai-platform-lock-in-risks-005
-  title: Implement Multi-Provider Agent Abstraction
-  status: accepted
-  linked_issue: 333
+  title: '2'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
-  _match_note: 'Matched issue #333: ''feat(agents): implement multi-provider inference
-    a'' (consecutive word overlap: 5)'
-  _confidence: high
+  _match_note: No matching issue found
+  _confidence: low
 - id: rec-ai-platform-lock-in-risks-006
   title: Create `dogma.
   status: deferred
@@ -63,14 +62,14 @@ recommendations:
   _match_note: No matching issue found
   _confidence: low
 - id: rec-ai-platform-lock-in-risks-009
-  title: Strengthen Local-Compute-First in Onboarding
+  title: '3'
   status: deferred
   linked_issue: null
   decision_ref: ''
   _match_note: No matching issue found
   _confidence: low
 - id: rec-ai-platform-lock-in-risks-010
-  title: Document how to run dogma's full agent fleet locally (vs.
+  title: Document how to run dogmas full agent fleet locally (vs.
   status: deferred
   linked_issue: null
   decision_ref: ''
@@ -84,35 +83,35 @@ recommendations:
   _match_note: No matching issue found
   _confidence: low
 - id: rec-ai-platform-lock-in-risks-012
-  title: 'Apply Data Portability Design: If your organization is bu...'
+  title: '1'
   status: deferred
   linked_issue: null
   decision_ref: ''
   _match_note: No matching issue found
   _confidence: low
 - id: rec-ai-platform-lock-in-risks-013
-  title: 'Monitor Vendor ToS Changes: Subscribe to ToS update notif...'
+  title: '2'
   status: deferred
   linked_issue: null
   decision_ref: ''
   _match_note: No matching issue found
   _confidence: low
 - id: rec-ai-platform-lock-in-risks-014
-  title: 'Budget for Migration Costs: Assume one major platform wil...'
+  title: '3'
   status: deferred
   linked_issue: null
   decision_ref: ''
   _match_note: No matching issue found
   _confidence: low
 - id: rec-ai-platform-lock-in-risks-015
-  title: Conduct annual third-party AI dependency audits using NIS...
+  title: '4'
   status: deferred
   linked_issue: null
   decision_ref: ''
   _match_note: No matching issue found
   _confidence: low
 - id: rec-ai-platform-lock-in-risks-016
-  title: Implement provider abstraction at the network layer, not ...
+  title: '5'
   status: deferred
   linked_issue: null
   decision_ref: ''

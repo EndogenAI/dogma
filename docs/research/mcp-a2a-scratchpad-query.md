@@ -15,17 +15,32 @@ sources:
 - MANIFESTO.md
 recommendations:
 - id: rec-mcp-a2a-scratchpad-query-001
-  title: 'Path allowlist: validate `scratchpad_path` against `.'
+  title: PROCEED with prototype — gated on B (#129)
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-mcp-a2a-scratchpad-query-002
-  title: 'Parameterized FTS5 queries: all `MATCH` clauses must use ...'
+  title: IMPLEMENT security controls before first use
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-mcp-a2a-scratchpad-query-003
+  title: 'Path allowlist: validate `scratchpad_path` against `.'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-mcp-a2a-scratchpad-query-004
+  title: 'Parameterized FTS5 queries: all `MATCH` clauses must use ...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-mcp-a2a-scratchpad-query-005
   title: '`audience: ["user"]` annotations: apply to all three tool...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-mcp-a2a-scratchpad-query-006
+  title: DEFER Tasks API integration
   status: deferred
   linked_issue: null
   decision_ref: ''

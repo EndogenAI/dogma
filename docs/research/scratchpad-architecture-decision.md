@@ -14,47 +14,87 @@ sources:
 - MANIFESTO.md
 recommendations:
 - id: rec-scratchpad-architecture-decision-001
-  title: '`prune_scratchpad.'
+  title: Adopt Candidate B' (SQLite-as-index + Markdown source of ...
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-scratchpad-architecture-decision-002
-  title: '`validate_session_state.'
+  title: '`prune_scratchpad.'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-scratchpad-architecture-decision-003
-  title: '`watch_scratchpad.'
+  title: '`validate_session_state.'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-scratchpad-architecture-decision-004
-  title: The `.
+  title: '`watch_scratchpad.'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-scratchpad-architecture-decision-005
-  title: No agent behaviour changes — all agents continue to write...
+  title: The `.
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-scratchpad-architecture-decision-006
-  title: Use stdio transport exclusively (no HTTP server); the MCP...
+  title: No agent behaviour changes — all agents continue to write...
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-scratchpad-architecture-decision-007
-  title: 'Expose three tool calls: `session_status` (active phase, ...'
+  title: Scope Candidate D (#297) as an access layer on top of B' ...
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-scratchpad-architecture-decision-008
-  title: Back all three tool calls against the B' SQLite index, no...
+  title: Use stdio transport exclusively (no HTTP server); the MCP...
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-scratchpad-architecture-decision-009
+  title: 'Expose three tool calls: `session_status` (active phase, ...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-scratchpad-architecture-decision-010
+  title: Back all three tool calls against the B' SQLite index, no...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-scratchpad-architecture-decision-011
   title: Treat atomic write coordination (the gap identified in ag...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-scratchpad-architecture-decision-012
+  title: Adopt Candidate C (YAML-fronted Markdown) as an immediate...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-scratchpad-architecture-decision-013
+  title: Impact
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-scratchpad-architecture-decision-014
+  title: '---'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-scratchpad-architecture-decision-015
+  title: SCOPED — depends on B' SQLite index for cross-phase state...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-scratchpad-architecture-decision-016
+  title: 'CONVERGED — #129''s SQLite FTS5 approach is the correct pa...'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-scratchpad-architecture-decision-017
+  title: SCOPED — implement as MCP tool access layer on top of B';...
   status: deferred
   linked_issue: null
   decision_ref: ''

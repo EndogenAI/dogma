@@ -6,39 +6,39 @@ date_published: 2026-03-18
 author: Executive Researcher
 recommendations:
 - id: rec-local-rag-adoption-patterns-001
-  title: Adopt LanceDB + BGE-Small-EN-v1.
-  status: accepted
-  linked_issue: 352
+  title: '1'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 - id: rec-local-rag-adoption-patterns-002
-  title: 'Implement embedding model versioning in the MCP server: S...'
-  status: accepted
-  linked_issue: 353
+  title: '2'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 - id: rec-local-rag-adoption-patterns-003
-  title: 'Define chunking strategy as part of adoption onboarding: ...'
-  status: accepted
-  linked_issue: 387
+  title: '3'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 - id: rec-local-rag-adoption-patterns-004
-  title: Defer core-repo retrofitting until greenfield pattern is ...
+  title: '4'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-local-rag-adoption-patterns-005
-  title: 'Measure RAG value: token savings vs.'
-  status: accepted
-  linked_issue: 355
+  title: '5'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 - id: rec-local-rag-adoption-patterns-006
-  title: Validate recall against BEIR baselines before accepting i...
+  title: '6'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-local-rag-adoption-patterns-007
-  title: Integrate RAGAS into post-deployment evaluation loops (Es...
-  status: accepted
-  linked_issue: 386
+  title: '7'
+  status: deferred
+  linked_issue: null
   decision_ref: ''
 ---
 

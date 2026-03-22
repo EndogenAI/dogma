@@ -1,10 +1,42 @@
 ---
-title: "High Reading Level as Encoding Drift Signal — Complexity Delta as a Governance Health Metric"
+title: High Reading Level as Encoding Drift Signal — Complexity Delta as a Governance
+  Health Metric
 status: Final
-research_sprint: "Sprint 12 — Intelligence & Architecture"
+research_sprint: Sprint 12 — Intelligence & Architecture
 wave: 4
 closes_issue: 276
 governs: []
+recommendations:
+- id: rec-high-reading-level-encoding-drift-signal-001
+  title: '1'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-high-reading-level-encoding-drift-signal-002
+  title: '2'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-high-reading-level-encoding-drift-signal-003
+  title: '3'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-high-reading-level-encoding-drift-signal-004
+  title: '4'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-high-reading-level-encoding-drift-signal-005
+  title: '5'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-high-reading-level-encoding-drift-signal-006
+  title: '6'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # High Reading Level as Encoding Drift Signal — Complexity Delta as a Governance Health Metric

@@ -1,10 +1,42 @@
 ---
-title: "Glossary Maintenance Strategy — Keeping a Living Vocabulary Synchronised Across Human Contributors and AI Agents"
+title: Glossary Maintenance Strategy — Keeping a Living Vocabulary Synchronised Across
+  Human Contributors and AI Agents
 status: Final
-research_sprint: "Sprint 12 — Intelligence & Architecture"
+research_sprint: Sprint 12 — Intelligence & Architecture
 wave: 4
 closes_issue: 267
 governs: []
+recommendations:
+- id: rec-glossary-maintenance-strategy-001
+  title: '1'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-glossary-maintenance-strategy-002
+  title: '2'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-glossary-maintenance-strategy-003
+  title: '3'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-glossary-maintenance-strategy-004
+  title: '4'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-glossary-maintenance-strategy-005
+  title: '5'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-glossary-maintenance-strategy-006
+  title: '6'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # Glossary Maintenance Strategy — Keeping a Living Vocabulary Synchronised Across Human Contributors and AI Agents

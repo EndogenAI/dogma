@@ -1,10 +1,42 @@
 ---
-title: "Programmatic Writing Assessment Tooling — Integrating Readability and Structural Metrics into the Corpus Analysis Suite"
+title: Programmatic Writing Assessment Tooling — Integrating Readability and Structural
+  Metrics into the Corpus Analysis Suite
 status: Final
-research_sprint: "Sprint 12 — Intelligence & Architecture"
+research_sprint: Sprint 12 — Intelligence & Architecture
 wave: 4
 closes_issue: 275
 governs: []
+recommendations:
+- id: rec-programmatic-writing-assessment-tooling-001
+  title: '1'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-programmatic-writing-assessment-tooling-002
+  title: '2'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-programmatic-writing-assessment-tooling-003
+  title: '3'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-programmatic-writing-assessment-tooling-004
+  title: '4'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-programmatic-writing-assessment-tooling-005
+  title: '5'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+- id: rec-programmatic-writing-assessment-tooling-006
+  title: '6'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
 ---
 
 # Programmatic Writing Assessment Tooling — Integrating Readability and Structural Metrics into the Corpus Analysis Suite

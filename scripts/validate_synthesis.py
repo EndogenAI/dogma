@@ -149,12 +149,14 @@ def is_synthesis(file_path: Path) -> bool:
     return "/research/" in p or "/sources/" in p
 
 
-def _parse_frontmatter_yaml(text: str) -> dict:
+def _parse_frontmatter_yaml(text: str) -> dict | None:
     """Parse the full YAML frontmatter block using pyyaml.
 
-    Returns the parsed dict, or {} if no frontmatter is found or parsing fails.
-    Used when structured fields (e.g. ``recommendations:`` lists) are needed beyond
-    what the flat regex-based ``parse_frontmatter`` can extract.
+    Returns the parsed dict, ``{}`` if no frontmatter is present, or
+    ``None`` if frontmatter is present but malformed.  Callers that depend
+    on the parsed values (e.g. ``recommendations:`` validation) must treat
+    ``None`` as a hard failure so malformed frontmatter does not silently
+    skip enforcement.
     """
     match = _FRONTMATTER_RE.match(text)
     if not match:
@@ -162,7 +164,7 @@ def _parse_frontmatter_yaml(text: str) -> dict:
     try:
         return yaml.safe_load(match.group(1)) or {}
     except yaml.YAMLError:
-        return {}
+        return None
 
 
 # Valid recommendation status values.
@@ -202,6 +204,14 @@ def _validate_recommendations_block(doc_path: Path, text: str, fm: dict[str, str
     # parse_frontmatter dict is unreliable when recommendations: entries contain
     # sub-keys (e.g. status:) that would overwrite top-level keys.
     full_fm = _parse_frontmatter_yaml(text)
+    if full_fm is None:
+        # Malformed YAML — surface as a hard failure so enforcement is not
+        # silently skipped for documents that could not be parsed.
+        errors.append(
+            "Malformed YAML frontmatter — unable to parse recommendations block. "
+            "Fix the frontmatter before committing this document as Final."
+        )
+        return errors
     status = str(full_fm.get("status", "")).strip()
 
     # Only relevant for Final documents.

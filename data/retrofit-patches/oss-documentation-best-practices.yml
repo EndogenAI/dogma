@@ -1,0 +1,51 @@
+# Suggested patch for docs/research/oss-documentation-best-practices.md
+# Review and edit before applying with Phase 6 patch application
+doc: docs/research/oss-documentation-best-practices.md
+doc_slug: oss-documentation-best-practices
+generated_at: '2026-03-22T20:41:09.943369+00:00'
+match_confidence: medium
+recommendations:
+- id: rec-oss-documentation-best-practices-001
+  title: Add `CHANGELOG.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-oss-documentation-best-practices-002
+  title: Add CI badge + TOC to `README.
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-oss-documentation-best-practices-003
+  title: Add development environment setup to `CONTRIBUTING.
+  status: accepted
+  linked_issue: 385
+  decision_ref: ''
+  _match_note: 'Matched issue #385: ''docs(governance): add Measurability as criterion
+    #'' (consecutive word overlap: 4)'
+  _confidence: medium
+- id: rec-oss-documentation-best-practices-004
+  title: Add MkDocs Material docsite (near-term, 1–2 hours) Add `m...
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-oss-documentation-best-practices-005
+  title: Add link checker to CI (near-term, 30 minutes) Add `lyche...
+  status: deferred
+  linked_issue: 386
+  decision_ref: ''
+  _match_note: 'Multiple matches: #386, #385 — manual review needed'
+  _confidence: low
+- id: rec-oss-documentation-best-practices-006
+  title: Run `validate_synthesis.
+  status: accepted
+  linked_issue: 386
+  decision_ref: ''
+  _match_note: 'Matched issue #386: ''feat(ci): scheduled quarterly audit workflow
+    — enc'' (consecutive word overlap: 3)'
+  _confidence: medium
