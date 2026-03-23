@@ -10,17 +10,17 @@ recommendations:
   - id: rec-agent-breakout-001
     title: Add reinforcement learning behavior drift monitoring
     status: accepted-for-adoption
-    linked_issue: null
+    linked_issue: 425
     decision_ref: ''
   - id: rec-agent-breakout-002
     title: Implement runtime action boundary enforcement
     status: accepted-for-adoption
-    linked_issue: null
+    linked_issue: 423
     decision_ref: ''
   - id: rec-agent-breakout-003
     title: Extend SSRF protections to internal-network resources
     status: accepted-for-adoption
-    linked_issue: null
+    linked_issue: 424
     decision_ref: ''
 ---
 
