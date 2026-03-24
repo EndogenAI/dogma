@@ -1,0 +1,42 @@
+# Suggested patch for docs/research/classic-programmatic-patterns-dogma-legibility.md
+# Review and edit before applying with Phase 6 patch application
+doc: docs/research/classic-programmatic-patterns-dogma-legibility.md
+doc_slug: classic-programmatic-patterns-dogma-legibility
+generated_at: '2026-03-22T20:41:09.702752+00:00'
+match_confidence: low
+recommendations:
+- id: rec-classic-programmatic-patterns-dogma-legibility-001
+  title: '1'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-classic-programmatic-patterns-dogma-legibility-002
+  title: '2'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-classic-programmatic-patterns-dogma-legibility-003
+  title: '3'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-classic-programmatic-patterns-dogma-legibility-004
+  title: '4'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-classic-programmatic-patterns-dogma-legibility-005
+  title: '5'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low

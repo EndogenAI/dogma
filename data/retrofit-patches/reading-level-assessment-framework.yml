@@ -1,0 +1,49 @@
+# Suggested patch for docs/research/reading-level-assessment-framework.md
+# Review and edit before applying with Phase 6 patch application
+doc: docs/research/reading-level-assessment-framework.md
+doc_slug: reading-level-assessment-framework
+generated_at: '2026-03-22T20:41:09.994573+00:00'
+match_confidence: low
+recommendations:
+- id: rec-reading-level-assessment-framework-001
+  title: '1'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-reading-level-assessment-framework-002
+  title: '2'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-reading-level-assessment-framework-003
+  title: '3'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-reading-level-assessment-framework-004
+  title: '4'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-reading-level-assessment-framework-005
+  title: '5'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-reading-level-assessment-framework-006
+  title: '6'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low

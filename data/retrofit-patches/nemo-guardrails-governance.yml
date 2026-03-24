@@ -1,0 +1,42 @@
+# Suggested patch for docs/research/nemo-guardrails-governance.md
+# Review and edit before applying with Phase 6 patch application
+doc: docs/research/nemo-guardrails-governance.md
+doc_slug: nemo-guardrails-governance
+generated_at: '2026-03-22T20:41:09.940929+00:00'
+match_confidence: low
+recommendations:
+- id: rec-nemo-guardrails-governance-001
+  title: '1'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-nemo-guardrails-governance-002
+  title: '2'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-nemo-guardrails-governance-003
+  title: '3'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-nemo-guardrails-governance-004
+  title: '4'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
+- id: rec-nemo-guardrails-governance-005
+  title: '5'
+  status: deferred
+  linked_issue: null
+  decision_ref: ''
+  _match_note: No matching issue found
+  _confidence: low
