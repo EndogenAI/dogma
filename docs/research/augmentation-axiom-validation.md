@@ -11,19 +11,19 @@ recommendations:
     title: "Adopt Morris's 'on the loop' terminology in MANIFESTO.md"
     status: accepted-for-adoption
     effort: Low
-    linked_issue: null
+    linked_issue: 427
     decision_ref: null
   - id: rec-augmentation-002
     title: "Document harness-first testing pattern in AGENTS.md § Testing-First"
     status: accepted-for-adoption
     effort: Medium
-    linked_issue: null
+    linked_issue: 428
     decision_ref: null
   - id: rec-augmentation-003
     title: "Cross-reference industry validation in MANIFESTO.md § Augmentive Partnership"
     status: accepted-for-adoption
     effort: Low
-    linked_issue: null
+    linked_issue: 429
     decision_ref: null
 ---
 

@@ -11,25 +11,25 @@ recommendations:
     title: "ADOPT Interrogative Pre-Delegation Gate (Phase 0)"
     status: accepted-for-adoption
     effort: Medium
-    linked_issue: null
+    linked_issue: 427
     decision_ref: null
   - id: rec-github-blog-002
     title: "DOCUMENT GitHub-Dogma Alignment in Comparative Guide"
     status: accepted-for-adoption
     effort: Low
-    linked_issue: null
+    linked_issue: 428
     decision_ref: null
   - id: rec-github-blog-003
     title: "EXTEND validate_synthesis.py to Check Pattern Catalog Canonical Example Count"
     status: accepted-for-adoption
     effort: Low
-    linked_issue: null
+    linked_issue: 428
     decision_ref: null
   - id: rec-github-blog-004
     title: "CONSIDER Squad-Style Agent Charter Files"
     status: deferred
     effort: High
-    linked_issue: null
+    linked_issue: 429
     decision_ref: null
 ---
 

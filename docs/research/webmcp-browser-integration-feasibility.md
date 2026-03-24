@@ -23,7 +23,7 @@ recommendations:
     title: "If WebMCP releases: pilot with read-only browser tools before enabling interactive capabilities"
     status: accepted-for-adoption
     effort: Medium
-    linked_issue: null
+    linked_issue: 430
     decision_ref: null
 ---
 

@@ -17,7 +17,7 @@ recommendations:
 - id: rec-mcp-deprecation-001
   title: Continue MCP adoption — no deprecation evidence found
   status: accepted
-  linked_issue: null
+  linked_issue: 429
   decision_ref: ''
 - id: rec-mcp-deprecation-002
   title: Monitor official Anthropic channels for deprecation signals
