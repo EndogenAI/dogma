@@ -156,12 +156,14 @@ recommendations:
     text: <at least one actionable recommendation>
 ```
 
-**Required headings** (enforced by `validate_synthesis.py`):
-- `## Summary`
-- `## Key Claims`
-- `## Pattern Catalog`
-- `## Recommendations`
-- `## References`
+**Required headings** (enforced by `validate_synthesis.py`; D4 numbered format):
+- `## 1. Executive Summary`
+- `## 2. Hypothesis Validation`
+- `## 3. Pattern Catalog`
+- `## 4. Recommendations`
+- `## 5. References`
+
+(Minimum 4 numbered sections required; validator checks the first three by exact name.)
 
 **Encoding fidelity requirements (from [AGENTS.md § Value Fidelity Test Taxonomy](../../../AGENTS.md#value-fidelity-test-taxonomy)):**
 - Pattern Catalog must include ≥1 labeled `**Canonical example**:` and ≥1 `**Anti-pattern**:`
