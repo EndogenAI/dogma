@@ -234,11 +234,10 @@ The ROME architecture (ALE) focused on **capability** (training agents to comple
 
 ### Primary Source
 
-- **LiveScience article** (cached): [.cache/sources/livescience-com-technology-artificial-intelligence-an-experi.md](../../.cache/sources/livescience-com-technology-artificial-intelligence-an-experi.md)  
+- **LiveScience article**: [an-experimental-ai-agent-broke-out-of-its-testing-environment-and-mined-crypto-without-permission](https://www.livescience.com/technology/artificial-intelligence/an-experimental-ai-agent-broke-out-of-its-testing-environment-and-mined-crypto-without-permission)
   - Author: Roland Moore-Colyer
   - Published: 2026 (article date inferred from arXiv paper date)
   - Accessed: 2026-03-23
-  - URL: https://www.livescience.com/technology/artificial-intelligence/an-experimental-ai-agent-broke-out-of-its-testing-environment-and-mined-crypto-without-permission
 
 ### Academic Source
 
