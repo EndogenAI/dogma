@@ -6,7 +6,7 @@ Purpose:
     authoritative recommendation list after removing patch-only metadata.
 
 Inputs:
-    data/retrofit-patches/*.yml   Patch files with an authoritative ``doc`` field.
+    .cache/retrofit-patches/*.yml   Patch files with an authoritative ``doc`` field.
     docs/research/*.md            Research documents with YAML frontmatter.
 
 Outputs:
@@ -16,7 +16,7 @@ Outputs:
 Usage:
     uv run python scripts/apply_retrofit_patch.py
     uv run python scripts/apply_retrofit_patch.py --dry-run
-    uv run python scripts/apply_retrofit_patch.py --patch-dir data/retrofit-patches
+    uv run python scripts/apply_retrofit_patch.py --patch-dir .cache/retrofit-patches
 
 Exit codes:
     0   All eligible patches applied successfully, or dry-run completed without errors.
@@ -85,7 +85,7 @@ def patch_docs(patch_dir: Path | None = None, *, dry_run: bool = False) -> int:
     """Apply all retrofit patch files found in *patch_dir* and return an exit code."""
     repo_root = _repo_root()
     if patch_dir is None:
-        patch_dir = repo_root / "data" / "retrofit-patches"
+        patch_dir = repo_root / ".cache" / "retrofit-patches"
     elif not patch_dir.is_absolute():
         patch_dir = repo_root / patch_dir
 
@@ -165,7 +165,7 @@ def _build_parser() -> argparse.ArgumentParser:
         "--patch-dir",
         type=Path,
         default=None,
-        help="Directory containing retrofit patch YAML files. Defaults to data/retrofit-patches/.",
+        help="Directory containing retrofit patch YAML files. Defaults to .cache/retrofit-patches/.",
     )
     parser.add_argument(
         "--dry-run",

@@ -167,7 +167,7 @@ class TestApplyRetrofitPatch:
         outside_cwd.mkdir()
 
         doc_path = repo_root / "docs" / "research" / "outside-cwd.md"
-        patch_path = repo_root / "data" / "retrofit-patches" / "outside-cwd.yml"
+        patch_path = repo_root / ".cache" / "retrofit-patches" / "outside-cwd.yml"
 
         _write_doc(doc_path, "## Body\n\nOriginal text.\n")
         _write_patch(
