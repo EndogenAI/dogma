@@ -26,10 +26,10 @@ Execute 8 secondary research issues from the backlog with full synthesis documen
 **CI**: validate_synthesis, lychee
 **Status**: ✅ Complete (commit 48a4c4b)
 
-### Phase 2 — Issue #400 Agent Breakout Security ⏳
+### Phase 2 — Issue #400 Agent Breakout Security ✅
 **Agent**: Executive Researcher → Research Scout → Synthesizer → Reviewer → Archivist
 **Deliverables**:
-- docs/research/agent-breakout-analysis.md (Status: Final)
+- docs/research/agent-breakout-security-analysis.md (Status: Final)
 - Failure taxonomy with canonical examples
 - Blast radius comparison table
 - Security guardrail recommendations aligned with MANIFESTO ethical constraints
@@ -39,10 +39,10 @@ Execute 8 secondary research issues from the backlog with full synthesis documen
 **CI**: validate_synthesis, lychee
 **Status**: ⏳ In Progress (sources cached, ready for synthesis)
 
-### Phase 3 — Issue #418 Claude Code Local LLM Script ⬜
+### Phase 3 — Issue #418 Claude Code Local LLM Script ✅
 **Agent**: Executive Researcher → Research Scout → Synthesizer → Reviewer → Archivist
 **Deliverables**:
-- docs/research/claude-code-local-llm.md (Status: Final)
+- docs/research/claude-code-local-llm-integration.md (Status: Final)
 - Script analysis and model compatibility assessment
 - Cost-quality comparison: local vs. API
 - Adoption recommendation for Local Compute-First axiom validation
@@ -65,10 +65,10 @@ Execute 8 secondary research issues from the backlog with full synthesis documen
 **CI**: validate_synthesis, lychee
 **Status**: ⬜ Not started
 
-### Phase 5 — Issue #397 Multi-Agent Collaboration Patterns ⬜
+### Phase 5 — Issue #397 Multi-Agent Collaboration Patterns ✅
 **Agent**: Executive Researcher → Research Scout → Synthesizer → Reviewer → Archivist
 **Deliverables**:
-- docs/research/multi-agent-collaboration.md (Status: Final)
+- docs/research/multi-agent-collaboration-failure-modes.md (Status: Final)
 - Collaboration taxonomy: "true" collaboration vs. discrete orchestration
 - Comparison table with dogma's handoff topology
 - Recommendations for fleet evolution
@@ -78,10 +78,10 @@ Execute 8 secondary research issues from the backlog with full synthesis documen
 **CI**: validate_synthesis, lychee
 **Status**: ⬜ Not started
 
-### Phase 6 — Issue #398 GitHub Blog Articles Review ⬜
+### Phase 6 — Issue #398 GitHub Blog Articles Review ✅
 **Agent**: Executive Researcher → Research Scout → Synthesizer → Reviewer → Archivist
 **Deliverables**:
-- docs/research/github-blog-synthesis.md (Status: Final)
+- docs/research/github-blog-agent-patterns.md (Status: Final)
 - Multi-source synthesis: context windows, Plan agent, TDD patterns
 - Comparison table across 2-3 GitHub blog articles
 - Pattern catalog relevant to dogma workflows
@@ -91,10 +91,10 @@ Execute 8 secondary research issues from the backlog with full synthesis documen
 **CI**: validate_synthesis, lychee
 **Status**: ⬜ Not started
 
-### Phase 7 — Issue #420 InfoQ Human Fit Article ⬜
+### Phase 7 — Issue #420 InfoQ Augmentation Axiom Validation ✅
 **Agent**: Executive Researcher → Research Scout → Synthesizer → Reviewer → Archivist
 **Deliverables**:
-- docs/research/infoq-human-fit.md (Status: Final)
+- docs/research/augmentation-axiom-validation.md (Status: Final)
 - Evidence table: external validation of Augmentive Partnership axiom (MANIFESTO foundational principle)
 - Industry comparison: dogma values vs. external research
 - Recommendations for values encoding refinement
@@ -104,10 +104,10 @@ Execute 8 secondary research issues from the backlog with full synthesis documen
 **CI**: validate_synthesis, lychee
 **Status**: ⬜ Not started
 
-### Phase 8 — Issue #395 WebMCP Browser Integration ⬜
+### Phase 8 — Issue #395 WebMCP Browser Integration ✅
 **Agent**: Executive Researcher → Research Scout → Synthesizer → Reviewer → Archivist
 **Deliverables**:
-- docs/research/webmcp-browser-integration.md (Status: Final)
+- docs/research/webmcp-browser-integration-feasibility.md (Status: Final)
 - Architecture evaluation informed by Phase 1 finding (MCP actively maintained)
 - Integration assessment with dogma MCP server
 - Adoption recommendation
@@ -136,13 +136,13 @@ Execute 8 secondary research issues from the backlog with full synthesis documen
 ## Acceptance Criteria
 
 - [x] Phase 1 complete: Issue #417 closed with synthesis doc committed (48a4c4b)
-- [ ] Phase 2 complete: Issue #400 closed with agent breakout security synthesis
-- [ ] Phase 3 complete: Issue #418 closed with local LLM adoption recommendation
-- [ ] Phase 4 complete: Issue #329 closed with governance patterns synthesis
-- [ ] Phase 5 complete: Issue #397 closed with collaboration patterns synthesis
-- [ ] Phase 6 complete: Issue #398 closed with GitHub blog synthesis
-- [ ] Phase 7 complete: Issue #420 closed with human fit validation synthesis
-- [ ] Phase 8 complete: Issue #395 closed with WebMCP integration assessment
+- [x] Phase 2 complete: Issue #400 closed with agent breakout security synthesis
+- [x] Phase 3 complete: Issue #418 closed with local LLM adoption recommendation
+- [ ] Phase 4 complete: Issue #329 closed with governance patterns synthesis (deferred)
+- [x] Phase 5 complete: Issue #397 closed with collaboration patterns synthesis
+- [x] Phase 6 complete: Issue #398 closed with GitHub blog synthesis
+- [x] Phase 7 complete: Issue #420 closed with augmentation axiom validation synthesis
+- [x] Phase 8 complete: Issue #395 closed with WebMCP integration assessment
 - [ ] All 8 synthesis docs validated: pass `validate_synthesis.py` check
 - [ ] All synthesis docs pass lychee link check
 - [ ] Milestone 26 closed
