@@ -1,6 +1,6 @@
 ---
 title: Multi-Agent Collaboration Failure Modes
-status: Draft
+status: Final
 closes_issue: 397
 research_question: Why do autonomous multi-agent systems fail, and does Dogma's orchestrated approach successfully avoid these failure modes?
 sources:
@@ -20,6 +20,19 @@ sources:
     date: 2025-06-12
     type: news-article
 x-governs: [endogenous-first, algorithms-before-tokens, augmentive-partnership]
+recommendations:
+  - id: rec-collaboration-001
+    title: "Encode 'No Lateral Handoff' Constraint in AGENTS.md"
+    status: accepted-for-adoption
+    effort: Low
+    linked_issue: null
+    decision_ref: null
+  - id: rec-collaboration-002
+    title: "Validate Handoff Graph Against McEntire Success Criteria"
+    status: accepted-for-adoption
+    effort: Medium
+    linked_issue: null
+    decision_ref: null
 ---
 
 # Multi-Agent Collaboration Failure Modes
