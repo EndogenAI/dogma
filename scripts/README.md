@@ -82,6 +82,7 @@ scripts/
   index_recommendations.py     # Scan finalized synthesis docs and write data/recommendations-registry.yml; --dry-run, --check, --docs-dir (closes #407)
   audit_recommendation_status.py  # Audit recommendation status across finalized docs; fuzzy-match to GitHub issues; write data/retrofit-patches/<slug>.yml patch files; --dry-run, --doc, --no-github (closes #409)
   test_newlines.py             # Internal utility to test newline handling in terminal scripts
+  enrich_research_issues.py    # Detect and enrich bare-bones type:research GitHub issues (body ≤ 300 chars, no ## Acceptance Criteria); posts enrichment guidance comment; --dry-run (default) / --apply flags; exit codes 0/1/2
   test_quotes.py               # Internal utility to test character escaping in terminal scripts
   test_small.py                # Internal utility for fast shell execution testing
   docs/                        # Per-script generated Markdown documentation (see scripts/docs/README.md)

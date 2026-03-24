@@ -104,7 +104,7 @@ If `feat/recommendation-provenance-sprint` still differs from `main`, open a fol
 - D7: Changes committed — `chore(scripts): apply retrofit patches and move to .cache`
 **Depends on**: Phase 5 complete
 **Gate**: `git ls-files data/retrofit-patches/` empty; `.cache/retrofit-patches/*.yml | wc -l` = 37; `--dry-run` shows 0 pending; tests pass
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — 319c442 (patches NOT applied: all 37 were low-confidence stubs that stripped apostrophes; discarded; script default + test path updated; data/retrofit-patches/ removed from tracking)
 
 ---
 
@@ -124,7 +124,7 @@ If `feat/recommendation-provenance-sprint` still differs from `main`, open a fol
 - D4: All internal links use `../../../` relative paths (no `/`-rooted paths)
 **Depends on**: Phase 6 complete
 **Gate**: Skill file exists; validator passes; AGENTS.md updated
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — 4784063 (SKILL.md + AGENTS.md); bd6ab75 (heading fix: numbered D4 format)
 
 ---
 
@@ -134,7 +134,7 @@ If `feat/recommendation-provenance-sprint` still differs from `main`, open a fol
 **Deliverables**: Verdict `APPROVED` or `REQUEST CHANGES` in scratchpad under `## Phase 7 Review Output`; if APPROVED, skill + AGENTS.md update committed and pushed
 **Depends on**: Phase 7 complete
 **Gate**: Verdict recorded; Phase 8 does not begin until APPROVED
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED (all 7 criteria; criterion 7 prompted heading fix committed bd6ab75)
 
 ---
 
@@ -150,7 +150,7 @@ If `feat/recommendation-provenance-sprint` still differs from `main`, open a fol
 - D5: `uv run python scripts/validate_synthesis.py docs/research/<slug>.md` exits 0
 **Depends on**: Phase 7 Review APPROVED
 **Gate**: Synthesis doc exists and validates; issue #433 body has `## Acceptance Criteria`; cache contains source(s)
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — fce519b (docs/research/agentic-platform-engineering-github-copilot.md; validate_synthesis PASS)
 
 ---
 
@@ -160,7 +160,7 @@ If `feat/recommendation-provenance-sprint` still differs from `main`, open a fol
 **Deliverables**: Verdict `APPROVED` or `REQUEST CHANGES` in scratchpad under `## Phase 8 Review Output`; if APPROVED, synthesis doc committed, `Closes #433` in commit body (not manual `gh issue close`), pushed
 **Depends on**: Phase 8 complete
 **Gate**: Verdict recorded; Phase 9 does not begin until APPROVED
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED (all 7 criteria)
 
 ---
 
@@ -176,7 +176,7 @@ If `feat/recommendation-provenance-sprint` still differs from `main`, open a fol
 - D5: `uv run pytest tests/test_enrich_research_issues.py -x -q` passes; ruff clean
 **Depends on**: Phase 8 Review APPROVED
 **Gate**: Script + tests + workflow exist; dry-run exits 0; README updated; ruff clean
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — 174f5ad (script + tests + workflow); scripts/README.md updated
 
 ---
 
@@ -186,7 +186,7 @@ If `feat/recommendation-provenance-sprint` still differs from `main`, open a fol
 **Deliverables**: Verdict `APPROVED` or `REQUEST CHANGES` in scratchpad under `## Phase 9 Review Output`; if APPROVED, all automation artifacts committed and pushed; CI green
 **Depends on**: Phase 9 complete
 **Gate**: Verdict recorded; CI green after push
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED (all 6 criteria)
 
 ---
 
