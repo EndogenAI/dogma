@@ -9,7 +9,7 @@ created: 2026-03-23
 recommendations:
   - id: rec-webmcp-001
     title: "DEFER WebMCP adoption until public release and security audit"
-    status: accepted
+    status: deferred
     effort: null
     linked_issue: null
     decision_ref: null
