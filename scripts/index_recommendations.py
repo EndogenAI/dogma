@@ -22,7 +22,7 @@ Outputs:
     data/recommendations-registry.yml  — YAML registry (written by default run)
 
 Exit codes:
-    0   Success (default / --dry-run / --check-fresh)
+    0   Success (default / --dry-run / fresh --check)
     0   Warning printed for docs with malformed YAML frontmatter (warn-and-skip behavior)
     1   --check mode: registry is stale (or missing)
 
@@ -62,6 +62,7 @@ _FRONTMATTER_RE = re.compile(r"^---\n(.*?)\n---", re.DOTALL)
 
 # Files that exist under docs/research/ but are not D4 synthesis documents.
 _EXCLUDED_FILENAMES = {"OPEN_RESEARCH.md"}
+_EXCLUDED_TOP_LEVEL_DIRS = {"sources"}
 
 
 # ---------------------------------------------------------------------------
@@ -97,7 +98,20 @@ def _parse_frontmatter_yaml(text: str, file_path: Path) -> dict[str, Any] | None
 def _doc_slug(doc_path: Path, docs_dir: Path) -> str:
     """Return a stable slug for *doc_path* relative to *docs_dir*."""
     rel = doc_path.relative_to(docs_dir)
-    return rel.stem
+    return rel.with_suffix("").as_posix()
+
+
+def _iter_synthesis_docs(docs_dir: Path):
+    """Yield candidate D4 synthesis docs under *docs_dir* recursively."""
+    for md_path in sorted(docs_dir.rglob("*.md")):
+        if not md_path.is_file():
+            continue
+        rel = md_path.relative_to(docs_dir)
+        if rel.parts and rel.parts[0] in _EXCLUDED_TOP_LEVEL_DIRS:
+            continue
+        if md_path.name in _EXCLUDED_FILENAMES:
+            continue
+        yield md_path
 
 
 def scan_docs(docs_dir: Path) -> tuple[list[dict[str, Any]], list[str], int, int]:
@@ -114,15 +128,7 @@ def scan_docs(docs_dir: Path) -> tuple[list[dict[str, Any]], list[str], int, int
     docs_scanned = 0
     docs_with_recs = 0
 
-    md_files = sorted(docs_dir.glob("*.md"))
-
-    for md_path in md_files:
-        if md_path.name in _EXCLUDED_FILENAMES:
-            continue
-        # Skip sub-directories (sources/)
-        if not md_path.is_file():
-            continue
-
+    for md_path in _iter_synthesis_docs(docs_dir):
         text = md_path.read_text(encoding="utf-8")
         frontmatter = _parse_frontmatter_yaml(text, md_path)
         if frontmatter is None:
@@ -134,12 +140,22 @@ def scan_docs(docs_dir: Path) -> tuple[list[dict[str, Any]], list[str], int, int
 
         docs_scanned += 1
 
-        recs = frontmatter.get("recommendations")
-        if not recs:
+        if "recommendations" not in frontmatter:
             warnings.append(f"WARNING: {md_path} has no recommendations: block (may need retrofit)")
             continue
 
+        recs = frontmatter.get("recommendations")
+        if recs is None:
+            warnings.append(f"WARNING: {md_path} has recommendations: null; treating as empty list")
+            continue
+        if not isinstance(recs, list):
+            warnings.append(f"WARNING: {md_path} recommendations: must be a YAML list; skipping malformed block")
+            continue
+
         docs_with_recs += 1
+        if not recs:
+            continue
+
         slug = _doc_slug(md_path, docs_dir)
         try:
             doc_rel = str(md_path.relative_to(_REPO_ROOT))
@@ -148,6 +164,11 @@ def scan_docs(docs_dir: Path) -> tuple[list[dict[str, Any]], list[str], int, int
             doc_rel = str(md_path)
 
         for entry in recs:
+            if not isinstance(entry, dict):
+                warnings.append(
+                    f"WARNING: {md_path} has malformed recommendation entry ({type(entry).__name__}); skipping entry"
+                )
+                continue
             record: dict[str, Any] = {
                 "doc": doc_rel,
                 "doc_slug": slug,
@@ -212,13 +233,14 @@ def _load_existing_registry(path: Path) -> dict[str, Any] | None:
 
 
 def _is_stale(
-    current_records: list[dict[str, Any]],
+    current_registry: dict[str, Any],
     existing_registry: dict[str, Any] | None,
 ) -> bool:
-    """Return True if *existing_registry* does not match *current_records*."""
+    """Return True if *existing_registry* does not match *current_registry*."""
     if existing_registry is None:
         return True
     existing_recs = existing_registry.get("recommendations") or []
+    current_recs = current_registry.get("recommendations") or []
 
     # Compare as sorted lists of (id, status, linked_issue, decision_ref) tuples
     # to ignore generated_at timestamp differences.
@@ -232,7 +254,12 @@ def _is_stale(
             r.get("decision_ref", ""),
         )
 
-    return sorted(current_records, key=_key) != sorted(existing_recs, key=_key)
+    if sorted(current_recs, key=_key) != sorted(existing_recs, key=_key):
+        return True
+
+    return any(
+        current_registry.get(key) != existing_registry.get(key) for key in ("docs_scanned", "docs_with_recommendations")
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -278,7 +305,7 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901
 
     if args.check:
         existing = _load_existing_registry(_REGISTRY_PATH)
-        if _is_stale(records, existing):
+        if _is_stale(registry, existing):
             print(
                 "STALE: recommendations-registry.yml is out of date. "
                 "Run: uv run python scripts/index_recommendations.py"

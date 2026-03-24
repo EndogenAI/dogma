@@ -31,7 +31,7 @@ recommendations:
   - id: rec-<doc-slug>-001          # unique, stable ID — never change after first commit
     title: "Short recommendation title"  # human-readable label; should match the ## Recommendations entry
     status: adopted                  # see Status Taxonomy below
-    linked_issue: 401                # GitHub issue number (integer); required unless status=deferred with no issue
+    linked_issue: 401                # GitHub issue number (integer); strongly preferred, warning-only if absent for non-deferred entries
     decision_ref: ""                 # optional URL to issue comment where a rejection/deferral was logged
 ```
 
@@ -42,7 +42,7 @@ recommendations:
 | `id` | string | **Always** | Stable unique identifier. Format: `rec-<doc-slug>-NNN` (three-digit zero-padded integer). Never rename after first commit — it is used as a stable reference in cross-doc links. |
 | `title` | string | **Always** | Human-readable label matching the corresponding `## Recommendations` section entry. Keep it under 80 characters. |
 | `status` | string | **Always** | One of the 7 status values defined below. |
-| `linked_issue` | integer | **Strongly preferred** | GitHub issue number (not URL). Required unless `status` is `deferred` and no issue exists yet. |
+| `linked_issue` | integer | **Strongly preferred** | GitHub issue number (not URL). Missing values produce a warning for non-`deferred` entries; `deferred` entries may omit it when no issue exists yet. |
 | `decision_ref` | string | **Conditional** | URL to the issue comment or discussion thread where a rejection or deferral was logged. Required when `status` is `rejected` or `not-accepted`. |
 
 ---
@@ -110,30 +110,40 @@ recommendations:
 
 ## Validation Rules
 
-`validate_synthesis.py` enforces the following rules when the `--recommendations`
-check is active (applied automatically when validating D4 synthesis docs):
+`validate_synthesis.py` enforces the following rules at the recommendations
+provenance check. That check hard-enforces only for D4 synthesis docs under
+`docs/research/`, excluding `docs/research/sources/**` and `OPEN_RESEARCH.md`:
 
 ### Hard Failures (exit code 1)
 
-1. A `status: Final` **synthesis doc** is missing the `recommendations:` key entirely.
-2. Any entry is missing the `id`, `status`, or `title` field.
-3. Any entry with `status: rejected` or `status: not-accepted` has no `decision_ref`
-   (absent or empty string).
+1. The YAML frontmatter is malformed in a way that prevents parsing the
+  `recommendations:` block.
+2. A `status: Final` **synthesis doc** is missing the `recommendations:` key entirely.
+3. The `recommendations:` value exists but is not a YAML list.
+4. Any `recommendations:` item is not a mapping (dict).
+5. Any entry is missing or has an empty `id`, `status`, or `title` field.
+6. Any entry has a `status` value outside the validator's canonical set:
+  `accepted`, `accepted-for-adoption`, `adopted`, `completed`, `rejected`,
+  `not-accepted`, `deferred`.
+7. Any entry with `status: rejected` or `status: not-accepted` has no
+  `decision_ref` (absent or empty string).
 
 ### Warnings (non-blocking, exit code 0)
 
-4. Any non-`deferred` entry has no `linked_issue` — the recommendation may be lost
+8. Any non-`deferred` entry has no `linked_issue` — the recommendation may be lost
    without an issue to track it.
-5. A `status: Final` file that is NOT a synthesis doc (e.g. `OPEN_RESEARCH.md`) is
-   missing `recommendations:` — logged as a warning but does not fail validation.
+9. A `status: Final` file outside that D4 set (for example `OPEN_RESEARCH.md`) is
+  missing `recommendations:` — logged as a warning but does not fail validation.
 
 ### How Synthesis Docs Are Identified
 
-Synthesis docs are D4 documents: any file validated by `validate_synthesis.py` that
-does not reside under a `.../sources/` directory. D3 per-source synthesis documents
-(under `docs/research/sources/`) are skipped entirely — the `recommendations:` check
-does not apply to them, as D3 docs describe individual external sources, not
-project-level recommendations.
+D4 synthesis docs for this check are files under `docs/research/` whose relative path
+does not begin with `sources/` and whose filename is not `OPEN_RESEARCH.md`.
+
+D3 per-source synthesis documents under `docs/research/sources/` are still validated
+by `validate_synthesis.py` generally; they only bypass the `recommendations:` check,
+because D3 docs describe individual external sources rather than project-level
+recommendations.
 
 ---
 

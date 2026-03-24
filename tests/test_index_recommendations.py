@@ -129,6 +129,19 @@ class TestMultipleDocs:
         assert len(records) == 1
         assert records[0]["doc_slug"] == "final-doc"
 
+    @pytest.mark.io
+    def test_recurses_into_nested_research_dirs_and_excludes_sources(self, tmp_path: Path) -> None:
+        docs_dir = tmp_path / "research"
+        _write_doc(docs_dir / "nested" / "doc-nested.md", recommendations=SAMPLE_RECS[:1])
+        _write_doc(docs_dir / "sources" / "source-note.md", recommendations=SAMPLE_RECS[:1])
+        _write_doc(docs_dir / "OPEN_RESEARCH.md", recommendations=SAMPLE_RECS[:1])
+
+        records, _, _, _ = scan_docs(docs_dir)
+
+        assert len(records) == 1
+        assert records[0]["doc_slug"] == "nested/doc-nested"
+        assert records[0]["doc"].endswith("nested/doc-nested.md")
+
 
 class TestMissingRecommendationsBlock:
     """Doc without recommendations: key → exits 0, warning printed."""
@@ -153,6 +166,39 @@ class TestMissingRecommendationsBlock:
         records, warnings, _, _ = scan_docs(docs_dir)
         assert records == []
         assert len(warnings) == 1
+
+    @pytest.mark.io
+    def test_explicit_empty_recommendations_list_is_not_treated_as_missing_block(self, tmp_path: Path) -> None:
+        docs_dir = tmp_path / "research"
+        _write_doc(docs_dir / "empty-list.md", recommendations=[])
+        _write_doc(docs_dir / "missing-block.md", recommendations=None)
+
+        records, warnings, docs_scanned, docs_with_recs = scan_docs(docs_dir)
+
+        assert records == []
+        assert docs_scanned == 2
+        assert docs_with_recs == 1
+        assert len(warnings) == 1
+        assert "missing-block.md" in warnings[0]
+
+
+class TestMalformedRecommendationEntries:
+    """Malformed recommendation entries are warned and skipped deterministically."""
+
+    @pytest.mark.io
+    def test_non_dict_recommendation_entry_warns_and_is_skipped(self, tmp_path: Path) -> None:
+        docs_dir = tmp_path / "research"
+        _write_doc(
+            docs_dir / "mixed-entries.md",
+            recommendations=["bad-entry", SAMPLE_RECS[0]],
+        )
+
+        records, warnings, _, docs_with_recs = scan_docs(docs_dir)
+
+        assert docs_with_recs == 1
+        assert len(records) == 1
+        assert records[0]["id"] == SAMPLE_RECS[0]["id"]
+        assert any("malformed recommendation entry" in warning for warning in warnings)
 
 
 class TestMalformedYaml:
@@ -329,17 +375,81 @@ class TestIsStaleHelper:
     """Unit tests for the _is_stale comparison helper."""
 
     def test_stale_when_registry_missing(self) -> None:
-        assert _is_stale([{"id": "x"}], None) is True
+        assert _is_stale({"recommendations": [{"id": "x"}]}, None) is True
 
     def test_not_stale_when_identical(self) -> None:
         recs = [{"doc": "a", "id": "x", "title": "T", "status": "adopted", "linked_issue": "1", "decision_ref": ""}]
-        existing = {"recommendations": recs}
-        assert _is_stale(recs, existing) is False
+        current = {
+            "docs_scanned": 1,
+            "docs_with_recommendations": 1,
+            "recommendations": recs,
+        }
+        existing = {
+            "docs_scanned": 1,
+            "docs_with_recommendations": 1,
+            "recommendations": recs,
+        }
+        assert _is_stale(current, existing) is False
 
     def test_stale_when_record_added(self) -> None:
         recs1 = [{"doc": "a", "id": "x", "title": "T", "status": "adopted", "linked_issue": "1", "decision_ref": ""}]
         recs2 = recs1 + [
             {"doc": "b", "id": "y", "title": "T2", "status": "deferred", "linked_issue": "", "decision_ref": ""}
         ]
-        existing = {"recommendations": recs1}
-        assert _is_stale(recs2, existing) is True
+        current = {
+            "docs_scanned": 2,
+            "docs_with_recommendations": 2,
+            "recommendations": recs2,
+        }
+        existing = {
+            "docs_scanned": 1,
+            "docs_with_recommendations": 1,
+            "recommendations": recs1,
+        }
+        assert _is_stale(current, existing) is True
+
+    def test_stale_when_registry_count_metadata_changes(self) -> None:
+        recs = [{"doc": "a", "id": "x", "title": "T", "status": "adopted", "linked_issue": "1", "decision_ref": ""}]
+        current = {
+            "docs_scanned": 2,
+            "docs_with_recommendations": 1,
+            "recommendations": recs,
+        }
+        existing = {
+            "docs_scanned": 1,
+            "docs_with_recommendations": 1,
+            "recommendations": recs,
+        }
+        assert _is_stale(current, existing) is True
+
+
+class TestCheckModeMetadataStaleness:
+    """--check also detects stale count metadata when recommendation rows are unchanged."""
+
+    @pytest.mark.io
+    def test_check_mode_stale_when_only_registry_counts_change(self, tmp_path: Path, capsys, mocker) -> None:
+        docs_dir = tmp_path / "research"
+        registry_path = tmp_path / "data" / "recommendations-registry.yml"
+        _write_doc(docs_dir / "doc.md", recommendations=SAMPLE_RECS[:1])
+
+        mocker.patch("scripts.index_recommendations._REGISTRY_PATH", registry_path)
+        main(["--docs-dir", str(docs_dir)])
+        capsys.readouterr()
+
+        existing = yaml.safe_load(
+            "\n".join(
+                line for line in registry_path.read_text(encoding="utf-8").splitlines() if not line.startswith("#")
+            )
+        )
+        existing["docs_scanned"] = existing["docs_scanned"] + 1
+        registry_path.write_text(
+            "# Auto-generated by scripts/index_recommendations.py — do not edit manually\n"
+            "# Run: uv run python scripts/index_recommendations.py\n"
+            + yaml.dump(existing, default_flow_style=False, allow_unicode=True, sort_keys=False),
+            encoding="utf-8",
+        )
+
+        exit_code = main(["--docs-dir", str(docs_dir), "--check"])
+
+        assert exit_code == 1
+        assert "STALE" in capsys.readouterr().out

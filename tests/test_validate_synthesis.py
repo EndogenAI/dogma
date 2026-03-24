@@ -13,7 +13,47 @@ Tests cover:
 - Exit codes
 """
 
+from pathlib import Path
+
 import pytest
+
+
+def _minimal_d3_text(
+    *,
+    include_url: bool = True,
+    headings: list[str] | None = None,
+    extra_frontmatter: str = "",
+    padding_lines: int = 60,
+):
+    """Return a minimal D3 document that can satisfy the validator."""
+    fm_lines = [
+        "---",
+        *(["url: https://example.com/source"] if include_url else []),
+        "cache_path: .cache/sources/example-source.md",
+        "slug: example-source",
+        "title: Example Source",
+    ]
+    if extra_frontmatter:
+        fm_lines.append(extra_frontmatter.rstrip("\n"))
+    fm_lines.append("---")
+
+    section_headings = headings or [
+        "## Citation",
+        "## Research Question",
+        "## Theoretical Framework",
+        "## Methodology",
+        "## Key Claims",
+        "## Critical Assessment",
+        "## Cross-Source Connections",
+        "## Project Relevance",
+    ]
+
+    body_parts = ["# Example Source"]
+    for heading in section_headings:
+        body_parts.extend([heading, "", f"Details for {heading}.", ""])
+    body_parts.extend(f"Supporting line {i}." for i in range(1, padding_lines + 1))
+
+    return "\n".join(fm_lines + [""] + body_parts) + "\n"
 
 
 class TestValidateSynthesisD3Detection:
@@ -21,148 +61,152 @@ class TestValidateSynthesisD3Detection:
 
     @pytest.mark.io
     def test_identifies_d3_by_path(self, tmp_path):
-        """File path containing /sources/ is identified as D3."""
+        """File path containing /sources/ is identified as D3 by the validator."""
         d3_file = tmp_path / "docs" / "research" / "sources" / "example.md"
         d3_file.parent.mkdir(parents=True)
         d3_file.write_text("# Example\n")
 
-        # Real test: validate_synthesis detects path contains /sources/
-        assert "/sources/" in str(d3_file)
+        vs = _import_vs()
+        assert vs.is_d3(d3_file)
 
     @pytest.mark.io
     def test_identifies_d4_by_path(self, tmp_path):
-        """File path not containing /sources/ is identified as D4."""
+        """File path outside /sources/ is treated as a D4 synthesis candidate."""
         d4_file = tmp_path / "docs" / "research" / "example-synthesis.md"
         d4_file.parent.mkdir(parents=True)
         d4_file.write_text("# Synthesis\n")
 
-        # Real test: validate_synthesis detects no /sources/ in path
-        assert "/sources/" not in str(d4_file)
+        vs = _import_vs()
+        assert not vs.is_d3(d4_file)
+        assert vs.is_d4_synthesis_doc(d4_file)
+
+    @pytest.mark.io
+    def test_nested_research_doc_is_treated_as_d4_synthesis(self, tmp_path):
+        """Nested docs/research paths still count as D4 synthesis docs."""
+        d4_file = tmp_path / "docs" / "research" / "nested" / "example-synthesis.md"
+        d4_file.parent.mkdir(parents=True)
+        d4_file.write_text("# Synthesis\n")
+
+        vs = _import_vs()
+        assert vs.is_d4_synthesis_doc(d4_file)
+
+    @pytest.mark.io
+    def test_open_research_file_is_not_treated_as_d4_synthesis(self, tmp_path):
+        """OPEN_RESEARCH.md under docs/research is excluded from D4 synthesis checks."""
+        open_research = tmp_path / "docs" / "research" / "OPEN_RESEARCH.md"
+        open_research.parent.mkdir(parents=True)
+        open_research.write_text("# Open Research\n")
+
+        vs = _import_vs()
+        assert not vs.is_d4_synthesis_doc(open_research)
 
 
 class TestValidateSynthesisD3Checks:
     """Tests for D3 per-source validation rules."""
 
     @pytest.mark.io
-    def test_d3_requires_minimum_lines(self, tmp_path, sample_d3_synthesis):
-        """D3 document must have ≥ 80 non-blank lines (default)."""
+    def test_d3_current_required_sections_pass_validation(self, tmp_path):
+        """D3 validation accepts the current eight required section headings."""
         d3_file = tmp_path / "docs" / "research" / "sources" / "test.md"
         d3_file.parent.mkdir(parents=True)
-        d3_file.write_text(sample_d3_synthesis)
+        d3_file.write_text(_minimal_d3_text())
 
-        # Real test: verify line count
-        lines = [line for line in sample_d3_synthesis.split("\n") if line.strip()]
-        assert len(lines) >= 80
+        vs = _import_vs()
+        passed, failures = vs.validate(d3_file, min_lines=80)
+        assert passed, failures
+        assert failures == []
 
     @pytest.mark.io
-    def test_d3_requires_frontmatter(self, tmp_path):
-        """D3 must have YAML frontmatter with url/cache_path/slug/title."""
+    def test_d3_accepts_keyword_variants_for_current_sections(self, tmp_path):
+        """D3 fuzzy matching accepts the current keyword variants defined in the validator."""
         d3_file = tmp_path / "docs" / "research" / "sources" / "test.md"
         d3_file.parent.mkdir(parents=True)
-        content = """---
-url: https://example.com
-cache_path: .cache/sources/example.md
-slug: example
-title: Example Source
----
+        d3_file.write_text(
+            _minimal_d3_text(
+                headings=[
+                    "## Citation",
+                    "## Research Question",
+                    "## Theoretical Notes",
+                    "## Source Type",
+                    "## Key Findings",
+                    "## Critical Assessment",
+                    "## Connection to Other Sources",
+                    "## Relevance to EndogenAI",
+                ]
+            )
+        )
 
-# Content
-
-Summary here.
-"""
-        d3_file.write_text(content)
-
-        # Real test: verify all required fields present
-        assert "url:" in content
-        assert "cache_path:" in content
-        assert "slug:" in content
-        assert "title:" in content
+        vs = _import_vs()
+        passed, failures = vs.validate(d3_file, min_lines=80)
+        assert passed, failures
 
     @pytest.mark.io
     def test_d3_missing_url_fails(self, tmp_path):
-        """D3 without url field in frontmatter fails validation (exit 1)."""
+        """D3 without a url/source_url frontmatter field fails validation."""
         d3_file = tmp_path / "docs" / "research" / "sources" / "test.md"
         d3_file.parent.mkdir(parents=True)
-        content = """---
-cache_path: .cache/sources/example.md
-slug: example
-title: Example
----
+        d3_file.write_text(_minimal_d3_text(include_url=False))
 
-# Content
-"""
-        d3_file.write_text(content)
-
-        # Real test: validate_synthesis exits 1, reports missing url
-        assert "url:" not in content
+        vs = _import_vs()
+        passed, failures = vs.validate(d3_file, min_lines=80)
+        assert not passed
+        assert any("URL field" in failure for failure in failures), failures
 
     @pytest.mark.io
-    def test_d3_required_sections(self, tmp_path, sample_d3_synthesis):
-        """D3 must have all 8 required section headings."""
+    def test_d3_missing_current_required_section_reports_actual_gap(self, tmp_path):
+        """D3 gap reporting names the current missing required section."""
         d3_file = tmp_path / "docs" / "research" / "sources" / "test.md"
         d3_file.parent.mkdir(parents=True)
-        d3_file.write_text(sample_d3_synthesis)
+        d3_file.write_text(
+            _minimal_d3_text(
+                headings=[
+                    "## Citation",
+                    "## Research Question",
+                    "## Theoretical Framework",
+                    "## Methodology",
+                    "## Key Claims",
+                    "## Critical Assessment",
+                    "## Project Relevance",
+                ]
+            )
+        )
 
-        # Required: Summary, Key Findings, Methodology, Strengths,
-        # Limitations, Relevance, Related Sources, Referenced By
-        required_sections = [
-            "## Summary",
-            "## Key Findings",
-            "## Methodology",
-            "## Strengths",
-            "## Limitations",
-            "## Relevance",
-            "## Related Sources",
-            "## Referenced By",
-        ]
-
-        text = d3_file.read_text()
-        for section in required_sections:
-            assert section in text
+        vs = _import_vs()
+        passed, failures = vs.validate(d3_file, min_lines=80)
+        assert not passed
+        assert any("Cross-Source Connections" in failure for failure in failures), failures
 
 
 class TestValidateSynthesisD4Checks:
     """Tests for D4 issue synthesis validation rules."""
 
     @pytest.mark.io
-    def test_d4_requires_minimum_lines(self, tmp_path, sample_d4_synthesis):
-        """D4 document must have ≥ 80 non-blank lines (default)."""
+    def test_d4_standard_layout_with_recommendations_passes_validation(self, tmp_path):
+        """D4 validation passes for the current numbered layout plus recommendations block."""
         d4_file = tmp_path / "docs" / "research" / "agent-patterns.md"
         d4_file.parent.mkdir(parents=True)
-        d4_file.write_text(sample_d4_synthesis)
+        block = (
+            "recommendations:\n"
+            "  - id: rec-agent-patterns-001\n"
+            "    title: Adopt the gate\n"
+            "    status: adopted\n"
+            "    linked_issue: 101\n"
+            '    decision_ref: ""\n'
+        )
+        d4_file.write_text(_minimal_d4_text(status="Final", extra_frontmatter=block))
 
-        # Real test: verify line count
-        lines = [line for line in sample_d4_synthesis.split("\n") if line.strip()]
-        assert len(lines) >= 80
+        vs = _import_vs()
+        passed, failures = vs.validate(d4_file, min_lines=80)
+        assert passed, failures
 
     @pytest.mark.io
-    def test_d4_requires_frontmatter(self, tmp_path):
-        """D4 must have YAML frontmatter with title and status."""
+    def test_d4_missing_required_headings_fails_even_with_four_h2s(self, tmp_path):
+        """D4 still requires executive-summary keywords, not just any four headings."""
         d4_file = tmp_path / "docs" / "research" / "test.md"
         d4_file.parent.mkdir(parents=True)
         content = """---
 title: Test Synthesis
-status: Final
----
-
-# Content
-
-Detailed synthesis here.
-"""
-        d4_file.write_text(content)
-
-        # Real test: verify required fields
-        assert "title:" in content
-        assert "status:" in content
-
-    @pytest.mark.io
-    def test_d4_minimum_four_headings(self, tmp_path):
-        """D4 must have at least 4 ## headings (if not using standard layout)."""
-        d4_file = tmp_path / "docs" / "research" / "test.md"
-        d4_file.parent.mkdir(parents=True)
-        content = """---
-title: Test
-status: Final
+status: Draft
 ---
 
 ## Heading 1
@@ -183,9 +227,55 @@ Content.
 """
         d4_file.write_text(content)
 
-        # Real test: verify ≥ 4 headings
-        headings = [line for line in content.split("\n") if line.startswith("##")]
-        assert len(headings) >= 4
+        vs = _import_vs()
+        passed, failures = vs.validate(d4_file, min_lines=4)
+        assert not passed
+        assert any("Executive Summary" in failure for failure in failures), failures
+        assert any("Hypothesis Validation" in failure for failure in failures), failures
+        assert any("Pattern Catalog" in failure for failure in failures), failures
+
+    @pytest.mark.io
+    def test_d4_validate_uses_top_level_yaml_for_required_fields(self, tmp_path):
+        """Nested recommendations keys do not satisfy missing top-level title/status."""
+        d4_file = tmp_path / "docs" / "research" / "masked-top-level-fields.md"
+        d4_file.parent.mkdir(parents=True)
+        d4_file.write_text(
+            """---
+recommendations:
+  - id: rec-masked-001
+    title: Nested recommendation title
+    status: adopted
+    linked_issue: 101
+    decision_ref: ""
+---
+
+## 1. Executive Summary
+
+Summary.
+
+## 2. Hypothesis Validation
+
+Validation.
+
+## 3. Pattern Catalog
+
+Patterns.
+
+## 4. Recommendations
+
+Recommendations.
+
+"""
+            + "\n".join(f"Line {i}." for i in range(80))
+            + "\n"
+        )
+
+        vs = _import_vs()
+        passed, failures = vs.validate(d4_file, min_lines=80)
+
+        assert not passed
+        assert any("Missing or empty frontmatter field: 'title'" == failure for failure in failures), failures
+        assert any("Missing or empty frontmatter field: 'status'" == failure for failure in failures), failures
 
 
 class TestValidateSynthesisGapReporting:
@@ -193,24 +283,51 @@ class TestValidateSynthesisGapReporting:
 
     @pytest.mark.io
     def test_reports_missing_sections(self, tmp_path):
-        """Validation output lists missing required sections."""
-        # Real test: run with incomplete document, capture stdout
-        # verify output lists: "Missing sections: Summary, Findings, ..."
-        assert True
+        """validate() returns the current missing-section failure messages for D3 docs."""
+        d3_file = tmp_path / "docs" / "research" / "sources" / "missing-sections.md"
+        d3_file.parent.mkdir(parents=True)
+        d3_file.write_text(
+            _minimal_d3_text(
+                headings=[
+                    "## Citation",
+                    "## Research Question",
+                    "## Methodology",
+                ]
+            )
+        )
+
+        vs = _import_vs()
+        passed, failures = vs.validate(d3_file, min_lines=80)
+        assert not passed
+        assert any("Theoretical Framework" in failure for failure in failures), failures
+        assert any("Critical Assessment" in failure for failure in failures), failures
+        assert any("Project Relevance" in failure for failure in failures), failures
 
     @pytest.mark.io
     def test_reports_missing_frontmatter_fields(self, tmp_path):
-        """Validation output lists missing frontmatter fields."""
-        # Real test: run with incomplete frontmatter
-        # verify output includes field names
-        assert True
+        """validate() reports the specific missing D3 frontmatter fields."""
+        d3_file = tmp_path / "docs" / "research" / "sources" / "missing-frontmatter.md"
+        d3_file.parent.mkdir(parents=True)
+        d3_file.write_text("---\ntitle: Example Source\n---\n\n# Example\n\n## Citation\n\nDetails.\n")
+
+        vs = _import_vs()
+        passed, failures = vs.validate(d3_file, min_lines=1)
+        assert not passed
+        assert any("cache_path" in failure for failure in failures), failures
+        assert any("slug" in failure for failure in failures), failures
+        assert any("URL field" in failure for failure in failures), failures
 
     @pytest.mark.io
     def test_reports_line_count_shortfall(self, tmp_path):
-        """Validation output states current line count vs. minimum."""
-        # Real test: doc with 50 lines, min 80
-        # output: "Line count: 50 (minimum: 100)"
-        assert True
+        """validate() reports the actual and required non-blank line counts."""
+        d3_file = tmp_path / "docs" / "research" / "sources" / "too-short.md"
+        d3_file.parent.mkdir(parents=True)
+        d3_file.write_text(_minimal_d3_text(padding_lines=2))
+
+        vs = _import_vs()
+        passed, failures = vs.validate(d3_file, min_lines=80)
+        assert not passed
+        assert any("Line count too low" in failure and "minimum: 80" in failure for failure in failures), failures
 
 
 class TestValidateSynthesisMinLinesFlag:
@@ -218,60 +335,79 @@ class TestValidateSynthesisMinLinesFlag:
 
     @pytest.mark.io
     def test_accepts_custom_min_lines(self, tmp_path):
-        """--min-lines N overrides default minimum."""
-        # Real test: pass --min-lines 50, validate 60-line document
-        # should pass; default would fail
-        assert True
+        """validate() respects a caller-provided min_lines threshold."""
+        d3_file = tmp_path / "docs" / "research" / "sources" / "custom-min-lines.md"
+        d3_file.parent.mkdir(parents=True)
+        d3_file.write_text(_minimal_d3_text(padding_lines=10))
 
-    def test_rejects_invalid_min_lines(self):
-        """--min-lines with non-integer value exits 1."""
-        # --min-lines invalid → exit 1
-        assert True
+        vs = _import_vs()
+        passed_default, failures_default = vs.validate(d3_file, min_lines=80)
+        passed_custom, failures_custom = vs.validate(d3_file, min_lines=20)
+
+        assert not passed_default
+        assert any("Line count too low" in failure for failure in failures_default), failures_default
+        assert passed_custom, failures_custom
+
+    def test_rejects_invalid_min_lines(self, monkeypatch):
+        """argparse rejects a non-integer --min-lines value with usage error exit code 2."""
+        vs = _import_vs()
+        monkeypatch.setattr(
+            "sys.argv",
+            ["validate_synthesis.py", "dummy.md", "--min-lines", "not-an-int"],
+        )
+
+        with pytest.raises(SystemExit) as excinfo:
+            vs.main()
+
+        assert excinfo.value.code == 2
 
 
 class TestValidateSynthesisExitCodes:
     """Tests for exit code semantics."""
 
     @pytest.mark.io
-    def test_exit_0_on_pass(self, tmp_path, sample_d3_synthesis):
-        """Exit 0 when all checks pass."""
+    def test_exit_0_on_pass(self, tmp_path, monkeypatch, capsys):
+        """CLI exits 0 and prints PASS when validation succeeds."""
         d3_file = tmp_path / "docs" / "research" / "sources" / "test.md"
         d3_file.parent.mkdir(parents=True)
-        d3_file.write_text(sample_d3_synthesis)
+        d3_file.write_text(_minimal_d3_text())
 
-        # Real test: validate_synthesis exits 0
-        assert d3_file.exists()
+        vs = _import_vs()
+        monkeypatch.setattr("sys.argv", ["validate_synthesis.py", str(d3_file)])
+
+        with pytest.raises(SystemExit) as excinfo:
+            vs.main()
+
+        out = capsys.readouterr().out
+        assert excinfo.value.code == 0
+        assert "PASS" in out
 
     @pytest.mark.io
-    def test_exit_1_on_failure(self, tmp_path):
-        """Exit 1 when any check fails."""
+    def test_exit_1_on_failure(self, tmp_path, monkeypatch, capsys):
+        """CLI exits 1 and prints FAIL with specific reasons when validation fails."""
         d3_file = tmp_path / "docs" / "research" / "sources" / "test.md"
         d3_file.parent.mkdir(parents=True)
         d3_file.write_text("# Too short\nNot enough content.\n")
 
-        # Real test: validate_synthesis exits 1
-        assert d3_file.exists()
+        vs = _import_vs()
+        monkeypatch.setattr("sys.argv", ["validate_synthesis.py", str(d3_file)])
 
+        with pytest.raises(SystemExit) as excinfo:
+            vs.main()
 
-class TestValidateSynthesisIntegration:
-    """Integration tests (real file validation)."""
-
-    @pytest.mark.integration
-    @pytest.mark.io
-    def test_validates_real_synthesis_file(self, sample_d3_synthesis):
-        """Can validate a real synthesis document structure."""
-        # Real test: verify all required fields present
-        assert "url:" in sample_d3_synthesis
-        assert "## Summary" in sample_d3_synthesis
+        out = capsys.readouterr().out
+        assert excinfo.value.code == 1
+        assert "FAIL" in out
+        assert "Line count too low" in out
 
 
 class TestFinalEditWarning:
     """Tests for check_final_status_modified — Final-status edit gate (issue #224)."""
 
-    def _make_d4(self, tmp_path, status="Final"):
+    def _make_d4(self, tmp_path, status="Final", extra_frontmatter=""):
         f = tmp_path / "docs" / "research" / "test.md"
         f.parent.mkdir(parents=True)
-        f.write_text(f"---\ntitle: Test\nstatus: {status}\n---\n\n## Section\n\nBody.\n")
+        f.write_text(f"---\ntitle: Test\nstatus: {status}\n{extra_frontmatter}---\n\n## Section\n\nBody.\n")
         return f
 
     def _import_vs(self):
@@ -287,13 +423,27 @@ class TestFinalEditWarning:
         """Patch subprocess.run in validate_synthesis to return modified_paths."""
         vs = self._import_vs()
         modified_strs = [str(p) for p in modified_paths]
+        repo_root = None
+        for path in modified_paths:
+            candidate = Path(path)
+            if candidate.is_absolute():
+                repo_root = candidate.parent.parent.parent
+                break
+
+        if repo_root is None:
+            repo_root = Path.cwd()
 
         def _fake_run(cmd, **kwargs):
             class _R:
-                stdout = "\n".join(modified_strs)
-                returncode = 0
+                def __init__(self, stdout, returncode=0):
+                    self.stdout = stdout
+                    self.returncode = returncode
 
-            return _R()
+            if len(cmd) >= 5 and cmd[0] == "git" and cmd[1] == "-C" and cmd[3] == "rev-parse":
+                return _R(str(repo_root))
+            if cmd == ["git", "-C", str(repo_root), "diff", "--name-only", "HEAD"]:
+                return _R("\n".join(modified_strs))
+            return _R("", returncode=1)
 
         monkeypatch.setattr(vs.subprocess, "run", _fake_run)
         return vs
@@ -337,6 +487,53 @@ class TestFinalEditWarning:
         vs = self._mock_git_diff(monkeypatch, [])  # empty diff
         vs.check_final_status_modified(d4_file, allow_final_edit=False)
         assert "WARNING" not in capsys.readouterr().out
+
+    @pytest.mark.io
+    def test_warns_for_final_doc_with_recommendations_block(self, tmp_path, monkeypatch, capsys):
+        """Nested recommendations[].status keys do not suppress the Final-status warning."""
+        d4_file = self._make_d4(
+            tmp_path,
+            status="Final",
+            extra_frontmatter=(
+                "recommendations:\n"
+                "  - id: rec-test-001\n"
+                "    title: Keep warning logic stable\n"
+                "    status: adopted\n"
+                "    linked_issue: 101\n"
+                '    decision_ref: ""\n'
+            ),
+        )
+        vs = self._mock_git_diff(monkeypatch, [d4_file.resolve()])
+        vs.check_final_status_modified(d4_file, allow_final_edit=False)
+        assert "WARNING" in capsys.readouterr().out
+
+    @pytest.mark.io
+    def test_warns_when_git_diff_path_is_repo_relative_from_subdirectory(self, tmp_path, monkeypatch, capsys):
+        """Repo-root-relative git diff paths still match when invoked from a subdirectory cwd."""
+        repo_root = tmp_path / "repo"
+        d4_file = self._make_d4(repo_root, status="Final")
+        outside_cwd = tmp_path / "elsewhere"
+        outside_cwd.mkdir()
+        monkeypatch.chdir(outside_cwd)
+
+        vs = self._import_vs()
+
+        def _fake_run(cmd, **kwargs):
+            class _R:
+                def __init__(self, stdout, returncode=0):
+                    self.stdout = stdout
+                    self.returncode = returncode
+
+            if cmd == ["git", "-C", str(d4_file.parent), "rev-parse", "--show-toplevel"]:
+                return _R(str(repo_root))
+            if cmd == ["git", "-C", str(repo_root), "diff", "--name-only", "HEAD"]:
+                return _R("docs/research/test.md")
+            return _R("", returncode=1)
+
+        monkeypatch.setattr(vs.subprocess, "run", _fake_run)
+
+        vs.check_final_status_modified(d4_file, allow_final_edit=False)
+        assert "WARNING" in capsys.readouterr().out
 
 
 # ---------------------------------------------------------------------------
