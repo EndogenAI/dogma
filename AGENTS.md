@@ -1005,6 +1005,13 @@ uv run python scripts/validate_agent_files.py --skills
 CI enforces this check on every PR that touches `.github/skills/`.
 
 For full authoring guidance, see [`docs/guides/agents.md`](docs/guides/agents.md#agent-skills). For the formal decision, see [`docs/decisions/ADR-006-agent-skills-adoption.md`](docs/decisions/ADR-006-agent-skills-adoption.md).
+
+**Registered skills:**
+
+| Skill | Description |
+|-------|-------------|
+| [secondary-research-sprint](.github/skills/secondary-research-sprint/SKILL.md) | 5-step workflow for bare-bones secondary research issues (enrich → corpus check → scout → synthesize → archive) |
+
 <a name="security-guardrails"></a>
 ---
 
