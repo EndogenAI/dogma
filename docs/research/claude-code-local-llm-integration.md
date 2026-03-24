@@ -327,7 +327,4 @@ Add a new section to `session-management` skill:
 - Ollama Anthropic-compatible endpoint: https://ollama.com/blog/anthropic-api
 - Qwen3 Coder Next model card: https://huggingface.co/Qwen/Qwen3-Coder-Next
 
----
 
-**Status**: Draft — pending Review  
-**Next Step**: Hand off to Research Reviewer for validation

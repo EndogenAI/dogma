@@ -292,7 +292,3 @@ GitHub Engineering has documented internal AI agent usage patterns across two bl
 - [.github/skills/session-management/SKILL.md](../../.github/skills/session-management/SKILL.md) — Scratchpad lifecycle, per-day files
 - [.github/skills/phase-gate-sequence/SKILL.md](../../.github/skills/phase-gate-sequence/SKILL.md) — Inter-phase checkpoint workflow
 - [docs/research/multi-agent-collaboration-failure-modes.md](./multi-agent-collaboration-failure-modes.md) (Issue #397) — McEntire's 36-100% lateral communication failure rates
-
----
-
-*Research conducted 2026-03-23. Status: Draft (pending Review approval).*

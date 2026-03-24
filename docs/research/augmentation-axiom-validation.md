@@ -241,7 +241,3 @@ InfoQ's coverage of Martin Fowler's "Exploring Gen AI" series (Morris, March 202
 9. [AGENTS.md § Programmatic-First Principle](../../AGENTS.md#programmatic-first-principle) — Automated verification > manual review
 10. [docs/research/civic-ai-governance.md](./civic-ai-governance.md) — Human oversight patterns from San Jose case study
 11. [docs/research/multi-agent-collaboration-failure-modes.md](./multi-agent-collaboration-failure-modes.md) (Issue #397) — Validates "humans design guardrails" necessity
-
----
-
-**Draft complete. Status: Pending Review approval.**

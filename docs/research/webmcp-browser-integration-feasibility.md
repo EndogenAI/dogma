@@ -344,7 +344,3 @@ MCP stdio servers are persistent processes (not spawned per-request). A WebMCP s
 
 9. **WebMCP Repository** (https://github.com/modelcontextprotocol/web-mcp) — **404 NOT FOUND** (searched modelcontextprotocol/, anthropics/, webmcp/ orgs; all returned 404)
 10. **Model Context Protocol Specification** (https://spec.modelcontextprotocol.io/) — MCP architecture: stdio/HTTP/SSE transports, client/server topology, tool/resource APIs
-
----
-
-**Research complete. Status: Pending Review approval.**
