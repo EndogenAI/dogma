@@ -50,7 +50,7 @@ Author `.agent.md` files for all 13 non-deferred agents from the fleet expansion
 - [ ] Fleet README (`README.md`) updated with new catalog sections
 - [ ] Issues #41–#44 assigned to milestones and added to project board
 - [ ] PR opened on `research/fleet-expansion-planning`
-- [ ] @conorjmcnamara tagged in PR for review
+- [ ] @accessit3ch tagged in PR for review
 
 ---
 

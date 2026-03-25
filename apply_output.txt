@@ -1,0 +1,74 @@
+Patched endogenic-inline-docs-synthesis.md
+Patched custom-agent-service-modules.md
+Patched output-format-constraint-compressed-returns.md
+Traceback (most recent call last):
+  File "/Users/conor/Sites/dogma/scripts/apply_retrofit_patch.py", line 58, in <module>
+    patch_docs()
+  File "/Users/conor/Sites/dogma/scripts/apply_retrofit_patch.py", line 46, in patch_docs
+    frontmatter = yaml.safe_load(frontmatter_text)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/conor/Sites/dogma/.venv/lib/python3.11/site-packages/yaml/__init__.py", line 125, in safe_load
+    return load(stream, SafeLoader)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/conor/Sites/dogma/.venv/lib/python3.11/site-packages/yaml/__init__.py", line 81, in load
+    return loader.get_single_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/conor/Sites/dogma/.venv/lib/python3.11/site-packages/yaml/constructor.py", line 49, in get_single_data
+    node = self.get_single_node()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/conor/Sites/dogma/.venv/lib/python3.11/site-packages/yaml/composer.py", line 36, in get_single_node
+    document = self.compose_document()
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/conor/Sites/dogma/.venv/lib/python3.11/site-packages/yaml/composer.py", line 55, in compose_document
+    node = self.compose_node(None, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/conor/Sites/dogma/.venv/lib/python3.11/site-packages/yaml/composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/conor/Sites/dogma/.venv/lib/python3.11/site-packages/yaml/composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/conor/Sites/dogma/.venv/lib/python3.11/site-packages/yaml/composer.py", line 82, in compose_node
+    node = self.compose_sequence_node(anchor)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/conor/Sites/dogma/.venv/lib/python3.11/site-packages/yaml/composer.py", line 111, in compose_sequence_node
+    node.value.append(self.compose_node(node, index))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/conor/Sites/dogma/.venv/lib/python3.11/site-packages/yaml/composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/conor/Sites/dogma/.venv/lib/python3.11/site-packages/yaml/composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/conor/Sites/dogma/.venv/lib/python3.11/site-packages/yaml/composer.py", line 64, in compose_node
+    if self.check_event(AliasEvent):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/conor/Sites/dogma/.venv/lib/python3.11/site-packages/yaml/parser.py", line 98, in check_event
+    self.current_event = self.state()
+                         ^^^^^^^^^^^^
+  File "/Users/conor/Sites/dogma/.venv/lib/python3.11/site-packages/yaml/parser.py", line 449, in parse_block_mapping_value
+    if not self.check_token(KeyToken, ValueToken, BlockEndToken):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/conor/Sites/dogma/.venv/lib/python3.11/site-packages/yaml/scanner.py", line 116, in check_token
+    self.fetch_more_tokens()
+  File "/Users/conor/Sites/dogma/.venv/lib/python3.11/site-packages/yaml/scanner.py", line 247, in fetch_more_tokens
+    return self.fetch_single()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/conor/Sites/dogma/.venv/lib/python3.11/site-packages/yaml/scanner.py", line 652, in fetch_single
+    self.fetch_flow_scalar(style='\'')
+  File "/Users/conor/Sites/dogma/.venv/lib/python3.11/site-packages/yaml/scanner.py", line 666, in fetch_flow_scalar
+    self.tokens.append(self.scan_flow_scalar(style))
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/conor/Sites/dogma/.venv/lib/python3.11/site-packages/yaml/scanner.py", line 1151, in scan_flow_scalar
+    chunks.extend(self.scan_flow_scalar_spaces(double, start_mark))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/conor/Sites/dogma/.venv/lib/python3.11/site-packages/yaml/scanner.py", line 1238, in scan_flow_scalar_spaces
+    raise ScannerError("while scanning a quoted scalar", start_mark,
+yaml.scanner.ScannerError: while scanning a quoted scalar
+  in "<unicode string>", line 38, column 10:
+      title: '
+             ^
+found unexpected end of stream
+  in "<unicode string>", line 38, column 11:
+      title: '
+              ^
