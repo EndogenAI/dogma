@@ -314,7 +314,31 @@ gh issue edit <num> --body-file /tmp/issue_<num>_body.md
 gh issue view <num> --json body -q '.body' | grep -E '\[x\]|\[ \]'
 ```
 
-### 6.4 Archive and Stop
+### 6.4 PR Review Triage (If a PR Is Open)
+
+**This step must run before any session that opens a PR or works on a branch with an open PR.**
+
+A PR is not ready to merge until all automated reviews are triaged. Copilot review is triggered automatically when a PR is opened — it must be handled before the session closes with "PR is open — ready to merge."
+
+```bash
+# Check PR state and any reviews
+gh pr view --json number,state,reviews,reviewThreads 2>/dev/null && \
+  gh api repos/<owner>/<repo>/pulls/<num>/comments \
+    --jq '.[] | {id, path, body}'
+```
+
+For each review:
+1. Classify every comment as Blocking / Suggestion / Nit / Question
+2. Fix all Blocking items and commit
+3. Post batch replies via `scripts/pr_review_reply.py`
+4. Resolve all addressed threads
+5. Re-request review if state was `CHANGES_REQUESTED`
+
+See the [pr-review-triage skill](../pr-review-triage/SKILL.md) for the full workflow.
+
+**Anti-pattern**: Ending a session with "PR is open — merge when ready" without running this check. This is a hard encoding violation regardless of CI status.
+
+### 6.5 Archive and Stop
 
 ```bash
 uv run python scripts/prune_scratchpad.py --force

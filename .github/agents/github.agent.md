@@ -68,6 +68,7 @@ uv run python scripts/validate_agent_files.py --all
 - Do not silently swallow validation, commit, or push failures.
 - Do not use heredocs for file writes; use built-in editing tools.
 - Do not include unrelated files in the staged set.
+- **Do not suggest, request, or execute a merge — and do not treat a PR as "ready to merge" — until the PR Review Triage Gate is confirmed clear.** After every PR open or push, retrieve all reviews with `gh pr view <num> --json reviews,reviewThreads`, triage every comment (Blocking / Suggestion / Nit / Question), fix all Blocking items, post replies, resolve threads, and re-request review if the state was `CHANGES_REQUESTED`. CI passing alone is insufficient — reviews must be handled. See [`AGENTS.md` § PR Review Triage Gate](../../AGENTS.md#pr-review-triage-gate) and the [`pr-review-triage` skill](../../.github/skills/pr-review-triage/SKILL.md).
 
 </constraints>
 
