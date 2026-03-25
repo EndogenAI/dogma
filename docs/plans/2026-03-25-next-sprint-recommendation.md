@@ -11,7 +11,12 @@ closes_issues: []
 
 **Current Context**: Issue #435 (branch-sync gate) is in active flight. User is asking for a sprint recommendation for parallel and follow-on work.
 
-**Backlog Health**: 67 open issues. Primary themes cluster into 6–7 distinct streams.
+**Backlog Health**: 67 original open issues + 26 issues merged from prior sprint milestones (21-25) = **93 total contextualized issues**. Primary themes cluster into 6–7 distinct streams.
+
+**Milestone Consolidation**: Prior sprint milestones (21–25: RAG, MCP, Security, Backlog, Provenance) have been consolidated into Q2 Governance structure:
+- **Q2 Governance Wave 1 (Milestone 32)**: 11 issues (Phases 0–2)
+- **Q2 Governance Wave 2 (Milestone 33)**: 7 issues (Phases 3–4)  
+- **Q2 Future Research & Automation (Milestone 34)**: 12 issues (backlog)
 
 ---
 
@@ -107,9 +112,16 @@ closes_issues: []
 
 ### Phase 0: Pre-Sprint Blocking Issues (This Week)
 **Gate**: Clear before Phase 1 begins  
-**Issues**:
+**Issues** (Prior Sprint):
 - #388 (high) — lychee SendErr [Depends on lychee release or workaround]
 - #435 (active) — branch-sync gate [In flight, expected complete]
+
+**Issues** (Merged from Sprints 20-23):
+- #381 (annual NIST AI RMF audit)
+- #386 (CI audit workflow — quarterly enforcement)
+- #356 (two-stage rule+LLM guardrails pipeline)
+- #403 (Substrate Distiller CI integration)
+- #408 (weekly GitHub Actions for orphaned recommendations)
 
 **Owner**: CI Monitor + Executive Orchestrator  
 **Effort**: Low–Medium
@@ -117,7 +129,9 @@ closes_issues: []
 **Acceptance Criteria**:
 - [ ] #388 resolved or workaround applied; CI passes
 - [ ] #435 merged; branch-sync gate documented
-- [ ] Phase 0 Review passed
+- [ ] #381 merged; NIST audit automation in place
+- [ ] #386, #356, #403, #408 merged; CI audit and guardrails enhanced
+- [ ] Phase 0 Review passed (9 total issues)
 
 ---
 
@@ -144,11 +158,19 @@ closes_issues: []
 ---
 
 ### Phase 2: Research Infrastructure Finalization
-**Issues**:
+**Issues** (Prior Sprint):
 - #422 (define primary research procedure) — GATE  
 - #410 (apply approved changes to docs)  
 - #411 (identify inconsistencies)  
 - #402 (retrospective: readiness for Foundation release)
+
+**Issues** (Merged from Sprints 20-23):
+- #396 (research: LLM performance benchmarking)
+- #387 (docs: add civic-tech-patterns.md to endogenous sources)
+- #401 (research: inline documentation as endogenic content)
+- #409 (feat: build audit_recommendation_status.py)
+- #407 (feat: build index_recommendations.py)
+- #406 (feat: define recommendations frontmatter schema)
 
 **Gate**: #422 complete before #410 starts; all 4 issues pass Review + CI before Phase 3
 
@@ -161,18 +183,27 @@ closes_issues: []
 - [ ] #410 merged; approved changes applied to all research docs
 - [ ] #411 merged; inconsistencies removed
 - [ ] #402 merged; retrospective published
-- [ ] Phase 2 Review passed
+- [ ] #396, #387, #401, #409, #407, #406 merged; research infrastructure enhanced
+- [ ] Phase 2 Review passed (10 total issues)
 
 ---
 
 ### Phase 3: Agent Fleet Standardization
-**Issues**:
+**Issues** (Prior Sprint):
 - #332 (feat: enforce YAML syntax consensus) — GATE  
 - #333 (implement multi-turn)  
 - #335 (enforce return compression)  
 - #334 (adopt L3 observability)  
 - #331 (encode decision logic / axiom priority)  
 - #336 (standardize MCP tool naming)
+
+**Issues** (Merged from Sprints 21-22):
+- #394 (feat: add Adoption agent for companion-repo onboarding)
+- #380 (feat: cross-domain conflict detection in pre-delegation)
+- #368 (feat: enforce Miller's Law tool-count ceiling in validator)
+- #338 (feat: encode L2 constraints as schema-validated YAML)
+- #337 (feat: adopt L1 semantic output validation)
+- #349 (feat: standardize review gates with numbered acceptance criteria)
 
 **Gate**: #332 complete and all agent files migrated before remaining issues start
 
@@ -188,15 +219,19 @@ closes_issues: []
 - [ ] #334 merged; L3 observability telemetry in all agents
 - [ ] #331 merged; decision logic and axiom priority encoded
 - [ ] #336 merged; MCP tool naming standardized
-- [ ] Phase 3 Review passed
+- [ ] #394, #380, #368, #338, #337, #349 merged; agent fleet enhanced with adoption, conflict detection, Miller's Law, guardrails, and review standardization
+- [ ] Phase 3 Review passed (12 total issues)
 
 ---
 
 ### Phase 4: Observability & Metrics Infrastructure (Post-Phase 3)
-**Issues**:
+**Issues** (Prior Sprint):
 - #369, #376, #342, #343 (observability foundation)  
 - #346, #345 (velocity metrics)  
 - #344 (script refactor)
+
+**Issues** (Merged from Sprint 20):
+- #351 (feat: track performance metrics by agent role)
 
 **Gate**: Phase 3 complete; all metrics issues pass Review + CI before Phase 5
 
@@ -207,7 +242,8 @@ closes_issues: []
 - [ ] #369, #376, #342, #343 merged; observability foundation in place
 - [ ] #346, #345 merged; velocity metrics dashboard available
 - [ ] #344 merged; script refactoring complete
-- [ ] Phase 4 Review passed
+- [ ] #351 merged; performance metrics tracking by agent role in place
+- [ ] Phase 4 Review passed (8 total issues)
 
 ---
 
