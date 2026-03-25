@@ -1,3 +1,12 @@
+## [0.18.1](https://github.com/EndogenAI/dogma/compare/v0.18.0...v0.18.1) (2026-03-25)
+
+
+### Bug Fixes
+
+* **scripts,tests,docs:** address PR [#436](https://github.com/EndogenAI/dogma/issues/436) review comments ([a504494](https://github.com/EndogenAI/dogma/commit/a5044947e8ec4218ead74c9da2c64c45ab6e663d))
+
+
+
 # [0.18.0](https://github.com/EndogenAI/dogma/compare/v0.17.0...v0.18.0) (2026-03-25)
 
 
