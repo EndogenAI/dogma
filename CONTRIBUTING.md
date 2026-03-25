@@ -45,6 +45,8 @@ See [`docs/guides/issue-and-artifact-discipline.md`](docs/guides/issue-and-artif
 
 > **Start here if you're setting up a local dev environment for script development or testing.**
 
+> **Before starting any session on a feature branch**: run `git fetch origin && git log HEAD..origin/main --oneline` and rebase if the output is non-empty. See [AGENTS.md § Branch Sync Gate](AGENTS.md#branch-sync-gate) or `uv run python scripts/check_branch_sync.py --rebase`.
+
 ```bash
 # 1. Clone the repo
 git clone https://github.com/EndogenAI/dogma.git

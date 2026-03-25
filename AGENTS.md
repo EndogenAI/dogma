@@ -22,6 +22,16 @@ These constraints govern all agent behavior. They derive from three core axioms 
 <a name="session-start-encoding-checkpoint"></a>
 **Session-Start Encoding Checkpoint**: At the start of every session, the first sentence of `## Session Start` in the scratchpad must name the governing axiom and one primary endogenous source. See [`docs/guides/session-management.md` → Session-Start Encoding Checkpoint](docs/guides/session-management.md#session-start-encoding-checkpoint) for format and examples. The agent fleet is the pressurizing medium — it gives each substrate coherent form but does not own the membrane or the bucket. Agents are tools that shape how values flow through the system, but they neither create nor control the values themselves.
 
+<a name="branch-sync-gate"></a>
+**Branch Sync Gate**: Before writing `## Session Start`, every agent must verify their local branch is not behind `origin/main`. Run:
+
+```bash
+git fetch origin
+git log HEAD..origin/main --oneline
+```
+
+If the log is non-empty, run `git rebase origin/main` before proceeding. Do **not** begin Phase 1 on a stale base — diverged branches produce reactive mid-sprint merges that cost a full context cycle to resolve. Alternatively, use `uv run python scripts/check_branch_sync.py` for an automated check with human-readable output (exits 1 if behind, 0 if in sync). See [`scripts/check_branch_sync.py`](scripts/check_branch_sync.py) for `--rebase` mode and `--help` reference. Closes #435.
+
 <a name="deployment-layer-integration"></a>
 **Deployment Layer integration**: If `client-values.yml` exists in the workspace root, it must be read after `AGENTS.md` and before any first action. Treat it as a Deployment Layer external-values file: note any Deployment Layer constraints in `## Session Start`, and interpret its contents using [`docs/research/external-value-architecture.md`](../../docs/research/external-value-architecture.md) (schema, Deployment Layer rules, and Supremacy constraints). Do **not** treat `client-values.yml` as overriding Core Layer constraints in `MANIFESTO.md` or this `AGENTS.md`; it can only specialize them at the Deployment Layer.
 

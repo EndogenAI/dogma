@@ -200,6 +200,16 @@ uv run python scripts/check_substrate_health.py
 
 Identify: what branch, what PR, what open issues, what prior unfinished phases. Write `## Session Start` with a one-paragraph orientation.
 
+**Branch Sync Gate**: After the MCP health check and before writing `## Session Start`, verify the branch is not behind `origin/main`:
+
+```bash
+# Sync branch with origin/main
+git fetch origin
+git log HEAD..origin/main --oneline
+```
+
+If the output is non-empty, run `git rebase origin/main` before writing `## Session Start`. Do not begin Phase 1 on a stale base. For an automated check with exit codes, use `uv run python scripts/check_branch_sync.py` (exits 0 if in sync, 1 if behind — add `--rebase` to auto-rebase). See [AGENTS.md § Branch Sync Gate](../../AGENTS.md#branch-sync-gate).
+
 **Session-Start Encoding Checkpoint**: The first sentence of `## Session Start` must name the governing axiom and one endogenous source you will consult first — before any tool calls or delegations. See [`docs/guides/session-management.md`](../../docs/guides/session-management.md) → Session-Start Encoding Checkpoint for format and examples.
 
 ### 2. Frame the Work — Create the Workplan
