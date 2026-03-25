@@ -13,7 +13,7 @@ Covers:
 - git log failure: git log fails → sys.exit(2)
 - Custom --remote and --base flags
 - main() callable with argv list
-- Module entrypoint (__name__ == '__main__')
+- OSError in _run(): exit 2 with error message
 
 All subprocess calls are mocked to keep tests hermetic (no real git state needed).
 Coverage target: ≥80% of scripts/check_branch_sync.py
@@ -79,6 +79,15 @@ class TestFetchRemote:
             with pytest.raises(SystemExit) as exc_info:
                 cbs_mod.fetch_remote("origin")
         assert exc_info.value.code == 2
+
+    def test_fetch_oserror_exits_2(self, cbs_mod, capsys):
+        """OSError (e.g. git not installed) must exit 2, not raise an unhandled traceback."""
+        with patch("subprocess.run", side_effect=OSError("git not found")):
+            with pytest.raises(SystemExit) as exc_info:
+                cbs_mod.fetch_remote("origin")
+        assert exc_info.value.code == 2
+        err = capsys.readouterr().err
+        assert "git not found" in err
 
     def test_fetch_custom_remote(self, cbs_mod):
         with patch("subprocess.run", return_value=_completed(0)) as mock_run:

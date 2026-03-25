@@ -263,7 +263,7 @@ Parallel Track (Research & Secondary Work)
 These are solid future work but not critical for the next 2 weeks:
 
 - RAG/Knowledge Systems (#358, #352–#355, #359) — defer to Q2 Wave 2
-- Testing & Release Harnesss (#428, #350, #113) — defer pending Wave 1 stabilization
+- Testing & Release Harness (#428, #350, #113) — defer pending Wave 1 stabilization
 - Long-tail research topics (#283, #131, #128) — standing backlog, not urgent
 - DevRel / Adoption (#427, #430, #429, #428) — [DEFER] items, intentionally deferred
 

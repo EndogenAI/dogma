@@ -48,11 +48,19 @@ import sys
 
 def _run(cmd: list[str], *, capture: bool = True) -> subprocess.CompletedProcess[str]:
     """Run a git command and return the CompletedProcess result."""
-    return subprocess.run(
-        cmd,
-        capture_output=capture,
-        text=True,
-    )
+    try:
+        return subprocess.run(
+            cmd,
+            capture_output=capture,
+            text=True,
+        )
+    except OSError as exc:
+        # Unexpected I/O error (e.g., git not installed, bad cwd); exit 2 per docstring.
+        print(
+            f"ERROR: failed to run command: {' '.join(cmd)}\n{exc}",
+            file=sys.stderr,
+        )
+        sys.exit(2)
 
 
 def fetch_remote(remote: str) -> None:
