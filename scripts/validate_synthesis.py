@@ -6,11 +6,13 @@ TaskCompleted hook. Validate before any Research Archivist commit.
 Purpose:
     Enforce a minimum quality bar on D3 per-source synthesis reports
     (docs/research/sources/<slug>.md) and D4 issue synthesis documents
-    (docs/research/<slug>.md) before they are committed as Final artifacts.
+        (docs/research/<slug>.md and nested subdirectories, excluding sources and
+        OPEN_RESEARCH.md) before they are committed as Final artifacts.
 
     Detects document type automatically:
       - D3 (per-source synthesis): file path contains /sources/
-      - D4 (issue synthesis):      file path does not contain /sources/
+            - D4 (issue synthesis):      file path is under docs/research/, excluding
+                                                                     /sources/ content and OPEN_RESEARCH.md
 
 Checks (D3 per-source synthesizer output):
     1. File exists and is readable.
@@ -22,8 +24,9 @@ Checks (D3 per-source synthesizer output):
 Checks (D4 issue synthesis):
     1. File exists and is readable.
     2. File has at least MIN_LINES (default: 80) non-blank lines.
-    3. All required section headings are present (## Executive Summary through
-       ## Project Relevance, or any ≥ 4 ## headings if the file uses a custom layout).
+     3. Required numbered headings include Executive Summary, Hypothesis
+         Validation, and Pattern Catalog, and the document must contain at least
+         4 H2 headings overall.
     4. YAML frontmatter contains: title, status.
 
 Inputs:
@@ -143,10 +146,33 @@ def is_d3(file_path: Path) -> bool:
     return "sources" in file_path.as_posix().split("/")
 
 
+_EXCLUDED_SYNTHESIS_FILENAMES: frozenset[str] = frozenset({"OPEN_RESEARCH.md"})
+
+
+def _research_subpath_parts(file_path: Path) -> tuple[str, ...] | None:
+    """Return path parts below ``docs/research`` if that anchor exists."""
+    parts = file_path.parts
+    for index in range(len(parts) - 1):
+        if parts[index] == "docs" and parts[index + 1] == "research":
+            return parts[index + 2 :]
+    return None
+
+
+def is_d4_synthesis_doc(file_path: Path) -> bool:
+    """True if *file_path* is a D4 synthesis doc under ``docs/research``."""
+    subpath = _research_subpath_parts(file_path)
+    if not subpath:
+        return False
+    if subpath[0] == "sources":
+        return False
+    if subpath[-1] in _EXCLUDED_SYNTHESIS_FILENAMES:
+        return False
+    return True
+
+
 def is_synthesis(file_path: Path) -> bool:
     """True if *file_path* points to a synthesis document (D3 or D4)."""
-    p = file_path.as_posix()
-    return "/research/" in p or "/sources/" in p
+    return is_d3(file_path) or is_d4_synthesis_doc(file_path)
 
 
 def _parse_frontmatter_yaml(text: str) -> dict | None:
@@ -299,6 +325,29 @@ _AXIOM_NAMES: tuple[str, ...] = (
 )
 
 
+def _get_git_repo_root(file_path: Path) -> Path | None:
+    """Return the repository root for *file_path*, or None if unavailable."""
+    working_dir = file_path if file_path.is_dir() else file_path.parent
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(working_dir), "rev-parse", "--show-toplevel"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except FileNotFoundError:
+        return None
+
+    if result.returncode != 0:
+        return None
+
+    repo_root = result.stdout.strip()
+    if not repo_root:
+        return None
+
+    return Path(repo_root)
+
+
 def check_final_status_modified(file_path: Path, allow_final_edit: bool) -> None:
     """Warn when a Final- or Published-status doc has uncommitted modifications.
 
@@ -310,14 +359,21 @@ def check_final_status_modified(file_path: Path, allow_final_edit: bool) -> None
         file_path: Path to the synthesis document.
         allow_final_edit: When True, suppress the warning (--allow-final-edit flag).
     """
-    fm = parse_frontmatter(file_path.read_text(encoding="utf-8"))
-    status = fm.get("status", "").strip().lower()
+    frontmatter = _parse_frontmatter_yaml(file_path.read_text(encoding="utf-8"))
+    if frontmatter is None or not isinstance(frontmatter, dict):
+        return
+
+    status = str(frontmatter.get("status", "")).strip().lower()
     if status not in ("final", "published"):
+        return
+
+    repo_root = _get_git_repo_root(file_path)
+    if repo_root is None:
         return
 
     try:
         result = subprocess.run(
-            ["git", "diff", "--name-only", "HEAD"],
+            ["git", "-C", str(repo_root), "diff", "--name-only", "HEAD"],
             capture_output=True,
             text=True,
             check=False,
@@ -328,9 +384,8 @@ def check_final_status_modified(file_path: Path, allow_final_edit: bool) -> None
 
     # git diff returns repo-relative paths; resolve both sides for comparison.
     try:
-        cwd = Path.cwd()
         resolved_target = file_path.resolve()
-        is_modified = any((cwd / Path(f)).resolve() == resolved_target for f in modified_files)
+        is_modified = any((repo_root / Path(f)).resolve() == resolved_target for f in modified_files)
     except Exception:
         return
 
@@ -407,6 +462,7 @@ def validate(file_path: Path, min_lines: int) -> tuple[bool, list[str]]:
 
     # --- Check 4: required frontmatter fields ---
     fm = parse_frontmatter(text)
+    parsed_fm = _parse_frontmatter_yaml(text)
     if not fm:
         failures.append("No YAML frontmatter found (expected --- block at top of file)")
     else:
@@ -418,19 +474,28 @@ def validate(file_path: Path, min_lines: int) -> tuple[bool, list[str]]:
             if not any(fm.get(k) for k in D3_URL_KEYS):
                 failures.append(f"Missing frontmatter URL field: one of {D3_URL_KEYS} must be present and non-empty")
         else:
+            if parsed_fm is None:
+                failures.append("Malformed YAML frontmatter — unable to parse top-level D4 fields")
+                parsed_d4_fm: dict[str, object] = {}
+            elif isinstance(parsed_fm, dict):
+                parsed_d4_fm = parsed_fm
+            else:
+                failures.append("Malformed YAML frontmatter — expected a top-level mapping for D4 fields")
+                parsed_d4_fm = {}
+
             for key in D4_REQUIRED_FRONTMATTER:
-                if not fm.get(key):
+                value = parsed_d4_fm.get(key)
+                if value is None or (isinstance(value, str) and not value.strip()):
                     failures.append(f"Missing or empty frontmatter field: '{key}'")
 
         # --- Check 5: recommendations provenance block (D4 only) ---
         if not is_d3(file_path):
-            # Determine if this is a synthesis doc (vs. tracking/meta doc).
-            # Use resolved path string to handle both relative and absolute paths;
-            # check adjacency of "docs/research" to avoid false positives from
-            # paths like docs/guides/research/foo.md.
-            _resolved_str = str(file_path.resolve())
-            is_synthesis = "/docs/research/" in _resolved_str and file_path.name not in {"OPEN_RESEARCH.md", "sources"}
-            rec_errors = _validate_recommendations_block(file_path, text, fm, is_synthesis=is_synthesis)
+            rec_errors = _validate_recommendations_block(
+                file_path,
+                text,
+                fm,
+                is_synthesis=is_d4_synthesis_doc(file_path),
+            )
             failures.extend(rec_errors)
 
     passed = len(failures) == 0

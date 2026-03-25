@@ -1,0 +1,25 @@
+name: Enrich bare-bones research issues
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Monday 09:00 UTC
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: uv sync --frozen
+      - name: Enrich bare-bones research issues
+          run: uv run python scripts/enrich_research_issues.py --apply
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
