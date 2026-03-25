@@ -1,9 +1,11 @@
 ---
 name: pr-review-triage
 description: |
-  Encodes the PR review triage workflow: classify actionable vs. advisory comments, prioritise
-  by blocking/suggestion/nit, batch fixes by file, phase them efficiently, and use
-  scripts/pr_review_reply.py to reply and resolve threads. USE FOR: reading a new PR review
+  **Mandatory pre-merge gate.** Encodes the PR review triage workflow: retrieve all automated and
+  human reviews (Copilot review is auto-triggered on PR open), classify actionable vs. advisory
+  comments, prioritise by blocking/suggestion/nit, batch fixes by file, phase them efficiently,
+  and use scripts/pr_review_reply.py to reply and resolve threads. A PR must NOT be merged or
+  treated as ready to merge until this workflow is complete. USE FOR: reading a new PR review
   and deciding what to fix in which order; preparing a batch reply file after all fixes are
   committed; distinguishing nits to acknowledge from blockers that gate merge. DO NOT USE FOR:
   posting individual replies one-by-one (use pr-review-reply skill instead); authoring the
@@ -25,7 +27,11 @@ with those documents, the primary documents take precedence.
 
 ## 1. Governing Constraint
 
-Per [`AGENTS.md`](../../../AGENTS.md) § Verify-After-Act for Remote Writes:
+**This skill is a mandatory pre-merge gate.** A PR must not be merged, suggested for merge, or treated as "ready to merge" until this triage workflow has been run and all Blocking comments are resolved. CI passing is a necessary but insufficient condition — reviews must be triaged independently.
+
+**Trigger**: Copilot review is automatically triggered when a PR is opened and on every subsequent push. Do not assume the review is empty — always retrieve it.
+
+Per [`AGENTS.md`](../../../AGENTS.md) § PR Review Triage Gate and § Verify-After-Act for Remote Writes:
 - Every reply posted to a review comment is a remote write — Tier 0 validation applies before
   sending.
 - Every thread resolved is irreversible — only resolve threads whose change is confirmed

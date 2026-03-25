@@ -217,6 +217,52 @@ The [PR template](../../.github/pull_request_template.md) includes a `## Closes`
 
 ---
 
+<a name="pr-review-triage-gate"></a>
+## PR Review Triage Gate (Mandatory Before Merge)
+
+A PR is **not ready to merge** until all automated and human review comments have been triaged, fixed, and responded to. GitHub Copilot review is triggered automatically when a PR is opened — this review must be handled before any merge discussion.
+
+### Why
+
+**Anti-pattern**: Push code → open PR → confirm CI passes → suggest "merge when ready" — without checking whether the Copilot review raised blocking comments.
+
+**Canonical failure mode**: PR opened → Copilot flags a correctness issue → agent reads CI status only → suggests merge → bug ships to `main`.
+
+CI status and review status are **independent checks**. A green CI run confirms code passes automated tests; it says nothing about whether a reviewer identified a design flaw, security issue, or contract violation. Both must be resolved before merge.
+
+### Merge Readiness Checklist
+
+Before treating a PR as ready to merge, all of the following must be true:
+
+- [ ] **CI passes** — `gh run list --limit 3` shows green on latest push
+- [ ] **Reviews retrieved** — `gh pr view <num> --json reviews,reviewThreads` confirmed  
+- [ ] **All Blocking comments fixed** — correctness / security / contract violations committed  
+- [ ] **All threads replied to** — `uv run python scripts/pr_review_reply.py --pr <num> --batch <file>`  
+- [ ] **Blocking threads resolved** — verified via `gh pr view <num> --json reviewThreads`  
+- [ ] **Review re-requested** (if original state was `CHANGES_REQUESTED`) — `gh pr review <num> --request-review`
+- [ ] **Research Doc PR Merge Gate** (if applicable) — all recommendations tracked as issues
+
+### How to Retrieve Reviews
+
+```bash
+# Retrieve inline comment IDs and bodies
+gh api repos/<owner>/<repo>/pulls/<num>/comments \
+  --jq '.[] | {id, path, line, body}'
+
+# Retrieve top-level review state (APPROVED / CHANGES_REQUESTED / COMMENTED)
+gh pr view <num> --json reviews --jq '.reviews[] | {state, body}'
+
+# Check thread resolution status
+gh pr view <num> --json reviewThreads \
+  --jq '.reviewThreads[] | {isResolved, body: .comments.nodes[0].body[:60]}'
+```
+
+### Triage Workflow
+
+Follow the [pr-review-triage skill](../../.github/skills/pr-review-triage/SKILL.md) for the full classify → fix → batch-reply → resolve → re-request sequence.
+
+---
+
 ## 10. PR Merge Strategy
 
 This repo enforces **rebase and merge** only. Squash merge is disabled in repository settings.

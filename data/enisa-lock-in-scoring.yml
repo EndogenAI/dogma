@@ -1,0 +1,244 @@
+# data/enisa-lock-in-scoring.yml
+#
+# ENISA 8-dimension lock-in risk scoring table for dogma's external AI
+# dependencies, populated during the annual NIST AI RMF GOVERN 6.1 audit.
+#
+# Scoring scale (per dimension):
+#   1 = Very low lock-in risk
+#   2 = Low
+#   3 = Moderate
+#   4 = High
+#   5 = Very high lock-in risk
+#
+# Dimensions (from ENISA Cloud Service Switching Framework, adapted for AI):
+#   data_portability           — Can prompts, fine-tuning data, and conversation
+#                                history be exported or transferred?
+#   api_portability            — How easily can API calls be switched to another
+#                                provider (interface similarity, adaptor tooling)?
+#   trained_model_portability  — Can the model be deployed locally or transferred
+#                                to another host?
+#   service_continuity         — Risk of provider discontinuing the service or
+#                                changing its terms unilaterally (ToS volatility).
+#   pricing_transparency       — Is pricing publicly documented and predictable?
+#   compliance_auditability    — Can we audit what data the model received and
+#                                what it produced (for regulatory compliance)?
+#   exit_costs                 — Engineering effort required to migrate off this
+#                                provider (codebase touchpoints + re-testing).
+#   ecosystem_dependency_depth — How deeply embedded is this provider in our
+#                                critical path? Could we work without it today?
+#
+# composite_risk — simple arithmetic mean of the 8 dimension scores (rounded).
+#   Thresholds: <=2 accepted, 3 accepted-with-mitigation, >=4 high-priority action
+#
+# To update this file: run the annual audit, score each dimension, update the
+# audit_record array, and commit. Read by scripts/audit_ai_dependencies.py
+# for provider-list extraction; full manual scoring is done by the auditor.
+
+schema_version: "1.0"
+scoring_basis: "ENISA Cloud Service Switching Framework (adapted for AI providers)"
+last_updated: "2026-03-25"
+next_review_due: "2027-01-01"
+auditor: "Executive Orchestrator — Phase 0 Session 2026-03-25"
+
+dimensions:
+  - id: data_portability
+    description: >
+      Can prompts, fine-tuning data, and conversation history be exported or
+      transferred to another provider without data loss?
+  - id: api_portability
+    description: >
+      How difficult is it to adapt API calls to use another provider?
+      Considers interface similarity and availability of adaptor/middleware tooling.
+  - id: trained_model_portability
+    description: >
+      Can the model be deployed on local or self-hosted infrastructure?
+      Score 5 if cloud-only with no published weights.
+  - id: service_continuity
+    description: >
+      Risk of the provider discontinuing service, changing ToS unilaterally,
+      or experiencing prolonged outages without contractual recourse.
+  - id: pricing_transparency
+    description: >
+      Is pricing publicly documented? Can costs be forecast reliably for
+      planning periods of six months or more?
+  - id: compliance_auditability
+    description: >
+      Can we retrieve logs of what data the model received and what it produced,
+      suitable for a regulatory or internal compliance review?
+  - id: exit_costs
+    description: >
+      Estimated engineering effort to migrate off this provider, measured by
+      codebase touchpoints, re-testing burden, and workflow reconstruction.
+  - id: ecosystem_dependency_depth
+    description: >
+      How central is this provider to the critical execution path?
+      Score 5 if the fleet cannot function without it today.
+
+dependencies:
+  - provider_id: claude
+    provider_name: "Anthropic / Claude"
+    dependency_type: "Inference API (primary)"
+    integration_points:
+      - "scripts/rate_limit_gate.py — default provider: claude"
+      - "scripts/rate_limit_config.py — claude profile"
+      - "scripts/detect_rate_limit.py — claude retry logic"
+      - ".github/agents/executive-orchestrator.agent.md — rate-limit gate usage"
+      - ".github/agents/research-scout.agent.md — Anthropic source cache"
+      - "AGENTS.md — claude -p print mode policy"
+      - "docs/guides/claude-code-integration.md — lifecycle hooks"
+    reference_count: 38  # from audit_ai_dependencies.py scan 2026-03-25
+    scores:
+      data_portability: 2
+      api_portability: 3
+      trained_model_portability: 5
+      service_continuity: 2
+      pricing_transparency: 1
+      compliance_auditability: 2
+      exit_costs: 3
+      ecosystem_dependency_depth: 3
+    composite_risk: 3  # mean(2,3,5,2,1,2,3,3) = 2.625, rounded to 3
+    risk_verdict: "accepted-with-mitigation"
+    score_rationale:
+      data_portability: >
+        dogma does not persist conversation history or training data with Anthropic.
+        Prompts are stored in source code (agent files, scripts) and are fully
+        portable. Score: 2 (low).
+      api_portability: >
+        Anthropic Messages API is structurally similar to OpenAI Chat Completions
+        but not identical. Migration tooling (LiteLLM, aisuite) exists. Claude-
+        specific features (extended context, system-prompt format) require adaptor
+        work. Score: 3 (moderate).
+      trained_model_portability: >
+        Claude weights are not publicly released and cannot be deployed locally.
+        There is no self-hosted option. Full cloud dependency. Score: 5 (very high).
+      service_continuity: >
+        Anthropic publishes commercial SLAs and has been operationally stable since
+        2023. However, the Meta/Moltbook case study (AGENTS.md Sprint 18 research)
+        shows AI ToS can change within 48 hours post-acquisition. No contractual
+        SLA guarantee at API tier. Score: 2 (low).
+      pricing_transparency: >
+        Token prices published at api.anthropic.com/pricing, updated publicly.
+        Costs are predictable from token budget tracking already implemented in
+        rate_limit_gate.py. Score: 1 (very low risk).
+      compliance_auditability: >
+        API request logs available via Anthropic console; Anthropic data retention
+        policy documented (zero data retention for API tier when opted in). Score: 2.
+      exit_costs: >
+        Migration requires updating rate_limit_gate.py, rate_limit_config.py,
+        detect_rate_limit.py, executive-orchestrator.agent.md, and AGENTS.md
+        claude-specific sections. Moderate refactor; estimated 2–3 sprints.
+        Score: 3 (moderate).
+      ecosystem_dependency_depth: >
+        Multiple scripts default to claude provider. Agent orchestration documented
+        as Claude Code + VS Code Copilot Chat integration. However, the Ollama
+        local-compute-scout provides an alternative inference path (reducing depth).
+        Score: 3 (moderate).
+    mitigation_steps:
+      - "Add LiteLLM adaptor layer to rate_limit_gate.py to enable provider switching via config"
+      - "Document local Ollama fallback as an explicit contingency path in docs/guides/claude-code-integration.md"
+      - "Track Claude-specific sections in AGENTS.md as abstraction candidates in a follow-up issue"
+
+  - provider_id: github_copilot
+    provider_name: "GitHub Copilot"
+    dependency_type: "IDE integration layer (agent invocation)"
+    integration_points:
+      - "VS Code Copilot Chat — primary interface for all agent invocations"
+      - ".github/agents/ — all agent files are VS Code Custom Agents (.agent.md)"
+      - ".vscode/mcp.json — MCP server configuration for Copilot"
+      - "AGENTS.md — VS Code Customization Taxonomy section"
+    reference_count: 0  # not in scripts; implicit runtime dependency
+    scores:
+      data_portability: 3
+      api_portability: 4
+      trained_model_portability: 5
+      service_continuity: 2
+      pricing_transparency: 2
+      compliance_auditability: 3
+      exit_costs: 4
+      ecosystem_dependency_depth: 5
+    composite_risk: 4  # mean(3,4,5,2,2,3,4,5) = 3.5, rounded to 4
+    risk_verdict: "high-priority-action"
+    score_rationale:
+      data_portability: >
+        VS Code Copilot Chat conversation history is stored by Microsoft and can be
+        viewed in the UI but extraction is limited. Agent definitions (.agent.md)
+        are fully source-controlled. Score: 3 (moderate).
+      api_portability: >
+        The VS Code Copilot Chat agent invocation model uses a proprietary extension
+        API (GitHub Copilot chat extensions). Alternative agents (Cursor, Windsurf)
+        use different plugin models requiring full agent file reformatting. Score: 4.
+      trained_model_portability: >
+        GitHub Copilot uses Microsoft Azure-hosted models; model weights are not
+        available. No self-hosted option. Score: 5 (very high).
+      service_continuity: >
+        Microsoft Azure-backed infrastructure with enterprise SLAs available.
+        GitHub has a 99.9% SLA for many services. Score: 2 (low operational risk).
+      pricing_transparency: >
+        GitHub Copilot pricing is publicly listed on github.com/features/copilot.
+        Per-seat flat pricing is straightforward to forecast. Score: 2 (low).
+      compliance_auditability: >
+        Enterprise audit logs available at GitHub Enterprise tier. Standard
+        subscription has limited audit trail. Requires enterprise tier for
+        full compliance coverage. Score: 3 (moderate).
+      exit_costs: >
+        The entire agent fleet (.github/agents/*.agent.md) uses the VS Code Custom
+        Agent format — not portable to other IDEs without full reformatting. MCP
+        server (.vscode/mcp.json) is portable (MCP protocol is open), but the
+        agent invocation model is not. Estimated 3–5 sprints to port to Cursor or
+        similar. Score: 4 (high).
+      ecosystem_dependency_depth: >
+        All agent work currently flows through VS Code Copilot Chat. The fleet
+        cannot be invoked without it. No alternative invocation path exists today.
+        Score: 5 (very high).
+    mitigation_steps:
+      - "Create agent-format-portability spike: assess effort to export .agent.md files as Cursor .cursorrules or system-prompt format"
+      - "Document MCP server as provider-agnostic asset (already portable via open MCP protocol) in mcp_server/README.md"
+      - "Track GitHub Copilot as single-point-of-failure in docs/governance/governance-metrics.md"
+      - "Evaluate open-source IDE plugins (Open VSX + Continue.dev) as fallback invocation path — create research issue"
+
+  - provider_id: ollama
+    provider_name: "Ollama (local inference)"
+    dependency_type: "Local inference runtime (contingency / LCF path)"
+    integration_points:
+      - ".github/agents/local-compute-scout.agent.md — primary consumer"
+      - ".github/agents/llm-cost-optimizer.agent.md — cost optimization guidance"
+      - "AGENTS.md § Local Compute-First axiom — Ollama as local-compute embodiment"
+      - "scripts/detect_rate_limit.py — local-localhost provider profile"
+    reference_count: 19  # from audit_ai_dependencies.py scan 2026-03-25
+    scores:
+      data_portability: 1
+      api_portability: 1
+      trained_model_portability: 1
+      service_continuity: 1
+      pricing_transparency: 1
+      compliance_auditability: 1
+      exit_costs: 1
+      ecosystem_dependency_depth: 2
+    composite_risk: 1  # mean(1,1,1,1,1,1,1,2) = 1.125, rounded to 1
+    risk_verdict: "accepted"
+    score_rationale:
+      data_portability: >
+        All data stays local; no vendor data handling. Score: 1.
+      api_portability: >
+        Ollama exposes an OpenAI-compatible REST API. Switching to another local
+        runtime (llama.cpp, LM Studio) requires minimal adaptor changes. Score: 1.
+      trained_model_portability: >
+        Model weights sourced from Hugging Face or Ollama registry; fully portable
+        to any local or self-hosted runtime. Score: 1 (very low risk).
+      service_continuity: >
+        Open-source project; no SLA. Running locally means no external service
+        dependency for inference. Score: 1.
+      pricing_transparency: >
+        Free and open-source. No pricing risk. Score: 1.
+      compliance_auditability: >
+        All inference happens locally; full audit trail within own infrastructure.
+        Score: 1.
+      exit_costs: >
+        Minimal switching cost; OpenAI-compatible API means standard adaptor works
+        across local runtimes. Score: 1.
+      ecosystem_dependency_depth: >
+        Ollama is the contingency path, not the primary. Agents can function without
+        it today (they fall back to Claude by default). Score: 2 (very low).
+    mitigation_steps:
+      - "No mitigation required. Continue using Ollama as the LCF contingency path."
+      - "Keep local-compute-scout.agent.md updated as Ollama model landscape evolves"

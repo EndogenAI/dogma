@@ -491,6 +491,18 @@ When all phases are complete:
 
 - Write `## Session Summary` — orientation for the next session, what was done, what's open.
 
+**Before suggesting merge or treating any open PR as ready to merge — run the PR Review Triage Gate:**
+
+```bash
+# Check for any open PR on this branch
+gh pr view --json number,state,reviews,reviewThreads 2>/dev/null || echo "No PR open"
+
+# If a PR exists, retrieve all inline comments
+gh api repos/<owner>/<repo>/pulls/<num>/comments --jq '.[] | {id, path, body}'
+```
+
+Triage every review comment (Blocking / Suggestion / Nit / Question) before treating the session as closed. A "PR is open — ready to merge" statement without this step is an encoding failure. See [AGENTS.md § PR Review Triage Gate](../../AGENTS.md#pr-review-triage-gate) and [pr-review-triage skill](../../.github/skills/pr-review-triage/SKILL.md).
+
 ### Session Delegation Audit (Optional Post-Session Check)
 
 After writing the `## Session Summary`, optionally review delegation health:

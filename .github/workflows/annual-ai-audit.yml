@@ -1,0 +1,56 @@
+name: Annual AI Dependency Audit Reminder
+
+on:
+  # Run on the first day of each year at 09:00 UTC
+  schedule:
+    - cron: '0 9 1 1 *'
+  # Allow manual trigger for ad-hoc audit runs
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Run in dry-run mode (print to stdout only)'
+        required: false
+        default: 'true'
+        type: string
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  audit-ai-dependencies:
+    name: Scan and Remind — NIST AI RMF GOVERN 6.1
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python with uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --dev
+
+      - name: Run AI dependency scan
+        id: scan
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.dry_run }}" = "true" ]; then
+            uv run python scripts/audit_ai_dependencies.py --dry-run
+          else
+            uv run python scripts/audit_ai_dependencies.py \
+              --output /tmp/ai-deps-current.yml
+            echo "output_written=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Display scan results
+        if: steps.scan.outputs.output_written == 'true'
+        run: cat /tmp/ai-deps-current.yml
+
+      - name: Open annual audit reminder issue
+        if: github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: uv run python scripts/create_audit_reminder_issue.py
