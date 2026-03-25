@@ -1,0 +1,33 @@
+# data/governance-thresholds.yml
+# Governance quality thresholds used by the quarterly audit CI workflow.
+# These are enforced by .github/workflows/quarterly-audit.yml (issue #386).
+#
+# Governing axiom: Algorithms-Before-Tokens — thresholds encode what was previously
+# a manual "remember to review" T2 instruction into a T4 programmatic enforcement gate.
+# See docs/research/civic-tech-patterns.md § Pattern 3 (Continuous Audit Cycles).
+
+encoding_coverage:
+  # Minimum proportion of MANIFESTO principles that must score >= 2/4 on F1-F4 coverage.
+  # Current baseline (2026-03-25): 9/12 principles score >= 2/4 (75%).
+  # Threshold set at 60% to allow for addition of new principles not yet fully encoded.
+  # A breach means at least 5 core principles have degraded below minimal encoding.
+  min_principles_passing: 0.60
+  rationale: >
+    Encoding coverage measures whether each named MANIFESTO principle has a description (F1),
+    canonical example (F2), anti-pattern (F3), and programmatic enforcement (F4) in AGENTS.md.
+    A score < 2/4 (F1 only) means the principle exists as a text instruction but has no
+    implementation depth — it is at T1 (verbal) rather than T2+ (text constraint or above).
+    60% passing keeps quality pressure while allowing room for newly added principles.
+
+cross_reference_density:
+  # Minimum fleet-wide mean CRD score (0.0–1.0) across all agent and skill files.
+  # Current baseline (2026-03-25): mean 0.4833 (median 0.5, min 0.0, max 1.0, n=91).
+  # Threshold set at 0.30 — one standard deviation below current mean (σ ≈ 0.31).
+  # A breach means the fleet has drifted significantly from its current cross-reference norm.
+  min_mean_crd: 0.30
+  rationale: >
+    Cross-reference density measures how often agent and skill files link back to
+    MANIFESTO.md, AGENTS.md, and peer skills/agents. Low CRD means agents are operating
+    without encoded context — a proxy for encoding drift and isolation risk.
+    Threshold at mean - 1σ catches measurable regression without triggering false alarms
+    during normal fleet expansion.

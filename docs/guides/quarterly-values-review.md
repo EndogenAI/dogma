@@ -1,5 +1,5 @@
 ---
-governs: [endogenous-first, documentation-first]
+x-governs: [endogenous-first, documentation-first]
 ---
 
 # Quarterly Values Alignment Review
@@ -7,6 +7,8 @@ governs: [endogenous-first, documentation-first]
 > Governing axiom: [MANIFESTO.md § Ethical Values](../../MANIFESTO.md#ethical-values) — values must be actively maintained; drift is not a failure of design but of ongoing encoding discipline. See also [AGENTS.md § Value Fidelity Test Taxonomy](../../AGENTS.md#value-fidelity-test-taxonomy).
 
 At the end of every quarter, the Executive Orchestrator runs a three-step values alignment review. This is not discretionary — it is a required phase-gate before the quarter's sprint retrospective is closed.
+
+**T4 Enforcement Gate**: The `.github/workflows/quarterly-audit.yml` workflow runs automatically on the first day of each quarter and opens a GitHub issue if metrics fall below the thresholds defined in `data/governance-thresholds.yml`. This is the T4 (runtime enforcement) layer for this review — the CI gate runs regardless of whether an agent remembers to initiate it manually. The three-step manual review below remains the authoritative diagnostic process; the CI gate is an early-warning sentinel.
 
 ---
 
@@ -90,3 +92,6 @@ The review must be completed and the `## Values Alignment Verdict` section writt
 - [MANIFESTO.md § Ethical Values](../../MANIFESTO.md#ethical-values) — values must be actively maintained, not declared once and assumed stable
 - [AGENTS.md § Value Fidelity Test Taxonomy](../../AGENTS.md#value-fidelity-test-taxonomy) — four-layer encoding signal taxonomy this review operationalizes at the quarterly cadence
 - [AGENTS.md § Programmatic-First Principle](../../AGENTS.md#programmatic-first-principle) — drift detection is a repeated task; `encoding_coverage.py` and `measure_cross_reference_density.py` are its encoded forms
+- `.github/workflows/quarterly-audit.yml` — T4 enforcement gate; runs on `cron: 0 9 1 1,4,7,10 *` and opens a tracking issue if `data/governance-thresholds.yml` thresholds are breached
+- `data/governance-thresholds.yml` — threshold definitions: `encoding_coverage.min_principles_passing` and `cross_reference_density.min_mean_crd`
+- `scripts/check_governance_thresholds.py` — threshold evaluation script invoked by the quarterly-audit workflow
