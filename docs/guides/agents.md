@@ -63,8 +63,8 @@ A **Character** is a type of agent designed for narrow domain expertise with exp
 | Aspect | Character | Broader Agent (Executive, Research, etc.) |
 |--------|-----------|-------------------------------------------|
 | **Scope** | Single domain (business, comms, engagement) | Orchestration or functional area |
-| **Decision Authority** | Autonomous within scope; Conor flagging review | Orchestrates others; higher-level decisions |
-| **Escalation** | Flags specific decisions for Conor approval | Delegates to specialists; handles meta-coordination |
+| **Decision Authority** | Autonomous within scope; reviewer-loop tracking | Orchestrates others; higher-level decisions |
+| **Escalation** | Flags specific decisions for human review | Delegates to specialists; handles meta-coordination |
 | **Use Case** | Ongoing specialist function (e.g., "track consulting pipeline") | One-time orchestration or broad domains |
 | **Examples** | Business Lead, Comms Strategist, Public Engagement | Executive Researcher, Executive Docs, Review |
 
@@ -72,11 +72,11 @@ A **Character** is a type of agent designed for narrow domain expertise with exp
 
 During the initial EndogenAI product discovery phase, three specialist Characters are being drafted:
 
-1. **Business Lead Character** — Tracks consulting pipeline, synthesizes customer insights, informs pricing strategy, identifies revenue opportunities. Month 1: discovery/facilitation. Month 2+: autonomous pipeline management with Conor review loop.
+1. **Business Lead Character** — Tracks consulting pipeline, synthesizes customer insights, informs pricing strategy, identifies revenue opportunities. Month 1: discovery/facilitation. Month 2+: autonomous pipeline management with **`@ckellydesign`** review loop.
 
-2. **Comms Strategist Character** — Defines messaging framework, proposes content calendar, establishes brand voice, manages community messaging. Month 1: discovery/facilitation. Month 2+: autonomous content planning with Conor approval on major campaigns.
+2. **Comms Strategist Character** — Defines messaging framework, proposes content calendar, establishes brand voice, manages community messaging. Month 1: discovery/facilitation. Month 2+: autonomous content planning with **`@ckellydesign`** approval on major campaigns.
 
-3. **Public Engagement Officer Character** — Facilitates GitHub community presence, monitors discussions, identifies speaker opportunities, co-hosts events. Month 1: community facilitation scope. Month 2+: expands to outreach + advocacy with Conor oversight.
+3. **Public Engagement Officer Character** — Facilitates GitHub community presence, monitors discussions, identifies speaker opportunities, co-hosts events. Month 1: community facilitation scope. Month 2+: expands to outreach + advocacy with human oversight.
 
 ### Invoking a Character
 
@@ -174,7 +174,7 @@ If you're authoring a **Character**:
 
 - **Scope statement**: Open with a clear one-sentence scope statement (a single domain)
 - **Month 1 constraints**: If new, specify Month 1 constraints (discovery/facilitation, what requires human approval)
-- **Escalation protocol**: Explicitly define which decisions are autonomous and which are flagged for Conor review
+- **Escalation protocol**: Explicitly define which decisions are autonomous and which are flagged for human review (use **`@accessit3ch`** or **`@ckellydesign`**)
 - **Endogenous sources**: Reference the GitHub issue defining the Character, the strategic roadmap (if applicable), and product discovery docs
 - **Autonomy signals**: Document in Endogenous Sources what metrics or events trigger scope expansion in future months
 
@@ -190,7 +190,7 @@ and inform pricing strategy and revenue opportunities.
 - Autonomous: Pipeline tracking via weekly spreadsheet reviews, customer inquiry synthesis
 - Flag for review: Any customer feedback influencing product positioning, pricing changes, 
   new service offerings
-- Escalate to Conor: Contracts >$25K, partnerships, strategic partnerships
+- Escalate to **`@ckellydesign`**: Contracts >$25K, partnerships, strategic partnerships
 ```
 
 ---

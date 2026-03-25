@@ -792,8 +792,16 @@ Every issue must have at minimum one `type:` and one `priority:` label.
 
 **Copilot reads issue title, body, and labels — it does NOT read Projects v2 field values.** Encode priority as a label (not only in project fields). Put key facts in the issue body directly; do not rely on cross-reference links.
 
+### Username and Mention Constraints
+
+**Never mention `@conor` in any context.** This project uses functional handles to separate technical/admin concerns from design/UX concerns.
+
+- **Technical / Admin**: Use **`@accessit3ch`** for system architecture, infrastructure, repo administration, and executive technical decisions.
+- **Design / UX**: Use **`@ckellydesign`** for user experience, interface design, brand identity, and front-end aesthetics.
+- **Strategic / Business**: All mentions of the founder in business or strategic contexts must use these handles based on the nature of the specific topic.
+
 **Projects v2 CLI prerequisite** (run once per machine, not per session):
-```bash
+```,oldString:bash
 gh auth refresh -s project
 gh auth status  # verify "project" appears in scopes
 ```

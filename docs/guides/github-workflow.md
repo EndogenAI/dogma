@@ -16,6 +16,7 @@ This guide is derived from [`docs/research/github-project-management.md`](../res
 | Priority encoding | Label **and** Projects v2 field — never only one location |
 | Project API | GraphQL only (no REST for Projects v2) |
 | Discussions | Low-frequency community surface only; do not use as coordination layer |
+| **Reviews / Assigments** | Use **`@accessit3ch`** (Technical/Admin) or **`@ckellydesign`** (Design/UX) |
 
 ---
 
