@@ -1,3 +1,12 @@
+# [0.18.0](https://github.com/EndogenAI/dogma/compare/v0.17.0...v0.18.0) (2026-03-25)
+
+
+### Features
+
+* **scripts,agents,docs:** encode Branch Sync Gate and ship check_branch_sync.py (closes [#435](https://github.com/EndogenAI/dogma/issues/435)) ([d2b2620](https://github.com/EndogenAI/dogma/commit/d2b26204e73c0253db4964268cf099379efb50e6))
+
+
+
 # [0.17.0](https://github.com/EndogenAI/dogma/compare/v0.16.0...v0.17.0) (2026-03-25)
 
 
