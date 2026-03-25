@@ -37,11 +37,16 @@ jobs:
       - name: Run AI dependency scan
         id: scan
         run: |
-          uv run python scripts/audit_ai_dependencies.py \
-            --output /tmp/ai-deps-current.yml
-          echo "scan_exit=$?" >> "$GITHUB_OUTPUT"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.dry_run }}" = "true" ]; then
+            uv run python scripts/audit_ai_dependencies.py --dry-run
+          else
+            uv run python scripts/audit_ai_dependencies.py \
+              --output /tmp/ai-deps-current.yml
+            echo "output_written=true" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Display scan results
+        if: steps.scan.outputs.output_written == 'true'
         run: cat /tmp/ai-deps-current.yml
 
       - name: Open annual audit reminder issue

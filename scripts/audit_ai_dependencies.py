@@ -23,8 +23,8 @@ Inputs:
     --dry-run                   — print inventory to stdout without writing file
 
 Outputs:
-    YAML inventory with keys: scan_date, providers[], dependencies[]
-    Each dependency: file, provider, reference_type, evidence_line, line_number
+    YAML inventory with keys: scan_date, providers[], raw_references[]
+    Each raw_reference: file, provider_id, line_number, evidence
 
 Exit codes:
     0   Scan completed (even if no providers found)

@@ -27,8 +27,8 @@ jobs:
       - name: Install dependencies
         run: uv sync --all-extras --dev
 
-      - name: Refresh recommendations registry
-        run: uv run python scripts/index_recommendations.py
+      - name: Check recommendations registry is up-to-date
+        run: uv run python scripts/index_recommendations.py --check
 
       - name: Audit for orphaned recommendations
         run: uv run python scripts/audit_recommendation_status.py --dry-run --no-github

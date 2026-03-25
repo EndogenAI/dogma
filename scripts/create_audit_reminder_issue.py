@@ -33,10 +33,15 @@ import subprocess
 import sys
 import tempfile
 from datetime import date
+from pathlib import Path
 
 
 def _gh(*args: str) -> subprocess.CompletedProcess:
-    return subprocess.run(["gh", *args], capture_output=True, text=True)
+    try:
+        return subprocess.run(["gh", *args], capture_output=True, text=True)
+    except FileNotFoundError:
+        print("ERROR: gh CLI not found. Install from https://cli.github.com", file=sys.stderr)
+        sys.exit(1)
 
 
 def main() -> int:
@@ -100,22 +105,25 @@ This issue is opened automatically on 1 January each year by the
         print(f"ERROR writing temp file: {exc}", file=sys.stderr)
         return 2
 
-    create_result = _gh(
-        "issue",
-        "create",
-        "--title",
-        title,
-        "--body-file",
-        tmp_path,
-        "--label",
-        "type:chore,priority:medium",
-    )
-    if create_result.returncode != 0:
-        print(f"ERROR: gh issue create failed: {create_result.stderr}", file=sys.stderr)
-        return 1
+    try:
+        create_result = _gh(
+            "issue",
+            "create",
+            "--title",
+            title,
+            "--body-file",
+            tmp_path,
+            "--label",
+            "type:chore,priority:medium",
+        )
+        if create_result.returncode != 0:
+            print(f"ERROR: gh issue create failed: {create_result.stderr}", file=sys.stderr)
+            return 1
 
-    print(create_result.stdout.strip())
-    return 0
+        print(create_result.stdout.strip())
+        return 0
+    finally:
+        Path(tmp_path).unlink(missing_ok=True)
 
 
 if __name__ == "__main__":

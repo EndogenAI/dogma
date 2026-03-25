@@ -58,18 +58,20 @@ except ImportError:  # pragma: no cover
 
 
 def load_thresholds(path: Path) -> dict:
-    """Load and parse the governance-thresholds.yml file."""
+    """Load and parse the governance-thresholds.yml file.
+
+    Raises:
+        FileNotFoundError: If the thresholds file does not exist.
+        ValueError: If the file contains malformed YAML or is not a mapping.
+    """
     try:
         data = yaml.safe_load(path.read_text(encoding="utf-8"))
     except FileNotFoundError:
-        print(f"ERROR: thresholds file not found: {path}", file=sys.stderr)
-        sys.exit(2)
+        raise FileNotFoundError(f"thresholds file not found: {path}")
     except yaml.YAMLError as exc:
-        print(f"ERROR: malformed YAML in {path}: {exc}", file=sys.stderr)
-        sys.exit(2)
+        raise ValueError(f"malformed YAML in {path}: {exc}")
     if not isinstance(data, dict):
-        print(f"ERROR: thresholds file must be a YAML mapping: {path}", file=sys.stderr)
-        sys.exit(2)
+        raise ValueError(f"thresholds file must be a YAML mapping: {path}")
     return data
 
 
@@ -87,7 +89,7 @@ def evaluate_encoding_coverage(enc_text: str, min_passing_ratio: float) -> tuple
     lines = [ln for ln in enc_text.splitlines() if "| " in ln and "/4" in ln]
     total = len(lines)
     if total == 0:
-        return True, "WARNING: no encoding coverage rows found — skipping check"
+        return False, "ERROR: no encoding coverage rows found — cannot validate threshold"
 
     passing = sum(1 for ln in lines if not ln.strip().endswith("| 0/4 |") and not ln.strip().endswith("| 1/4 |"))
     ratio = passing / total
@@ -146,7 +148,11 @@ def main(argv: list[str] | None = None) -> int:
             print(f"ERROR: input file not found: {p}", file=sys.stderr)
             return 2
 
-    thresholds = load_thresholds(thresholds_path)
+    try:
+        thresholds = load_thresholds(thresholds_path)
+    except (FileNotFoundError, ValueError) as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 2
 
     try:
         enc_text = enc_path.read_text(encoding="utf-8")

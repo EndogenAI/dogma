@@ -31,7 +31,8 @@
 #   Thresholds: <=2 accepted, 3 accepted-with-mitigation, >=4 high-priority action
 #
 # To update this file: run the annual audit, score each dimension, update the
-# audit_record array, and commit. Machine-readable by audit_ai_dependencies.py.
+# audit_record array, and commit. Read by scripts/audit_ai_dependencies.py
+# for provider-list extraction; full manual scoring is done by the auditor.
 
 schema_version: "1.0"
 scoring_basis: "ENISA Cloud Service Switching Framework (adapted for AI providers)"
