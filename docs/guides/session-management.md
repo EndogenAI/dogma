@@ -113,7 +113,9 @@ Use this canonical schema for all multi-session tracking. Columns are: Date (ses
 
 **Format:**
 
-> **Session-Start Checkpoint**: This session is governed by Axiom _N_ (_name_). Primary endogenous source: `<path>` — _one sentence on why_.
+```
+**Session-Start Checkpoint**: This session is governed by Axiom _N_ (_name_). Primary endogenous source: `<path>` — _one sentence on why_.
+```
 
 **When**: Required at the start of any session where the agent operates under `AGENTS.md` scope.
 

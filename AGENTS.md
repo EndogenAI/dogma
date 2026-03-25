@@ -836,6 +836,8 @@ When research surfaces ≥2 viable options, **all options must be presented to t
 
 When starting a new session on an existing branch, **always reference the scratchpad before delegating**. Use this standard prompt:
 
+**Prompt Formatting Rule**: All suggested agent prompts — handoff prompts, orientation prompts, session-start prompts, and delegation examples — must be enclosed in a triple-backtick fenced code block. Never surface a suggested prompt as a bare `> ` blockquote. Fenced blocks are copy-paste-safe and scannable.
+
 ```
 @Executive Orchestrator Please continue the session on branch [branch-slug].
 Read the active scratchpad at .tmp/[branch-slug]/[YYYY-MM-DD].md before delegating anything —
@@ -1156,6 +1158,7 @@ uv run pre-commit install --hook-type pre-push
 - Use heredocs (`cat >> file << 'EOF'` or Python inline `<< 'PYEOF'`) to write Markdown content — backticks, triple-backtick fences, and special characters silently corrupt or truncate output through the terminal tool. **Always use `replace_string_in_file` or `create_file` (the built-in VS Code tools) for any file write that contains Markdown, code blocks, or backtick-containing content.**
 - Use terminal file I/O redirection (`> file`, `>> file`, `| tee file`, `| cat >> file`) in scripts — shell quoting causes interleaving and corruption. **Always use `create_file` or `replace_string_in_file` (the built-in VS Code tools).** Enforced via pre-commit hook `no-terminal-file-io-redirect` (Programmatic-First principle; §75–76).
 - Pass multi-line `gh issue` bodies via `--body "..."` on the command line — shell quoting and backtick interpolation cause `gh` to hang or silently corrupt content. **Always write the body to a temp file and use `--body-file <path>`, or use Python `subprocess` with a list of args.**
+- Surface suggested prompts as bare blockquotes (`> `) — always wrap in a triple-backtick fenced code block instead.
 
 **Prefer caution over assumption for:**
 
