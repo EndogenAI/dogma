@@ -1,3 +1,13 @@
+# [0.19.0](https://github.com/EndogenAI/dogma/compare/v0.18.1...v0.19.0) (2026-03-25)
+
+
+### Features
+
+* **scripts:** automate sprint milestone setup and issue assignment ([ab25d9c](https://github.com/EndogenAI/dogma/commit/ab25d9cc0b9841b1ee1f27d5d5ed3184e603ff9f))
+* **scripts:** automate sprint milestone setup and issue assignment ([1703bac](https://github.com/EndogenAI/dogma/commit/1703bac6b4ab357f67910691ca20d7e7742b9405))
+
+
+
 ## [0.18.1](https://github.com/EndogenAI/dogma/compare/v0.18.0...v0.18.1) (2026-03-25)
 
 
