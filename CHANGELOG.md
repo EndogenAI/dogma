@@ -1,3 +1,27 @@
+# [0.17.0](https://github.com/EndogenAI/dogma/compare/v0.16.0...v0.17.0) (2026-03-25)
+
+
+### Bug Fixes
+
+* **audit:** use numbered.group(2) for recommendation text extraction ([9d146a1](https://github.com/EndogenAI/dogma/commit/9d146a11762b72e95bc5182afc2d8aeef2aa6eb0))
+* **provenance:** address all remaining PR [#412](https://github.com/EndogenAI/dogma/issues/412) review comments ([022c3db](https://github.com/EndogenAI/dogma/commit/022c3db563691412ebef61eae6092971f6e78aaf))
+* **provenance:** address PR [#412](https://github.com/EndogenAI/dogma/issues/412) review feedback regarding path portability and status validation ([a0562d6](https://github.com/EndogenAI/dogma/commit/a0562d62ce4284157827c3e7d89fc7a0b86636a7))
+* **provenance:** address PR [#431](https://github.com/EndogenAI/dogma/issues/431) review feedback ([e11994c](https://github.com/EndogenAI/dogma/commit/e11994c0d649a47d4affbcf4b4db70ce6cbac1b5))
+* **research:** correct rec-webmcp-001 status from accepted to deferred ([5845eb6](https://github.com/EndogenAI/dogma/commit/5845eb640ef5e1a81023e22576f56466ba319c4d))
+* **scripts,ci,skills:** address PR [#431](https://github.com/EndogenAI/dogma/issues/431) review batch 2 ([d7c61cb](https://github.com/EndogenAI/dogma/commit/d7c61cbec8986d823216b6cb9608427ee6171082))
+* **skills:** update secondary-research-sprint SKILL.md to use D4 numbered headings ([bd6ab75](https://github.com/EndogenAI/dogma/commit/bd6ab75ca47e4ded7924d703fdb714c30dda8f6a))
+
+
+### Features
+
+* **governance:** add recommendations provenance schema and CI hard-fail validation ([de1e664](https://github.com/EndogenAI/dogma/commit/de1e664987719de53d6e0c2f01474ae328781872)), closes [#406](https://github.com/EndogenAI/dogma/issues/406)
+* **provenance:** complete sprint 23 recommendation retrofit execution [forced sync] ([5942ca4](https://github.com/EndogenAI/dogma/commit/5942ca40c9a8d29fb7ddb7b6025818b9842e21bf))
+* **scripts:** add audit_recommendation_status.py to suggest provenance patches ([edb9cd7](https://github.com/EndogenAI/dogma/commit/edb9cd7e6fd62b8bd77436f7e08c4c3ee3d62658)), closes [#409](https://github.com/EndogenAI/dogma/issues/409)
+* **scripts:** add enrich_research_issues.py automation and weekly workflow ([174f5ad](https://github.com/EndogenAI/dogma/commit/174f5adcb628a5f6eebcdc8b5820299479b43f84))
+* **scripts:** add index_recommendations.py to generate recommendations registry ([59372fd](https://github.com/EndogenAI/dogma/commit/59372fd35839be1602511000f4922816aa0a60f0)), closes [#407](https://github.com/EndogenAI/dogma/issues/407)
+
+
+
 # [0.16.0](https://github.com/EndogenAI/dogma/compare/v0.15.0...v0.16.0) (2026-03-22)
 
 
