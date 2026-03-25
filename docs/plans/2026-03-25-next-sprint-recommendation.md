@@ -127,11 +127,12 @@ closes_issues: []
 **Effort**: Low–Medium
 
 **Acceptance Criteria**:
-- [ ] #388 resolved or workaround applied; CI passes
-- [ ] #435 merged; branch-sync gate documented
+- [ ] #388 resolved or workaround applied; CI passes (space-named plan file deleted; upstream bug filed)
+- [x] #435 merged; branch-sync gate documented *(CLOSED — already merged)*
 - [ ] #381 merged; NIST audit automation in place
-- [ ] #386, #356, #403, #408 merged; CI audit and guardrails enhanced
-- [ ] Phase 0 Review passed (9 total issues)
+- [ ] #386, #356, #408 merged; CI audit and guardrails enhanced
+- [x] #403 merged; Substrate Distiller CI integration *(CLOSED — already merged)*
+- [ ] Phase 0 Review passed (7 remaining open issues)
 
 ---
 
