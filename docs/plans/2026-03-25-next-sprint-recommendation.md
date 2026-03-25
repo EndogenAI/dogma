@@ -114,6 +114,11 @@ closes_issues: []
 **Owner**: CI Monitor + Executive Orchestrator  
 **Effort**: Low–Medium
 
+**Acceptance Criteria**:
+- [ ] #388 resolved or workaround applied; CI passes
+- [ ] #435 merged; branch-sync gate documented
+- [ ] Phase 0 Review passed
+
 ---
 
 ### Phase 1: Security Hardening Foundation
@@ -129,6 +134,13 @@ closes_issues: []
 **Effort**: 5–8 days  
 **Maturity Target**: L2 → L3 (threats encoded, no longer ad-hoc)
 
+**Acceptance Criteria**:
+- [ ] #424 merged; SSRF range validation complete
+- [ ] #423 merged; runtime behaviors documented
+- [ ] #360 merged; OWASP threat model in docs/research/
+- [ ] #361, #357 merged; security automation in place
+- [ ] Phase 1 Review passed
+
 ---
 
 ### Phase 2: Research Infrastructure Finalization
@@ -143,6 +155,13 @@ closes_issues: []
 **Owner**: Executive Researcher + Executive Docs  
 **Effort**: 5–7 days  
 **Maturity Target**: Research procedures L2 → L3 (standardized, taught, enforced)
+
+**Acceptance Criteria**:
+- [ ] #422 merged; research procedure flowchart in docs/guides/
+- [ ] #410 merged; approved changes applied to all research docs
+- [ ] #411 merged; inconsistencies removed
+- [ ] #402 merged; retrospective published
+- [ ] Phase 2 Review passed
 
 ---
 
@@ -162,6 +181,15 @@ closes_issues: []
 **Note**: High-scope; recommend smaller team to avoid merge conflicts. Coordinate with any other PRs in flight.  
 **Maturity Target**: Agent fleet L1 → L2 (standardized syntax, consistent tooling)
 
+**Acceptance Criteria**:
+- [ ] #332 merged; YAML syntax standardized across 40+ agent files
+- [ ] #333 merged; multi-turn conversation support added to agent runtime
+- [ ] #335 merged; return compression constraints enforced
+- [ ] #334 merged; L3 observability telemetry in all agents
+- [ ] #331 merged; decision logic and axiom priority encoded
+- [ ] #336 merged; MCP tool naming standardized
+- [ ] Phase 3 Review passed
+
 ---
 
 ### Phase 4: Observability & Metrics Infrastructure (Post-Phase 3)
@@ -175,6 +203,12 @@ closes_issues: []
 **Owner**: Executive Scripter  
 **Effort**: 5–7 days
 
+**Acceptance Criteria**:
+- [ ] #369, #376, #342, #343 merged; observability foundation in place
+- [ ] #346, #345 merged; velocity metrics dashboard available
+- [ ] #344 merged; script refactoring complete
+- [ ] Phase 4 Review passed
+
 ---
 
 ### Phase 5: Skills & Automation (Post-Phase 2)
@@ -186,6 +220,11 @@ closes_issues: []
 
 **Owner**: Executive Automator + Executive Planner  
 **Effort**: 3–4 days
+
+**Acceptance Criteria**:
+- [ ] #432 merged; PR review automation skill available
+- [ ] Supporting automation issues merged
+- [ ] Phase 5 Review passed
 
 ---
 
