@@ -44,6 +44,7 @@ Exit codes:
 from __future__ import annotations
 
 import argparse
+import re
 import subprocess
 import sys
 from datetime import date
@@ -160,6 +161,38 @@ def _git_branch() -> str:
     return "unknown"
 
 
+def sanitize_filename(slug: str) -> str:
+    """Sanitize slug for use in filenames by removing/replacing problematic characters.
+
+    Removes characters that could cause issues with lychee (spaces, colons) and
+    other file systems. Replaces spaces and colons with hyphens; removes other
+    special characters. Keeps only alphanumeric, hyphens, and underscores.
+
+    Args:
+        slug: Original slug string (may contain spaces, colons, special chars)
+
+    Returns:
+        Sanitized slug safe for use in filenames
+
+    Example:
+        "sprint 19: governance & ethics" → "sprint-19-governance-ethics"
+    """
+    original = slug
+    # Replace spaces and colons with hyphens
+    sanitized = slug.replace(" ", "-").replace(":", "-")
+    # Remove other special characters, keep only alphanumeric, hyphens, underscores
+    sanitized = re.sub(r"[^a-z0-9_-]", "", sanitized)
+    # Collapse multiple consecutive hyphens to single hyphen
+    sanitized = re.sub(r"-+", "-", sanitized)
+    # Strip leading/trailing hyphens
+    sanitized = sanitized.strip("-")
+
+    if original != sanitized:
+        print(f"Sanitized slug: '{original}' → '{sanitized}'", file=sys.stderr)
+
+    return sanitized
+
+
 def slug_to_title(slug: str) -> str:
     """Convert a dash-separated slug to a title-cased string."""
     return slug.replace("-", " ").title()
@@ -194,6 +227,7 @@ def main() -> int:
     args = parser.parse_args()
 
     slug = args.slug.strip().lower()
+    slug = sanitize_filename(slug)  # Sanitize for filename safety (prevents lychee panic)
     if not slug:
         print("ERROR: slug must not be empty.", file=sys.stderr)
         return 1
