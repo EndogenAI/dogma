@@ -1,3 +1,19 @@
+# [0.20.0](https://github.com/EndogenAI/dogma/compare/v0.19.0...v0.20.0) (2026-03-25)
+
+
+### Bug Fixes
+
+* **ci:** address Copilot review blocking comments on PR [#440](https://github.com/EndogenAI/dogma/issues/440) ([ec81be4](https://github.com/EndogenAI/dogma/commit/ec81be44eb3adc74bd7eb2b6f0c24cfd13cc94a4))
+
+
+### Features
+
+* **ci:** add quarterly governance audit workflow and threshold enforcement ([03cc929](https://github.com/EndogenAI/dogma/commit/03cc929eb4d3373838533193c1ec947fa2c85a24)), closes [#386](https://github.com/EndogenAI/dogma/issues/386)
+* **ci:** fix recommendations-audit workflow; add on-archival registry step ([ba7d9f7](https://github.com/EndogenAI/dogma/commit/ba7d9f78dce8457f4a67effee0f5afda207e62fe)), closes [#408](https://github.com/EndogenAI/dogma/issues/408)
+* **guardrails:** two-stage rule+LLM pipeline for irreversible agent actions ([8656296](https://github.com/EndogenAI/dogma/commit/8656296c3e9ddc1f18f90bf5255d0a4f4270a365)), closes [#356](https://github.com/EndogenAI/dogma/issues/356)
+
+
+
 # [0.19.0](https://github.com/EndogenAI/dogma/compare/v0.18.1...v0.19.0) (2026-03-25)
 
 
