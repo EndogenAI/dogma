@@ -152,8 +152,11 @@ status: Draft
 sources:
   - <primary URL>
 recommendations:
-  - status: open
-    text: <at least one actionable recommendation>
+  - id: rec-1
+    title: <short recommendation title>
+    status: accepted-for-adoption
+    linked_issue: <github-issue-number-or-url>
+    decision_ref: ""
 ```
 
 **Required headings** (enforced by `validate_synthesis.py`; D4 numbered format):

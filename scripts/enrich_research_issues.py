@@ -4,8 +4,8 @@ enrich_research_issues.py — Detect and enrich bare-bones type:research GitHub 
 Bare-bones heuristic: body length ≤ 300 chars AND no "## Acceptance Criteria" heading.
 
 Usage:
-    uv run python scripts/enrich_research_issues.py --dry-run   # inspect only (default)
-    uv run python scripts/enrich_research_issues.py --apply     # post enrichment comment
+    uv run python scripts/enrich_research_issues.py           # inspect only (default, dry-run)
+    uv run python scripts/enrich_research_issues.py --apply   # post enrichment comment
 
 Exit codes:
     0 — completed (0 or more issues found)
@@ -19,8 +19,6 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
-
-repo_root = Path(__file__).resolve().parents[1]
 
 BARE_BONES_MAX_BODY = 300
 ACCEPTANCE_CRITERIA_HEADING = "## Acceptance Criteria"
@@ -92,12 +90,14 @@ def post_enrichment_comment(issue_number: int) -> None:
         Path(tmp_path).unlink(missing_ok=True)
         return
 
-    subprocess.run(
-        ["gh", "issue", "comment", str(issue_number), "--body-file", tmp_path],
-        check=True,
-    )
-    Path(tmp_path).unlink(missing_ok=True)
-    print(f"  ✓ Posted enrichment comment on #{issue_number}")
+    try:
+        subprocess.run(
+            ["gh", "issue", "comment", str(issue_number), "--body-file", tmp_path],
+            check=True,
+        )
+        print(f"  ✓ Posted enrichment comment on #{issue_number}")
+    finally:
+        Path(tmp_path).unlink(missing_ok=True)
 
 
 def print_dry_run_table(issues: list[dict]) -> None:
@@ -114,22 +114,14 @@ def print_dry_run_table(issues: list[dict]) -> None:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Detect and enrich bare-bones type:research GitHub issues.")
-    mode = parser.add_mutually_exclusive_group()
-    mode.add_argument(
-        "--dry-run",
-        action="store_true",
-        default=True,
-        help="Print matching issues without posting comments (default)",
-    )
-    mode.add_argument(
+    parser.add_argument(
         "--apply",
         action="store_true",
         default=False,
-        help="Post enrichment comment on each bare-bones issue",
+        help="Post enrichment comment on each bare-bones issue (default: dry-run; inspect only)",
     )
     args = parser.parse_args(argv)
 
-    # --apply overrides the dry-run default
     dry_run = not args.apply
 
     try:

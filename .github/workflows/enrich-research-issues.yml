@@ -20,6 +20,6 @@ jobs:
       - name: Install dependencies
         run: uv sync --frozen
       - name: Enrich bare-bones research issues
-        run: uv run python scripts/enrich_research_issues.py --dry-run
+          run: uv run python scripts/enrich_research_issues.py --apply
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

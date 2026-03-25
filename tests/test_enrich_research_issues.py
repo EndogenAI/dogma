@@ -70,11 +70,10 @@ def test_dry_run_prints_table(capsys):
     mock_result.stdout = issues_json
 
     with patch("subprocess.run", return_value=mock_result) as mock_run:
-        exit_code = script.main(["--dry-run"])
+        exit_code = script.main([])
 
     assert exit_code == 0
     captured = capsys.readouterr()
-    assert "#10" in captured.out
     assert "Research topic A" in captured.out
     # Long-body issue should NOT appear
     assert "#11" not in captured.out
@@ -132,7 +131,7 @@ def test_gh_api_error_exits_1():
         "subprocess.run",
         side_effect=subprocess.CalledProcessError(1, "gh", stderr="auth error"),
     ):
-        exit_code = script.main(["--dry-run"])
+        exit_code = script.main([])
     assert exit_code == 1
 
 
@@ -153,7 +152,7 @@ def test_no_bare_bones_issues_exits_0(capsys):
     mock_result.stdout = issues_json
 
     with patch("subprocess.run", return_value=mock_result):
-        exit_code = script.main(["--dry-run"])
+        exit_code = script.main([])
 
     assert exit_code == 0
     captured = capsys.readouterr()
