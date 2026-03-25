@@ -88,6 +88,23 @@ git commit -m "docs(research): add final synthesis — <title>
 Closes #<issue-number>"
 ```
 
+### 5a. Refresh the Recommendations Registry (On-Archival Step)
+
+After the commit, always run:
+
+```bash
+uv run python scripts/index_recommendations.py
+```
+
+This updates `data/recommendations-registry.yml` with the newly finalized document's recommendations. The weekly `recommendations-audit.yml` CI workflow depends on this registry being current — skip it and the next audit will report stale data.
+
+If the registry changed, stage and commit it in the same session:
+
+```bash
+git add data/recommendations-registry.yml
+git commit -m "chore(data): refresh recommendations registry after archiving <title>"
+```
+
 ### 6. Return to Executive Researcher
 
 Use the "Return to Executive Researcher" handoff so the executive can update guides, notify Executive Docs, or close the GitHub issue.
