@@ -89,6 +89,16 @@ Maintain the health and standards compliance of the agent fleet itself.
 
 ---
 
+## Adoption & Onboarding Agents
+
+Guide new adopters through companion-repo onboarding using the cookiecutter template and adopt_wizard.py.
+
+| Agent | File | Posture | Tier | Effort | Trigger |
+|-------|------|---------|------|--------|---------|
+| **Adoption Agent** | `adoption.agent.md` | read + execute | Adoption | M | Run companion-repo onboarding via `scripts/adopt_wizard.py`; scaffold `client-values.yml` and `AGENTS.md` for new adopters; validate output before handoff |
+
+---
+
 ## Project Management Agents
 
 Maintain the health of the repository as an open-source resource.
