@@ -293,6 +293,60 @@ Before delegating any multi-step execution phase, the Orchestrator delegates a d
 
 ---
 
+## Audit Trail
+
+Every irreversible or external-state-modifying action taken during a session must be recorded under a `## Audit Trail` heading in the scratchpad.
+
+### Required fields per entry
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `timestamp` | ISO 8601 string | When the action was taken |
+| `action` | string | Short imperative description (e.g., "gh issue create #42") |
+| `agent` | string | Which agent performed the action |
+| `outcome` | string | Result: `success`, `failure`, or `partial` |
+
+### Example entry
+
+```yaml
+- timestamp: "2026-03-26T14:32:00Z"
+  action: "gh issue comment 333 --body-file /tmp/note.md"
+  agent: "Executive Orchestrator"
+  outcome: "success"
+```
+
+Write an Audit Trail entry immediately after any `git push`, `gh issue create/comment/close`, `gh pr create`, or bulk file operation affecting committed state.
+
+---
+
+## Telemetry
+
+For each agent invocation that produces a measurable span, record OTel metadata under a `## Telemetry` heading in the scratchpad. Entry shape is consistent with [## Audit Trail](#audit-trail) — one YAML block per invocation.
+
+### Required sub-fields per entry
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `span_id` | string | OTel span identifier for the invocation |
+| `model` | string | Model name (e.g., `claude-sonnet-4`) |
+| `input_tokens` | int | Token count for the prompt (`gen_ai.usage.input_tokens`) |
+| `output_tokens` | int | Token count for the completion (`gen_ai.usage.output_tokens`) |
+| `latency_ms` | int | Wall-clock latency in milliseconds (`gen_ai.client.operation.duration` × 1000) |
+
+### Example entry
+
+```yaml
+- span_id: "3a2b1c4d5e6f"
+  model: "claude-sonnet-4"
+  input_tokens: 4200
+  output_tokens: 612
+  latency_ms: 3840
+```
+
+Values come from `gen_ai.*` OTel attributes — see [`docs/research/otel-agent-instrumentation.md`](../../docs/research/otel-agent-instrumentation.md) Pattern 2 for the canonical attribute names and Pattern 1 for the span shape.
+
+---
+
 ## 6. Session Close
 
 ### 6.1 Session Summary
