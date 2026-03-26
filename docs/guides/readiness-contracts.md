@@ -79,4 +79,4 @@ Every workplan that gates on a readiness claim must include:
 
 - `scripts/check_readiness_matrix.py` — validates capability matrix presence in claims
 - `scripts/check_plan_to_intent_drift.py` — checks workplan completion maps to intent
-- [AGENTS.md § Readiness Language Guard](../AGENTS.md#readiness-language-guard) — language constraints
+- [AGENTS.md § Readiness Language Guard](../../AGENTS.md#readiness-language-guard) — language constraints

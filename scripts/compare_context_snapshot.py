@@ -73,7 +73,22 @@ def _parse_snapshot(snapshot_path: Path) -> dict:
 
 
 def _first_active_section(text: str) -> tuple[str, list[str]]:
-    """Return (heading, first_5_lines) of first non-archived H2 section."""
+    """Return (heading, first_5_lines) of first substantive non-archived H2 section.
+
+    Skips well-known meta headings (Active Context, Session State, etc.) that
+    appear at the top of pruned scratchpads but do not represent the active
+    task/phase being compared.
+    """
+    _META_HEADINGS = frozenset(
+        {
+            "Active Context",
+            "Session State",
+            "Session Start",
+            "Pre-Compact Checkpoint",
+            "Orchestration Plan",
+        }
+    )
+
     lines = text.splitlines()
     in_section = False
     heading = ""
@@ -83,7 +98,7 @@ def _first_active_section(text: str) -> tuple[str, list[str]]:
         stripped = line.strip()
         if stripped.startswith("## "):
             candidate = stripped[3:].strip()
-            if "archived" in candidate.lower():
+            if "archived" in candidate.lower() or candidate in _META_HEADINGS:
                 in_section = False
                 heading = ""
                 section_lines = []

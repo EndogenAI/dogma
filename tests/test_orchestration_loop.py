@@ -6,6 +6,8 @@ import importlib.util
 import json
 from pathlib import Path
 
+import pytest
+
 _SCRIPT = Path(__file__).parent.parent / "scripts" / "detect_orchestration_loop.py"
 spec = importlib.util.spec_from_file_location("detect_orchestration_loop", _SCRIPT)
 _mod = importlib.util.module_from_spec(spec)  # type: ignore[arg-type]
@@ -23,6 +25,7 @@ def _write_scratchpad(tmp_path: Path, headings: list[str]) -> Path:
     return p
 
 
+@pytest.mark.io
 class TestDetectLoop:
     def test_no_loop_unique_headings(self, tmp_path: Path) -> None:
         p = _write_scratchpad(tmp_path, ["Phase 1", "Phase 2", "Phase 3", "Review"])

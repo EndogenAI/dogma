@@ -489,13 +489,26 @@ def _run_snapshot(path: Path, today: str) -> None:
     """Save a YAML context snapshot of the active scratchpad section.
 
     Writes a snapshot YAML file to .tmp/<branch>/<date>-snapshot.yaml containing
-    the first non-archived H2 heading and its first 5 non-empty lines.
+    the first substantive H2 heading (skipping known meta headings) and its first
+    5 non-empty lines.  Returns 0 on success, 1 on error.
     """
     from datetime import datetime
 
+    # Well-known meta headings that appear at the top of pruned scratchpads
+    # and do not represent the active task/phase being preserved.
+    _META_HEADINGS = frozenset(
+        {
+            "Active Context",
+            "Session State",
+            "Session Start",
+            "Pre-Compact Checkpoint",
+            "Orchestration Plan",
+        }
+    )
+
     if not path.exists():
         print(f"ERROR: {path} not found.", file=sys.stderr)
-        sys.exit(1)
+        return 1
 
     text = path.read_text(encoding="utf-8")
     lines = text.splitlines()
@@ -506,8 +519,9 @@ def _run_snapshot(path: Path, today: str) -> None:
 
     for i, line in enumerate(lines):
         stripped = line.strip()
-        if stripped.startswith("## ") and "archived" not in stripped.lower():
-            task_name = stripped[3:].strip()
+        heading_text = stripped[3:].strip() if stripped.startswith("## ") else ""
+        if stripped.startswith("## ") and "archived" not in stripped.lower() and heading_text not in _META_HEADINGS:
+            task_name = heading_text
             heading_found = True
             # Collect first 5 non-empty lines after the heading
             for subsequent in lines[i + 1 :]:
@@ -680,8 +694,7 @@ def main() -> int:
 
     # --snapshot: save a YAML context snapshot of the active section
     if args.snapshot:
-        _run_snapshot(path, today)
-        sys.exit(0)
+        return _run_snapshot(path, today)
 
     # --append-summary: safe Python-based session summary write
     if args.append_summary is not None:
