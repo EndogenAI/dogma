@@ -386,7 +386,7 @@ def extract_tools_list(text: str) -> list[str]:
             break
         stripped = line.strip()
         if stripped.startswith("- "):
-            tool = stripped[2:].strip()
+            tool = stripped[2:].strip().strip(".")
             if tool:
                 result.append(tool)
 
@@ -435,7 +435,8 @@ def check_approval_gate_presence(text: str, tools: list[str]) -> list[str]:
     if not is_full_exec:
         return []
 
-    if _APPROVAL_GATE_RE.search(text):
+    body = _extract_body(text)
+    if _APPROVAL_GATE_RE.search(body):
         return []
 
     return [

@@ -25,8 +25,9 @@ Phase 0 addresses new blockers discovered post-Wave-1-close.
 ### Phase 0 — Pre-Sprint Blockers ✅
 **Agent**: CI Monitor + Executive Scripter
 **Deliverables**:
-- Fix `Snapshot GitHub State` recurring CI failure (3 days, `git push` blocked by
-  branch protection on main — needs `SNAPSHOT_PAT` secret or bypass actor config)
+- Fix `Snapshot GitHub State` recurring CI failure (3 days, `git push` to `main`
+  was blocked by branch protection — resolved by switching to upload-artifact
+  pattern so no `SNAPSHOT_PAT` secret or bypass actor config is needed)
 - CI health check: confirm all other scheduled + pushed workflows are green
 
 **Depends on**: nothing
