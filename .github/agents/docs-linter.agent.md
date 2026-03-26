@@ -123,6 +123,7 @@ Do not edit any file. Hand off to Executive Docs.
 - Do not recommend removing citations from research docs — dead URLs are part of the citation record (see `.lycheeignore` convention).
 - Run `validate_synthesis.py` to establish baseline before beginning any independent checks — do not re-implement what the script already enforces.
 - Do not batch-close issues — flag gaps and return to Executive Docs or Review.
+- **Return compression ceiling**: Return ≤ 300 tokens to the delegating executive. Write full findings to the scratchpad or disk — do not put detailed content in the return channel.
 
 </constraints>
 

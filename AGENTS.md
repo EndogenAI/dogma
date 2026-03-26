@@ -427,7 +427,7 @@ Rules:
 
 ### Focus-on-Descent / Compression-on-Ascent
 
-**Essence**: Outbound delegation prompts must be scoped narrowly and explicitly. Returned results must be compressed to ≤ 2,000 tokens. Both together preserve context window budget across multi-phase sessions.
+**Essence**: Outbound delegation prompts must be scoped narrowly and explicitly. Returned results must be compressed — **subagents return ≤ 300 tokens**; **executive agents return ≤ 2,000 tokens**. Both together preserve context window budget across multi-phase sessions.
 
 **Three-layer encoding** (prescriptive — not advisory):
 
@@ -985,6 +985,7 @@ The authoring contract for `.agent.md` files (VS Code Custom Agents) is enforced
   - **Read-only**: `search`, `read`, `changes`, `usages`
   - **Read + create**: adds `edit`, `web` (only if fetching remote URLs)
   - **Full execution**: adds `execute`, `terminal`, `agent`
+- **Tool count ceiling (Miller's Law)**: Agent `tools` arrays must not exceed **9 items** (Miller 1956, 7±2 rule). Exceeding this ceiling prevents reviewers from mentally tracking all available actions. `validate_agent_files.py` emits a warning for violations. Evidence: [`docs/research/ai-cognitive-load.md`](docs/research/ai-cognitive-load.md).
 - **Handoff Patterns**:
   - **Takeback**: Sub-agent returns to executive for review gate before next phase.
   - **Inter-Phase Review Gate**: Multi-phase sessions invoke Review agent between every domain phase pair.

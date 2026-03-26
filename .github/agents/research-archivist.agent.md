@@ -167,4 +167,5 @@ A correct output from this agent looks like:
 - Do not archive a document with a Reviewer verdict of **Revise** or **Reject**.
 - Do not force-push to `main`.
 - Do not commit documentation and code changes in the same commit.
+- **Return compression ceiling**: Return ≤ 300 tokens to the delegating executive. Write full findings to the scratchpad or disk — do not put detailed content in the return channel.
 </constraints>

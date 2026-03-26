@@ -143,6 +143,7 @@ Write output to scratchpad under `## Values Researcher Output`. Then hand off to
 - Check `.cache/sources/` before fetching any URL.
 - Focus on how values are encoded, not whether the values themselves are correct — that is for the user to decide.
 - Flag any finding that contradicts a current MANIFESTO.md axiom as a decision point for the user before proceeding.
+- **Return compression ceiling**: Return ≤ 300 tokens to the delegating executive. Write full findings to the scratchpad or disk — do not put detailed content in the return channel.
 
 </constraints>
 
