@@ -22,7 +22,7 @@ Phase 0 addresses new blockers discovered post-Wave-1-close.
 
 ## Phase Plan
 
-### Phase 0 — Pre-Sprint Blockers ⬜
+### Phase 0 — Pre-Sprint Blockers ✅
 **Agent**: CI Monitor + Executive Scripter
 **Deliverables**:
 - Fix `Snapshot GitHub State` recurring CI failure (3 days, `git push` blocked by
@@ -34,13 +34,13 @@ Phase 0 addresses new blockers discovered post-Wave-1-close.
 **CI**: Tests
 **Status**: Not started
 
-### Phase 0 Review ⬜
+### Phase 0 Review ✅
 **Agent**: Review
 **Deliverables**: APPROVED verdict in scratchpad `## Phase 0 Review Output`
 **Depends on**: Phase 0 committed
 **Status**: Not started
 
-### Phase 1 — Agent Fleet Standardization ⬜
+### Phase 1 — Agent Fleet Standardization ✅
 **Agent**: Executive Fleet + Executive Scripter
 **Deliverables**:
 - #332 — enforce approval gates / YAML governance in `validate_agent_files.py`
@@ -54,7 +54,7 @@ Phase 0 addresses new blockers discovered post-Wave-1-close.
 **CI**: Tests, validate-agent-files, ruff
 **Status**: Not started
 
-### Phase 1 Review ⬜
+### Phase 1 Review ✅
 **Agent**: Review
 **Deliverables**: APPROVED verdict in scratchpad `## Phase 1 Review Output`
 **Depends on**: Phase 1 committed
