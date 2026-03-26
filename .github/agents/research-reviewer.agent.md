@@ -160,4 +160,5 @@ A correct output from this agent looks like:
 - Do not approve a draft where recommendations are speculative (not grounded in cited sources).
 - Do not proceed without reading `OPEN_RESEARCH.md` gate deliverables for the topic.
 - Do not approve a draft that still contains raw, unprocessed Scout notes.
+- **Return compression ceiling**: Return ≤ 300 tokens to the delegating executive. Write full findings to the scratchpad or disk — do not put detailed content in the return channel.
 </constraints>

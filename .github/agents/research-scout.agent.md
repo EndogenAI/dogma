@@ -182,4 +182,5 @@ A correct output from this agent looks like:
 - Do not follow more than 2 levels of links per source.
 - Do not include sources that are behind hard paywalls with no accessible abstract or summary.
 - Do not proceed if the research question is unclear — return to Executive Researcher for clarification.
+- **Return compression ceiling**: Return ≤ 300 tokens to the delegating executive. Write full findings to the scratchpad or disk — do not put detailed content in the return channel.
 </constraints>

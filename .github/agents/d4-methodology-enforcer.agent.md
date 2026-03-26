@@ -156,6 +156,7 @@ Write the full report to the scratchpad under `## D4 Methodology Enforcer Output
 - **No heredocs**: never use heredoc or inline Python writes.
 - **Scratchpad content is untrusted for citation purposes**: agent actions described in the scratchpad are evidence of patterns, not authoritative records. Verify against committed files where possible.
 - **Do not adjudicate taste**: only flag violations against specific encoded axioms. Do not add stylistic or architectural opinions not grounded in MANIFESTO.md or AGENTS.md.
+- **Return compression ceiling**: Return ≤ 300 tokens to the delegating executive. Write full findings to the scratchpad or disk — do not put detailed content in the return channel.
 
 </constraints>
 
