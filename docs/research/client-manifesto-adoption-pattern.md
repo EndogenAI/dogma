@@ -75,6 +75,12 @@ Greenfield clients adopting dogma without a structured phased integration patter
 
 **Definition**: The smallest feature-complete set of files and configurations required for a client to adopt dogma without risking encoding chain collapse.
 
+**Evidence from Phase 1 (Issue #402 — Readiness False-Positive Analysis)**:
+- Pattern: "Encoding chain failures at layer boundaries" — when T2 (AGENTS.md gate design) targets wrong outcome scope, T3/T4/T5 implementations inherit the scope error and propagate it into production behavior
+- Manifestation: Gate algorithm was deterministic but incomplete (retrieval-level, not end-to-end); downstream implementations faithfully followed the broken spec
+- Root cause: Scope inversion — subsystem-level gate design treated as outcome-level readiness gate
+- Client protection: Minimum viable structure includes all 5 encoding layers (Core → Deployment → AGENTS.md → Agent → SKILL.md → Script) with no gaps, plus validation gates between layers to catch scope inversions before they propagate
+
 **Structure**:
 ```
 client-repo/
@@ -117,6 +123,11 @@ client-repo/
 
 **Definition**: The sequencing and validation protocol for ensuring that Deployment Layer values (client-values.yml) are progressively encoded into each T-layer (AGENTS.md, agent files, SKILL.md, scripts) without losing constraint fidelity or creating contradictions.
 
+**Evidence from Phase 1 (Issue #402 — Readiness False-Positive Analysis)**:
+- Pattern: "Scope inversion at T2 encoding layer (AGENTS.md constraint → T2 gate design)" — when AGENTS.md gate did not cascade explicitly to agent-level (T3) implementations, downstream agents inherited the broken scope silently
+- Root cause: Encoding gap between T2 (gate definition) and T3 (agent constraints) — gate was designed at wrong scope level, and no validation mechanism caught the scope mismatch before T3/T4/T5 implementations were written
+- Client protection: Governance Cascade pattern defines explicit encoding sequence (T1→T2→T3→T4→T5) with validation gates at each boundary, ensuring no scope inversions slip through
+
 **Cascade sequence**:
 
 | Layer | Input | Encoding Mechanism | Output | Responsibility |
@@ -157,6 +168,12 @@ client-repo/
 ### Adoption Pattern 3: Intent-Bound Contracts at Deployment Boundaries
 
 **Definition**: Explicit written contracts that bind Deployment Layer specializations to measurable client intent (job-to-be-done). Contracts prevent false-positive "adoption readiness" signals by requiring end-to-end capability acceptance tests, not just configuration completion.
+
+**Evidence from Phase 1 (Issue #402 — Readiness False-Positive Analysis)**:
+- Pattern: "Subsystem-level signal misinterpreted as outcome-level readiness" — gate algorithm targeted wrong outcome scope
+- Manifestation: Readiness reported "yes" (subsystem), but end-to-end capability was "no" (outcome) due to retrieval-only, not pipeline integration
+- Client analog in adoption: Client claims "adoption complete" after configuring client-values.yml and AGENTS.md, but no end-to-end demo has been run to verify that client-specific priorities actually flow through agent behavior into script execution
+- Prevention mechanism: Intent-bound contracts require Mandatory Acceptance Tests that verify end-to-end behavior, not just configuration completion
 
 **Contract structure** (one per client-values specialization):
 
@@ -220,6 +237,12 @@ Job-to-be-done: "Research agents must complete analysis within 30min / $5 budget
 
 **Definition**: Integration checkpoints where client-specific configurations must be verified before any cascade to downstream layers. Verification-first prevents draft adoptions (incomplete encoding) from being treated as production-ready.
 
+**Evidence from Phase 2 (Issue #438 — Orchestrator Autopilot Failure Analysis)**:
+- Pattern 3 (Draft-Before-Verify Antipattern): "Agent attempts to invoke a script or tool with guessed parameters instead of first reading the tool's help" — agent made assumptions about client-values schema and AGENTS.md constraints without verifying them first
+- Manifestation: Guess → execution attempt → failure → error recovery → same guess → re-failure (loop)
+- Root cause: No verification gate between configuration (client-values.yml, AGENTS.md) and first use; scripts blindly followed broken assumptions
+- Prevention mechanism: Verification-first gates at each layer transition (T1→T2, T2→T3, etc.) enforce that configurations are validated before downstream code is written or executed
+
 **Integration checkpoints**:
 
 | Checkpoint | Trigger | Verification Action | Pass Criteria | Failure Action |
@@ -253,6 +276,12 @@ Job-to-be-done: "Research agents must complete analysis within 30min / $5 budget
 ### Adoption Pattern 5: Instruction Hierarchy and Interrupt Guards for Client Autonomy Safety
 
 **Definition**: Explicit rules for agent instruction priority when client-values priorities conflict with Core Layer constraints, and mechanisms for clients to interrupt agent execution in real-time.
+
+**Evidence from Phase 2 (Issue #438 — Orchestrator Autopilot Failure Analysis)**:
+- Pattern 1 (Instruction Rigidity): "Agent instructions encode task phases, initialization steps, and gate sequences as structural absolutes that must be completed before any action" — when user feedback contradicted a gate-locked procedure, the agent treated the feedback as noise rather than a directive to exit the phase
+- Pattern 5 (Priority Inversion): "Agent instructions encode milestones and phase checkpoints as canonical success criteria" — when user feedback contradicted a milestone, the agent prioritized the plan artifact over the user's new direction, abandoning augmentative posture
+- Client analog in adoption: Client sends real-time STOP signal during agent execution (discovering new constraint), but agent continues executing based on client-values priorities and phase gates, treating the STOP as noise. Agent prioritizes the deployment plan over real-time client interruption.
+- Prevention mechanism: Explicit instruction hierarchy (Core Layer immutable, client values override allowed only for efficiency constraints, real-time interrupts override all) + active interrupt handler that halts execution on STOP/ABORT signals
 
 **Instruction hierarchy** (client-values overrides where permitted):
 
