@@ -14,7 +14,7 @@ sources:
 - MANIFESTO.md
 recommendations:
 - id: rec-scratchpad-architecture-decision-001
-  title: Adopt Candidate B' (SQLite-as-index + Markdown source of ...
+  title: Adopt Candidate B (SQLite-as-index + Markdown source of t...
   status: deferred
   linked_issue: null
   decision_ref: ''
@@ -44,7 +44,7 @@ recommendations:
   linked_issue: null
   decision_ref: ''
 - id: rec-scratchpad-architecture-decision-007
-  title: Scope Candidate D (#297) as an access layer on top of B' ...
+  title: Scope Candidate D (#297) as an access layer on top of B —...
   status: deferred
   linked_issue: null
   decision_ref: ''
@@ -59,7 +59,7 @@ recommendations:
   linked_issue: null
   decision_ref: ''
 - id: rec-scratchpad-architecture-decision-010
-  title: Back all three tool calls against the B' SQLite index, no...
+  title: Back all three tool calls against the B SQLite index, not...
   status: deferred
   linked_issue: null
   decision_ref: ''
@@ -84,17 +84,17 @@ recommendations:
   linked_issue: null
   decision_ref: ''
 - id: rec-scratchpad-architecture-decision-015
-  title: SCOPED — depends on B' SQLite index for cross-phase state...
+  title: SCOPED — depends on B SQLite index for cross-phase state ...
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-scratchpad-architecture-decision-016
-  title: 'CONVERGED — #129''s SQLite FTS5 approach is the correct pa...'
+  title: 'CONVERGED — #129s SQLite FTS5 approach is the correct pat...'
   status: deferred
   linked_issue: null
   decision_ref: ''
 - id: rec-scratchpad-architecture-decision-017
-  title: SCOPED — implement as MCP tool access layer on top of B';...
+  title: SCOPED — implement as MCP tool access layer on top of B; ...
   status: deferred
   linked_issue: null
   decision_ref: ''

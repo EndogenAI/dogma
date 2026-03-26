@@ -1,5 +1,3 @@
-# Suggested patch for docs/research/h2-nk-model-formalization.md
-# Review and edit before applying with Phase 6 patch application
 doc: docs/research/h2-nk-model-formalization.md
 doc_slug: h2-nk-model-formalization
 generated_at: '2026-03-22T20:41:09.832913+00:00'
@@ -40,3 +38,4 @@ recommendations:
   decision_ref: ''
   _match_note: No matching issue found
   _confidence: low
+status: approved-for-adoption
