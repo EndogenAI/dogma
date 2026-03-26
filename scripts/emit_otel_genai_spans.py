@@ -146,14 +146,33 @@ def validate_genai_span_attributes(span_attributes: dict) -> tuple[bool, list[st
 def main():
     """CLI entry point for testing GenAI span emission."""
     import argparse
+    import json
 
     parser = argparse.ArgumentParser(description="Emit a test span with GenAI semantic convention attributes")
     parser.add_argument("--model", default="claude-3-5-sonnet-20241022", help="Model name for test span")
     parser.add_argument("--input-tokens", type=int, default=150, help="Input token count")
     parser.add_argument("--output-tokens", type=int, default=42, help="Output token count")
     parser.add_argument("--finish-reason", default="end_turn", help="Finish reason (e.g., end_turn, max_tokens)")
+    parser.add_argument("--dry-run", action="store_true", help="Print sample span JSON and exit 0")
 
     args = parser.parse_args()
+
+    if args.dry_run:
+        provider_name = get_provider_name(args.model)
+        sample_span = {
+            "name": f"chat {args.model}",
+            "attributes": {
+                "gen_ai.system": provider_name,
+                "gen_ai.request.model": args.model,
+                "gen_ai.usage.input_tokens": args.input_tokens,
+                "gen_ai.usage.output_tokens": args.output_tokens,
+                "gen_ai.response.finish_reasons": [args.finish_reason],
+                "gen_ai.operation.name": "chat",
+                "gen_ai.request.temperature": 0.0,
+            },
+        }
+        print(json.dumps(sample_span, indent=2))
+        return 0
 
     with emit_genai_span(
         model=args.model,
