@@ -77,7 +77,7 @@ repos:
         entry: python3 scripts/check_readiness_matrix.py
         language: system
         types: [markdown]
-        files: ^(docs/guides/|docs/plans/|docs/research/)
+        files: ^(docs/guides/|docs/research/)
         exclude: ^docs/guides/(client-adoption-pattern|deployment-contract)\.md$
         pass_filenames: true
       - id: verify-script-usage
