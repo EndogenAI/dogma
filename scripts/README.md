@@ -33,6 +33,7 @@ scripts/
   pr_review_reply.py           # Post replies to PR inline review comments and resolve threads (--reply-to, --resolve, --batch)
   seed_labels.py               # Idempotent GitHub label seeder — reads data/labels.yml and syncs via gh label create --force (--dry-run, --delete-legacy)
   seed_action_items.py         # Seed GitHub issues from action items extracted from research docs
+  seed_research_recommendations.py # Read research doc frontmatter and batch-create tracking issues via bulk_github_operations.py (--input, --milestone, --default-area, --critical-ids, --output, --dry-run)
   fetch_toolchain_docs.py      # Cache gh CLI help output as structured Markdown under .cache/toolchain/ (--check, --force, --dry-run)
   wait_for_unblock.py          # Poll a GitHub issue until status:blocked is removed; writes trigger file on exit 0 (--issue, --interval, --timeout, --dry-run)
   wait_for_github_run.py       # Poll a GitHub Actions run until completion; exits 0 on success, 1 on failure
