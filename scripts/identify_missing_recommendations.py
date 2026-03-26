@@ -31,6 +31,10 @@ import sys
 from pathlib import Path
 from typing import TypedDict
 
+import yaml
+
+_FRONTMATTER_RE = re.compile(r"^---\n(.*?)\n---\n?", re.DOTALL)
+
 
 class ResearchDocRecord(TypedDict):
     """Record for a single research doc inventory entry."""
@@ -45,49 +49,31 @@ def parse_frontmatter(content: str) -> dict:
     """
     Extract YAML frontmatter from markdown.
 
-    Expects content to start with --- and contain YAML until the next ---.
+    Uses a regex anchored to the start of the document to avoid matching
+    thematic break (---) lines in the body. Parses the full YAML block so
+    all frontmatter keys (including 'recommendations' lists) are available.
     Returns empty dict if no valid frontmatter found.
     """
-    if not content.startswith("---"):
+    match = _FRONTMATTER_RE.match(content)
+    if not match:
         return {}
-
-    # Find the closing ---
-    end_marker_pos = content.find("---", 3)  # Skip the opening ---
-    if end_marker_pos == -1:
+    try:
+        parsed = yaml.safe_load(match.group(1))
+        return parsed if isinstance(parsed, dict) else {}
+    except yaml.YAMLError:
         return {}
-
-    frontmatter_text = content[3:end_marker_pos].strip()
-
-    # Simple YAML parser for status field
-    frontmatter = {}
-    for line in frontmatter_text.split("\n"):
-        line = line.strip()
-        if line.startswith("status:"):
-            # Extract value after "status:"
-            value = line.split("status:", 1)[1].strip()
-            # Remove quotes if present
-            value = value.strip("'\"")
-            frontmatter["status"] = value
-        elif line.startswith("title:"):
-            value = line.split("title:", 1)[1].strip()
-            value = value.strip("'\"")
-            frontmatter["title"] = value
-
-    return frontmatter
 
 
 def extract_body_content(content: str) -> str:
     """
     Extract body content (everything after frontmatter).
+
+    Uses a regex anchored to the start to avoid matching thematic breaks.
     """
-    if not content.startswith("---"):
+    match = _FRONTMATTER_RE.match(content)
+    if not match:
         return content
-
-    end_marker_pos = content.find("---", 3)
-    if end_marker_pos == -1:
-        return content
-
-    return content[end_marker_pos + 3 :].strip()
+    return content[match.end() :].strip()
 
 
 def has_recommendations_section(body_content: str) -> bool:

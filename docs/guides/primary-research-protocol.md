@@ -301,7 +301,7 @@ Before marking a research document as "complete" and closing the research issue:
 ### Gate 4: Artifact Link Verification
 - [ ] All GitHub issue/PR links are valid and publicly accessible (run `lychee docs/research/<file>.md` before commit)
 - [ ] All code references (commit SHAs, line numbers) are verified to exist: `git show <sha>:<file>#L<line>`
-- [ ] Relative documentation links use correct path depth: `docs/guides/` → `../../AGENTS.md`, `.github/agents/` → `../../../AGENTS.md`
+- [ ] Relative documentation links use correct path depth: `docs/guides/` → `../../AGENTS.md`, `.github/agents/` → `../../AGENTS.md`
 
 ### Gate 5: Duplication and Novelty
 - [ ] No recommendations duplicate existing AGENTS.md constraints, agent file instructions, or committed skills

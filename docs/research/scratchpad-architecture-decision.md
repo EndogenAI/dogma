@@ -14,7 +14,7 @@ sources:
 - MANIFESTO.md
 recommendations:
 - id: rec-scratchpad-architecture-decision-001
-  title: Adopt Candidate B (SQLite-as-index + Markdown source of t...
+  title: Adopt Candidate B' (SQLite-as-index + Markdown source of truth)
   status: deferred
   linked_issue: null
   decision_ref: ''
@@ -89,7 +89,7 @@ recommendations:
   linked_issue: null
   decision_ref: ''
 - id: rec-scratchpad-architecture-decision-016
-  title: 'CONVERGED — #129s SQLite FTS5 approach is the correct pat...'
+  title: 'CONVERGED — #129''s SQLite FTS5 approach is the correct pattern'
   status: deferred
   linked_issue: null
   decision_ref: ''
