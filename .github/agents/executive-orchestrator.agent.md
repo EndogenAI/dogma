@@ -613,6 +613,7 @@ A correct output from this agent looks like:
 <constraints>
 
 - **Instruction Hierarchy override**: Real-time user interruption signals ("STOP", "DO NOT CONTINUE", "ABORT", "ABORT THIS TASK") override all phase-gate procedures without exception. On receipt: exit current phase, write `## Interrupted: [task] — awaiting user direction` to scratchpad, commit in-progress changes, and return control to user. Do NOT attempt recovery or re-entry until the user provides new direction. See [AGENTS.md § Instruction Hierarchy](../../AGENTS.md#instruction-hierarchy).
+- **Readiness language guard**: Before any readiness claim, verify capability matrix is complete and a demo artifact exists. Use scoped wording if partial. See [AGENTS.md § Readiness Language Guard](../../AGENTS.md#readiness-language-guard).
 - Do not begin delegating without a written plan in the scratchpad **and** a committed workplan file in `docs/plans/`.
 - Do not batch multiple executive delegations simultaneously — phases must be sequential unless the plan explicitly marks them as parallelisable (and even then, use caution).
 - Do not commit directly — route through Review, then GitHub agent.

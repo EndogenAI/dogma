@@ -1098,6 +1098,37 @@ For full authoring guidance, see [`docs/guides/agents.md`](docs/guides/agents.md
 |-------|-------------|
 | [secondary-research-sprint](.github/skills/secondary-research-sprint/SKILL.md) | 5-step workflow for bare-bones secondary research issues (enrich → corpus check → scout → synthesize → archive) |
 
+<a name="readiness-language-guard"></a>
+---
+
+## Readiness Language Guard
+
+**Readiness language must be capability-scoped.** Claiming "ready" without a capability matrix or demo artifact is prohibited.
+
+### Prohibited Patterns
+
+- Unqualified "ready" or "complete" when any capability dimension is partial or untested
+- "All tests pass" as a readiness claim when end-to-end tests are not included
+- Closing an issue as "done" without a demo artifact that proves intent satisfaction
+
+### Required Patterns
+
+| Situation | Required Wording |
+|-----------|------------------|
+| Full end-to-end passing | "Ready — capability matrix: Retrieval ✅, Augmentation ✅, Generation ✅, E2E ✅" |
+| Partial readiness | "Retrieval-ready; generation in progress — not ready for end-to-end use" |
+| Readiness claim in PR | Must link to `docs/plans/<initiative>/intent-contract.md` and demo artifact |
+
+### Agent Responsibility
+
+Before any agent writes or endorses a readiness claim:
+1. Confirm the intent contract exists for the initiative
+2. Run `scripts/check_readiness_matrix.py` to validate capability dimensions
+3. Confirm a demo artifact is available (question + answer + citations)
+4. If any check fails: use scoped wording, do not claim ready
+
+*Grounded in `docs/research/readiness-false-positive-analysis.md` § Recommendation 5 — Communication Safety Protocol.*
+
 <a name="security-guardrails"></a>
 ---
 
@@ -1277,6 +1308,7 @@ uv run pre-commit install --hook-type pre-push
 - Use terminal file I/O redirection (`> file`, `>> file`, `| tee file`, `| cat >> file`) in scripts — shell quoting causes interleaving and corruption. **Always use `create_file` or `replace_string_in_file` (the built-in VS Code tools).** Enforced via pre-commit hook `no-terminal-file-io-redirect` (Programmatic-First principle; §75–76).
 - Pass multi-line `gh issue` bodies via `--body "..."` on the command line — shell quoting and backtick interpolation cause `gh` to hang or silently corrupt content. **Always write the body to a temp file and use `--body-file <path>`, or use Python `subprocess` with a list of args.**
 - Surface suggested prompts as bare blockquotes (`> `) — always wrap in a triple-backtick fenced code block instead.
+- Make an unqualified "ready" or "complete" claim without a demo artifact and capability matrix — see [Readiness Language Guard](#readiness-language-guard).
 
 **Prefer caution over assumption for:**
 
