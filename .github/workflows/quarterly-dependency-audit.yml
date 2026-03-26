@@ -1,0 +1,50 @@
+name: Quarterly Dependency Audit
+
+on:
+  schedule:
+    # First day of each quarter at 00:00 UTC (Jan 1, Apr 1, Jul 1, Oct 1)
+    - cron: '0 0 1 */3 *'
+  workflow_dispatch: # Allow manual trigger for out-of-cycle audits
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-audit:
+    name: Audit dependencies for CVE vulnerabilities
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "latest"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: uv sync --extra dev
+
+      - name: Run dependency audit
+        run: |
+          echo "Running quarterly dependency audit..."
+          if [ ! -f ".cache/cve-db.json" ]; then
+            echo "::error::.cache/cve-db.json is missing; dependency audit cannot run."
+            echo "Ensure the CVE database is generated or downloaded before running this workflow."
+            exit 1
+          fi
+          uv run python scripts/audit_dependencies.py --lock-file uv.lock
+        id: audit
+
+      - name: Check audit result
+        if: failure()
+        run: |
+          echo "::error::High+ severity CVEs detected in dependencies"
+          echo "Review the audit output above and update affected packages"
+          exit 1

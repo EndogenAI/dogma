@@ -33,63 +33,75 @@ class TestValidateUrl:
 
     def test_rejects_http_scheme(self):
         """http:// is rejected — only https allowed."""
-        with pytest.raises(ValueError, match="scheme"):
+        with pytest.raises(SystemExit) as exc_info:
             validate_url("http://example.com/page")
+        assert exc_info.value.code == 2
 
     def test_rejects_file_scheme(self):
         """file:// is rejected — prevents local file read via SSRF."""
-        with pytest.raises(ValueError, match="scheme"):
+        with pytest.raises(SystemExit) as exc_info:
             validate_url("file:///etc/passwd")
+        assert exc_info.value.code == 2
 
     def test_rejects_ftp_scheme(self):
         """ftp:// is rejected."""
-        with pytest.raises(ValueError, match="scheme"):
+        with pytest.raises(SystemExit) as exc_info:
             validate_url("ftp://example.com/file.txt")
+        assert exc_info.value.code == 2
 
     def test_rejects_localhost(self):
         """localhost is rejected — prevents SSRF to local services."""
-        with pytest.raises(ValueError, match="hostname"):
+        with pytest.raises(SystemExit) as exc_info:
             validate_url("https://localhost/admin")
+        assert exc_info.value.code == 2
 
     def test_rejects_loopback_ip(self):
         """127.0.0.1 is rejected."""
-        with pytest.raises(ValueError, match="hostname"):
+        with pytest.raises(SystemExit) as exc_info:
             validate_url("https://127.0.0.1/secret")
+        assert exc_info.value.code == 2
 
     def test_rejects_private_10_range(self):
         """10.x.x.x is rejected — private RFC1918 range."""
-        with pytest.raises(ValueError, match="hostname"):
+        with pytest.raises(SystemExit) as exc_info:
             validate_url("https://10.0.0.1/internal")
+        assert exc_info.value.code == 2
 
     def test_rejects_private_192_168_range(self):
         """192.168.x.x is rejected — private RFC1918 range."""
-        with pytest.raises(ValueError, match="hostname"):
+        with pytest.raises(SystemExit) as exc_info:
             validate_url("https://192.168.1.1/router")
+        assert exc_info.value.code == 2
 
     def test_rejects_link_local(self):
         """169.254.x.x is rejected — AWS/GCP metadata endpoint range."""
-        with pytest.raises(ValueError, match="hostname"):
+        with pytest.raises(SystemExit) as exc_info:
             validate_url("https://169.254.169.254/latest/meta-data/")
+        assert exc_info.value.code == 2
 
     def test_rejects_ipv6_loopback(self):
         """IPv6 loopback ::1 is rejected."""
-        with pytest.raises(ValueError, match="hostname"):
+        with pytest.raises(SystemExit) as exc_info:
             validate_url("https://[::1]/secret")
+        assert exc_info.value.code == 2
 
     def test_rejects_ipv6_link_local(self):
         """IPv6 link-local fe80::/10 is rejected."""
-        with pytest.raises(ValueError, match="hostname"):
+        with pytest.raises(SystemExit) as exc_info:
             validate_url("https://[fe80::1]/secret")
+        assert exc_info.value.code == 2
 
     def test_rejects_private_172_range(self):
         """172.16-31.x.x is rejected — private RFC1918 range."""
-        with pytest.raises(ValueError, match="hostname"):
+        with pytest.raises(SystemExit) as exc_info:
             validate_url("https://172.16.0.1/internal")
+        assert exc_info.value.code == 2
 
     def test_rejects_ipv6_link_local_full_range(self):
         """fe81:: is in fe80::/10 but not caught by the fe80: prefix regex — must be rejected via ipaddress module."""
-        with pytest.raises(ValueError, match="not permitted"):
+        with pytest.raises(SystemExit) as exc_info:
             validate_url("https://[fe81::1]/secret")
+        assert exc_info.value.code == 2
 
 
 class TestValidateSlug:
