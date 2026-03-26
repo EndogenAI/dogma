@@ -504,4 +504,4 @@ class TestDogmaServerImport:
             tools = getattr(tool_manager, "_tools", {})
         else:
             tools = getattr(mod.mcp, "_tools", {})
-        assert len(tools) == 9, f"Expected 9 tools, found {len(tools)}: {list(tools.keys())}"
+        assert len(tools) == 11, f"Expected 11 tools, found {len(tools)}: {list(tools.keys())}"
