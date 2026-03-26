@@ -1,13 +1,3 @@
-## [0.21.1](https://github.com/EndogenAI/dogma/compare/v0.21.0...v0.21.1) (2026-03-26)
-
-
-### Bug Fixes
-
-* **research:** add acceptance criteria and adoption rationale to orchestrator autopilot doc (phase 2 review fix) ([3a161c0](https://github.com/EndogenAI/dogma/commit/3a161c08d2dd8bef7c91c9a8cf49432205712f94))
-* **research:** add evidence citations to pattern catalog from phase 1 & 2 research (phase 3 review fix) ([9c45dd7](https://github.com/EndogenAI/dogma/commit/9c45dd7a1f9dc6a045f091cdc4d69e2dd0b87622))
-
-
-
 # [0.21.0](https://github.com/EndogenAI/dogma/compare/v0.20.0...v0.21.0) (2026-03-26)
 
 
