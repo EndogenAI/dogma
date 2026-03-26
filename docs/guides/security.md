@@ -29,6 +29,8 @@ The following tool categories trigger irreversible external side effects and are
 
 For any agent tool that can trigger an irreversible external side effect, apply the following two-stage pipeline before execution. This pattern is validated by Rebedea et al. (2023) and Inan et al. (2023) and reduces adversarial bypass from ~18% (rules only) to ~3% (hybrid pipeline).
 
+**Full implementation guide**: [`docs/guides/runtime-action-behaviors.md`](runtime-action-behaviors.md) — comprehensive catalog of irreversible actions, trigger conditions, examples, and adoption timeline.
+
 ### Stage 1 — Rule-Based Gate (L1, <5ms)
 
 **Purpose**: Block known-bad patterns with minimal latency overhead.
@@ -114,7 +116,7 @@ Per Recommendation 5 of `docs/research/nemo-guardrails-governance.md`, schedule 
 
 **Server-Side Request Forgery (SSRF)** attacks occur when an agent is manipulated into fetching URLs that target internal services, metadata endpoints, or local files — effectively using the agent infrastructure as a proxy to access resources that should not be reachable.
 
-**Attack surface in dogma**: The Research Scout agent fetches arbitrary external URLs via `scripts/fetch_source.py` with no host/scheme validation prior to Phase 2 (issue #360, commit e675064). Cached content lands in `.cache/sources/` → read into agent context → prompt injection propagation if cached content contains instruction-like text.
+**Attack surface in dogma**: The Research Scout agent fetches arbitrary external URLs via `scripts/fetch_source.py`. Without validation, cached content lands in `.cache/sources/` → read into agent context → prompt injection propagation if cached content contains instruction-like text. SSRF protections were added in PR #442 (Q2 Wave 1 Phase 1) via centralized URL validation in `mcp_server/_security.py`.
 
 ### Allowlist/Blocklist Rules
 

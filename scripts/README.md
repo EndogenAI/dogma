@@ -41,7 +41,7 @@ scripts/
   check_substrate_health.py    # CRD health check for startup-loaded substrate files — reports PASS/WARN/BLOCK per file; exits 1 if any file is below the block threshold (--warn-below, --block-below, --files)
   check_problems_panel.py      # Audit and count VS Code Problems panel diagnostics; exits 1 if count > 0; --check-only
   check_doc_links.py           # Validate that relative file links in Markdown docs resolve to existing files
-  audit_dependencies.py        # Quarterly dependency audit with CVE checking — reads uv.lock, cross-checks against .cache/cve-db.json, reports High+ severity vulnerabilities; --lock-file, --cve-db, --dry-run; exit 0 if no High+ CVEs, exit 1 if vulnerabilities found; runs quarterly via .github/workflows/quarterly-dependency-audit.yml (closes #361)
+  audit_dependencies.py        # Quarterly dependency audit with CVE checking — reads uv.lock, cross-checks against .cache/cve-db.json, reports High+ severity vulnerabilities; --lock-file, --cve-db, --dry-run; exit 0 if no High+ CVEs, exit 1 if vulnerabilities found; runs quarterly via .github/workflows/quarterly-dependency-audit.yml (closes #357)
   audit_provenance.py          # Audit .agent.md files for x-governs: provenance annotations; report orphaned files and unverifiable axiom citations (--agents-dir, --scope, --manifesto, --format, --output)
   audit_structural_compliance.py # Audit agent fleet for mandatory BDI XML tag compliance and section heading alignment (--target-dir, --format)
   annotate_provenance.py       # Scan Markdown and .agent.md files for MANIFESTO.md axiom mentions and write x-governs: frontmatter annotations (--scope, --dry-run, --registry, --manifesto, --no-recurse)
