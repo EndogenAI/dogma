@@ -1,14 +1,15 @@
 """mcp_server/dogma_server.py — FastMCP server exposing dogma governance tools.
 
-Registers 8 tools via @mcp.tool():
-    validate_agent_file  — Validate a .agent.md file against AGENTS.md constraints.
-    validate_synthesis   — Validate a D4 synthesis document.
-    check_substrate      — Run a full CRD substrate health check.
-    scaffold_agent       — Scaffold a new .agent.md stub from template.
-    scaffold_workplan    — Scaffold a new docs/plans/ workplan from template.
-    run_research_scout   — Fetch and cache an external URL (SSRF-safe).
-    query_docs           — BM25 query over the dogma documentation corpus.
-    prune_scratchpad     — Initialise or inspect the session scratchpad.
+Registers 9 tools via @mcp.tool():
+    validate_agent_file    — Validate a .agent.md file against AGENTS.md constraints.
+    validate_synthesis     — Validate a D4 synthesis document.
+    check_substrate        — Run a full CRD substrate health check.
+    scaffold_agent         — Scaffold a new .agent.md stub from template.
+    scaffold_workplan      — Scaffold a new docs/plans/ workplan from template.
+    run_research_scout     — Fetch and cache an external URL (SSRF-safe).
+    query_docs             — BM25 query over the dogma documentation corpus.
+    prune_scratchpad       — Initialise or inspect the session scratchpad.
+    detect_user_interrupt  — Check whether a user message contains an interruption signal.
 
 Transport: stdio (default for Claude Desktop / Cursor / VS Code MCP clients).
 
@@ -37,6 +38,7 @@ from mcp_server.tools.research import query_docs as _query_docs
 from mcp_server.tools.research import run_research_scout as _run_research_scout
 from mcp_server.tools.scaffolding import scaffold_agent as _scaffold_agent
 from mcp_server.tools.scaffolding import scaffold_workplan as _scaffold_workplan
+from mcp_server.tools.scratchpad import detect_user_interrupt as _detect_user_interrupt
 from mcp_server.tools.scratchpad import prune_scratchpad as _prune_scratchpad
 from mcp_server.tools.validation import check_substrate as _check_substrate
 from mcp_server.tools.validation import validate_agent_file as _validate_agent_file
@@ -60,6 +62,7 @@ Common workflow:
   3. validate_agent_file() / validate_synthesis() — validate changes before committing
   4. scaffold_agent() / scaffold_workplan() — create new governance artefacts
   5. prune_scratchpad() — initialise today's session scratchpad for cross-agent handoffs
+  6. detect_user_interrupt(message) — check for STOP/ABORT/CANCEL signals before each phase
 """
 
 mcp = FastMCP("dogma-governance", instructions=_INSTRUCTIONS)
@@ -206,6 +209,24 @@ def prune_scratchpad(branch: str = "", dry_run: bool = False) -> dict:
          "lines": int | None, "errors": list[str]}
     """
     return _prune_scratchpad(branch, dry_run)
+
+
+@mcp.tool()
+def detect_user_interrupt(message: str) -> dict:
+    """Check whether a user message contains an interruption signal.
+
+    Detects: STOP, DO NOT CONTINUE, ABORT, ABORT THIS TASK, CANCEL, PAUSE EXECUTION, HOLD
+
+    Call this before each phase action. If interrupted=True, immediately exit the
+    current phase and return control to the user per AGENTS.md § Instruction Hierarchy.
+
+    Args:
+        message: The user's most recent chat message to check.
+
+    Returns:
+        {"ok": bool, "interrupted": bool, "signal": str | None, "errors": list[str]}
+    """
+    return _detect_user_interrupt(message)
 
 
 if __name__ == "__main__":
