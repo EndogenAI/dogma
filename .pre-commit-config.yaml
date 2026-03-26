@@ -72,6 +72,13 @@ repos:
         language: system
         pass_filenames: false
         stages: [pre-push]
+      - id: check-readiness-matrix
+        name: Check capability matrix in readiness claims
+        entry: python3 scripts/check_readiness_matrix.py
+        language: system
+        types: [markdown]
+        files: ^(docs/guides/|docs/plans/|docs/research/)
+        pass_filenames: true
       - id: no-heredoc-writes
         name: Block heredoc file-write commands (use create_file / replace_string_in_file tools instead)
         language: pygrep
