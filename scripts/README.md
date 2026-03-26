@@ -39,6 +39,7 @@ scripts/
   wait_for_github_run.py       # Poll a GitHub Actions run until completion; exits 0 on success, 1 on failure
   detect_drift.py              # Detect value-encoding drift in .agent.md files via watermark-phrase analysis (--agents-dir, --threshold, --fail-below, --format, --output)
   detect_rate_limit.py         # Detect rate-limit budget exhaustion and recommend protective action (sleep injection, phase deferral) — command: --check <remaining_tokens> <phase_cost_estimate>; outputs: OK|WARN|CRITICAL|SLEEP_REQUIRED_NNN
+  detect_delegation_conflict.py # Pre-delegation conflict detection — reads proposed delegation scope against data/l2-constraints.yml and data/decision-tables.yml; outputs JSON {"safe": bool, "conflicts": [...]}; exits 0 (safe), 1 (conflicts found), 2 (config error); --scope or --stdin JSON; closes #380
   check_substrate_health.py    # CRD health check for startup-loaded substrate files — reports PASS/WARN/BLOCK per file; exits 1 if any file is below the block threshold (--warn-below, --block-below, --files)
   check_problems_panel.py      # Audit and count VS Code Problems panel diagnostics; exits 1 if count > 0; --check-only
   check_doc_links.py           # Validate that relative file links in Markdown docs resolve to existing files

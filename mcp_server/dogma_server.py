@@ -1,6 +1,6 @@
 """mcp_server/dogma_server.py — FastMCP server exposing dogma governance tools.
 
-Registers 9 tools via @mcp.tool():
+Registers 11 tools via @mcp.tool():
     validate_agent_file    — Validate a .agent.md file against AGENTS.md constraints.
     validate_synthesis     — Validate a D4 synthesis document.
     check_substrate        — Run a full CRD substrate health check.
@@ -10,6 +10,8 @@ Registers 9 tools via @mcp.tool():
     query_docs             — BM25 query over the dogma documentation corpus.
     prune_scratchpad       — Initialise or inspect the session scratchpad.
     detect_user_interrupt  — Check whether a user message contains an interruption signal.
+    normalize_path         — Normalize a cross-platform path string, expanding env-var tokens.
+    resolve_env_path       — Read an env-var expected to hold a path and normalize it.
 
 Transport: stdio (default for Claude Desktop / Cursor / VS Code MCP clients).
 
@@ -34,6 +36,8 @@ from __future__ import annotations
 
 from mcp.server.fastmcp import FastMCP
 
+from mcp_server.tools.cross_platform_tools import normalize_path as _normalize_path
+from mcp_server.tools.cross_platform_tools import resolve_env_path as _resolve_env_path
 from mcp_server.tools.research import query_docs as _query_docs
 from mcp_server.tools.research import run_research_scout as _run_research_scout
 from mcp_server.tools.scaffolding import scaffold_agent as _scaffold_agent
@@ -227,6 +231,44 @@ def detect_user_interrupt(message: str) -> dict:
         {"ok": bool, "interrupted": bool, "signal": str | None, "errors": list[str]}
     """
     return _detect_user_interrupt(message)
+
+
+# ---------------------------------------------------------------------------
+# Cross-platform tools
+# ---------------------------------------------------------------------------
+
+
+@mcp.tool()
+def normalize_path(path_str: str) -> str:
+    """Normalize a cross-platform path string, expanding environment-variable tokens.
+
+    Expands tokens such as $HOME and $PWD via os.path.expandvars, then normalizes
+    the result using pathlib.Path (resolves .., fixes separators).
+
+    Args:
+        path_str: A raw path string, potentially containing env-var tokens.
+
+    Returns:
+        A normalized path string with OS-appropriate separators.
+    """
+    return _normalize_path(path_str)
+
+
+@mcp.tool()
+def resolve_env_path(key: str, default: str = "") -> str:
+    """Read an environment variable expected to hold a path and normalize it.
+
+    If the variable is set and non-empty, expands and normalizes it. If the
+    variable is unset or empty, returns `default`.
+
+    Args:
+        key: Environment variable name (e.g. 'REPO_ROOT', 'HOME').
+        default: Value to return when the variable is not set or is empty.
+
+    Returns:
+        Normalized path string, or `default` if the variable is absent/empty.
+    """
+    return _resolve_env_path(key, default)
 
 
 if __name__ == "__main__":
