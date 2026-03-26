@@ -9,23 +9,28 @@ recommendations:
   - id: instruction-hierarchy-gate
     title: Instruction Hierarchy Gate (Track A)
     status: accepted-for-adoption
-    linked_issue: null
+    linked_issue: TBD-track-a-hierarchy
+    adoption_rationale: Explicit priority ordering (user real-time directives > phase gates) is fundamental to restoring Augmentative Partnership and preventing autonomous execution that contradicts human intent. This is a foundational guardrail that gates all other improvements.
   - id: user-interrupt-signal-handler
     title: User Interrupt Signal Handler (Track B)
     status: accepted-for-adoption
-    linked_issue: null
+    linked_issue: TBD-track-b-interrupt
+    adoption_rationale: Without an explicit handler for user interruption signals, the agent lacks the ability to recognize and respect real-time user direction. This track implements the operational mechanism that Track A defines.
   - id: draft-verification-mandate
     title: Draft Verification Mandate Before Usage (Track C)
     status: accepted-for-adoption
-    linked_issue: null
+    linked_issue: TBD-track-c-verification
+    adoption_rationale: The draft-before-verify antipattern creates preventable failures. Verification-first eliminates guessing and satisfies Programmatic-First (encode tool contracts) and Endogenous-First (read available documentation before acting externally).
   - id: orchestration-blindness-audit-loop
     title: Orchestration Blindness Audit Loop (Track D)
     status: accepted-for-adoption
-    linked_issue: null
+    linked_issue: TBD-track-d-loop-detect
+    adoption_rationale: The incident showed agents lack self-awareness of failure loops. Local loop detection (compare current context to prior 2 iterations) is deterministic, low-cost, and breaks re-entry looping immediately. Satisfies Local-Compute-First.
   - id: re-entry-context-preservation
     title: Re-entry Context Preservation Guard (Track E)
     status: accepted-for-adoption
-    linked_issue: null
+    linked_issue: TBD-track-e-context-snap
+    adoption_rationale: Context snapshots before resets enable comparison-based re-entry blocking. This prevents the specific failure mode where error recovery triggers a context wipe that erases the memory of what just failed, enabling the loop to repeat.
 ---
 
 ## Executive Summary
@@ -188,6 +193,13 @@ Agent instructions prioritizing internal consistency (phase gates, initializatio
 
 **Encoding point**: Store hierarchy rule in AGENTS.md § When to Ask vs. Proceed section, and update executive-orchestrator.agent.md constraints.
 
+**Acceptance Criteria (Track A)**:
+- [ ] AGENTS.md updated with new section "Instruction Hierarchy: User Real-Time Directives Override" (Section 1 priority, Section 2 phase gates, Section 3 recovery heuristics)
+- [ ] executive-orchestrator.agent.md constraints section includes "Real-time user interruption signals override phase-gate procedures"
+- [ ] AGENTS.md § When to Ask vs. Proceed updated to reference hierarchy rule
+- [ ] Existing agent files reviewed; none contradict the hierarchy (audit completed)
+- [ ] Commit: `docs(agents): add instruction hierarchy gate (track a) — user directives override phases`
+
 ---
 
 ### Recommendation 2: User Interrupt Signal Handler (Track B)
@@ -204,6 +216,14 @@ Agent instructions prioritizing internal consistency (phase gates, initializatio
 - Integrate interrupt handler into session-management SKILL.md as a pre-phase and per-action check
 
 **Encoding point**: Store handler template in agent-file-authoring SKILL.md; reference from all executive agent files.
+
+**Acceptance Criteria (Track B)**:
+- [ ] MCP tool `detect_user_interrupt()` implemented in mcp_server/dogma_server.py (detects "STOP", "DO NOT CONTINUE", "ABORT" keywords in last N chat turns)
+- [ ] session-management SKILL.md updated with interrupt handler procedure (check before each phase, before each action)
+- [ ] executive-orchestrator.agent.md, executive-researcher.agent.md, executive-docs.agent.md updated with interrupt handler instruction
+- [ ] Pre-phase sequence in agent files includes call to `detect_user_interrupt()` and conditional branch ("if interrupted: write ## Interrupted and ask for direction")
+- [ ] Test: Create integration test verifying that "STOP" signal exits current phase without re-entry
+- [ ] Commit: `feat(agents): add user interrupt signal handler (track b) — detect and respect STOP directives`
 
 ---
 
@@ -223,6 +243,14 @@ Guessing parameters followed by error recovery is a draft-before-verify antipatt
 
 **Encoding point**: Store in AGENTS.md § Guardrails; add to all agent files' instruction sections.
 
+**Acceptance Criteria (Track C)**:
+- [ ] AGENTS.md § Guardrails section updated with "Verification-First for Script/Tool Usage" rule (forbids guessing; mandates --help before execution)
+- [ ] Pre-commit hook `scripts/verify-script-usage.py` implemented (reads agent files; flags CLI invocations without prior verification calls)
+- [ ] Hook integrated into pre-commit configuration; runs on commit of .agent.md or SKILL.md files
+- [ ] All existing executive agent files reviewed for violations; any found are fixed in a follow-up patch commit
+- [ ] Test: Verify hook catches a deliberately added CLI guess (uv run python) and blocks commit
+- [ ] Commit: `chore(scripts): add verify-script-usage pre-commit hook (track c) — enforce verification-first`
+
 ---
 
 ### Recommendation 4: Orchestration Blindness Audit Loop (Track D)
@@ -239,6 +267,15 @@ Guessing parameters followed by error recovery is a draft-before-verify antipatt
 - Integrate audit into phase-gate-sequence SKILL.md as a mandatory pre-execution check
 
 **Encoding point**: Store loop-detection logic in `scripts/detect_orchestration_loop.py`; reference from phase-gate-sequence and executive agent instructions.
+
+**Acceptance Criteria (Track D)**:
+- [ ] `scripts/detect_orchestration_loop.py` implemented (reads scratchpad; compares current task context against past 3 iterations; returns loop_detected=true/false + iteration_count)
+- [ ] Script detects identical task+parameters within configurable iteration window (default: 3)
+- [ ] Tests in `tests/test_orchestration_loop.py` cover: loop detection (true case), no loop (false case), multi-iteration history, scratchpad parsing
+- [ ] phase-gate-sequence SKILL.md updated to include loop audit before complex phase gates
+- [ ] executive-orchestrator.agent.md instructions include pre-execution loop audit call
+- [ ] Integration test: Verify agent halts and escalates when loop-audit returns positive
+- [ ] Commit: `feat(scripts): add orchestration loop detection (track d) — prevent re-entry of failed tasks`
 
 ---
 
@@ -260,6 +297,15 @@ Guessing parameters followed by error recovery is a draft-before-verify antipatt
 - Add to validate-before-commit SKILL.md: "Context snapshots must be compared before re-entry into failed task paths."
 
 **Encoding point**: Store in scripts/prune_scratchpad.py (--snapshot mode); reference from session-management SKILL.md and executive agent instructions.
+
+**Acceptance Criteria (Track E)**:
+- [ ] `prune_scratchpad.py --snapshot` mode implemented (reads scratchpad, extracts active task+parameters, saves to .tmp/[branch]/[date]-snapshot.yaml)
+- [ ] Snapshot includes: task_name, task_parameters (all inputs that drove the task), timestamp, scratchpad_section
+- [ ] session-management SKILL.md updated: "Before calling --init, call --snapshot. After re-entry, use scripts/compare_context_snapshot.py to check equivalence."
+- [ ] `scripts/compare_context_snapshot.py` implemented (compares current context against snapshot; returns equivalent=true/false)
+- [ ] executive-orchestrator.agent.md instructions updated: "Before error recovery (context reset), preserve context snapshot. After re-entry, compare. If contexts equivalent, escalate instead of re-attempting."
+- [ ] Tests in `tests/test_context_snapshot.py` cover: snapshot creation, equivalence detection, re-entry blocking
+- [ ] Commit: `feat(scripts): add context snapshot guard (track e) — prevent re-entry on context equivalence`
 
 ---
 
