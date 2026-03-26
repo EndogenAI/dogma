@@ -1,0 +1,37 @@
+# Decision Tables — Strategic Recommendation Routing
+#
+# Encodes the routing logic for strategic decisions during agent sessions.
+# Reference: AGENTS.md § Programmatic-First Principle
+# Reference: AGENTS.md § Agent Communication — Focus-on-Descent
+# Consulted by: executive-orchestrator.agent.md (Beliefs & Context)
+
+decision_tables:
+  - situation: "A task has been performed interactively more than twice in the same session or across sessions"
+    action: "Encode the task as a script in scripts/ before performing it a third time. Run --dry-run first, then real run. Commit with chore(scripts): prefix."
+    rationale: "Programmatic-First Principle (AGENTS.md): repeated interactive tasks must be encoded to avoid token waste and ensure reproducibility."
+    agent: "Executive Scripter"
+
+  - situation: "A new external tool (GitHub Actions action, PyPI package, third-party API) is proposed for adoption"
+    action: "Run the New Tool Encoding Gate: (1) confirm no internal overlap in scripts/ via grep, (2) run ethics rubric — ≥3 criteria from procurement doc, (3) write a D4 research doc before any implementation code."
+    rationale: "Endogenous-First (AGENTS.md § New Tool Encoding Gate): external tools must be vetted against internal overlap and ethics rubric before adoption."
+    agent: "Executive Researcher"
+
+  - situation: "A research question informs two or more subsequent implementation phases"
+    action: "Place the research in Phase 2 (earliest executable phase) and treat it as a hard gate. Do not mark it as parallel with any phase it informs."
+    rationale: "Research-First ordering constraint (AGENTS.md § Sprint Phase Ordering Constraints): cross-cutting research must precede all phases it informs."
+    agent: "Executive Planner"
+
+  - situation: "A subagent returns output that exceeds 2000 tokens or does not match the declared format"
+    action: "Request compression immediately: 'Return only: [specific fields]. Drop explanations. Stay <2000 tokens.' Do not act on the over-limit output until compressed."
+    rationale: "Focus-on-Descent / Compression-on-Ascent (AGENTS.md § Agent Communication): context window budget is preserved by enforcing output ceilings."
+    agent: "Executive Orchestrator"
+
+  - situation: "A PR review has been posted (Copilot or human) and the PR is discussed as merge-ready"
+    action: "Retrieve all reviews and inline comments, classify each as Blocking/Suggestion/Nit/Question, fix all Blocking comments, post replies referencing fix SHAs, resolve threads, then re-request review."
+    rationale: "PR Review Triage Gate (AGENTS.md § Agent Communication): a PR must not be merged until every automated and human review is fully triaged."
+    agent: "GitHub Agent"
+
+  - situation: "A session involves ≥3 phases or ≥2 agent delegations"
+    action: "Create a workplan doc in docs/plans/ using scaffold_workplan.py before Phase 1 begins. Commit the workplan. Pass it through the Review agent before execution starts."
+    rationale: "Tracked Workplans (AGENTS.md § Agent Communication): multi-phase sessions require an auditable plan committed before execution."
+    agent: "Executive Orchestrator"

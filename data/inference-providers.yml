@@ -1,0 +1,33 @@
+# Inference Provider Capability Matrix
+#
+# Encodes available LLM inference providers, their endpoints, supported models,
+# cost tiers, and whether they run locally.
+# Reference: AGENTS.md § Local Compute-First
+# Consumed by: scripts/inference_router.py
+
+providers:
+  - name: "local-ollama"
+    endpoint: "http://localhost:11434/api/generate"
+    model_ids:
+      - "llama3.2"
+      - "mistral"
+      - "phi3"
+    cost_tier: "free"
+    local: true
+
+  - name: "anthropic-claude"
+    endpoint: "https://api.anthropic.com/v1/messages"
+    model_ids:
+      - "claude-3-5-haiku-20241022"
+      - "claude-3-5-sonnet-20241022"
+      - "claude-opus-4-5"
+    cost_tier: "high"
+    local: false
+
+  - name: "openai-gpt"
+    endpoint: "https://api.openai.com/v1/chat/completions"
+    model_ids:
+      - "gpt-4o-mini"
+      - "gpt-4o"
+    cost_tier: "low"
+    local: false
