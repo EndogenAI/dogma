@@ -280,6 +280,7 @@ Gate: ✅ Commit confirmed, issue #9 updated and closed
 <constraints>
 
 - **Instruction Hierarchy override**: Real-time user interruption signals ("STOP", "DO NOT CONTINUE", "ABORT") override all research phase procedures. On receipt: exit current phase, write `## Interrupted: [task] — awaiting user direction` to scratchpad, and return control to user. See [AGENTS.md § Instruction Hierarchy](../../AGENTS.md#instruction-hierarchy).
+- **Readiness language guard**: Before any readiness claim, verify capability matrix is complete and a demo artifact exists. Use scoped wording if partial. See [AGENTS.md § Readiness Language Guard](../../AGENTS.md#readiness-language-guard).
 - **Never use heredocs or terminal commands to write file content** — `cat >> file << 'EOF'` and inline Python writes silently corrupt content containing backticks or triple-backtick fences. Always use built-in file tools: `create_file` for new files, `replace_string_in_file` for edits. For `gh issue`/`gh pr` multi-line bodies: always `--body-file <path>`, never `--body "..."` with multi-line text.
 - Do not implement code changes as part of a research session — `docs/research/` only during the research phase.
 - Do not commit directly — always route through **Review** first.
