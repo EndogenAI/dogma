@@ -97,9 +97,18 @@ def validate_url_safety(url: str) -> tuple[bool, str]:
         addr_info = socket.getaddrinfo(hostname, None)
         for _family, _type, _proto, _canonname, sockaddr in addr_info:
             ip_str = sockaddr[0]
+            # Strip IPv6 zone ID (e.g., fe81::1%eth0) before parsing
+            if "%" in ip_str:
+                ip_str = ip_str.split("%")[0]
             try:
                 ip_addr = ipaddress.ip_address(ip_str)
                 if isinstance(ip_addr, ipaddress.IPv4Address):
+                    # Block private ranges, loopback, link-local, and unspecified (0.0.0.0)
+                    if ip_addr.is_unspecified:
+                        return (
+                            False,
+                            f"Rejected: URL resolves to unspecified IPv4 {ip_addr} (prevents SSRF)",
+                        )
                     for blocked in _BLOCKED_IPV4_NETWORKS:
                         if ip_addr in blocked:
                             return (
@@ -108,7 +117,8 @@ def validate_url_safety(url: str) -> tuple[bool, str]:
                                 f"(prevents SSRF to internal services)",
                             )
                 elif isinstance(ip_addr, ipaddress.IPv6Address):
-                    if ip_addr.is_link_local or ip_addr.is_loopback or ip_addr.is_private:
+                    # Block link-local, loopback, private, and unspecified (::)
+                    if ip_addr.is_unspecified or ip_addr.is_link_local or ip_addr.is_loopback or ip_addr.is_private:
                         return (
                             False,
                             f"Rejected: URL resolves to private/internal IPv6 {ip_addr} (prevents SSRF)",

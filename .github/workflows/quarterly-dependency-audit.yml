@@ -34,6 +34,11 @@ jobs:
       - name: Run dependency audit
         run: |
           echo "Running quarterly dependency audit..."
+          if [ ! -f ".cache/cve-db.json" ]; then
+            echo "::error::.cache/cve-db.json is missing; dependency audit cannot run."
+            echo "Ensure the CVE database is generated or downloaded before running this workflow."
+            exit 1
+          fi
           uv run python scripts/audit_dependencies.py --lock-file uv.lock
         id: audit
 
