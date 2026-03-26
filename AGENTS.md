@@ -819,12 +819,52 @@ Check for remaining subdirectory files with:
 find . -name 'AGENTS.md' | grep -v node_modules
 ```
 
+<a name="instruction-hierarchy"></a>
+---
+
+## Instruction Hierarchy — User Real-Time Directives Override
+
+**User real-time interruption signals override all phase gates, session plans, retry logic, and recovery heuristics.** This hierarchy applies to all agents at all times.
+
+### Priority Order
+
+1. **User real-time directives** (highest) — any message containing "STOP", "DO NOT CONTINUE", "ABORT", "ABORT THIS TASK", or equivalent is an EXIT signal; the agent must exit the current execution path immediately
+2. **Session constraints** — AGENTS.md guardrails, security rules, and file-writing guards
+3. **Phase gate procedures** — workplan phases, review gates, per-phase checklists
+4. **Script/automation outputs** — CI results, pre-commit hooks, validated commands (lowest)
+
+### Agent Behaviour on Interruption Signal
+
+Upon receiving a user interruption signal:
+1. **Exit** the current phase immediately — do not attempt to complete or recover the current task
+2. **Write** to the session scratchpad: `## Interrupted: [task name] — awaiting user direction`
+3. **Commit** any in-progress changes with message `chore: checkpoint before interrupt -- [task name]` if there are uncommitted file changes
+4. **Return control** to the user with: "Execution paused. What would you like to do next?"
+5. **Do NOT** auto-recover, re-enter the phase, or execute the next planned step until the user provides new direction
+
+### Interrupt Signal Keywords
+
+The following phrases, when detected in user input, constitute an interruption signal:
+- `STOP`
+- `DO NOT CONTINUE`
+- `ABORT`
+- `ABORT THIS TASK`
+- `CANCEL`
+- `PAUSE EXECUTION`
+- `HOLD`
+
+**Critical anti-pattern**: Treating user interruption signals as "clarification requests" or "noise" and continuing phase execution is an encoding failure. User direction > phase instruction at all times.
+
+*Grounded in `docs/research/orchestrator-autopilot-failure.md` § Recommendation 1 (Track A) — confirmed: the `task/comms-strategy-split` incident on 2026-03-25 where the agent treated "STOP" signals as noise and re-entered the same failed phase cycle.*
+
 <a name="when-to-ask-vs-proceed"></a>
 ---
 
 ## When to Ask vs. Proceed
 
 **Default posture: stop and ask before any ambiguous or irreversible action.**
+
+**Note**: User real-time interruption signals override the posture below entirely. See [Instruction Hierarchy](#instruction-hierarchy) for the exit protocol.
 
 ### Anti-pattern: Outward-facing research framing
 

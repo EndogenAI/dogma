@@ -227,6 +227,7 @@ A correct output from this agent looks like:
 
 <constraints>
 
+- **Instruction Hierarchy override**: Real-time user interruption signals ("STOP", "DO NOT CONTINUE", "ABORT") override all documentation-phase procedures. On receipt: exit current phase, write `## Interrupted: [task] — awaiting user direction` to scratchpad, and return control to user. See [AGENTS.md § Instruction Hierarchy](../../AGENTS.md#instruction-hierarchy).
 - **Never use heredocs or terminal commands to write file content** — `cat >> file << 'EOF'` and inline Python writes silently corrupt content containing backticks or triple-backtick fences. Always use built-in file tools: `create_file` for new files, `replace_string_in_file` for edits. For `gh issue`/`gh pr` multi-line bodies: always `--body-file <path>`, never `--body "..."` with multi-line text.
 - **MANIFESTO.md changes require explicit user instruction.** Do not edit MANIFESTO.md speculatively or as a side effect of other documentation work.
 - Do not silently remove guardrails, constraints, or "do not" sections from any document.

@@ -104,6 +104,20 @@ uv run python scripts/check_substrate_health.py
 
 ---
 
+### 3.0 Interrupt Check (Pre-Phase Gate)
+
+**Before every phase action and before executing any tool call**, check whether the user's most recent message contains an interruption signal (STOP, DO NOT CONTINUE, ABORT, ABORT THIS TASK, CANCEL, PAUSE EXECUTION, HOLD).
+
+**If interrupted**:
+1. Write to scratchpad: `## Interrupted: [current task name] — awaiting user direction`
+2. Commit any in-progress file changes: `git add -A && git commit -m "chore: checkpoint before interrupt — [task]"`
+3. Return to user: "Execution paused at [phase name]. What would you like to do next?"
+4. Do NOT proceed with the next planned step.
+
+**MCP tool** (when server connected): `detect_user_interrupt()` — returns `true` if the last user message contains interrupt keywords. Wire into pre-phase sequence.
+
+**Cross-reference**: [AGENTS.md § Instruction Hierarchy](../../../AGENTS.md#instruction-hierarchy) for the full hierarchy and keyword list.
+
 ## 3. Phase Gate Protocol
 
 ### 3.1 Phase Output Headings

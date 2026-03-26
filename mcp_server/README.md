@@ -1,7 +1,7 @@
 # dogma MCP Server
 
 Exposes the dogma governance toolset as an [MCP](https://modelcontextprotocol.io/) server
-using [FastMCP](https://github.com/jlowin/fastmcp). Provides 8 tools for validating,
+using [FastMCP](https://github.com/jlowin/fastmcp). Provides 9 tools for validating,
 scaffolding, researching, and managing sessions within the dogma repository.
 
 ---
@@ -18,6 +18,7 @@ scaffolding, researching, and managing sessions within the dogma repository.
 | `run_research_scout` | Fetch and cache an external URL (SSRF-safe) |
 | `query_docs` | BM25 query over the dogma documentation corpus |
 | `prune_scratchpad` | Initialise or inspect the session scratchpad |
+| `detect_user_interrupt` | **Per-phase** — check for user STOP/ABORT/CANCEL signals before any phase action; returns `interrupted: true` if detected |
 
 ---
 
