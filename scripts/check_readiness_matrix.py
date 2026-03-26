@@ -20,6 +20,8 @@ Usage:
     uv run python scripts/check_readiness_matrix.py --strict docs/plans/foo.md
 """
 
+from __future__ import annotations
+
 import argparse
 import re
 import sys
@@ -44,6 +46,10 @@ MATRIX_PATTERNS = [
     re.compile(r"\|\s*End.to.End\s*\|", re.IGNORECASE),
     # Inline claim format: "capability matrix: Retrieval ✅"
     re.compile(r"capability matrix\s*:", re.IGNORECASE),
+    # Markdown heading: "## Capability Matrix"
+    re.compile(r"##\s*Capability Matrix", re.IGNORECASE),
+    # Table with "Retrieval" in first column (wider match)
+    re.compile(r"\|\s*Retrieval\s*(\([^)]*\))?\s*\|", re.IGNORECASE),
 ]
 
 PARTIAL_RE = re.compile(r"\bpartial\b", re.IGNORECASE)
