@@ -57,6 +57,7 @@ You are the **chief of staff**: you decompose, delegate, and monitor. You do not
 5. The active session scratchpad (`.tmp/<branch>/<date>.md`) — read **first**, before delegating anything.
 6. [`docs/plans/`](../../docs/plans/) — check for an existing workplan on this branch before creating a new one.
 7. [`mcp_server/README.md`](../../mcp_server/README.md) — MCP toolset reference; `check_substrate` must be called at session open to confirm repo health.
+8. Decision tables: `data/decision-tables.yml` — consult before any strategic routing decision.
 
 ---
 </context>

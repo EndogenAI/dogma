@@ -1546,6 +1546,86 @@ uv run python scripts/audit_recommendation_status.py --no-github
 
 ---
 
+## scripts/inference_router.py
+
+**Job**: Enable executive agents to route LLM prompts to the best available inference provider so that Local-Compute-First is enforced structurally.
+
+**Purpose**: Reads `data/inference-providers.yml` and routes requests through an ordered fallback chain (local → configured order). Provides `route()` to select a provider and `call_with_fallback()` to walk the chain.
+
+**Tests**: [`tests/test_inference_router.py`](../tests/test_inference_router.py)
+
+**Usage**:
+
+```bash
+uv run python scripts/inference_router.py --prompt "Summarise this." --provider local-ollama
+uv run python scripts/inference_router.py --prompt "Summarise this." --fallback
+```
+
+**Flags**:
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--prompt TEXT` | yes | Text prompt to route |
+| `--provider NAME` | no | Preferred provider name (optional) |
+| `--config PATH` | no | Override path to inference-providers.yml |
+| `--fallback` | no | Run full fallback chain; print result dict |
+
+**Exit codes**: `0` success; `1` all providers failed or list empty; `2` config file not found.
+
+---
+
+## scripts/validate_l2_constraints.py
+
+**Job**: Enable agents and CI to validate `data/l2-constraints.yml` against its JSON Schema so that L2 constraint encoding errors are caught before commit.
+
+**Purpose**: Validates the L2 constraints YAML file using `jsonschema`. Required fields: `id`, `description`, `enforcement` (pre-commit|runtime|review), `severity` (blocking|warning).
+
+**Tests**: [`tests/test_validate_l2_constraints.py`](../tests/test_validate_l2_constraints.py)
+
+**Usage**:
+
+```bash
+uv run python scripts/validate_l2_constraints.py data/l2-constraints.yml
+uv run python scripts/validate_l2_constraints.py  # uses default path
+```
+
+**Flags**:
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `path` (positional) | no | YAML file to validate (default: data/l2-constraints.yml) |
+
+**Exit codes**: `0` valid; `1` schema violation; `2` file not found or YAML parse error.
+
+---
+
+## scripts/validate_semantic_output.py
+
+**Job**: Enable agents and CI to validate subagent return tokens against declared format and token ceiling so that Focus-on-Descent / Compression-on-Ascent contracts are enforced structurally.
+
+**Purpose**: Checks that text matches a declared format (bullets, table, single-line) and that the approximate token count does not exceed a ceiling. Tokens estimated as `ceil(word_count / 0.75)`.
+
+**Tests**: [`tests/test_validate_semantic_output.py`](../tests/test_validate_semantic_output.py)
+
+**Usage**:
+
+```bash
+echo "- item one\n- item two" | uv run python scripts/validate_semantic_output.py --format bullets --ceiling 50
+uv run python scripts/validate_semantic_output.py --format single-line --ceiling 20 "APPROVED"
+```
+
+**Flags**:
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--format` | yes | Expected format: `bullets`, `table`, or `single-line` |
+| `--ceiling N` | yes | Maximum token count (integer) |
+| `text` (positional) | no | Text to validate; reads from stdin if omitted |
+
+**Exit codes**: `0` format matches and tokens ≤ ceiling; `1` format mismatch; `2` ceiling exceeded.
+
+---
+
 ## References
 
 - [`AGENTS.md` — Programmatic-First Principle](../AGENTS.md#programmatic-first-principle) — when and how to write scripts
