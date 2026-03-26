@@ -29,6 +29,16 @@ recommendations:
     status: accepted
     linked_issue: null
     decision_ref: ''
+  - id: rec-owasp-llm-005
+    title: Pin GitHub Actions to commit SHAs
+    status: accepted
+    linked_issue: null
+    decision_ref: ''
+  - id: rec-owasp-llm-006
+    title: Add secret scanning pre-commit hook
+    status: accepted
+    linked_issue: null
+    decision_ref: ''
 ---
 
 # OWASP LLM Top 10 Threat Model for EndogenAI Workflows
