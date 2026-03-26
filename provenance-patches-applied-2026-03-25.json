@@ -10,7 +10,7 @@
   "patches": [
     {
       "patch_id": "agent-to-agent-communication-protocol",
-      "document": "/Users/conor/Sites/dogma/docs/research/agent-to-agent-communication-protocol.md",
+      "document": "docs/research/agent-to-agent-communication-protocol.md",
       "status": "APPLIED",
       "old_recommendation_count": 8,
       "new_recommendation_count": 8,
@@ -18,7 +18,7 @@
     },
     {
       "patch_id": "ai-autonomy-governance",
-      "document": "/Users/conor/Sites/dogma/docs/research/ai-autonomy-governance.md",
+      "document": "docs/research/ai-autonomy-governance.md",
       "status": "APPLIED",
       "old_recommendation_count": 14,
       "new_recommendation_count": 14,
@@ -26,7 +26,7 @@
     },
     {
       "patch_id": "ai-cognitive-load",
-      "document": "/Users/conor/Sites/dogma/docs/research/ai-cognitive-load.md",
+      "document": "docs/research/ai-cognitive-load.md",
       "status": "APPLIED",
       "old_recommendation_count": 8,
       "new_recommendation_count": 8,
@@ -34,7 +34,7 @@
     },
     {
       "patch_id": "ai-platform-lock-in-risks",
-      "document": "/Users/conor/Sites/dogma/docs/research/ai-platform-lock-in-risks.md",
+      "document": "docs/research/ai-platform-lock-in-risks.md",
       "status": "APPLIED",
       "old_recommendation_count": 16,
       "new_recommendation_count": 16,
@@ -42,7 +42,7 @@
     },
     {
       "patch_id": "ai-workload-observability",
-      "document": "/Users/conor/Sites/dogma/docs/research/ai-workload-observability.md",
+      "document": "docs/research/ai-workload-observability.md",
       "status": "APPLIED",
       "old_recommendation_count": 7,
       "new_recommendation_count": 7,
@@ -50,7 +50,7 @@
     },
     {
       "patch_id": "biological-evolution-dogma-propagation",
-      "document": "/Users/conor/Sites/dogma/docs/research/biological-evolution-dogma-propagation.md",
+      "document": "docs/research/biological-evolution-dogma-propagation.md",
       "status": "APPLIED",
       "old_recommendation_count": 8,
       "new_recommendation_count": 8,
@@ -58,7 +58,7 @@
     },
     {
       "patch_id": "civic-ai-governance",
-      "document": "/Users/conor/Sites/dogma/docs/research/civic-ai-governance.md",
+      "document": "docs/research/civic-ai-governance.md",
       "status": "APPLIED",
       "old_recommendation_count": 7,
       "new_recommendation_count": 7,
@@ -66,7 +66,7 @@
     },
     {
       "patch_id": "classic-programmatic-patterns-dogma-legibility",
-      "document": "/Users/conor/Sites/dogma/docs/research/classic-programmatic-patterns-dogma-legibility.md",
+      "document": "docs/research/classic-programmatic-patterns-dogma-legibility.md",
       "status": "APPLIED",
       "old_recommendation_count": 5,
       "new_recommendation_count": 5,
@@ -74,7 +74,7 @@
     },
     {
       "patch_id": "claude-code-cli-productivity-patterns",
-      "document": "/Users/conor/Sites/dogma/docs/research/claude-code-cli-productivity-patterns.md",
+      "document": "docs/research/claude-code-cli-productivity-patterns.md",
       "status": "APPLIED",
       "old_recommendation_count": 13,
       "new_recommendation_count": 13,
@@ -82,7 +82,7 @@
     },
     {
       "patch_id": "copilot-collaboration-effects",
-      "document": "/Users/conor/Sites/dogma/docs/research/copilot-collaboration-effects.md",
+      "document": "docs/research/copilot-collaboration-effects.md",
       "status": "APPLIED",
       "old_recommendation_count": 5,
       "new_recommendation_count": 5,
@@ -90,7 +90,7 @@
     },
     {
       "patch_id": "custom-agent-service-modules",
-      "document": "/Users/conor/Sites/dogma/docs/research/custom-agent-service-modules.md",
+      "document": "docs/research/custom-agent-service-modules.md",
       "status": "APPLIED",
       "old_recommendation_count": 4,
       "new_recommendation_count": 4,
@@ -98,7 +98,7 @@
     },
     {
       "patch_id": "dogma-corpus-audit-2026-03",
-      "document": "/Users/conor/Sites/dogma/docs/research/dogma-corpus-audit-2026-03.md",
+      "document": "docs/research/dogma-corpus-audit-2026-03.md",
       "status": "APPLIED",
       "old_recommendation_count": 20,
       "new_recommendation_count": 20,
@@ -106,7 +106,7 @@
     },
     {
       "patch_id": "endogenic-inline-docs-baseline",
-      "document": "/Users/conor/Sites/dogma/docs/research/endogenic-inline-docs-baseline.md",
+      "document": "docs/research/endogenic-inline-docs-baseline.md",
       "status": "APPLIED",
       "old_recommendation_count": 4,
       "new_recommendation_count": 4,
@@ -114,7 +114,7 @@
     },
     {
       "patch_id": "endogenic-inline-docs-synthesis",
-      "document": "/Users/conor/Sites/dogma/docs/research/endogenic-inline-docs-synthesis.md",
+      "document": "docs/research/endogenic-inline-docs-synthesis.md",
       "status": "APPLIED",
       "old_recommendation_count": 7,
       "new_recommendation_count": 7,
@@ -122,7 +122,7 @@
     },
     {
       "patch_id": "github-copilot-ecosystem",
-      "document": "/Users/conor/Sites/dogma/docs/research/github-copilot-ecosystem.md",
+      "document": "docs/research/github-copilot-ecosystem.md",
       "status": "APPLIED",
       "old_recommendation_count": 8,
       "new_recommendation_count": 8,
@@ -130,7 +130,7 @@
     },
     {
       "patch_id": "glossary-maintenance-strategy",
-      "document": "/Users/conor/Sites/dogma/docs/research/glossary-maintenance-strategy.md",
+      "document": "docs/research/glossary-maintenance-strategy.md",
       "status": "APPLIED",
       "old_recommendation_count": 6,
       "new_recommendation_count": 6,
@@ -138,7 +138,7 @@
     },
     {
       "patch_id": "greenfield-repo-candidates",
-      "document": "/Users/conor/Sites/dogma/docs/research/greenfield-repo-candidates.md",
+      "document": "docs/research/greenfield-repo-candidates.md",
       "status": "APPLIED",
       "old_recommendation_count": 5,
       "new_recommendation_count": 5,
@@ -146,7 +146,7 @@
     },
     {
       "patch_id": "h2-nk-model-formalization",
-      "document": "/Users/conor/Sites/dogma/docs/research/h2-nk-model-formalization.md",
+      "document": "docs/research/h2-nk-model-formalization.md",
       "status": "APPLIED",
       "old_recommendation_count": 5,
       "new_recommendation_count": 5,
@@ -154,7 +154,7 @@
     },
     {
       "patch_id": "high-reading-level-encoding-drift-signal",
-      "document": "/Users/conor/Sites/dogma/docs/research/high-reading-level-encoding-drift-signal.md",
+      "document": "docs/research/high-reading-level-encoding-drift-signal.md",
       "status": "APPLIED",
       "old_recommendation_count": 6,
       "new_recommendation_count": 6,
@@ -162,7 +162,7 @@
     },
     {
       "patch_id": "intelligence-architecture-synthesis",
-      "document": "/Users/conor/Sites/dogma/docs/research/intelligence-architecture-synthesis.md",
+      "document": "docs/research/intelligence-architecture-synthesis.md",
       "status": "APPLIED",
       "old_recommendation_count": 20,
       "new_recommendation_count": 20,
@@ -170,7 +170,7 @@
     },
     {
       "patch_id": "llm-strategic-advice-quality",
-      "document": "/Users/conor/Sites/dogma/docs/research/llm-strategic-advice-quality.md",
+      "document": "docs/research/llm-strategic-advice-quality.md",
       "status": "APPLIED",
       "old_recommendation_count": 15,
       "new_recommendation_count": 15,
@@ -178,7 +178,7 @@
     },
     {
       "patch_id": "local-inference-rag",
-      "document": "/Users/conor/Sites/dogma/docs/research/local-inference-rag.md",
+      "document": "docs/research/local-inference-rag.md",
       "status": "APPLIED",
       "old_recommendation_count": 5,
       "new_recommendation_count": 5,
@@ -186,7 +186,7 @@
     },
     {
       "patch_id": "local-rag-adoption-patterns",
-      "document": "/Users/conor/Sites/dogma/docs/research/local-rag-adoption-patterns.md",
+      "document": "docs/research/local-rag-adoption-patterns.md",
       "status": "APPLIED",
       "old_recommendation_count": 7,
       "new_recommendation_count": 7,
@@ -194,7 +194,7 @@
     },
     {
       "patch_id": "mcp-a2a-scratchpad-query",
-      "document": "/Users/conor/Sites/dogma/docs/research/mcp-a2a-scratchpad-query.md",
+      "document": "docs/research/mcp-a2a-scratchpad-query.md",
       "status": "APPLIED",
       "old_recommendation_count": 6,
       "new_recommendation_count": 6,
@@ -202,7 +202,7 @@
     },
     {
       "patch_id": "mcp-production-pain-points",
-      "document": "/Users/conor/Sites/dogma/docs/research/mcp-production-pain-points.md",
+      "document": "docs/research/mcp-production-pain-points.md",
       "status": "APPLIED",
       "old_recommendation_count": 3,
       "new_recommendation_count": 3,
@@ -210,7 +210,7 @@
     },
     {
       "patch_id": "mcp-state-architecture",
-      "document": "/Users/conor/Sites/dogma/docs/research/mcp-state-architecture.md",
+      "document": "docs/research/mcp-state-architecture.md",
       "status": "APPLIED",
       "old_recommendation_count": 4,
       "new_recommendation_count": 4,
@@ -218,7 +218,7 @@
     },
     {
       "patch_id": "nemo-guardrails-governance",
-      "document": "/Users/conor/Sites/dogma/docs/research/nemo-guardrails-governance.md",
+      "document": "docs/research/nemo-guardrails-governance.md",
       "status": "APPLIED",
       "old_recommendation_count": 5,
       "new_recommendation_count": 5,
@@ -226,7 +226,7 @@
     },
     {
       "patch_id": "oss-documentation-best-practices",
-      "document": "/Users/conor/Sites/dogma/docs/research/oss-documentation-best-practices.md",
+      "document": "docs/research/oss-documentation-best-practices.md",
       "status": "APPLIED",
       "old_recommendation_count": 6,
       "new_recommendation_count": 6,
@@ -234,7 +234,7 @@
     },
     {
       "patch_id": "output-format-constraint-compressed-returns",
-      "document": "/Users/conor/Sites/dogma/docs/research/output-format-constraint-compressed-returns.md",
+      "document": "docs/research/output-format-constraint-compressed-returns.md",
       "status": "APPLIED",
       "old_recommendation_count": 5,
       "new_recommendation_count": 5,
@@ -242,7 +242,7 @@
     },
     {
       "patch_id": "platform-agnosticism",
-      "document": "/Users/conor/Sites/dogma/docs/research/platform-agnosticism.md",
+      "document": "docs/research/platform-agnosticism.md",
       "status": "APPLIED",
       "old_recommendation_count": 4,
       "new_recommendation_count": 4,
@@ -250,7 +250,7 @@
     },
     {
       "patch_id": "programmatic-writing-assessment-tooling",
-      "document": "/Users/conor/Sites/dogma/docs/research/programmatic-writing-assessment-tooling.md",
+      "document": "docs/research/programmatic-writing-assessment-tooling.md",
       "status": "APPLIED",
       "old_recommendation_count": 6,
       "new_recommendation_count": 6,
@@ -258,7 +258,7 @@
     },
     {
       "patch_id": "ramp-l0l3-framework",
-      "document": "/Users/conor/Sites/dogma/docs/research/ramp-l0l3-framework.md",
+      "document": "docs/research/ramp-l0l3-framework.md",
       "status": "APPLIED",
       "old_recommendation_count": 6,
       "new_recommendation_count": 6,
@@ -266,7 +266,7 @@
     },
     {
       "patch_id": "reading-level-assessment-framework",
-      "document": "/Users/conor/Sites/dogma/docs/research/reading-level-assessment-framework.md",
+      "document": "docs/research/reading-level-assessment-framework.md",
       "status": "APPLIED",
       "old_recommendation_count": 6,
       "new_recommendation_count": 6,
@@ -274,7 +274,7 @@
     },
     {
       "patch_id": "scratchpad-architecture-decision",
-      "document": "/Users/conor/Sites/dogma/docs/research/scratchpad-architecture-decision.md",
+      "document": "docs/research/scratchpad-architecture-decision.md",
       "status": "APPLIED",
       "old_recommendation_count": 17,
       "new_recommendation_count": 17,
@@ -282,7 +282,7 @@
     },
     {
       "patch_id": "semantic-encoding-modes-contextual-routing",
-      "document": "/Users/conor/Sites/dogma/docs/research/semantic-encoding-modes-contextual-routing.md",
+      "document": "docs/research/semantic-encoding-modes-contextual-routing.md",
       "status": "APPLIED",
       "old_recommendation_count": 8,
       "new_recommendation_count": 8,
@@ -290,7 +290,7 @@
     },
     {
       "patch_id": "substrate-atlas",
-      "document": "/Users/conor/Sites/dogma/docs/research/substrate-atlas.md",
+      "document": "docs/research/substrate-atlas.md",
       "status": "APPLIED",
       "old_recommendation_count": 5,
       "new_recommendation_count": 5,
@@ -298,7 +298,7 @@
     },
     {
       "patch_id": "vscode-problems-panel-diagnostics",
-      "document": "/Users/conor/Sites/dogma/docs/research/vscode-problems-panel-diagnostics.md",
+      "document": "docs/research/vscode-problems-panel-diagnostics.md",
       "status": "APPLIED",
       "old_recommendation_count": 11,
       "new_recommendation_count": 11,

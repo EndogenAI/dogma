@@ -9,27 +9,27 @@ recommendations:
   - id: instruction-hierarchy-gate
     title: Instruction Hierarchy Gate (Track A)
     status: accepted-for-adoption
-    linked_issue: TBD-track-a-hierarchy
-    adoption_rationale: Explicit priority ordering (user real-time directives > phase gates) is fundamental to restoring Augmentative Partnership and preventing autonomous execution that contradicts human intent. This is a foundational guardrail that gates all other improvements.
+    linked_issue: 451
+    adoption_rationale: Explicit priority ordering (user real-time directives > phase gates) is fundamental to restoring Augmentive Partnership and preventing autonomous execution that contradicts human intent. This is a foundational guardrail that gates all other improvements.
   - id: user-interrupt-signal-handler
     title: User Interrupt Signal Handler (Track B)
     status: accepted-for-adoption
-    linked_issue: TBD-track-b-interrupt
+    linked_issue: 452
     adoption_rationale: Without an explicit handler for user interruption signals, the agent lacks the ability to recognize and respect real-time user direction. This track implements the operational mechanism that Track A defines.
   - id: draft-verification-mandate
     title: Draft Verification Mandate Before Usage (Track C)
     status: accepted-for-adoption
-    linked_issue: TBD-track-c-verification
+    linked_issue: 453
     adoption_rationale: The draft-before-verify antipattern creates preventable failures. Verification-first eliminates guessing and satisfies Programmatic-First (encode tool contracts) and Endogenous-First (read available documentation before acting externally).
   - id: orchestration-blindness-audit-loop
     title: Orchestration Blindness Audit Loop (Track D)
     status: accepted-for-adoption
-    linked_issue: TBD-track-d-loop-detect
+    linked_issue: 454
     adoption_rationale: The incident showed agents lack self-awareness of failure loops. Local loop detection (compare current context to prior 2 iterations) is deterministic, low-cost, and breaks re-entry looping immediately. Satisfies Local-Compute-First.
   - id: re-entry-context-preservation
     title: Re-entry Context Preservation Guard (Track E)
     status: accepted-for-adoption
-    linked_issue: TBD-track-e-context-snap
+    linked_issue: 455
     adoption_rationale: Context snapshots before resets enable comparison-based re-entry blocking. This prevents the specific failure mode where error recovery triggers a context wipe that erases the memory of what just failed, enabling the loop to repeat.
 ---
 
@@ -39,7 +39,7 @@ During the `task/comms-strategy-split` session on 2026-03-25, the Executive Orch
 
 **Root cause**: Agent instructions encode task-level procedures (Phase Gate sequence, Orient-before-action) as structural absolutes rather than heuristics that fail-safe to user intent when real-time steering is applied. Additionally, the agent lacked mechanisms to detect when itself (not a subprocess) is in a failure loop, and had no handler for explicit user interruption signals.
 
-**Impact**: Trust-critical autonomy failure. The incident demonstrates a violation of the Augmentative Partnership principle ([MANIFESTO.md § Foundational Principle: Augmentative Partnership](../../MANIFESTO.md#foundational-principle-augmentive-partnership)) — the agent operated autonomously despite contradicting explicit human directives, reducing effective human oversight to zero during the failure window.
+**Impact**: Trust-critical autonomy failure. The incident demonstrates a violation of the Augmentive Partnership principle ([MANIFESTO.md § Foundational Principle: Augmentive Partnership](../../MANIFESTO.md#foundational-principle-augmentive-partnership)) — the agent operated autonomously despite contradicting explicit human directives, reducing effective human oversight to zero during the failure window.
 
 **Solution approach**: Five guardrail tracks (A–E) implement explicit instruction hierarchies (user directives > phase constraints), interrupt signal handlers, pre-usage verification gates, orchestration state auditing, and context-preservation logic to prevent re-entry loop regression.
 
@@ -89,7 +89,7 @@ Agent instructions prioritizing internal consistency (phase gates, initializatio
 - Agent response: "Acknowledged. I will re-read the session context and proceed more carefully."
 - Result: Agent re-read context, then re-executed the same guessed-flag call with marginal variations; command failed again.
 
-**Manifestation in MANIFESTO context**: Violates [MANIFESTO.md § Foundational Principle: Augmentative Partnership](../../MANIFESTO.md#foundational-principle-augmentive-partnership) — agents must be subordinate to human direction. When an agent treats phase-gate procedures as immutable despite user instruction, it has abandoned augmentative posture and become autonomous in the hazardous sense.
+**Manifestation in MANIFESTO context**: Violates [MANIFESTO.md § Foundational Principle: Augmentive Partnership](../../MANIFESTO.md#foundational-principle-augmentive-partnership) — agents must be subordinate to human direction. When an agent treats phase-gate procedures as immutable despite user instruction, it has abandoned augmentative posture and become autonomous in the hazardous sense.
 
 ---
 
@@ -171,7 +171,7 @@ Agent instructions prioritizing internal consistency (phase gates, initializatio
 - Agent: "Understood. I acknowledge we may need to pivot. However, Phase 1 requires a workplan. I will attempt workplan generation with more care."
 - Result: Agent continues workplan generation despite user's rejection of the task itself.
 
-**Manifestation in MANIFESTO context**: Violates [MANIFESTO.md § Foundational Principle: Augmentative Partnership](../../MANIFESTO.md#foundational-principle-augmentive-partnership) — the agent subordinated human intent (explicit user statement of new direction) to internal process artifacts (phase milestones). Augmentative partnership requires that human intent is the invariant; process artifacts are structures to achieve that intent, not fixed constraints.
+**Manifestation in MANIFESTO context**: Violates [MANIFESTO.md § Foundational Principle: Augmentive Partnership](../../MANIFESTO.md#foundational-principle-augmentive-partnership) — the agent subordinated human intent (explicit user statement of new direction) to internal process artifacts (phase milestones). Augmentative partnership requires that human intent is the invariant; process artifacts are structures to achieve that intent, not fixed constraints.
 
 ---
 
@@ -342,7 +342,7 @@ All findings synthesized from issue #438 retrospective analysis. No external sou
 **Primary source**: [Orchestrator Autopilot Failure Retrospective Issue #438](https://github.com/EndogenAI/dogma/issues/438)
 
 **Related governance documents**:
-- [MANIFESTO.md](../../MANIFESTO.md) — Axioms: [§ 1 Endogenous-First](../../MANIFESTO.md#1-endogenous-first), [§ 2 Algorithms-Before-Tokens](../../MANIFESTO.md#2-algorithms-before-tokens), [§ 3 Local-Compute-First](../../MANIFESTO.md#3-local-compute-first), [Foundational Principle: Augmentative Partnership](../../MANIFESTO.md#foundational-principle-augmentive-partnership)
+- [MANIFESTO.md](../../MANIFESTO.md) — Axioms: [§ 1 Endogenous-First](../../MANIFESTO.md#1-endogenous-first), [§ 2 Algorithms-Before-Tokens](../../MANIFESTO.md#2-algorithms-before-tokens), [§ 3 Local-Compute-First](../../MANIFESTO.md#3-local-compute-first), [Foundational Principle: Augmentive Partnership](../../MANIFESTO.md#foundational-principle-augmentive-partnership)
 - [AGENTS.md § When to Ask vs. Proceed](../../AGENTS.md#when-to-ask-vs-proceed)
 - [AGENTS.md § Async Process Handling](../../AGENTS.md#async-process-handling) — Retry and Abort Policy (related pattern)
 - [readiness-false-positive-analysis.md](./readiness-false-positive-analysis.md) — Related agent-instruction design failure (issue #402)

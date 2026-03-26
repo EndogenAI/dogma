@@ -18,19 +18,19 @@ recommendations:
   - id: adoption-phase-1-readiness-layer
     title: "Phase 1: Readiness Layer Configuration (client-values.yml structure)"
     status: accepted-for-adoption
-    linked_issue: null
+    linked_issue: 456
   - id: adoption-phase-2-governance-cascade
     title: "Phase 2: Governance Cascade Integration (values flow through encoding layers)"
     status: accepted-for-adoption
-    linked_issue: null
+    linked_issue: 457
   - id: adoption-phase-3-validation-gates
     title: "Phase 3: Validation Gates and Safety Checks (prevent adoption false-positives)"
     status: accepted-for-adoption
-    linked_issue: null
+    linked_issue: 458
   - id: adoption-phase-4-orchestration-guardrails
     title: "Phase 4: Orchestration Guardrails (client-specific agent constraints)"
     status: accepted-for-adoption
-    linked_issue: null
+    linked_issue: 459
 ---
 
 ## Executive Summary

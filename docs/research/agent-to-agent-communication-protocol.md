@@ -18,7 +18,7 @@ recommendations:
   linked_issue: null
   decision_ref: ''
 - id: rec-agent-to-agent-communication-protocol-003
-  title: Defer full A2A adoption — the fleets current serialised d...
+  title: Defer full A2A adoption — the fleet's current serialised delegation model is coherent
   status: deferred
   linked_issue: null
   decision_ref: ''

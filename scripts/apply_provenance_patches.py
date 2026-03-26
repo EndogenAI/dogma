@@ -75,6 +75,14 @@ def _repo_root() -> Path:
     return Path(__file__).resolve().parent.parent
 
 
+def _rel(path: Path, repo_root: Path) -> str:
+    """Return *path* relative to *repo_root* for portable report output."""
+    try:
+        return str(path.relative_to(repo_root))
+    except ValueError:
+        return str(path)
+
+
 def apply_patches(
     patch_dir: Path | None = None,
     *,
@@ -153,7 +161,7 @@ def apply_patches(
         if not doc_path.exists():
             result = {
                 "patch_id": patch_path.stem,
-                "document": str(doc_path),
+                "document": _rel(doc_path, repo_root),
                 "status": "ERROR",
                 "error": "Target document does not exist",
             }
@@ -165,7 +173,7 @@ def apply_patches(
         if not isinstance(recommendations, list):
             result = {
                 "patch_id": patch_path.stem,
-                "document": str(doc_path),
+                "document": _rel(doc_path, repo_root),
                 "status": "ERROR",
                 "error": "Field 'recommendations' must be a YAML list",
             }
@@ -176,7 +184,7 @@ def apply_patches(
         if not recommendations:
             result = {
                 "patch_id": patch_path.stem,
-                "document": str(doc_path),
+                "document": _rel(doc_path, repo_root),
                 "status": "SKIPPED",
                 "reason": "Patch has no recommendations to apply",
             }
@@ -187,7 +195,7 @@ def apply_patches(
         if recommendations and not clean_recs:
             result = {
                 "patch_id": patch_path.stem,
-                "document": str(doc_path),
+                "document": _rel(doc_path, repo_root),
                 "status": "ERROR",
                 "error": "Recommendations list contained no valid mappings",
             }
@@ -200,7 +208,7 @@ def apply_patches(
         except OSError as exc:
             result = {
                 "patch_id": patch_path.stem,
-                "document": str(doc_path),
+                "document": _rel(doc_path, repo_root),
                 "status": "ERROR",
                 "error": f"Cannot read document: {exc}",
             }
@@ -212,7 +220,7 @@ def apply_patches(
         if parsed is None:
             result = {
                 "patch_id": patch_path.stem,
-                "document": str(doc_path),
+                "document": _rel(doc_path, repo_root),
                 "status": "ERROR",
                 "error": "Document has malformed frontmatter",
             }
@@ -233,7 +241,7 @@ def apply_patches(
 
             result = {
                 "patch_id": patch_path.stem,
-                "document": str(doc_path),
+                "document": _rel(doc_path, repo_root),
                 "status": "APPLIED" if not dry_run else "WOULD_APPLY",
                 "old_recommendation_count": old_rec_count,
                 "new_recommendation_count": len(clean_recs),
@@ -244,7 +252,7 @@ def apply_patches(
         except Exception as exc:
             result = {
                 "patch_id": patch_path.stem,
-                "document": str(doc_path),
+                "document": _rel(doc_path, repo_root),
                 "status": "ERROR",
                 "error": f"Write error: {exc}",
             }
@@ -269,8 +277,8 @@ def main() -> int:
     parser.add_argument(
         "--status-filter",
         type=str,
-        default=None,
-        help="Only apply patches with this status (e.g., 'approved-for-adoption')",
+        default="approved-for-adoption",
+        help="Only apply patches with this status (default: approved-for-adoption)",
     )
     parser.add_argument(
         "--dry-run",
