@@ -18,7 +18,7 @@ recommendations:
   linked_issue: null
   decision_ref: ''
 - id: rec-agent-to-agent-communication-protocol-003
-  title: Defer full A2A adoption — the fleet's current serialised ...
+  title: Defer full A2A adoption — the fleets current serialised d...
   status: deferred
   linked_issue: null
   decision_ref: ''
@@ -43,7 +43,7 @@ recommendations:
   linked_issue: null
   decision_ref: ''
 - id: rec-agent-to-agent-communication-protocol-008
-  title: When fleet grows to ≥4 concurrent sessions, evaluate A2A'...
+  title: When fleet grows to ≥4 concurrent sessions, evaluate A2As...
   status: deferred
   linked_issue: null
   decision_ref: ''

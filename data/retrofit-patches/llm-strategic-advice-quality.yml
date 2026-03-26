@@ -1,5 +1,3 @@
-# Suggested patch for docs/research/llm-strategic-advice-quality.md
-# Review and edit before applying with Phase 6 patch application
 doc: docs/research/llm-strategic-advice-quality.md
 doc_slug: llm-strategic-advice-quality
 generated_at: '2026-03-22T20:41:09.871661+00:00'
@@ -111,3 +109,4 @@ recommendations:
   decision_ref: ''
   _match_note: No matching issue found
   _confidence: low
+status: approved-for-adoption

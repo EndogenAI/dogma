@@ -20,7 +20,7 @@ recommendations:
   linked_issue: null
   decision_ref: ''
 - id: rec-claude-code-cli-productivity-patterns-002
-  title: ENCODE dogma's phase-gate-sequence as Claude Code `Stop`/...
+  title: ENCODE dogmas phase-gate-sequence as Claude Code `Stop`/`...
   status: deferred
   linked_issue: null
   decision_ref: ''
@@ -65,7 +65,7 @@ recommendations:
   linked_issue: null
   decision_ref: ''
 - id: rec-claude-code-cli-productivity-patterns-011
-  title: '`PostToolUse` on `Edit\'
+  title: '`PostToolUse` on `Edit'
   status: deferred
   linked_issue: null
   decision_ref: ''
