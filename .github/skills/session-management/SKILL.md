@@ -33,6 +33,27 @@ The `_index.md` accumulates single-line stubs for every closed session on the br
 
 ## 2. Session Start
 
+### Context Snapshot Before Reset
+
+Before calling `prune_scratchpad.py --init` during error recovery, save a snapshot of the current context:
+
+```bash
+uv run python scripts/prune_scratchpad.py --snapshot
+```
+
+This saves `.tmp/<branch>/<date>-snapshot.yaml` containing: `task_name`, `task_parameters`, `timestamp`, and active scratchpad section.
+
+After re-entry into the failed task's decision point, compare contexts:
+
+```bash
+uv run python scripts/compare_context_snapshot.py \
+  --snapshot ".tmp/$(git branch --show-current | tr '/' '-')/$(date +%Y-%m-%d)-snapshot.yaml"
+```
+
+If `equivalent: true` → **do not re-attempt**. Escalate to user: "My context is identical to the failed attempt. New direction needed."
+
+**Encoding point**: Research basis: `docs/research/orchestrator-autopilot-failure.md` § Recommendation 5. Scripts: `scripts/prune_scratchpad.py --snapshot`, `scripts/compare_context_snapshot.py`.
+
 ### 2.1 Initialize the Scratchpad
 
 At the beginning of every session, run:

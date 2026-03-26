@@ -1309,6 +1309,7 @@ uv run pre-commit install --hook-type pre-push
 - Pass multi-line `gh issue` bodies via `--body "..."` on the command line — shell quoting and backtick interpolation cause `gh` to hang or silently corrupt content. **Always write the body to a temp file and use `--body-file <path>`, or use Python `subprocess` with a list of args.**
 - Surface suggested prompts as bare blockquotes (`> `) — always wrap in a triple-backtick fenced code block instead.
 - Make an unqualified "ready" or "complete" claim without a demo artifact and capability matrix — see [Readiness Language Guard](#readiness-language-guard).
+- Invoke a script or tool without first verifying its interface — run `--help` or read the script's docstring to confirm [input parameters], [expected output], and [error modes] before the first invocation in any session. Guessing and error-recovering is the draft-before-verify anti-pattern. See [orchestrator-autopilot-failure.md](docs/research/orchestrator-autopilot-failure.md) § Recommendation 3.
 
 **Prefer caution over assumption for:**
 

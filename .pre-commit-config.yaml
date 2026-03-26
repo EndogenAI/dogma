@@ -79,6 +79,13 @@ repos:
         types: [markdown]
         files: ^(docs/guides/|docs/plans/|docs/research/)
         pass_filenames: true
+      - id: verify-script-usage
+        name: Verify --help before script invocations in agent/skill files
+        entry: python3 scripts/verify-script-usage.py
+        language: system
+        types: [markdown]
+        files: ^\.github/(agents/|skills/)
+        pass_filenames: true
       - id: no-heredoc-writes
         name: Block heredoc file-write commands (use create_file / replace_string_in_file tools instead)
         language: pygrep
