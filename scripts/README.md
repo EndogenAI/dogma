@@ -59,6 +59,7 @@ scripts/
   health_check_services.py     # Poll /health endpoints for services in data/substrate-atlas.yml; exits 0 if all healthy, 1 if degraded, 2 if unreachable; --timeout, --services, --dry-run (closes #342)
   encoding_coverage.py         # Check MANIFESTO F1-F4 encoding coverage for named principles/axioms; outputs Markdown table (--manifesto, --agents)
   emit_otel_genai_spans.py     # Emit OTel spans with GenAI semantic convention attributes (gen_ai.system, gen_ai.request.model, gen_ai.usage.input_tokens, gen_ai.usage.output_tokens, gen_ai.response.finish_reason); extends instrument_agent_calls.py; --model, --input-tokens, --output-tokens, --finish-reason (closes #369)
+  emit_otel_metrics.py         # Emit OTel metrics for LLM usage (input/output tokens, duration) and system health (status); supports --dry-run and console export; --metric, --value, --model, --system
   adopt_wizard.py              # Dogma framework onboarding wizard — generates client-values.yml and scaffolds AGENTS.md for new adopters; --org, --repo required; --non-interactive, --load-values, --output-dir flags; runs validate_agent_files.py before reporting success (closes #56, #125)
   orientation_snapshot.py      # Pre-computed session orientation digest — writes .cache/github/orientation-snapshot.md with open issue counts, recent commits, active branches, milestone summary; --branch includes scratchpad ## Session Summary (closes #241)
   bulk_github_operations.py    # Batch GitHub issue/PR write operations (issue-create, issue-edit, issue-close, pr-edit) from a JSON/YAML spec file or stdin; --dry-run safety gate; --rate-limit-delay throttling; JSON results to stdout (closes #260)
@@ -1627,6 +1628,52 @@ uv run python scripts/validate_semantic_output.py --format single-line --ceiling
 | `text` (positional) | no | Text to validate; reads from stdin if omitted |
 
 **Exit codes**: `0` format matches and tokens ≤ ceiling; `1` format mismatch; `2` ceiling exceeded.
+
+---
+
+## scripts/emit_otel_metrics.py
+
+**Job**: Emit OpenTelemetry metrics for GenAI usage and system health to an OTel collector or local console.
+
+**Purpose**: Provides a standardized CLI for emitting metrics related to LLM token usage (`input_tokens`, `output_tokens`), request `duration`, and system `status`. Implements **Phase 4D: OTel Metrics**. Supports a `--dry-run` mode that outputs a YAML-compatible JSON representation of the intended metric for validation.
+
+**Usage**:
+
+```bash
+# Emit input tokens for a specific model
+uv run python scripts/emit_otel_metrics.py --metric input_tokens --value 150 --model claude-3-5-sonnet
+
+# Emit output tokens
+uv run python scripts/emit_otel_metrics.py --metric output_tokens --value 45 --model claude-3-5-sonnet
+
+# Emit request duration in milliseconds
+uv run python scripts/emit_otel_metrics.py --metric duration --value 1250 --model gpt-4o
+
+# Emit system health status (1=Healthy, 0=Degraded)
+uv run python scripts/emit_otel_metrics.py --metric status --value 1 --system phase-gate
+
+# Validate metric definition without emitting (JSON output)
+uv run python scripts/emit_otel_metrics.py --metric input_tokens --value 10 --dry-run
+```
+
+**Inputs**:
+- `--metric`: Required. Choice of `input_tokens`, `output_tokens`, `duration`, `status`.
+- `--value`: Required. Numeric value to emit.
+- `--model`: Optional. Model name attribute (e.g., `claude-3-5-sonnet`).
+- `--system`: Optional. System name attribute for health metrics (e.g., `phase-gate`).
+- `--dry-run`: Optional flag. Prints the metric definition as JSON and exits without emitting.
+
+**Outputs**:
+- **Metric Emission**: Sends metrics to the configured OTel exporter (Console by default).
+- **Dry-run**: Prints a structured JSON object to stdout containing `metric` name, `description`, `type`, `unit`, `value`, and `attributes`.
+
+**Metric Definitions**:
+- `gen_ai.usage.input_tokens` (Counter): Number of input tokens.
+- `gen_ai.usage.output_tokens` (Counter): Number of output tokens.
+- `gen_ai.request.duration` (Histogram, unit: `ms`): Duration of the LLM request.
+- `system.health.status` (ObservableGauge): System health status (1=Healthy, 0=Degraded/Critical).
+
+**Dependencies**: `opentelemetry-api`, `opentelemetry-sdk`. Requires `uv sync` to ensure OTel packages are available.
 
 ---
 
