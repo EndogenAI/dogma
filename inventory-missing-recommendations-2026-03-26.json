@@ -1,0 +1,386 @@
+[
+  {
+    "filename": "research/OPEN_RESEARCH.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/agents/agent-fleet-design-patterns.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/agents/agent-skills-integration.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/agents/agent-taxonomy.md",
+    "status": "Final",
+    "has_body_recommendations": true,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/agents/aigne-afs-evaluation.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/agents/context-amplification-calibration.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/agents/context-budget-balance.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/agents/deterministic-agent-components.md",
+    "status": "Final",
+    "has_body_recommendations": true,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/agents/episodic-memory-agents.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/agents/fleet-emergence-operationalization.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/agents/skills-as-decision-logic.md",
+    "status": "Final",
+    "has_body_recommendations": true,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/agents/xml-agent-instruction-format.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/ci/github-actions-caching-patterns.md",
+    "status": "Final",
+    "has_body_recommendations": true,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/infrastructure/async-process-handling.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/infrastructure/copilot-pr-review-automation.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/infrastructure/dev-workflow-automations.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/infrastructure/doc-interweb.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/infrastructure/github-as-memory-substrate.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/infrastructure/issue-metrics-action.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/infrastructure/issue-to-markdown-action.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/infrastructure/lcf-oversight-infrastructure.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/infrastructure/lcf-programmatic-enforcement.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/infrastructure/programmatic-governors.md",
+    "status": "Final",
+    "has_body_recommendations": true,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/infrastructure/queryable-substrate.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/infrastructure/security-threat-model.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/infrastructure/session-checkpoint-and-safeguard-patterns.md",
+    "status": "Final",
+    "has_body_recommendations": true,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/infrastructure/shell-preexec-governor.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/infrastructure/substrate-consolidation-2026-03-13.md",
+    "status": "Final",
+    "has_body_recommendations": true,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/infrastructure/substrate-rebalancing-2026-03-13.md",
+    "status": "Final",
+    "has_body_recommendations": true,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/infrastructure/testing-tools-and-frameworks.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/methodology/enforcement-tier-mapping.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/methodology/epigenetic-tagging.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/methodology/external-value-architecture.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/methodology/external-values-decision-framework.md",
+    "status": "Final",
+    "has_body_recommendations": true,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/methodology/gap-analysis-endogenic-design.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/methodology/gap-analysis-values-encoding.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/methodology/lcf-axiom-positioning.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/methodology/methodology-review.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/methodology/multi-principal-deployment-scenarios.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/methodology/shifting-constraints-from-tokens.md",
+    "status": "Final",
+    "has_body_recommendations": true,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/methodology/value-provenance.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/methodology/values-encoding.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/methodology/values-enforcement-tier-mapping.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/methodology/values-substrate-relationship.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/methodology/vocabulary-bridge-encoding-models.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/models/llm-behavioral-testing.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/models/llm-tier-strategy.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/neuroscience/bubble-clusters-substrate.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/neuroscience/dogma-neuroplasticity.md",
+    "status": "Final",
+    "has_body_recommendations": true,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/neuroscience/filter-bubble-threshold-calibration.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/neuroscience/gap-analysis-bubble-clusters.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/neuroscience/h4-peer-review-synthesis.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/neuroscience/holographic-encoding-empirics.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/neuroscience/holonomic-brain-theory-application.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/neuroscience/laplace-pressure-empirical-validation.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/neuroscience/six-layer-topological-extension.md",
+    "status": "Final",
+    "has_body_recommendations": true,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/neuroscience/topological-audit-substrate.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/pm/comms-marketing-bizdev.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/pm/endogenai-product-discovery.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/pm/external-team-case-study.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/pm/github-project-management.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/pm/pm-and-team-structures.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/pm/product-research-and-design.md",
+    "status": "Final",
+    "has_body_recommendations": false,
+    "recommendation_count": 0
+  },
+  {
+    "filename": "research/pm/sprint-retrospective-2026-03-13-dogma-update.md",
+    "status": "Final",
+    "has_body_recommendations": true,
+    "recommendation_count": 0
+  }
+]
