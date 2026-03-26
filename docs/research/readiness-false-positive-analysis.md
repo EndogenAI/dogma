@@ -9,23 +9,23 @@ recommendations:
   - id: intent-bound-readiness-contract
     title: Intent-Bound Readiness Contract (Track A)
     status: accepted-for-adoption
-    linked_issue: null
+    linked_issue: 446
   - id: capability-matrix-requirement
     title: Capability Matrix Requirement (Track B)
     status: accepted-for-adoption
-    linked_issue: null
+    linked_issue: 447
   - id: demo-before-claim-gate
     title: Demo-before-Claim Gate (Track C)
     status: accepted-for-adoption
-    linked_issue: null
+    linked_issue: 448
   - id: plan-to-intent-drift-check
     title: Plan-to-Intent Drift Check (Track D)
     status: accepted-for-adoption
-    linked_issue: null
+    linked_issue: 449
   - id: communication-safety-protocol
     title: Communication Safety Protocol (Track E)
     status: accepted-for-adoption
-    linked_issue: null
+    linked_issue: 450
 ---
 
 ## Executive Summary

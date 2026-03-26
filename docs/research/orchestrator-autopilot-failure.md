@@ -9,27 +9,27 @@ recommendations:
   - id: instruction-hierarchy-gate
     title: Instruction Hierarchy Gate (Track A)
     status: accepted-for-adoption
-    linked_issue: TBD-track-a-hierarchy
+    linked_issue: 451
     adoption_rationale: Explicit priority ordering (user real-time directives > phase gates) is fundamental to restoring Augmentative Partnership and preventing autonomous execution that contradicts human intent. This is a foundational guardrail that gates all other improvements.
   - id: user-interrupt-signal-handler
     title: User Interrupt Signal Handler (Track B)
     status: accepted-for-adoption
-    linked_issue: TBD-track-b-interrupt
+    linked_issue: 452
     adoption_rationale: Without an explicit handler for user interruption signals, the agent lacks the ability to recognize and respect real-time user direction. This track implements the operational mechanism that Track A defines.
   - id: draft-verification-mandate
     title: Draft Verification Mandate Before Usage (Track C)
     status: accepted-for-adoption
-    linked_issue: TBD-track-c-verification
+    linked_issue: 453
     adoption_rationale: The draft-before-verify antipattern creates preventable failures. Verification-first eliminates guessing and satisfies Programmatic-First (encode tool contracts) and Endogenous-First (read available documentation before acting externally).
   - id: orchestration-blindness-audit-loop
     title: Orchestration Blindness Audit Loop (Track D)
     status: accepted-for-adoption
-    linked_issue: TBD-track-d-loop-detect
+    linked_issue: 454
     adoption_rationale: The incident showed agents lack self-awareness of failure loops. Local loop detection (compare current context to prior 2 iterations) is deterministic, low-cost, and breaks re-entry looping immediately. Satisfies Local-Compute-First.
   - id: re-entry-context-preservation
     title: Re-entry Context Preservation Guard (Track E)
     status: accepted-for-adoption
-    linked_issue: TBD-track-e-context-snap
+    linked_issue: 455
     adoption_rationale: Context snapshots before resets enable comparison-based re-entry blocking. This prevents the specific failure mode where error recovery triggers a context wipe that erases the memory of what just failed, enabling the loop to repeat.
 ---
 
