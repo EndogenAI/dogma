@@ -1395,6 +1395,87 @@
       "file": ".cache/sources/devblogs-microsoft-com-all-things-azure-agentic-platform-eng.md",
       "content_type": "text/html",
       "size_bytes": 24437
+    },
+    "modelcontextprotocol-io-docs-concepts-tools": {
+      "url": "https://modelcontextprotocol.io/docs/concepts/tools",
+      "slug": "modelcontextprotocol-io-docs-concepts-tools",
+      "title": "",
+      "fetched_at": "2026-03-26T21:33:55",
+      "file": ".cache/sources/modelcontextprotocol-io-docs-concepts-tools.md",
+      "content_type": "text/html",
+      "size_bytes": 11315
+    },
+    "docs-pydantic-dev-latest-concepts-validators": {
+      "url": "https://docs.pydantic.dev/latest/concepts/validators/",
+      "slug": "docs-pydantic-dev-latest-concepts-validators",
+      "title": "",
+      "fetched_at": "2026-03-26T21:34:08",
+      "file": ".cache/sources/docs-pydantic-dev-latest-concepts-validators.md",
+      "content_type": "text/html",
+      "size_bytes": 27774
+    },
+    "opentelemetry-io-docs-specs-semconv-gen-ai": {
+      "url": "https://opentelemetry.io/docs/specs/semconv/gen-ai/",
+      "slug": "opentelemetry-io-docs-specs-semconv-gen-ai",
+      "title": "",
+      "fetched_at": "2026-03-26T22:20:59",
+      "file": ".cache/sources/opentelemetry-io-docs-specs-semconv-gen-ai.md",
+      "content_type": "text/html",
+      "size_bytes": 3624
+    },
+    "opentelemetry-io-docs-languages-python-getting-started": {
+      "url": "https://opentelemetry.io/docs/languages/python/getting-started/",
+      "slug": "opentelemetry-io-docs-languages-python-getting-started",
+      "title": "",
+      "fetched_at": "2026-03-26T22:21:03",
+      "file": ".cache/sources/opentelemetry-io-docs-languages-python-getting-started.md",
+      "content_type": "text/html",
+      "size_bytes": 26457
+    },
+    "opentelemetry-io-docs-languages-python-instrumentation": {
+      "url": "https://opentelemetry.io/docs/languages/python/instrumentation/",
+      "slug": "opentelemetry-io-docs-languages-python-instrumentation",
+      "title": "",
+      "fetched_at": "2026-03-26T22:21:10",
+      "file": ".cache/sources/opentelemetry-io-docs-languages-python-instrumentation.md",
+      "content_type": "text/html",
+      "size_bytes": 14983
+    },
+    "opentelemetry-io-docs-specs-otel-trace-api": {
+      "url": "https://opentelemetry.io/docs/specs/otel/trace/api/",
+      "slug": "opentelemetry-io-docs-specs-otel-trace-api",
+      "title": "",
+      "fetched_at": "2026-03-26T22:21:14",
+      "file": ".cache/sources/opentelemetry-io-docs-specs-otel-trace-api.md",
+      "content_type": "text/html",
+      "size_bytes": 37856
+    },
+    "kubernetes-io-docs-tasks-configure-pod-container-configure-l": {
+      "url": "https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/",
+      "slug": "kubernetes-io-docs-tasks-configure-pod-container-configure-l",
+      "title": "",
+      "fetched_at": "2026-03-26T22:21:18",
+      "file": ".cache/sources/kubernetes-io-docs-tasks-configure-pod-container-configure-l.md",
+      "content_type": "text/html",
+      "size_bytes": 27969
+    },
+    "opentelemetry-io-docs-collector-deployment": {
+      "url": "https://opentelemetry.io/docs/collector/deployment/",
+      "slug": "opentelemetry-io-docs-collector-deployment",
+      "title": "",
+      "fetched_at": "2026-03-26T22:21:23",
+      "file": ".cache/sources/opentelemetry-io-docs-collector-deployment.md",
+      "content_type": "text/html",
+      "size_bytes": 1677
+    },
+    "opentelemetry-io-docs-specs-semconv-gen-ai-gen-ai-spans": {
+      "url": "https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/",
+      "slug": "opentelemetry-io-docs-specs-semconv-gen-ai-gen-ai-spans",
+      "title": "",
+      "fetched_at": "2026-03-26T22:21:34",
+      "file": ".cache/sources/opentelemetry-io-docs-specs-semconv-gen-ai-gen-ai-spans.md",
+      "content_type": "text/html",
+      "size_bytes": 51184
     }
   }
 }

@@ -1,0 +1,175 @@
+#!/usr/bin/env python3
+"""
+emit_otel_genai_spans.py — Emit GenAI semantic convention attributes in OTel spans.
+
+Purpose:
+    Extends instrument_agent_calls.py with a convenience wrapper that enforces
+    GenAI semantic convention attribute presence for LLM call spans.
+
+    Required GenAI attributes (per OTel semconv gen-ai-spans spec):
+    - gen_ai.system (e.g., "anthropic")
+    - gen_ai.request.model (e.g., "claude-3-5-sonnet-20241022")
+    - gen_ai.usage.input_tokens (int)
+    - gen_ai.usage.output_tokens (int)
+    - gen_ai.response.finish_reason (string or list)
+
+Inputs:
+    - model: Model identifier (e.g., "claude-3-5-sonnet-20241022")
+    - input_tokens: Number of input tokens
+    - output_tokens: Number of output tokens
+    - finish_reason: Completion finish reason (e.g., "end_turn", "max_tokens")
+    - temperature: Optional temperature parameter (default: 0.0)
+
+Outputs:
+    - Span emitted with all required GenAI attributes
+
+Usage:
+    from scripts.emit_otel_genai_spans import emit_genai_span
+
+    with emit_genai_span(
+        model="claude-3-5-sonnet-20241022",
+        input_tokens=150,
+        output_tokens=42,
+        finish_reason="end_turn"
+    ) as span:
+        # Perform LLM call here
+        # span is automatically populated with GenAI attributes
+        pass
+
+Exit codes:
+    0 — success
+    1 — configuration error
+
+Reference:
+    - docs/research/otel-agent-instrumentation.md § Pattern 1 (H2)
+    - AGENTS.md § Programmatic-First Principle
+    - MANIFESTO.md § 2 Algorithms-Before-Tokens
+
+Closes: #369
+"""
+
+import sys
+from contextlib import contextmanager
+from typing import List, Optional, Union
+
+try:
+    from scripts.instrument_agent_calls import get_provider_name, get_tracer
+except ImportError:
+    print("Error: instrument_agent_calls module not found", file=sys.stderr)
+    sys.exit(1)
+
+
+@contextmanager
+def emit_genai_span(
+    model: str,
+    input_tokens: int,
+    output_tokens: int,
+    finish_reason: Union[str, List[str]],
+    operation_name: str = "chat",
+    temperature: float = 0.0,
+    span_name: Optional[str] = None,
+):
+    """Context manager that emits a span with GenAI semantic convention attributes.
+
+    Args:
+        model: Model identifier (e.g., "claude-3-5-sonnet-20241022")
+        input_tokens: Number of input tokens consumed
+        output_tokens: Number of output tokens generated
+        finish_reason: Completion finish reason (string or list of strings)
+        operation_name: GenAI operation type (default: "chat")
+        temperature: Sampling temperature (default: 0.0)
+        span_name: Custom span name (default: "{operation_name} {model}")
+
+    Yields:
+        Active span with GenAI attributes set
+
+    Example:
+        with emit_genai_span(
+            model="claude-3-5-sonnet-20241022",
+            input_tokens=150,
+            output_tokens=42,
+            finish_reason="end_turn"
+        ) as span:
+            # LLM call happens here
+            response = call_llm(...)
+    """
+    tracer = get_tracer()
+    provider_name = get_provider_name(model)
+
+    # Build span name from operation + model if not provided
+    if span_name is None:
+        span_name = f"{operation_name} {model}"
+
+    # Normalize finish_reason to list
+    if isinstance(finish_reason, str):
+        finish_reason_list = [finish_reason]
+    else:
+        finish_reason_list = finish_reason
+
+    with tracer.start_as_current_span(span_name) as span:
+        # Required GenAI attributes
+        span.set_attribute("gen_ai.system", provider_name)
+        span.set_attribute("gen_ai.operation.name", operation_name)
+        span.set_attribute("gen_ai.request.model", model)
+        span.set_attribute("gen_ai.usage.input_tokens", input_tokens)
+        span.set_attribute("gen_ai.usage.output_tokens", output_tokens)
+        span.set_attribute("gen_ai.response.finish_reasons", finish_reason_list)
+
+        # Optional attributes
+        span.set_attribute("gen_ai.request.temperature", temperature)
+
+        yield span
+
+
+def validate_genai_span_attributes(span_attributes: dict) -> tuple[bool, list[str]]:
+    """Validate that all required GenAI attributes are present.
+
+    Args:
+        span_attributes: Dictionary of span attributes
+
+    Returns:
+        Tuple of (valid: bool, missing_attrs: list[str])
+    """
+    required_attrs = [
+        "gen_ai.system",
+        "gen_ai.request.model",
+        "gen_ai.usage.input_tokens",
+        "gen_ai.usage.output_tokens",
+        "gen_ai.response.finish_reasons",
+    ]
+
+    missing = [attr for attr in required_attrs if attr not in span_attributes]
+
+    return (len(missing) == 0, missing)
+
+
+def main():
+    """CLI entry point for testing GenAI span emission."""
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Emit a test span with GenAI semantic convention attributes")
+    parser.add_argument("--model", default="claude-3-5-sonnet-20241022", help="Model name for test span")
+    parser.add_argument("--input-tokens", type=int, default=150, help="Input token count")
+    parser.add_argument("--output-tokens", type=int, default=42, help="Output token count")
+    parser.add_argument("--finish-reason", default="end_turn", help="Finish reason (e.g., end_turn, max_tokens)")
+
+    args = parser.parse_args()
+
+    with emit_genai_span(
+        model=args.model,
+        input_tokens=args.input_tokens,
+        output_tokens=args.output_tokens,
+        finish_reason=args.finish_reason,
+    ):
+        print(
+            f"Test GenAI span emitted: model={args.model}, "
+            f"input={args.input_tokens}, output={args.output_tokens}, "
+            f"finish_reason={args.finish_reason}",
+            file=sys.stderr,
+        )
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

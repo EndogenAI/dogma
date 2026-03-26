@@ -56,7 +56,9 @@ scripts/
   extract_action_items.py      # Extract and deduplicate action items from D4 research docs (docs/research/*.md); outputs Markdown table; --output FILE, --threshold 0.8
   generate_script_docs.py      # Generate per-script Markdown docs from module docstrings into scripts/docs/; --check for staleness, --dry-run
   generate_sweep_table.py      # Generate the corpus sweep table for back-propagation planning from research doc metadata
+  health_check_services.py     # Poll /health endpoints for services in data/substrate-atlas.yml; exits 0 if all healthy, 1 if degraded, 2 if unreachable; --timeout, --services, --dry-run (closes #342)
   encoding_coverage.py         # Check MANIFESTO F1-F4 encoding coverage for named principles/axioms; outputs Markdown table (--manifesto, --agents)
+  emit_otel_genai_spans.py     # Emit OTel spans with GenAI semantic convention attributes (gen_ai.system, gen_ai.request.model, gen_ai.usage.input_tokens, gen_ai.usage.output_tokens, gen_ai.response.finish_reason); extends instrument_agent_calls.py; --model, --input-tokens, --output-tokens, --finish-reason (closes #369)
   adopt_wizard.py              # Dogma framework onboarding wizard — generates client-values.yml and scaffolds AGENTS.md for new adopters; --org, --repo required; --non-interactive, --load-values, --output-dir flags; runs validate_agent_files.py before reporting success (closes #56, #125)
   orientation_snapshot.py      # Pre-computed session orientation digest — writes .cache/github/orientation-snapshot.md with open issue counts, recent commits, active branches, milestone summary; --branch includes scratchpad ## Session Summary (closes #241)
   bulk_github_operations.py    # Batch GitHub issue/PR write operations (issue-create, issue-edit, issue-close, pr-edit) from a JSON/YAML spec file or stdin; --dry-run safety gate; --rate-limit-delay throttling; JSON results to stdout (closes #260)
@@ -86,6 +88,7 @@ scripts/
   subscribe_cve_feeds.py       # Stub for CVE feed subscription automation (issue #361) — placeholder for future NVD API integration; raises NotImplementedError; exits 0 (stub does not fail CI); to be implemented: fetch CVE data, filter by dependencies, alert on High+ severity; related: audit_dependencies.py (consumes CVE DB)
   repaired_audit.py            # Post-audit repair validator — checks that identified gaps in a prior audit result have been resolved (closes #301)
   token_spin_detector.py       # Detect "token spinning" (repeated loops with no progress) in session logs using Hamming distance and regex entropy (closes #310)
+  instrument_agent_calls.py    # Wrap LLM call sites with OTel Python SDK spans; reads provider config from data/inference-providers.yml; exports to stdout JSONL by default, OTLP via OTEL_EXPORTER_OTLP_ENDPOINT env var; --test emits test span (closes #334)
   index_recommendations.py     # Scan finalized synthesis docs and write data/recommendations-registry.yml; --dry-run, --check, --docs-dir (closes #407)
   audit_recommendation_status.py  # Audit recommendation status across finalized docs; fuzzy-match to GitHub issues; write data/retrofit-patches/<slug>.yml patch files; --dry-run, --doc, --no-github (closes #409)
   test_newlines.py             # Internal utility to test newline handling in terminal scripts
