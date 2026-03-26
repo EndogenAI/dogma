@@ -38,6 +38,21 @@ This skill enacts the *Algorithms-Before-Tokens* axiom from [`MANIFESTO.md`](../
 
 Run this sequence after every `## Phase N Output` write, **before** delegating the next domain phase.
 
+### Step 0: Loop Audit (Pre-Phase)
+
+Before any complex phase execution, run the orchestration loop detector:
+
+```bash
+uv run python scripts/detect_orchestration_loop.py \
+  --task "<current-phase-name>" \
+  --scratchpad ".tmp/$(git branch --show-current | tr '/' '-')/$(date +%Y-%m-%d).md"
+```
+
+- If `loop_detected: false` → proceed to Step 1
+- If `loop_detected: true` → **do not execute**. Write to scratchpad: `## Loop Detected — [task] — iteration [N]; awaiting user direction`. Surface to user: "I detected that I attempted this task [N] iterations ago. What should I do differently?"
+
+**Encoding point**: Governed by [AGENTS.md](../../../AGENTS.md) § Guardrails. Script: `scripts/detect_orchestration_loop.py`. Research basis: `docs/research/orchestrator-autopilot-failure.md` § Recommendation 4.
+
 ### Step 1 — Prune
 
 If the scratchpad exceeds 2000 lines:
