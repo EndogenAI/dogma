@@ -13,7 +13,12 @@ handoffs:
     send: false
   - label: Return to Review
     agent: Review
-    prompt: "Docs lint audit complete. Advisory report is in the scratchpad under '## Docs Linter Output'. Please validate that changed docs now pass all listed checks before any commit."
+    prompt: |
+      Docs lint audit complete. Review the changed docs against these 3 criteria:
+      1. D4 heading schema complete (title, status, and all required section headings present) — PASS/FAIL
+      2. All changed doc frontmatter fields validate cleanly against validate_synthesis.py schema — PASS/FAIL
+      3. No dead source stubs (every path referenced in sources resolves to an existing .cache/sources/ entry) — PASS/FAIL
+      Return APPROVED or REQUEST CHANGES — [criterion number: one-line reason].
     send: false
 x-governs:
   - endogenous-first

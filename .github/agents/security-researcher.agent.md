@@ -15,7 +15,13 @@ handoffs:
     send: false
   - label: "✓ Draft ready — review"
     agent: Research Reviewer
-    prompt: "Security synthesis draft is ready. Please validate against endogenic methodology standards and flag any unsupported threat claims or missing mitigations."
+    prompt: |
+      Validate the security synthesis draft against these 4 criteria:
+      1. Every threat claim maps to a named OWASP category (e.g., LLM01–LLM10) — PASS/FAIL
+      2. Each threat entry includes a concrete mitigation (not aspirational) — PASS/FAIL
+      3. Pattern Catalog has ≥1 Canonical example and ≥1 Anti-pattern — PASS/FAIL
+      4. ≥2 MANIFESTO.md section-anchored citations present in document body — PASS/FAIL
+      Return APPROVED or REQUEST CHANGES — [criterion number: one-line reason].
     send: false
   - label: Hand off to Executive Researcher
     agent: Executive Researcher
@@ -27,7 +33,12 @@ handoffs:
     send: false
   - label: Hand off to Review
     agent: Review
-    prompt: "Security research output is ready for final review before committing. Please check the changed files against AGENTS.md constraints."
+    prompt: |
+      Security research output ready for commit. Review against these 3 criteria:
+      1. No hardcoded secrets, credential strings, or SSRF-vulnerable URL patterns in changed files — PASS/FAIL
+      2. AGENTS.md §Security Guardrails constraints not altered without explicit instruction — PASS/FAIL
+      3. validate_synthesis.py exits 0 for every changed docs/research/ file — PASS/FAIL
+      Return APPROVED or REQUEST CHANGES — [criterion number: one-line reason].
     send: false
 x-governs:
   - minimal-posture

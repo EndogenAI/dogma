@@ -14,7 +14,12 @@ tools:
 handoffs:
   - label: Review Automation
     agent: Review
-    prompt: "Automation (watcher / hook / CI task / VS Code task) has been authored or updated. Please review the changed file(s) against AGENTS.md constraints — especially the programmatic-first principle, cooldown / infinite-loop safeguards, and documentation. Do not approve if guard-rails are missing."
+    prompt: |
+      Automation change ready for review. Check against these 3 criteria:
+      1. Event-driven automation includes a cooldown/de-bounce mechanism or exit guard preventing infinite loops — PASS/FAIL
+      2. New pre-commit hooks are registered in .pre-commit-config.yaml and tested locally — PASS/FAIL
+      3. Automation change documented in scripts/README.md or the relevant toolchain doc — PASS/FAIL
+      Return APPROVED or REQUEST CHANGES — [criterion number: one-line reason].
     send: false
   - label: Commit Automation
     agent: GitHub

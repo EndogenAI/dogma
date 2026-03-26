@@ -12,7 +12,12 @@ tools:
 handoffs:
   - label: Hand off to Review
     agent: Review
-    prompt: "Release artifacts are ready: version bump in pyproject.toml, CHANGELOG entry, and release notes draft. Please review against AGENTS.md constraints and conventional commit standards before committing."
+    prompt: |
+      Release artifacts ready for review. Check against these 3 criteria:
+      1. pyproject.toml version bumped to a valid SemVer string matching the CHANGELOG.md heading — PASS/FAIL
+      2. CHANGELOG.md entry includes version, date, and ≥1 Added/Changed/Fixed subsection — PASS/FAIL
+      3. Proposed commit message follows Conventional Commits format (chore(release): vVERSION) — PASS/FAIL
+      Return APPROVED or REQUEST CHANGES — [criterion number: one-line reason].
     send: false
   - label: Hand off to GitHub (commit release)
     agent: GitHub

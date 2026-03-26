@@ -11,8 +11,6 @@ tools:
   - usages
   - changes
   - agent
-  - github.vscode-pull-request-github/doSearch
-  - github.vscode-pull-request-github/issue_fetch
 handoffs:
   - label: "✓ Audit done — review & prioritise"
     agent: Executive PM
@@ -20,7 +18,12 @@ handoffs:
     send: false
   - label: Review PM Changes
     agent: Review
-    prompt: "Repository health changes are ready for review. Please check all changed files against AGENTS.md constraints — in particular: no guardrails silently removed from CONTRIBUTING.md, no MANIFESTO.md edits without explicit instruction, no issue or label changes that conflict with existing conventions."
+    prompt: |
+      Repository health changes ready for review. Check against these 3 criteria:
+      1. No guardrails silently removed from CONTRIBUTING.md — PASS/FAIL
+      2. MANIFESTO.md unedited (no changes without explicit instruction) — PASS/FAIL
+      3. All issue/label changes use the colon-prefixed namespace from github-workflow.md — PASS/FAIL
+      Return APPROVED or REQUEST CHANGES — [criterion number: one-line reason].
     send: false
   - label: Commit PM Changes
     agent: GitHub

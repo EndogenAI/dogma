@@ -9,7 +9,12 @@ tools:
 handoffs:
   - label: Send draft to Research Reviewer
     agent: Research Reviewer
-    prompt: "Context architecture evaluation draft is in `## A5 Context Architect Output`. Please validate methodology and flag any unsupported tradeoff claims."
+    prompt: |
+      Context architecture evaluation draft in `## A5 Context Architect Output`. Validate against these 3 criteria:
+      1. Every tradeoff claim cites an endogenous source (AGENTS.md, MANIFESTO.md, or a docs/research/ file) — PASS/FAIL
+      2. Recommendations distinguish between established fact, working hypothesis, and open question — PASS/FAIL
+      3. No external tool adoption proposed without passing the New Tool Encoding Gate (AGENTS.md §Toolchain Reference) — PASS/FAIL
+      Return APPROVED or REQUEST CHANGES — [criterion number: one-line reason].
     send: false
   - label: Return to Executive Orchestrator
     agent: Executive Orchestrator
