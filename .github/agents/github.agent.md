@@ -9,7 +9,12 @@ tools:
 handoffs:
   - label: Open Pull Request
     agent: Review
-    prompt: "All commits for this session are complete. Please do a final summary review of all changes on this branch before a pull request is opened."
+    prompt: |
+      All commits for this session are complete. Review before PR is opened against these 3 criteria:
+      1. Every commit message follows Conventional Commits format (type(scope): description) — PASS/FAIL
+      2. Changed files contain no hardcoded secrets, API keys, or SSRF-vulnerable URL patterns — PASS/FAIL
+      3. Pre-push tests pass (`uv run pytest -m "not slow and not integration"` exits 0) — PASS/FAIL
+      Return APPROVED or REQUEST CHANGES — [criterion number: one-line reason].
     send: false
 
 x-governs:

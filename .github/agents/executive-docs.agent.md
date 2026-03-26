@@ -14,7 +14,12 @@ tools:
 handoffs:
   - label: Review Docs Changes
     agent: Review
-    prompt: "Documentation has been updated. Please review the changed files against AGENTS.md constraints — check for consistency, tone, and whether any guiding axioms or guardrails have been altered without explicit instruction. Do not approve changes to MANIFESTO.md without executive sign-off."
+    prompt: |
+      Documentation updated. Review changed files against these 3 criteria:
+      1. No guiding axiom or guardrail removed or weakened without explicit instruction — PASS/FAIL
+      2. All internal cross-references use relative paths (no /-rooted paths in .github/ subdirectories) — PASS/FAIL
+      3. MANIFESTO.md unedited unless this session explicitly targeted MANIFESTO.md updates — PASS/FAIL
+      Return APPROVED or REQUEST CHANGES — [criterion number: one-line reason].
     send: false
   - label: Commit Docs
     agent: GitHub

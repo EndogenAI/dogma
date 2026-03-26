@@ -8,10 +8,8 @@ tools:
   - write
   - execute
   - terminal
-  - usages
   - changes
   - agent
-  - execute/runInTerminal
   - web/fetch
 handoffs:
   # ── Phase-gate checkpoints (self-loop) ────────────────────────────────────
@@ -46,7 +44,13 @@ handoffs:
     send: false
   - label: Delegate to Research Reviewer
     agent: Research Reviewer
-    prompt: "A synthesis draft is ready at docs/research/<slug>.md. Please validate against endogenic methodology standards and flag any gaps, unsupported claims, or contradictions. Gate deliverables: <!-- D1, D2, D3 -->"
+    prompt: |
+      Synthesis draft ready at docs/research/<slug>.md. Validate against these 4 criteria:
+      1. Required D4 headings present (Executive Summary, Hypothesis Validation, Pattern Catalog, Recommendations, Sources) — PASS/FAIL
+      2. Pattern Catalog has ≥1 labeled Canonical example and ≥1 Anti-pattern — PASS/FAIL
+      3. No unsupported claims (every key claim cites a source URL or endogenous doc) — PASS/FAIL
+      4. Gate deliverables met: <!-- D1, D2, D3 from OPEN_RESEARCH.md --> — PASS/FAIL
+      Return APPROVED or REQUEST CHANGES — [criterion number: one-line reason].
     send: false
   - label: Delegate to Research Archivist
     agent: Research Archivist
@@ -62,7 +66,12 @@ handoffs:
     send: false
   - label: Review Research Output
     agent: Review
-    prompt: "Research output is ready for final review before committing. Please check the changed files against AGENTS.md constraints and research quality standards."
+    prompt: |
+      Research output ready for commit. Review against these 3 criteria:
+      1. Required D4 headings present (Executive Summary, Hypothesis Validation, Pattern Catalog, Recommendations, Sources) — PASS/FAIL
+      2. ≥2 MANIFESTO.md section-anchored citations (MANIFESTO.md#section-name) in document body — PASS/FAIL
+      3. validate_synthesis.py exits 0 for the changed docs/research/ file — PASS/FAIL
+      Return APPROVED or REQUEST CHANGES — [criterion number: one-line reason].
     send: false
   - label: "Cross-Fleet: Orchestrator"
     agent: Executive Orchestrator
