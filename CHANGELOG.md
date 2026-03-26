@@ -1,3 +1,18 @@
+# [0.23.0](https://github.com/EndogenAI/dogma/compare/v0.22.0...v0.23.0) (2026-03-26)
+
+
+### Bug Fixes
+
+* **ci:** replace git-push snapshot with upload-artifact; fix .gitignore negation for .cache/ ([6af65e1](https://github.com/EndogenAI/dogma/commit/6af65e13da896be07ae97fe956bb0fd7e2eee738)), closes [#460](https://github.com/EndogenAI/dogma/issues/460)
+* **scripts:** address Copilot review comments on PR [#462](https://github.com/EndogenAI/dogma/issues/462) ([892b831](https://github.com/EndogenAI/dogma/commit/892b8315220a1b08088ef9da4c80c824fbbca7f5))
+
+
+### Features
+
+* **agents:** enforce approval gates, Miller's Law ceiling, return compression ([#332](https://github.com/EndogenAI/dogma/issues/332) [#368](https://github.com/EndogenAI/dogma/issues/368) [#335](https://github.com/EndogenAI/dogma/issues/335)) ([74d622b](https://github.com/EndogenAI/dogma/commit/74d622bdda5c8627f638f26bde901ecb005e87be)), closes [#461](https://github.com/EndogenAI/dogma/issues/461)
+
+
+
 # [0.22.0](https://github.com/EndogenAI/dogma/compare/v0.21.0...v0.22.0) (2026-03-26)
 
 
