@@ -110,8 +110,73 @@ Per Recommendation 5 of `docs/research/nemo-guardrails-governance.md`, schedule 
 
 ---
 
+## SSRF Protection
+
+**Server-Side Request Forgery (SSRF)** attacks occur when an agent is manipulated into fetching URLs that target internal services, metadata endpoints, or local files — effectively using the agent infrastructure as a proxy to access resources that should not be reachable.
+
+**Attack surface in dogma**: The Research Scout agent fetches arbitrary external URLs via `scripts/fetch_source.py` with no host/scheme validation prior to Phase 2 (issue #360, commit e675064). Cached content lands in `.cache/sources/` → read into agent context → prompt injection propagation if cached content contains instruction-like text.
+
+### Allowlist/Blocklist Rules
+
+Implemented via `mcp_server/_security.validate_url_safety()` and enforced at fetch boundaries in `scripts/fetch_source.py` and MCP `run_research_scout` tool:
+
+| Rule | Enforcement | Rationale |
+|------|------------|-----------|
+| **Allowlist: `https://` scheme only** | Reject `http://`, `file://`, `ftp://`, `data://` | Prevents local file access, plaintext credential leakage, and non-HTTP protocol abuse |
+| **Blocklist: Private IPv4 ranges** | Reject 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 127.0.0.0/8 (loopback), 169.254.0.0/16 (link-local), 100.64.0.0/10 (CGNAT) | Prevents access to internal services (Docker containers, corporate VPNs, cloud metadata endpoints) |
+| **Blocklist: IPv6 private ranges** | Reject fe80::/10 (link-local), ::1 (loopback), fc00::/7 (unique local) | Prevents IPv6 equivalent of private IPv4 SSRF |
+| **DNS resolution check** | Resolve hostname before fetch; reject if any resolved IP is in blocklist | Catches `http://localtest.me` (resolves to 127.0.0.1) and other DNS rebinding attacks |
+
+### Canonical Example: Metadata Endpoint Rejection
+
+```bash
+# Attempt to fetch AWS/GCP metadata endpoint (common SSRF target)
+uv run python scripts/fetch_source.py https://169.254.169.254/latest/meta-data/ --dry-run
+
+# Output (exit 2):
+# ERROR: Rejected: URL resolves to private/internal IP 169.254.169.254 (prevents SSRF to internal services)
+```
+
+**Why this matters**: Cloud provider metadata endpoints (AWS: 169.254.169.254, GCP: metadata.google.internal) expose IAM credentials, instance IDs, and service account tokens. A successful SSRF to these endpoints would leak credentials directly into agent context.
+
+### Implementation Files
+
+| File | Role |
+|------|------|
+| [`mcp_server/_security.py`](../../mcp_server/_security.py) | Core validation logic: `validate_url_safety()` returns `(bool, reason)` tuple |
+| [`scripts/fetch_source.py`](../../scripts/fetch_source.py) | Calls `validate_url_safety()` before any fetch; exits with code 2 on rejection |
+| [`tests/test_security.py`](../../tests/test_security.py) | Unit tests for allowlist/blocklist rules; integration tests for `fetch_source.py` exit codes |
+
+### Testing
+
+Run full security test suite:
+
+```bash
+# Unit tests (fast)
+uv run pytest tests/test_security.py::TestValidateURLSafety -v
+
+# Integration tests (subprocess invocations)
+uv run pytest tests/test_security.py::TestFetchSourceIntegration -v -m integration
+
+# All security tests
+uv run pytest tests/test_security.py -v
+```
+
+**Coverage targets**: All SSRF test cases (valid HTTPS, blocked schemes, blocked IPs, metadata endpoints) must pass. Any new blocklist entry must have a corresponding test case before merge.
+
+### OWASP LLM01 Mitigation Cross-Reference
+
+This SSRF protection implements Recommendation R1 from [`docs/research/owasp-llm-threat-model.md`](../research/owasp-llm-threat-model.md):
+
+> **R1**: Implement URL scheme/host validation in `fetch_source.py` and MCP `run_research_scout` tool before any external fetch operation. Block private IP ranges, metadata endpoints, and non-HTTPS schemes.
+
+**Severity reduction**: High → Low (residual risk: time-of-check-to-time-of-use DNS rebinding; mitigated by DNS resolution check in validation function).
+
+---
+
 ## References
 
+- [`docs/research/owasp-llm-threat-model.md`](../research/owasp-llm-threat-model.md) — OWASP LLM Top 10 threat model; R1 SSRF mitigation
 - [`docs/research/nemo-guardrails-governance.md`](../research/nemo-guardrails-governance.md) — Research synthesis; Recommendation 4 is the direct source for the two-stage pipeline pattern
 - [`AGENTS.md § Security Guardrails`](../../AGENTS.md#security-guardrails) — Operative policy constraints (Prompt Injection, Secrets Hygiene, SSRF)
 - [`AGENTS.md § Programmatic Governors`](../../AGENTS.md#programmatic-governors) — T3/T4 enforcement stack

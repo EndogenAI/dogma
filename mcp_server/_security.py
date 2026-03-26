@@ -54,30 +54,45 @@ def validate_repo_path(file_path: str) -> Path:
     return resolved
 
 
-def validate_url(url: str) -> str:
-    """Validate a URL for the run_research_scout tool.
+def validate_url_safety(url: str) -> tuple[bool, str]:
+    """Validate URL safety for SSRF prevention (non-raising variant).
 
-    Enforces:
-    - https:// scheme only
-    - No private / loopback IPv4 or IPv6 link-local destinations (SSRF)
-    - Hostname must not be a bare IP in a private range
+    Enforces allowlist/blocklist rules:
+    - Allowlist: https:// scheme only (blocks http://, file://, ftp://, etc.)
+    - Blocklist: private IP ranges, localhost, metadata endpoints
 
-    Raises:
-        ValueError: on scheme mismatch, invalid URL, or SSRF risk.
+    Returns:
+        (True, "") if safe
+        (False, reason) if blocked
+
+    This is the non-raising variant used by scripts that need structured error handling.
+    For MCP tools that prefer exceptions, use validate_url() instead.
     """
-    parsed = urllib.parse.urlparse(url)
+    try:
+        parsed = urllib.parse.urlparse(url)
+    except Exception as exc:
+        return (False, f"Invalid URL syntax: {exc}")
+
+    # Rule 1: Scheme allowlist (https only)
     if parsed.scheme not in _ALLOWED_SCHEMES:
-        raise ValueError(f"URL scheme '{parsed.scheme}' is not allowed. Use https://")
+        return (
+            False,
+            f"Rejected scheme '{parsed.scheme}': only 'https' is allowed (prevents SSRF via local file access)",
+        )
 
     hostname = parsed.hostname
     if not hostname:
-        raise ValueError("URL must have a valid hostname.")
+        return (False, "URL must have a valid hostname")
 
-    # IPv6 link-local: fe80::/10 (SSRF risk)
+    # Rule 2: IPv6 link-local blocklist (fe80::/10)
     if re.match(r"^\[?fe80:", hostname, re.IGNORECASE):
-        raise ValueError("IPv6 link-local addresses are not allowed.")
+        return (
+            False,
+            f"Rejected hostname '{hostname}': IPv6 link-local addresses are not allowed "
+            f"(prevents SSRF to link-local services)",
+        )
 
-    # Try resolving the hostname to an IP address for SSRF check
+    # Rule 3: DNS-resolved IP blocklist (private ranges + metadata endpoints)
     try:
         addr_info = socket.getaddrinfo(hostname, None)
         for _family, _type, _proto, _canonname, sockaddr in addr_info:
@@ -87,14 +102,41 @@ def validate_url(url: str) -> str:
                 if isinstance(ip_addr, ipaddress.IPv4Address):
                     for blocked in _BLOCKED_IPV4_NETWORKS:
                         if ip_addr in blocked:
-                            raise ValueError(f"URL resolves to a private/internal IP: {ip_addr}")
+                            return (
+                                False,
+                                f"Rejected: URL resolves to private/internal IP {ip_addr} "
+                                f"(prevents SSRF to internal services)",
+                            )
                 elif isinstance(ip_addr, ipaddress.IPv6Address):
                     if ip_addr.is_link_local or ip_addr.is_loopback or ip_addr.is_private:
-                        raise ValueError(f"URL resolves to a private/internal IPv6: {ip_addr}")
+                        return (
+                            False,
+                            f"Rejected: URL resolves to private/internal IPv6 {ip_addr} (prevents SSRF)",
+                        )
             except ValueError:
-                raise
+                pass  # IP parsing failed, continue checking other results
     except OSError:
-        # DNS resolution failed — let the downstream fetch fail with a clean error
+        # DNS resolution failed — allow it through (downstream fetch will surface a cleaner error)
         pass
 
+    return (True, "")
+
+
+def validate_url(url: str) -> str:
+    """Validate a URL for the run_research_scout tool (raising variant).
+
+    Enforces:
+    - https:// scheme only
+    - No private / loopback IPv4 or IPv6 link-local destinations (SSRF)
+    - Hostname must not be a bare IP in a private range
+
+    Raises:
+        ValueError: on scheme mismatch, invalid URL, or SSRF risk.
+
+    This is the exception-raising variant used by MCP tools.
+    For scripts that need structured error handling, use validate_url_safety() instead.
+    """
+    is_safe, reason = validate_url_safety(url)
+    if not is_safe:
+        raise ValueError(reason)
     return url
