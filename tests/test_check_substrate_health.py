@@ -145,7 +145,7 @@ def test_load_atlas_success():
     """load_atlas returns a list of substrate dicts from the real atlas file."""
     substrates = load_atlas(REPO_ROOT)
     assert isinstance(substrates, list)
-    assert len(substrates) == 23, f"Expected 23 substrates, got {len(substrates)}"
+    assert len(substrates) == 24, f"Expected 24 substrates, got {len(substrates)}"
 
 
 def test_load_atlas_all_entries_have_required_fields():
@@ -192,7 +192,7 @@ def test_print_atlas_summary_output(capsys: pytest.CaptureFixture[str]):
     captured = capsys.readouterr()
     assert "WARN" in captured.out
     assert "programmatic" in captured.out.lower() or "PASS" in captured.out
-    assert "23 substrates" in captured.out
+    assert "24 substrates" in captured.out
 
 
 def test_print_atlas_summary_none_entries_flagged(capsys: pytest.CaptureFixture[str]):
@@ -232,5 +232,5 @@ def test_atlas_flag_cli():
         text=True,
     )
     assert result.returncode == 0, result.stderr
-    assert "23 substrates" in result.stdout
+    assert "24 substrates" in result.stdout
     assert "WARN" in result.stdout  # at least some unvalidated substrates exist
