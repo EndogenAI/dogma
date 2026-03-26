@@ -108,7 +108,7 @@ _UNTRUSTED_HEADER = (
 def validate_url(url: str) -> None:
     """Validate URL using centralized SSRF protection from mcp_server._security.
 
-    Raises ValueError if URL is unsafe; exits with code 2 if called from CLI context.
+    Prints an error message and exits with status code 2 if the URL is unsafe.
     """
     is_safe, reason = validate_url_safety(url)
     if not is_safe:

@@ -225,7 +225,9 @@ def main() -> int:
         dependencies = parse_uv_lock(args.lock_file)
         print(f"[DRY RUN] Would audit {len(dependencies)} dependencies")
         for dep in dependencies[:5]:  # Show first 5
-            print(f"  - {dep['name']}=={dep['version']}")
+            name = dep.get("name", "<missing-name>")
+            version = dep.get("version", "<missing-version>")
+            print(f"  - {name}=={version}")
         if len(dependencies) > 5:
             print(f"  ... and {len(dependencies) - 5} more")
         return 0
