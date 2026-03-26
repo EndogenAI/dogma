@@ -33,6 +33,7 @@ def _make_scratchpad(tmp_path: Path, heading: str, params: list[str]) -> Path:
     return p
 
 
+@pytest.mark.io
 class TestRunSnapshot:
     def test_snapshot_created(self, tmp_path: Path) -> None:
         sp = _make_scratchpad(tmp_path, "Phase 3 Planning", ["Step A", "Step B", "Step C"])
@@ -71,12 +72,12 @@ class TestRunSnapshot:
         assert "Phase 2 Active" in content
         assert "Phase 1 Summary" not in content
 
-    def test_snapshot_missing_file_exits_1(self, tmp_path: Path) -> None:
-        with pytest.raises(SystemExit) as exc_info:
-            _run_snapshot(tmp_path / "missing.md", "2026-03-26")
-        assert exc_info.value.code == 1
+    def test_snapshot_missing_file_returns_1(self, tmp_path: Path) -> None:
+        result = _run_snapshot(tmp_path / "missing.md", "2026-03-26")
+        assert result == 1
 
 
+@pytest.mark.io
 class TestCompareContextSnapshot:
     def _write_snap(self, tmp_path: Path, task_name: str, params: list[str]) -> Path:
         snap = tmp_path / "2026-03-26-snapshot.yaml"

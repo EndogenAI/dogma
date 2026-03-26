@@ -103,3 +103,17 @@ def test_explicit_contract_path(tmp_path):
     contract = tmp_path / "custom-contract.yml"
     contract.write_text("acceptance_tests:\n  - name: my custom test\n    command: pytest tests/custom.py\n")
     assert main(["--workplan", str(workplan), "--contract", str(contract)]) == 0
+
+
+@pytest.mark.io
+def test_date_prefix_stripped_from_workplan_name(tmp_path):
+    """Workplan named YYYY-MM-DD-<slug>.md resolves contract at <slug>/intent-contract.md."""
+    # Workplan has a date prefix: 2026-03-26-sprint.md
+    workplan = tmp_path / "2026-03-26-sprint.md"
+    workplan.write_text("# Sprint Workplan\n\n## Acceptance criteria\n- covers smoke test\n")
+    # Contract placed at <slug>/ (date-stripped), not at 2026-03-26-sprint/
+    contract_dir = tmp_path / "sprint"
+    contract_dir.mkdir()
+    contract = contract_dir / "intent-contract.md"
+    contract.write_text("```yaml\nacceptance_tests:\n  - name: smoke test\n    command: pytest tests/smoke/\n```\n")
+    assert main(["--workplan", str(workplan)]) == 0

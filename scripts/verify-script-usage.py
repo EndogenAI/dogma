@@ -36,29 +36,29 @@ def _has_help_flag(text: str) -> bool:
 
 
 def _find_violations(filepath: str, lines: list[str]) -> list[tuple[int, str]]:
-    """Return list of (line_number, message) for each violation found."""
-    text = "".join(lines)
-    if _has_help_flag(text):
-        return []
+    """Return list of (line_number, message) for each violation found.
 
+    Checks each fenced bash/shell block independently: a block is a violation
+    if it contains a script invocation but no ``--help`` flag anywhere in that
+    same block.  A ``--help`` elsewhere in the file does *not* suppress
+    violations in other blocks.
+    """
     violations: list[tuple[int, str]] = []
     in_fence = False
-    fence_has_invocation = False
+    block_has_invocation = False
+    block_has_help = False
     fence_start_line = 0
 
     for i, line in enumerate(lines, start=1):
         if not in_fence:
             if _FENCE_START_RE.match(line):
                 in_fence = True
-                fence_has_invocation = False
+                block_has_invocation = False
+                block_has_help = False
                 fence_start_line = i
         else:
             if _FENCE_END_RE.match(line):
-                in_fence = False
-                fence_has_invocation = False
-            elif _SCRIPT_INVOCATION_RE.search(line):
-                fence_has_invocation = True
-                if fence_has_invocation:
+                if block_has_invocation and not block_has_help:
                     violations.append(
                         (
                             fence_start_line,
@@ -66,8 +66,15 @@ def _find_violations(filepath: str, lines: list[str]) -> list[tuple[int, str]]:
                             "--help verification — see AGENTS.md § Guardrails",
                         )
                     )
-                    # Only report each block once
-                    fence_has_invocation = False
+                in_fence = False
+                block_has_invocation = False
+                block_has_help = False
+            elif _SCRIPT_INVOCATION_RE.search(line):
+                block_has_invocation = True
+                if _has_help_flag(line):
+                    block_has_help = True
+            elif _has_help_flag(line):
+                block_has_help = True
 
     return violations
 

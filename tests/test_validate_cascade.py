@@ -3,6 +3,8 @@
 import importlib
 from pathlib import Path
 
+import pytest
+
 # Load script as module
 spec = importlib.util.spec_from_file_location(
     "validate_cascade",
@@ -17,6 +19,7 @@ spec.loader.exec_module(validate_cascade)
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.io
 def test_tier1_pass(tmp_path):
     cvf = tmp_path / "client-values.yml"
     cvf.write_text("project_name: Acme\ndomain: governance\nmission: Build trust\n")
@@ -25,6 +28,7 @@ def test_tier1_pass(tmp_path):
     assert "required fields" in msg
 
 
+@pytest.mark.io
 def test_tier1_warn(tmp_path):
     cvf = tmp_path / "client-values.yml"
     cvf.write_text("project_name: Acme\ndomain: governance\nmission: \n")
@@ -33,6 +37,7 @@ def test_tier1_warn(tmp_path):
     assert "mission" in msg
 
 
+@pytest.mark.io
 def test_tier1_fail(tmp_path):
     cvf = tmp_path / "client-values.yml"
     cvf.write_text("project_name: Acme\nmission: Build trust\n")
@@ -41,6 +46,7 @@ def test_tier1_fail(tmp_path):
     assert "domain" in msg
 
 
+@pytest.mark.io
 def test_tier1_no_file_pass(tmp_path):
     (tmp_path / "MANIFESTO.md").write_text("# MANIFESTO\n")
     (tmp_path / "AGENTS.md").write_text("# AGENTS\n")
@@ -48,6 +54,7 @@ def test_tier1_no_file_pass(tmp_path):
     assert status == "PASS"
 
 
+@pytest.mark.io
 def test_tier1_no_file_fail(tmp_path):
     # Only AGENTS.md, no MANIFESTO.md
     (tmp_path / "AGENTS.md").write_text("# AGENTS\n")
@@ -173,6 +180,7 @@ def test_tier5_always_pass():
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.io
 def test_all_tiers_run():
     repo_root = Path(__file__).parent.parent
     exit_code = validate_cascade.main(["--repo-root", str(repo_root)])

@@ -148,7 +148,7 @@ Every client agent deploying dogma governance must include the following in its 
 
 ### Integration with Tracks A/B
 
-- **Track A (Instruction Hierarchy)**: See [AGENTS.md § Instruction Hierarchy](../AGENTS.md#instruction-hierarchy) for the full interrupt signal keyword list and exit protocol.
+- **Track A (Instruction Hierarchy)**: See [AGENTS.md § Instruction Hierarchy](../../AGENTS.md#instruction-hierarchy) for the full interrupt signal keyword list and exit protocol.
 - **Track B (User Interrupt Signal Handler)**: MCP `detect_user_interrupt()` tool is available for all client sessions; invoke before each phase gate.
 
 ### Acceptance Criteria

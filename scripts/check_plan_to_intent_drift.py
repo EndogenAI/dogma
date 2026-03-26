@@ -65,7 +65,13 @@ def _resolve_contract_path(workplan: Path, explicit: Path | None) -> Path:
     if explicit is not None:
         return explicit
     # Derive slug from workplan filename stem (strip date prefix if present)
-    slug = workplan.stem
+    import re
+
+    stem = workplan.stem
+    if re.match(r"^\d{4}-\d{2}-\d{2}-.+", stem):
+        slug = stem[11:]  # len("YYYY-MM-DD-") == 11
+    else:
+        slug = stem
     return workplan.parent / slug / "intent-contract.md"
 
 

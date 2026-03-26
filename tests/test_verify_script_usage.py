@@ -6,6 +6,8 @@ from __future__ import annotations
 import importlib.util
 from pathlib import Path
 
+import pytest
+
 _SCRIPT = Path(__file__).parent.parent / "scripts" / "verify-script-usage.py"
 spec = importlib.util.spec_from_file_location("verify_script_usage", _SCRIPT)
 _mod = importlib.util.module_from_spec(spec)  # type: ignore[arg-type]
@@ -20,6 +22,7 @@ def _write(tmp_path: Path, name: str, content: str) -> Path:
     return p
 
 
+@pytest.mark.io
 class TestCheckFile:
     def test_no_code_blocks_clean(self, tmp_path: Path) -> None:
         f = _write(tmp_path, "a.md", "# Title\n\nJust prose, nothing here.\n")
@@ -30,10 +33,12 @@ class TestCheckFile:
         f = _write(tmp_path, "b.md", content)
         assert check_file(f) == []
 
-    def test_help_in_prose_clean(self, tmp_path: Path) -> None:
+    def test_help_in_prose_does_not_suppress_block(self, tmp_path: Path) -> None:
+        # With per-block tracking, --help in prose does NOT suppress a violation
+        # in a subsequent code block that lacks --help.
         content = "Use --help to see options.\n\n```bash\nuv run python scripts/foo.py\n```\n"
         f = _write(tmp_path, "c.md", content)
-        assert check_file(f) == []
+        assert len(check_file(f)) == 1
 
     def test_violation_detected(self, tmp_path: Path) -> None:
         content = "```bash\nuv run python scripts/foo.py --run\n```\n"
@@ -65,6 +70,7 @@ class TestCheckFile:
         assert check_file(f) == []
 
 
+@pytest.mark.io
 class TestMain:
     def test_advisory_mode_exits_0_with_violations(self, tmp_path: Path) -> None:
         f = _write(tmp_path, "i.md", "```bash\nuv run python scripts/foo.py\n```\n")
