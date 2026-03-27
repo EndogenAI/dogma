@@ -1,0 +1,299 @@
+"""Tests for scripts/aggregate_session_costs.py."""
+
+import json
+import subprocess
+from datetime import date
+from pathlib import Path
+
+import pytest
+
+from scripts.aggregate_session_costs import aggregate_log, derive_agent_role, main
+from scripts.session_cost_log import REQUIRED_RECORD_KEYS, log_session_cost, read_log
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+BASELINE_FIXTURE = Path("tests/fixtures/baseline_data/session_cost_log_baseline.json")
+BASELINE_SNAPSHOT = Path("tests/fixtures/baseline_data/aggregate_session_costs_baseline_snapshot.json")
+ROLE_BASELINE_SNAPSHOT = Path("tests/fixtures/baseline_data/aggregate_session_costs_role_baseline_snapshot.json")
+
+
+@pytest.mark.io
+def test_aggregate_log_happy_path_with_inclusive_date_bounds(tmp_path):
+    """Aggregation groups by model and phase and includes boundary dates."""
+    log_file = tmp_path / "session_cost_log.json"
+    log_session_cost(
+        "session-1",
+        "claude-sonnet-4",
+        100,
+        50,
+        "Phase 1",
+        "2026-03-27T10:00:00Z",
+        log_file=log_file,
+    )
+    log_session_cost(
+        "session-2",
+        "claude-sonnet-4",
+        150,
+        75,
+        "Phase 1",
+        "2026-03-28T11:00:00Z",
+        log_file=log_file,
+    )
+    log_session_cost(
+        "session-3",
+        "gpt-5.4",
+        80,
+        40,
+        "Phase 2",
+        "2026-03-29T11:00:00Z",
+        log_file=log_file,
+    )
+
+    payload = aggregate_log(
+        log_file=log_file,
+        start_date=date(2026, 3, 27),
+        end_date=date(2026, 3, 28),
+    )
+
+    assert payload["source_boundary"]["accepted_source"] == "Exact six-field session_cost_log records only"
+    assert payload["source_boundary"]["malformed_entry_policy"] == "fail-fast"
+    assert payload["date_range"]["bounds"] == "inclusive"
+    assert payload["output_boundary"].startswith("Grouped aggregate data for later Phase 2 seeding only")
+    assert payload["groups"] == [
+        {
+            "model": "claude-sonnet-4",
+            "phase": "Phase 1",
+            "record_count": 2,
+            "tokens_in": 250,
+            "tokens_out": 125,
+        }
+    ]
+
+
+@pytest.mark.io
+def test_aggregate_log_empty_log_returns_no_groups(tmp_path):
+    """A missing or empty source log should produce an empty aggregate payload."""
+    log_file = tmp_path / "missing-session-cost-log.json"
+
+    payload = aggregate_log(log_file=log_file)
+
+    assert payload["groups"] == []
+    assert payload["log_file"] == str(log_file)
+
+
+@pytest.mark.io
+def test_aggregate_log_role_mode_groups_known_and_unknown_roles(tmp_path):
+    """Role mode derives known role buckets from session_id and groups unknown prefixes."""
+    log_file = tmp_path / "session_cost_log.json"
+    log_session_cost(
+        "executive-scripter/2026-03-27-a",
+        "claude-sonnet-4",
+        120,
+        60,
+        "Phase 1",
+        "2026-03-27T10:00:00Z",
+        log_file=log_file,
+    )
+    log_session_cost(
+        "manual-runner/2026-03-27-b",
+        "gpt-5.4",
+        80,
+        40,
+        "Phase 2",
+        "2026-03-27T11:00:00Z",
+        log_file=log_file,
+    )
+
+    payload = aggregate_log(log_file=log_file, aggregate_by="role")
+
+    assert payload["output_boundary"].startswith("Grouped role metrics only")
+    assert payload["groups"] == [
+        {
+            "agent_role": "executive-scripter",
+            "record_count": 1,
+            "tokens_in": 120,
+            "tokens_out": 60,
+        },
+        {
+            "agent_role": "unknown",
+            "record_count": 1,
+            "tokens_in": 80,
+            "tokens_out": 40,
+        },
+    ]
+    assert all(
+        set(group.keys()) == {"agent_role", "record_count", "tokens_in", "tokens_out"} for group in payload["groups"]
+    )
+
+
+def test_derive_agent_role_uses_dynamic_known_role_set(monkeypatch):
+    """Role derivation should honor dynamically discovered/loaded agent slugs."""
+    monkeypatch.setattr("scripts.aggregate_session_costs.known_agent_roles", lambda: {"research-scout"})
+
+    assert derive_agent_role("research-scout/session-1") == "research-scout"
+    assert derive_agent_role("manual-runner/session-2") == "unknown"
+
+
+@pytest.mark.io
+def test_aggregate_log_fails_fast_on_malformed_entry(tmp_path):
+    """Malformed source entries should fail fast rather than being skipped."""
+    log_file = tmp_path / "session_cost_log.json"
+    log_file.write_text(
+        json.dumps(
+            [
+                {
+                    "session_id": "session-1",
+                    "model": "claude-sonnet-4",
+                    "tokens_in": 100,
+                    "tokens_out": 50,
+                    "timestamp": "2026-03-27T10:00:00Z",
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="record at index 0"):
+        aggregate_log(log_file=log_file)
+
+
+@pytest.mark.io
+def test_aggregate_log_rejects_invalid_record_timestamp(tmp_path):
+    """Invalid timestamps in otherwise valid records should raise a clear validation error."""
+    log_file = tmp_path / "session_cost_log.json"
+    log_file.write_text(
+        json.dumps(
+            [
+                {
+                    "session_id": "session-1",
+                    "model": "claude-sonnet-4",
+                    "tokens_in": 100,
+                    "tokens_out": 50,
+                    "phase": "Phase 1",
+                    "timestamp": "2026-03-99T10:00:00Z",
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="invalid timestamp"):
+        aggregate_log(log_file=log_file)
+
+
+@pytest.mark.io
+def test_committed_baseline_fixture_uses_exact_six_field_records():
+    """The committed Phase 2 baseline input stays within the accepted source boundary."""
+    records = read_log(log_file=REPO_ROOT / BASELINE_FIXTURE)
+
+    assert records
+    assert all(set(record.keys()) == set(REQUIRED_RECORD_KEYS) for record in records)
+
+
+@pytest.mark.io
+def test_committed_baseline_snapshot_matches_deterministic_rerun():
+    """The committed Phase 2 snapshot reruns deterministically from the canonical fixture."""
+    expected_snapshot = json.loads((REPO_ROOT / BASELINE_SNAPSHOT).read_text(encoding="utf-8"))
+
+    result = subprocess.run(
+        [
+            "uv",
+            "run",
+            "python",
+            "scripts/aggregate_session_costs.py",
+            "--log-file",
+            str(BASELINE_FIXTURE),
+            "--start-date",
+            "2026-03-27",
+            "--end-date",
+            "2026-03-28",
+        ],
+        capture_output=True,
+        text=True,
+        cwd=REPO_ROOT,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stderr
+
+    actual_snapshot = json.loads(result.stdout)
+
+    assert expected_snapshot["groups"], "Committed baseline snapshot must be non-empty"
+    assert actual_snapshot["groups"], "Rerun baseline snapshot must be non-empty"
+    assert actual_snapshot == expected_snapshot
+
+
+@pytest.mark.io
+def test_committed_role_baseline_snapshot_matches_deterministic_rerun():
+    """The committed Phase 3 role snapshot reruns deterministically from the canonical fixture."""
+    expected_snapshot = json.loads((REPO_ROOT / ROLE_BASELINE_SNAPSHOT).read_text(encoding="utf-8"))
+
+    result = subprocess.run(
+        [
+            "uv",
+            "run",
+            "python",
+            "scripts/aggregate_session_costs.py",
+            "--aggregate-by",
+            "role",
+            "--log-file",
+            str(BASELINE_FIXTURE),
+            "--start-date",
+            "2026-03-27",
+            "--end-date",
+            "2026-03-28",
+        ],
+        capture_output=True,
+        text=True,
+        cwd=REPO_ROOT,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stderr
+
+    actual_snapshot = json.loads(result.stdout)
+
+    assert expected_snapshot["groups"], "Committed role baseline snapshot must be non-empty"
+    assert actual_snapshot["groups"], "Rerun role baseline snapshot must be non-empty"
+    assert all(
+        set(group.keys()) == {"agent_role", "record_count", "tokens_in", "tokens_out"}
+        for group in actual_snapshot["groups"]
+    )
+    assert actual_snapshot == expected_snapshot
+
+
+@pytest.mark.parametrize("flag", ["--start-date", "--end-date"])
+@pytest.mark.parametrize("raw_value", ["2026/03/27", "2026-02-30", "not-a-date"])
+def test_main_rejects_invalid_yyyy_mm_dd_date_args(monkeypatch, capsys, flag, raw_value):
+    """CLI date arguments must use valid YYYY-MM-DD values for both bounds."""
+    monkeypatch.setattr(
+        "sys.argv",
+        ["aggregate_session_costs.py", flag, raw_value],
+    )
+
+    exit_code = main()
+
+    assert exit_code == 1
+    assert capsys.readouterr().err.strip() == f"Error: {flag} must be YYYY-MM-DD"
+
+
+@pytest.mark.io
+def test_main_rejects_reversed_start_end_date_bounds(tmp_path, monkeypatch, capsys):
+    """The CLI rejects reversed inclusive date bounds."""
+    log_file = tmp_path / "missing-session-cost-log.json"
+    monkeypatch.setattr(
+        "sys.argv",
+        [
+            "aggregate_session_costs.py",
+            "--log-file",
+            str(log_file),
+            "--start-date",
+            "2026-03-29",
+            "--end-date",
+            "2026-03-27",
+        ],
+    )
+
+    exit_code = main()
+
+    assert exit_code == 1
+    assert capsys.readouterr().err.strip() == "Error: start date must be less than or equal to end date"

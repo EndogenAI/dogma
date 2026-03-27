@@ -45,8 +45,86 @@ from pathlib import Path
 from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-_LOG_FILE_ENV = os.getenv("SESSION_COST_LOG_FILE")
-LOG_FILE = Path(_LOG_FILE_ENV) if _LOG_FILE_ENV else REPO_ROOT / "session_cost_log.json"
+LOG_FILE_ENV_VAR = "SESSION_COST_LOG_FILE"
+REQUIRED_RECORD_KEYS = (
+    "session_id",
+    "model",
+    "tokens_in",
+    "tokens_out",
+    "phase",
+    "timestamp",
+)
+DEFAULT_LOG_FILE = REPO_ROOT / "session_cost_log.json"
+LOG_FILE = DEFAULT_LOG_FILE
+
+
+def resolve_log_file(log_file: str | Path | None = None) -> Path:
+    """Resolve the active session cost log path.
+
+    Precedence:
+    1. Explicit function argument
+    2. SESSION_COST_LOG_FILE environment variable
+    3. Module default/monkeypatched LOG_FILE
+    """
+    if log_file is not None:
+        return Path(log_file)
+
+    env_override = os.getenv(LOG_FILE_ENV_VAR)
+    if env_override:
+        return Path(env_override)
+
+    return Path(LOG_FILE)
+
+
+def _validate_non_empty_string(value: Any, field_name: str) -> str:
+    if not isinstance(value, str) or not value:
+        raise ValueError(f"{field_name} must be a non-empty string")
+    return value
+
+
+def _validate_non_negative_int(value: Any, field_name: str) -> int:
+    if not isinstance(value, int) or value < 0:
+        raise ValueError(f"{field_name} must be a non-negative integer")
+    return value
+
+
+def build_record(
+    session_id: str,
+    model: str,
+    tokens_in: int,
+    tokens_out: int,
+    phase: str,
+    timestamp: str,
+) -> dict[str, Any]:
+    """Build and validate a canonical six-field session cost record."""
+    return {
+        "session_id": _validate_non_empty_string(session_id, "session_id"),
+        "model": _validate_non_empty_string(model, "model"),
+        "tokens_in": _validate_non_negative_int(tokens_in, "tokens_in"),
+        "tokens_out": _validate_non_negative_int(tokens_out, "tokens_out"),
+        "phase": _validate_non_empty_string(phase, "phase"),
+        "timestamp": _validate_non_empty_string(timestamp, "timestamp"),
+    }
+
+
+def validate_record(record: Any, *, index: int | None = None) -> dict[str, Any]:
+    """Validate an existing record against the exact accepted source boundary."""
+    prefix = f"record at index {index}" if index is not None else "record"
+    if not isinstance(record, dict):
+        raise ValueError(f"{prefix} must be a JSON object")
+
+    if set(record.keys()) != set(REQUIRED_RECORD_KEYS):
+        expected = ", ".join(REQUIRED_RECORD_KEYS)
+        raise ValueError(f"{prefix} must contain exactly these keys: {expected}")
+
+    return build_record(
+        session_id=record["session_id"],
+        model=record["model"],
+        tokens_in=record["tokens_in"],
+        tokens_out=record["tokens_out"],
+        phase=record["phase"],
+        timestamp=record["timestamp"],
+    )
 
 
 def log_session_cost(
@@ -56,6 +134,7 @@ def log_session_cost(
     tokens_out: int,
     phase: str,
     timestamp: str,
+    log_file: str | Path | None = None,
 ) -> None:
     """
     Append one session cost record to the log file.
@@ -71,55 +150,39 @@ def log_session_cost(
     Raises:
         ValueError: If any required field is missing or invalid type
     """
-    # Validate required fields
-    if not session_id or not isinstance(session_id, str):
-        raise ValueError("session_id must be a non-empty string")
-    if not model or not isinstance(model, str):
-        raise ValueError("model must be a non-empty string")
-    if not isinstance(tokens_in, int) or tokens_in < 0:
-        raise ValueError("tokens_in must be a non-negative integer")
-    if not isinstance(tokens_out, int) or tokens_out < 0:
-        raise ValueError("tokens_out must be a non-negative integer")
-    if not phase or not isinstance(phase, str):
-        raise ValueError("phase must be a non-empty string")
-    if not timestamp or not isinstance(timestamp, str):
-        raise ValueError("timestamp must be a non-empty string")
-
-    record = {
-        "session_id": session_id,
-        "model": model,
-        "tokens_in": tokens_in,
-        "tokens_out": tokens_out,
-        "phase": phase,
-        "timestamp": timestamp,
-    }
+    target_log_file = resolve_log_file(log_file)
+    record = build_record(session_id, model, tokens_in, tokens_out, phase, timestamp)
 
     # Read existing records
-    records = []
-    if LOG_FILE.exists():
-        with open(LOG_FILE, "r", encoding="utf-8") as f:
-            records = json.load(f)
+    records = read_log(log_file=target_log_file)
 
     # Append new record
     records.append(record)
 
     # Write back
-    with open(LOG_FILE, "w", encoding="utf-8") as f:
+    target_log_file.parent.mkdir(parents=True, exist_ok=True)
+    with open(target_log_file, "w", encoding="utf-8") as f:
         json.dump(records, f, indent=2, ensure_ascii=False)
 
 
-def read_log() -> list[dict[str, Any]]:
+def read_log(log_file: str | Path | None = None) -> list[dict[str, Any]]:
     """
     Read all session cost records from the log file.
 
     Returns:
         List of session cost records (empty list if file doesn't exist)
     """
-    if not LOG_FILE.exists():
+    target_log_file = resolve_log_file(log_file)
+    if not target_log_file.exists():
         return []
 
-    with open(LOG_FILE, "r", encoding="utf-8") as f:
-        return json.load(f)
+    with open(target_log_file, "r", encoding="utf-8") as f:
+        records = json.load(f)
+
+    if not isinstance(records, list):
+        raise ValueError("session cost log must contain a JSON array")
+
+    return [validate_record(record, index=index) for index, record in enumerate(records)]
 
 
 def main() -> int:
@@ -140,14 +203,14 @@ def main() -> int:
     args = parser.parse_args()
 
     try:
-        record = {
-            "session_id": args.session,
-            "model": args.model,
-            "tokens_in": args.tokens_in,
-            "tokens_out": args.tokens_out,
-            "phase": args.phase,
-            "timestamp": args.timestamp,
-        }
+        record = build_record(
+            args.session,
+            args.model,
+            args.tokens_in,
+            args.tokens_out,
+            args.phase,
+            args.timestamp,
+        )
 
         if args.dry_run:
             print("DRY RUN — would append:")
@@ -155,12 +218,12 @@ def main() -> int:
             return 0
 
         log_session_cost(
-            args.session,
-            args.model,
-            args.tokens_in,
-            args.tokens_out,
-            args.phase,
-            args.timestamp,
+            record["session_id"],
+            record["model"],
+            record["tokens_in"],
+            record["tokens_out"],
+            record["phase"],
+            record["timestamp"],
         )
         print(f"Logged session cost: {args.session} / {args.phase}")
         return 0

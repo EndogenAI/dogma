@@ -7,14 +7,14 @@ from pathlib import Path
 
 import pytest
 
-from scripts.session_cost_log import log_session_cost, main, read_log
+from scripts.session_cost_log import REQUIRED_RECORD_KEYS, log_session_cost, main, read_log
 
 
 @pytest.fixture
 def temp_log_file(tmp_path, monkeypatch):
     """Use a temporary log file for tests."""
     log_file = tmp_path / "session_cost_log.json"
-    monkeypatch.setattr("scripts.session_cost_log.LOG_FILE", log_file)
+    monkeypatch.setenv("SESSION_COST_LOG_FILE", str(log_file))
     return log_file
 
 
@@ -36,6 +36,7 @@ def test_log_session_cost_happy_path(temp_log_file):
 
     assert len(records) == 1
     record = records[0]
+    assert set(record.keys()) == set(REQUIRED_RECORD_KEYS)
     assert record["session_id"] == "main/2026-03-27"
     assert record["model"] == "claude-sonnet-4"
     assert record["tokens_in"] == 1500
@@ -78,7 +79,7 @@ def test_read_log_returns_correct_count(temp_log_file):
 def test_dry_run_no_file_written(tmp_path, monkeypatch):
     """--dry-run: no file written, stdout contains expected record."""
     log_file = tmp_path / "session_cost_log.json"
-    monkeypatch.setattr("scripts.session_cost_log.LOG_FILE", log_file)
+    monkeypatch.setenv("SESSION_COST_LOG_FILE", str(log_file))
 
     result = subprocess.run(
         [
@@ -134,9 +135,24 @@ def test_invalid_input_missing_field():
 
 
 @pytest.mark.io
+def test_env_var_path_override_applies_without_reimport(tmp_path, monkeypatch):
+    """Function calls should honor SESSION_COST_LOG_FILE set after import."""
+    log_file = tmp_path / "override.json"
+    monkeypatch.setenv("SESSION_COST_LOG_FILE", str(log_file))
+
+    log_session_cost("env-test", "model-a", 12, 6, "Phase 1", "2026-03-27T09:00:00Z")
+
+    assert log_file.exists()
+    records = json.loads(log_file.read_text(encoding="utf-8"))
+    assert records[0]["session_id"] == "env-test"
+
+
+@pytest.mark.io
 def test_cli_success(tmp_path):
     """CLI writes record successfully when SESSION_COST_LOG_FILE env var is set."""
     log_file = tmp_path / "session_cost_log.json"
+    repo_log_file = Path(__file__).parent.parent / "session_cost_log.json"
+    repo_log_before = repo_log_file.read_bytes() if repo_log_file.exists() else None
     env = os.environ.copy()
     env["SESSION_COST_LOG_FILE"] = str(log_file)
 
@@ -168,6 +184,10 @@ def test_cli_success(tmp_path):
     assert result.returncode == 0
     assert "Logged session cost" in result.stdout
     assert log_file.exists(), "Log file should be written to SESSION_COST_LOG_FILE path"
+    if repo_log_before is None:
+        assert not repo_log_file.exists()
+    else:
+        assert repo_log_file.read_bytes() == repo_log_before
 
 
 @pytest.mark.io
@@ -232,6 +252,58 @@ def test_main_dry_run(temp_log_file, monkeypatch, capsys):
     captured = capsys.readouterr()
     assert "DRY RUN" in captured.out
     assert "dry-session" in captured.out
+
+
+def test_main_invalid_values_return_1(temp_log_file, monkeypatch, capsys):
+    """Direct main() call with invalid values returns 1 and does not write a file."""
+    monkeypatch.setattr(
+        "sys.argv",
+        [
+            "session_cost_log.py",
+            "--session",
+            "invalid-session",
+            "--model",
+            "test-model",
+            "--tokens-in",
+            "-1",
+            "--tokens-out",
+            "5",
+            "--phase",
+            "Phase",
+            "--timestamp",
+            "2026-03-27T17:30:00Z",
+        ],
+    )
+
+    rc = main()
+    assert rc == 1
+    assert not temp_log_file.exists()
+    captured = capsys.readouterr()
+    assert "tokens_in must be a non-negative integer" in captured.err
+
+
+@pytest.mark.io
+def test_read_log_rejects_noncanonical_record_schema(temp_log_file):
+    """Existing records must match the exact six-field source boundary."""
+    temp_log_file.write_text(
+        json.dumps(
+            [
+                {
+                    "session_id": "bad-session",
+                    "model": "test-model",
+                    "tokens_in": 1,
+                    "tokens_out": 2,
+                    "phase": "Phase",
+                    "timestamp": "2026-03-27T18:00:00Z",
+                    "extra": True,
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="exactly these keys"):
+        read_log()
 
 
 def test_main_invalid_args(monkeypatch):
