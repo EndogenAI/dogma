@@ -1,8 +1,8 @@
 # dogma MCP Server
 
 Exposes the dogma governance toolset as an [MCP](https://modelcontextprotocol.io/) server
-using [FastMCP](https://github.com/jlowin/fastmcp). Provides 11 tools for validating,
-scaffolding, researching, managing sessions, and normalizing cross-platform paths within the dogma repository.
+using [FastMCP](https://github.com/jlowin/fastmcp). Provides 12 tools for validating,
+scaffolding, researching, managing sessions, routing inference, and normalizing cross-platform paths within the dogma repository.
 
 ---
 
@@ -19,6 +19,7 @@ scaffolding, researching, managing sessions, and normalizing cross-platform path
 | `query_docs` | BM25 query over the dogma documentation corpus |
 | `prune_scratchpad` | Initialise or inspect the session scratchpad |
 | `detect_user_interrupt` | **Per-phase** — check for user STOP/ABORT/CANCEL signals before any phase action; returns `interrupted: true` if detected |
+| `route_inference_request` | Route inference requests to local or external providers based on model_id (Local-Compute-First) |
 
 ---
 
@@ -28,6 +29,16 @@ scaffolding, researching, managing sessions, and normalizing cross-platform path
 |------|-------------|--------|--------|
 | `normalize_path` | Normalize a path string cross-platform, expanding env-var tokens (`$HOME`, `$PWD`) via `os.path.expandvars` then `pathlib.Path` | `path_str: str` | Normalized path string |
 | `resolve_env_path` | Read an env-var expected to hold a path, normalize it; returns `default` if unset | `key: str`, `default: str = ""` | Normalized path or default |
+
+---
+
+## Inference Routing
+
+| Tool | Description | Inputs | Output |
+|------|-------------|--------|--------|
+| `route_inference_request` | Route inference request to appropriate provider; prefers local providers (Local-Compute-First principle) | `prompt: str`, `model_id: str`, `max_tokens: int = 512`, `temperature: float = 0.7` | `{"ok": bool, "provider": str \| None, "endpoint": str \| None, "local": bool, "cost_tier": str \| None, "response": str \| None, "errors": list[str]}` |
+
+Reads provider configuration from `data/inference-providers.yml`. Returns routing metadata only; does not execute the request.
 
 ---
 
