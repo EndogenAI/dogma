@@ -11,10 +11,11 @@ Session Cost Log — JSON-based Token Burn Tracking
 - tokens_out (int): Output tokens generated
 - phase (str): Phase or task name
 - timestamp (str): ISO 8601 timestamp
+- synthetic (bool, optional): Explicit marker required for zero-token records
 
 **Outputs**:
 - Appends one JSON record to `session_cost_log.json` at workspace root
-- Each record contains all six fields
+- Measured records contain six canonical fields; synthetic records add `synthetic: true`
 
 **Usage**:
     # Programmatic
@@ -54,6 +55,7 @@ REQUIRED_RECORD_KEYS = (
     "phase",
     "timestamp",
 )
+OPTIONAL_RECORD_KEYS = ("synthetic",)
 DEFAULT_LOG_FILE = REPO_ROOT / "session_cost_log.json"
 LOG_FILE = DEFAULT_LOG_FILE
 
@@ -95,27 +97,50 @@ def build_record(
     tokens_out: int,
     phase: str,
     timestamp: str,
+    synthetic: bool = False,
 ) -> dict[str, Any]:
-    """Build and validate a canonical six-field session cost record."""
-    return {
+    """Build and validate a session cost record with optional synthetic marker."""
+    normalized_tokens_in = _validate_non_negative_int(tokens_in, "tokens_in")
+    normalized_tokens_out = _validate_non_negative_int(tokens_out, "tokens_out")
+    if not isinstance(synthetic, bool):
+        raise ValueError("synthetic must be a boolean")
+    if normalized_tokens_in == 0 and normalized_tokens_out == 0 and not synthetic:
+        raise ValueError("zero-token records require synthetic=true")
+
+    record = {
         "session_id": _validate_non_empty_string(session_id, "session_id"),
         "model": _validate_non_empty_string(model, "model"),
-        "tokens_in": _validate_non_negative_int(tokens_in, "tokens_in"),
-        "tokens_out": _validate_non_negative_int(tokens_out, "tokens_out"),
+        "tokens_in": normalized_tokens_in,
+        "tokens_out": normalized_tokens_out,
         "phase": _validate_non_empty_string(phase, "phase"),
         "timestamp": _validate_non_empty_string(timestamp, "timestamp"),
     }
+    if synthetic:
+        record["synthetic"] = True
+
+    return record
 
 
 def validate_record(record: Any, *, index: int | None = None) -> dict[str, Any]:
-    """Validate an existing record against the exact accepted source boundary."""
+    """Validate an existing record against required+optional schema boundaries."""
     prefix = f"record at index {index}" if index is not None else "record"
     if not isinstance(record, dict):
         raise ValueError(f"{prefix} must be a JSON object")
 
-    if set(record.keys()) != set(REQUIRED_RECORD_KEYS):
+    keys = set(record.keys())
+    required = set(REQUIRED_RECORD_KEYS)
+    optional = set(OPTIONAL_RECORD_KEYS)
+    missing = required - keys
+    unknown = keys - (required | optional)
+    if missing:
         expected = ", ".join(REQUIRED_RECORD_KEYS)
-        raise ValueError(f"{prefix} must contain exactly these keys: {expected}")
+        raise ValueError(f"{prefix} is missing required keys; expected: {expected}")
+    if unknown:
+        raise ValueError(f"{prefix} contains unsupported keys: {', '.join(sorted(unknown))}")
+
+    synthetic_present = "synthetic" in record
+    if synthetic_present and not isinstance(record["synthetic"], bool):
+        raise ValueError(f"{prefix} field 'synthetic' must be a boolean when present")
 
     return build_record(
         session_id=record["session_id"],
@@ -124,6 +149,9 @@ def validate_record(record: Any, *, index: int | None = None) -> dict[str, Any]:
         tokens_out=record["tokens_out"],
         phase=record["phase"],
         timestamp=record["timestamp"],
+        synthetic=(
+            record["synthetic"] if synthetic_present else (record["tokens_in"] == 0 and record["tokens_out"] == 0)
+        ),
     )
 
 
@@ -134,6 +162,7 @@ def log_session_cost(
     tokens_out: int,
     phase: str,
     timestamp: str,
+    synthetic: bool = False,
     log_file: str | Path | None = None,
 ) -> None:
     """
@@ -151,7 +180,7 @@ def log_session_cost(
         ValueError: If any required field is missing or invalid type
     """
     target_log_file = resolve_log_file(log_file)
-    record = build_record(session_id, model, tokens_in, tokens_out, phase, timestamp)
+    record = build_record(session_id, model, tokens_in, tokens_out, phase, timestamp, synthetic=synthetic)
 
     # Read existing records
     records = read_log(log_file=target_log_file)
@@ -165,12 +194,16 @@ def log_session_cost(
         json.dump(records, f, indent=2, ensure_ascii=False)
 
 
-def read_log(log_file: str | Path | None = None) -> list[dict[str, Any]]:
+def read_log(log_file: str | Path | None = None, *, exclude_synthetic: bool = False) -> list[dict[str, Any]]:
     """
     Read all session cost records from the log file.
 
     Returns:
         List of session cost records (empty list if file doesn't exist)
+
+    Args:
+        log_file: Optional explicit path to JSON log file
+        exclude_synthetic: If True, omit records marked synthetic
     """
     target_log_file = resolve_log_file(log_file)
     if not target_log_file.exists():
@@ -182,7 +215,10 @@ def read_log(log_file: str | Path | None = None) -> list[dict[str, Any]]:
     if not isinstance(records, list):
         raise ValueError("session cost log must contain a JSON array")
 
-    return [validate_record(record, index=index) for index, record in enumerate(records)]
+    validated = [validate_record(record, index=index) for index, record in enumerate(records)]
+    if exclude_synthetic:
+        return [record for record in validated if not record.get("synthetic", False)]
+    return validated
 
 
 def main() -> int:
@@ -194,6 +230,11 @@ def main() -> int:
     parser.add_argument("--tokens-out", type=int, required=True, help="Output tokens")
     parser.add_argument("--phase", required=True, help="Phase or task name")
     parser.add_argument("--timestamp", required=True, help="ISO 8601 timestamp")
+    parser.add_argument(
+        "--synthetic",
+        action="store_true",
+        help="Mark record as synthetic (required for zero-token records)",
+    )
     parser.add_argument(
         "--dry-run",
         action="store_true",
@@ -210,6 +251,7 @@ def main() -> int:
             args.tokens_out,
             args.phase,
             args.timestamp,
+            synthetic=args.synthetic,
         )
 
         if args.dry_run:
@@ -224,6 +266,7 @@ def main() -> int:
             record["tokens_out"],
             record["phase"],
             record["timestamp"],
+            synthetic=bool(record.get("synthetic", False)),
         )
         print(f"Logged session cost: {args.session} / {args.phase}")
         return 0

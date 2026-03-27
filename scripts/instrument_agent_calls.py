@@ -14,6 +14,8 @@ Inputs:
 Outputs:
     - Spans emitted to stdout (ConsoleSpanExporter) or OTLP endpoint
     - Returns tracer instance for use in agent scripts
+        - When combined with scripts/emit_otel_genai_spans.py, span-close hooks append measured
+            token usage to session_cost_log.json for model calls this repo controls directly
 
 Usage:
     from scripts.instrument_agent_calls import get_tracer, call_llm

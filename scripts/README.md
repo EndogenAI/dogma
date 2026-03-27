@@ -211,7 +211,7 @@ Commit the README entry in the same commit as the script. If the entry cannot be
 
 **Job**: Enable agents to record canonical baseline token-usage events so Phase 1 aggregation reads one exact, trustworthy source substrate.
 
-**Purpose**: Append exact six-field records to `session_cost_log.json`: `session_id`, `model`, `tokens_in`, `tokens_out`, `phase`, `timestamp`. This exact schema is the accepted Phase 1 source boundary for baseline-data aggregation.
+**Purpose**: Append canonical records to `session_cost_log.json`: required keys are `session_id`, `model`, `tokens_in`, `tokens_out`, `phase`, `timestamp`; optional `synthetic: true` is supported for explicit placeholder/boundary events.
 
 **Tests**: [tests/test_session_cost_log.py](../tests/test_session_cost_log.py)
 
@@ -228,6 +228,18 @@ uv run python scripts/session_cost_log.py \
 ```
 
 ```bash
+# Zero-token rows must be explicitly marked synthetic
+uv run python scripts/session_cost_log.py \
+  --session main/example/2026-03-27 \
+  --model gpt-5.3-codex \
+  --tokens-in 0 \
+  --tokens-out 0 \
+  --phase "Boundary annotation" \
+  --timestamp 2026-03-27T20:00:00Z \
+  --synthetic
+```
+
+```bash
 # Route writes away from repo root (used by tests/CI)
 SESSION_COST_LOG_FILE=/tmp/session_cost_log.json \
 uv run python scripts/session_cost_log.py \
@@ -239,9 +251,11 @@ uv run python scripts/session_cost_log.py \
   --timestamp 2026-03-27T16:00:00Z
 ```
 
-**Path precedence**: `--log-file` argument (if provided) overrides `SESSION_COST_LOG_FILE`; otherwise the env var is used; if neither is set, the default file is `session_cost_log.json` in the current working directory.
+**Path precedence**: `SESSION_COST_LOG_FILE` (if set) overrides the module default; if unset, the default file is repository-root `session_cost_log.json`.
 
-**Accepted source boundary**: Only exact six-field records from this script are valid input to Phase 1 aggregation. Malformed, partial, or expanded records are outside the accepted baseline source.
+**Accepted source boundary**: Records must include all required keys and may include `synthetic` only. Unknown extra keys are rejected.
+
+**Observability boundary**: See [docs/guides/observability-boundaries.md](../docs/guides/observability-boundaries.md) for what this local substrate can and cannot capture.
 
 ---
 
