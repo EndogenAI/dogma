@@ -31,7 +31,6 @@ handoffs:
     agent: Executive Scripter
     prompt: "Please create or extend a script for: "
     send: false
----
 x-governs:
   - endogenous-first
   - programmatic-first

@@ -16,8 +16,6 @@ handoffs:
       3. Pre-push tests pass (`uv run pytest -m "not slow and not integration"` exits 0) — PASS/FAIL
       Return APPROVED or REQUEST CHANGES — [criterion number: one-line reason].
     send: false
-
----
 x-governs:
   - algorithms-before-tokens
 ---
