@@ -1,0 +1,44 @@
+{
+  "source_boundary": {
+    "accepted_source": "Exact six-field session_cost_log records only",
+    "required_keys": [
+      "session_id",
+      "model",
+      "tokens_in",
+      "tokens_out",
+      "phase",
+      "timestamp"
+    ],
+    "malformed_entry_policy": "fail-fast"
+  },
+  "output_boundary": "Grouped aggregate data for later Phase 2 seeding only; no Phase 2 side effects.",
+  "log_file": "tests/fixtures/baseline_data/session_cost_log_baseline.json",
+  "date_range": {
+    "start_date": "2026-03-27",
+    "end_date": "2026-03-28",
+    "bounds": "inclusive"
+  },
+  "groups": [
+    {
+      "model": "claude-sonnet-4",
+      "phase": "Phase 1",
+      "record_count": 2,
+      "tokens_in": 1500,
+      "tokens_out": 750
+    },
+    {
+      "model": "claude-sonnet-4",
+      "phase": "Phase 2",
+      "record_count": 1,
+      "tokens_in": 900,
+      "tokens_out": 450
+    },
+    {
+      "model": "gpt-5.4",
+      "phase": "Phase 2",
+      "record_count": 1,
+      "tokens_in": 700,
+      "tokens_out": 350
+    }
+  ]
+}

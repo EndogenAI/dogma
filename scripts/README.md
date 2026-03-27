@@ -251,6 +251,8 @@ uv run python scripts/aggregate_session_costs.py \
 
 **Lean Phase 2 snapshot gate**: Phase 2 starts only once this aggregation can produce a reproducible, non-empty grouped result from accepted `session_cost_log` inputs; Phase 2 then turns that grouped result into a deterministic snapshot artifact.
 
+**Lean Phase 2 rerun path**: Reproduce the committed baseline snapshot with `uv run python scripts/aggregate_session_costs.py --log-file tests/fixtures/baseline_data/session_cost_log_baseline.json --start-date 2026-03-27 --end-date 2026-03-28`; the expected grouped payload is committed at [tests/fixtures/baseline_data/aggregate_session_costs_baseline_snapshot.json](../tests/fixtures/baseline_data/aggregate_session_costs_baseline_snapshot.json).
+
 ---
 
 ## scripts/prune_scratchpad.py

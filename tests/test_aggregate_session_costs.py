@@ -1,12 +1,18 @@
 """Tests for scripts/aggregate_session_costs.py."""
 
 import json
+import subprocess
 from datetime import date
+from pathlib import Path
 
 import pytest
 
 from scripts.aggregate_session_costs import aggregate_log, main
-from scripts.session_cost_log import log_session_cost
+from scripts.session_cost_log import REQUIRED_RECORD_KEYS, log_session_cost, read_log
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+BASELINE_FIXTURE = Path("tests/fixtures/baseline_data/session_cost_log_baseline.json")
+BASELINE_SNAPSHOT = Path("tests/fixtures/baseline_data/aggregate_session_costs_baseline_snapshot.json")
 
 
 @pytest.mark.io
@@ -94,6 +100,48 @@ def test_aggregate_log_fails_fast_on_malformed_entry(tmp_path):
 
     with pytest.raises(ValueError, match="record at index 0"):
         aggregate_log(log_file=log_file)
+
+
+@pytest.mark.io
+def test_committed_baseline_fixture_uses_exact_six_field_records():
+    """The committed Phase 2 baseline input stays within the accepted source boundary."""
+    records = read_log(log_file=REPO_ROOT / BASELINE_FIXTURE)
+
+    assert records
+    assert all(set(record.keys()) == set(REQUIRED_RECORD_KEYS) for record in records)
+
+
+@pytest.mark.io
+def test_committed_baseline_snapshot_matches_deterministic_rerun():
+    """The committed Phase 2 snapshot reruns deterministically from the canonical fixture."""
+    expected_snapshot = json.loads((REPO_ROOT / BASELINE_SNAPSHOT).read_text(encoding="utf-8"))
+
+    result = subprocess.run(
+        [
+            "uv",
+            "run",
+            "python",
+            "scripts/aggregate_session_costs.py",
+            "--log-file",
+            str(BASELINE_FIXTURE),
+            "--start-date",
+            "2026-03-27",
+            "--end-date",
+            "2026-03-28",
+        ],
+        capture_output=True,
+        text=True,
+        cwd=REPO_ROOT,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stderr
+
+    actual_snapshot = json.loads(result.stdout)
+
+    assert expected_snapshot["groups"], "Committed baseline snapshot must be non-empty"
+    assert actual_snapshot["groups"], "Rerun baseline snapshot must be non-empty"
+    assert actual_snapshot == expected_snapshot
 
 
 @pytest.mark.parametrize("raw_value", ["2026/03/27", "2026-02-30", "not-a-date"])

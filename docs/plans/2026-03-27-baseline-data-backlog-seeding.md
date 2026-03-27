@@ -101,7 +101,7 @@ any related RAG instrumentation or evaluation work.
 
 **Depends on**: Phase 1 Review APPROVED
 **Gate**: Phase 2 Review must return APPROVED before Phase 3 begins
-**Status**: Ready to start
+**Status**: Complete — APPROVED
 
 ### Phase 2 Review — Validate Snapshot Threshold ⬜
 
@@ -111,7 +111,7 @@ any related RAG instrumentation or evaluation work.
 
 **Depends on**: Phase 2
 **Gate**: Phase 3 does not begin until APPROVED
-**Status**: Not started
+**Status**: Complete — APPROVED
 
 ### Phase 3 — Lean Role Metrics (`#351`) ⬜
 
@@ -123,7 +123,7 @@ any related RAG instrumentation or evaluation work.
 
 **Depends on**: Phase 2 Review APPROVED
 **Gate**: Phase 3 Review must return APPROVED before session close
-**Status**: Not started
+**Status**: Ready to start
 
 ### Phase 3 Review — Validate Lean Metric Scope ⬜
 
