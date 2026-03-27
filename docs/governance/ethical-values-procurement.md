@@ -9,7 +9,7 @@ status: Active
 
 Operationalize [`MANIFESTO.md § Ethical Values`](../../MANIFESTO.md#ethical-values) into a procurement checklist for any new tool, agent capability, or external service before adoption. This framework ensures that every externally adopted tool is vetted against core project values before integration, instantiating the endogenous-first principle.
 
-## Procurement Checklist (5 Criteria)
+## Procurement Checklist (6 Criteria)
 
 Every tool integration must satisfy at least **three** of the following criteria before adoption:
 
@@ -43,10 +43,20 @@ Every tool integration must satisfy at least **three** of the following criteria
 
 **Rationale**: Irreversible tools cannot be safely governed. If a tool makes a mistake that cannot be undone, governance is only reactive (post-harm). Reversibility ensures governance can be proactive and corrective.
 
+### 6. Measurability
+
+**Signal**: Does the tool expose metrics, counters, or observable state that allow humans to measure its impact and effectiveness?
+
+**Rationale**: Tools without measurable outputs cannot be evaluated for alignment with project values. If we cannot measure what a tool does, we cannot determine whether it is helping or harming the project. Measurability enables continuous alignment checks and data-driven governance adjustments.
+
 ## Decision Tree
 
 - **Does the tool pass ≥3 criteria?** → Proceed to Review gate for approval
 - **Does the tool pass <3 criteria?** → Reject or send back for redesign
+
+## Threshold
+
+The threshold remains **3 of 6** criteria — adding Measurability increases the option space without diluting the approval gate.
 
 ## Procurement Workflow
 
