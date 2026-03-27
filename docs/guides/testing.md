@@ -201,6 +201,40 @@ Each test should:
 - **Mock network**: Mock HTTP calls (network is external)
 - **Mock git commands**: If testing script behavior on different branches (git calls are slow)
 
+### 6. Harness-First Testing
+
+**Pattern**: Import the script as a module and call its functions directly with mocked dependencies, rather than invoking the script via subprocess and parsing stdout.
+
+**Rationale**: Direct imports surface errors immediately (via exception, not exit code), enable precise assertions on return values (not string parsing), and run faster (no process spawn overhead). Subprocess invocation is acceptable for integration tests that verify end-to-end CLI behavior, but unit tests should prefer the harness pattern.
+
+**Canonical example**:
+
+```python
+# Harness-first (preferred for unit tests)
+import importlib.util
+def test_check_branch_sync_behind(mocker):
+    spec = importlib.util.spec_from_file_location("check_branch_sync", "scripts/check_branch_sync.py")
+    module = importlib.util.module_from_spec(spec)
+    mocker.patch.object(module.subprocess, "run", side_effect=[
+        mocker.MagicMock(stdout="abc123\n", returncode=0),  # HEAD
+        mocker.MagicMock(stdout="def456 commit msg\n", returncode=0)  # origin/main ahead
+    ])
+    spec.loader.exec_module(module)
+    with pytest.raises(SystemExit) as exc:
+        module.main()
+    assert exc.value.code == 1
+
+# Subprocess invocation (acceptable for integration tests)
+def test_check_branch_sync_cli(tmp_repo):
+    result = subprocess.run(["uv", "run", "python", "scripts/check_branch_sync.py"], cwd=tmp_repo)
+    assert result.returncode == 0
+```
+
+**When to use each**:
+- **Unit tests**: Harness-first (import + mock dependencies)
+- **Integration tests**: Subprocess invocation (verify CLI contract)
+- **CI smoke tests**: Subprocess invocation (confirm script is executable)
+
 Examples:
 ```python
 # Good: Real file I/O
