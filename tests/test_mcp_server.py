@@ -485,6 +485,7 @@ class TestPruneScratchpad:
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.integration
 class TestDogmaServerImport:
     def test_server_importable(self):
         """dogma_server.py should import without error and expose mcp instance."""
