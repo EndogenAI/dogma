@@ -10,32 +10,32 @@ recommendations:
 - id: rec-agent-fleet-model-diversity-001
   title: 'Encode role-aligned model assignment in fleet agent files'
   status: deferred
-  linked_issue: null
+  linked_issue: 469
   decision_ref: ''
 - id: rec-agent-fleet-model-diversity-002
   title: 'Create data/deployment-registry.yml for multi-provider routing'
   status: deferred
-  linked_issue: null
+  linked_issue: 470
   decision_ref: ''
 - id: rec-agent-fleet-model-diversity-003
   title: 'Adopt JSONL as canonical format for multi-Scout batch handoffs'
   status: deferred
-  linked_issue: null
+  linked_issue: 471
   decision_ref: ''
 - id: rec-agent-fleet-model-diversity-004
   title: 'Add XML attribute convention for large document injection'
   status: deferred
-  linked_issue: null
+  linked_issue: 472
   decision_ref: ''
 - id: rec-agent-fleet-model-diversity-005
   title: 'Update data/task-type-classifier.yml with model-tier routing column'
   status: deferred
-  linked_issue: null
+  linked_issue: 473
   decision_ref: ''
 - id: rec-agent-fleet-model-diversity-006
   title: 'Track provider diversity in substrate health checks'
   status: deferred
-  linked_issue: null
+  linked_issue: 474
   decision_ref: ''
 ---
 
@@ -428,37 +428,37 @@ re-derived:
 
 ## 6. Recommendations
 
-1. **Encode role-aligned model assignment in fleet agent files.** Update Executive
-   Orchestrator, Executive Docs, and Executive Researcher files to explicitly specify
-   frontier-tier model selection. Update Research Scout, Env Validator, and structured
-   editing agents to specify mid-tier model selection. Add a `preferred_model_tier`
-   frontmatter field to `.agent.md` schema via the Fleet agent.
+1. **Encode role-aligned model assignment in fleet agent files.** update executive
+   orchestrator, executive docs, and executive researcher files to explicitly specify
+   frontier-tier model selection. update research scout, env validator, and structured
+   editing agents to specify mid-tier model selection. add a `preferred_model_tier`
+   frontmatter field to `.agent.md` schema via the fleet agent. (tracked in #469)
 
-2. **Create `data/deployment-registry.yml` for multi-provider routing.** Encode the
-   Anthropic Direct → Vertex AI failover pattern as a data file (litellm-style deployment
-   list). Reference in `docs/guides/local-compute.md` and in the rate-limit-resilience
-   skill. This closes the structural gap in `rate-limit-detection-api.md` §Revised
-   Mitigation Strategy.
+2. **Create `data/deployment-registry.yml` for multi-provider routing.** encode the
+   anthropic direct → vertex ai failover pattern as a data file (litellm-style deployment
+   list). reference in `docs/guides/local-compute.md` and in the rate-limit-resilience
+   skill. this closes the structural gap in `rate-limit-detection-api.md` §revised
+   mitigation strategy. (tracked in #470)
 
-3. **Adopt JSONL as the canonical format for multi-Scout batch handoffs.** Update
-   `docs/guides/session-management.md` and the session-management SKILL.md to specify JSONL
-   as the output format when 2+ subagents return concurrent findings. Add a JSONL schema
-   convention for scout output objects (`agent`, `source`, `confidence`, `finding`).
+3. **Adopt JSONL as the canonical format for multi-scout batch handoffs.** update
+   `docs/guides/session-management.md` and the session-management skill.md to specify jsonl
+   as the output format when 2+ subagents return concurrent findings. add a jsonl schema
+   convention for scout output objects (`agent`, `source`, `confidence`, `finding`). (tracked in #471)
 
-4. **Add XML attribute convention for large document injection.** Extend the adopted hybrid
+4. **Add XML attribute convention for large document injection.** extend the adopted hybrid
    pattern in `xml-agent-instruction-format.md` with an addendum covering attribute-based
-   document metadata (`index`, `source`, `type`, `relevance`). Target: any prompt injecting
-   ≥3 external documents. File as a minor amendment to Issue #12 follow-up.
+   document metadata (`index`, `source`, `type`, `relevance`). target: any prompt injecting
+   ≥3 external documents. file as a minor amendment to issue #12 follow-up. (tracked in #472)
 
-5. **Update `data/task-type-classifier.yml` with model-tier routing column.** The existing
+5. **Update `data/task-type-classifier.yml` with model-tier routing column.** the existing
    classifier (task type → amplification principle) should add a `model_tier` column
-   (frontier / mid / local) per task type. This encodes H1 of #413 as a data-driven
-   decision rather than an implied instruction in individual agent files.
+   (frontier / mid / local) per task type. this encodes h1 of #413 as a data-driven
+   decision rather than an implied instruction in individual agent files. (tracked in #473)
 
-6. **Track provider diversity configuration in substrate health checks.** Update
+6. **Track provider diversity configuration in substrate health checks.** update
    `scripts/check_substrate_health.py` to warn when the deployment registry contains only
-   one API key scope (monolithic provider configuration). A single-provider fleet has no
-   structural rate-limit resilience.
+   one api key scope (monolithic provider configuration). a single-provider fleet has no
+   structural rate-limit resilience. (tracked in #474)
 
 ---
 

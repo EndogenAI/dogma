@@ -79,6 +79,7 @@ def test_unknown_state_exits_1():
     assert "INVALID" in result.stderr
 
 
+@pytest.mark.io
 def test_missing_fsm_file_exits_2():
     """Nonexistent --fsm-file path returns exit code 2."""
     result = run_script(

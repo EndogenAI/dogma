@@ -26,6 +26,12 @@ rest gap between sub-delegations. Phase 3 depends on Phase 2 Delegation A output
 
 ## Phase Plan
 
+### Phase 0 — Workplan Review ⬜
+**Agent**: Review
+**Deliverables**: APPROVED verdict logged under `## Workplan Review Output` in scratchpad
+**Depends on**: workplan.md committed
+**Status**: Not started
+
 ### Phase 1 — Fleet Housekeeping ⬜
 **Agent**: Executive Fleet + Executive Docs
 **Issues**: #461, #349, #376, #343
@@ -36,7 +42,7 @@ rest gap between sub-delegations. Phase 3 depends on Phase 2 Delegation A output
 - Add `## Telemetry` section to session scratchpad schema (#343)
 - All changes pass `uv run python scripts/validate_agent_files.py --all`
 
-**Depends on**: nothing
+**Depends on**: Phase 0 — Workplan Review APPROVED
 **Rate-limit risk**: None — pure file edits
 **CI**: Tests, Auto-validate, Lint
 **Status**: Not started
@@ -54,7 +60,7 @@ rest gap between sub-delegations. Phase 3 depends on Phase 2 Delegation A output
 **Issues**: #413, #414, #311, #426
 **Deliverables**:
 - **Delegation A** (#413 + #414 — same domain, one Scout pass):
-  - `docs/research/agent-fleet-model-diversity.md` (Status: Final) covering agent fleet model diversity (#413)
+  - `docs/research/agent-fleet-model-diversity-and-structured-formats.md` (Status: Final) covering agent fleet model diversity (#413)
   - Multi-agent coordination patterns findings incorporated (#414) — may be same doc or companion doc
 - **Rate-limit rest gap**: 15–20 min between Delegation A and B (or end-of-session boundary)
 - **Delegation B** (#311 + #426 — lighter secondary research):

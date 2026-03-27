@@ -43,7 +43,21 @@ def load_fsm(fsm_file: str) -> dict:
         print(f"ERROR: FSM file not found: {fsm_file}", file=sys.stderr)
         sys.exit(2)
     with path.open() as f:
-        return yaml.safe_load(f)
+        try:
+            data = yaml.safe_load(f)
+        except yaml.YAMLError as e:
+            print(
+                f"ERROR: Failed to parse FSM YAML file {fsm_file}: {e}",
+                file=sys.stderr,
+            )
+            sys.exit(2)
+    if not isinstance(data, dict):
+        print(
+            f"ERROR: FSM YAML file {fsm_file} must contain a mapping at the top level.",
+            file=sys.stderr,
+        )
+        sys.exit(2)
+    return data
 
 
 def get_states(fsm_data: dict) -> dict:

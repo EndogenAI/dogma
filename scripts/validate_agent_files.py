@@ -708,7 +708,7 @@ def main() -> None:
         "--all",
         action="store_true",
         dest="scan_all",
-        help=(f"Scan every *.agent.md in {AGENTS_DIR}/ AND every SKILL.md in {SKILLS_DIR}/*/SKILL.md."),
+        help="Scan every *.agent.md in {AGENTS_DIR} recursively and every SKILL.md in {SKILLS_DIR}",
     )
     parser.add_argument(
         "--skills",

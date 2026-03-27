@@ -66,7 +66,9 @@ Stage 1 alone cannot detect:
 | **`check-readiness-matrix`** | pygrep pre-commit hook | Unguarded affirmation words in docs (see `.pre-commit-config.yaml` for the trigger list) | `git commit` boundary |
 | **`validate-synthesis`** | Python pre-commit hook | Incomplete D4 structure (missing Executive Summary, Pattern Catalog, Recommendations) | `git commit` boundary; `uv run python scripts/validate_synthesis.py` |
 | **`no-heredoc-writes`** | pygrep pre-commit hook | `cat >> file << 'EOF'` and `cat > file << 'EOF'` in `.py` and `.sh` files | `git commit` boundary |
-| **Structured output via `--output-format json`** | CLI flag enforced in `claude -p` print-mode invocations | Forces JSON-schema-validated output; rejects unstructured prose for single-query tasks | CI pipelines; `claude -p` print-mode commands |
+| **Structured-output gate (`--output-format json`)** | CLI flag + deterministic JSON-schema validator (reuses the primary task LLM invocation; no additional models) | Forces JSON-schema-validated output; rejects unstructured prose for single-query tasks | CI pipelines; `claude -p` print-mode commands |
+
+> **Note**: L1 guardrails never introduce *additional* LLM/classifier invocations beyond the primary task model call. For the structured-output gate, only the JSON-schema validator is part of L1; the LLM run it validates is the task itself, not a separate guardrail model.
 
 ### L1 → L2 Escalation Path
 
