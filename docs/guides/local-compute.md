@@ -91,13 +91,16 @@ Use the **Auto** model selection in VS Code Copilot Chat to get ~10% token savin
 
 ---
 
-## Strategy C: Locally Networked Compute
+## Strategy D: Deployment Registry & Multi-Provider Routing
 
-If you have access to a machine with a capable GPU (e.g., Apple Silicon M-series):
+**Structural Resilience Control**: To mitigate rate limits and provider outages, the repository uses a multi-provider routing strategy. Instead of a single API key, agents can route requests through a **deployment registry** that includes primary and fallback providers.
 
-1. Install Ollama or LM Studio on the powerful machine
-2. Expose the API on the local network (e.g., `OLLAMA_HOST=0.0.0.0 ollama serve`)
-3. Point VS Code on your development machine to the network address
+- **Source**: [`docs/research/agent-fleet-model-diversity-and-structured-formats.md`](../research/agent-fleet-model-diversity-and-structured-formats.md) § Recommendation 2
+- **Implementation**: [`data/deployment-registry.yml`](../../data/deployment-registry.yml)
+
+The registry encodes a **deployment-level cooldown pattern** (LiteLLM-style). When a request to a provider (e.g., Anthropic Direct) returns a 429 Rate Limit error, the orchestrator cools down that deployment and immediately routes the next request to a healthy alternative (e.g., Vertex AI). This ensures that sessions proceed without sleepy retries or manual intervention.
+
+For more on rate-limit mitigation, see the [`rate-limit-resilience` skill](../../.github/skills/rate-limit-resilience/SKILL.md).
 
 VS Code has **native MCP server support** (1.103+): configure servers in `.vscode/mcp.json` and they are automatically available in chat.
 

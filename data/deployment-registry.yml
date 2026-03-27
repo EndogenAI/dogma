@@ -1,0 +1,22 @@
+# Deployment Registry (LiteLLM-style)
+# Generated: 2026-03-27
+# Source: docs/research/agent-fleet-model-diversity-and-structured-formats.md § Recommendation 2
+# Governance: docs/guides/local-compute.md (Structural Resilience Control)
+
+deployments:
+  - model_name: sonnet-4
+    litellm_params:
+      model: anthropic/claude-3-7-sonnet-20250219
+      api_key: os.environ/ANTHROPIC_API_KEY
+    resilience:
+      primary: true
+      cooldown: 5
+
+  - model_name: sonnet-4
+    litellm_params:
+      model: vertex_ai/claude-3-7-sonnet@20250219
+      vertex_project: os.environ/VERTEX_PROJECT
+      vertex_location: us-central1
+    resilience:
+      fallback: true
+      cooldown: 5
