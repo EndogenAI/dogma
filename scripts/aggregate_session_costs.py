@@ -34,6 +34,7 @@ import json
 import sys
 from collections import defaultdict
 from datetime import date, datetime
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
@@ -50,7 +51,7 @@ SOURCE_BOUNDARY = {
 OUTPUT_BOUNDARY = "Grouped aggregate data for later Phase 2 seeding only; no Phase 2 side effects."
 ROLE_OUTPUT_BOUNDARY = "Grouped role metrics only: agent_role, tokens_in, tokens_out, record_count; no extra metrics."
 
-KNOWN_AGENT_ROLES = {
+FALLBACK_AGENT_ROLES = {
     "executive-orchestrator",
     "executive-docs",
     "executive-researcher",
@@ -62,6 +63,18 @@ KNOWN_AGENT_ROLES = {
     "github",
     "review",
 }
+
+
+@lru_cache(maxsize=1)
+def known_agent_roles() -> set[str]:
+    """Load known agent slugs from .github/agents, with a stable fallback set."""
+    agents_dir = Path(__file__).resolve().parent.parent / ".github" / "agents"
+    discovered_roles = {
+        path.name.removesuffix(".agent.md")
+        for path in agents_dir.glob("*.agent.md")
+        if path.is_file() and path.name.endswith(".agent.md")
+    }
+    return discovered_roles or set(FALLBACK_AGENT_ROLES)
 
 
 def parse_date_arg(raw_value: str | None, flag_name: str) -> date | None:
@@ -87,7 +100,7 @@ def record_date(record: dict[str, Any]) -> date:
 def derive_agent_role(session_id: str) -> str:
     """Derive agent role from session_id path prefix; unknown prefixes map to unknown."""
     role_candidate = session_id.split("/", 1)[0].strip().lower()
-    return role_candidate if role_candidate in KNOWN_AGENT_ROLES else "unknown"
+    return role_candidate if role_candidate in known_agent_roles() else "unknown"
 
 
 def aggregate_records(

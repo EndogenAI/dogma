@@ -10,7 +10,7 @@ with a docstring describing its purpose, inputs, outputs, and usage examples.
 
 ```
 scripts/
-  aggregate_session_costs.py     # Lean Phase 1 baseline-data aggregation — reads exact six-field session_cost_log records, applies inclusive date filters, groups by model and phase, writes JSON to stdout only (closes #480)
+  aggregate_session_costs.py     # Lean Phase 1 baseline-data aggregation — reads exact six-field session_cost_log records, applies inclusive date filters, groups by model and phase, writes JSON to stdout only
   capability_gate.py           # Runtime capability gates and audit logging — decorator-based access control for privileged operations (github_api, etc.) with JSONL audit log
   prune_scratchpad.py          # Cross-agent scratchpad session file manager (--init, --annotate, --force, --append-summary, --check-only)
   watch_scratchpad.py          # File watcher — auto-annotates .tmp/*.md on change (uses watchdog)
@@ -36,7 +36,7 @@ scripts/
   seed_labels.py               # Idempotent GitHub label seeder — reads data/labels.yml and syncs via gh label create --force (--dry-run, --delete-legacy)
   seed_action_items.py         # Seed GitHub issues from action items extracted from research docs
   seed_research_recommendations.py # Read research doc frontmatter and batch-create tracking issues via bulk_github_operations.py (--input, --milestone, --default-area, --critical-ids, --output, --dry-run)
-  session_cost_log.py          # Append canonical six-field session-cost records to session_cost_log.json; accepted Phase 1 source substrate for baseline aggregation (closes #481)
+  session_cost_log.py          # Append canonical six-field session-cost records to session_cost_log.json; accepted Phase 1 source substrate for baseline aggregation
   fetch_toolchain_docs.py      # Cache gh CLI help output as structured Markdown under .cache/toolchain/ (--check, --force, --dry-run)
   wait_for_unblock.py          # Poll a GitHub issue until status:blocked is removed; writes trigger file on exit 0 (--issue, --interval, --timeout, --dry-run)
   wait_for_github_run.py       # Poll a GitHub Actions run until completion; exits 0 on success, 1 on failure
@@ -226,6 +226,20 @@ uv run python scripts/session_cost_log.py \
   --phase "Phase 1" \
   --timestamp 2026-03-27T16:00:00Z
 ```
+
+```bash
+# Route writes away from repo root (used by tests/CI)
+SESSION_COST_LOG_FILE=/tmp/session_cost_log.json \
+uv run python scripts/session_cost_log.py \
+  --session feat/example/2026-03-27 \
+  --model gpt-5.4 \
+  --tokens-in 1200 \
+  --tokens-out 600 \
+  --phase "Phase 1" \
+  --timestamp 2026-03-27T16:00:00Z
+```
+
+**Path precedence**: `--log-file` argument (if provided) overrides `SESSION_COST_LOG_FILE`; otherwise the env var is used; if neither is set, the default file is `session_cost_log.json` in the current working directory.
 
 **Accepted source boundary**: Only exact six-field records from this script are valid input to Phase 1 aggregation. Malformed, partial, or expanded records are outside the accepted baseline source.
 

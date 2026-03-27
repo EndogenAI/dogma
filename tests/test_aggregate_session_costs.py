@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from scripts.aggregate_session_costs import aggregate_log, main
+from scripts.aggregate_session_costs import aggregate_log, derive_agent_role, main
 from scripts.session_cost_log import REQUIRED_RECORD_KEYS, log_session_cost, read_log
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -123,6 +123,14 @@ def test_aggregate_log_role_mode_groups_known_and_unknown_roles(tmp_path):
     assert all(
         set(group.keys()) == {"agent_role", "record_count", "tokens_in", "tokens_out"} for group in payload["groups"]
     )
+
+
+def test_derive_agent_role_uses_dynamic_known_role_set(monkeypatch):
+    """Role derivation should honor dynamically discovered/loaded agent slugs."""
+    monkeypatch.setattr("scripts.aggregate_session_costs.known_agent_roles", lambda: {"research-scout"})
+
+    assert derive_agent_role("research-scout/session-1") == "research-scout"
+    assert derive_agent_role("manual-runner/session-2") == "unknown"
 
 
 @pytest.mark.io
