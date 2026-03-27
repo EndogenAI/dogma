@@ -995,7 +995,7 @@ Heredocs (`cat >> file << 'EOF'`, Python inline `<< 'PYEOF'`) silently corrupt o
 ## Documentation Standards
 
 - **What Lives Where**: `docs/guides/` for procedures; `docs/toolchain/` for CLI references; `docs/research/` for syntheses; `docs/plans/` for workplans.
-- **Writing Standards**: Use clear, concise Markdown. Link to related docs, agents, and scripts by relative path. Research docs must distinguish between "established fact", "working hypothesis", and "open question".
+- **Writing Standards**: Use clear, concise Markdown. Link to related docs, agents, and scripts by relative path. Research docs must distinguish between "established fact", "working hypothesis", and "open question". For civic-tech patterns and participatory frameworks, see [`docs/research/civic-tech-patterns.md`](docs/research/civic-tech-patterns.md).
 - **D4 Synthesis Format**: Research outputs must follow the D4 (Distributed Dogma Discovery & Distillation) schema:
   - **Pass 1**: Per-source synthesis reports in `docs/research/sources/`. One file per surveyed source; standard synthesis note conventions: citation, research question, framework, methodology, key claims with quotes, critical assessment, cross-source connections, and project relevance.
   - **Pass 3**: Issue-level synthesis in `docs/research/`. Draws conclusions across all per-source synthesis documents for the issue.
