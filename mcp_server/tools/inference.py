@@ -102,7 +102,9 @@ def route_inference_request(
 
     # Find providers that support this model_id, preferring local providers first
     candidates = [p for p in providers if model_id in p.get("model_ids", [])]
-    candidates.sort(key=lambda p: (not p.get("local", False), p.get("cost_tier", "high")))
+    # Map cost tiers to numeric ranks for correct sorting (free < low < medium < high)
+    cost_rank = {"free": 0, "low": 1, "medium": 2, "high": 3}
+    candidates.sort(key=lambda p: (not p.get("local", False), cost_rank.get(p.get("cost_tier", "high"), 3)))
 
     if not candidates:
         return {

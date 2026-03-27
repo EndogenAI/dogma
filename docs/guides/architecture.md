@@ -8,7 +8,7 @@ This document records key architectural choices for the EndogenAI Workflows proj
 
 **Status**: Active  
 **Decided**: Sprint 21 (March 2026)  
-**Closes**: [#429](https://github.com/cagostino/dogma/issues/429)
+**Closes**: [#429](https://github.com/EndogenAI/dogma/issues/429)
 
 ### Decision
 

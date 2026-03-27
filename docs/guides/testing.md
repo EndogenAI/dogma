@@ -212,14 +212,17 @@ Each test should:
 ```python
 # Harness-first (preferred for unit tests)
 import importlib.util
+import subprocess
+import pytest
+
 def test_check_branch_sync_behind(mocker):
     spec = importlib.util.spec_from_file_location("check_branch_sync", "scripts/check_branch_sync.py")
     module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
     mocker.patch.object(module.subprocess, "run", side_effect=[
         mocker.MagicMock(stdout="abc123\n", returncode=0),  # HEAD
         mocker.MagicMock(stdout="def456 commit msg\n", returncode=0)  # origin/main ahead
     ])
-    spec.loader.exec_module(module)
     with pytest.raises(SystemExit) as exc:
         module.main()
     assert exc.value.code == 1
