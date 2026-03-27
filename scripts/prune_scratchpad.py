@@ -217,7 +217,19 @@ def init_session_file(path: Path) -> None:
         f"## Session State\n\n"
         f"```yaml\n"
         f"{yaml_block}"
-        f"```\n"
+        f"```\n\n"
+        f"## Audit Trail\n\n"
+        f"<!-- Log each agent action: agent name | decision | justification | timestamp -->\n"
+        f"| Agent | Decision | Justification | Time |\n"
+        f"|-------|----------|--------------|------|\n\n"
+        f"## Telemetry\n\n"
+        f"<!-- Update at each phase gate -->\n"
+        f"| Metric | Value |\n"
+        f"|--------|-------|\n"
+        f"| Phases complete | 0 |\n"
+        f"| Delegations made | 0 |\n"
+        f"| Rate-limit events | 0 |\n"
+        f"| Estimated tokens used | 0 |\n"
     )
     print(f"Initialised new session file: {path}")
 

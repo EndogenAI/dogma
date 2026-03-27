@@ -45,69 +45,85 @@ Follows the **programmatic-first** principle from [`AGENTS.md`](../../AGENTS.md)
 
 ### All Changes
 
-- [ ] Changed files are within the stated scope of the delegating agent.
-- [ ] No secrets, API keys, or credentials introduced.
-- [ ] No lockfile edits by hand.
-- [ ] Commit message (if draft provided) follows Conventional Commits.
+1. Changed files are within the stated scope of the delegating agent — PASS/FAIL
+2. No secrets, API keys, or credentials introduced — PASS/FAIL
+3. No lockfile edits by hand — PASS/FAIL
+4. Commit message (if draft provided) follows Conventional Commits — PASS/FAIL
+
+Return: APPROVED or REQUEST CHANGES — [criterion number: one-line reason]
 
 ### Agent Files (`.agent.md`)
 
-- [ ] `name` is unique across all agent files.
-- [ ] `description` is ≤ 200 characters.
-- [ ] `tools` is the minimum set for the agent's posture.
-- [ ] All `handoffs[].agent` values resolve to an existing agent `name`.
-- [ ] Body follows the required four-section structure: role statement, endogenous sources, workflow, guardrails.
-- [ ] At least one handoff exists.
+1. `name` is unique across all agent files — PASS/FAIL
+2. `description` is ≤ 200 characters — PASS/FAIL
+3. `tools` is the minimum set for the agent's posture — PASS/FAIL
+4. All `handoffs[].agent` values resolve to an existing agent `name` — PASS/FAIL
+5. Body follows the required four-section structure: role statement, endogenous sources, workflow, guardrails — PASS/FAIL
+6. At least one handoff exists — PASS/FAIL
+
+Return: APPROVED or REQUEST CHANGES — [criterion number: one-line reason]
 
 ### Documentation Changes
 
-- [ ] No guiding axiom or guardrail has been silently removed.
-- [ ] Changes to `MANIFESTO.md` have explicit user instruction recorded.
-- [ ] Cross-references to other docs are valid.
-- [ ] Consistent voice and formatting with surrounding content.
+1. No guiding axiom or guardrail has been silently removed — PASS/FAIL
+2. Changes to `MANIFESTO.md` have explicit user instruction recorded — PASS/FAIL
+3. Cross-references to other docs are valid — PASS/FAIL
+4. Consistent voice and formatting with surrounding content — PASS/FAIL
+
+Return: APPROVED or REQUEST CHANGES — [criterion number: one-line reason]
 
 ### Workplan Files (`docs/plans/*.md`)
 
-- [ ] Cross-cutting research issues (informing ≥ 2 implementation phases) are placed in Phase 2 — not mid-sprint or late-sprint.
-- [ ] No cross-cutting research issue is annotated as "parallel with" any implementation phase it informs.
-- [ ] Phase-specific research issues (informing exactly 1 phase) are placed immediately before (Phase N−1) the phase they inform.
-- [ ] Guidance-providing documentation phases (encoding agent/workflow conventions, not retrospective docs) precede the phases that rely on that guidance.
-- [ ] If both cross-cutting research and guidance docs compete for the earliest phases, the chicken-and-egg resolution decision is recorded in the workplan's Objective section.
-- [ ] Every implementation phase that depends on prior research or docs has an explicit `Depends on:` annotation referencing those phases.
-- [ ] Phase status markers (`⬜`, `✅`) present for every phase.
-- [ ] Acceptance criteria present and use `- [ ]` / `- [x]` checkbox format.
+1. Cross-cutting research issues (informing ≥ 2 implementation phases) are placed in Phase 2 — not mid-sprint or late-sprint — PASS/FAIL
+2. No cross-cutting research issue is annotated as "parallel with" any implementation phase it informs — PASS/FAIL
+3. Phase-specific research issues (informing exactly 1 phase) are placed immediately before (Phase N−1) the phase they inform — PASS/FAIL
+4. Guidance-providing documentation phases precede the phases that rely on that guidance — PASS/FAIL
+5. Chicken-and-egg resolution (if both cross-cutting research and guidance docs compete for earliest phases) is recorded in the workplan's Objective section — PASS/FAIL
+6. Every implementation phase that depends on prior research or docs has an explicit `Depends on:` annotation referencing those phases — PASS/FAIL
+7. Phase status markers (`⬜`, `✅`) present for every phase — PASS/FAIL
+8. Acceptance criteria present and use `- [ ]` / `- [x]` checkbox format — PASS/FAIL
+
+Return: APPROVED or REQUEST CHANGES — [criterion number: one-line reason]
 
 ### Script Changes
 
-- [ ] Script opens with a module docstring (purpose, inputs, outputs, usage, exit codes).
-- [ ] `--dry-run` flag present for any script that writes or deletes files.
-- [ ] `uv run` invocation confirmed in docstring.
-- [ ] Entry in `scripts/README.md` updated.
-- [ ] **Coverage enforcement**: new scripts have corresponding tests; coverage gate (`--cov-fail-under=80`) enforced in CI — flag any PR that adds a script without tests.
-- [ ] **Mock pattern consistency**: `mocker.patch` (from `pytest-mock`) used consistently — flag any new test that uses `@patch` decorator or `unittest.mock.patch` directly when `mocker` is available.
-- [ ] **Subprocess mocking**: tests that invoke subprocesses use `pytest-subprocess` or mock `subprocess.run`/`subprocess.check_call` directly — no real subprocess calls in unit tests.
-- [ ] **Marker correctness**: every test that does file I/O has `@pytest.mark.io`; every test with network calls has `@pytest.mark.integration`.
+1. Script opens with a module docstring (purpose, inputs, outputs, usage, exit codes) — PASS/FAIL
+2. `--dry-run` flag present for any script that writes or deletes files — PASS/FAIL
+3. `uv run` invocation confirmed in docstring — PASS/FAIL
+4. Entry in `scripts/README.md` updated — PASS/FAIL
+5. New scripts have corresponding tests; coverage gate (`--cov-fail-under=80`) enforced in CI — PASS/FAIL
+6. `mocker.patch` (from `pytest-mock`) used consistently — no `@patch` decorator or `unittest.mock.patch` directly when `mocker` is available — PASS/FAIL
+7. Tests that invoke subprocesses use `pytest-subprocess` or mock `subprocess.run`/`subprocess.check_call` directly — no real subprocess calls in unit tests — PASS/FAIL
+8. Every test that does file I/O has `@pytest.mark.io`; every test with network calls has `@pytest.mark.integration` — PASS/FAIL
+
+Return: APPROVED or REQUEST CHANGES — [criterion number: one-line reason]
 
 ### Skill Files (`.github/skills/*/SKILL.md`)
 
-- [ ] YAML frontmatter present with `name` and `description`.
-- [ ] Run `uv run python scripts/validate_agent_files.py --skills` — confirm zero errors.
-- [ ] At least one MANIFESTO.md axiom cited in the body.
-- [ ] `AGENTS.md` governance constraint cited in the first substantive section.
+1. YAML frontmatter present with `name` and `description` — PASS/FAIL
+2. `uv run python scripts/validate_agent_files.py --skills` exits 0 — PASS/FAIL
+3. At least one MANIFESTO.md axiom cited in the body — PASS/FAIL
+4. `AGENTS.md` governance constraint cited in the first substantive section — PASS/FAIL
+
+Return: APPROVED or REQUEST CHANGES — [criterion number: one-line reason]
 
 ### D4 Research Documents (`docs/research/*.md`)
 
-- [ ] For each new or updated D4 doc with `status: Final`: every item in `## Recommendations` is either (a) linked to a GitHub issue (`#NNN` appears in the recommendation text or elsewhere in the PR), or (b) explicitly marked as intentionally deferred with inline rationale in the doc.
-- [ ] For each new or updated D4 doc: every actionable item in `## Open Questions` (containing "ADOPT", "IMPLEMENT", "UPDATE", or other imperative verbs) either has a `#NNN` issue reference or an explicit deferral note.
-- [ ] No `## Recommendations` heading is followed by an "ADOPT" / "IMPLEMENT" / "UPDATE" statement that has no corresponding `#NNN` anywhere in the PR context. Use `grep -n 'ADOPT\|IMPLEMENT\|UPDATE' docs/research/<file>.md` to enumerate items quickly.
-- [ ] PR body or a session comment lists every new issue seeded from this PR's research recommendations, using `Closes #NNN` for issues the PR directly resolves. *(Implements the Research Doc PR Merge Gate from [`AGENTS.md`](../../AGENTS.md))*
+1. Every item in `## Recommendations` (status: Final docs) is either linked to a GitHub issue (`#NNN`) or explicitly marked as intentionally deferred with inline rationale — PASS/FAIL
+2. Every actionable item in `## Open Questions` (containing "ADOPT", "IMPLEMENT", "UPDATE") either has a `#NNN` issue reference or an explicit deferral note — PASS/FAIL
+3. No `## Recommendations` heading is followed by an "ADOPT" / "IMPLEMENT" / "UPDATE" statement with no corresponding `#NNN` in the PR context — PASS/FAIL
+4. PR body or session comment lists every new issue seeded from this PR's research recommendations, using `Closes #NNN` for directly resolved issues — PASS/FAIL
+
+Return: APPROVED or REQUEST CHANGES — [criterion number: one-line reason]
 
 ### Pre-commit Gate Compliance
 
-- [ ] `uv run pre-commit run --all-files` passes without errors (or the agent confirms hooks ran clean on the changed files).
-- [ ] If `.github/agents/*.agent.md` changed: `uv run python scripts/detect_drift.py --agents-dir .github/agents/ --format summary --fail-below 0.33` exits 0.
-- [ ] If `.github/skills/*/SKILL.md` changed: `uv run python scripts/validate_agent_files.py --skills` exits 0.
-- [ ] If `lychee` dead-link CI failure anticipated: confirm the URL is in `.lycheeignore` (with a dated comment) or that the link is genuinely reachable.
+1. `uv run pre-commit run --all-files` passes without errors — PASS/FAIL
+2. If `.github/agents/*.agent.md` changed: `uv run python scripts/detect_drift.py --agents-dir .github/agents/ --format summary --fail-below 0.33` exits 0 — PASS/FAIL
+3. If `.github/skills/*/SKILL.md` changed: `uv run python scripts/validate_agent_files.py --skills` exits 0 — PASS/FAIL
+4. If `lychee` dead-link CI failure anticipated: URL is in `.lycheeignore` (with a dated comment) or is genuinely reachable — PASS/FAIL
+
+Return: APPROVED or REQUEST CHANGES — [criterion number: one-line reason]
 
 ---
 

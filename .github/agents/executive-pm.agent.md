@@ -8,7 +8,6 @@ tools:
   - write
   - execute
   - terminal
-  - usages
   - changes
   - agent
 handoffs:

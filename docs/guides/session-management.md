@@ -69,7 +69,38 @@ At the beginning of every session, initialize today's scratchpad file:
 uv run python scripts/prune_scratchpad.py --init
 ```
 
-This creates `.tmp/<branch-slug>/<today>.md` if it does not exist. If it already exists (e.g., resuming a session), the file is unchanged.
+This creates `.tmp/<branch-slug>/<today>.md` if it does not exist. If it already exists (e.g., resuming a session), the file is unchanged. The initialised file includes three pre-populated sections: `## Session State` (YAML), `## Audit Trail`, and `## Telemetry`.
+
+### `## Audit Trail` section
+
+The `## Audit Trail` section is a Markdown table that records every agent action taken during the session. It is written once per agent decision — not per task — to maintain an auditable, human-readable record of what ran, why, and when.
+
+**Required fields**:
+
+| Field | Meaning |
+|-------|---------|
+| Agent | Name of the agent that acted (e.g., `Executive Docs`, `Research Scout`) |
+| Decision | One-line description of the action taken (e.g., "Edited docs/guides/session-management.md") |
+| Justification | The axiom, instruction, or issue number that motivated the action |
+| Time | Approximate time or phase marker (e.g., `Phase 1`, `10:42`) |
+
+**Example row**:
+
+```markdown
+| Executive Docs | Added `## Audit Trail` section to scratchpad init template | Resolves #376 — closes acceptance criterion 3 | Phase 1 |
+```
+
+Append a new row after each non-trivial agent action. The Audit Trail is consumed by the Executive at session close to verify phase sequence and produce the Session Summary.
+
+### `## Telemetry` section
+
+The `## Telemetry` section is a lightweight metrics table, pre-populated with zero values by `--init`. Update it at each phase gate to track session cost and throughput.
+
+Update the table by incrementing the relevant counter after each phase gate:
+- **Phases complete**: increment by 1 each time a phase closes
+- **Delegations made**: increment by 1 each time a subagent is invoked
+- **Rate-limit events**: increment if `rate_limit_gate.py` returns `safe: false`
+- **Estimated tokens used**: update from provider usage stats when available
 
 Also start the scratchpad watcher so H2 headings stay annotated automatically:
 

@@ -727,7 +727,7 @@ def main() -> None:
     skill_targets: list[Path] = []
 
     if args.scan_all:
-        agent_targets = sorted(AGENTS_DIR.glob("*.agent.md"))
+        agent_targets = sorted(AGENTS_DIR.glob("**/*.agent.md"))
         skill_targets = sorted(SKILLS_DIR.glob("*/SKILL.md"))
     elif args.scan_skills:
         skill_targets = sorted(SKILLS_DIR.glob("*/SKILL.md"))
@@ -764,7 +764,10 @@ def main() -> None:
             _text = file_path.read_text(encoding="utf-8")
             _tools = extract_tools_list(_text)
             _warnings = manifesto_warnings(_text)
-            _warnings.extend(check_tool_count_ceiling(_tools))
+            # executive-orchestrator is exempt from Miller's Law tool-count ceiling:
+            # it spans MCP + VS Code tooling and has genuinely broad scope (Issue #461).
+            if file_path.name != "executive-orchestrator.agent.md":
+                _warnings.extend(check_tool_count_ceiling(_tools))
             _warnings.extend(check_approval_gate_presence(_text, _tools))
             for w in _warnings:
                 print(f"      ⚠ {w}")
