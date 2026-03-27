@@ -46,9 +46,8 @@ def check_file_content(filepath: Path) -> List[Tuple[int, str]]:
 
     try:
         content = filepath.read_text(encoding="utf-8")
-    except Exception as e:
-        print(f"Warning: Could not read {filepath}: {e}", file=sys.stderr)
-        return []
+    except Exception:
+        raise
 
     lines = content.split("\n")
 
@@ -115,9 +114,9 @@ def main():
 
     args = parser.parse_args()
 
-    # Default to scripts/ and docs/ if no paths provided
+    # Default to scripts/, docs/, and .github/ if no paths provided
     if not args.paths:
-        paths = [Path("scripts"), Path("docs")]
+        paths = [Path("scripts"), Path("docs"), Path(".github")]
     else:
         paths = args.paths
 

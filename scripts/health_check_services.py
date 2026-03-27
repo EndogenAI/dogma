@@ -196,7 +196,8 @@ def check_inference_providers(
             # Check if local endpoint is reachable (simple GET)
             try:
                 response = requests.get(endpoint, timeout=timeout)
-                if response.status_code in (200, 404):  # 404 is OK for base URLs
+                # Include 401/403/405 as "reachable" - provider is up but expects POST/auth
+                if response.status_code in (200, 404, 401, 403, 405):
                     provider_entry["status"] = "available"
                     provider_entry["message"] = f"Reachable ({response.status_code})"
                 else:

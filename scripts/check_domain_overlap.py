@@ -75,7 +75,7 @@ def get_open_prs() -> List[Dict[str, str]]:
         print(f"Error fetching open PRs: {e}", file=sys.stderr)
         sys.exit(2)
     except FileNotFoundError:
-        print("Error: gh CLI not found. Install via 'brew install gh'", file=sys.stderr)
+        print("Error: gh CLI not found. Install GitHub CLI from https://cli.github.com/", file=sys.stderr)
         sys.exit(2)
 
 

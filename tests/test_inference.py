@@ -48,7 +48,7 @@ providers:
 @pytest.fixture
 def mock_providers_yaml():
     """Mock the providers YAML file."""
-    with patch("builtins.open", mock_open(read_data=SAMPLE_PROVIDERS_YAML)):
+    with patch("pathlib.Path.open", mock_open(read_data=SAMPLE_PROVIDERS_YAML)):
         with patch("pathlib.Path.exists", return_value=True):
             yield
 
