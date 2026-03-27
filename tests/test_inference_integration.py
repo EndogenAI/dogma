@@ -47,6 +47,7 @@ def test_health_check_local_providers():
         capture_output=True,
         text=True,
         timeout=10,
+        cwd=Path(__file__).parent.parent,
     )
 
     assert result.returncode == 0, f"health_check_services.py failed: {result.stderr}"
@@ -63,12 +64,12 @@ def test_health_check_local_providers():
 
 
 @pytest.mark.integration
-def test_route_and_respond():
-    """Verify route_inference_request can route to a local model."""
+def test_route_local_model_routing_only():
+    """Verify route_inference_request routes to a local provider and sets routing metadata (no inference)."""
     result = route_inference_request(prompt="hello", model_id="phi3:mini", max_tokens=50, temperature=0.7)
 
     assert result["ok"] is True, f"route_inference_request failed: {result.get('errors')}"
-    assert "response" in result, "Expected 'response' field in result"
+    assert "response" in result, "Expected 'response' key in result (may be None for routing-only)"
     assert result["provider"] is not None, "Expected provider to be set"
     assert result["local"] is True, "Expected local provider for phi3:mini"
 

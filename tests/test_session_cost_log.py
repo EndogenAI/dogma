@@ -1,6 +1,7 @@
 """Tests for scripts/session_cost_log.py"""
 
 import json
+import os
 import subprocess
 from pathlib import Path
 
@@ -133,10 +134,11 @@ def test_invalid_input_missing_field():
 
 
 @pytest.mark.io
-def test_cli_success(tmp_path, monkeypatch):
-    """CLI writes record successfully."""
+def test_cli_success(tmp_path):
+    """CLI writes record successfully when SESSION_COST_LOG_FILE env var is set."""
     log_file = tmp_path / "session_cost_log.json"
-    monkeypatch.setattr("scripts.session_cost_log.LOG_FILE", log_file)
+    env = os.environ.copy()
+    env["SESSION_COST_LOG_FILE"] = str(log_file)
 
     result = subprocess.run(
         [
@@ -160,10 +162,12 @@ def test_cli_success(tmp_path, monkeypatch):
         capture_output=True,
         text=True,
         cwd=Path(__file__).parent.parent,
+        env=env,
     )
 
     assert result.returncode == 0
     assert "Logged session cost" in result.stdout
+    assert log_file.exists(), "Log file should be written to SESSION_COST_LOG_FILE path"
 
 
 @pytest.mark.io
