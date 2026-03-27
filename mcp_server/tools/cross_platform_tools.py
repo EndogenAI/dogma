@@ -24,7 +24,7 @@ Usage:
 from __future__ import annotations
 
 import os
-from pathlib import Path
+from typing import Any
 
 __all__ = [
     "normalize_path",
@@ -47,10 +47,11 @@ def normalize_path(path_str: str) -> str:
         Symlinks are NOT resolved — use pathlib.Path.resolve() if needed.
     """
     expanded = os.path.expandvars(path_str)
-    return str(Path(expanded))
+    # Use abspath + normpath to match suggestion and OS expectations
+    return os.path.abspath(os.path.normpath(expanded))
 
 
-def resolve_env_path(key: str, default: str = "") -> str:
+def resolve_env_path(key: str, default: str = "") -> dict[str, Any]:
     """Read an environment variable expected to hold a path and normalize it.
 
     If the variable is set and non-empty, expands and normalizes its value via
@@ -61,9 +62,13 @@ def resolve_env_path(key: str, default: str = "") -> str:
         default: Value to return when the variable is not set or is empty.
 
     Returns:
-        Normalized path string, or `default` if the variable is absent/empty.
+        Dict following {ok, errors, result} contract.
     """
     raw = os.environ.get(key, "")
     if not raw:
-        return default
-    return normalize_path(raw)
+        return {"ok": True, "errors": [], "result": default}
+    try:
+        norm = normalize_path(raw)
+        return {"ok": True, "errors": [], "result": norm}
+    except Exception as exc:
+        return {"ok": False, "errors": [str(exc)], "result": ""}

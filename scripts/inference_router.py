@@ -65,7 +65,10 @@ def load_providers(config_path: Path = _DEFAULT_CONFIG) -> list[dict[str, Any]]:
             f"Inference providers config not found: {config_path}\nExpected: data/inference-providers.yml"
         )
     with config_path.open() as fh:
-        data = yaml.safe_load(fh)
+        try:
+            data = yaml.safe_load(fh)
+        except yaml.YAMLError as exc:
+            raise ValueError(f"Malformed YAML in {config_path}: {exc}") from exc
     if not isinstance(data, dict) or "providers" not in data:
         raise ValueError(f"Config file {config_path} must contain a top-level 'providers:' list.")
     return data["providers"]
@@ -208,10 +211,12 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         if args.fallback:
+            import json
+
             providers = load_providers(config_path)
             provider_names = [p["name"] for p in providers]
             result = call_with_fallback(args.prompt, provider_names, config_path)
-            print(f"Provider: {result['provider']} (attempts: {result['attempts']})")
+            print(json.dumps(result, indent=2))
         else:
             name = route(args.prompt, args.provider, config_path)
             print(f"Route to: {name}")

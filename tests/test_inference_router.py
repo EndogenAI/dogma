@@ -184,6 +184,7 @@ def test_call_with_fallback_empty_list_raises(router, provider_config):
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.io
 def test_route_raises_on_empty_providers(router, tmp_path):
     """ValueError raised when providers list in YAML is empty."""
     config_file = tmp_path / "empty.yml"
@@ -232,8 +233,8 @@ def test_cli_missing_config(router, tmp_path, capsys):
 
 @pytest.mark.io
 def test_cli_fallback_flag(router, provider_config, capsys):
-    """CLI --fallback runs full fallback chain and prints provider."""
+    """CLI --fallback runs full fallback chain and prints JSON result."""
     rc = router.main(["--prompt", "hi", "--config", str(provider_config), "--fallback"])
     assert rc == 0
     captured = capsys.readouterr()
-    assert "Provider:" in captured.out
+    assert '"provider": "local-test"' in captured.out

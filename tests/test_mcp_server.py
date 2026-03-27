@@ -493,8 +493,8 @@ class TestDogmaServerImport:
         mod = importlib.import_module("mcp_server.dogma_server")
         assert hasattr(mod, "mcp"), "Expected 'mcp' FastMCP instance"
 
-    def test_server_registers_nine_tools(self):
-        """The mcp server should register exactly 9 tools."""
+    def test_server_registers_eleven_tools(self):
+        """The mcp server should register exactly 11 tools."""
         import importlib
 
         mod = importlib.import_module("mcp_server.dogma_server")

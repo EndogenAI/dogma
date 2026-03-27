@@ -75,10 +75,14 @@ def _is_bullets(text: str) -> bool:
 
 
 def _is_table(text: str) -> bool:
-    """Return True if text contains at least one Markdown table row (| ... |)."""
+    """Return True if text contains at least one Markdown table row (| ... |) and a separator row."""
     lines = [line.strip() for line in text.strip().splitlines() if line.strip()]
     table_rows = [row for row in lines if row.startswith("|") and row.endswith("|")]
-    return len(table_rows) >= 2  # header + at least one data row
+    if len(table_rows) < 2:
+        return False
+    # Check for separator row (e.g. |---| or | :--- |)
+    has_separator = any(re.match(r"^\|[ :|-]+\|$", row) for row in table_rows)
+    return has_separator and len(table_rows) >= 3  # header + separator + at least one data row
 
 
 def _is_single_line(text: str) -> bool:
