@@ -39,11 +39,14 @@ Session Cost Log — JSON-based Token Burn Tracking
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Any
 
-LOG_FILE = Path("session_cost_log.json")
+REPO_ROOT = Path(__file__).resolve().parent.parent
+_LOG_FILE_ENV = os.getenv("SESSION_COST_LOG_FILE")
+LOG_FILE = Path(_LOG_FILE_ENV) if _LOG_FILE_ENV else REPO_ROOT / "session_cost_log.json"
 
 
 def log_session_cost(
