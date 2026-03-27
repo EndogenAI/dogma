@@ -28,6 +28,7 @@ scripts/
   validate_adr.py              # Validate Architectural Decision Records (ADR) in docs/decisions/ against template and numbering rules
   validate_session.py          # Validate a session scratchpad against schema and consistency rules
   validate_session_state.py    # Validate the ## Session State YAML block in scratchpads
+  validate_gh_body.py          # Scan for gh CLI commands using --body "..." with multi-line strings instead of --body-file; accepts [paths]; exit 0 if clean, 1 if violations found (closes #416)
   validate_delegation_routing.py # Cross-check agent handoffs against the delegation routing table in data/delegation-gate.yml
   migrate_agent_xml.py         # Bulk-migrate .agent.md body sections to hybrid Markdown + XML format (--dry-run safe)
   pr_review_reply.py           # Post replies to PR inline review comments and resolve threads (--reply-to, --resolve, --batch)
@@ -43,6 +44,8 @@ scripts/
   check_substrate_health.py    # CRD health check for startup-loaded substrate files — reports PASS/WARN/BLOCK per file; exits 1 if any file is below the block threshold (--warn-below, --block-below, --files)
   check_problems_panel.py      # Audit and count VS Code Problems panel diagnostics; exits 1 if count > 0; --check-only
   check_doc_links.py           # Validate that relative file links in Markdown docs resolve to existing files
+  check_domain_overlap.py      # Detect concurrent work sessions via branch names and scratchpad content; checks if proposed branch overlaps with open PRs; --branch <name>; exit 0 if safe, 1 if overlap detected (closes #434)
+  check_readiness_contract.py  # Validate capability matrix exists before "ready" claims; scans files for unqualified readiness language; --scope <path>; exit 0 if compliant, 1 if violations found (closes #445)
   audit_dependencies.py        # Quarterly dependency audit with CVE checking — reads uv.lock, cross-checks against .cache/cve-db.json, reports High+ severity vulnerabilities; --lock-file, --cve-db, --dry-run; exit 0 if no High+ CVEs, exit 1 if vulnerabilities found; runs quarterly via .github/workflows/quarterly-dependency-audit.yml (closes #357)
   audit_provenance.py          # Audit .agent.md files for x-governs: provenance annotations; report orphaned files and unverifiable axiom citations (--agents-dir, --scope, --manifesto, --format, --output)
   audit_structural_compliance.py # Audit agent fleet for mandatory BDI XML tag compliance and section heading alignment (--target-dir, --format)
