@@ -121,16 +121,16 @@ Harden the session cost tracking substrate across three axes: (1) prevent silent
 
 ---
 
-### Phase B-R — Review: Research Quality ⏳
+### Phase B-R — Review: Research Quality ✅
 **Agent**: Review
 **Deliverables**: Verdict logged under `## Phase B-R Review Output`
 **Depends on**: Phase B
 **Gate**: APPROVED before Phase C begins
-**Status**: Not started
+**Status**: Complete — APPROVED
 
 ---
 
-### Phase C — Update Sprint Workplan ⬜
+### Phase C — Update Sprint Workplan ✅
 **Agent**: Executive Planner
 **Deliverables**:
 - This file (`docs/plans/2026-03-27-session-cost-log-hardening.md`) updated with Phase B research findings incorporated into Phase E deliverables and open questions table
@@ -146,11 +146,11 @@ Harden the session cost tracking substrate across three axes: (1) prevent silent
 - #484 implementation includes explicit optional-key allowlist behavior (`synthetic` only) instead of broad key expansion.
 - #485 implementation includes a bridge extraction contract (accepted attrs, coercion, zero/invalid fallback) and non-crashing warning path.
 - #486 documentation includes can/cannot matrix and runbook-by-symptom actions.
-- Out-of-scope but tracked for later sprints: semconv normalization (#487), bridge dedup/idempotency (#488), log retention/rotation (#489).
+- Out-of-scope but tracked for later sprints: bridge dedup/idempotency (#488), log retention/rotation (#489).
 
 ---
 
-### Phase C-R — Review: Workplan Compliance ⬜
+### Phase C-R — Review: Workplan Compliance ✅
 **Agent**: Review
 **Deliverables**: Verdict logged under `## Workplan Review Output`
 **Criteria**:
@@ -161,21 +161,26 @@ Harden the session cost tracking substrate across three axes: (1) prevent silent
 
 **Depends on**: Phase C
 **Gate**: APPROVED logged before Phase D begins
-**Status**: ⏳ In review
+**Status**: Complete — APPROVED
 
 ---
 
-### Phase D — Human Gate: Design Decisions ⬜
+### Phase D — Human Gate: Design Decisions ✅
 **Agent**: Executive Orchestrator (surfaces to human; no execution)
 **Deliverables**: Decision table in scratchpad under `## Phase D Decisions`; all open questions confirmed resolved (Phase B may surface new ones)
 
 **Depends on**: Phase C-R (APPROVED)
 **Gate**: Human explicitly confirms decisions before Phase E begins; no autonomous escalation
-**Status**: Not started
+**Status**: Complete — decisions confirmed by user
+
+**Confirmed choices**:
+- Scope extension: Option B — include exactly one follow-up issue in this sprint (`#487` only); keep `#488` and `#489` deferred.
+- Bridge malformed/zero payload behavior: warn + skip record (no crash).
+- CLI behavior: add explicit `--synthetic` flag for zero-token records.
 
 ---
 
-### Phase E — Implementation ⬜
+### Phase E — Implementation ✅
 **Agent**: Executive Scripter
 **Deliverables**:
 - `scripts/session_cost_log.py` — zero-guard + optional `synthetic` field + `exclude_synthetic` filter in `read_log()`
@@ -183,24 +188,25 @@ Harden the session cost tracking substrate across three axes: (1) prevent silent
 - `docs/guides/observability-boundaries.md` — new operational guide (see Issue #486 AC)
 - `tests/test_session_cost_log.py` — updated: zero-guard raise, synthetic-flag write, exclude_synthetic filter, backward-compat records
 - `tests/test_emit_otel_genai_spans.py` — new/updated: integration tests for bridge success path, zero-token warning fallback, and invalid payload warning fallback
+- `scripts/emit_otel_genai_spans.py` + tests — include semconv provider-attribute alignment work from issue #487
 
 **Depends on**: Phase D (decisions confirmed by human)
 **Gate**: `uv run pytest tests/test_session_cost_log.py tests/test_emit_otel_genai_spans.py -x -q` exits 0; `uv run ruff check scripts/ tests/` exits 0
 **CI**: Tests, Auto-validate
-**Status**: Not started
+**Status**: Complete
 
 ---
 
-### Phase E-R — Review: Implementation Quality ⬜
+### Phase E-R — Review: Implementation Quality ✅
 **Agent**: Review
 **Deliverables**: Verdict logged under `## Phase E-R Review Output`; blocking findings enumerated
 **Depends on**: Phase E
 **Gate**: APPROVED before Phase G begins
-**Status**: Not started
+**Status**: Complete — APPROVED
 
 ---
 
-### Phase G — Cross-Review by Fleet Specialists ⬜
+### Phase G — Cross-Review by Fleet Specialists ✅
 **Agent**: Executive Fleet + Executive Docs (non-overlapping files — safe to run sequentially same session)
 **Deliverables**:
 - Fleet review: script API surface, no tool-count or posture violations in any touched agent files
@@ -210,16 +216,16 @@ Harden the session cost tracking substrate across three axes: (1) prevent silent
 **Depends on**: Phase E-R (APPROVED)
 **Gate**: `uv run python scripts/validate_agent_files.py --all` exits 0; doc link-check passes
 **CI**: Tests, Auto-validate
-**Status**: Not started
+**Status**: Complete — findings addressed
 
 ---
 
-### Phase G-R — Review: Final Pre-PR Gate ⬜
+### Phase G-R — Review: Final Pre-PR Gate ✅
 **Agent**: Review
 **Deliverables**: Final APPROVED verdict covering all changed files; logged under `## Phase G-R Review Output`
 **Depends on**: Phase G
 **Gate**: APPROVED before Phase H begins
-**Status**: Not started
+**Status**: Complete — APPROVED
 
 ---
 
@@ -267,6 +273,7 @@ Triage per `pr-review-triage` skill before merge.
 - [ ] Issue #484 closed: zero-guard implemented, backward-compatible `synthetic` field, `exclude_synthetic` filter, all tests green
 - [ ] Issue #485 closed: span-close bridge in `emit_otel_genai_spans.py`; always-on for `instrument_agent_calls` importers; failsafe logging; integration tests green
 - [ ] Issue #486 closed: `docs/guides/observability-boundaries.md` published, cross-referenced from `scripts/README.md`, lint-clean
+- [ ] Issue #487 sprint slice delivered: provider-attribute semconv alignment applied in emitter path with test coverage
 - [ ] All existing tests continue to pass (no regressions in `tests/test_session_cost_log.py`, `tests/test_aggregate_session_costs.py`)
 - [ ] `uv run ruff check scripts/ tests/` exits 0
 - [ ] PR #H open with `Closes #484 / #485 / #486`; CI green; Copilot review triaged

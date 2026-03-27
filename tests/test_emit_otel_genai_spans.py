@@ -4,17 +4,28 @@ test_emit_otel_genai_spans.py — Unit tests for GenAI semantic convention span 
 Verifies all 5 required GenAI attributes are present in emitted spans.
 """
 
+import logging
 import sys
 from pathlib import Path
-from unittest.mock import patch
+
+import pytest
 
 # Add scripts/ to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 from emit_otel_genai_spans import (
+    _append_session_cost_from_span,
     emit_genai_span,
     validate_genai_span_attributes,
 )
+
+pytestmark = pytest.mark.io
+
+
+@pytest.fixture(autouse=True)
+def isolate_session_cost_log_path(monkeypatch, tmp_path):
+    """Prevent bridge writes from mutating repository-root session_cost_log.json."""
+    monkeypatch.setenv("SESSION_COST_LOG_FILE", str(tmp_path / "session_cost_log.json"))
 
 
 def test_emit_genai_span_sets_all_required_attributes():
@@ -85,9 +96,10 @@ def test_validate_genai_span_attributes_passes_complete_set():
     assert len(missing) == 0
 
 
-def test_validate_genai_span_attributes_fails_missing_system():
-    """Verify validate_genai_span_attributes detects missing gen_ai.system."""
+def test_validate_genai_span_attributes_accepts_provider_name_without_system():
+    """Either gen_ai.provider.name or gen_ai.system should satisfy provider identity."""
     attributes = {
+        "gen_ai.provider.name": "anthropic",
         "gen_ai.request.model": "test-model",
         "gen_ai.usage.input_tokens": 100,
         "gen_ai.usage.output_tokens": 50,
@@ -95,8 +107,8 @@ def test_validate_genai_span_attributes_fails_missing_system():
     }
 
     valid, missing = validate_genai_span_attributes(attributes)
-    assert valid is False
-    assert "gen_ai.system" in missing
+    assert valid is True
+    assert len(missing) == 0
 
 
 def test_validate_genai_span_attributes_fails_missing_multiple():
@@ -110,6 +122,20 @@ def test_validate_genai_span_attributes_fails_missing_multiple():
     assert "gen_ai.usage.input_tokens" in missing
     assert "gen_ai.usage.output_tokens" in missing
     assert "gen_ai.response.finish_reasons" in missing
+
+
+def test_validate_genai_span_attributes_fails_missing_provider_and_system():
+    """Provider identity is required via either gen_ai.provider.name or gen_ai.system."""
+    attributes = {
+        "gen_ai.request.model": "test-model",
+        "gen_ai.usage.input_tokens": 100,
+        "gen_ai.usage.output_tokens": 50,
+        "gen_ai.response.finish_reasons": ["stop"],
+    }
+
+    valid, missing = validate_genai_span_attributes(attributes)
+    assert valid is False
+    assert "gen_ai.provider.name|gen_ai.system" in missing
 
 
 def test_validate_genai_span_attributes_ignores_extra_attributes():
@@ -129,13 +155,84 @@ def test_validate_genai_span_attributes_ignores_extra_attributes():
     assert len(missing) == 0
 
 
-def test_main_emits_test_span(capsys):
+def test_main_emits_test_span(capsys, monkeypatch):
     """Verify main CLI emits a test span."""
-    with patch("sys.argv", ["emit_otel_genai_spans.py"]):
-        from emit_otel_genai_spans import main
+    monkeypatch.setattr("sys.argv", ["emit_otel_genai_spans.py"])
+    from emit_otel_genai_spans import main
 
-        exit_code = main()
+    exit_code = main()
 
-        assert exit_code == 0
-        captured = capsys.readouterr()
-        assert "Test GenAI span emitted" in captured.err
+    assert exit_code == 0
+    captured = capsys.readouterr()
+    assert "Test GenAI span emitted" in captured.err
+
+
+def test_bridge_appends_non_zero_tokens(monkeypatch):
+    """Bridge should append non-zero token spans via log_session_cost."""
+    captured = {}
+
+    def fake_log_session_cost(session_id, model, tokens_in, tokens_out, phase, timestamp, **kwargs):
+        captured["session_id"] = session_id
+        captured["model"] = model
+        captured["tokens_in"] = tokens_in
+        captured["tokens_out"] = tokens_out
+        captured["phase"] = phase
+        captured["timestamp"] = timestamp
+
+    monkeypatch.setattr("emit_otel_genai_spans.log_session_cost", fake_log_session_cost)
+
+    _append_session_cost_from_span(
+        {
+            "gen_ai.request.model": "test-model",
+            "gen_ai.usage.input_tokens": 10,
+            "gen_ai.usage.output_tokens": 5,
+        }
+    )
+
+    assert captured["model"] == "test-model"
+    assert captured["tokens_in"] == 10
+    assert captured["tokens_out"] == 5
+
+
+def test_bridge_warns_and_skips_zero_tokens(monkeypatch, caplog):
+    """Bridge should warn and skip writes for zero-token payloads."""
+    called = {"value": False}
+
+    def fake_log_session_cost(*args, **kwargs):
+        called["value"] = True
+
+    monkeypatch.setattr("emit_otel_genai_spans.log_session_cost", fake_log_session_cost)
+
+    with caplog.at_level(logging.WARNING):
+        _append_session_cost_from_span(
+            {
+                "gen_ai.request.model": "test-model",
+                "gen_ai.usage.input_tokens": 0,
+                "gen_ai.usage.output_tokens": 0,
+            }
+        )
+
+    assert called["value"] is False
+    assert "zero-token record" in caplog.text
+
+
+def test_bridge_warns_on_invalid_payload(monkeypatch, caplog):
+    """Bridge should warn and skip for invalid token payload values."""
+    called = {"value": False}
+
+    def fake_log_session_cost(*args, **kwargs):
+        called["value"] = True
+
+    monkeypatch.setattr("emit_otel_genai_spans.log_session_cost", fake_log_session_cost)
+
+    with caplog.at_level(logging.WARNING):
+        _append_session_cost_from_span(
+            {
+                "gen_ai.request.model": "test-model",
+                "gen_ai.usage.input_tokens": "abc",
+                "gen_ai.usage.output_tokens": 5,
+            }
+        )
+
+    assert called["value"] is False
+    assert "invalid token attributes" in caplog.text

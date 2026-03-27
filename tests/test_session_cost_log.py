@@ -43,6 +43,7 @@ def test_log_session_cost_happy_path(temp_log_file):
     assert record["tokens_out"] == 800
     assert record["phase"] == "Phase 1"
     assert record["timestamp"] == "2026-03-27T14:30:00Z"
+    assert "synthetic" not in record
 
 
 @pytest.mark.io
@@ -132,6 +133,48 @@ def test_invalid_input_missing_field():
 
     with pytest.raises(ValueError, match="timestamp must be a non-empty string"):
         log_session_cost("session", "model", 100, 50, "phase", "")
+
+    with pytest.raises(ValueError, match="zero-token records require synthetic=true"):
+        log_session_cost("session", "model", 0, 0, "phase", "2026-03-27T10:00:00Z")
+
+
+@pytest.mark.io
+def test_log_session_cost_allows_zero_with_synthetic(temp_log_file):
+    """Zero-token records are accepted only when explicitly marked synthetic."""
+    log_session_cost(
+        "synthetic-session",
+        "model",
+        0,
+        0,
+        "phase",
+        "2026-03-27T10:00:00Z",
+        synthetic=True,
+    )
+
+    records = read_log()
+    assert len(records) == 1
+    assert records[0].get("synthetic") is True
+
+
+@pytest.mark.io
+def test_read_log_exclude_synthetic_filter(temp_log_file):
+    """read_log(exclude_synthetic=True) should return non-synthetic records only."""
+    log_session_cost("real-session", "model", 10, 5, "phase", "2026-03-27T10:00:00Z")
+    log_session_cost(
+        "synthetic-session",
+        "model",
+        0,
+        0,
+        "phase",
+        "2026-03-27T11:00:00Z",
+        synthetic=True,
+    )
+
+    all_records = read_log()
+    filtered = read_log(exclude_synthetic=True)
+    assert len(all_records) == 2
+    assert len(filtered) == 1
+    assert filtered[0]["session_id"] == "real-session"
 
 
 @pytest.mark.io
@@ -254,6 +297,64 @@ def test_main_dry_run(temp_log_file, monkeypatch, capsys):
     assert "dry-session" in captured.out
 
 
+def test_main_zero_requires_synthetic(temp_log_file, monkeypatch, capsys):
+    """CLI main returns 1 for zero-token records unless --synthetic is provided."""
+    monkeypatch.setattr(
+        "sys.argv",
+        [
+            "session_cost_log.py",
+            "--session",
+            "zero-session",
+            "--model",
+            "test-model",
+            "--tokens-in",
+            "0",
+            "--tokens-out",
+            "0",
+            "--phase",
+            "Phase",
+            "--timestamp",
+            "2026-03-27T17:30:00Z",
+        ],
+    )
+
+    rc = main()
+    assert rc == 1
+    assert not temp_log_file.exists()
+    captured = capsys.readouterr()
+    assert "zero-token records require synthetic=true" in captured.err
+
+
+@pytest.mark.io
+def test_main_zero_with_synthetic_flag(temp_log_file, monkeypatch):
+    """CLI main accepts zero-token records when --synthetic is passed."""
+    monkeypatch.setattr(
+        "sys.argv",
+        [
+            "session_cost_log.py",
+            "--session",
+            "zero-synthetic-session",
+            "--model",
+            "test-model",
+            "--tokens-in",
+            "0",
+            "--tokens-out",
+            "0",
+            "--phase",
+            "Phase",
+            "--timestamp",
+            "2026-03-27T17:30:00Z",
+            "--synthetic",
+        ],
+    )
+
+    rc = main()
+    assert rc == 0
+    records = read_log()
+    assert len(records) == 1
+    assert records[0].get("synthetic") is True
+
+
 def test_main_invalid_values_return_1(temp_log_file, monkeypatch, capsys):
     """Direct main() call with invalid values returns 1 and does not write a file."""
     monkeypatch.setattr(
@@ -284,7 +385,7 @@ def test_main_invalid_values_return_1(temp_log_file, monkeypatch, capsys):
 
 @pytest.mark.io
 def test_read_log_rejects_noncanonical_record_schema(temp_log_file):
-    """Existing records must match the exact six-field source boundary."""
+    """Existing records must use required keys plus supported optional keys only."""
     temp_log_file.write_text(
         json.dumps(
             [
@@ -302,8 +403,33 @@ def test_read_log_rejects_noncanonical_record_schema(temp_log_file):
         encoding="utf-8",
     )
 
-    with pytest.raises(ValueError, match="exactly these keys"):
+    with pytest.raises(ValueError, match="unsupported keys"):
         read_log()
+
+
+@pytest.mark.io
+def test_read_log_normalizes_legacy_zero_token_record(temp_log_file):
+    """Legacy zero-token rows without synthetic should normalize to synthetic=True on read."""
+    temp_log_file.write_text(
+        json.dumps(
+            [
+                {
+                    "session_id": "legacy-zero",
+                    "model": "test-model",
+                    "tokens_in": 0,
+                    "tokens_out": 0,
+                    "phase": "legacy",
+                    "timestamp": "2026-03-27T18:00:00Z",
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    records = read_log()
+    assert len(records) == 1
+    assert records[0]["session_id"] == "legacy-zero"
+    assert records[0].get("synthetic") is True
 
 
 def test_main_invalid_args(monkeypatch):

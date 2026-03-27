@@ -48,15 +48,66 @@ Reference:
 Closes: #369
 """
 
+import logging
 import sys
 from contextlib import contextmanager
+from datetime import datetime, timezone
 from typing import List, Optional, Union
+from uuid import uuid4
 
 try:
     from scripts.instrument_agent_calls import get_provider_name, get_tracer
+    from scripts.session_cost_log import log_session_cost
 except ImportError:
     print("Error: instrument_agent_calls module not found", file=sys.stderr)
     sys.exit(1)
+
+
+logger = logging.getLogger(__name__)
+
+
+def _coerce_token_count(value: object) -> int | None:
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, int):
+        return value if value >= 0 else None
+    if isinstance(value, str) and value.isdigit():
+        return int(value)
+    return None
+
+
+def _append_session_cost_from_span(span_attributes: dict[str, object]) -> None:
+    model = span_attributes.get("gen_ai.request.model")
+    input_tokens = _coerce_token_count(span_attributes.get("gen_ai.usage.input_tokens"))
+    output_tokens = _coerce_token_count(span_attributes.get("gen_ai.usage.output_tokens"))
+
+    if not isinstance(model, str) or not model:
+        logger.warning("session-cost bridge skipped: missing model attribute")
+        return
+    if input_tokens is None or output_tokens is None:
+        logger.warning("session-cost bridge skipped: invalid token attributes")
+        return
+    if input_tokens == 0 and output_tokens == 0:
+        logger.warning("session-cost bridge skipped: zero-token record without synthetic marker")
+        return
+
+    session_id = f"bridge/{datetime.now(timezone.utc).date()}/{uuid4().hex[:8]}"
+    timestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    phase = "bridge: span-close token capture"
+
+    try:
+        log_session_cost(
+            session_id=session_id,
+            model=model,
+            tokens_in=input_tokens,
+            tokens_out=output_tokens,
+            phase=phase,
+            timestamp=timestamp,
+        )
+    except ValueError as exc:
+        logger.warning("session-cost bridge skipped due to validation error: %s", exc)
+    except OSError as exc:
+        logger.warning("session-cost bridge skipped due to write error: %s", exc)
 
 
 @contextmanager
@@ -109,6 +160,7 @@ def emit_genai_span(
     with tracer.start_as_current_span(span_name) as span:
         # Required GenAI attributes
         span.set_attribute("gen_ai.system", provider_name)
+        span.set_attribute("gen_ai.provider.name", provider_name)
         span.set_attribute("gen_ai.operation.name", operation_name)
         span.set_attribute("gen_ai.request.model", model)
         span.set_attribute("gen_ai.usage.input_tokens", input_tokens)
@@ -118,7 +170,16 @@ def emit_genai_span(
         # Optional attributes
         span.set_attribute("gen_ai.request.temperature", temperature)
 
-        yield span
+        try:
+            yield span
+        finally:
+            # Always-on bridge for scripts using this span helper.
+            attributes = {
+                "gen_ai.request.model": model,
+                "gen_ai.usage.input_tokens": input_tokens,
+                "gen_ai.usage.output_tokens": output_tokens,
+            }
+            _append_session_cost_from_span(attributes)
 
 
 def validate_genai_span_attributes(span_attributes: dict) -> tuple[bool, list[str]]:
@@ -131,7 +192,6 @@ def validate_genai_span_attributes(span_attributes: dict) -> tuple[bool, list[st
         Tuple of (valid: bool, missing_attrs: list[str])
     """
     required_attrs = [
-        "gen_ai.system",
         "gen_ai.request.model",
         "gen_ai.usage.input_tokens",
         "gen_ai.usage.output_tokens",
@@ -139,6 +199,8 @@ def validate_genai_span_attributes(span_attributes: dict) -> tuple[bool, list[st
     ]
 
     missing = [attr for attr in required_attrs if attr not in span_attributes]
+    if "gen_ai.system" not in span_attributes and "gen_ai.provider.name" not in span_attributes:
+        missing.append("gen_ai.provider.name|gen_ai.system")
 
     return (len(missing) == 0, missing)
 
@@ -163,6 +225,7 @@ def main():
             "name": f"chat {args.model}",
             "attributes": {
                 "gen_ai.system": provider_name,
+                "gen_ai.provider.name": provider_name,
                 "gen_ai.request.model": args.model,
                 "gen_ai.usage.input_tokens": args.input_tokens,
                 "gen_ai.usage.output_tokens": args.output_tokens,
