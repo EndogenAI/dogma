@@ -6,7 +6,6 @@ tools:
   - read
   - edit
   - write
-  - execute
   - terminal
   - changes
   - agent

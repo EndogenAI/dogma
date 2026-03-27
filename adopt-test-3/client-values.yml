@@ -1,0 +1,11 @@
+# client-values.yml — Deployment Layer external-values file
+# Specialises (does not override) Core Layer constraints in MANIFESTO.md.
+
+org: TestOrg
+repo: testrepo
+mission: Purpose-driven technology for TestOrg.
+priorities:
+- Endogenous-First
+axiom_emphasis: endogenous-first
+constraints: []
+deployment_layer: {}

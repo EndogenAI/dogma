@@ -53,6 +53,36 @@ Stage 1 alone cannot detect:
 
 ---
 
+## L1 Semantic Output Validation — Pattern Reference
+
+**Definition**: L1 validation = rule-based text-pattern matching that runs deterministically, with no LLM invocation. It is the foundation of Stage 1 — fast, stateless, and locally enforced.
+
+> **Principle**: Every L1 guardrail must be encodable as a static pattern match (regex, keyword, schema check). If a validation requires reasoning about context or intent, it belongs in Stage 2, not L1.
+
+### Active L1 Guardrails (Current Fleet)
+
+| Guardrail | Mechanism | Pattern Matched | Where Enforced |
+|-----------|-----------|----------------|----------------|
+| **`check-readiness-matrix`** | pygrep pre-commit hook | Unguarded affirmation words in docs (see `.pre-commit-config.yaml` for the trigger list) | `git commit` boundary |
+| **`validate-synthesis`** | Python pre-commit hook | Incomplete D4 structure (missing Executive Summary, Pattern Catalog, Recommendations) | `git commit` boundary; `uv run python scripts/validate_synthesis.py` |
+| **`no-heredoc-writes`** | pygrep pre-commit hook | `cat >> file << 'EOF'` and `cat > file << 'EOF'` in `.py` and `.sh` files | `git commit` boundary |
+| **Structured-output gate (`--output-format json`)** | CLI flag + deterministic JSON-schema validator (reuses the primary task LLM invocation; no additional models) | Forces JSON-schema-validated output; rejects unstructured prose for single-query tasks | CI pipelines; `claude -p` print-mode commands |
+
+> **Note**: L1 guardrails never introduce *additional* LLM/classifier invocations beyond the primary task model call. For the structured-output gate, only the JSON-schema validator is part of L1; the LLM run it validates is the task itself, not a separate guardrail model.
+
+### L1 → L2 Escalation Path
+
+L1 guardrails catch known-bad patterns deterministically. When a pattern is *paraphrased*, *novel*, or *context-dependent*, L1 passes it — this is the escalation trigger for Stage 2.
+
+**Flow**:
+1. **L1 blocks** (pattern matched) → action rejected; error message surfaced to agent
+2. **L1 passes + no Stage 2 trigger** → action proceeds normally
+3. **L1 passes + Stage 2 trigger condition met** (see [Trigger Conditions](#trigger-conditions) below) → escalate to human-in-the-loop
+
+> **Adding new L1 rules**: L1 guardrails are additive — new hooks do not replace existing ones. If a proposed check requires interpreting context or intent rather than matching a static pattern, implement it as a Stage 2 escalation condition instead.
+
+---
+
 ## Stage 2 — LLM Classifier / Human-in-the-loop (150–400ms)
 
 **Purpose**: Handle adversarial paraphrasing, edge cases, and ambiguous requests that bypass Stage 1 rules.
@@ -181,9 +211,8 @@ Your choice:
 **Stage 2**: Triggered — agent proposes label sync across 47 issues:
 
 ```bash
-for issue in $(gh issue list --limit 47 --json number -q '.[].number'); do
-  gh issue edit "$issue" --add-label "priority:high"
-done
+gh issue list --limit 47 --json number -q '.[].number' \
+  | xargs -I{} gh issue edit {} --add-label "priority:high"
 ```
 
 **Decision menu**:
