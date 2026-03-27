@@ -149,6 +149,30 @@ def test_aggregate_log_fails_fast_on_malformed_entry(tmp_path):
 
 
 @pytest.mark.io
+def test_aggregate_log_rejects_invalid_record_timestamp(tmp_path):
+    """Invalid timestamps in otherwise valid records should raise a clear validation error."""
+    log_file = tmp_path / "session_cost_log.json"
+    log_file.write_text(
+        json.dumps(
+            [
+                {
+                    "session_id": "session-1",
+                    "model": "claude-sonnet-4",
+                    "tokens_in": 100,
+                    "tokens_out": 50,
+                    "phase": "Phase 1",
+                    "timestamp": "2026-03-99T10:00:00Z",
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="invalid timestamp"):
+        aggregate_log(log_file=log_file)
+
+
+@pytest.mark.io
 def test_committed_baseline_fixture_uses_exact_six_field_records():
     """The committed Phase 2 baseline input stays within the accepted source boundary."""
     records = read_log(log_file=REPO_ROOT / BASELINE_FIXTURE)
@@ -229,18 +253,19 @@ def test_committed_role_baseline_snapshot_matches_deterministic_rerun():
     assert actual_snapshot == expected_snapshot
 
 
+@pytest.mark.parametrize("flag", ["--start-date", "--end-date"])
 @pytest.mark.parametrize("raw_value", ["2026/03/27", "2026-02-30", "not-a-date"])
-def test_main_rejects_invalid_yyyy_mm_dd_date_args(monkeypatch, capsys, raw_value):
-    """CLI date arguments must use valid YYYY-MM-DD values."""
+def test_main_rejects_invalid_yyyy_mm_dd_date_args(monkeypatch, capsys, flag, raw_value):
+    """CLI date arguments must use valid YYYY-MM-DD values for both bounds."""
     monkeypatch.setattr(
         "sys.argv",
-        ["aggregate_session_costs.py", "--start-date", raw_value],
+        ["aggregate_session_costs.py", flag, raw_value],
     )
 
     exit_code = main()
 
     assert exit_code == 1
-    assert capsys.readouterr().err.strip() == "Error: --start-date must be YYYY-MM-DD"
+    assert capsys.readouterr().err.strip() == f"Error: {flag} must be YYYY-MM-DD"
 
 
 @pytest.mark.io
