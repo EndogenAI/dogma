@@ -9,12 +9,16 @@ Purpose:
     Implements the circuit-breaker pattern for repeated rate-limit failures
     (issue #324 — adaptive escalation + circuit-breaker).
 
+    Integrates task-type classification from data/task-type-classifier.yml
+    (issue #473 — task-specific rate-limit policies).
+
     Logs all gate decisions to audit trail if --audit-log flag is set.
 
 Inputs:
     current_token_budget: Tokens remaining in current rate-limit window
     operation_type: Operation about to execute ('fetch_source', 'delegation', etc.)
     --provider: Provider name (default: 'claude')
+    --task-hint: Optional hint for better task classification (e.g., 'research synthesis')
     --audit-log: Log gate decision to scratchpad + .cache/rate-limit-audit.log
 
 Outputs (stdout):
@@ -24,6 +28,7 @@ Outputs (stdout):
         "reason": str,
         "provider": str,
         "operation": str,
+        "task_category": str|null,  # Added in issue #473
     }
 
 Exit Codes:
@@ -34,6 +39,9 @@ Usage Examples:
     # Check if safe to proceed with delegation using 40k tokens
     uv run python scripts/rate_limit_gate.py 40000 delegation --provider claude
 
+    # With task hint for better classification
+    uv run python scripts/rate_limit_gate.py 40000 delegation --task-hint "research synthesis"
+
     # With audit logging
     uv run python scripts/rate_limit_gate.py 20000 phase_boundary --provider gpt-4 --audit-log
 
@@ -42,6 +50,7 @@ Usage Examples:
 
 Notes:
     - Circuit-breaker: if N consecutive rate-limits in last M minutes, return safe=false
+    - Task classification: matches operation_type + task_hint against keyword list
     - Audit log persists across sessions (append mode)
     - JSON output can be parsed by orchestrators for conditional logic
     - Backward compatible with detect_rate_limit.py (does not depend on it)
@@ -51,6 +60,8 @@ Integration:
     - Integrated into phase-gate-sequence.py at step 2 (pre-phase checkpoint)
     - Drives pre-delegation decision in orchestration loops
     - Based on research in docs/research/rate-limit-detection-api.md (Tier 2)
+
+Closes: #324, #473
 """
 
 from __future__ import annotations
@@ -71,6 +82,64 @@ from rate_limit_config import OperationNotFound, OperationType, PolicyNotFound, 
 AUDIT_LOG_PATH = Path(__file__).parent.parent / ".cache" / "rate-limit-audit.log"
 CIRCUIT_BREAKER_WINDOW_MIN = 5  # Look back 5 minutes for consecutive failures
 MIN_BUDGET_SAFETY_MARGIN = 5000  # Reserve 5k tokens for overhead
+TASK_TYPE_CLASSIFIER_PATH = Path(__file__).parent.parent / "data" / "task-type-classifier.yml"
+
+
+# ============================================================================
+# Task-Type Classification (Issue #473)
+# ============================================================================
+
+
+def _load_task_type_classifier() -> list[dict]:
+    """Load task-type-classifier.yml for keyword-based operation classification.
+
+    Returns:
+        List of task category dicts with 'category', 'keywords', 'agent', 'axiom'
+
+    Raises:
+        FileNotFoundError: If classifier file doesn't exist
+    """
+    try:
+        import yaml
+    except ImportError:
+        # Graceful degradation: if pyyaml not available, return empty
+        return []
+
+    if not TASK_TYPE_CLASSIFIER_PATH.exists():
+        raise FileNotFoundError(f"Task classifier not found: {TASK_TYPE_CLASSIFIER_PATH}")
+
+    with open(TASK_TYPE_CLASSIFIER_PATH, "r") as f:
+        return yaml.safe_load(f) or []
+
+
+def _classify_operation(operation_type: str, task_hint: str | None = None) -> str | None:
+    """Classify operation_type into a task category using keyword matching.
+
+    Args:
+        operation_type: Operation name (e.g., 'delegation', 'fetch_source')
+        task_hint: Optional user-provided task hint for better classification
+
+    Returns:
+        Task category name (e.g., 'research', 'scripting') or None if no match
+    """
+    try:
+        classifier_data = _load_task_type_classifier()
+    except FileNotFoundError:
+        return None
+
+    # Build search text from operation_type + task_hint
+    search_text = operation_type.lower()
+    if task_hint:
+        search_text += f" {task_hint.lower()}"
+
+    # Match keywords (case-insensitive)
+    for task_entry in classifier_data:
+        keywords = task_entry.get("keywords", [])
+        for keyword in keywords:
+            if keyword.lower() in search_text:
+                return task_entry.get("category")
+
+    return None
 
 
 # ============================================================================
@@ -152,6 +221,7 @@ def check_rate_limit_gate(
     current_token_budget: int,
     operation_type: OperationType,
     provider: str = "claude",
+    task_hint: str | None = None,
 ) -> dict[str, Any]:
     """
     Check whether it's safe to proceed with an operation.
@@ -160,6 +230,7 @@ def check_rate_limit_gate(
         current_token_budget: Tokens available in current window
         operation_type: Type of operation to check
         provider: Provider name (default: 'claude')
+        task_hint: Optional task hint for better classification (issue #473)
 
     Returns:
         {
@@ -169,12 +240,16 @@ def check_rate_limit_gate(
             "provider": str,
             "operation": str,
             "consecutive_failures": int,
+            "task_category": str | None,  # Added in issue #473
         }
 
     Raises:
         OperationNotFound: If operation is not in provider policy
         PolicyNotFound: If provider not found and no fallback
     """
+
+    # Classify operation into task category (issue #473)
+    task_category = _classify_operation(operation_type, task_hint)
 
     # Load policy
     try:
@@ -201,6 +276,7 @@ def check_rate_limit_gate(
             "provider": provider,
             "operation": operation_type,
             "consecutive_failures": consecutive_failures,
+            "task_category": task_category,
         }
 
     # Check budget (≤ to treat exactly-at-margin as exhausted — margin must be reserved)
@@ -212,6 +288,7 @@ def check_rate_limit_gate(
             "provider": provider,
             "operation": operation_type,
             "consecutive_failures": consecutive_failures,
+            "task_category": task_category,
         }
 
     # Safe to proceed
@@ -222,6 +299,7 @@ def check_rate_limit_gate(
         "provider": provider,
         "operation": operation_type,
         "consecutive_failures": consecutive_failures,
+        "task_category": task_category,
     }
 
 
@@ -247,6 +325,7 @@ def _log_gate_decision(decision_dict: dict, audit_flag: bool = False) -> None:
         "consecutive_failures": decision_dict["consecutive_failures"],
         "budget": decision_dict.get("current_budget"),
         "reason": decision_dict["reason"],
+        "task_category": decision_dict.get("task_category"),  # Added in issue #473
     }
 
     # Append to audit log (JSONL format)
@@ -286,6 +365,10 @@ def main() -> int:
         help="Provider name (default: claude)",
     )
     parser.add_argument(
+        "--task-hint",
+        help="Task hint for better classification (e.g., 'research synthesis', 'bug fix')",
+    )
+    parser.add_argument(
         "--audit-log",
         action="store_true",
         help="Log gate decision to audit trail",
@@ -298,6 +381,7 @@ def main() -> int:
             current_token_budget=args.current_token_budget,
             operation_type=args.operation_type,
             provider=args.provider,
+            task_hint=args.task_hint,
         )
 
         # Add current budget to result for logging

@@ -208,5 +208,71 @@ class TestCircuitBreakerRegression:
         assert result["safe"] is True
 
 
+# ============================================================================
+# Task-Type Classification Tests (Issue #473)
+# ============================================================================
+
+
+class TestTaskTypeClassification:
+    """Test task-type classification integration."""
+
+    def test_classify_operation_research(self):
+        """Test classification of research operations."""
+        from rate_limit_gate import _classify_operation
+
+        # Test research keywords
+        assert _classify_operation("fetch_source", task_hint="research synthesis") == "research"
+        assert _classify_operation("delegation", task_hint="survey literature") == "research"
+
+    def test_classify_operation_ci(self):
+        """Test classification of CI operations."""
+        from rate_limit_gate import _classify_operation
+
+        # Test CI keywords (maps to scripting category per task-type-classifier.yml)
+        category = _classify_operation("phase_boundary", task_hint="ci failing tests")
+        assert category == "scripting"
+
+    def test_gate_includes_task_category_research(self):
+        """Test that gate response includes task_category for research."""
+        result = check_rate_limit_gate(
+            current_token_budget=100000,
+            operation_type="fetch_source",
+            provider="claude",
+            task_hint="research synthesis",
+        )
+        assert "task_category" in result
+        assert result["task_category"] == "research"
+
+    def test_gate_task_category_fallback_none(self):
+        """Test that task_category is None when no classification matches."""
+        result = check_rate_limit_gate(
+            current_token_budget=100000,
+            operation_type="delegation",
+            provider="claude",
+            task_hint="unrecognized xyz random words",  # Definitely unmatched
+        )
+        assert "task_category" in result
+        # Should be None when no keyword matches
+        assert result["task_category"] is None
+
+    def test_classify_operation_without_task_hint(self):
+        """Test classification using only operation_type (no task_hint)."""
+        from rate_limit_gate import _classify_operation
+
+        # Should still work with operation_type alone
+        category = _classify_operation("fetch_source")
+        assert category in ("research", None)  # 'fetch' is a research keyword
+
+    def test_gate_backward_compatible_no_task_hint(self):
+        """Test gate works without --task-hint (backward compatible)."""
+        result = check_rate_limit_gate(
+            current_token_budget=50000,
+            operation_type="delegation",
+            provider="claude",
+        )
+        assert "task_category" in result
+        # task_hint is optional; task_category may be None or inferred from operation_type
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
