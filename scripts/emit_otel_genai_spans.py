@@ -58,8 +58,13 @@ from uuid import uuid4
 try:
     from scripts.instrument_agent_calls import get_provider_name, get_tracer
     from scripts.session_cost_log import log_session_cost
-except ImportError:
-    print("Error: instrument_agent_calls module not found", file=sys.stderr)
+except ImportError as exc:
+    print(
+        "Error: failed to import required modules "
+        "'scripts.instrument_agent_calls' or 'scripts.session_cost_log': "
+        f"{exc}",
+        file=sys.stderr,
+    )
     sys.exit(1)
 
 
@@ -91,8 +96,9 @@ def _append_session_cost_from_span(span_attributes: dict[str, object]) -> None:
         logger.warning("session-cost bridge skipped: zero-token record without synthetic marker")
         return
 
-    session_id = f"bridge/{datetime.now(timezone.utc).date()}/{uuid4().hex[:8]}"
-    timestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    now = datetime.now(timezone.utc)
+    session_id = f"bridge/{now.date()}/{uuid4().hex[:8]}"
+    timestamp = now.isoformat().replace("+00:00", "Z")
     phase = "bridge: span-close token capture"
 
     try:
