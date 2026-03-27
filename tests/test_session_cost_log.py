@@ -297,6 +297,7 @@ def test_main_dry_run(temp_log_file, monkeypatch, capsys):
     assert "dry-session" in captured.out
 
 
+@pytest.mark.io
 def test_main_zero_requires_synthetic(temp_log_file, monkeypatch, capsys):
     """CLI main returns 1 for zero-token records unless --synthetic is provided."""
     monkeypatch.setattr(
