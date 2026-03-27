@@ -1476,6 +1476,285 @@
       "file": ".cache/sources/opentelemetry-io-docs-specs-semconv-gen-ai-gen-ai-spans.md",
       "content_type": "text/html",
       "size_bytes": 51184
+    },
+    "openrouter-ai-rankings": {
+      "url": "https://openrouter.ai/rankings",
+      "slug": "openrouter-ai-rankings",
+      "title": "",
+      "fetched_at": "2026-03-27T08:01:35",
+      "file": ".cache/sources/openrouter-ai-rankings.md",
+      "content_type": "text/html",
+      "size_bytes": 2906
+    },
+    "anthropic-com-pricing": {
+      "url": "https://www.anthropic.com/pricing",
+      "slug": "anthropic-com-pricing",
+      "title": "",
+      "fetched_at": "2026-03-27T08:01:35",
+      "file": ".cache/sources/anthropic-com-pricing.md",
+      "content_type": "text/html",
+      "size_bytes": 24381
+    },
+    "openai-com-api-pricing": {
+      "url": "https://openai.com/api/pricing/",
+      "slug": "openai-com-api-pricing",
+      "title": "",
+      "fetched_at": "2026-03-27T08:01:36",
+      "file": ".cache/sources/openai-com-api-pricing.md",
+      "content_type": "text/html",
+      "size_bytes": 3804
+    },
+    "cloud-google-com-vertex-ai-generative-ai-pricing": {
+      "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+      "slug": "cloud-google-com-vertex-ai-generative-ai-pricing",
+      "title": "",
+      "fetched_at": "2026-03-27T08:01:38",
+      "file": ".cache/sources/cloud-google-com-vertex-ai-generative-ai-pricing.md",
+      "content_type": "text/html",
+      "size_bytes": 63127
+    },
+    "openrouter-ai-docs-models": {
+      "url": "https://openrouter.ai/docs/models",
+      "slug": "openrouter-ai-docs-models",
+      "title": "",
+      "fetched_at": "2026-03-27T08:01:45",
+      "file": ".cache/sources/openrouter-ai-docs-models.md",
+      "content_type": "text/html",
+      "size_bytes": 6435
+    },
+    "docs-anthropic-com-en-docs-about-claude-models": {
+      "url": "https://docs.anthropic.com/en/docs/about-claude/models",
+      "slug": "docs-anthropic-com-en-docs-about-claude-models",
+      "title": "",
+      "fetched_at": "2026-03-27T08:01:56",
+      "file": ".cache/sources/docs-anthropic-com-en-docs-about-claude-models.md",
+      "content_type": "text/html",
+      "size_bytes": 5434
+    },
+    "deepseek-com": {
+      "url": "https://deepseek.com",
+      "slug": "deepseek-com",
+      "title": "",
+      "fetched_at": "2026-03-27T08:02:08",
+      "file": ".cache/sources/deepseek-com.md",
+      "content_type": "text/html",
+      "size_bytes": 2069
+    },
+    "huggingface-co-spaces-open-llm-leaderboard-open_llm_leaderbo": {
+      "url": "https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard",
+      "slug": "huggingface-co-spaces-open-llm-leaderboard-open_llm_leaderbo",
+      "title": "",
+      "fetched_at": "2026-03-27T08:02:19",
+      "file": ".cache/sources/huggingface-co-spaces-open-llm-leaderboard-open_llm_leaderbo.md",
+      "content_type": "text/html",
+      "size_bytes": 73
+    },
+    "openrouter-ai-models-deepseek-deepseek-v3": {
+      "url": "https://openrouter.ai/models/deepseek/deepseek-v3",
+      "slug": "openrouter-ai-models-deepseek-deepseek-v3",
+      "title": "",
+      "fetched_at": "2026-03-27T08:02:21",
+      "file": ".cache/sources/openrouter-ai-models-deepseek-deepseek-v3.md",
+      "content_type": "text/html",
+      "size_bytes": 165
+    },
+    "openrouter-ai-models-deepseek-deepseek-chat": {
+      "url": "https://openrouter.ai/models/deepseek/deepseek-chat",
+      "slug": "openrouter-ai-models-deepseek-deepseek-chat",
+      "title": "",
+      "fetched_at": "2026-03-27T08:03:37",
+      "file": ".cache/sources/openrouter-ai-models-deepseek-deepseek-chat.md",
+      "content_type": "text/html",
+      "size_bytes": 2791
+    },
+    "openrouter-ai-models-anthropic-claude-3-5-sonnet": {
+      "url": "https://openrouter.ai/models/anthropic/claude-3-5-sonnet",
+      "slug": "openrouter-ai-models-anthropic-claude-3-5-sonnet",
+      "title": "",
+      "fetched_at": "2026-03-27T08:03:55",
+      "file": ".cache/sources/openrouter-ai-models-anthropic-claude-3-5-sonnet.md",
+      "content_type": "text/html",
+      "size_bytes": 3067
+    },
+    "openrouter-ai-models-openai-gpt-4o": {
+      "url": "https://openrouter.ai/models/openai/gpt-4o",
+      "slug": "openrouter-ai-models-openai-gpt-4o",
+      "title": "",
+      "fetched_at": "2026-03-27T08:03:51",
+      "file": ".cache/sources/openrouter-ai-models-openai-gpt-4o.md",
+      "content_type": "text/html",
+      "size_bytes": 2609
+    },
+    "openrouter-ai-models-google-gemini-pro-1-5": {
+      "url": "https://openrouter.ai/models/google/gemini-pro-1.5",
+      "slug": "openrouter-ai-models-google-gemini-pro-1-5",
+      "title": "",
+      "fetched_at": "2026-03-27T08:03:49",
+      "file": ".cache/sources/openrouter-ai-models-google-gemini-pro-1-5.md",
+      "content_type": "text/html",
+      "size_bytes": 699
+    },
+    "open-llm-leaderboard-open-llm-leaderboard-hf-space": {
+      "url": "https://open-llm-leaderboard-open-llm-leaderboard.hf.space",
+      "slug": "open-llm-leaderboard-open-llm-leaderboard-hf-space",
+      "title": "",
+      "fetched_at": "2026-03-27T08:04:20",
+      "file": ".cache/sources/open-llm-leaderboard-open-llm-leaderboard-hf-space.md",
+      "content_type": "text/html",
+      "size_bytes": 0
+    },
+    "openrouter-ai-models-google-gemini-2-0-flash-001": {
+      "url": "https://openrouter.ai/models/google/gemini-2-0-flash-001",
+      "slug": "openrouter-ai-models-google-gemini-2-0-flash-001",
+      "title": "",
+      "fetched_at": "2026-03-27T08:03:57",
+      "file": ".cache/sources/openrouter-ai-models-google-gemini-2-0-flash-001.md",
+      "content_type": "text/html",
+      "size_bytes": 172
+    },
+    "openrouter-ai-models-anthropic-claude-3-7-sonnet": {
+      "url": "https://openrouter.ai/models/anthropic/claude-3-7-sonnet",
+      "slug": "openrouter-ai-models-anthropic-claude-3-7-sonnet",
+      "title": "",
+      "fetched_at": "2026-03-27T08:04:00",
+      "file": ".cache/sources/openrouter-ai-models-anthropic-claude-3-7-sonnet.md",
+      "content_type": "text/html",
+      "size_bytes": 3230
+    },
+    "openrouter-ai-models-google-gemini-2-0-pro-exp-02-05": {
+      "url": "https://openrouter.ai/models/google/gemini-2-0-pro-exp-02-05",
+      "slug": "openrouter-ai-models-google-gemini-2-0-pro-exp-02-05",
+      "title": "",
+      "fetched_at": "2026-03-27T08:03:39",
+      "file": ".cache/sources/openrouter-ai-models-google-gemini-2-0-pro-exp-02-05.md",
+      "content_type": "text/html",
+      "size_bytes": 176
+    },
+    "openrouter-ai-models-anthropic-claude-3-5-opus-20241022": {
+      "url": "https://openrouter.ai/models/anthropic/claude-3.5-opus-20241022",
+      "slug": "openrouter-ai-models-anthropic-claude-3-5-opus-20241022",
+      "title": "",
+      "fetched_at": "2026-03-27T08:02:50",
+      "file": ".cache/sources/openrouter-ai-models-anthropic-claude-3-5-opus-20241022.md",
+      "content_type": "text/html",
+      "size_bytes": 179
+    },
+    "openrouter-ai-models-anthropic-claude-3-5-sonnet-beta": {
+      "url": "https://openrouter.ai/models/anthropic/claude-3.5-sonnet:beta",
+      "slug": "openrouter-ai-models-anthropic-claude-3-5-sonnet-beta",
+      "title": "",
+      "fetched_at": "2026-03-27T08:03:00",
+      "file": ".cache/sources/openrouter-ai-models-anthropic-claude-3-5-sonnet-beta.md",
+      "content_type": "text/html",
+      "size_bytes": 3102
+    },
+    "openrouter-ai-models-google-gemini-2-0-flash-thinking-exp-12": {
+      "url": "https://openrouter.ai/models/google/gemini-2-0-flash-thinking-exp-1219",
+      "slug": "openrouter-ai-models-google-gemini-2-0-flash-thinking-exp-12",
+      "title": "",
+      "fetched_at": "2026-03-27T08:04:12",
+      "file": ".cache/sources/openrouter-ai-models-google-gemini-2-0-flash-thinking-exp-12.md",
+      "content_type": "text/html",
+      "size_bytes": 186
+    },
+    "openrouter-ai-models-deepseek-deepseek-r1": {
+      "url": "https://openrouter.ai/models/deepseek/deepseek-r1",
+      "slug": "openrouter-ai-models-deepseek-deepseek-r1",
+      "title": "",
+      "fetched_at": "2026-03-27T08:04:02",
+      "file": ".cache/sources/openrouter-ai-models-deepseek-deepseek-r1.md",
+      "content_type": "text/html",
+      "size_bytes": 2524
+    },
+    "openrouter-ai-models-openai-o1": {
+      "url": "https://openrouter.ai/models/openai/o1",
+      "slug": "openrouter-ai-models-openai-o1",
+      "title": "",
+      "fetched_at": "2026-03-27T08:04:05",
+      "file": ".cache/sources/openrouter-ai-models-openai-o1.md",
+      "content_type": "text/html",
+      "size_bytes": 2456
+    },
+    "openrouter-ai-models-openai-o3-mini": {
+      "url": "https://openrouter.ai/models/openai/o3-mini",
+      "slug": "openrouter-ai-models-openai-o3-mini",
+      "title": "",
+      "fetched_at": "2026-03-27T08:03:42",
+      "file": ".cache/sources/openrouter-ai-models-openai-o3-mini.md",
+      "content_type": "text/html",
+      "size_bytes": 3132
+    },
+    "openrouter-ai-models-meta-llama-llama-3-3-70b-instruct": {
+      "url": "https://openrouter.ai/models/meta-llama/llama-3.3-70b-instruct",
+      "slug": "openrouter-ai-models-meta-llama-llama-3-3-70b-instruct",
+      "title": "",
+      "fetched_at": "2026-03-27T08:04:15",
+      "file": ".cache/sources/openrouter-ai-models-meta-llama-llama-3-3-70b-instruct.md",
+      "content_type": "text/html",
+      "size_bytes": 3064
+    },
+    "openrouter-ai-models-google-gemini-2-0-flash-exp": {
+      "url": "https://openrouter.ai/models/google/gemini-2.0-flash-exp",
+      "slug": "openrouter-ai-models-google-gemini-2-0-flash-exp",
+      "title": "",
+      "fetched_at": "2026-03-27T08:03:26",
+      "file": ".cache/sources/openrouter-ai-models-google-gemini-2-0-flash-exp.md",
+      "content_type": "text/html",
+      "size_bytes": 741
+    },
+    "openrouter-ai-models-anthropic-claude-3-5-haiku": {
+      "url": "https://openrouter.ai/models/anthropic/claude-3-5-haiku",
+      "slug": "openrouter-ai-models-anthropic-claude-3-5-haiku",
+      "title": "",
+      "fetched_at": "2026-03-27T08:04:10",
+      "file": ".cache/sources/openrouter-ai-models-anthropic-claude-3-5-haiku.md",
+      "content_type": "text/html",
+      "size_bytes": 2892
+    },
+    "openrouter-ai-models-openai-gpt-4o-2024-11-20": {
+      "url": "https://openrouter.ai/models/openai/gpt-4o-2024-11-20",
+      "slug": "openrouter-ai-models-openai-gpt-4o-2024-11-20",
+      "title": "",
+      "fetched_at": "2026-03-27T08:03:31",
+      "file": ".cache/sources/openrouter-ai-models-openai-gpt-4o-2024-11-20.md",
+      "content_type": "text/html",
+      "size_bytes": 2974
+    },
+    "openrouter-ai-models-openai-o1-mini": {
+      "url": "https://openrouter.ai/models/openai/o1-mini",
+      "slug": "openrouter-ai-models-openai-o1-mini",
+      "title": "",
+      "fetched_at": "2026-03-27T08:04:07",
+      "file": ".cache/sources/openrouter-ai-models-openai-o1-mini.md",
+      "content_type": "text/html",
+      "size_bytes": 706
+    },
+    "openrouter-ai-models-meta-llama-llama-3-1-405b": {
+      "url": "https://openrouter.ai/models/meta-llama/llama-3.1-405b",
+      "slug": "openrouter-ai-models-meta-llama-llama-3-1-405b",
+      "title": "",
+      "fetched_at": "2026-03-27T08:03:44",
+      "file": ".cache/sources/openrouter-ai-models-meta-llama-llama-3-1-405b.md",
+      "content_type": "text/html",
+      "size_bytes": 880
+    },
+    "openrouter-ai-models-anthropic-claude-3-opus-20240229": {
+      "url": "https://openrouter.ai/models/anthropic/claude-3-opus-20240229",
+      "slug": "openrouter-ai-models-anthropic-claude-3-opus-20240229",
+      "title": "",
+      "fetched_at": "2026-03-27T08:03:47",
+      "file": ".cache/sources/openrouter-ai-models-anthropic-claude-3-opus-20240229.md",
+      "content_type": "text/html",
+      "size_bytes": 656
+    },
+    "openrouter-ai-models-openai-gpt-4o-mini": {
+      "url": "https://openrouter.ai/models/openai/gpt-4o-mini",
+      "slug": "openrouter-ai-models-openai-gpt-4o-mini",
+      "title": "",
+      "fetched_at": "2026-03-27T08:04:17",
+      "file": ".cache/sources/openrouter-ai-models-openai-gpt-4o-mini.md",
+      "content_type": "text/html",
+      "size_bytes": 2895
     }
   }
 }
