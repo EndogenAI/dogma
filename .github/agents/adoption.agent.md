@@ -6,7 +6,8 @@ tools:
   - edit
   - execute
 x-governs:
-  - companion-repo-onboarding
+  - endogenous-first
+  - programmatic-first
 handoffs:
   - label: Return to Executive Orchestrator
     agent: Executive Orchestrator
