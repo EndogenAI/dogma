@@ -17,12 +17,15 @@ Usage:
 from __future__ import annotations
 
 import ipaddress
+import os
 import re
 import socket
 import urllib.parse
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).parent.parent
+# Use os.path.abspath for cross-platform repo root calculation
+# (cross_platform_tools imports this module, so we can't import from there)
+REPO_ROOT = Path(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # Allowlist of URL schemes accepted by run_research_scout
 _ALLOWED_SCHEMES: frozenset[str] = frozenset({"https"})
