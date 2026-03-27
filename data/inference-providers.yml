@@ -9,9 +9,9 @@ providers:
   - name: "local-ollama"
     endpoint: "http://localhost:11434/api/generate"
     model_ids:
-      - "llama3.2"
-      - "mistral"
-      - "phi3"
+      - "phi3:mini"
+      - "qwen2.5:3b"
+      - "tinyllama:latest"
     cost_tier: "free"
     local: true
 
