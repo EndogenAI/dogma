@@ -1,7 +1,7 @@
 ---
 title: LLM Performance & Costs Comparison 2026
 status: Draft
-closes_issue: #396
+closes_issue: 396
 date: 2026-03-27
 ---
 

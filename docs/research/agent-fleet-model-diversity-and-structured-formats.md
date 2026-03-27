@@ -14,9 +14,9 @@ recommendations:
     decision_ref: ''
   - id: rec-agent-fleet-model-diversity-002
     title: 'Create data/deployment-registry.yml for multi-provider routing'
-    status: deferred
+    status: completed
     linked_issue: 470
-    decision_ref: ''
+    decision_ref: 'data/deployment-registry.yml'
   - id: rec-agent-fleet-model-diversity-003
     title: 'Adopt JSONL as canonical format for multi-Scout batch handoffs'
     status: completed

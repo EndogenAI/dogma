@@ -1755,6 +1755,51 @@
       "file": ".cache/sources/openrouter-ai-models-openai-gpt-4o-mini.md",
       "content_type": "text/html",
       "size_bytes": 2895
+    },
+    "docs-anthropic-com-en-docs-build-with-claude-extended-thinki": {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking",
+      "slug": "docs-anthropic-com-en-docs-build-with-claude-extended-thinki",
+      "title": "",
+      "fetched_at": "2026-03-27T08:10:03",
+      "file": ".cache/sources/docs-anthropic-com-en-docs-build-with-claude-extended-thinki.md",
+      "content_type": "text/html",
+      "size_bytes": 36410
+    },
+    "anthropic-com-news-claude-3-7-sonnet": {
+      "url": "https://www.anthropic.com/news/claude-3-7-sonnet",
+      "slug": "anthropic-com-news-claude-3-7-sonnet",
+      "title": "Claude 3.7 Sonnet and Claude Code \\ Anthropic",
+      "fetched_at": "2026-03-27T08:10:04",
+      "file": ".cache/sources/anthropic-com-news-claude-3-7-sonnet.md",
+      "content_type": "text/html",
+      "size_bytes": 13925
+    },
+    "docs-aws-amazon-com-bedrock-latest-userguide-model-parameter": {
+      "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-meta.html",
+      "slug": "docs-aws-amazon-com-bedrock-latest-userguide-model-parameter",
+      "title": "",
+      "fetched_at": "2026-03-27T08:12:49",
+      "file": ".cache/sources/docs-aws-amazon-com-bedrock-latest-userguide-model-parameter.md",
+      "content_type": "text/html",
+      "size_bytes": 8896
+    },
+    "huggingface-co-meta-llama-Llama-3-3-70B-Instruct": {
+      "url": "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct",
+      "slug": "huggingface-co-meta-llama-Llama-3-3-70B-Instruct",
+      "title": "",
+      "fetched_at": "2026-03-27T08:12:50",
+      "file": ".cache/sources/huggingface-co-meta-llama-Llama-3-3-70B-Instruct.md",
+      "content_type": "text/html",
+      "size_bytes": 37554
+    },
+    "livebench-ai": {
+      "url": "https://livebench.ai/",
+      "slug": "livebench-ai",
+      "title": "",
+      "fetched_at": "2026-03-27T08:12:45",
+      "file": ".cache/sources/livebench-ai.md",
+      "content_type": "text/html",
+      "size_bytes": 0
     }
   }
 }

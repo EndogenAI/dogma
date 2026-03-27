@@ -1,7 +1,7 @@
 ---
 title: Claude 3.7 Extended Thinking & Thinking Blocks Patterns
 status: Draft
-closes_issue: #396
+closes_issue: 396
 date: 2026-03-27
 ---
 
