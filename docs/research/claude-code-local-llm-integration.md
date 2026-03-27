@@ -120,7 +120,7 @@ claude-code "$@"
 
 **Consequences**:
 - ✅ Single-command launch reduces friction
-- ✅ Health check prevents cryptic failure modes (launching before server ready)
+- ✅ Health check prevents cryptic failure modes (launching before server is running)
 - ✅ Auto-selection when unambiguous choices exist
 - ❌ Requires llama-server or Ollama pre-installed and configured
 - ❌ Hardware requirements: RTX 3090 class or better for usable token throughput
@@ -310,7 +310,27 @@ Add a new section to `session-management` skill:
 
 ---
 
-## 5. Sources
+## 5. Long-Running Sessions: Scientific Computing Patterns
+
+**Source**: Matthew Schwartz, "Vibe physics: The AI grad student," *Anthropic Science Blog*, March 23, 2026. <https://www.anthropic.com/research/vibe-physics> — companion to ["Long-running Claude for scientific computing"](https://www.anthropic.com/research/long-running-Claude) (practical guide: test oracles, persistent memory, orchestration patterns).
+
+A Harvard physics professor supervised Claude Opus 4.5 through a real G2-level physics paper using Claude Code in VS Code: 270 sessions, 51 K messages, ~36M tokens, ~40 CPU hours of local simulation, 110 paper drafts, completed in 2 weeks.
+
+**Orchestration patterns validated:**
+
+- **Tree-of-tasks structure**: decompose work into 100+ explicit tasks across sequential stages; one markdown summary file per task. Claude retrieves from files rather than holding state in context — directly analogous to dogma's `.tmp/` scratchpad tree.
+- **Sequential stage gates**: 7 stages (kinematics → resummation → documentation), 15-35 min each. No stage started before the prior stage was reviewed by the human expert — validates dogma's mandatory Review gate between phases.
+- **Context loss is routine**: Claude crashed and lost context at Stage 2; restart-and-reorient from scratchpad files recovered the session. Session handoff prompts must assume context loss, not treat it as exceptional.
+- **Human test oracle required at every stage**: Claude self-reports "verified" without verifying. Domain expert review cannot be substituted by automated checks alone; explicit "go line by line" prompts are required. Validates the Review agent gate — narrative "finished" claims ≠ verified output.
+- **Cross-model verification for critical calculations**: GPT and Gemini checked Claude's maths; they caught errors each other missed. For high-stakes multi-phase tasks, cross-model spot-checking is a viable quality layer.
+- **Scale ceiling**: ~27.5M input tokens for a 2-week scientific task means frontier-model budget planning is required. Local models (Qwen3 Coder Next class) are not viable at this reasoning depth — use cloud Opus/Sonnet for novel synthesis phases; local only for high-volume deterministic subtasks.
+- **CLAUDE.md discipline pays off**: explicit honesty instructions ("never say 'this becomes' without showing the step") reduced sycophantic shortcutting. Mirrors dogma's AGENTS.md constraint encoding approach.
+
+**Dogma fleet implications**: tree-of-tasks validates the per-phase task decomposition and `.tmp/` scratchpad pattern. Context-loss restart validates the Phase Gate Sequence session handoff protocol. Human oracle requirement reinforces the mandatory Review gate. Long-running research sessions (multi-day) should budget for frontier-model spend — Local-Compute-First applies to well-defined subtasks within those sessions, not to the novel synthesis phases.
+
+---
+
+## 6. Sources
 
 ### Primary Source
 - Conway, Adam. "[I wrote a script to run Claude Code with my local LLM, and skipping the cloud has never been easier](https://www.xda-developers.com/wrote-script-run-claude-code-local-llm-skipping-cloud/)." *XDA Developers*, 2026-03-20. Cached: `.cache/sources/xda-developers-com-wrote-script-run-claude-code-local-llm-sk.md`
