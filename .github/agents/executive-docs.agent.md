@@ -1,6 +1,7 @@
 ---
 name: Executive Docs
 description: Maintain and evolve all project documentation — encoding dogmatic values, guiding axioms, and methodology across every documentation layer.
+preferred_model_tier: frontier
 tools:
   - search
   - read

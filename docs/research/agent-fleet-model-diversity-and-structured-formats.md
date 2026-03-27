@@ -7,36 +7,36 @@ related_issue: 414
 date: 2026-03-26
 sources_scouted: 4
 recommendations:
-- id: rec-agent-fleet-model-diversity-001
-  title: 'Encode role-aligned model assignment in fleet agent files'
-  status: deferred
-  linked_issue: 469
-  decision_ref: ''
-- id: rec-agent-fleet-model-diversity-002
-  title: 'Create data/deployment-registry.yml for multi-provider routing'
-  status: deferred
-  linked_issue: 470
-  decision_ref: ''
-- id: rec-agent-fleet-model-diversity-003
-  title: 'Adopt JSONL as canonical format for multi-Scout batch handoffs'
-  status: deferred
-  linked_issue: 471
-  decision_ref: ''
-- id: rec-agent-fleet-model-diversity-004
-  title: 'Add XML attribute convention for large document injection'
-  status: deferred
-  linked_issue: 472
-  decision_ref: ''
-- id: rec-agent-fleet-model-diversity-005
-  title: 'Update data/task-type-classifier.yml with model-tier routing column'
-  status: deferred
-  linked_issue: 473
-  decision_ref: ''
-- id: rec-agent-fleet-model-diversity-006
-  title: 'Track provider diversity in substrate health checks'
-  status: deferred
-  linked_issue: 474
-  decision_ref: ''
+  - id: rec-agent-fleet-model-diversity-001
+    title: 'Encode role-aligned model assignment in fleet agent files'
+    status: completed
+    linked_issue: 469
+    decision_ref: ''
+  - id: rec-agent-fleet-model-diversity-002
+    title: 'Create data/deployment-registry.yml for multi-provider routing'
+    status: deferred
+    linked_issue: 470
+    decision_ref: ''
+  - id: rec-agent-fleet-model-diversity-003
+    title: 'Adopt JSONL as canonical format for multi-Scout batch handoffs'
+    status: completed
+    linked_issue: 471
+    decision_ref: ''
+  - id: rec-agent-fleet-model-diversity-004
+    title: 'Add XML attribute convention for large document injection'
+    status: completed
+    linked_issue: 472
+    decision_ref: 'docs/research/agents/xml-agent-instruction-format.md'
+  - id: rec-agent-fleet-model-diversity-005
+    title: 'Update data/task-type-classifier.yml with model-tier routing column'
+    status: deferred
+    linked_issue: 473
+    decision_ref: ''
+  - id: rec-agent-fleet-model-diversity-006
+    title: 'Track provider diversity in substrate health checks'
+    status: deferred
+    linked_issue: 474
+    decision_ref: ''
 ---
 
 # Agent Fleet Model Diversity and Structured Format Strategies
