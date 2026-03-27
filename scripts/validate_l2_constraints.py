@@ -36,7 +36,11 @@ import argparse
 import sys
 from pathlib import Path
 
-import jsonschema
+try:
+    import jsonschema
+except ImportError:
+    print("Error: jsonschema is required. Install with: pip install jsonschema")
+    sys.exit(1)
 import yaml
 
 _DEFAULT_PATH = Path(__file__).parent.parent / "data" / "l2-constraints.yml"

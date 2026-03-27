@@ -6,16 +6,16 @@ from scripts.emit_otel_metrics import emit_metrics
 
 def test_emit_metrics_input_tokens():
     args = argparse.Namespace(metric="input_tokens", value=10, model="claude-3-sonnet", system=None, dry_run=False)
-    with patch("scripts.emit_otel_metrics.input_tokens_counter") as mock_counter:
+    with patch("scripts.emit_otel_metrics.input_tokens_histogram") as mock_histogram:
         emit_metrics(args)
-        mock_counter.add.assert_called_once_with(10, {"gen_ai.request.model": "claude-3-sonnet"})
+        mock_histogram.record.assert_called_once_with(10, {"gen_ai.request.model": "claude-3-sonnet"})
 
 
 def test_emit_metrics_output_tokens():
     args = argparse.Namespace(metric="output_tokens", value=5, model="claude-3-sonnet", system=None, dry_run=False)
-    with patch("scripts.emit_otel_metrics.output_tokens_counter") as mock_counter:
+    with patch("scripts.emit_otel_metrics.output_tokens_histogram") as mock_histogram:
         emit_metrics(args)
-        mock_counter.add.assert_called_once_with(5, {"gen_ai.request.model": "claude-3-sonnet"})
+        mock_histogram.record.assert_called_once_with(5, {"gen_ai.request.model": "claude-3-sonnet"})
 
 
 def test_emit_metrics_duration():
@@ -36,11 +36,11 @@ def test_emit_metrics_status():
 
 
 def test_emit_metrics_dry_run(capsys):
-    args = argparse.Namespace(metric="input_tokens", value=10.0, model="claude-3-sonnet", system="otel", dry_run=True)
+    args = argparse.Namespace(metric="input_tokens", value=10, model="claude-3-sonnet", system="otel", dry_run=True)
     emit_metrics(args)
     captured = capsys.readouterr()
-    assert "[DRY-RUN] Metric definition: input_tokens" in captured.out
-    assert "Value: 10.0" in captured.out
+    assert '"metric": "gen_ai.usage.input_tokens"' in captured.out
+    assert '"value": 10' in captured.out
 
 
 def test_main_cli():

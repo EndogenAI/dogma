@@ -18,11 +18,19 @@ os.environ["OTEL_PYTHON_METER_PROVIDER"] = "sdk_meter_provider"
 
 try:
     from opentelemetry import metrics
+    from opentelemetry.exporter.otlp.proto.grpc.metric_exporter import OTLPMetricExporter
     from opentelemetry.sdk.metrics import MeterProvider
     from opentelemetry.sdk.metrics.export import ConsoleMetricExporter, PeriodicExportingMetricReader
 except ImportError:
-    print("Error: opentelemetry-api and opentelemetry-sdk are required.")
-    sys.exit(1)
+    # Try alternate OTLP exporter if grpc not available
+    try:
+        from opentelemetry.exporter.otlp.proto.http.metric_exporter import OTLPMetricExporter
+    except ImportError:
+        OTLPMetricExporter = None
+
+    if "ConsoleMetricExporter" not in locals():
+        print("Error: opentelemetry-api and opentelemetry-sdk are required.")
+        sys.exit(1)
 
 # Argument parsing early to handle dry-run before SDK setup if possible
 # (But meter setup is global here, so we'll just handle it in main/emit)
@@ -52,8 +60,8 @@ def setup_otel(dry_run=False):
 
 # Global variables for metrics (will be initialized in main)
 meter = None
-input_tokens_counter = None
-output_tokens_counter = None
+input_tokens_histogram = None
+output_tokens_histogram = None
 request_duration = None
 system_health_gauge = None
 _reader = None
@@ -66,13 +74,15 @@ def get_system_health(options):
 
 
 def init_metrics(m, dry_run=False):
-    global input_tokens_counter, output_tokens_counter, request_duration, system_health_gauge
-    input_tokens_counter = m.create_counter("gen_ai.usage.input_tokens", unit="1", description="Number of input tokens")
-    output_tokens_counter = m.create_counter(
+    global input_tokens_histogram, output_tokens_histogram, request_duration, system_health_gauge
+    input_tokens_histogram = m.create_histogram(
+        "gen_ai.usage.input_tokens", unit="1", description="Number of input tokens"
+    )
+    output_tokens_histogram = m.create_histogram(
         "gen_ai.usage.output_tokens", unit="1", description="Number of output tokens"
     )
     request_duration = m.create_histogram(
-        "gen_ai.request.duration", unit="ms", description="Duration of the LLM request in milliseconds"
+        "gen_ai.client.operation.duration", unit="ms", description="Duration of the LLM request in milliseconds"
     )
     if not dry_run:
         system_health_gauge = m.create_observable_gauge(
@@ -94,9 +104,13 @@ def emit_metrics(args: argparse.Namespace):
 
     # Metric type and unit lookup for dry-run/consistent emission
     metric_info = {
-        "input_tokens": {"type": "Counter", "unit": "1", "description": "Number of input tokens"},
-        "output_tokens": {"type": "Counter", "unit": "1", "description": "Number of output tokens"},
-        "duration": {"type": "Histogram", "unit": "ms", "description": "Duration of the LLM request in milliseconds"},
+        "input_tokens": {"type": "Histogram", "unit": "1", "description": "Number of input tokens"},
+        "output_tokens": {"type": "Histogram", "unit": "1", "description": "Number of output tokens"},
+        "duration": {
+            "type": "Histogram",
+            "unit": "ms",
+            "description": "Duration of the LLM request in milliseconds",
+        },
         "status": {
             "type": "ObservableGauge",
             "unit": "1",
@@ -109,7 +123,7 @@ def emit_metrics(args: argparse.Namespace):
         output = {
             "metric": f"gen_ai.usage.{args.metric}"
             if "tokens" in args.metric
-            else ("gen_ai.request.duration" if args.metric == "duration" else "system.health.status"),
+            else ("gen_ai.client.operation.duration" if args.metric == "duration" else "system.health.status"),
             "description": info.get("description"),
             "type": info.get("type"),
             "unit": info.get("unit"),
@@ -120,9 +134,9 @@ def emit_metrics(args: argparse.Namespace):
         return
 
     if args.metric == "input_tokens":
-        input_tokens_counter.add(int(args.value), attributes)
+        input_tokens_histogram.record(int(args.value), attributes)
     elif args.metric == "output_tokens":
-        output_tokens_counter.add(int(args.value), attributes)
+        output_tokens_histogram.record(int(args.value), attributes)
     elif args.metric == "duration":
         request_duration.record(float(args.value), attributes)
     elif args.metric == "status":
@@ -130,7 +144,7 @@ def emit_metrics(args: argparse.Namespace):
         # Observable gauge refreshes on collection/export
 
     # Force collection for CLI output visibility if not status (status is async)
-    if not args.dry_run and args.metric != "status":
+    if not args.dry_run and args.metric != "status" and _reader and hasattr(_reader, "collect"):
         _reader.collect()
 
 
@@ -149,7 +163,13 @@ def main():
         from opentelemetry.sdk.metrics import MeterProvider
         from opentelemetry.sdk.metrics.export import ConsoleMetricExporter, PeriodicExportingMetricReader
 
-        _reader = PeriodicExportingMetricReader(ConsoleMetricExporter())
+        endpoint = os.environ.get("OTEL_EXPORTER_OTLP_ENDPOINT")
+        if endpoint and OTLPMetricExporter:
+            exporter = OTLPMetricExporter(endpoint=endpoint)
+        else:
+            exporter = ConsoleMetricExporter()
+
+        _reader = PeriodicExportingMetricReader(exporter)
         provider = MeterProvider(metric_readers=[_reader])
         metrics.set_meter_provider(provider)
         meter = metrics.get_meter("dogma.otel.metrics")
