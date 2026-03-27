@@ -143,7 +143,7 @@ gracefully when Ollama is not reachable.
 
 **Depends on**: Phase 2 D1 and D2 confirmed in scratchpad
 **Gate**: Phase 3 Review gate must return APPROVED before Phase 4 begins.
-**Status**: ⬜ Not started
+**Status**: ✅ Complete
 
 ---
 
@@ -168,7 +168,7 @@ begins.
 
 **Return**: `APPROVED` or `REQUEST CHANGES — [criterion number: one-line reason]`
 **Gate**: Phase 4 does not begin until verdict is `APPROVED`.
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED
 
 ---
 
@@ -213,7 +213,7 @@ issue #131 (H1 token-burn hypothesis). Must ship with a full test file
 
 **Depends on**: Phase 3 Review APPROVED
 **Gate**: Phase 4 Review gate must return APPROVED before Phase 5 begins.
-**Status**: ⬜ Not started
+**Status**: ✅ Complete
 
 ---
 
@@ -237,7 +237,7 @@ AGENTS.md before the GitHub agent opens the PR.
 
 **Return**: `APPROVED` or `REQUEST CHANGES — [criterion number: one-line reason]`
 **Gate**: Phase 5 does not begin until verdict is `APPROVED`.
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED
 
 ---
 
