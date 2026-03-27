@@ -1,7 +1,7 @@
 ---
 title: "Local Compute Baseline Establishment"
 branch: feat/establish-local-compute-baseline
-closes_issues: [131]
+unblocks_issues: [131]
 date: 2026-03-27
 status: Active
 ---
@@ -245,7 +245,7 @@ AGENTS.md before the GitHub agent opens the PR.
 
 **Agent**: GitHub
 **Description**: Commit all changed files, push to `feat/establish-local-compute-baseline`,
-and open a pull request targeting `main`. PR body must include `Closes #131`.
+and open a pull request targeting `main`. PR body must include `Unblocks #131`.
 
 **Tasks**:
 1. Stage all changed files: `data/inference-providers.yml`,
@@ -258,12 +258,13 @@ and open a pull request targeting `main`. PR body must include `Closes #131`.
    - `feat(metrics): add session cost log harness` (Phase 4)
 3. Push: `git push -u origin feat/establish-local-compute-baseline`.
 4. Open PR — title: `feat(lcf): establish local compute baseline`; body includes
-   `Closes #131` and a one-line summary per phase deliverable.
+   `Unblocks #131` and a one-line summary per phase deliverable. Note: this establishes
+   the baseline prerequisite but does NOT adopt Cognee (which is #131's actual scope).
 5. Verify CI is green before requesting Copilot review.
 
 **Deliverables**:
 - D1: All phase deliverables committed to `feat/establish-local-compute-baseline`.
-- D2: PR opened with `Closes #131` in the PR body.
+- D2: PR opened with `Unblocks #131` in the PR body (not `Closes` — Cognee adoption is a separate follow-up issue).
 - D3: CI passing; Copilot review requested.
 
 **Depends on**: Phase 4 Review APPROVED
@@ -279,7 +280,7 @@ and open a pull request targeting `main`. PR body must include `Closes #131`.
 - [ ] `tests/test_inference_integration.py` — ≥3 `@pytest.mark.integration` tests; skips without Ollama
 - [ ] `scripts/session_cost_log.py` — `log_session_cost`, `read_log`, `--dry-run` implemented with docstring
 - [ ] `tests/test_session_cost_log.py` — ≥5 tests, all passing, coverage ≥80%
-- [ ] PR open on `feat/establish-local-compute-baseline` with `Closes #131`
+- [ ] PR open on `feat/establish-local-compute-baseline` with `Unblocks #131` (not `Closes` — this establishes the baseline; Cognee adoption is a separate issue)
 - [ ] CI green before Copilot review requested
 
 ---
