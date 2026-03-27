@@ -1,17 +1,18 @@
 """mcp_server/dogma_server.py — FastMCP server exposing dogma governance tools.
 
-Registers 11 tools via @mcp.tool():
-    validate_agent_file    — Validate a .agent.md file against AGENTS.md constraints.
-    validate_synthesis     — Validate a D4 synthesis document.
-    check_substrate        — Run a full CRD substrate health check.
-    scaffold_agent         — Scaffold a new .agent.md stub from template.
-    scaffold_workplan      — Scaffold a new docs/plans/ workplan from template.
-    run_research_scout     — Fetch and cache an external URL (SSRF-safe).
-    query_docs             — BM25 query over the dogma documentation corpus.
-    prune_scratchpad       — Initialise or inspect the session scratchpad.
-    detect_user_interrupt  — Check whether a user message contains an interruption signal.
-    normalize_path         — Normalize a cross-platform path string, expanding env-var tokens.
-    resolve_env_path       — Read an env-var expected to hold a path and normalize it.
+Registers 12 tools via @mcp.tool():
+    validate_agent_file      — Validate a .agent.md file against AGENTS.md constraints.
+    validate_synthesis       — Validate a D4 synthesis document.
+    check_substrate          — Run a full CRD substrate health check.
+    scaffold_agent           — Scaffold a new .agent.md stub from template.
+    scaffold_workplan        — Scaffold a new docs/plans/ workplan from template.
+    run_research_scout       — Fetch and cache an external URL (SSRF-safe).
+    query_docs               — BM25 query over the dogma documentation corpus.
+    prune_scratchpad         — Initialise or inspect the session scratchpad.
+    detect_user_interrupt    — Check whether a user message contains an interruption signal.
+    normalize_path           — Normalize a cross-platform path string, expanding env-var tokens.
+    resolve_env_path         — Read an env-var expected to hold a path and normalize it.
+    route_inference_request  — Route inference requests to local or external providers.
 
 Transport: stdio (default for Claude Desktop / Cursor / VS Code MCP clients).
 
@@ -40,6 +41,7 @@ from mcp.server.fastmcp import FastMCP
 
 from mcp_server.tools.cross_platform_tools import normalize_path as _normalize_path
 from mcp_server.tools.cross_platform_tools import resolve_env_path as _resolve_env_path
+from mcp_server.tools.inference import route_inference_request as _route_inference_request
 from mcp_server.tools.research import query_docs as _query_docs
 from mcp_server.tools.research import run_research_scout as _run_research_scout
 from mcp_server.tools.scaffolding import scaffold_agent as _scaffold_agent
@@ -275,6 +277,38 @@ def resolve_env_path(key: str, default: str = "") -> dict[str, Any]:
         Normalized path string, or `default` if the variable is absent/empty.
     """
     return _resolve_env_path(key, default)
+
+
+# ---------------------------------------------------------------------------
+# Inference routing
+# ---------------------------------------------------------------------------
+
+
+@mcp.tool()
+def route_inference_request(
+    prompt: str,
+    model_id: str,
+    max_tokens: int = 512,
+    temperature: float = 0.7,
+) -> dict[str, Any]:
+    """Route an inference request to the appropriate provider based on model_id.
+
+    Reads data/inference-providers.yml and selects a provider, preferring local
+    providers (Local-Compute-First principle). Does not execute the request —
+    returns routing metadata only.
+
+    Args:
+        prompt: The prompt text to send to the model.
+        model_id: Model identifier (e.g., 'llama3.2', 'claude-3-5-haiku-20241022').
+        max_tokens: Maximum tokens to generate (default: 512).
+        temperature: Sampling temperature 0.0-1.0 (default: 0.7).
+
+    Returns:
+        {"ok": bool, "provider": str | None, "endpoint": str | None,
+         "local": bool, "cost_tier": str | None, "response": str | None,
+         "errors": list[str]}
+    """
+    return _route_inference_request(prompt, model_id, max_tokens, temperature)
 
 
 if __name__ == "__main__":
