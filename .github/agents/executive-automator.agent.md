@@ -144,6 +144,7 @@ Determine the category (see table above) and the trigger:
 - **What event fires it?** (file change, git commit, folder open, CI push)
 - **What does it do?** (validate, annotate, regenerate, notify)
 - **How do we prevent loops?** (cooldown, sentinels, idempotent writes)
+- **Does it pass the Two-Stage Gate?** — any automation that triggers irreversible external side effects (commits, pushes, bulk deletes) must pass the Two-Stage Gate as per [`AGENTS.md` § Security Guardrails](../../AGENTS.md#security-guardrails).
 
 ### 2. Audit Existing Automation
 

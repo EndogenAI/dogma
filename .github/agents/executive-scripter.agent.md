@@ -92,6 +92,7 @@ For each gap found, assess:
 
 - **Extension first** — if a script partially covers the need, extend it rather than creating a new one.
 - **Check external tools first** — before writing bespoke code, check if a well-maintained open-source tool already solves the problem. If so, adopt it, document it, and write a thin wrapper script if needed.
+- **Two-Stage Security Gate** — any script that triggers irreversible side effects (commits, pushes, bulk deletes) must pass the Two-Stage Gate as per [`AGENTS.md` § Security Guardrails](../../AGENTS.md#security-guardrails).
 
 #### Script Conventions (Mandatory)
 
