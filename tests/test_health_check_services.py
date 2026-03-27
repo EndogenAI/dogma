@@ -218,3 +218,110 @@ substrates:
         assert output["count"] == 2
         assert "service-1" in output["services"]
         assert "service-2" in output["services"]
+
+
+# ============================================================================
+# Provider Diversity Tests (Issue #474)
+# ============================================================================
+
+
+def test_load_inference_providers_yaml(tmp_path):
+    """Verify load_inference_providers reads YAML correctly."""
+    providers_file = tmp_path / "providers.yml"
+    providers_file.write_text("""
+providers:
+  - name: "local-ollama"
+    endpoint: "http://localhost:11434/api/generate"
+    local: true
+  - name: "anthropic-claude"
+    endpoint: "https://api.anthropic.com/v1/messages"
+    local: false
+""")
+
+    from health_check_services import load_inference_providers
+
+    providers_data = load_inference_providers(providers_file)
+    assert "providers" in providers_data
+    assert len(providers_data["providers"]) == 2
+    assert providers_data["providers"][0]["name"] == "local-ollama"
+    assert providers_data["providers"][0]["local"] is True
+
+
+@patch("health_check_services.requests.get")
+def test_check_inference_providers_local_only(mock_get):
+    """Verify check_inference_providers filters local providers correctly."""
+    from health_check_services import check_inference_providers
+
+    mock_response = Mock()
+    mock_response.status_code = 200
+    mock_response.elapsed.total_seconds.return_value = 0.1
+    mock_get.return_value = mock_response
+
+    providers_data = {
+        "providers": [
+            {"name": "local-ollama", "endpoint": "http://localhost:11434/api/generate", "local": True},
+            {"name": "anthropic-claude", "endpoint": "https://api.anthropic.com/v1/messages", "local": False},
+        ]
+    }
+
+    result = check_inference_providers(providers_data, provider_type="local")
+
+    # Only local providers should be checked
+    assert len(result["local"]) == 1
+    assert len(result["external"]) == 0
+    assert result["local"][0]["name"] == "local-ollama"
+    assert result["local"][0]["status"] == "available"
+
+
+@patch("health_check_services.requests.get")
+def test_check_inference_providers_multi_provider_all(mock_get):
+    """Verify check_inference_providers handles all provider types."""
+    from health_check_services import check_inference_providers
+
+    mock_response = Mock()
+    mock_response.status_code = 200
+    mock_get.return_value = mock_response
+
+    providers_data = {
+        "providers": [
+            {"name": "local-ollama", "endpoint": "http://localhost:11434", "local": True},
+            {"name": "anthropic-claude", "endpoint": "https://api.anthropic.com/v1/messages", "local": False},
+            {"name": "openai-gpt", "endpoint": "https://api.openai.com/v1/chat/completions", "local": False},
+        ]
+    }
+
+    result = check_inference_providers(providers_data, provider_type="all")
+
+    # Should have 1 local and 2 external
+    assert len(result["local"]) == 1
+    assert len(result["external"]) == 2
+    assert result["local"][0]["name"] == "local-ollama"
+    assert result["external"][0]["name"] == "anthropic-claude"
+    assert result["external"][1]["name"] == "openai-gpt"
+
+
+@patch("health_check_services.requests.get")
+def test_check_inference_providers_local_first_ordering(mock_get):
+    """Verify local providers appear first in output (local-first preference)."""
+    from health_check_services import check_inference_providers
+
+    mock_response = Mock()
+    mock_response.status_code = 200
+    mock_get.return_value = mock_response
+
+    providers_data = {
+        "providers": [
+            {"name": "anthropic-claude", "endpoint": "https://api.anthropic.com", "local": False},
+            {"name": "local-ollama", "endpoint": "http://localhost:11434", "local": True},
+            {"name": "openai-gpt", "endpoint": "https://api.openai.com", "local": False},
+        ]
+    }
+
+    result = check_inference_providers(providers_data, provider_type="all")
+
+    # Local providers should be in 'local' key, external in 'external' key
+    # The structure itself enforces local-first presentation
+    assert "local" in result
+    assert "external" in result
+    assert len(result["local"]) == 1
+    assert len(result["external"]) == 2

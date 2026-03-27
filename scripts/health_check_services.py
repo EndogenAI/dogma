@@ -5,14 +5,18 @@ health_check_services.py — Poll /health endpoints for services in substrate-at
 Purpose:
     Health check orchestrator for long-running services. Reads service registry from
     data/substrate-atlas.yml and polls each service's /health endpoint.
+    Optionally checks inference provider availability from data/inference-providers.yml.
 
 Inputs:
     - data/substrate-atlas.yml: service registry with health_endpoint fields
+    - data/inference-providers.yml: inference provider capability matrix (optional)
     - --timeout: HTTP request timeout in seconds (default: 5)
     - --services: comma-separated list of service names to check (default: all)
+    - --provider-type: check inference providers by type (local|external|all) (optional)
 
 Outputs:
     - JSON to stdout: {"healthy": [...], "degraded": [...], "unreachable": [...]}
+    - If --provider-type specified: adds "providers": {"local": [...], "external": [...]}
     - Exit 0 if all services healthy
     - Exit 1 if any service degraded (responding but not OK)
     - Exit 2 if any service unreachable (timeout or connection error)
@@ -23,6 +27,12 @@ Usage:
 
     # Check specific services with custom timeout
     uv run python scripts/health_check_services.py --services ollama,mcp-server --timeout 10
+
+    # Check local inference providers only
+    uv run python scripts/health_check_services.py --provider-type local
+
+    # Check all inference providers (local + external)
+    uv run python scripts/health_check_services.py --provider-type all
 
     # Dry run (list services without checking)
     uv run python scripts/health_check_services.py --dry-run
@@ -37,7 +47,7 @@ Reference:
     - AGENTS.md § Async Process Handling
     - MANIFESTO.md § 3 Local-Compute-First
 
-Closes: #342
+Closes: #342, #474
 """
 
 import argparse
@@ -128,6 +138,90 @@ def extract_services_with_health_endpoints(atlas: dict) -> List[Dict[str, str]]:
     return services
 
 
+def load_inference_providers(providers_path: Path) -> dict:
+    """Load inference provider capability matrix from YAML.
+
+    Args:
+        providers_path: Path to data/inference-providers.yml
+
+    Returns:
+        Parsed YAML dict with providers list
+
+    Raises:
+        FileNotFoundError: If providers file doesn't exist
+        yaml.YAMLError: If providers file is invalid YAML
+    """
+    if not providers_path.exists():
+        raise FileNotFoundError(f"Inference providers file not found: {providers_path}")
+
+    with providers_path.open() as f:
+        return yaml.safe_load(f)
+
+
+def check_inference_providers(
+    providers_data: dict, provider_type: str = "all", timeout: int = 5
+) -> Dict[str, List[Dict[str, str]]]:
+    """Check inference provider availability based on provider type filter.
+
+    Args:
+        providers_data: Parsed inference-providers.yml dict
+        provider_type: Filter by 'local', 'external', or 'all' (default: 'all')
+        timeout: Request timeout in seconds for external providers
+
+    Returns:
+        Dict with keys: local (list of local providers), external (list of external providers)
+        Each provider entry: {"name": str, "status": "available"|"unreachable", "message": str}
+    """
+    local_providers = []
+    external_providers = []
+
+    for provider in providers_data.get("providers", []):
+        is_local = provider.get("local", False)
+
+        # Apply provider_type filter
+        if provider_type == "local" and not is_local:
+            continue
+        if provider_type == "external" and is_local:
+            continue
+
+        # Check provider availability
+        endpoint = provider.get("endpoint")
+        if not endpoint:
+            continue
+
+        provider_entry = {"name": provider["name"], "endpoint": endpoint}
+
+        # For local providers, check availability
+        if is_local:
+            # Check if local endpoint is reachable (simple GET)
+            try:
+                response = requests.get(endpoint, timeout=timeout)
+                if response.status_code in (200, 404):  # 404 is OK for base URLs
+                    provider_entry["status"] = "available"
+                    provider_entry["message"] = f"Reachable ({response.status_code})"
+                else:
+                    provider_entry["status"] = "unreachable"
+                    provider_entry["message"] = f"HTTP {response.status_code}"
+            except requests.Timeout:
+                provider_entry["status"] = "unreachable"
+                provider_entry["message"] = f"Timeout after {timeout}s"
+            except requests.ConnectionError:
+                provider_entry["status"] = "unreachable"
+                provider_entry["message"] = "Connection refused"
+            except Exception as e:
+                provider_entry["status"] = "unreachable"
+                provider_entry["message"] = f"Error: {str(e)[:50]}"
+
+            local_providers.append(provider_entry)
+        else:
+            # External providers: mark as configured (don't check auth endpoints)
+            provider_entry["status"] = "configured"
+            provider_entry["message"] = "External API endpoint configured"
+            external_providers.append(provider_entry)
+
+    return {"local": local_providers, "external": external_providers}
+
+
 def main():
     """CLI entry point for health check orchestrator."""
     parser = argparse.ArgumentParser(description="Poll /health endpoints for services in substrate-atlas.yml")
@@ -137,8 +231,19 @@ def main():
         default=Path(__file__).parent.parent / "data" / "substrate-atlas.yml",
         help="Path to substrate-atlas.yml (default: data/substrate-atlas.yml)",
     )
+    parser.add_argument(
+        "--providers",
+        type=Path,
+        default=Path(__file__).parent.parent / "data" / "inference-providers.yml",
+        help="Path to inference-providers.yml (default: data/inference-providers.yml)",
+    )
     parser.add_argument("--timeout", type=int, default=5, help="HTTP request timeout in seconds (default: 5)")
     parser.add_argument("--services", help="Comma-separated list of service names to check (default: all)")
+    parser.add_argument(
+        "--provider-type",
+        choices=["local", "external", "all"],
+        help="Check inference providers by type: local, external, or all (optional)",
+    )
     parser.add_argument("--dry-run", action="store_true", help="List services without checking health")
 
     args = parser.parse_args()
@@ -196,6 +301,19 @@ def main():
         "degraded": [{"name": r["name"], "message": r["message"]} for r in degraded],
         "unreachable": [{"name": r["name"], "message": r["message"]} for r in unreachable],
     }
+
+    # Check inference providers if --provider-type is specified
+    if args.provider_type:
+        try:
+            providers_data = load_inference_providers(args.providers)
+            providers_check = check_inference_providers(providers_data, args.provider_type, args.timeout)
+            output["providers"] = providers_check
+        except FileNotFoundError as e:
+            output["providers"] = {"error": str(e)}
+        except yaml.YAMLError as e:
+            output["providers"] = {"error": f"Invalid providers YAML: {e}"}
+        except Exception as e:
+            output["providers"] = {"error": f"Provider check error: {e}"}
 
     print(json.dumps(output, indent=2))
 
