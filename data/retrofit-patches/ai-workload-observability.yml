@@ -1,5 +1,3 @@
-# Suggested patch for docs/research/ai-workload-observability.md
-# Review and edit before applying with Phase 6 patch application
 doc: docs/research/ai-workload-observability.md
 doc_slug: ai-workload-observability
 generated_at: '2026-03-22T20:41:09.678865+00:00'
@@ -54,3 +52,4 @@ recommendations:
   decision_ref: ''
   _match_note: No matching issue found
   _confidence: low
+status: approved-for-adoption

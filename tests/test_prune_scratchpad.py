@@ -78,6 +78,16 @@ class TestPruneScrapbookInitialisation:
         assert "phases" in data
         # Candidate C extended fields
         assert "date" in data, "Expected 'date' field (Candidate C)"
+
+        # Verify new sections (Audit Trail and Telemetry) added in Sprint 34
+        assert "## Audit Trail" in text
+        assert "| Agent | Decision | Justification | Time |" in text
+        assert "## Telemetry" in text
+        assert "| Metric | Value |" in text
+        assert "| Phases complete | 0 |" in text
+        assert "| Delegations made | 0 |" in text
+        assert "| Rate-limit events | 0 |" in text
+        assert "| Estimated tokens used | 0 |" in text
         assert "active_issues" in data, "Expected 'active_issues' field (Candidate C)"
         assert "blockers" in data, "Expected 'blockers' field (Candidate C)"
         assert "last_agent" in data, "Expected 'last_agent' field (Candidate C)"

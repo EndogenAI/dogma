@@ -1,3 +1,42 @@
+# [0.22.0](https://github.com/EndogenAI/dogma/compare/v0.21.0...v0.22.0) (2026-03-26)
+
+
+### Bug Fixes
+
+* **research:** add acceptance criteria and adoption rationale to orchestrator autopilot doc (phase 2 review fix) ([3a161c0](https://github.com/EndogenAI/dogma/commit/3a161c08d2dd8bef7c91c9a8cf49432205712f94))
+* **research:** add evidence citations to pattern catalog from phase 1 & 2 research (phase 3 review fix) ([9c45dd7](https://github.com/EndogenAI/dogma/commit/9c45dd7a1f9dc6a045f091cdc4d69e2dd0b87622))
+* **review:** address Copilot PR [#444](https://github.com/EndogenAI/dogma/issues/444) review — script bugs, tests, doc fixes ([6b63d4f](https://github.com/EndogenAI/dogma/commit/6b63d4f2947c52a44e578d90da9ae60430c96a06)), closes [#129](https://github.com/EndogenAI/dogma/issues/129) [#129](https://github.com/EndogenAI/dogma/issues/129)
+
+
+### Features
+
+* **scripts:** add seed_research_recommendations.py ([cf204f0](https://github.com/EndogenAI/dogma/commit/cf204f066cd655abfd08abc3aafa7ce47c35fb77))
+
+
+### Reverts
+
+* Revert "chore(release): v0.21.1 [skip ci]" ([9f05099](https://github.com/EndogenAI/dogma/commit/9f05099912b2a8e508278374aed927363402a5c3))
+
+
+
+# [0.21.0](https://github.com/EndogenAI/dogma/compare/v0.20.0...v0.21.0) (2026-03-26)
+
+
+### Bug Fixes
+
+* **plans:** correct Phase 3 dependency — depends on Phase 1 OWASP research ([30afae4](https://github.com/EndogenAI/dogma/commit/30afae439cf8bbe6f3556b3016ed8b4647bc3d36))
+* **research:** complete OWASP recommendations frontmatter ([ec59434](https://github.com/EndogenAI/dogma/commit/ec5943416cd519b2200cd3deeee648d35dcaa119))
+* **scripts:** address PR [#442](https://github.com/EndogenAI/dogma/issues/442) review - dry-run KeyError guard + docstring correction ([ae87587](https://github.com/EndogenAI/dogma/commit/ae875874153142259e3eaed8e9a627177bf7b576))
+* **security:** address PR [#442](https://github.com/EndogenAI/dogma/issues/442) review - IPv6 zone stripping + is_unspecified + CVE DB gate ([c3b3370](https://github.com/EndogenAI/dogma/commit/c3b33702cbd8a1b3f2d28dfd6575396275a2a070))
+
+
+### Features
+
+* **security:** add CVE feed stub and dependency audit automation ([9b9c326](https://github.com/EndogenAI/dogma/commit/9b9c326110c0b4cea831950c88f16a0b871566ef)), closes [#361](https://github.com/EndogenAI/dogma/issues/361) [#357](https://github.com/EndogenAI/dogma/issues/357)
+* **security:** extend SSRF protections with URL validation ([df192ce](https://github.com/EndogenAI/dogma/commit/df192cec57da5ac796e3751eddd096da7e348a8a)), closes [#424](https://github.com/EndogenAI/dogma/issues/424)
+
+
+
 # [0.20.0](https://github.com/EndogenAI/dogma/compare/v0.19.0...v0.20.0) (2026-03-25)
 
 

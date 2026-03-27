@@ -1,8 +1,8 @@
 # dogma MCP Server
 
 Exposes the dogma governance toolset as an [MCP](https://modelcontextprotocol.io/) server
-using [FastMCP](https://github.com/jlowin/fastmcp). Provides 8 tools for validating,
-scaffolding, researching, and managing sessions within the dogma repository.
+using [FastMCP](https://github.com/jlowin/fastmcp). Provides 11 tools for validating,
+scaffolding, researching, managing sessions, and normalizing cross-platform paths within the dogma repository.
 
 ---
 
@@ -18,6 +18,16 @@ scaffolding, researching, and managing sessions within the dogma repository.
 | `run_research_scout` | Fetch and cache an external URL (SSRF-safe) |
 | `query_docs` | BM25 query over the dogma documentation corpus |
 | `prune_scratchpad` | Initialise or inspect the session scratchpad |
+| `detect_user_interrupt` | **Per-phase** — check for user STOP/ABORT/CANCEL signals before any phase action; returns `interrupted: true` if detected |
+
+---
+
+## Cross-Platform Tools
+
+| Tool | Description | Inputs | Output |
+|------|-------------|--------|--------|
+| `normalize_path` | Normalize a path string cross-platform, expanding env-var tokens (`$HOME`, `$PWD`) via `os.path.expandvars` then `pathlib.Path` | `path_str: str` | Normalized path string |
+| `resolve_env_path` | Read an env-var expected to hold a path, normalize it; returns `default` if unset | `key: str`, `default: str = ""` | Normalized path or default |
 
 ---
 

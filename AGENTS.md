@@ -427,7 +427,7 @@ Rules:
 
 ### Focus-on-Descent / Compression-on-Ascent
 
-**Essence**: Outbound delegation prompts must be scoped narrowly and explicitly. Returned results must be compressed to ≤ 2,000 tokens. Both together preserve context window budget across multi-phase sessions.
+**Essence**: Outbound delegation prompts must be scoped narrowly and explicitly. Returned results must be compressed — **subagents return ≤ 300 tokens**; **executive agents return ≤ 2,000 tokens**. Both together preserve context window budget across multi-phase sessions.
 
 **Three-layer encoding** (prescriptive — not advisory):
 
@@ -819,12 +819,52 @@ Check for remaining subdirectory files with:
 find . -name 'AGENTS.md' | grep -v node_modules
 ```
 
+<a name="instruction-hierarchy"></a>
+---
+
+## Instruction Hierarchy — User Real-Time Directives Override
+
+**User real-time interruption signals override all phase gates, session plans, retry logic, and recovery heuristics.** This hierarchy applies to all agents at all times.
+
+### Priority Order
+
+1. **User real-time directives** (highest) — any message containing "STOP", "DO NOT CONTINUE", "ABORT", "ABORT THIS TASK", or equivalent is an EXIT signal; the agent must exit the current execution path immediately
+2. **Session constraints** — AGENTS.md guardrails, security rules, and file-writing guards
+3. **Phase gate procedures** — workplan phases, review gates, per-phase checklists
+4. **Script/automation outputs** — CI results, pre-commit hooks, validated commands (lowest)
+
+### Agent Behaviour on Interruption Signal
+
+Upon receiving a user interruption signal:
+1. **Exit** the current phase immediately — do not attempt to complete or recover the current task
+2. **Write** to the session scratchpad: `## Interrupted: [task name] — awaiting user direction`
+3. **Commit** any in-progress changes with message `chore: checkpoint before interrupt -- [task name]` if there are uncommitted file changes
+4. **Return control** to the user with: "Execution paused. What would you like to do next?"
+5. **Do NOT** auto-recover, re-enter the phase, or execute the next planned step until the user provides new direction
+
+### Interrupt Signal Keywords
+
+The following phrases, when detected in user input, constitute an interruption signal:
+- `STOP`
+- `DO NOT CONTINUE`
+- `ABORT`
+- `ABORT THIS TASK`
+- `CANCEL`
+- `PAUSE EXECUTION`
+- `HOLD`
+
+**Critical anti-pattern**: Treating user interruption signals as "clarification requests" or "noise" and continuing phase execution is an encoding failure. User direction > phase instruction at all times.
+
+*Grounded in `docs/research/orchestrator-autopilot-failure.md` § Recommendation 1 (Track A) — confirmed: the `task/comms-strategy-split` incident on 2026-03-25 where the agent treated "STOP" signals as noise and re-entered the same failed phase cycle.*
+
 <a name="when-to-ask-vs-proceed"></a>
 ---
 
 ## When to Ask vs. Proceed
 
 **Default posture: stop and ask before any ambiguous or irreversible action.**
+
+**Note**: User real-time interruption signals override the posture below entirely. See [Instruction Hierarchy](#instruction-hierarchy) for the exit protocol.
 
 ### Anti-pattern: Outward-facing research framing
 
@@ -985,6 +1025,7 @@ The authoring contract for `.agent.md` files (VS Code Custom Agents) is enforced
   - **Read-only**: `search`, `read`, `changes`, `usages`
   - **Read + create**: adds `edit`, `web` (only if fetching remote URLs)
   - **Full execution**: adds `execute`, `terminal`, `agent`
+- **Tool count ceiling (Miller's Law)**: Agent `tools` arrays must not exceed **9 items** (Miller 1956, 7±2 rule). Exceeding this ceiling prevents reviewers from mentally tracking all available actions. `validate_agent_files.py` emits a warning for violations. Evidence: [`docs/research/ai-cognitive-load.md`](docs/research/ai-cognitive-load.md).
 - **Handoff Patterns**:
   - **Takeback**: Sub-agent returns to executive for review gate before next phase.
   - **Inter-Phase Review Gate**: Multi-phase sessions invoke Review agent between every domain phase pair.
@@ -1056,6 +1097,37 @@ For full authoring guidance, see [`docs/guides/agents.md`](docs/guides/agents.md
 | Skill | Description |
 |-------|-------------|
 | [secondary-research-sprint](.github/skills/secondary-research-sprint/SKILL.md) | 5-step workflow for bare-bones secondary research issues (enrich → corpus check → scout → synthesize → archive) |
+
+<a name="readiness-language-guard"></a>
+---
+
+## Readiness Language Guard
+
+**Readiness language must be capability-scoped.** Claiming "ready" without a capability matrix or demo artifact is prohibited.
+
+### Prohibited Patterns
+
+- Unqualified "ready" or "complete" when any capability dimension is partial or untested
+- "All tests pass" as a readiness claim when end-to-end tests are not included
+- Closing an issue as "done" without a demo artifact that proves intent satisfaction
+
+### Required Patterns
+
+| Situation | Required Wording |
+|-----------|------------------|
+| Full end-to-end passing | "Ready — capability matrix: Retrieval ✅, Augmentation ✅, Generation ✅, E2E ✅" |
+| Partial readiness | "Retrieval-ready; generation in progress — not ready for end-to-end use" |
+| Readiness claim in PR | Must link to `docs/plans/<initiative>/intent-contract.md` and demo artifact |
+
+### Agent Responsibility
+
+Before any agent writes or endorses a readiness claim:
+1. Confirm the intent contract exists for the initiative
+2. Run `scripts/check_readiness_matrix.py` to validate capability dimensions
+3. Confirm a demo artifact is available (question + answer + citations)
+4. If any check fails: use scoped wording, do not claim ready
+
+*Grounded in `docs/research/readiness-false-positive-analysis.md` § Recommendation 5 — Communication Safety Protocol.*
 
 <a name="security-guardrails"></a>
 ---
@@ -1236,6 +1308,8 @@ uv run pre-commit install --hook-type pre-push
 - Use terminal file I/O redirection (`> file`, `>> file`, `| tee file`, `| cat >> file`) in scripts — shell quoting causes interleaving and corruption. **Always use `create_file` or `replace_string_in_file` (the built-in VS Code tools).** Enforced via pre-commit hook `no-terminal-file-io-redirect` (Programmatic-First principle; §75–76).
 - Pass multi-line `gh issue` bodies via `--body "..."` on the command line — shell quoting and backtick interpolation cause `gh` to hang or silently corrupt content. **Always write the body to a temp file and use `--body-file <path>`, or use Python `subprocess` with a list of args.**
 - Surface suggested prompts as bare blockquotes (`> `) — always wrap in a triple-backtick fenced code block instead.
+- Make an unqualified "ready" or "complete" claim without a demo artifact and capability matrix — see [Readiness Language Guard](#readiness-language-guard).
+- Invoke a script or tool without first verifying its interface — run `--help` or read the script's docstring to confirm [input parameters], [expected output], and [error modes] before the first invocation in any session. Guessing and error-recovering is the draft-before-verify anti-pattern. See [orchestrator-autopilot-failure.md](docs/research/orchestrator-autopilot-failure.md) § Recommendation 3.
 
 **Prefer caution over assumption for:**
 

@@ -33,6 +33,27 @@ The `_index.md` accumulates single-line stubs for every closed session on the br
 
 ## 2. Session Start
 
+### Context Snapshot Before Reset
+
+Before calling `prune_scratchpad.py --init` during error recovery, save a snapshot of the current context:
+
+```bash
+uv run python scripts/prune_scratchpad.py --snapshot
+```
+
+This saves `.tmp/<branch>/<date>-snapshot.yaml` containing: `task_name`, `task_parameters`, `timestamp`, and active scratchpad section.
+
+After re-entry into the failed task's decision point, compare contexts:
+
+```bash
+uv run python scripts/compare_context_snapshot.py \
+  --snapshot ".tmp/$(git branch --show-current | tr '/' '-')/$(date +%Y-%m-%d)-snapshot.yaml"
+```
+
+If `equivalent: true` → **do not re-attempt**. Escalate to user: "My context is identical to the failed attempt. New direction needed."
+
+**Encoding point**: Research basis: `docs/research/orchestrator-autopilot-failure.md` § Recommendation 5. Scripts: `scripts/prune_scratchpad.py --snapshot`, `scripts/compare_context_snapshot.py`.
+
 ### 2.1 Initialize the Scratchpad
 
 At the beginning of every session, run:
@@ -103,6 +124,20 @@ uv run python scripts/check_substrate_health.py
 ```
 
 ---
+
+### 3.0 Interrupt Check (Pre-Phase Gate)
+
+**Before every phase action and before executing any tool call**, check whether the user's most recent message contains an interruption signal (STOP, DO NOT CONTINUE, ABORT, ABORT THIS TASK, CANCEL, PAUSE EXECUTION, HOLD).
+
+**If interrupted**:
+1. Write to scratchpad: `## Interrupted: [current task name] — awaiting user direction`
+2. Commit any in-progress file changes: `git add -A && git commit -m "chore: checkpoint before interrupt — [task]"`
+3. Return to user: "Execution paused at [phase name]. What would you like to do next?"
+4. Do NOT proceed with the next planned step.
+
+**MCP tool** (when server connected): `detect_user_interrupt()` — returns `true` if the last user message contains interrupt keywords. Wire into pre-phase sequence.
+
+**Cross-reference**: [AGENTS.md § Instruction Hierarchy](../../../AGENTS.md#instruction-hierarchy) for the full hierarchy and keyword list.
 
 ## 3. Phase Gate Protocol
 
@@ -255,6 +290,60 @@ Before delegating any multi-step execution phase, the Orchestrator delegates a d
 - Each execution phase invocation references the checklist as its acceptance criteria
 
 **Hard gate (≥3 phases or ≥2 delegations)**: The Executive Planner must produce per-phase checklists before the first domain phase delegation begins. This is not optional. Skipping this step produces a ~1 audit-round overhead to recover mid-phase scope gaps — observed twice in the 2026-03-13 Dogma Update Sprint (Phase 5 recast, Phase 1A sub-issue gap). Write "Planner checklist received" in the scratchpad before delegating Phase 1.
+
+---
+
+## Audit Trail
+
+Every irreversible or external-state-modifying action taken during a session must be recorded under a `## Audit Trail` heading in the scratchpad.
+
+### Required fields per entry
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `timestamp` | ISO 8601 string | When the action was taken |
+| `action` | string | Short imperative description (e.g., "gh issue create #42") |
+| `agent` | string | Which agent performed the action |
+| `outcome` | string | Result: `success`, `failure`, or `partial` |
+
+### Example entry
+
+```yaml
+- timestamp: "2026-03-26T14:32:00Z"
+  action: "gh issue comment 333 --body-file /tmp/note.md"
+  agent: "Executive Orchestrator"
+  outcome: "success"
+```
+
+Write an Audit Trail entry immediately after any `git push`, `gh issue create/comment/close`, `gh pr create`, or bulk file operation affecting committed state.
+
+---
+
+## Telemetry
+
+For each agent invocation that produces a measurable span, record OTel metadata under a `## Telemetry` heading in the scratchpad. Entry shape is consistent with [## Audit Trail](#audit-trail) — one YAML block per invocation.
+
+### Required sub-fields per entry
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `span_id` | string | OTel span identifier for the invocation |
+| `model` | string | Model name (e.g., `claude-sonnet-4`) |
+| `input_tokens` | int | Token count for the prompt (`gen_ai.usage.input_tokens`) |
+| `output_tokens` | int | Token count for the completion (`gen_ai.usage.output_tokens`) |
+| `latency_ms` | int | Wall-clock latency in milliseconds (`gen_ai.client.operation.duration` × 1000) |
+
+### Example entry
+
+```yaml
+- span_id: "3a2b1c4d5e6f"
+  model: "claude-sonnet-4"
+  input_tokens: 4200
+  output_tokens: 612
+  latency_ms: 3840
+```
+
+Values come from `gen_ai.*` OTel attributes — see [`docs/research/otel-agent-instrumentation.md`](../../docs/research/otel-agent-instrumentation.md) Pattern 2 for the canonical attribute names and Pattern 1 for the span shape.
 
 ---
 

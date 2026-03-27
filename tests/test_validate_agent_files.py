@@ -958,3 +958,143 @@ class TestManifestoAnchoring:
         )
         warnings = vaf.manifesto_warnings(content)
         assert not any("specificity metric" in w for w in warnings)
+
+
+# ---------------------------------------------------------------------------
+# extract_tools_list — Issue #368
+# ---------------------------------------------------------------------------
+
+
+class TestExtractToolsList:
+    def test_block_list_syntax(self):
+        text = "---\nname: A\ndescription: B\ntools:\n  - execute\n  - read\n  - search\n---\n"
+        tools = vaf.extract_tools_list(text)
+        assert tools == ["execute", "read", "search"]
+
+    def test_inline_flow_syntax(self):
+        text = "---\nname: A\ndescription: B\ntools: [execute, read, search]\n---\n"
+        tools = vaf.extract_tools_list(text)
+        assert tools == ["execute", "read", "search"]
+
+    def test_indented_flow_syntax(self):
+        text = "---\nname: A\ndescription: B\ntools:\n  [execute, read, search]\n---\n"
+        tools = vaf.extract_tools_list(text)
+        assert tools == ["execute", "read", "search"]
+
+    def test_indented_flow_with_dots(self):
+        """Dotted entries like [..execute/runTests..] strip leading/trailing dots."""
+        text = "---\nname: A\ndescription: B\ntools:\n  [..execute/runTests..]\n---\n"
+        tools = vaf.extract_tools_list(text)
+        assert tools == ["execute/runTests"]
+
+    def test_missing_tools_field_returns_empty(self):
+        text = "---\nname: A\ndescription: B\n---\n\n## Body\n"
+        assert vaf.extract_tools_list(text) == []
+
+    def test_no_frontmatter_returns_empty(self):
+        text = "## Just a heading\nNo frontmatter here."
+        assert vaf.extract_tools_list(text) == []
+
+
+# ---------------------------------------------------------------------------
+# check_tool_count_ceiling — Issue #368
+# ---------------------------------------------------------------------------
+
+
+class TestCheckToolCountCeiling:
+    def test_nine_tools_no_warning(self):
+        tools = ["a", "b", "c", "d", "e", "f", "g", "h", "i"]
+        assert vaf.check_tool_count_ceiling(tools) == []
+
+    def test_ten_tools_emits_warning(self):
+        tools = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]
+        warnings = vaf.check_tool_count_ceiling(tools)
+        assert len(warnings) == 1
+        assert "10" in warnings[0]
+        assert "Miller" in warnings[0]
+
+    def test_block_list_more_than_nine_emits_warning(self):
+        text = (
+            "---\nname: A\ndescription: B\ntools:\n"
+            "  - t1\n  - t2\n  - t3\n  - t4\n  - t5\n"
+            "  - t6\n  - t7\n  - t8\n  - t9\n  - t10\n---\n"
+        )
+        tools = vaf.extract_tools_list(text)
+        assert len(tools) == 10
+        warnings = vaf.check_tool_count_ceiling(tools)
+        assert len(warnings) == 1
+
+    def test_inline_flow_more_than_nine_emits_warning(self):
+        text = "---\nname: A\ndescription: B\ntools: [t1, t2, t3, t4, t5, t6, t7, t8, t9, t10]\n---\n"
+        tools = vaf.extract_tools_list(text)
+        assert len(tools) == 10
+        warnings = vaf.check_tool_count_ceiling(tools)
+        assert len(warnings) == 1
+
+    def test_empty_tools_no_warning(self):
+        assert vaf.check_tool_count_ceiling([]) == []
+
+
+# ---------------------------------------------------------------------------
+# check_approval_gate_presence — Issue #332
+# ---------------------------------------------------------------------------
+
+
+class TestCheckApprovalGatePresence:
+    def test_full_exec_with_two_stage_gate_no_warning(self):
+        text = "---\nname: A\ndescription: B\ntools:\n  - execute\n  - read\n---\n\nSee the two-stage gate.\n"
+        tools = ["execute", "read"]
+        assert vaf.check_approval_gate_presence(text, tools) == []
+
+    def test_full_exec_with_approval_gate_no_warning(self):
+        text = "---\nname: A\ndescription: B\n---\n\nUse the approval gate before any write.\n"
+        tools = ["execute", "read"]
+        assert vaf.check_approval_gate_presence(text, tools) == []
+
+    def test_full_exec_with_irreversible_no_warning(self):
+        text = "---\nname: A\ndescription: B\n---\n\nAll irreversible actions require human review.\n"
+        tools = ["execute"]
+        assert vaf.check_approval_gate_presence(text, tools) == []
+
+    def test_full_exec_with_stage_1_no_warning(self):
+        text = "---\nname: A\ndescription: B\n---\n\nStage 1 gate runs pre-commit checks.\n"
+        tools = ["terminal", "read"]
+        assert vaf.check_approval_gate_presence(text, tools) == []
+
+    def test_full_exec_without_gate_reference_emits_warning(self):
+        text = "---\nname: A\ndescription: B\n---\n\nDo some work and push.\n"
+        tools = ["execute", "read"]
+        warnings = vaf.check_approval_gate_presence(text, tools)
+        assert len(warnings) == 1
+        assert "Approval gate missing" in warnings[0]
+
+    def test_non_full_exec_without_gate_no_warning(self):
+        """read/search tools are not full-execution — no warning."""
+        text = "---\nname: A\ndescription: B\n---\n\nDo some work.\n"
+        tools = ["read", "search"]
+        assert vaf.check_approval_gate_presence(text, tools) == []
+
+    def test_scoped_execute_id_treated_as_full_exec(self):
+        """'execute/runTests' prefix is 'execute' — triggers full-exec check."""
+        text = "---\nname: A\ndescription: B\n---\n\nDo some work and commit.\n"
+        tools = ["execute/runTests"]
+        warnings = vaf.check_approval_gate_presence(text, tools)
+        assert len(warnings) == 1
+        assert "Approval gate missing" in warnings[0]
+
+    def test_terminal_tool_treated_as_full_exec(self):
+        """'terminal' tool triggers full-exec check."""
+        text = "---\nname: A\ndescription: B\n---\n\nRun commands in the shell.\n"
+        tools = ["terminal"]
+        warnings = vaf.check_approval_gate_presence(text, tools)
+        assert len(warnings) == 1
+
+    def test_empty_tools_no_warning(self):
+        text = "---\nname: A\ndescription: B\n---\n\nDo some work.\n"
+        assert vaf.check_approval_gate_presence(text, []) == []
+
+    def test_case_insensitive_gate_match(self):
+        """'IRREVERSIBLE' (uppercase) must match and suppress the warning."""
+        text = "---\nname: A\ndescription: B\n---\n\nAll IRREVERSIBLE actions need review.\n"
+        tools = ["execute"]
+        assert vaf.check_approval_gate_presence(text, tools) == []

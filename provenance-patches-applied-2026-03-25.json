@@ -1,0 +1,308 @@
+{
+  "timestamp": "2026-03-25T20:12:15.211841",
+  "dry_run": false,
+  "status_filter": "approved-for-adoption",
+  "total_patches": 37,
+  "applied_count": 37,
+  "would_apply_count": 0,
+  "skipped_count": 0,
+  "error_count": 0,
+  "patches": [
+    {
+      "patch_id": "agent-to-agent-communication-protocol",
+      "document": "docs/research/agent-to-agent-communication-protocol.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 8,
+      "new_recommendation_count": 8,
+      "change_summary": "Updated 8 recommendations"
+    },
+    {
+      "patch_id": "ai-autonomy-governance",
+      "document": "docs/research/ai-autonomy-governance.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 14,
+      "new_recommendation_count": 14,
+      "change_summary": "Updated 14 recommendations"
+    },
+    {
+      "patch_id": "ai-cognitive-load",
+      "document": "docs/research/ai-cognitive-load.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 8,
+      "new_recommendation_count": 8,
+      "change_summary": "Updated 8 recommendations"
+    },
+    {
+      "patch_id": "ai-platform-lock-in-risks",
+      "document": "docs/research/ai-platform-lock-in-risks.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 16,
+      "new_recommendation_count": 16,
+      "change_summary": "Updated 16 recommendations"
+    },
+    {
+      "patch_id": "ai-workload-observability",
+      "document": "docs/research/ai-workload-observability.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 7,
+      "new_recommendation_count": 7,
+      "change_summary": "Updated 7 recommendations"
+    },
+    {
+      "patch_id": "biological-evolution-dogma-propagation",
+      "document": "docs/research/biological-evolution-dogma-propagation.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 8,
+      "new_recommendation_count": 8,
+      "change_summary": "Updated 8 recommendations"
+    },
+    {
+      "patch_id": "civic-ai-governance",
+      "document": "docs/research/civic-ai-governance.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 7,
+      "new_recommendation_count": 7,
+      "change_summary": "Updated 7 recommendations"
+    },
+    {
+      "patch_id": "classic-programmatic-patterns-dogma-legibility",
+      "document": "docs/research/classic-programmatic-patterns-dogma-legibility.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 5,
+      "new_recommendation_count": 5,
+      "change_summary": "Updated 5 recommendations"
+    },
+    {
+      "patch_id": "claude-code-cli-productivity-patterns",
+      "document": "docs/research/claude-code-cli-productivity-patterns.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 13,
+      "new_recommendation_count": 13,
+      "change_summary": "Updated 13 recommendations"
+    },
+    {
+      "patch_id": "copilot-collaboration-effects",
+      "document": "docs/research/copilot-collaboration-effects.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 5,
+      "new_recommendation_count": 5,
+      "change_summary": "Updated 5 recommendations"
+    },
+    {
+      "patch_id": "custom-agent-service-modules",
+      "document": "docs/research/custom-agent-service-modules.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 4,
+      "new_recommendation_count": 4,
+      "change_summary": "Updated 4 recommendations"
+    },
+    {
+      "patch_id": "dogma-corpus-audit-2026-03",
+      "document": "docs/research/dogma-corpus-audit-2026-03.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 20,
+      "new_recommendation_count": 20,
+      "change_summary": "Updated 20 recommendations"
+    },
+    {
+      "patch_id": "endogenic-inline-docs-baseline",
+      "document": "docs/research/endogenic-inline-docs-baseline.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 4,
+      "new_recommendation_count": 4,
+      "change_summary": "Updated 4 recommendations"
+    },
+    {
+      "patch_id": "endogenic-inline-docs-synthesis",
+      "document": "docs/research/endogenic-inline-docs-synthesis.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 7,
+      "new_recommendation_count": 7,
+      "change_summary": "Updated 7 recommendations"
+    },
+    {
+      "patch_id": "github-copilot-ecosystem",
+      "document": "docs/research/github-copilot-ecosystem.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 8,
+      "new_recommendation_count": 8,
+      "change_summary": "Updated 8 recommendations"
+    },
+    {
+      "patch_id": "glossary-maintenance-strategy",
+      "document": "docs/research/glossary-maintenance-strategy.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 6,
+      "new_recommendation_count": 6,
+      "change_summary": "Updated 6 recommendations"
+    },
+    {
+      "patch_id": "greenfield-repo-candidates",
+      "document": "docs/research/greenfield-repo-candidates.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 5,
+      "new_recommendation_count": 5,
+      "change_summary": "Updated 5 recommendations"
+    },
+    {
+      "patch_id": "h2-nk-model-formalization",
+      "document": "docs/research/h2-nk-model-formalization.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 5,
+      "new_recommendation_count": 5,
+      "change_summary": "Updated 5 recommendations"
+    },
+    {
+      "patch_id": "high-reading-level-encoding-drift-signal",
+      "document": "docs/research/high-reading-level-encoding-drift-signal.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 6,
+      "new_recommendation_count": 6,
+      "change_summary": "Updated 6 recommendations"
+    },
+    {
+      "patch_id": "intelligence-architecture-synthesis",
+      "document": "docs/research/intelligence-architecture-synthesis.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 20,
+      "new_recommendation_count": 20,
+      "change_summary": "Updated 20 recommendations"
+    },
+    {
+      "patch_id": "llm-strategic-advice-quality",
+      "document": "docs/research/llm-strategic-advice-quality.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 15,
+      "new_recommendation_count": 15,
+      "change_summary": "Updated 15 recommendations"
+    },
+    {
+      "patch_id": "local-inference-rag",
+      "document": "docs/research/local-inference-rag.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 5,
+      "new_recommendation_count": 5,
+      "change_summary": "Updated 5 recommendations"
+    },
+    {
+      "patch_id": "local-rag-adoption-patterns",
+      "document": "docs/research/local-rag-adoption-patterns.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 7,
+      "new_recommendation_count": 7,
+      "change_summary": "Updated 7 recommendations"
+    },
+    {
+      "patch_id": "mcp-a2a-scratchpad-query",
+      "document": "docs/research/mcp-a2a-scratchpad-query.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 6,
+      "new_recommendation_count": 6,
+      "change_summary": "Updated 6 recommendations"
+    },
+    {
+      "patch_id": "mcp-production-pain-points",
+      "document": "docs/research/mcp-production-pain-points.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 3,
+      "new_recommendation_count": 3,
+      "change_summary": "Updated 3 recommendations"
+    },
+    {
+      "patch_id": "mcp-state-architecture",
+      "document": "docs/research/mcp-state-architecture.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 4,
+      "new_recommendation_count": 4,
+      "change_summary": "Updated 4 recommendations"
+    },
+    {
+      "patch_id": "nemo-guardrails-governance",
+      "document": "docs/research/nemo-guardrails-governance.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 5,
+      "new_recommendation_count": 5,
+      "change_summary": "Updated 5 recommendations"
+    },
+    {
+      "patch_id": "oss-documentation-best-practices",
+      "document": "docs/research/oss-documentation-best-practices.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 6,
+      "new_recommendation_count": 6,
+      "change_summary": "Updated 6 recommendations"
+    },
+    {
+      "patch_id": "output-format-constraint-compressed-returns",
+      "document": "docs/research/output-format-constraint-compressed-returns.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 5,
+      "new_recommendation_count": 5,
+      "change_summary": "Updated 5 recommendations"
+    },
+    {
+      "patch_id": "platform-agnosticism",
+      "document": "docs/research/platform-agnosticism.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 4,
+      "new_recommendation_count": 4,
+      "change_summary": "Updated 4 recommendations"
+    },
+    {
+      "patch_id": "programmatic-writing-assessment-tooling",
+      "document": "docs/research/programmatic-writing-assessment-tooling.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 6,
+      "new_recommendation_count": 6,
+      "change_summary": "Updated 6 recommendations"
+    },
+    {
+      "patch_id": "ramp-l0l3-framework",
+      "document": "docs/research/ramp-l0l3-framework.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 6,
+      "new_recommendation_count": 6,
+      "change_summary": "Updated 6 recommendations"
+    },
+    {
+      "patch_id": "reading-level-assessment-framework",
+      "document": "docs/research/reading-level-assessment-framework.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 6,
+      "new_recommendation_count": 6,
+      "change_summary": "Updated 6 recommendations"
+    },
+    {
+      "patch_id": "scratchpad-architecture-decision",
+      "document": "docs/research/scratchpad-architecture-decision.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 17,
+      "new_recommendation_count": 17,
+      "change_summary": "Updated 17 recommendations"
+    },
+    {
+      "patch_id": "semantic-encoding-modes-contextual-routing",
+      "document": "docs/research/semantic-encoding-modes-contextual-routing.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 8,
+      "new_recommendation_count": 8,
+      "change_summary": "Updated 8 recommendations"
+    },
+    {
+      "patch_id": "substrate-atlas",
+      "document": "docs/research/substrate-atlas.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 5,
+      "new_recommendation_count": 5,
+      "change_summary": "Updated 5 recommendations"
+    },
+    {
+      "patch_id": "vscode-problems-panel-diagnostics",
+      "document": "docs/research/vscode-problems-panel-diagnostics.md",
+      "status": "APPLIED",
+      "old_recommendation_count": 11,
+      "new_recommendation_count": 11,
+      "change_summary": "Updated 11 recommendations"
+    }
+  ]
+}

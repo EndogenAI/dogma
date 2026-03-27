@@ -6,16 +6,19 @@ tools:
   - read
   - edit
   - write
-  - execute
   - terminal
   - usages
   - changes
-  - execute/runInTerminal
   - execute/runTests
 handoffs:
   - label: Review New Script
     agent: Review
-    prompt: "A new script has been authored or extended. Please review the changed file(s) against AGENTS.md constraints — especially the programmatic-first principle, script conventions (docstring, --dry-run, uv run), and test coverage. Do not approve if any convention is violated."
+    prompt: |
+      New or updated script ready for review. Check against these 3 criteria:
+      1. Script opens with a docstring (purpose, inputs, outputs, usage example) — PASS/FAIL
+      2. Script uses `uv run` invocation pattern; no direct Python or .venv invocation — PASS/FAIL
+      3. Corresponding tests/test_<script>.py exists and covers happy path + error cases — PASS/FAIL
+      Return APPROVED or REQUEST CHANGES — [criterion number: one-line reason].
     send: false
   - label: Commit Script
     agent: GitHub
@@ -88,6 +91,7 @@ For each gap found, assess:
 
 - **Extension first** — if a script partially covers the need, extend it rather than creating a new one.
 - **Check external tools first** — before writing bespoke code, check if a well-maintained open-source tool already solves the problem. If so, adopt it, document it, and write a thin wrapper script if needed.
+- **Two-Stage Security Gate** — any script that triggers irreversible side effects (commits, pushes, bulk deletes) must pass the Two-Stage Gate as per [`AGENTS.md` § Security Guardrails](../../AGENTS.md#security-guardrails).
 
 #### Script Conventions (Mandatory)
 

@@ -33,11 +33,13 @@ scripts/
   pr_review_reply.py           # Post replies to PR inline review comments and resolve threads (--reply-to, --resolve, --batch)
   seed_labels.py               # Idempotent GitHub label seeder — reads data/labels.yml and syncs via gh label create --force (--dry-run, --delete-legacy)
   seed_action_items.py         # Seed GitHub issues from action items extracted from research docs
+  seed_research_recommendations.py # Read research doc frontmatter and batch-create tracking issues via bulk_github_operations.py (--input, --milestone, --default-area, --critical-ids, --output, --dry-run)
   fetch_toolchain_docs.py      # Cache gh CLI help output as structured Markdown under .cache/toolchain/ (--check, --force, --dry-run)
   wait_for_unblock.py          # Poll a GitHub issue until status:blocked is removed; writes trigger file on exit 0 (--issue, --interval, --timeout, --dry-run)
   wait_for_github_run.py       # Poll a GitHub Actions run until completion; exits 0 on success, 1 on failure
   detect_drift.py              # Detect value-encoding drift in .agent.md files via watermark-phrase analysis (--agents-dir, --threshold, --fail-below, --format, --output)
   detect_rate_limit.py         # Detect rate-limit budget exhaustion and recommend protective action (sleep injection, phase deferral) — command: --check <remaining_tokens> <phase_cost_estimate>; outputs: OK|WARN|CRITICAL|SLEEP_REQUIRED_NNN
+  detect_delegation_conflict.py # Pre-delegation conflict detection — reads proposed delegation scope against data/l2-constraints.yml and data/decision-tables.yml; outputs JSON {"safe": bool, "conflicts": [...]}; exits 0 (safe), 1 (conflicts found), 2 (config error); --scope or --stdin JSON; closes #380
   check_substrate_health.py    # CRD health check for startup-loaded substrate files — reports PASS/WARN/BLOCK per file; exits 1 if any file is below the block threshold (--warn-below, --block-below, --files)
   check_problems_panel.py      # Audit and count VS Code Problems panel diagnostics; exits 1 if count > 0; --check-only
   check_doc_links.py           # Validate that relative file links in Markdown docs resolve to existing files
@@ -54,12 +56,17 @@ scripts/
   extract_action_items.py      # Extract and deduplicate action items from D4 research docs (docs/research/*.md); outputs Markdown table; --output FILE, --threshold 0.8
   generate_script_docs.py      # Generate per-script Markdown docs from module docstrings into scripts/docs/; --check for staleness, --dry-run
   generate_sweep_table.py      # Generate the corpus sweep table for back-propagation planning from research doc metadata
+  health_check_services.py     # Poll /health endpoints for services in data/substrate-atlas.yml; exits 0 if all healthy, 1 if degraded, 2 if unreachable; --timeout, --services, --dry-run (closes #342)
   encoding_coverage.py         # Check MANIFESTO F1-F4 encoding coverage for named principles/axioms; outputs Markdown table (--manifesto, --agents)
+  emit_otel_genai_spans.py     # Emit OTel spans with GenAI semantic convention attributes (gen_ai.system, gen_ai.request.model, gen_ai.usage.input_tokens, gen_ai.usage.output_tokens, gen_ai.response.finish_reason); extends instrument_agent_calls.py; --model, --input-tokens, --output-tokens, --finish-reason (closes #369)
+  emit_otel_metrics.py         # Emit OTel metrics for LLM usage (input/output tokens, duration) and system health (status); supports --dry-run and console export; --metric, --value, --model, --system
   adopt_wizard.py              # Dogma framework onboarding wizard — generates client-values.yml and scaffolds AGENTS.md for new adopters; --org, --repo required; --non-interactive, --load-values, --output-dir flags; runs validate_agent_files.py before reporting success (closes #56, #125)
   orientation_snapshot.py      # Pre-computed session orientation digest — writes .cache/github/orientation-snapshot.md with open issue counts, recent commits, active branches, milestone summary; --branch includes scratchpad ## Session Summary (closes #241)
   bulk_github_operations.py    # Batch GitHub issue/PR write operations (issue-create, issue-edit, issue-close, pr-edit) from a JSON/YAML spec file or stdin; --dry-run safety gate; --rate-limit-delay throttling; JSON results to stdout (closes #260)
   bulk_github_read.py          # Batch GitHub issue/PR metadata reads — fetch by number (--issues, --prs) or search query (--query); --format table|json|csv; --fields column selection (closes #261)
   check_fleet_integration.py   # Validate that new agents and skills are documented in AGENTS.md; cross-ref check for fleet integration (criterion 8 in Review gate)
+  check_readiness_matrix.py    # Validate that files with readiness/ready/complete claims include a capability matrix; --strict fails on any 'partial' dimension; exit 0 = no violations, exit 1 = violations (closes #447)
+  check_plan_to_intent_drift.py # Detect plan-to-intent drift: compares workplan acceptance criteria against an intent-contract.yml/.md; --workplan, --contract (auto-detected if omitted), --check for advisory exit-0 mode (closes #449)
   check_glossary_coverage.py   # Bold-term glossary scanner — extracts **term** patterns from governance docs and checks each against docs/glossary.md; --check exits 1 on gaps; --fix scaffolds stub entries (idempotent; closes #290)
   assess_doc_quality.py        # Composite readability/structure/completeness scorer for Markdown docs; 30% readability (FK grade, textstat), 40% structural (heading density, tables, list/code ratio), 30% completeness (citations, bold terms, labeled blocks); --output json, --delta for FK grade target comparison (advisory only — calibrate before CI enforcement; closes #289)
   check_branch_sync.py         # Branch sync gate — fetches origin and checks whether the current branch is behind origin/main; exits 0 if in sync, exits 1 with commit list if behind; --remote (default: origin), --base (default: main), --rebase to auto-rebase, --quiet for CI gate mode (closes #435)
@@ -82,6 +89,7 @@ scripts/
   subscribe_cve_feeds.py       # Stub for CVE feed subscription automation (issue #361) — placeholder for future NVD API integration; raises NotImplementedError; exits 0 (stub does not fail CI); to be implemented: fetch CVE data, filter by dependencies, alert on High+ severity; related: audit_dependencies.py (consumes CVE DB)
   repaired_audit.py            # Post-audit repair validator — checks that identified gaps in a prior audit result have been resolved (closes #301)
   token_spin_detector.py       # Detect "token spinning" (repeated loops with no progress) in session logs using Hamming distance and regex entropy (closes #310)
+  instrument_agent_calls.py    # Wrap LLM call sites with OTel Python SDK spans; reads provider config from data/inference-providers.yml; exports to stdout JSONL by default, OTLP via OTEL_EXPORTER_OTLP_ENDPOINT env var; --test emits test span (closes #334)
   index_recommendations.py     # Scan finalized synthesis docs and write data/recommendations-registry.yml; --dry-run, --check, --docs-dir (closes #407)
   audit_recommendation_status.py  # Audit recommendation status across finalized docs; fuzzy-match to GitHub issues; write data/retrofit-patches/<slug>.yml patch files; --dry-run, --doc, --no-github (closes #409)
   test_newlines.py             # Internal utility to test newline handling in terminal scripts
@@ -1540,6 +1548,132 @@ uv run python scripts/audit_recommendation_status.py --no-github
 **Confidence levels**: `high` = single match, ≥ 5 consecutive shared words; `medium` = single match (3–4 words) or multiple ambiguous matches; `low` = no match found.
 
 **Exit codes**: `0` success (including --dry-run); `1` fatal error (missing docs-dir or --doc path).
+
+---
+
+## scripts/inference_router.py
+
+**Job**: Enable executive agents to route LLM prompts to the best available inference provider so that Local-Compute-First is enforced structurally.
+
+**Purpose**: Reads `data/inference-providers.yml` and routes requests through an ordered fallback chain (local → configured order). Provides `route()` to select a provider and `call_with_fallback()` to walk the chain.
+
+**Tests**: [`tests/test_inference_router.py`](../tests/test_inference_router.py)
+
+**Usage**:
+
+```bash
+uv run python scripts/inference_router.py --prompt "Summarise this." --provider local-ollama
+uv run python scripts/inference_router.py --prompt "Summarise this." --fallback
+```
+
+**Flags**:
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--prompt TEXT` | yes | Text prompt to route |
+| `--provider NAME` | no | Preferred provider name (optional) |
+| `--config PATH` | no | Override path to inference-providers.yml |
+| `--fallback` | no | Run full fallback chain; print result dict |
+
+**Exit codes**: `0` success; `1` all providers failed or list empty; `2` config file not found.
+
+---
+
+## scripts/validate_l2_constraints.py
+
+**Job**: Enable agents and CI to validate `data/l2-constraints.yml` against its JSON Schema so that L2 constraint encoding errors are caught before commit.
+
+**Purpose**: Validates the L2 constraints YAML file using `jsonschema`. Required fields: `id`, `description`, `enforcement` (pre-commit|runtime|review), `severity` (blocking|warning).
+
+**Tests**: [`tests/test_validate_l2_constraints.py`](../tests/test_validate_l2_constraints.py)
+
+**Usage**:
+
+```bash
+uv run python scripts/validate_l2_constraints.py data/l2-constraints.yml
+uv run python scripts/validate_l2_constraints.py  # uses default path
+```
+
+**Flags**:
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `path` (positional) | no | YAML file to validate (default: data/l2-constraints.yml) |
+
+**Exit codes**: `0` valid; `1` schema violation; `2` file not found or YAML parse error.
+
+---
+
+## scripts/validate_semantic_output.py
+
+**Job**: Enable agents and CI to validate subagent return tokens against declared format and token ceiling so that Focus-on-Descent / Compression-on-Ascent contracts are enforced structurally.
+
+**Purpose**: Checks that text matches a declared format (bullets, table, single-line) and that the approximate token count does not exceed a ceiling. Tokens estimated as `ceil(word_count / 0.75)`.
+
+**Tests**: [`tests/test_validate_semantic_output.py`](../tests/test_validate_semantic_output.py)
+
+**Usage**:
+
+```bash
+echo "- item one\n- item two" | uv run python scripts/validate_semantic_output.py --format bullets --ceiling 50
+uv run python scripts/validate_semantic_output.py --format single-line --ceiling 20 "APPROVED"
+```
+
+**Flags**:
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--format` | yes | Expected format: `bullets`, `table`, or `single-line` |
+| `--ceiling N` | yes | Maximum token count (integer) |
+| `text` (positional) | no | Text to validate; reads from stdin if omitted |
+
+**Exit codes**: `0` format matches and tokens ≤ ceiling; `1` format mismatch; `2` ceiling exceeded.
+
+---
+
+## scripts/emit_otel_metrics.py
+
+**Job**: Emit OpenTelemetry metrics for GenAI usage and system health to an OTel collector or local console.
+
+**Purpose**: Provides a standardized CLI for emitting metrics related to LLM token usage (`input_tokens`, `output_tokens`), request `duration`, and system `status`. Implements **Phase 4D: OTel Metrics**. Supports a `--dry-run` mode that outputs a YAML-compatible JSON representation of the intended metric for validation.
+
+**Usage**:
+
+```bash
+# Emit input tokens for a specific model
+uv run python scripts/emit_otel_metrics.py --metric input_tokens --value 150 --model claude-3-5-sonnet
+
+# Emit output tokens
+uv run python scripts/emit_otel_metrics.py --metric output_tokens --value 45 --model claude-3-5-sonnet
+
+# Emit request duration in milliseconds
+uv run python scripts/emit_otel_metrics.py --metric duration --value 1250 --model gpt-4o
+
+# Emit system health status (1=Healthy, 0=Degraded)
+uv run python scripts/emit_otel_metrics.py --metric status --value 1 --system phase-gate
+
+# Validate metric definition without emitting (JSON output)
+uv run python scripts/emit_otel_metrics.py --metric input_tokens --value 10 --dry-run
+```
+
+**Inputs**:
+- `--metric`: Required. Choice of `input_tokens`, `output_tokens`, `duration`, `status`.
+- `--value`: Required. Numeric value to emit.
+- `--model`: Optional. Model name attribute (e.g., `claude-3-5-sonnet`).
+- `--system`: Optional. System name attribute for health metrics (e.g., `phase-gate`).
+- `--dry-run`: Optional flag. Prints the metric definition as JSON and exits without emitting.
+
+**Outputs**:
+- **Metric Emission**: Sends metrics to the configured OTel exporter (Console by default).
+- **Dry-run**: Prints a structured JSON object to stdout containing `metric` name, `description`, `type`, `unit`, `value`, and `attributes`.
+
+**Metric Definitions**:
+- `gen_ai.usage.input_tokens` (Counter): Number of input tokens.
+- `gen_ai.usage.output_tokens` (Counter): Number of output tokens.
+- `gen_ai.request.duration` (Histogram, unit: `ms`): Duration of the LLM request.
+- `system.health.status` (ObservableGauge): System health status (1=Healthy, 0=Degraded/Critical).
+
+**Dependencies**: `opentelemetry-api`, `opentelemetry-sdk`. Requires `uv sync` to ensure OTel packages are available.
 
 ---
 

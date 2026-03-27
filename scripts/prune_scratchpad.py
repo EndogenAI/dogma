@@ -64,9 +64,13 @@ Usage:
     # Corruption check only — exits 0 if clean, 1 if corruption found
     uv run python scripts/prune_scratchpad.py --check-only
 
+    # Save a YAML context snapshot before error recovery
+    uv run python scripts/prune_scratchpad.py --snapshot
+    uv run python scripts/prune_scratchpad.py --snapshot --file .tmp/my-branch/2026-03-26.md
+
 Exit codes:
-    0 — success (pruned, initialised, annotated, summary appended, or no pruning needed)
-    1 — file not found, parse error, or corruption detected (--check-only)
+    0 — success (pruned, initialised, annotated, summary appended, snapshot saved, or no pruning needed)
+    1 — file not found, parse error, or corruption detected (--check-only), or snapshot error
 """
 
 from __future__ import annotations
@@ -213,7 +217,19 @@ def init_session_file(path: Path) -> None:
         f"## Session State\n\n"
         f"```yaml\n"
         f"{yaml_block}"
-        f"```\n"
+        f"```\n\n"
+        f"## Audit Trail\n\n"
+        f"<!-- Log each agent action: agent name | decision | justification | timestamp -->\n"
+        f"| Agent | Decision | Justification | Time |\n"
+        f"|-------|----------|--------------|------|\n\n"
+        f"## Telemetry\n\n"
+        f"<!-- Update at each phase gate -->\n"
+        f"| Metric | Value |\n"
+        f"|--------|-------|\n"
+        f"| Phases complete | 0 |\n"
+        f"| Delegations made | 0 |\n"
+        f"| Rate-limit events | 0 |\n"
+        f"| Estimated tokens used | 0 |\n"
     )
     print(f"Initialised new session file: {path}")
 
@@ -481,6 +497,73 @@ def append_summary(path: Path, summary: str, today: str) -> int:
     return 0
 
 
+def _run_snapshot(path: Path, today: str) -> None:
+    """Save a YAML context snapshot of the active scratchpad section.
+
+    Writes a snapshot YAML file to .tmp/<branch>/<date>-snapshot.yaml containing
+    the first substantive H2 heading (skipping known meta headings) and its first
+    5 non-empty lines.  Returns 0 on success, 1 on error.
+    """
+    from datetime import datetime
+
+    # Well-known meta headings that appear at the top of pruned scratchpads
+    # and do not represent the active task/phase being preserved.
+    _META_HEADINGS = frozenset(
+        {
+            "Active Context",
+            "Session State",
+            "Session Start",
+            "Pre-Compact Checkpoint",
+            "Orchestration Plan",
+        }
+    )
+
+    if not path.exists():
+        print(f"ERROR: {path} not found.", file=sys.stderr)
+        return 1
+
+    text = path.read_text(encoding="utf-8")
+    lines = text.splitlines()
+
+    task_name = "unknown"
+    task_params: list[str] = []
+    heading_found = False
+
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+        heading_text = stripped[3:].strip() if stripped.startswith("## ") else ""
+        if stripped.startswith("## ") and "archived" not in stripped.lower() and heading_text not in _META_HEADINGS:
+            task_name = heading_text
+            heading_found = True
+            # Collect first 5 non-empty lines after the heading
+            for subsequent in lines[i + 1 :]:
+                if subsequent.strip().startswith("## "):
+                    break
+                if subsequent.strip():
+                    task_params.append(subsequent.strip())
+                    if len(task_params) >= 5:
+                        break
+            break
+
+    if not heading_found:
+        task_name = "unknown"
+
+    snapshot_path = path.parent / f"{today}-snapshot.yaml"
+    timestamp = datetime.now().isoformat()
+
+    yaml_lines = [
+        f"task_name: {task_name}",
+        f"timestamp: {timestamp}",
+        f"scratchpad_section: {task_name}",
+        "task_parameters:",
+    ]
+    for param in task_params:
+        yaml_lines.append(f"  - {param}")
+
+    snapshot_path.write_text("\n".join(yaml_lines) + "\n", encoding="utf-8")
+    print(f"Snapshot saved: {snapshot_path}")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Scratchpad size management for .tmp/<branch>/<date>.md")
     parser.add_argument(
@@ -533,6 +616,14 @@ def main() -> int:
         help=(
             "Run corruption detection only. Exits 0 if no corruption found, "
             "1 if corrupted lines are detected. Does not modify any file."
+        ),
+    )
+    parser.add_argument(
+        "--snapshot",
+        action="store_true",
+        help=(
+            "Save a YAML context snapshot of the active scratchpad section to "
+            ".tmp/<branch>/<date>-snapshot.yaml. Use before --init during error recovery."
         ),
     )
     args = parser.parse_args()
@@ -612,6 +703,10 @@ def main() -> int:
             return 1
         print(f"OK: No corruption detected in {path}")
         return 0
+
+    # --snapshot: save a YAML context snapshot of the active section
+    if args.snapshot:
+        return _run_snapshot(path, today)
 
     # --append-summary: safe Python-based session summary write
     if args.append_summary is not None:

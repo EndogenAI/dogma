@@ -324,6 +324,129 @@ def manifesto_warnings(text: str) -> list[str]:
 
 
 # ---------------------------------------------------------------------------
+# Tools extraction and ceiling check (Issue #368)
+# ---------------------------------------------------------------------------
+
+
+def extract_tools_list(text: str) -> list[str]:
+    """Extract the tools field from agent frontmatter as a list of strings.
+
+    Handles two YAML formats:
+    1. Block-list::
+
+        tools:
+          - execute
+          - read
+
+    2. Indented flow-sequence (as seen in executive-orchestrator.agent.md)::
+
+        tools:
+          [..execute/runTests..]
+
+       OR::
+
+        tools: [execute, read, search]
+
+    Returns empty list if no tools field found or field is empty.
+    Strip leading/trailing dots and whitespace from each entry so that
+    ``[..execute/runTests..]`` yields ``['execute/runTests']``.
+    """
+    fm_match = _FRONTMATTER_RE.match(text)
+    if not fm_match:
+        return []
+
+    fm_text = fm_match.group(1)
+
+    # Try inline flow: tools: [a, b, c]
+    inline_match = re.search(r"^tools\s*:\s*\[([^\]]*)\]", fm_text, re.MULTILINE)
+    if inline_match:
+        raw = inline_match.group(1)
+        return [t.strip().strip(".") for t in raw.split(",") if t.strip().strip(".")]
+
+    # Try indented flow: tools:\n  [a, b, c]
+    indented_match = re.search(r"^tools\s*:\s*\n[ \t]+\[([^\]]*)\]", fm_text, re.MULTILINE)
+    if indented_match:
+        raw = indented_match.group(1)
+        return [t.strip().strip(".") for t in raw.split(",") if t.strip().strip(".")]
+
+    # Try block-list: tools:\n  - a\n  - b
+    lines = fm_text.splitlines()
+    tools_start = None
+    for i, line in enumerate(lines):
+        if re.match(r"^tools\s*:", line):
+            tools_start = i
+            break
+
+    if tools_start is None:
+        return []
+
+    result = []
+    for line in lines[tools_start + 1 :]:
+        if not line or not line[0].isspace():
+            break
+        stripped = line.strip()
+        if stripped.startswith("- "):
+            tool = stripped[2:].strip().strip(".")
+            if tool:
+                result.append(tool)
+
+    return result
+
+
+def check_tool_count_ceiling(tools: list[str]) -> list[str]:
+    """Return soft warnings if tools count exceeds Miller's Law ceiling (9).
+
+    If len(tools) > 9 → emit warning citing Miller (1956) 7±2 rule.
+    Returns list of warning strings (empty list = OK).
+    """
+    if len(tools) > 9:
+        return [
+            f"Tool count ceiling exceeded: {len(tools)} tools declared "
+            "(Miller's Law 7\u00b12 rule (1956) suggests \u22649 \u2014 consider narrowing the "
+            "agent's tool scope or splitting into two agents)"
+        ]
+    return []
+
+
+# ---------------------------------------------------------------------------
+# Approval gate presence check (Issue #332)
+# ---------------------------------------------------------------------------
+
+_FULL_EXEC_PREFIXES = frozenset(["execute", "terminal"])
+_APPROVAL_GATE_RE = re.compile(
+    r"two-stage gate|approval gate|stage 1|irreversible",
+    re.IGNORECASE,
+)
+
+
+def check_approval_gate_presence(text: str, tools: list[str]) -> list[str]:
+    """Return soft warnings if a full-execution agent lacks approval-gate reference.
+
+    Full-execution = any of: ``execute``, ``terminal`` appear in the tools list
+    (match on prefix: ``execute/runTests`` counts as ``execute``).
+
+    If full-execution AND body does not contain any of:
+        ``two-stage gate``, ``approval gate``, ``stage 1``, ``irreversible``
+    (case-insensitive) → emit one warning.
+
+    Returns list of warning strings (empty list = OK).
+    """
+    is_full_exec = any(t.split("/")[0] in _FULL_EXEC_PREFIXES for t in tools)
+    if not is_full_exec:
+        return []
+
+    body = _extract_body(text)
+    if _APPROVAL_GATE_RE.search(body):
+        return []
+
+    return [
+        "Approval gate missing: full-execution agent (tools include 'execute' or 'terminal') "
+        "should reference the two-stage gate, approval gate, 'Stage 1', or 'irreversible' actions "
+        "(see AGENTS.md \u00a7 Security Guardrails \u2014 Two-Stage Gate for Irreversible Tool Actions)"
+    ]
+
+
+# ---------------------------------------------------------------------------
 # Validation logic
 # ---------------------------------------------------------------------------
 
@@ -585,7 +708,7 @@ def main() -> None:
         "--all",
         action="store_true",
         dest="scan_all",
-        help=(f"Scan every *.agent.md in {AGENTS_DIR}/ AND every SKILL.md in {SKILLS_DIR}/*/SKILL.md."),
+        help="Scan every *.agent.md in {AGENTS_DIR} recursively and every SKILL.md in {SKILLS_DIR}",
     )
     parser.add_argument(
         "--skills",
@@ -604,7 +727,7 @@ def main() -> None:
     skill_targets: list[Path] = []
 
     if args.scan_all:
-        agent_targets = sorted(AGENTS_DIR.glob("*.agent.md"))
+        agent_targets = sorted(AGENTS_DIR.glob("**/*.agent.md"))
         skill_targets = sorted(SKILLS_DIR.glob("*/SKILL.md"))
     elif args.scan_skills:
         skill_targets = sorted(SKILLS_DIR.glob("*/SKILL.md"))
@@ -638,7 +761,15 @@ def main() -> None:
             for msg in failures:
                 print(f"      • {msg}")
         if file_path.exists():
-            for w in manifesto_warnings(file_path.read_text(encoding="utf-8")):
+            _text = file_path.read_text(encoding="utf-8")
+            _tools = extract_tools_list(_text)
+            _warnings = manifesto_warnings(_text)
+            # executive-orchestrator is exempt from Miller's Law tool-count ceiling:
+            # it spans MCP + VS Code tooling and has genuinely broad scope (Issue #461).
+            if file_path.name != "executive-orchestrator.agent.md":
+                _warnings.extend(check_tool_count_ceiling(_tools))
+            _warnings.extend(check_approval_gate_presence(_text, _tools))
+            for w in _warnings:
                 print(f"      ⚠ {w}")
 
     for file_path in skill_targets:

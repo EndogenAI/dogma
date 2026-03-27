@@ -1,0 +1,1481 @@
+{
+  "version": 1,
+  "sources": {
+    "arxiv-org-abs-2512-05470": {
+      "url": "https://arxiv.org/abs/2512.05470",
+      "slug": "arxiv-org-abs-2512-05470",
+      "title": "[2512.05470] Everything is Context: Agentic File System Abstraction for Context Engineering",
+      "fetched_at": "2026-03-07T00:34:18",
+      "file": ".cache/sources/arxiv-org-abs-2512-05470.txt",
+      "content_type": "text/html",
+      "size_bytes": 10103
+    },
+    "anthropic-building-effective-agents": {
+      "url": "https://www.anthropic.com/engineering/building-effective-agents",
+      "slug": "anthropic-building-effective-agents",
+      "title": "Building Effective AI Agents \\ Anthropic",
+      "fetched_at": "2026-03-07T00:37:21",
+      "file": ".cache/sources/anthropic-building-effective-agents.md",
+      "content_type": "text/html",
+      "size_bytes": 19517
+    },
+    "tds-claude-skills-subagents": {
+      "url": "https://towardsdatascience.com/claude-skills-and-subagents-escaping-the-prompt-engineering-hamster-wheel/",
+      "slug": "tds-claude-skills-subagents",
+      "title": "",
+      "fetched_at": "2026-03-07T00:39:21",
+      "file": ".cache/sources/tds-claude-skills-subagents.md",
+      "content_type": "text/html",
+      "size_bytes": 27078
+    },
+    "arxiv-generative-agents": {
+      "url": "https://arxiv.org/abs/2304.03442",
+      "slug": "arxiv-generative-agents",
+      "title": "",
+      "fetched_at": "2026-03-07T00:39:21",
+      "file": ".cache/sources/arxiv-generative-agents.md",
+      "content_type": "text/html",
+      "size_bytes": 7880
+    },
+    "arxiv-react": {
+      "url": "https://arxiv.org/abs/2210.03629",
+      "slug": "arxiv-react",
+      "title": "",
+      "fetched_at": "2026-03-07T00:39:22",
+      "file": ".cache/sources/arxiv-react.md",
+      "content_type": "text/html",
+      "size_bytes": 7929
+    },
+    "cookbook-research-lead-agent": {
+      "url": "https://raw.githubusercontent.com/anthropics/claude-cookbooks/main/patterns/agents/prompts/research_lead_agent.md",
+      "slug": "cookbook-research-lead-agent",
+      "title": "",
+      "fetched_at": "2026-03-07T00:39:22",
+      "file": ".cache/sources/cookbook-research-lead-agent.md",
+      "content_type": "text/plain",
+      "size_bytes": 23102
+    },
+    "cookbook-research-subagent": {
+      "url": "https://raw.githubusercontent.com/anthropics/claude-cookbooks/main/patterns/agents/prompts/research_subagent.md",
+      "slug": "cookbook-research-subagent",
+      "title": "",
+      "fetched_at": "2026-03-07T00:39:22",
+      "file": ".cache/sources/cookbook-research-subagent.md",
+      "content_type": "text/plain",
+      "size_bytes": 9109
+    },
+    "cookbook-citations-agent": {
+      "url": "https://raw.githubusercontent.com/anthropics/claude-cookbooks/main/patterns/agents/prompts/citations_agent.md",
+      "slug": "cookbook-citations-agent",
+      "title": "",
+      "fetched_at": "2026-03-07T00:39:22",
+      "file": ".cache/sources/cookbook-citations-agent.md",
+      "content_type": "text/plain",
+      "size_bytes": 2870
+    },
+    "claude-code-agent-teams": {
+      "url": "https://code.claude.com/docs/en/agent-teams",
+      "slug": "claude-code-agent-teams",
+      "title": "",
+      "fetched_at": "2026-03-07T00:39:23",
+      "file": ".cache/sources/claude-code-agent-teams.md",
+      "content_type": "text/html",
+      "size_bytes": 24498
+    },
+    "claude-sdk-subagents": {
+      "url": "https://platform.claude.com/docs/en/agent-sdk/subagents",
+      "slug": "claude-sdk-subagents",
+      "title": "",
+      "fetched_at": "2026-03-07T00:39:23",
+      "file": ".cache/sources/claude-sdk-subagents.md",
+      "content_type": "text/html",
+      "size_bytes": 17764
+    },
+    "ollama-ai": {
+      "url": "https://ollama.ai",
+      "slug": "ollama-ai",
+      "title": "",
+      "fetched_at": "2026-03-07T00:59:05",
+      "file": ".cache/sources/ollama-ai.md",
+      "content_type": "text/html",
+      "size_bytes": 2615
+    },
+    "lmstudio-ai": {
+      "url": "https://lmstudio.ai",
+      "slug": "lmstudio-ai",
+      "title": "",
+      "fetched_at": "2026-03-07T00:59:05",
+      "file": ".cache/sources/lmstudio-ai.md",
+      "content_type": "text/html",
+      "size_bytes": 1895
+    },
+    "xda-developers-com-youre-using-local-llm-wrong-if-youre-prom": {
+      "url": "https://www.xda-developers.com/youre-using-local-llm-wrong-if-youre-prompting-it-like-cloud-llm/",
+      "slug": "xda-developers-com-youre-using-local-llm-wrong-if-youre-prom",
+      "title": "",
+      "fetched_at": "2026-03-07T00:59:06",
+      "file": ".cache/sources/xda-developers-com-youre-using-local-llm-wrong-if-youre-prom.md",
+      "content_type": "text/html",
+      "size_bytes": 8880
+    },
+    "opensourceprojects-dev-post-e7415816-a348-4936-b8bd-0c651c4a": {
+      "url": "https://opensourceprojects.dev/post/e7415816-a348-4936-b8bd-0c651c4ab2d8",
+      "slug": "opensourceprojects-dev-post-e7415816-a348-4936-b8bd-0c651c4a",
+      "title": "",
+      "fetched_at": "2026-03-07T00:59:08",
+      "file": ".cache/sources/opensourceprojects-dev-post-e7415816-a348-4936-b8bd-0c651c4a.md",
+      "content_type": "text/html",
+      "size_bytes": 4584
+    },
+    "freecodecamp-org-news-build-and-deploy-multi-agent-ai-with-p": {
+      "url": "https://www.freecodecamp.org/news/build-and-deploy-multi-agent-ai-with-python-and-docker/",
+      "slug": "freecodecamp-org-news-build-and-deploy-multi-agent-ai-with-p",
+      "title": "",
+      "fetched_at": "2026-03-07T00:59:09",
+      "file": ".cache/sources/freecodecamp-org-news-build-and-deploy-multi-agent-ai-with-p.md",
+      "content_type": "text/html",
+      "size_bytes": 43308
+    },
+    "kdnuggets-com-docker-ai-for-agent-builders-models-tools-and-": {
+      "url": "https://www.kdnuggets.com/docker-ai-for-agent-builders-models-tools-and-cloud-offload",
+      "slug": "kdnuggets-com-docker-ai-for-agent-builders-models-tools-and-",
+      "title": "",
+      "fetched_at": "2026-03-07T00:59:10",
+      "file": ".cache/sources/kdnuggets-com-docker-ai-for-agent-builders-models-tools-and-.md",
+      "content_type": "text/html",
+      "size_bytes": 15288
+    },
+    "arxiv-org-html-2512-05470v1": {
+      "url": "https://arxiv.org/html/2512.05470v1",
+      "slug": "arxiv-org-html-2512-05470v1",
+      "title": "",
+      "fetched_at": "2026-03-07T00:59:11",
+      "file": ".cache/sources/arxiv-org-html-2512-05470v1.md",
+      "content_type": "text/html",
+      "size_bytes": 42643
+    },
+    "github-com-mem0ai-mem0": {
+      "url": "https://github.com/mem0ai/mem0",
+      "slug": "github-com-mem0ai-mem0",
+      "title": "",
+      "fetched_at": "2026-03-07T00:59:11",
+      "file": ".cache/sources/github-com-mem0ai-mem0.md",
+      "content_type": "text/html",
+      "size_bytes": 11961
+    },
+    "github-com-letta-ai-letta": {
+      "url": "https://github.com/letta-ai/letta",
+      "slug": "github-com-letta-ai-letta",
+      "title": "",
+      "fetched_at": "2026-03-07T00:59:12",
+      "file": ".cache/sources/github-com-letta-ai-letta.md",
+      "content_type": "text/html",
+      "size_bytes": 12681
+    },
+    "github-com-getzep-graphiti": {
+      "url": "https://github.com/getzep/graphiti",
+      "slug": "github-com-getzep-graphiti",
+      "title": "",
+      "fetched_at": "2026-03-07T00:59:13",
+      "file": ".cache/sources/github-com-getzep-graphiti.md",
+      "content_type": "text/html",
+      "size_bytes": 35841
+    },
+    "github-com-topoteretes-cognee": {
+      "url": "https://github.com/topoteretes/cognee",
+      "slug": "github-com-topoteretes-cognee",
+      "title": "",
+      "fetched_at": "2026-03-07T00:59:14",
+      "file": ".cache/sources/github-com-topoteretes-cognee.md",
+      "content_type": "text/html",
+      "size_bytes": 16846
+    },
+    "towardsdatascience-com-claude-skills-and-subagents": {
+      "url": "https://towardsdatascience.com/claude-skills-and-subagents",
+      "slug": "towardsdatascience-com-claude-skills-and-subagents",
+      "title": "",
+      "fetched_at": "2026-03-07T00:59:15",
+      "file": ".cache/sources/towardsdatascience-com-claude-skills-and-subagents.md",
+      "content_type": "text/html",
+      "size_bytes": 27078
+    },
+    "a2a-announcement": {
+      "url": "https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/",
+      "slug": "a2a-announcement",
+      "title": "",
+      "fetched_at": "2026-03-07T00:59:32",
+      "file": ".cache/sources/a2a-announcement.md",
+      "content_type": "text/html",
+      "size_bytes": 25733
+    },
+    "arxiv-context-engineering-survey": {
+      "url": "https://arxiv.org/abs/2507.13334",
+      "slug": "arxiv-context-engineering-survey",
+      "title": "",
+      "fetched_at": "2026-03-07T00:59:32",
+      "file": ".cache/sources/arxiv-context-engineering-survey.md",
+      "content_type": "text/html",
+      "size_bytes": 8063
+    },
+    "github-com-anthropics-anthropic-cookbook": {
+      "url": "https://github.com/anthropics/anthropic-cookbook",
+      "slug": "github-com-anthropics-anthropic-cookbook",
+      "title": "",
+      "fetched_at": "2026-03-07T06:01:22",
+      "file": ".cache/sources/github-com-anthropics-anthropic-cookbook.md",
+      "content_type": "text/html",
+      "size_bytes": 14457
+    },
+    "platform-claude-com-docs-en-build-with-claude-prompt-enginee": {
+      "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/use-xml-tags",
+      "slug": "platform-claude-com-docs-en-build-with-claude-prompt-enginee",
+      "title": "",
+      "fetched_at": "2026-03-07T06:12:02",
+      "file": ".cache/sources/platform-claude-com-docs-en-build-with-claude-prompt-enginee.md",
+      "content_type": "text/html",
+      "size_bytes": 40984
+    },
+    "code-visualstudio-com-docs-copilot-customization-custom-agen": {
+      "url": "https://code.visualstudio.com/docs/copilot/customization/custom-agents",
+      "slug": "code-visualstudio-com-docs-copilot-customization-custom-agen",
+      "title": "",
+      "fetched_at": "2026-03-07T06:12:03",
+      "file": ".cache/sources/code-visualstudio-com-docs-copilot-customization-custom-agen.md",
+      "content_type": "text/html",
+      "size_bytes": 18818
+    },
+    "code-visualstudio-com-api-extension-guides-chat": {
+      "url": "https://code.visualstudio.com/api/extension-guides/chat",
+      "slug": "code-visualstudio-com-api-extension-guides-chat",
+      "title": "",
+      "fetched_at": "2026-03-07T06:12:04",
+      "file": ".cache/sources/code-visualstudio-com-api-extension-guides-chat.md",
+      "content_type": "text/html",
+      "size_bytes": 36032
+    },
+    "platform-openai-com-docs-guides-prompt-engineering": {
+      "url": "https://platform.openai.com/docs/guides/prompt-engineering",
+      "slug": "platform-openai-com-docs-guides-prompt-engineering",
+      "title": "",
+      "fetched_at": "2026-03-07T06:12:04",
+      "file": ".cache/sources/platform-openai-com-docs-guides-prompt-engineering.md",
+      "content_type": "text/html",
+      "size_bytes": 48678
+    },
+    "microsoft-github-io-autogen-stable-user-guide-agentchat-user": {
+      "url": "https://microsoft.github.io/autogen/stable/user-guide/agentchat-user-guide/quickstart.html",
+      "slug": "microsoft-github-io-autogen-stable-user-guide-agentchat-user",
+      "title": "",
+      "fetched_at": "2026-03-07T06:12:04",
+      "file": ".cache/sources/microsoft-github-io-autogen-stable-user-guide-agentchat-user.md",
+      "content_type": "text/html",
+      "size_bytes": 3340
+    },
+    "code-claude-com-docs-en-sub-agents": {
+      "url": "https://code.claude.com/docs/en/sub-agents",
+      "slug": "code-claude-com-docs-en-sub-agents",
+      "title": "",
+      "fetched_at": "2026-03-07T06:12:12",
+      "file": ".cache/sources/code-claude-com-docs-en-sub-agents.md",
+      "content_type": "text/html",
+      "size_bytes": 38490
+    },
+    "platform-claude-com-docs-en-agents-and-tools-agent-skills-ov": {
+      "url": "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview",
+      "slug": "platform-claude-com-docs-en-agents-and-tools-agent-skills-ov",
+      "title": "",
+      "fetched_at": "2026-03-07T06:12:13",
+      "file": ".cache/sources/platform-claude-com-docs-en-agents-and-tools-agent-skills-ov.md",
+      "content_type": "text/html",
+      "size_bytes": 17108
+    },
+    "python-langchain-com-docs-concepts-agents": {
+      "url": "https://python.langchain.com/docs/concepts/agents/",
+      "slug": "python-langchain-com-docs-concepts-agents",
+      "title": "",
+      "fetched_at": "2026-03-07T06:12:13",
+      "file": ".cache/sources/python-langchain-com-docs-concepts-agents.md",
+      "content_type": "text/html",
+      "size_bytes": 5741
+    },
+    "platform-openai-com-docs-api-reference-assistants": {
+      "url": "https://platform.openai.com/docs/api-reference/assistants",
+      "slug": "platform-openai-com-docs-api-reference-assistants",
+      "title": "",
+      "fetched_at": "2026-03-07T06:12:13",
+      "file": ".cache/sources/platform-openai-com-docs-api-reference-assistants.md",
+      "content_type": "text/html",
+      "size_bytes": 29014
+    },
+    "anthropic-com-engineering-effective-context-engineering-for-": {
+      "url": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+      "slug": "anthropic-com-engineering-effective-context-engineering-for-",
+      "title": "Effective context engineering for AI agents \\ Anthropic",
+      "fetched_at": "2026-03-07T06:59:03",
+      "file": ".cache/sources/anthropic-com-engineering-effective-context-engineering-for-.md",
+      "content_type": "text/html",
+      "size_bytes": 22524
+    },
+    "anthropic-com-engineering-multi-agent-research-system": {
+      "url": "https://www.anthropic.com/engineering/multi-agent-research-system",
+      "slug": "anthropic-com-engineering-multi-agent-research-system",
+      "title": "How we built our multi-agent research system \\ Anthropic",
+      "fetched_at": "2026-03-07T06:59:06",
+      "file": ".cache/sources/anthropic-com-engineering-multi-agent-research-system.md",
+      "content_type": "text/html",
+      "size_bytes": 26996
+    },
+    "a2aproject-github-io-A2A-latest-specification": {
+      "url": "https://a2aproject.github.io/A2A/latest/specification/",
+      "slug": "a2aproject-github-io-A2A-latest-specification",
+      "title": "",
+      "fetched_at": "2026-03-07T06:59:16",
+      "file": ".cache/sources/a2aproject-github-io-A2A-latest-specification.md",
+      "content_type": "text/html",
+      "size_bytes": 168915
+    },
+    "docs-pytest-org-en-stable": {
+      "url": "https://docs.pytest.org/en/stable/",
+      "slug": "docs-pytest-org-en-stable",
+      "title": "Contents",
+      "fetched_at": "2026-03-07T08:53:39",
+      "file": ".cache/sources/docs-pytest-org-en-stable.md",
+      "content_type": "text/html",
+      "size_bytes": 3901
+    },
+    "martinfowler-com-articles-practical-test-pyramid-html": {
+      "url": "https://martinfowler.com/articles/practical-test-pyramid.html",
+      "slug": "martinfowler-com-articles-practical-test-pyramid-html",
+      "title": "",
+      "fetched_at": "2026-03-07T08:53:58",
+      "file": ".cache/sources/martinfowler-com-articles-practical-test-pyramid-html.md",
+      "content_type": "text/html",
+      "size_bytes": 82961
+    },
+    "pre-commit-com": {
+      "url": "https://pre-commit.com/",
+      "slug": "pre-commit-com",
+      "title": "",
+      "fetched_at": "2026-03-07T09:00:46",
+      "file": ".cache/sources/pre-commit-com.md",
+      "content_type": "text/html",
+      "size_bytes": 65971
+    },
+    "docs-astral-sh-uv": {
+      "url": "https://docs.astral.sh/uv/",
+      "slug": "docs-astral-sh-uv",
+      "title": "",
+      "fetched_at": "2026-03-07T09:00:46",
+      "file": ".cache/sources/docs-astral-sh-uv.md",
+      "content_type": "text/html",
+      "size_bytes": 6174
+    },
+    "conventionalcommits-org-en-v1-0-0": {
+      "url": "https://www.conventionalcommits.org/en/v1.0.0/",
+      "slug": "conventionalcommits-org-en-v1-0-0",
+      "title": "",
+      "fetched_at": "2026-03-07T09:00:47",
+      "file": ".cache/sources/conventionalcommits-org-en-v1-0-0.md",
+      "content_type": "text/html",
+      "size_bytes": 10597
+    },
+    "taskfile-dev": {
+      "url": "https://taskfile.dev/",
+      "slug": "taskfile-dev",
+      "title": "",
+      "fetched_at": "2026-03-07T09:00:47",
+      "file": ".cache/sources/taskfile-dev.md",
+      "content_type": "text/html",
+      "size_bytes": 1114
+    },
+    "github-com-astral-sh-ruff": {
+      "url": "https://github.com/astral-sh/ruff",
+      "slug": "github-com-astral-sh-ruff",
+      "title": "",
+      "fetched_at": "2026-03-07T09:00:48",
+      "file": ".cache/sources/github-com-astral-sh-ruff.md",
+      "content_type": "text/html",
+      "size_bytes": 32281
+    },
+    "keepachangelog-com-en-1-1-0": {
+      "url": "https://keepachangelog.com/en/1.1.0/",
+      "slug": "keepachangelog-com-en-1-1-0",
+      "title": "",
+      "fetched_at": "2026-03-07T09:00:48",
+      "file": ".cache/sources/keepachangelog-com-en-1-1-0.md",
+      "content_type": "text/html",
+      "size_bytes": 16408
+    },
+    "github-com-googleapis-release-please": {
+      "url": "https://github.com/googleapis/release-please",
+      "slug": "github-com-googleapis-release-please",
+      "title": "",
+      "fetched_at": "2026-03-07T09:00:49",
+      "file": ".cache/sources/github-com-googleapis-release-please.md",
+      "content_type": "text/html",
+      "size_bytes": 21850
+    },
+    "makeareadme-com": {
+      "url": "https://www.makeareadme.com/",
+      "slug": "makeareadme-com",
+      "title": "",
+      "fetched_at": "2026-03-07T09:06:34",
+      "file": ".cache/sources/makeareadme-com.md",
+      "content_type": "text/html",
+      "size_bytes": 13516
+    },
+    "writethedocs-org-guide": {
+      "url": "https://www.writethedocs.org/guide/",
+      "slug": "writethedocs-org-guide",
+      "title": "",
+      "fetched_at": "2026-03-07T09:06:34",
+      "file": ".cache/sources/writethedocs-org-guide.md",
+      "content_type": "text/html",
+      "size_bytes": 10038
+    },
+    "squidfunk-github-io-mkdocs-material": {
+      "url": "https://squidfunk.github.io/mkdocs-material/",
+      "slug": "squidfunk-github-io-mkdocs-material",
+      "title": "",
+      "fetched_at": "2026-03-07T09:06:34",
+      "file": ".cache/sources/squidfunk-github-io-mkdocs-material.md",
+      "content_type": "text/html",
+      "size_bytes": 6884
+    },
+    "docusaurus-io-docs": {
+      "url": "https://docusaurus.io/docs",
+      "slug": "docusaurus-io-docs",
+      "title": "",
+      "fetched_at": "2026-03-07T09:06:35",
+      "file": ".cache/sources/docusaurus-io-docs.md",
+      "content_type": "text/html",
+      "size_bytes": 12513
+    },
+    "docs-github-com-en-communities-setting-up-your-project-for-h": {
+      "url": "https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors",
+      "slug": "docs-github-com-en-communities-setting-up-your-project-for-h",
+      "title": "",
+      "fetched_at": "2026-03-07T09:06:35",
+      "file": ".cache/sources/docs-github-com-en-communities-setting-up-your-project-for-h.md",
+      "content_type": "text/html",
+      "size_bytes": 5109
+    },
+    "github-com-matiassingers-awesome-readme": {
+      "url": "https://github.com/matiassingers/awesome-readme",
+      "slug": "github-com-matiassingers-awesome-readme",
+      "title": "",
+      "fetched_at": "2026-03-07T09:06:36",
+      "file": ".cache/sources/github-com-matiassingers-awesome-readme.md",
+      "content_type": "text/html",
+      "size_bytes": 34708
+    },
+    "pdoc-dev": {
+      "url": "https://pdoc.dev/",
+      "slug": "pdoc-dev",
+      "title": "",
+      "fetched_at": "2026-03-07T09:06:37",
+      "file": ".cache/sources/pdoc-dev.md",
+      "content_type": "text/html",
+      "size_bytes": 937
+    },
+    "docs-github-com-en-issues-planning-and-tracking-with-project": {
+      "url": "https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects",
+      "slug": "docs-github-com-en-issues-planning-and-tracking-with-project",
+      "title": "",
+      "fetched_at": "2026-03-07T09:13:20",
+      "file": ".cache/sources/docs-github-com-en-issues-planning-and-tracking-with-project.md",
+      "content_type": "text/html",
+      "size_bytes": 7369
+    },
+    "adr-github-io": {
+      "url": "https://adr.github.io/",
+      "slug": "adr-github-io",
+      "title": "",
+      "fetched_at": "2026-03-07T09:13:25",
+      "file": ".cache/sources/adr-github-io.md",
+      "content_type": "text/html",
+      "size_bytes": 0
+    },
+    "opensource-guide-building-community": {
+      "url": "https://opensource.guide/building-community/",
+      "slug": "opensource-guide-building-community",
+      "title": "",
+      "fetched_at": "2026-03-07T09:13:28",
+      "file": ".cache/sources/opensource-guide-building-community.md",
+      "content_type": "text/html",
+      "size_bytes": 19882
+    },
+    "opensource-guide-leadership-and-governance": {
+      "url": "https://opensource.guide/leadership-and-governance/",
+      "slug": "opensource-guide-leadership-and-governance",
+      "title": "",
+      "fetched_at": "2026-03-07T09:13:29",
+      "file": ".cache/sources/opensource-guide-leadership-and-governance.md",
+      "content_type": "text/html",
+      "size_bytes": 12282
+    },
+    "atlassian-com-agile-kanban-kanban-vs-scrum": {
+      "url": "https://www.atlassian.com/agile/kanban/kanban-vs-scrum",
+      "slug": "atlassian-com-agile-kanban-kanban-vs-scrum",
+      "title": "",
+      "fetched_at": "2026-03-07T09:13:37",
+      "file": ".cache/sources/atlassian-com-agile-kanban-kanban-vs-scrum.md",
+      "content_type": "text/html",
+      "size_bytes": 13175
+    },
+    "teamtopologies-com-key-concepts": {
+      "url": "https://teamtopologies.com/key-concepts",
+      "slug": "teamtopologies-com-key-concepts",
+      "title": "",
+      "fetched_at": "2026-03-07T09:13:38",
+      "file": ".cache/sources/teamtopologies-com-key-concepts.md",
+      "content_type": "text/html",
+      "size_bytes": 13222
+    },
+    "nngroup-com-articles-design-thinking": {
+      "url": "https://www.nngroup.com/articles/design-thinking/",
+      "slug": "nngroup-com-articles-design-thinking",
+      "title": "",
+      "fetched_at": "2026-03-07T09:20:41",
+      "file": ".cache/sources/nngroup-com-articles-design-thinking.md",
+      "content_type": "text/html",
+      "size_bytes": 15107
+    },
+    "docs-github-com-en-issues-using-labels-and-milestones-to-tra": {
+      "url": "https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/managing-labels",
+      "slug": "docs-github-com-en-issues-using-labels-and-milestones-to-tra",
+      "title": "",
+      "fetched_at": "2026-03-07T10:09:30",
+      "file": ".cache/sources/docs-github-com-en-issues-using-labels-and-milestones-to-tra.md",
+      "content_type": "text/html",
+      "size_bytes": 4851
+    },
+    "docs-github-com-en-communities-using-templates-to-encourage-": {
+      "url": "https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms",
+      "slug": "docs-github-com-en-communities-using-templates-to-encourage-",
+      "title": "",
+      "fetched_at": "2026-03-07T10:09:31",
+      "file": ".cache/sources/docs-github-com-en-communities-using-templates-to-encourage-.md",
+      "content_type": "text/html",
+      "size_bytes": 8971
+    },
+    "docs-github-com-en-discussions": {
+      "url": "https://docs.github.com/en/discussions",
+      "slug": "docs-github-com-en-discussions",
+      "title": "",
+      "fetched_at": "2026-03-07T10:09:35",
+      "file": ".cache/sources/docs-github-com-en-discussions.md",
+      "content_type": "text/html",
+      "size_bytes": 6247
+    },
+    "cli-github-com-manual-gh_project": {
+      "url": "https://cli.github.com/manual/gh_project",
+      "slug": "cli-github-com-manual-gh_project",
+      "title": "",
+      "fetched_at": "2026-03-07T10:09:35",
+      "file": ".cache/sources/cli-github-com-manual-gh_project.md",
+      "content_type": "text/html",
+      "size_bytes": 1402
+    },
+    "cli-github-com-manual-gh_issue": {
+      "url": "https://cli.github.com/manual/gh_issue",
+      "slug": "cli-github-com-manual-gh_issue",
+      "title": "",
+      "fetched_at": "2026-03-07T10:09:40",
+      "file": ".cache/sources/cli-github-com-manual-gh_issue.md",
+      "content_type": "text/html",
+      "size_bytes": 925
+    },
+    "docs-github-com-en-actions-writing-workflows-choosing-when-y": {
+      "url": "https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows",
+      "slug": "docs-github-com-en-actions-writing-workflows-choosing-when-y",
+      "title": "",
+      "fetched_at": "2026-03-07T10:09:41",
+      "file": ".cache/sources/docs-github-com-en-actions-writing-workflows-choosing-when-y.md",
+      "content_type": "text/html",
+      "size_bytes": 76486
+    },
+    "opensource-guide-finding-users": {
+      "url": "https://opensource.guide/finding-users/",
+      "slug": "opensource-guide-finding-users",
+      "title": "",
+      "fetched_at": "2026-03-07T11:17:43",
+      "file": ".cache/sources/opensource-guide-finding-users.md",
+      "content_type": "text/html",
+      "size_bytes": 8135
+    },
+    "github-com-nayafia-lemonade-stand": {
+      "url": "https://github.com/nayafia/lemonade-stand",
+      "slug": "github-com-nayafia-lemonade-stand",
+      "title": "",
+      "fetched_at": "2026-03-07T11:17:44",
+      "file": ".cache/sources/github-com-nayafia-lemonade-stand.md",
+      "content_type": "text/html",
+      "size_bytes": 31395
+    },
+    "code-visualstudio-com-api-extension-guides-ai-language-model": {
+      "url": "https://code.visualstudio.com/api/extension-guides/ai/language-model",
+      "slug": "code-visualstudio-com-api-extension-guides-ai-language-model",
+      "title": "",
+      "fetched_at": "2026-03-07T11:18:19",
+      "file": ".cache/sources/code-visualstudio-com-api-extension-guides-ai-language-model.md",
+      "content_type": "text/html",
+      "size_bytes": 15306
+    },
+    "code-visualstudio-com-api-references-vscode-api-LanguageMode": {
+      "url": "https://code.visualstudio.com/api/references/vscode-api#LanguageModelChat",
+      "slug": "code-visualstudio-com-api-references-vscode-api-LanguageMode",
+      "title": "",
+      "fetched_at": "2026-03-07T11:18:24",
+      "file": ".cache/sources/code-visualstudio-com-api-references-vscode-api-LanguageMode.md",
+      "content_type": "text/html",
+      "size_bytes": 699569
+    },
+    "code-visualstudio-com-api-extension-guides-ai-chat": {
+      "url": "https://code.visualstudio.com/api/extension-guides/ai/chat",
+      "slug": "code-visualstudio-com-api-extension-guides-ai-chat",
+      "title": "",
+      "fetched_at": "2026-03-07T11:18:25",
+      "file": ".cache/sources/code-visualstudio-com-api-extension-guides-ai-chat.md",
+      "content_type": "text/html",
+      "size_bytes": 36032
+    },
+    "ai-google-dev-gemini-api-docs-prompting-strategies": {
+      "url": "https://ai.google.dev/gemini-api/docs/prompting-strategies",
+      "slug": "ai-google-dev-gemini-api-docs-prompting-strategies",
+      "title": "",
+      "fetched_at": "2026-03-07T11:41:30",
+      "file": ".cache/sources/ai-google-dev-gemini-api-docs-prompting-strategies.md",
+      "content_type": "text/html",
+      "size_bytes": 40394
+    },
+    "ollama-com-blog-how-to-prompt-code-llama": {
+      "url": "https://ollama.com/blog/how-to-prompt-code-llama",
+      "slug": "ollama-com-blog-how-to-prompt-code-llama",
+      "title": "",
+      "fetched_at": "2026-03-07T11:41:58",
+      "file": ".cache/sources/ollama-com-blog-how-to-prompt-code-llama.md",
+      "content_type": "text/html",
+      "size_bytes": 5557
+    },
+    "docs-github-com-en-rest-pulls-review-requests-apiVersion-202": {
+      "url": "https://docs.github.com/en/rest/pulls/review-requests?apiVersion=2022-11-28",
+      "slug": "docs-github-com-en-rest-pulls-review-requests-apiVersion-202",
+      "title": "",
+      "fetched_at": "2026-03-07T20:19:42",
+      "file": ".cache/sources/docs-github-com-en-rest-pulls-review-requests-apiVersion-202.md",
+      "content_type": "text/html",
+      "size_bytes": 57195
+    },
+    "docs-github-com-en-copilot-using-github-copilot-code-review-": {
+      "url": "https://docs.github.com/en/copilot/using-github-copilot/code-review/using-copilot-code-review",
+      "slug": "docs-github-com-en-copilot-using-github-copilot-code-review-",
+      "title": "",
+      "fetched_at": "2026-03-07T20:19:53",
+      "file": ".cache/sources/docs-github-com-en-copilot-using-github-copilot-code-review-.md",
+      "content_type": "text/html",
+      "size_bytes": 15843
+    },
+    "docs-github-com-en-copilot-how-tos-agents-copilot-code-revie": {
+      "url": "https://docs.github.com/en/copilot/how-tos/agents/copilot-code-review/automatic-code-review",
+      "slug": "docs-github-com-en-copilot-how-tos-agents-copilot-code-revie",
+      "title": "",
+      "fetched_at": "2026-03-07T20:20:07",
+      "file": ".cache/sources/docs-github-com-en-copilot-how-tos-agents-copilot-code-revie.md",
+      "content_type": "text/html",
+      "size_bytes": 4686
+    },
+    "docs-github-com-en-copilot-concepts-code-review": {
+      "url": "https://docs.github.com/en/copilot/concepts/code-review",
+      "slug": "docs-github-com-en-copilot-concepts-code-review",
+      "title": "",
+      "fetched_at": "2026-03-07T20:20:18",
+      "file": ".cache/sources/docs-github-com-en-copilot-concepts-code-review.md",
+      "content_type": "text/html",
+      "size_bytes": 12299
+    },
+    "github-com-orgs-community-discussions-109409": {
+      "url": "https://github.com/orgs/community/discussions/109409",
+      "slug": "github-com-orgs-community-discussions-109409",
+      "title": "",
+      "fetched_at": "2026-03-07T20:21:26",
+      "file": ".cache/sources/github-com-orgs-community-discussions-109409.md",
+      "content_type": "text/html",
+      "size_bytes": 4178
+    },
+    "arxiv-org-abs-2501-13956": {
+      "url": "https://arxiv.org/abs/2501.13956",
+      "slug": "arxiv-org-abs-2501-13956",
+      "title": "",
+      "fetched_at": "2026-03-08T04:14:29",
+      "file": ".cache/sources/arxiv-org-abs-2501-13956.md",
+      "content_type": "text/html",
+      "size_bytes": 7477
+    },
+    "link-springer-com-book-10-1007-978-94-009-8947-4": {
+      "url": "https://link.springer.com/book/10.1007/978-94-009-8947-4",
+      "slug": "link-springer-com-book-10-1007-978-94-009-8947-4",
+      "title": "",
+      "fetched_at": "2026-03-08T04:14:30",
+      "file": ".cache/sources/link-springer-com-book-10-1007-978-94-009-8947-4.md",
+      "content_type": "text/html",
+      "size_bytes": 11399
+    },
+    "global-oup-com-academic-product-the-origins-of-order-9780195": {
+      "url": "https://global.oup.com/academic/product/the-origins-of-order-9780195079517",
+      "slug": "global-oup-com-academic-product-the-origins-of-order-9780195",
+      "title": "",
+      "fetched_at": "2026-03-08T04:14:31",
+      "file": ".cache/sources/global-oup-com-academic-product-the-origins-of-order-9780195.md",
+      "content_type": "text/html",
+      "size_bytes": 0
+    },
+    "theatlantic-com-magazine-archive-1945-07-as-we-may-think-303": {
+      "url": "https://www.theatlantic.com/magazine/archive/1945/07/as-we-may-think/303881/",
+      "slug": "theatlantic-com-magazine-archive-1945-07-as-we-may-think-303",
+      "title": "",
+      "fetched_at": "2026-03-08T04:14:48",
+      "file": ".cache/sources/theatlantic-com-magazine-archive-1945-07-as-we-may-think-303.md",
+      "content_type": "text/html",
+      "size_bytes": 47181
+    },
+    "cognitect-com-blog-2011-11-15-documenting-architecture-decis": {
+      "url": "https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions",
+      "slug": "cognitect-com-blog-2011-11-15-documenting-architecture-decis",
+      "title": "",
+      "fetched_at": "2026-03-08T04:14:49",
+      "file": ".cache/sources/cognitect-com-blog-2011-11-15-documenting-architecture-decis.md",
+      "content_type": "text/html",
+      "size_bytes": 0
+    },
+    "informit-com-store-living-documentation-continuous-knowledge": {
+      "url": "https://www.informit.com/store/living-documentation-continuous-knowledge-sharing-by-9780134689326",
+      "slug": "informit-com-store-living-documentation-continuous-knowledge",
+      "title": "",
+      "fetched_at": "2026-03-08T04:14:50",
+      "file": ".cache/sources/informit-com-store-living-documentation-continuous-knowledge.md",
+      "content_type": "text/html",
+      "size_bytes": 27325
+    },
+    "arxiv-org-abs-2210-03629": {
+      "url": "https://arxiv.org/abs/2210.03629",
+      "slug": "arxiv-org-abs-2210-03629",
+      "title": "",
+      "fetched_at": "2026-03-08T04:15:20",
+      "file": ".cache/sources/arxiv-org-abs-2210-03629.md",
+      "content_type": "text/html",
+      "size_bytes": 7929
+    },
+    "arxiv-org-abs-2304-03442": {
+      "url": "https://arxiv.org/abs/2304.03442",
+      "slug": "arxiv-org-abs-2304-03442",
+      "title": "",
+      "fetched_at": "2026-03-08T04:15:20",
+      "file": ".cache/sources/arxiv-org-abs-2304-03442.md",
+      "content_type": "text/html",
+      "size_bytes": 7880
+    },
+    "arxiv-org-abs-2507-13334": {
+      "url": "https://arxiv.org/abs/2507.13334",
+      "slug": "arxiv-org-abs-2507-13334",
+      "title": "",
+      "fetched_at": "2026-03-08T04:15:20",
+      "file": ".cache/sources/arxiv-org-abs-2507-13334.md",
+      "content_type": "text/html",
+      "size_bytes": 8063
+    },
+    "code-visualstudio-com-docs-copilot-customization-agent-skill": {
+      "url": "https://code.visualstudio.com/docs/copilot/customization/agent-skills",
+      "slug": "code-visualstudio-com-docs-copilot-customization-agent-skill",
+      "title": "",
+      "fetched_at": "2026-03-08T05:38:58",
+      "file": ".cache/sources/code-visualstudio-com-docs-copilot-customization-agent-skill.md",
+      "content_type": "text/html",
+      "size_bytes": 14997
+    },
+    "agentskills-io": {
+      "url": "https://agentskills.io",
+      "slug": "agentskills-io",
+      "title": "",
+      "fetched_at": "2026-03-08T05:39:01",
+      "file": ".cache/sources/agentskills-io.md",
+      "content_type": "text/html",
+      "size_bytes": 2887
+    },
+    "agentskills-io-specification": {
+      "url": "https://agentskills.io/specification",
+      "slug": "agentskills-io-specification",
+      "title": "",
+      "fetched_at": "2026-03-08T05:39:05",
+      "file": ".cache/sources/agentskills-io-specification.md",
+      "content_type": "text/html",
+      "size_bytes": 7935
+    },
+    "code-visualstudio-com-docs-copilot-customization-overview": {
+      "url": "https://code.visualstudio.com/docs/copilot/customization/overview",
+      "slug": "code-visualstudio-com-docs-copilot-customization-overview",
+      "title": "",
+      "fetched_at": "2026-03-08T05:39:08",
+      "file": ".cache/sources/code-visualstudio-com-docs-copilot-customization-overview.md",
+      "content_type": "text/html",
+      "size_bytes": 11440
+    },
+    "docs-anthropic-com-en-docs-build-with-claude-prompt-caching": {
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching",
+      "slug": "docs-anthropic-com-en-docs-build-with-claude-prompt-caching",
+      "title": "",
+      "fetched_at": "2026-03-08T22:41:55",
+      "file": ".cache/sources/docs-anthropic-com-en-docs-build-with-claude-prompt-caching.md",
+      "content_type": "text/html",
+      "size_bytes": 29402
+    },
+    "arxiv-org-abs-2101-12649": {
+      "url": "https://arxiv.org/abs/2101.12649",
+      "slug": "arxiv-org-abs-2101-12649",
+      "title": "",
+      "fetched_at": "2026-03-10T19:15:04",
+      "file": ".cache/sources/arxiv-org-abs-2101-12649.md",
+      "content_type": "text/html",
+      "size_bytes": 8361
+    },
+    "hbt-wiki-overview": {
+      "url": "https://en.wikipedia.org/wiki/Holonomic_brain_theory",
+      "slug": "hbt-wiki-overview",
+      "title": "",
+      "fetched_at": "2026-03-10T19:28:37",
+      "file": ".cache/sources/hbt-wiki-overview.md",
+      "content_type": "text/html",
+      "size_bytes": 44108
+    },
+    "bnf-wiki": {
+      "url": "https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form",
+      "slug": "bnf-wiki",
+      "title": "",
+      "fetched_at": "2026-03-11T02:31:58",
+      "file": ".cache/sources/bnf-wiki.md",
+      "content_type": "text/html",
+      "size_bytes": 31270
+    },
+    "ebnf-wiki": {
+      "url": "https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form",
+      "slug": "ebnf-wiki",
+      "title": "",
+      "fetched_at": "2026-03-11T02:32:02",
+      "file": ".cache/sources/ebnf-wiki.md",
+      "content_type": "text/html",
+      "size_bytes": 16377
+    },
+    "petri-nets-wiki": {
+      "url": "https://en.wikipedia.org/wiki/Petri_net",
+      "slug": "petri-nets-wiki",
+      "title": "",
+      "fetched_at": "2026-03-11T02:32:02",
+      "file": ".cache/sources/petri-nets-wiki.md",
+      "content_type": "text/html",
+      "size_bytes": 69836
+    },
+    "bpmn-wiki": {
+      "url": "https://en.wikipedia.org/wiki/Business_Process_Model_and_Notation",
+      "slug": "bpmn-wiki",
+      "title": "",
+      "fetched_at": "2026-03-11T02:32:02",
+      "file": ".cache/sources/bpmn-wiki.md",
+      "content_type": "text/html",
+      "size_bytes": 54036
+    },
+    "langchain-ai-github-io-langgraph-concepts-why-langgraph": {
+      "url": "https://langchain-ai.github.io/langgraph/concepts/why-langgraph/",
+      "slug": "langchain-ai-github-io-langgraph-concepts-why-langgraph",
+      "title": "",
+      "fetched_at": "2026-03-14T16:47:08",
+      "file": ".cache/sources/langchain-ai-github-io-langgraph-concepts-why-langgraph.md",
+      "content_type": "text/html",
+      "size_bytes": 14
+    },
+    "langchain-ai-github-io-langgraph": {
+      "url": "https://langchain-ai.github.io/langgraph/",
+      "slug": "langchain-ai-github-io-langgraph",
+      "title": "",
+      "fetched_at": "2026-03-14T16:47:20",
+      "file": ".cache/sources/langchain-ai-github-io-langgraph.md",
+      "content_type": "text/html",
+      "size_bytes": 171
+    },
+    "networkx-org-documentation-stable": {
+      "url": "https://networkx.org/documentation/stable/",
+      "slug": "networkx-org-documentation-stable",
+      "title": "",
+      "fetched_at": "2026-03-14T16:47:20",
+      "file": ".cache/sources/networkx-org-documentation-stable.md",
+      "content_type": "text/html",
+      "size_bytes": 6350
+    },
+    "docs-langchain-com-oss-python-langgraph-overview": {
+      "url": "https://docs.langchain.com/oss/python/langgraph/overview",
+      "slug": "docs-langchain-com-oss-python-langgraph-overview",
+      "title": "",
+      "fetched_at": "2026-03-14T16:47:28",
+      "file": ".cache/sources/docs-langchain-com-oss-python-langgraph-overview.md",
+      "content_type": "text/html",
+      "size_bytes": 6397
+    },
+    "docs-github-com-en-billing-managing-billing-for-github-actio": {
+      "url": "https://docs.github.com/en/billing/managing-billing-for-github-actions/viewing-your-github-actions-usage",
+      "slug": "docs-github-com-en-billing-managing-billing-for-github-actio",
+      "title": "",
+      "fetched_at": "2026-03-15T02:23:08",
+      "file": ".cache/sources/docs-github-com-en-billing-managing-billing-for-github-actio.md",
+      "content_type": "text/html",
+      "size_bytes": 5801
+    },
+    "docs-github-com-en-actions-learn-github-actions-usage-limits": {
+      "url": "https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration",
+      "slug": "docs-github-com-en-actions-learn-github-actions-usage-limits",
+      "title": "",
+      "fetched_at": "2026-03-15T02:23:32",
+      "file": ".cache/sources/docs-github-com-en-actions-learn-github-actions-usage-limits.md",
+      "content_type": "text/html",
+      "size_bytes": 4045
+    },
+    "docs-github-com-en-get-started-learning-about-github-githubs": {
+      "url": "https://docs.github.com/en/get-started/learning-about-github/githubs-plans",
+      "slug": "docs-github-com-en-get-started-learning-about-github-githubs",
+      "title": "",
+      "fetched_at": "2026-03-15T02:23:49",
+      "file": ".cache/sources/docs-github-com-en-get-started-learning-about-github-githubs.md",
+      "content_type": "text/html",
+      "size_bytes": 9413
+    },
+    "docs-github-com-en-code-security-code-scanning-introduction-": {
+      "url": "https://docs.github.com/en/code-security/code-scanning/introduction-to-code-scanning/about-code-scanning",
+      "slug": "docs-github-com-en-code-security-code-scanning-introduction-",
+      "title": "",
+      "fetched_at": "2026-03-15T02:24:06",
+      "file": ".cache/sources/docs-github-com-en-code-security-code-scanning-introduction-.md",
+      "content_type": "text/html",
+      "size_bytes": 4983
+    },
+    "diataxis-fr": {
+      "url": "https://diataxis.fr",
+      "slug": "diataxis-fr",
+      "title": "Contents",
+      "fetched_at": "2026-03-15T06:53:11",
+      "file": ".cache/sources/diataxis-fr.md",
+      "content_type": "text/html",
+      "size_bytes": 3211
+    },
+    "documentation-divio-com": {
+      "url": "https://documentation.divio.com",
+      "slug": "documentation-divio-com",
+      "title": "",
+      "fetched_at": "2026-03-15T06:53:12",
+      "file": ".cache/sources/documentation-divio-com.md",
+      "content_type": "text/html",
+      "size_bytes": 2009
+    },
+    "diataxis-fr-tutorials": {
+      "url": "https://diataxis.fr/tutorials/",
+      "slug": "diataxis-fr-tutorials",
+      "title": "Contents",
+      "fetched_at": "2026-03-15T06:53:26",
+      "file": ".cache/sources/diataxis-fr-tutorials.md",
+      "content_type": "text/html",
+      "size_bytes": 15625
+    },
+    "diataxis-fr-how-to-guides": {
+      "url": "https://diataxis.fr/how-to-guides/",
+      "slug": "diataxis-fr-how-to-guides",
+      "title": "Contents",
+      "fetched_at": "2026-03-15T06:53:27",
+      "file": ".cache/sources/diataxis-fr-how-to-guides.md",
+      "content_type": "text/html",
+      "size_bytes": 10504
+    },
+    "diataxis-fr-reference": {
+      "url": "https://diataxis.fr/reference/",
+      "slug": "diataxis-fr-reference",
+      "title": "Contents",
+      "fetched_at": "2026-03-15T06:53:27",
+      "file": ".cache/sources/diataxis-fr-reference.md",
+      "content_type": "text/html",
+      "size_bytes": 5477
+    },
+    "diataxis-fr-explanation": {
+      "url": "https://diataxis.fr/explanation/",
+      "slug": "diataxis-fr-explanation",
+      "title": "Contents",
+      "fetched_at": "2026-03-15T06:53:27",
+      "file": ".cache/sources/diataxis-fr-explanation.md",
+      "content_type": "text/html",
+      "size_bytes": 7113
+    },
+    "docs-github-com-en-copilot-using-github-copilot": {
+      "url": "https://docs.github.com/en/copilot/using-github-copilot/",
+      "slug": "docs-github-com-en-copilot-using-github-copilot",
+      "title": "",
+      "fetched_at": "2026-03-15T06:53:34",
+      "file": ".cache/sources/docs-github-com-en-copilot-using-github-copilot.md",
+      "content_type": "text/html",
+      "size_bytes": 11180
+    },
+    "diataxis-fr-complex-hierarchies": {
+      "url": "https://diataxis.fr/complex-hierarchies/",
+      "slug": "diataxis-fr-complex-hierarchies",
+      "title": "Contents",
+      "fetched_at": "2026-03-15T06:53:40",
+      "file": ".cache/sources/diataxis-fr-complex-hierarchies.md",
+      "content_type": "text/html",
+      "size_bytes": 8604
+    },
+    "docs-github-com-en-copilot-customizing-copilot-adding-custom": {
+      "url": "https://docs.github.com/en/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot",
+      "slug": "docs-github-com-en-copilot-customizing-copilot-adding-custom",
+      "title": "",
+      "fetched_at": "2026-03-15T06:53:48",
+      "file": ".cache/sources/docs-github-com-en-copilot-customizing-copilot-adding-custom.md",
+      "content_type": "text/html",
+      "size_bytes": 47250
+    },
+    "docs-github-com-en-copilot-concepts-prompting-response-custo": {
+      "url": "https://docs.github.com/en/copilot/concepts/prompting/response-customization",
+      "slug": "docs-github-com-en-copilot-concepts-prompting-response-custo",
+      "title": "",
+      "fetched_at": "2026-03-15T06:53:59",
+      "file": ".cache/sources/docs-github-com-en-copilot-concepts-prompting-response-custo.md",
+      "content_type": "text/html",
+      "size_bytes": 48570
+    },
+    "github-com-openai-agents-md": {
+      "url": "https://github.com/openai/agents.md",
+      "slug": "github-com-openai-agents-md",
+      "title": "",
+      "fetched_at": "2026-03-15T06:54:05",
+      "file": ".cache/sources/github-com-openai-agents-md.md",
+      "content_type": "text/html",
+      "size_bytes": 6945
+    },
+    "docs-github-com-en-repositories-creating-and-managing-reposi": {
+      "url": "https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository",
+      "slug": "docs-github-com-en-repositories-creating-and-managing-reposi",
+      "title": "",
+      "fetched_at": "2026-03-15T19:03:10",
+      "file": ".cache/sources/docs-github-com-en-repositories-creating-and-managing-reposi.md",
+      "content_type": "text/html",
+      "size_bytes": 2040
+    },
+    "github-com-cruft-cruft": {
+      "url": "https://github.com/cruft/cruft",
+      "slug": "github-com-cruft-cruft",
+      "title": "",
+      "fetched_at": "2026-03-15T19:03:25",
+      "file": ".cache/sources/github-com-cruft-cruft.md",
+      "content_type": "text/html",
+      "size_bytes": 16910
+    },
+    "modelcontextprotocol-io-specification-2025-03-26-basic-lifec": {
+      "url": "https://modelcontextprotocol.io/specification/2025-03-26/basic/lifecycle",
+      "slug": "modelcontextprotocol-io-specification-2025-03-26-basic-lifec",
+      "title": "",
+      "fetched_at": "2026-03-16T06:12:02",
+      "file": ".cache/sources/modelcontextprotocol-io-specification-2025-03-26-basic-lifec.md",
+      "content_type": "text/html",
+      "size_bytes": 8290
+    },
+    "langchain-ai-github-io-langgraph-concepts-multi_agent": {
+      "url": "https://langchain-ai.github.io/langgraph/concepts/multi_agent/",
+      "slug": "langchain-ai-github-io-langgraph-concepts-multi_agent",
+      "title": "",
+      "fetched_at": "2026-03-16T06:12:12",
+      "file": ".cache/sources/langchain-ai-github-io-langgraph-concepts-multi_agent.md",
+      "content_type": "text/html",
+      "size_bytes": 14
+    },
+    "modelcontextprotocol-io-docs-concepts-architecture": {
+      "url": "https://modelcontextprotocol.io/docs/concepts/architecture",
+      "slug": "modelcontextprotocol-io-docs-concepts-architecture",
+      "title": "",
+      "fetched_at": "2026-03-16T06:12:41",
+      "file": ".cache/sources/modelcontextprotocol-io-docs-concepts-architecture.md",
+      "content_type": "text/html",
+      "size_bytes": 22946
+    },
+    "langchain-ai-github-io-langgraph-concepts-agentic_concepts": {
+      "url": "https://langchain-ai.github.io/langgraph/concepts/agentic_concepts/",
+      "slug": "langchain-ai-github-io-langgraph-concepts-agentic_concepts",
+      "title": "",
+      "fetched_at": "2026-03-16T06:13:05",
+      "file": ".cache/sources/langchain-ai-github-io-langgraph-concepts-agentic_concepts.md",
+      "content_type": "text/html",
+      "size_bytes": 14
+    },
+    "langchain-ai-github-io-langgraph-concepts-human_in_the_loop": {
+      "url": "https://langchain-ai.github.io/langgraph/concepts/human_in_the_loop/",
+      "slug": "langchain-ai-github-io-langgraph-concepts-human_in_the_loop",
+      "title": "",
+      "fetched_at": "2026-03-16T06:13:05",
+      "file": ".cache/sources/langchain-ai-github-io-langgraph-concepts-human_in_the_loop.md",
+      "content_type": "text/html",
+      "size_bytes": 14
+    },
+    "a2aproject-github-io-A2A-latest-topics-agent-discovery": {
+      "url": "https://a2aproject.github.io/A2A/latest/topics/agent-discovery/",
+      "slug": "a2aproject-github-io-A2A-latest-topics-agent-discovery",
+      "title": "",
+      "fetched_at": "2026-03-16T06:13:36",
+      "file": ".cache/sources/a2aproject-github-io-A2A-latest-topics-agent-discovery.md",
+      "content_type": "text/html",
+      "size_bytes": 7561
+    },
+    "en-wikipedia-org-wiki-Horizontal_gene_transfer": {
+      "url": "https://en.wikipedia.org/wiki/Horizontal_gene_transfer",
+      "slug": "en-wikipedia-org-wiki-Horizontal_gene_transfer",
+      "title": "",
+      "fetched_at": "2026-03-16T06:13:57",
+      "file": ".cache/sources/en-wikipedia-org-wiki-Horizontal_gene_transfer.md",
+      "content_type": "text/html",
+      "size_bytes": 171309
+    },
+    "en-wikipedia-org-wiki-Meme": {
+      "url": "https://en.wikipedia.org/wiki/Meme",
+      "slug": "en-wikipedia-org-wiki-Meme",
+      "title": "",
+      "fetched_at": "2026-03-16T06:13:57",
+      "file": ".cache/sources/en-wikipedia-org-wiki-Meme.md",
+      "content_type": "text/html",
+      "size_bytes": 119343
+    },
+    "en-wikipedia-org-wiki-Punctuated_equilibrium": {
+      "url": "https://en.wikipedia.org/wiki/Punctuated_equilibrium",
+      "slug": "en-wikipedia-org-wiki-Punctuated_equilibrium",
+      "title": "",
+      "fetched_at": "2026-03-16T06:14:01",
+      "file": ".cache/sources/en-wikipedia-org-wiki-Punctuated_equilibrium.md",
+      "content_type": "text/html",
+      "size_bytes": 98867
+    },
+    "semver-org": {
+      "url": "https://semver.org/",
+      "slug": "semver-org",
+      "title": "",
+      "fetched_at": "2026-03-16T06:14:01",
+      "file": ".cache/sources/semver-org.md",
+      "content_type": "text/html",
+      "size_bytes": 19080
+    },
+    "en-wikipedia-org-wiki-Dijkstra-27s_algorithm": {
+      "url": "https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm",
+      "slug": "en-wikipedia-org-wiki-Dijkstra-27s_algorithm",
+      "title": "",
+      "fetched_at": "2026-03-16T06:14:07",
+      "file": ".cache/sources/en-wikipedia-org-wiki-Dijkstra-27s_algorithm.md",
+      "content_type": "text/html",
+      "size_bytes": 68825
+    },
+    "developer-mozilla-org-en-US-docs-Web-CSS-Specificity": {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity",
+      "slug": "developer-mozilla-org-en-US-docs-Web-CSS-Specificity",
+      "title": "",
+      "fetched_at": "2026-03-16T06:14:11",
+      "file": ".cache/sources/developer-mozilla-org-en-US-docs-Web-CSS-Specificity.md",
+      "content_type": "text/html",
+      "size_bytes": 27430
+    },
+    "en-wikipedia-org-wiki-Topological_sorting": {
+      "url": "https://en.wikipedia.org/wiki/Topological_sorting",
+      "slug": "en-wikipedia-org-wiki-Topological_sorting",
+      "title": "",
+      "fetched_at": "2026-03-16T06:14:11",
+      "file": ".cache/sources/en-wikipedia-org-wiki-Topological_sorting.md",
+      "content_type": "text/html",
+      "size_bytes": 31083
+    },
+    "share-google-rQZMjYCJ0WYccUVFk": {
+      "url": "https://share.google/rQZMjYCJ0WYccUVFk",
+      "slug": "share-google-rQZMjYCJ0WYccUVFk",
+      "title": "Group",
+      "fetched_at": "2026-03-17T07:27:27",
+      "file": ".cache/sources/share-google-rQZMjYCJ0WYccUVFk.md",
+      "content_type": "text/html",
+      "size_bytes": 61023
+    },
+    "youtu-be-RBqT2PHWdBg": {
+      "url": "https://youtu.be/RBqT2PHWdBg",
+      "slug": "youtu-be-RBqT2PHWdBg",
+      "title": "",
+      "fetched_at": "2026-03-18T05:45:51",
+      "file": ".cache/sources/youtu-be-RBqT2PHWdBg.md",
+      "content_type": "text/html",
+      "size_bytes": 758
+    },
+    "youtu-be-D5v1lKEToUM": {
+      "url": "https://youtu.be/D5v1lKEToUM",
+      "slug": "youtu-be-D5v1lKEToUM",
+      "title": "",
+      "fetched_at": "2026-03-18T05:45:53",
+      "file": ".cache/sources/youtu-be-D5v1lKEToUM.md",
+      "content_type": "text/html",
+      "size_bytes": 758
+    },
+    "share-google-hsTSK72tIoy9LHE02": {
+      "url": "https://share.google/hsTSK72tIoy9LHE02",
+      "slug": "share-google-hsTSK72tIoy9LHE02",
+      "title": "Harvard Business Review Logo",
+      "fetched_at": "2026-03-18T07:05:05",
+      "file": ".cache/sources/share-google-hsTSK72tIoy9LHE02.md",
+      "content_type": "text/html",
+      "size_bytes": 2414
+    },
+    "share-google-6b9E6lj45d4m2dTQD": {
+      "url": "https://share.google/6b9E6lj45d4m2dTQD",
+      "slug": "share-google-6b9E6lj45d4m2dTQD",
+      "title": "",
+      "fetched_at": "2026-03-18T07:05:06",
+      "file": ".cache/sources/share-google-6b9E6lj45d4m2dTQD.md",
+      "content_type": "text/html",
+      "size_bytes": 2930
+    },
+    "share-google-MycYWiAEtFBQdYVGn": {
+      "url": "https://share.google/MycYWiAEtFBQdYVGn",
+      "slug": "share-google-MycYWiAEtFBQdYVGn",
+      "title": "",
+      "fetched_at": "2026-03-18T07:05:07",
+      "file": ".cache/sources/share-google-MycYWiAEtFBQdYVGn.md",
+      "content_type": "text/html",
+      "size_bytes": 61461
+    },
+    "cio-com-article-4143420-true-multi-agent-collaboration-doesn": {
+      "url": "https://www.cio.com/article/4143420/true-multi-agent-collaboration-doesnt-work.html",
+      "slug": "cio-com-article-4143420-true-multi-agent-collaboration-doesn",
+      "title": "",
+      "fetched_at": "2026-03-19T20:13:59",
+      "file": ".cache/sources/cio-com-article-4143420-true-multi-agent-collaboration-doesn.md",
+      "content_type": "text/html",
+      "size_bytes": 17495
+    },
+    "xda-developers-com-tested-chatgpt-gemini-claude-with-same-do": {
+      "url": "https://www.xda-developers.com/tested-chatgpt-gemini-claude-with-same-documents-one-crushed-the-others/",
+      "slug": "xda-developers-com-tested-chatgpt-gemini-claude-with-same-do",
+      "title": "",
+      "fetched_at": "2026-03-19T20:12:17",
+      "file": ".cache/sources/xda-developers-com-tested-chatgpt-gemini-claude-with-same-do.md",
+      "content_type": "text/html",
+      "size_bytes": 9341
+    },
+    "share-google-gV2lyf2ZpruEOfG57": {
+      "url": "https://share.google/gV2lyf2ZpruEOfG57",
+      "slug": "share-google-gV2lyf2ZpruEOfG57",
+      "title": "Group",
+      "fetched_at": "2026-03-19T20:12:17",
+      "file": ".cache/sources/share-google-gV2lyf2ZpruEOfG57.md",
+      "content_type": "text/html",
+      "size_bytes": 57147
+    },
+    "literate-programming": {
+      "url": "https://en.wikipedia.org/wiki/Literate_programming",
+      "slug": "literate-programming",
+      "title": "",
+      "fetched_at": "2026-03-20T18:53:09",
+      "file": ".cache/sources/literate-programming.md",
+      "content_type": "text/html",
+      "size_bytes": 50572
+    },
+    "youtu-be-da8cSPcO7Lw": {
+      "url": "https://youtu.be/da8cSPcO7Lw",
+      "slug": "youtu-be-da8cSPcO7Lw",
+      "title": "",
+      "fetched_at": "2026-03-23T22:10:38",
+      "file": ".cache/sources/youtu-be-da8cSPcO7Lw.md",
+      "content_type": "text/html",
+      "size_bytes": 758
+    },
+    "livescience-com-technology-artificial-intelligence-an-experi": {
+      "url": "https://www.livescience.com/technology/artificial-intelligence/an-experimental-ai-agent-broke-out-of-its-testing-environment-and-mined-crypto-without-permission",
+      "slug": "livescience-com-technology-artificial-intelligence-an-experi",
+      "title": "",
+      "fetched_at": "2026-03-23T22:16:51",
+      "file": ".cache/sources/livescience-com-technology-artificial-intelligence-an-experi.md",
+      "content_type": "text/html",
+      "size_bytes": 13780
+    },
+    "xda-developers-com-wrote-script-run-claude-code-local-llm-sk": {
+      "url": "https://www.xda-developers.com/wrote-script-run-claude-code-local-llm-skipping-cloud/",
+      "slug": "xda-developers-com-wrote-script-run-claude-code-local-llm-sk",
+      "title": "",
+      "fetched_at": "2026-03-23T23:50:21",
+      "file": ".cache/sources/xda-developers-com-wrote-script-run-claude-code-local-llm-sk.md",
+      "content_type": "text/html",
+      "size_bytes": 10796
+    },
+    "zenodo-org-records-18809207": {
+      "url": "https://zenodo.org/records/18809207",
+      "slug": "zenodo-org-records-18809207",
+      "title": "",
+      "fetched_at": "2026-03-24T00:13:18",
+      "file": ".cache/sources/zenodo-org-records-18809207.md",
+      "content_type": "text/html",
+      "size_bytes": 2724
+    },
+    "cio-com-article-4003880-how-ai-agents-and-agentic-ai-differ-": {
+      "url": "https://www.cio.com/article/4003880/how-ai-agents-and-agentic-ai-differ-from-each-other.html",
+      "slug": "cio-com-article-4003880-how-ai-agents-and-agentic-ai-differ-",
+      "title": "",
+      "fetched_at": "2026-03-24T00:13:24",
+      "file": ".cache/sources/cio-com-article-4003880-how-ai-agents-and-agentic-ai-differ-.md",
+      "content_type": "text/html",
+      "size_bytes": 16021
+    },
+    "github-blog-developer-skills-application-development-context": {
+      "url": "https://github.blog/developer-skills/application-development/context-windows-plan-agent-and-tdd-what-i-learned-building-a-countdown-app-with-github-copilot/",
+      "slug": "github-blog-developer-skills-application-development-context",
+      "title": "",
+      "fetched_at": "2026-03-24T00:31:44",
+      "file": ".cache/sources/github-blog-developer-skills-application-development-context.md",
+      "content_type": "text/html",
+      "size_bytes": 22815
+    },
+    "github-blog-ai-and-ml-github-copilot-how-squad-runs-coordina": {
+      "url": "https://github.blog/ai-and-ml/github-copilot/how-squad-runs-coordinated-ai-agents-inside-your-repository/",
+      "slug": "github-blog-ai-and-ml-github-copilot-how-squad-runs-coordina",
+      "title": "",
+      "fetched_at": "2026-03-24T00:31:50",
+      "file": ".cache/sources/github-blog-ai-and-ml-github-copilot-how-squad-runs-coordina.md",
+      "content_type": "text/html",
+      "size_bytes": 9658
+    },
+    "infoq-com-news-2026-03-mf-aiassisted-dev": {
+      "url": "https://www.infoq.com/news/2026/03/mf-aiassisted-dev/",
+      "slug": "infoq-com-news-2026-03-mf-aiassisted-dev",
+      "title": "",
+      "fetched_at": "2026-03-24T03:44:58",
+      "file": ".cache/sources/infoq-com-news-2026-03-mf-aiassisted-dev.md",
+      "content_type": "text/html",
+      "size_bytes": 7574
+    },
+    "martinfowler-com-articles-exploring-gen-ai-humans-and-agents": {
+      "url": "https://martinfowler.com/articles/exploring-gen-ai/humans-and-agents.html",
+      "slug": "martinfowler-com-articles-exploring-gen-ai-humans-and-agents",
+      "title": "",
+      "fetched_at": "2026-03-24T03:45:30",
+      "file": ".cache/sources/martinfowler-com-articles-exploring-gen-ai-humans-and-agents.md",
+      "content_type": "text/html",
+      "size_bytes": 10647
+    },
+    "openai-com-index-unrolling-the-codex-agent-loop": {
+      "url": "https://openai.com/index/unrolling-the-codex-agent-loop/",
+      "slug": "openai-com-index-unrolling-the-codex-agent-loop",
+      "title": "",
+      "fetched_at": "2026-03-24T03:45:36",
+      "file": ".cache/sources/openai-com-index-unrolling-the-codex-agent-loop.md",
+      "content_type": "text/html",
+      "size_bytes": 28427
+    },
+    "stackoverflow-blog-2026-01-23-ai-can-10x-developers-in-creat": {
+      "url": "https://stackoverflow.blog/2026/01/23/ai-can-10x-developers-in-creating-tech-debt/",
+      "slug": "stackoverflow-blog-2026-01-23-ai-can-10x-developers-in-creat",
+      "title": "",
+      "fetched_at": "2026-03-24T03:45:42",
+      "file": ".cache/sources/stackoverflow-blog-2026-01-23-ai-can-10x-developers-in-creat.md",
+      "content_type": "text/html",
+      "size_bytes": 33451
+    },
+    "datadoghq-com-blog-ai-harness-first-agents": {
+      "url": "https://www.datadoghq.com/blog/ai/harness-first-agents/",
+      "slug": "datadoghq-com-blog-ai-harness-first-agents",
+      "title": "host-map",
+      "fetched_at": "2026-03-24T03:45:47",
+      "file": ".cache/sources/datadoghq-com-blog-ai-harness-first-agents.md",
+      "content_type": "text/html",
+      "size_bytes": 32921
+    },
+    "devblogs-microsoft-com-all-things-azure-agentic-platform-eng": {
+      "url": "https://devblogs.microsoft.com/all-things-azure/agentic-platform-engineering-with-github-copilot/",
+      "slug": "devblogs-microsoft-com-all-things-azure-agentic-platform-eng",
+      "title": "",
+      "fetched_at": "2026-03-24T19:28:44",
+      "file": ".cache/sources/devblogs-microsoft-com-all-things-azure-agentic-platform-eng.md",
+      "content_type": "text/html",
+      "size_bytes": 24437
+    },
+    "modelcontextprotocol-io-docs-concepts-tools": {
+      "url": "https://modelcontextprotocol.io/docs/concepts/tools",
+      "slug": "modelcontextprotocol-io-docs-concepts-tools",
+      "title": "",
+      "fetched_at": "2026-03-26T21:33:55",
+      "file": ".cache/sources/modelcontextprotocol-io-docs-concepts-tools.md",
+      "content_type": "text/html",
+      "size_bytes": 11315
+    },
+    "docs-pydantic-dev-latest-concepts-validators": {
+      "url": "https://docs.pydantic.dev/latest/concepts/validators/",
+      "slug": "docs-pydantic-dev-latest-concepts-validators",
+      "title": "",
+      "fetched_at": "2026-03-26T21:34:08",
+      "file": ".cache/sources/docs-pydantic-dev-latest-concepts-validators.md",
+      "content_type": "text/html",
+      "size_bytes": 27774
+    },
+    "opentelemetry-io-docs-specs-semconv-gen-ai": {
+      "url": "https://opentelemetry.io/docs/specs/semconv/gen-ai/",
+      "slug": "opentelemetry-io-docs-specs-semconv-gen-ai",
+      "title": "",
+      "fetched_at": "2026-03-26T22:20:59",
+      "file": ".cache/sources/opentelemetry-io-docs-specs-semconv-gen-ai.md",
+      "content_type": "text/html",
+      "size_bytes": 3624
+    },
+    "opentelemetry-io-docs-languages-python-getting-started": {
+      "url": "https://opentelemetry.io/docs/languages/python/getting-started/",
+      "slug": "opentelemetry-io-docs-languages-python-getting-started",
+      "title": "",
+      "fetched_at": "2026-03-26T22:21:03",
+      "file": ".cache/sources/opentelemetry-io-docs-languages-python-getting-started.md",
+      "content_type": "text/html",
+      "size_bytes": 26457
+    },
+    "opentelemetry-io-docs-languages-python-instrumentation": {
+      "url": "https://opentelemetry.io/docs/languages/python/instrumentation/",
+      "slug": "opentelemetry-io-docs-languages-python-instrumentation",
+      "title": "",
+      "fetched_at": "2026-03-26T22:21:10",
+      "file": ".cache/sources/opentelemetry-io-docs-languages-python-instrumentation.md",
+      "content_type": "text/html",
+      "size_bytes": 14983
+    },
+    "opentelemetry-io-docs-specs-otel-trace-api": {
+      "url": "https://opentelemetry.io/docs/specs/otel/trace/api/",
+      "slug": "opentelemetry-io-docs-specs-otel-trace-api",
+      "title": "",
+      "fetched_at": "2026-03-26T22:21:14",
+      "file": ".cache/sources/opentelemetry-io-docs-specs-otel-trace-api.md",
+      "content_type": "text/html",
+      "size_bytes": 37856
+    },
+    "kubernetes-io-docs-tasks-configure-pod-container-configure-l": {
+      "url": "https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/",
+      "slug": "kubernetes-io-docs-tasks-configure-pod-container-configure-l",
+      "title": "",
+      "fetched_at": "2026-03-26T22:21:18",
+      "file": ".cache/sources/kubernetes-io-docs-tasks-configure-pod-container-configure-l.md",
+      "content_type": "text/html",
+      "size_bytes": 27969
+    },
+    "opentelemetry-io-docs-collector-deployment": {
+      "url": "https://opentelemetry.io/docs/collector/deployment/",
+      "slug": "opentelemetry-io-docs-collector-deployment",
+      "title": "",
+      "fetched_at": "2026-03-26T22:21:23",
+      "file": ".cache/sources/opentelemetry-io-docs-collector-deployment.md",
+      "content_type": "text/html",
+      "size_bytes": 1677
+    },
+    "opentelemetry-io-docs-specs-semconv-gen-ai-gen-ai-spans": {
+      "url": "https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/",
+      "slug": "opentelemetry-io-docs-specs-semconv-gen-ai-gen-ai-spans",
+      "title": "",
+      "fetched_at": "2026-03-26T22:21:34",
+      "file": ".cache/sources/opentelemetry-io-docs-specs-semconv-gen-ai-gen-ai-spans.md",
+      "content_type": "text/html",
+      "size_bytes": 51184
+    }
+  }
+}

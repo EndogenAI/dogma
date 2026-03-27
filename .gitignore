@@ -42,7 +42,6 @@ htmlcov/
 .nox/
 .coverage
 .coverage.*
-.cache
 nosetests.xml
 coverage.xml
 *.cover
@@ -51,11 +50,18 @@ coverage.xml
 .pytest_cache/
 cover/
 
-# Local source cache (fetch_source.py)
-# Raw distillations are regenerable and excluded. Manifest is the surveyed-sources
-# index and IS tracked. Per-source synthesis stubs live in docs/research/sources/ (tracked).
-.cache/
+# .cache/: regenerable source distillations and tool caches are excluded by default.
+# Using .cache/* (not .cache/ or .cache) lets git enter the directory so nested
+# !-exception patterns are honoured — git silently ignores !-rules inside an
+# ignored directory, which is why .cache/ would cause all exceptions below to no-op.
+.cache/*
+# sources/ — raw fetch distillations excluded; only the surveyed-sources manifest is tracked.
+!.cache/sources/
+.cache/sources/*
 !.cache/sources/manifest.json
+# github/ — snapshot workflow output; specific files are intentionally tracked.
+!.cache/github/
+.cache/github/*
 # snapshot-issues.yml workflow output (daily issue/label snapshot)
 !.cache/github/project_state.json
 # issue-metrics.yml workflow output (weekly issue/PR health snapshots)

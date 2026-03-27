@@ -1,12 +1,15 @@
 """mcp_server/tools/scratchpad.py — MCP tool implementations for session management.
 
 Tools:
-    prune_scratchpad — Initialise or inspect today's session scratchpad file.
+    prune_scratchpad     — Initialise or inspect today's session scratchpad file.
+    detect_user_interrupt — Check whether a user message contains an interruption signal.
 
 Inputs:
     prune_scratchpad:
         branch   : str  — branch slug for the scratchpad folder (default: current git branch)
         dry_run  : bool — if True, only check status without writing (default: False)
+    detect_user_interrupt:
+        message  : str  — the user's most recent chat message to check
 
 Outputs:
     prune_scratchpad: {
@@ -16,11 +19,18 @@ Outputs:
         "lines":     int | None,   # current line count (None if dry_run and not yet created)
         "errors":    list[str],
     }
+    detect_user_interrupt: {
+        "ok":          bool,
+        "interrupted": bool,       # True if an interrupt signal was detected
+        "signal":      str | None, # matched keyword (e.g. "STOP") or None
+        "errors":      list[str],
+    }
 
 Usage:
     result = prune_scratchpad()                       # init today's scratchpad
     result = prune_scratchpad(branch="feat/my-feat")  # explicit branch slug
     result = prune_scratchpad(dry_run=True)           # status check only
+    result = detect_user_interrupt("Please STOP")    # check for interrupt signal
 """
 
 from __future__ import annotations
@@ -120,3 +130,43 @@ def prune_scratchpad(branch: str = "", dry_run: bool = False) -> dict:
         "lines": lines,
         "errors": errors,
     }
+
+
+# Ordered from longest to shortest so multi-word phrases match before substrings.
+_INTERRUPT_KEYWORDS: list[str] = [
+    "DO NOT CONTINUE",
+    "ABORT THIS TASK",
+    "PAUSE EXECUTION",
+    "ABORT",
+    "CANCEL",
+    "HOLD",
+    "STOP",
+]
+
+# Pre-compiled patterns: each keyword wrapped in word-boundary assertions.
+_INTERRUPT_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
+    (kw, re.compile(r"\b" + re.escape(kw) + r"\b", re.IGNORECASE)) for kw in _INTERRUPT_KEYWORDS
+]
+
+
+def detect_user_interrupt(message: str) -> dict:
+    """Check whether a user message contains an interruption signal.
+
+    Iterates over the canonical interrupt keywords defined in AGENTS.md
+    § Interrupt Signal Keywords and returns on the first match.
+
+    Args:
+        message: The user's most recent chat message to check.
+
+    Returns:
+        {
+            "ok":          bool,
+            "interrupted": bool,       — True if an interrupt signal was detected
+            "signal":      str | None, — matched keyword (e.g. "STOP") or None
+            "errors":      list[str],
+        }
+    """
+    for keyword, pattern in _INTERRUPT_PATTERNS:
+        if pattern.search(message):
+            return {"ok": True, "interrupted": True, "signal": keyword, "errors": []}
+    return {"ok": True, "interrupted": False, "signal": None, "errors": []}

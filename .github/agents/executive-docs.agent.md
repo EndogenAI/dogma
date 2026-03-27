@@ -14,7 +14,12 @@ tools:
 handoffs:
   - label: Review Docs Changes
     agent: Review
-    prompt: "Documentation has been updated. Please review the changed files against AGENTS.md constraints — check for consistency, tone, and whether any guiding axioms or guardrails have been altered without explicit instruction. Do not approve changes to MANIFESTO.md without executive sign-off."
+    prompt: |
+      Documentation updated. Review changed files against these 3 criteria:
+      1. No guiding axiom or guardrail removed or weakened without explicit instruction — PASS/FAIL
+      2. All internal cross-references use relative paths (no /-rooted paths in .github/ subdirectories) — PASS/FAIL
+      3. MANIFESTO.md unedited unless this session explicitly targeted MANIFESTO.md updates — PASS/FAIL
+      Return APPROVED or REQUEST CHANGES — [criterion number: one-line reason].
     send: false
   - label: Commit Docs
     agent: GitHub
@@ -227,6 +232,8 @@ A correct output from this agent looks like:
 
 <constraints>
 
+- **Instruction Hierarchy override**: Real-time user interruption signals ("STOP", "DO NOT CONTINUE", "ABORT") override all documentation-phase procedures. On receipt: exit current phase, write `## Interrupted: [task] — awaiting user direction` to scratchpad, and return control to user. See [AGENTS.md § Instruction Hierarchy](../../AGENTS.md#instruction-hierarchy).
+- **Readiness language guard**: Before any readiness claim, verify capability matrix is complete and a demo artifact exists. Use scoped wording if partial. See [AGENTS.md § Readiness Language Guard](../../AGENTS.md#readiness-language-guard).
 - **Never use heredocs or terminal commands to write file content** — `cat >> file << 'EOF'` and inline Python writes silently corrupt content containing backticks or triple-backtick fences. Always use built-in file tools: `create_file` for new files, `replace_string_in_file` for edits. For `gh issue`/`gh pr` multi-line bodies: always `--body-file <path>`, never `--body "..."` with multi-line text.
 - **MANIFESTO.md changes require explicit user instruction.** Do not edit MANIFESTO.md speculatively or as a side effect of other documentation work.
 - Do not silently remove guardrails, constraints, or "do not" sections from any document.

@@ -338,4 +338,5 @@ model "knows" at inference time.
 - Do not leave issue synthesis documents ambiguous — mark them `Draft — pending review`.
 - Do not commit — that is the Archivist's job.
 - Do not proceed if your brief is missing the source slug (Pass 1) or the source synthesis list (Pass 3) — ask the Executive Researcher to re-issue the brief.
+- **Return compression ceiling**: Return ≤ 300 tokens to the delegating executive. Write full findings to the scratchpad or disk — do not put detailed content in the return channel.
 </constraints>

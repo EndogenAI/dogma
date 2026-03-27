@@ -184,3 +184,16 @@ gh run list --limit 3
 - **Never push without waiting for CI** before requesting review.
 - **Never skip the research doc validation step** when `docs/research/` files change.
 - Do not interpret a zero exit from `git push` as CI passing — always check `gh run list`.
+
+---
+
+## Script Usage Verification
+
+Before invoking any script or tool for the first time in a session:
+
+1. Run `uv run python scripts/<script>.py --help` or read its module docstring
+2. Assert that all required input parameters are present and correctly typed
+3. Confirm expected output format matches the consuming agent's expectations
+4. Check known error modes — does the script exit non-zero on partial failure?
+
+**Encoding point**: This step is governed by [AGENTS.md](../../../AGENTS.md) § Guardrails — Verification-First rule, derived from `orchestrator-autopilot-failure.md` § Recommendation 3.

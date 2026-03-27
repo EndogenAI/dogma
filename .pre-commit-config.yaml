@@ -35,6 +35,12 @@ repos:
         types: [markdown]
         files: ^docs/decisions/ADR-.*\.md$
         pass_filenames: true
+      - id: validate-l2-constraints
+        name: Validate L2 constraints YAML schema
+        entry: uv run python scripts/validate_l2_constraints.py data/l2-constraints.yml
+        language: system
+        files: ^data/l2-constraints\.yml$
+        pass_filenames: false
       - id: detect-drift
         name: Check value-encoding drift in agent files
         entry: python3 scripts/detect_drift.py --agents-dir .github/agents/ --format summary --fail-below 0.1
@@ -72,6 +78,21 @@ repos:
         language: system
         pass_filenames: false
         stages: [pre-push]
+      - id: check-readiness-matrix
+        name: Check capability matrix in readiness claims
+        entry: python3 scripts/check_readiness_matrix.py
+        language: system
+        types: [markdown]
+        files: ^(docs/guides/|docs/research/)
+        exclude: ^docs/guides/(client-adoption-pattern|deployment-contract)\.md$
+        pass_filenames: true
+      - id: verify-script-usage
+        name: Verify --help before script invocations in agent/skill files
+        entry: python3 scripts/verify-script-usage.py
+        language: system
+        types: [markdown]
+        files: ^\.github/(agents/|skills/)
+        pass_filenames: true
       - id: no-heredoc-writes
         name: Block heredoc file-write commands (use create_file / replace_string_in_file tools instead)
         language: pygrep

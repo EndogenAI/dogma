@@ -198,3 +198,32 @@ Detailed synthesis documents for local compute topics:
 | Benchmarking local vs. cloud token usage | Open — see [issue #5 D3](https://github.com/EndogenAI/dogma/issues/5) | Not started |
 
 See [GitHub Issues labeled `research`](https://github.com/EndogenAI/dogma/issues?q=label%3Aresearch) for current status.
+
+---
+
+## Practitioner Testimonials — Local Model Substitution
+
+**Source**: Nolen Jonker, "I cancelled ChatGPT, Gemini, and Perplexity to run one local model, and I don't miss them," *XDA Developers*, March 17, 2026. <https://www.xda-developers.com/cancelled-chatgpt-gemini-perplexity-to-run-one-local-model/>
+
+A practitioner switched from multiple cloud AI subscriptions to a single local model
+(gpt-oss 20B via LM Studio on Intel Core i7-13700, 16 GB RAM). Field-reported findings:
+
+**Works well locally:**
+- Explaining concepts ("explain like I'm 5") and brainstorming
+- General writing, math, and light summarisation
+- Quick information retrieval and quiz/question-answering
+- Minor scripting tasks with simple, well-scoped prompts
+
+**Still needs a frontier model:**
+- Complex multi-step processes run end-to-end without manual decomposition
+- Large-context document summarisation (cloud services retain quality lead)
+- Deep agentic tool use and complex code generation (community reports: gpt-oss 20B poor at tooling)
+- Web search without additional MCP setup
+
+**Friction points practitioners report:**
+- Multi-part queries must be broken into single-topic chunks; local models handle ambiguity less gracefully than cloud
+- Less adaptive to conversational context — requires more explicit direction per turn
+- Model selection is the critical gate: general-purpose 20B models fall short for coding; architecture-specific models (e.g., Qwen3.5 30B) are required but may not run on consumer CPUs
+- Community debate on reliability: multiple commenters note significant variance in tool-calling quality across models
+
+**Implication for Local-Compute-First axiom**: High-volume, well-defined tasks (explaining, brainstorming, short summaries) are fully viable locally and validate the Local-Compute-First principle for casual use patterns. For agentic and tool-calling workloads, model selection is the binding constraint — not the local runtime itself. See [Strategy E](#strategy-e-tier-routing--which-task-gets-which-model) for the full routing decision table.

@@ -221,3 +221,22 @@ substrates:
     persistence: "external"
     validation: "gh CLI+seed_labels.py"
     owns: "issue tracker, label taxonomy, milestone roadmap"
+
+  - id: 24
+    name: "ollama"
+    health_endpoint: "http://localhost:11434/"
+    tier: "T5: Programmatic"
+    primary_reader: ["agent", "tool"]
+    persistence: "external"
+    validation: "health_check_services.py"
+    owns: "local LLM inference engine"
+
+services:
+  - name: "ollama"
+    health_endpoint: "http://localhost:11434/"
+    tier: "T5: Programmatic"
+    primary_reader: ["agent", "tool"]
+    persistence: "external"
+    validation: "health_check_services.py"
+    owns: "local LLM inference engine"
+

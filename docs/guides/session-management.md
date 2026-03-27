@@ -1,5 +1,7 @@
 # Session Management & Cross-Agent Scratchpad
 
+<!-- capability_matrix: N/A — process guide; "done", "complete", and "ready" are lifecycle terms, not project readiness claims -->
+
 ---
 
 ## Overview
@@ -67,7 +69,38 @@ At the beginning of every session, initialize today's scratchpad file:
 uv run python scripts/prune_scratchpad.py --init
 ```
 
-This creates `.tmp/<branch-slug>/<today>.md` if it does not exist. If it already exists (e.g., resuming a session), the file is unchanged.
+This creates `.tmp/<branch-slug>/<today>.md` if it does not exist. If it already exists (e.g., resuming a session), the file is unchanged. The initialised file includes three pre-populated sections: `## Session State` (YAML), `## Audit Trail`, and `## Telemetry`.
+
+### `## Audit Trail` section
+
+The `## Audit Trail` section is a Markdown table that records every agent action taken during the session. It is written once per agent decision — not per task — to maintain an auditable, human-readable record of what ran, why, and when.
+
+**Required fields**:
+
+| Field | Meaning |
+|-------|---------|
+| Agent | Name of the agent that acted (e.g., `Executive Docs`, `Research Scout`) |
+| Decision | One-line description of the action taken (e.g., "Edited docs/guides/session-management.md") |
+| Justification | The axiom, instruction, or issue number that motivated the action |
+| Time | Approximate time or phase marker (e.g., `Phase 1`, `10:42`) |
+
+**Example row**:
+
+```markdown
+| Executive Docs | Added `## Audit Trail` section to scratchpad init template | Resolves #376 — closes acceptance criterion 3 | Phase 1 |
+```
+
+Append a new row after each non-trivial agent action. The Audit Trail is consumed by the Executive at session close to verify phase sequence and produce the Session Summary.
+
+### `## Telemetry` section
+
+The `## Telemetry` section is a lightweight metrics table, pre-populated with zero values by `--init`. Update it at each phase gate to track session cost and throughput.
+
+Update the table by incrementing the relevant counter after each phase gate:
+- **Phases complete**: increment by 1 each time a phase closes
+- **Delegations made**: increment by 1 each time a subagent is invoked
+- **Rate-limit events**: increment if `rate_limit_gate.py` returns `safe: false`
+- **Estimated tokens used**: update from provider usage stats when available
 
 Also start the scratchpad watcher so H2 headings stay annotated automatically:
 
@@ -105,11 +138,11 @@ Include a `## Session History` table to track multi-session continuity:
 
 | Date | Phase | Deliverable | Status |
 |------|-------|-------------|--------|
-| 2026-03-09 | Phase 1 | Documentation win — 5 edits | ✅ Complete |
+| 2026-03-09 | Phase 1 | Documentation win — 5 edits | ✅ Shipped |
 | 2026-03-10 | Phase 2 | Feature implementation | ⬜ Pending |
 ```
 
-Use this canonical schema for all multi-session tracking. Columns are: Date (session day), Phase (workplan phase name), Deliverable (what was delivered or is in progress), Status (✅ Complete, ⬜ Pending, 🔴 Blocked).
+Use this canonical schema for all multi-session tracking. Columns are: Date (session day), Phase (workplan phase name), Deliverable (what was delivered or is in progress), Status (✅ Shipped, ⬜ Pending, 🔴 Blocked).
 
 **Format:**
 
@@ -156,7 +189,7 @@ gh issue view <blocker-issue-number> --json state -q '.state'
 **Check 3 — Workplan gate status set to ⏳ In progress**
 
 ```bash
-grep -n "In progress\|Not started\|Complete" docs/plans/<current-plan>.md
+grep -n "In progress\|Not started\|✅" docs/plans/<current-plan>.md
 # Update the relevant phase line: ⬜ Not started → ⏳ In progress
 # This makes phase state explicit before delegation begins.
 ```
@@ -516,6 +549,60 @@ At the **end** of any session that will continue later, write a `## Executive Ha
 - **Recommended Next Session Scope** — one paragraph per candidate session (Session A, Session B…)
 
 The handoff section is the contract between sessions. Without it, the next session re-discovers at token cost what the prior session already knew.
+
+---
+
+## Audit Trail
+
+Every irreversible or external-state-modifying action taken during a session must be recorded under a `## Audit Trail` heading in the scratchpad. This requirement is enforced by [`AGENTS.md` § Verify-After-Act](../AGENTS.md#verify-after-act) — zero error output is not confirmation of success; only a recorded audit entry paired with a verification read constitutes done.
+
+### Required fields per entry
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `timestamp` | ISO 8601 string | When the action was taken |
+| `action` | string | Short imperative description (e.g., "gh issue create #42") |
+| `agent` | string | Which agent performed the action |
+| `outcome` | string | Result: `success`, `failure`, or `partial` |
+
+### Example entry
+
+```yaml
+- timestamp: "2026-03-26T14:32:00Z"
+  action: "gh issue comment 333 --body-file /tmp/note.md"
+  agent: "Executive Orchestrator"
+  outcome: "success"
+```
+
+Write an Audit Trail entry immediately after any `git push`, `gh issue create/comment/close`, `gh pr create`, or bulk file operation affecting committed state.
+
+---
+
+## Telemetry
+
+For each agent invocation that produces a measurable span, record OTel metadata under a `## Telemetry` heading in the scratchpad. See [## Audit Trail](#audit-trail) for event shape conventions — Telemetry entries follow the same YAML block format.
+
+### Required sub-fields per entry
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `span_id` | string | OTel span identifier for the invocation |
+| `model` | string | Model name (e.g., `claude-sonnet-4`) |
+| `input_tokens` | int | Token count for the prompt (`gen_ai.usage.input_tokens`) |
+| `output_tokens` | int | Token count for the completion (`gen_ai.usage.output_tokens`) |
+| `latency_ms` | int | Wall-clock latency in milliseconds (`gen_ai.client.operation.duration` × 1000) |
+
+### Example entry
+
+```yaml
+- span_id: "3a2b1c4d5e6f"
+  model: "claude-sonnet-4"
+  input_tokens: 4200
+  output_tokens: 612
+  latency_ms: 3840
+```
+
+Values come from `gen_ai.*` OTel attributes — see [`docs/research/otel-agent-instrumentation.md`](../research/otel-agent-instrumentation.md) Pattern 2 for canonical attribute names and Pattern 1 for the span shape.
 
 ---
 

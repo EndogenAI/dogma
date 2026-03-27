@@ -18,7 +18,13 @@ handoffs:
     send: false
   - label: Review Fleet Changes
     agent: Review
-    prompt: "Fleet changes are ready for review. Please check all changed .agent.md files against AGENTS.md constraints: correct handoff targets, no missing guardrails, posture matches tool list, README.md is consistent with file list. Return Approved or Revise."
+    prompt: |
+      Fleet changes ready for review. Check all changed .agent.md files against these 4 criteria:
+      1. All handoff `agent:` values reference real agent names in .github/agents/README.md — PASS/FAIL
+      2. Every changed agent has a Guardrails section with ≥3 explicit "do not" entries — PASS/FAIL
+      3. Tool list matches declared posture (readonly/creator/full) per AGENTS.md posture table — PASS/FAIL
+      4. .github/agents/README.md catalog entry exists with matching name for every changed file — PASS/FAIL
+      Return APPROVED or REQUEST CHANGES — [criterion number: one-line reason].
     send: false
   - label: Commit Fleet Changes
     agent: GitHub
