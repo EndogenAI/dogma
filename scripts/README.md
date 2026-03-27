@@ -10,6 +10,7 @@ with a docstring describing its purpose, inputs, outputs, and usage examples.
 
 ```
 scripts/
+  aggregate_session_costs.py     # Lean Phase 1 baseline-data aggregation — reads exact six-field session_cost_log records, applies inclusive date filters, groups by model and phase, writes JSON to stdout only (closes #480)
   capability_gate.py           # Runtime capability gates and audit logging — decorator-based access control for privileged operations (github_api, etc.) with JSONL audit log
   prune_scratchpad.py          # Cross-agent scratchpad session file manager (--init, --annotate, --force, --append-summary, --check-only)
   watch_scratchpad.py          # File watcher — auto-annotates .tmp/*.md on change (uses watchdog)
@@ -35,6 +36,7 @@ scripts/
   seed_labels.py               # Idempotent GitHub label seeder — reads data/labels.yml and syncs via gh label create --force (--dry-run, --delete-legacy)
   seed_action_items.py         # Seed GitHub issues from action items extracted from research docs
   seed_research_recommendations.py # Read research doc frontmatter and batch-create tracking issues via bulk_github_operations.py (--input, --milestone, --default-area, --critical-ids, --output, --dry-run)
+  session_cost_log.py          # Append canonical six-field session-cost records to session_cost_log.json; accepted Phase 1 source substrate for baseline aggregation (closes #481)
   fetch_toolchain_docs.py      # Cache gh CLI help output as structured Markdown under .cache/toolchain/ (--check, --force, --dry-run)
   wait_for_unblock.py          # Poll a GitHub issue until status:blocked is removed; writes trigger file on exit 0 (--issue, --interval, --timeout, --dry-run)
   wait_for_github_run.py       # Poll a GitHub Actions run until completion; exits 0 on success, 1 on failure
@@ -202,6 +204,52 @@ uv run python scripts/your-script.py --flag value
 ```
 
 Commit the README entry in the same commit as the script. If the entry cannot be written, do not implement the script yet.
+
+---
+
+## scripts/session_cost_log.py
+
+**Job**: Enable agents to record canonical baseline token-usage events so Phase 1 aggregation reads one exact, trustworthy source substrate.
+
+**Purpose**: Append exact six-field records to `session_cost_log.json`: `session_id`, `model`, `tokens_in`, `tokens_out`, `phase`, `timestamp`. This exact schema is the accepted Phase 1 source boundary for baseline-data aggregation.
+
+**Tests**: [tests/test_session_cost_log.py](../tests/test_session_cost_log.py)
+
+**Usage**:
+
+```bash
+uv run python scripts/session_cost_log.py \
+  --session feat/example/2026-03-27 \
+  --model gpt-5.4 \
+  --tokens-in 1200 \
+  --tokens-out 600 \
+  --phase "Phase 1" \
+  --timestamp 2026-03-27T16:00:00Z
+```
+
+**Accepted source boundary**: Only exact six-field records from this script are valid input to Phase 1 aggregation. Malformed, partial, or expanded records are outside the accepted baseline source.
+
+---
+
+## scripts/aggregate_session_costs.py
+
+**Job**: Enable agents to produce the lean Phase 1 baseline aggregate grouped by model and phase so Phase 2 has a clear input contract without generating a snapshot yet.
+
+**Purpose**: Read canonical `session_cost_log.json` records, apply inclusive `YYYY-MM-DD` date bounds, and emit grouped aggregate JSON to stdout. This script is read-only and intentionally stops at grouped aggregate output.
+
+**Tests**: [tests/test_aggregate_session_costs.py](../tests/test_aggregate_session_costs.py)
+
+**Usage**:
+
+```bash
+uv run python scripts/aggregate_session_costs.py \
+  --start-date 2026-03-27 \
+  --end-date 2026-03-28
+```
+
+**Output boundary**: Grouped aggregate data for later Phase 2 seeding only. No snapshot generation, no role metrics, and no interpretation-guide expansion happen here.
+
+**Lean Phase 2 snapshot gate**: Phase 2 starts only once this aggregation can produce a reproducible, non-empty grouped result from accepted `session_cost_log` inputs; Phase 2 then turns that grouped result into a deterministic snapshot artifact.
 
 ---
 
