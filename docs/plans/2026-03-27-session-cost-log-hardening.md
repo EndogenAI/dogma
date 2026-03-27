@@ -229,7 +229,7 @@ Harden the session cost tracking substrate across three axes: (1) prevent silent
 
 ---
 
-### Phase H — Open Pull Request ⬜
+### Phase H — Open Pull Request ✅
 **Agent**: GitHub Agent
 **Deliverables**:
 - Branch `feat/session-cost-log-hardening` pushed
@@ -239,11 +239,11 @@ Harden the session cost tracking substrate across three axes: (1) prevent silent
 **Depends on**: Phase G-R (APPROVED)
 **Gate**: `gh pr view` returns open PR; Copilot review auto-triggered on open
 **CI**: Tests, Auto-validate
-**Status**: Not started
+**Status**: Complete — PR opened: https://github.com/EndogenAI/dogma/pull/490
 
 ---
 
-### Phase I — CI & Review Polling (30s interval) ⬜
+### Phase I — CI & Review Polling (30s interval) ✅
 **Agent**: Executive Orchestrator
 **Deliverables**:
 - CI confirmed green
@@ -264,7 +264,7 @@ Triage per `pr-review-triage` skill before merge.
 
 **Gate**: CI passing + all Copilot review comments classified; blocking comments fixed
 **CI**: Tests, Auto-validate
-**Status**: Not started
+**Status**: Complete — all active runs green; no inline review comments at poll time
 
 ---
 
