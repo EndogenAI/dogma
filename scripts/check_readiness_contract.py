@@ -1,9 +1,19 @@
 #!/usr/bin/env python3
-"""Check that readiness claims are accompanied by capability matrices.
+"""Heuristically check that textual readiness claims are scoped by capability matrices.
 
 Purpose:
-    Validates that files containing "ready" or "complete" claims also include
-    capability matrix documentation to scope what capabilities are actually ready.
+    This script scans Markdown/text documents for unqualified readiness language
+    (e.g., "ready", "complete", "done", "all tests pass") and verifies that
+    the same document also contains capability-matrix-style scoping. It is a
+    lightweight, text-level guardrail that complements the existing structured
+    matrix validation performed by scripts/check_readiness_matrix.py.
+
+    In other words:
+      * scripts/check_readiness_matrix.py: validates the presence/shape/content
+        of capability matrices themselves.
+      * scripts/check_readiness_contract.py (this file): ensures that prose
+        readiness statements in plans and docs are not left unscoped by such
+        matrices.
 
 Inputs:
     --scope <path>: Check specific file or directory (default: workspace root)
@@ -49,9 +59,22 @@ def find_readiness_claims(content: str, filepath: Path) -> List[Tuple[int, str]]
     ]
 
     lines = content.split("\n")
+    in_code_block = False
+
     for i, line in enumerate(lines, start=1):
-        # Skip code blocks and inline code
-        if line.strip().startswith("```") or line.strip().startswith("`"):
+        stripped = line.lstrip()
+
+        # Track fenced code blocks (e.g., ```python ... ```). Ignore all lines inside.
+        if stripped.startswith("```"):
+            in_code_block = not in_code_block
+            continue
+
+        # Skip any content that is inside a fenced code block.
+        if in_code_block:
+            continue
+
+        # Skip lines that start with inline/pseudo-code backticks.
+        if stripped.startswith("`"):
             continue
 
         for pattern in readiness_patterns:
@@ -89,8 +112,8 @@ def check_file(filepath: Path) -> List[str]:
 
     try:
         content = filepath.read_text(encoding="utf-8")
-    except Exception as e:
-        return [f"Error reading {filepath}: {e}"]
+    except Exception:
+        raise
 
     # Find readiness claims
     claims = find_readiness_claims(content, filepath)
