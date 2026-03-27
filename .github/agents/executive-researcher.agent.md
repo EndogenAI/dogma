@@ -1,6 +1,7 @@
 ---
 name: Executive Researcher
 description: Orchestrate research sessions end-to-end — delegate to the research fleet, synthesize outputs, and spawn new area-specific research agents as needed.
+preferred_model_tier: frontier
 tools:
   - search
   - read

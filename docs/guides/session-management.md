@@ -11,6 +11,20 @@ When multiple agents collaborate across a session, they need a shared scratchpad
 `.tmp/` is **gitignored** — it is never committed. It exists only on your local machine during active development.
 
 ---
+## Batch Subagent Handoffs
+
+When a session involves multiple parallel subagents (e.g., multiple Research Scouts surveying different source clusters), the canonical format for their independent outputs is **JSONL** (JSON Lines).
+
+**Schema convention for Scout outputs**:
+```json
+{"agent": "Research Scout", "source": "https://example.com/paper", "confidence": 0.95, "finding": "The core mechanism is X..."}
+```
+
+**Source**: `docs/research/agent-fleet-model-diversity-and-structured-formats.md` (§ Recommendations 3).
+
+JSONL allows the Executive to stream-process findings as they arrive rather than waiting for a monolithic JSON array to be joined.
+
+---
 
 ## Workplans (`docs/plans/`)
 

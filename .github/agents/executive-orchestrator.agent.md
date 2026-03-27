@@ -1,6 +1,7 @@
 ---
 name: Executive Orchestrator
 description: Coordinate multi-workflow sessions spanning research, docs, scripting, and fleet changes — sequence executive agents and maintain session coherence.
+preferred_model_tier: frontier
 tools:
   - read
   - search

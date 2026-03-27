@@ -243,9 +243,22 @@ After compaction, the `<conversation-summary>` block is the only conversation co
 
 **Rule**: treat every important finding as if the next token will trigger compaction. If it is not in the scratchpad, it is lost.
 
+## 5. Batch Subagent Handoffs
+
+When a session involves multiple parallel subagents (e.g., multiple Research Scouts), use **JSONL** (JSON Lines) as the canonical format for batch handoffs and streamed context.
+
+**Schema convention for Scout output objects**:
+```json
+{"agent": "str", "source": "str", "confidence": "float", "finding": "str"}
+```
+
+**Source**: `docs/research/agent-fleet-model-diversity-and-structured-formats.md` (§ Recommendations 3).
+
+JSONL preservation ensures that append-only write semantics are maintained across isolated subagent context windows without requiring atomic file locks.
+
 ---
 
-## 5. Size Management
+## 6. Size Management
 
 | Situation | Action |
 |-----------|--------|

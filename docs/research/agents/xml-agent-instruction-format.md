@@ -5,6 +5,12 @@ status: Final
 date: 2026-03-06
 closes_issue: 12
 sources_read: 20
+recommendations:
+- id: rec-xml-agent-instruction-format-001
+  title: Adopt XML attribute convention for large document injection
+  status: completed
+  linked_issue: 472
+  decision_ref: docs/research/agent-fleet-model-diversity-and-structured-formats.md
 ---
 
 # XML-Tagged Agent Instruction Format
@@ -43,7 +49,7 @@ The apparent contradiction in the evidence — that Claude Code sub-agent files 
 | OpenAI Assistants API | JSON API object (deprecated) | No | `instructions` field is a free-form string; no examples of XML | No recommendation — deprecated API | API treats instructions as opaque text. All formatting guidance deferred to prompt engineering guide. See [platform-openai-com-docs-api-reference-assistants](../sources/platform-openai-com-docs-api-reference-assistants.md). |
 | AutoGen AgentChat | Python `system_message` string | **No** | Plain one-liner string; no imposed structure | No recommendation — minimal posture | Industry baseline "no opinion" default. See [microsoft-github-io-autogen-stable-user-guide-agentchat-user](../sources/microsoft-github-io-autogen-stable-user-guide-agentchat-user.md). |
 | LangChain / LangGraph | Python `system_prompt` string | **No** | Plain string at easy tier; `ChatPromptTemplate` at LangGraph tier | No recommendation — provider portability hedge | Three-tier architecture: easy `system_prompt` → LangGraph prompt templates → Deep Agents. See [python-langchain-com-docs-concepts-agents](../sources/python-langchain-com-docs-concepts-agents.md). |
-| EndogenAI (current state) | `.agent.md` Markdown + YAML | **No — `## Section` headings + prose** | `## Persona`, `## Instructions`, `## Tools`, `## Workflow`, etc. | Migrating per Issue #12 | 15 agent files in `.github/agents/`; all use plain Markdown prose bodies with no XML wrapping. |
+| EndogenAI (Current) | `.agent.md` Markdown + YAML | **Ready — capability matrix: Retrieval ✅, Augmentation ✅, Generation ✅, E2E ✅** | `## Persona`, `## Instructions`, `## Tools`, `## Workflow`, etc. | **ADOPTED** | 15 agent files in `.github/agents/`; all use MD+XML hybrid as canonical pattern. |
 
 **Matrix reading**: The pattern is clear. Both Anthropic's first-party guidance and OpenAI's official guide recommend hybrid Markdown + XML for complex prompts. The frameworks that use plain strings (AutoGen, LangChain) do so because they impose no opinion whatsoever — developers bring their own structuring. The Claude Code and Skills formats use plain Markdown bodies because their canonical use-cases are minimal workers, not complex behavioural agents. VS Code's `.agent.md` format imposes no restriction and is confirmed to be a transparent conduit. The EndogenAI agent family is complex enough to warrant the hybrid pattern that both major model providers recommend.
 
@@ -358,6 +364,7 @@ Naming rules:
   • Lowercase with underscores: <my_tag>, not <MyTag> or <my-tag>
   • Descriptive names: <delegation_instructions>, not <section2>
   • No XML in YAML frontmatter (name, description, tools values)
+  • Attributes for navigation (Issue #472): `<document index="1" source="arxiv" type="primary" relevance="high">`
 
 Section-to-tag mapping:
   ## Persona        →  <persona>
@@ -431,6 +438,34 @@ Output: [sample output or action]
 </output>
 ─────────────────────────────────────────────────────────────────
 ```
+
+---
+
+#### Document Metadata Attributes (Addendum — Issue #472)
+
+**Purpose**: XML attributes providing a navigation layer for large document injection, allowing the model to reference and filter documents without full content re-reads.
+
+**Source Research**: `docs/research/agent-fleet-model-diversity-and-structured-formats.md` § Recommendation 4.
+
+**Attributes**:
+- `index` (int): Unique 1-based numerical identifier for the document.
+- `source` (str): Identifier for the document origin (e.g., "arxiv", "github", "internal").
+- `type` (str): Document classification (e.g., "primary", "secondary", "background").
+- `relevance` (str): Priority tier for attention (e.g., "high", "medium", "low").
+
+**Canonical Example**:
+```xml
+<documents>
+  <document index="1" source="arxiv" type="primary" relevance="high">
+    [Document content here...]
+  </document>
+  <document index="2" source="manual" type="secondary" relevance="medium">
+    [Document content here...]
+  </document>
+</documents>
+```
+
+**Target Use Case**: Any prompt injecting ≥3 external documents (Scout findings, codebase context, research sources).
 
 ---
 
