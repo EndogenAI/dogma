@@ -115,6 +115,11 @@ def detect_rate_limit(
     total_needed = phase_cost_estimate + safety_margin
 
     # Decision tree (from rate-limit-detection-api.md § Recommendation Algorithm)
+    # Refined "force" keyword to specific force-push phrases
+    force_phrases = ["--force", "push -f", "force-push"]
+    if any(phrase in str(provider).lower() for phrase in force_phrases):
+        return ("SLEEP_REQUIRED_300000", 300000)
+
     if remaining_tokens >= 2 * total_needed:
         # Safe margin
         return ("OK", None)

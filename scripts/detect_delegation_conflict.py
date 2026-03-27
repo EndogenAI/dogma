@@ -81,8 +81,11 @@ def _build_constraint_index(data_dir: Path) -> dict[str, dict]:
     data = _load_yaml(path)
     if not isinstance(data, dict) or "constraints" not in data:
         raise ValueError(f"Unexpected schema in {path}: expected top-level 'constraints' key")
+    constraints_list = data["constraints"]
+    if not isinstance(constraints_list, list):
+        raise ValueError(f"Unexpected schema in {path}: 'constraints' must be a list")
     index: dict[str, dict] = {}
-    for entry in data["constraints"]:
+    for entry in constraints_list:
         if isinstance(entry, dict) and "id" in entry:
             index[entry["id"]] = entry
     return index

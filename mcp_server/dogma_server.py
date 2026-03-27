@@ -34,6 +34,8 @@ See mcp_server/README.md for full setup, Cursor config, and environment variable
 
 from __future__ import annotations
 
+from typing import Any
+
 from mcp.server.fastmcp import FastMCP
 
 from mcp_server.tools.cross_platform_tools import normalize_path as _normalize_path
@@ -239,23 +241,27 @@ def detect_user_interrupt(message: str) -> dict:
 
 
 @mcp.tool()
-def normalize_path(path_str: str) -> str:
+def normalize_path(path_str: str) -> dict[str, Any]:
     """Normalize a cross-platform path string, expanding environment-variable tokens.
 
     Expands tokens such as $HOME and $PWD via os.path.expandvars, then normalizes
-    the result using pathlib.Path (resolves .., fixes separators).
+    the result using os.path.abspath(os.path.normpath(...)).
 
     Args:
         path_str: A raw path string, potentially containing env-var tokens.
 
     Returns:
-        A normalized path string with OS-appropriate separators.
+        Dict following {ok, errors, result} contract.
     """
-    return _normalize_path(path_str)
+    try:
+        res = _normalize_path(path_str)
+        return {"ok": True, "errors": [], "result": res}
+    except Exception as exc:
+        return {"ok": False, "errors": [str(exc)], "result": ""}
 
 
 @mcp.tool()
-def resolve_env_path(key: str, default: str = "") -> str:
+def resolve_env_path(key: str, default: str = "") -> dict[str, Any]:
     """Read an environment variable expected to hold a path and normalize it.
 
     If the variable is set and non-empty, expands and normalizes it. If the
