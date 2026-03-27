@@ -233,9 +233,9 @@ uv run python scripts/session_cost_log.py \
 
 ## scripts/aggregate_session_costs.py
 
-**Job**: Enable agents to produce the lean Phase 1 baseline aggregate grouped by model and phase so Phase 2 has a clear input contract without generating a snapshot yet.
+**Job**: Enable agents to produce lean baseline aggregates in either default model+phase mode or role mode from the same six-field source substrate.
 
-**Purpose**: Read canonical `session_cost_log.json` records, apply inclusive `YYYY-MM-DD` date bounds, and emit grouped aggregate JSON to stdout. This script is read-only and intentionally stops at grouped aggregate output.
+**Purpose**: Read canonical `session_cost_log.json` records, apply inclusive `YYYY-MM-DD` date bounds, and emit grouped aggregate JSON to stdout. Default mode groups by model+phase; `--aggregate-by role` groups by derived `agent_role` from `session_id` prefix. This script is read-only and intentionally stops at grouped aggregate output.
 
 **Tests**: [tests/test_aggregate_session_costs.py](../tests/test_aggregate_session_costs.py)
 
@@ -245,9 +245,16 @@ uv run python scripts/session_cost_log.py \
 uv run python scripts/aggregate_session_costs.py \
   --start-date 2026-03-27 \
   --end-date 2026-03-28
+
+uv run python scripts/aggregate_session_costs.py \
+  --aggregate-by role \
+  --start-date 2026-03-27 \
+  --end-date 2026-03-28
 ```
 
-**Output boundary**: Grouped aggregate data for later Phase 2 seeding only. No snapshot generation, no role metrics, and no interpretation-guide expansion happen here.
+**Default output boundary**: In the default mode, output is grouped aggregate data for later Phase 2 seeding only. No snapshot generation or interpretation-guide expansion happen here.
+
+**Role mode output boundary**: In `--aggregate-by role`, each group emits only `agent_role`, `tokens_in`, `tokens_out`, and `record_count` inside the existing payload envelope. No latency, error-rate, RAG, or benchmark metrics are emitted.
 
 **Lean Phase 2 snapshot gate**: Phase 2 starts only once this aggregation can produce a reproducible, non-empty grouped result from accepted `session_cost_log` inputs; Phase 2 then turns that grouped result into a deterministic snapshot artifact.
 

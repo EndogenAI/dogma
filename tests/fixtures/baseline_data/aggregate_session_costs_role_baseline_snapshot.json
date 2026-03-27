@@ -1,0 +1,41 @@
+{
+  "source_boundary": {
+    "accepted_source": "Exact six-field session_cost_log records only",
+    "required_keys": [
+      "session_id",
+      "model",
+      "tokens_in",
+      "tokens_out",
+      "phase",
+      "timestamp"
+    ],
+    "malformed_entry_policy": "fail-fast"
+  },
+  "output_boundary": "Grouped role metrics only: agent_role, tokens_in, tokens_out, record_count; no extra metrics.",
+  "log_file": "tests/fixtures/baseline_data/session_cost_log_baseline.json",
+  "date_range": {
+    "start_date": "2026-03-27",
+    "end_date": "2026-03-28",
+    "bounds": "inclusive"
+  },
+  "groups": [
+    {
+      "agent_role": "executive-scripter",
+      "record_count": 2,
+      "tokens_in": 1500,
+      "tokens_out": 750
+    },
+    {
+      "agent_role": "review",
+      "record_count": 1,
+      "tokens_in": 900,
+      "tokens_out": 450
+    },
+    {
+      "agent_role": "unknown",
+      "record_count": 1,
+      "tokens_in": 700,
+      "tokens_out": 350
+    }
+  ]
+}

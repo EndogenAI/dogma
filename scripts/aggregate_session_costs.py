@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-aggregate_session_costs.py — Group baseline session-cost data by model and phase.
+aggregate_session_costs.py — Group baseline session-cost data by model+phase or by role.
 
 Purpose:
     Produce the lean Phase 1 aggregation output for baseline-data seeding. The accepted
@@ -14,7 +14,7 @@ Inputs:
     - --end-date: optional inclusive upper date bound (YYYY-MM-DD)
 
 Outputs:
-    - JSON aggregate to stdout grouped by model and phase
+    - JSON aggregate to stdout grouped by model and phase (default) or role
     - Explicit source boundary metadata for later Phase 2 snapshot seeding
     - No writes, no snapshot generation, no downstream side effects
 
@@ -22,6 +22,7 @@ Usage:
     uv run python scripts/aggregate_session_costs.py
     uv run python scripts/aggregate_session_costs.py --start-date 2026-03-27 --end-date 2026-03-28
     uv run python scripts/aggregate_session_costs.py --log-file /tmp/session_cost_log.json
+    uv run python scripts/aggregate_session_costs.py --aggregate-by role
 
 Exit codes:
     0: Success
@@ -47,6 +48,20 @@ SOURCE_BOUNDARY = {
     "malformed_entry_policy": "fail-fast",
 }
 OUTPUT_BOUNDARY = "Grouped aggregate data for later Phase 2 seeding only; no Phase 2 side effects."
+ROLE_OUTPUT_BOUNDARY = "Grouped role metrics only: agent_role, tokens_in, tokens_out, record_count; no extra metrics."
+
+KNOWN_AGENT_ROLES = {
+    "executive-orchestrator",
+    "executive-docs",
+    "executive-researcher",
+    "executive-scripter",
+    "executive-automator",
+    "executive-pm",
+    "executive-fleet",
+    "executive-planner",
+    "github",
+    "review",
+}
 
 
 def parse_date_arg(raw_value: str | None, flag_name: str) -> date | None:
@@ -69,19 +84,27 @@ def record_date(record: dict[str, Any]) -> date:
         raise ValueError(f"invalid timestamp in record {record['session_id']}: {timestamp}") from exc
 
 
+def derive_agent_role(session_id: str) -> str:
+    """Derive agent role from session_id path prefix; unknown prefixes map to unknown."""
+    role_candidate = session_id.split("/", 1)[0].strip().lower()
+    return role_candidate if role_candidate in KNOWN_AGENT_ROLES else "unknown"
+
+
 def aggregate_records(
     records: list[dict[str, Any]],
     *,
     start_date: date | None = None,
     end_date: date | None = None,
+    aggregate_by: str = "model-phase",
 ) -> list[dict[str, Any]]:
-    """Aggregate validated records by model and phase within inclusive date bounds."""
+    """Aggregate validated records within inclusive date bounds using the selected mode."""
     if start_date and end_date and start_date > end_date:
         raise ValueError("start date must be less than or equal to end date")
 
-    grouped: dict[tuple[str, str], dict[str, Any]] = defaultdict(
-        lambda: {"record_count": 0, "tokens_in": 0, "tokens_out": 0}
-    )
+    if aggregate_by not in {"model-phase", "role"}:
+        raise ValueError("aggregate mode must be one of: model-phase, role")
+
+    grouped: dict[Any, dict[str, Any]] = defaultdict(lambda: {"record_count": 0, "tokens_in": 0, "tokens_out": 0})
 
     for index, raw_record in enumerate(records):
         record = validate_record(raw_record, index=index)
@@ -91,10 +114,24 @@ def aggregate_records(
         if end_date and current_date > end_date:
             continue
 
-        key = (record["model"], record["phase"])
+        if aggregate_by == "role":
+            key = derive_agent_role(record["session_id"])
+        else:
+            key = (record["model"], record["phase"])
         grouped[key]["record_count"] += 1
         grouped[key]["tokens_in"] += record["tokens_in"]
         grouped[key]["tokens_out"] += record["tokens_out"]
+
+    if aggregate_by == "role":
+        return [
+            {
+                "agent_role": agent_role,
+                "record_count": grouped[agent_role]["record_count"],
+                "tokens_in": grouped[agent_role]["tokens_in"],
+                "tokens_out": grouped[agent_role]["tokens_out"],
+            }
+            for agent_role in sorted(grouped.keys())
+        ]
 
     return [
         {
@@ -114,20 +151,26 @@ def aggregate_log(
     log_file: str | Path | None = None,
     start_date: date | None = None,
     end_date: date | None = None,
+    aggregate_by: str = "model-phase",
 ) -> dict[str, Any]:
     """Read the canonical source log and return the Phase 1 aggregation payload."""
     resolved_log_file = resolve_log_file(log_file)
     records = read_log(log_file=resolved_log_file)
     return {
         "source_boundary": SOURCE_BOUNDARY,
-        "output_boundary": OUTPUT_BOUNDARY,
+        "output_boundary": ROLE_OUTPUT_BOUNDARY if aggregate_by == "role" else OUTPUT_BOUNDARY,
         "log_file": str(resolved_log_file),
         "date_range": {
             "start_date": start_date.isoformat() if start_date else None,
             "end_date": end_date.isoformat() if end_date else None,
             "bounds": "inclusive",
         },
-        "groups": aggregate_records(records, start_date=start_date, end_date=end_date),
+        "groups": aggregate_records(
+            records,
+            start_date=start_date,
+            end_date=end_date,
+            aggregate_by=aggregate_by,
+        ),
     }
 
 
@@ -137,6 +180,12 @@ def main() -> int:
     parser.add_argument("--log-file", help="Optional path override for session_cost_log.json")
     parser.add_argument("--start-date", help="Inclusive lower date bound (YYYY-MM-DD)")
     parser.add_argument("--end-date", help="Inclusive upper date bound (YYYY-MM-DD)")
+    parser.add_argument(
+        "--aggregate-by",
+        choices=["model-phase", "role"],
+        default="model-phase",
+        help="Aggregation mode: model-phase (default) or role",
+    )
     args = parser.parse_args()
 
     try:
@@ -144,6 +193,7 @@ def main() -> int:
             log_file=args.log_file,
             start_date=parse_date_arg(args.start_date, "--start-date"),
             end_date=parse_date_arg(args.end_date, "--end-date"),
+            aggregate_by=args.aggregate_by,
         )
         print(json.dumps(payload, indent=2))
         return 0

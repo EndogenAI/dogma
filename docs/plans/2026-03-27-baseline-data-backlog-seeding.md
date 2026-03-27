@@ -123,7 +123,7 @@ any related RAG instrumentation or evaluation work.
 
 **Depends on**: Phase 2 Review APPROVED
 **Gate**: Phase 3 Review must return APPROVED before session close
-**Status**: Ready to start
+**Status**: Complete — APPROVED
 
 ### Phase 3 Review — Validate Lean Metric Scope ⬜
 
@@ -133,4 +133,4 @@ any related RAG instrumentation or evaluation work.
 
 **Depends on**: Phase 3
 **Gate**: Session close begins only after APPROVED
-**Status**: Not started
+**Status**: Complete — APPROVED

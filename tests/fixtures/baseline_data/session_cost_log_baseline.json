@@ -1,6 +1,6 @@
 [
   {
-    "session_id": "feat/baseline-data-backlog-seeding/2026-03-27-a",
+    "session_id": "executive-scripter/baseline-data-backlog-seeding/2026-03-27-a",
     "model": "claude-sonnet-4",
     "tokens_in": 1200,
     "tokens_out": 600,
@@ -8,7 +8,7 @@
     "timestamp": "2026-03-27T09:00:00Z"
   },
   {
-    "session_id": "feat/baseline-data-backlog-seeding/2026-03-28-b",
+    "session_id": "executive-scripter/baseline-data-backlog-seeding/2026-03-28-b",
     "model": "claude-sonnet-4",
     "tokens_in": 300,
     "tokens_out": 150,
@@ -16,7 +16,7 @@
     "timestamp": "2026-03-28T12:00:00Z"
   },
   {
-    "session_id": "feat/baseline-data-backlog-seeding/2026-03-27-c",
+    "session_id": "review/baseline-data-backlog-seeding/2026-03-27-c",
     "model": "claude-sonnet-4",
     "tokens_in": 900,
     "tokens_out": 450,
@@ -24,7 +24,7 @@
     "timestamp": "2026-03-27T15:30:00Z"
   },
   {
-    "session_id": "feat/baseline-data-backlog-seeding/2026-03-28-d",
+    "session_id": "manual-observer/baseline-data-backlog-seeding/2026-03-28-d",
     "model": "gpt-5.4",
     "tokens_in": 700,
     "tokens_out": 350,
@@ -32,7 +32,7 @@
     "timestamp": "2026-03-28T18:45:00Z"
   },
   {
-    "session_id": "feat/baseline-data-backlog-seeding/2026-03-29-e",
+    "session_id": "manual-observer/baseline-data-backlog-seeding/2026-03-29-e",
     "model": "gpt-5.4",
     "tokens_in": 500,
     "tokens_out": 250,
