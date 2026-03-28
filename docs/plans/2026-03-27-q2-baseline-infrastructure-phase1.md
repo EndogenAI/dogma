@@ -72,7 +72,7 @@ Research informs metric definitions (which define the data schema, which constra
 **Deliverables**: Scout findings package in scratchpad + cached sources list  
 **Depends on**: Phase 1 complete  
 **Gate**: Phase 2B does not start until scout findings are logged  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete
 
 **Research questions:**
 1. Which human-centered design (HCD), universal design (UD), and human-computer interaction (HCI) methods are valid for quantifying qualitative usability evidence?
@@ -85,11 +85,11 @@ Research informs metric definitions (which define the data schema, which constra
 **Output ceiling**: ≤ 2,000 tokens compressed scout findings.
 
 **Acceptance criteria:**
-- [ ] At least 3 external sources surveyed across HCD/UD/HCI qualitative quantification
-- [ ] At least 2 MCP QA/QC references surveyed for tool-level quality assurance patterns
-- [ ] rag#33 query suite reviewed; applicable queries identified
-- [ ] Existing dogma test suite and docs/metrics gaps documented
-- [ ] Candidate quantitative proxies for qualitative usability proposed with rationale
+- [x] At least 3 external sources surveyed across HCD/UD/HCI qualitative quantification
+- [x] At least 2 MCP QA/QC references surveyed for tool-level quality assurance patterns
+- [x] rag#33 query suite reviewed; applicable queries identified
+- [x] Existing dogma test suite and docs/metrics gaps documented
+- [x] Candidate quantitative proxies for qualitative usability proposed with rationale
 
 ### Phase 2B — Formal Synthesis + Recommendations
 
@@ -97,12 +97,12 @@ Research informs metric definitions (which define the data schema, which constra
 **Deliverables**: `docs/research/mcp-quality-metrics-survey.md` (Status: Final) with explicit recommendations section  
 **Depends on**: Phase 2A complete  
 **Gate**: Phase 2C does not start until synthesis doc committed  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — `fe36389`
 
 **Acceptance criteria:**
-- [ ] D4 synthesis includes: Executive Summary, Hypothesis Validation, Pattern Catalog, Recommendations, Sources
-- [ ] Recommendations include measurable candidate metrics for usability/qualitative dimensions
-- [ ] Recommendations map directly to #495 implementation decisions
+- [x] D4 synthesis includes: Executive Summary, Hypothesis Validation, Pattern Catalog, Recommendations, Sources
+- [x] Recommendations include measurable candidate metrics for usability/qualitative dimensions
+- [x] Recommendations map directly to #495 implementation decisions
 
 ### Phase 2C — STOP Checkpoint (Post-Research Model Switch)
 
@@ -110,7 +110,7 @@ Research informs metric definitions (which define the data schema, which constra
 **Deliverables**: Explicit pause marker in scratchpad after research completes  
 **Depends on**: Phase 2B complete  
 **Gate**: Phase 2D does not start until pause is acknowledged  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete
 
 **Purpose:**
 - Pause immediately after research phase completion to allow model switching per user request
@@ -121,15 +121,16 @@ Research informs metric definitions (which define the data schema, which constra
 **Agent**: Executive PM  
 **Deliverables**:
 - New progress comments on #493, #494, #495, #496, #497 with research implications
-- New issues created for out-of-scope but required follow-ups discovered in synthesis  
+- New issues created for out-of-scope but required follow-ups discovered in synthesis (#498, #499, #500)
+- Sprint incorporation decision recorded: include #498 and #499 in this sprint; defer #500 to follow-up sprint  
 **Depends on**: Phase 2C complete  
 **Gate**: Phase 2 Review does not start until comments/issues are posted and verified  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete
 
 **Acceptance criteria:**
-- [ ] Progress comment posted to each issue #493–#497 summarizing synthesis impact
-- [ ] Any unresolved recommendations converted into actionable GitHub issues with labels
-- [ ] New issues linked back to #497 umbrella (or relevant child issue)
+- [x] Progress comment posted to each issue #493–#497 summarizing synthesis impact
+- [x] Any unresolved recommendations converted into actionable GitHub issues with labels
+- [x] New issues linked back to #497 umbrella (or relevant child issue)
 
 ### Phase 2 Review — Review Gate
 
@@ -137,7 +138,7 @@ Research informs metric definitions (which define the data schema, which constra
 **Deliverables**: `## Phase 2 Review Output` in scratchpad, verdict APPROVED  
 **Depends on**: Phase 1 and Phase 2A-2D deliverables committed  
 **Gate**: Phase 3 does not begin until APPROVED  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED
 
 ---
 
@@ -146,23 +147,25 @@ Research informs metric definitions (which define the data schema, which constra
 **Agent**: Executive Scripter (design spec only — no implementation)  
 **Deliverables**:
 - `data/mcp-metrics-schema.yml` — YAML schema for metric storage
-- `docs/decisions/ADR-NNN-mcp-quality-metrics-framework.md` — architecture decision record  
+- `docs/decisions/ADR-008-mcp-quality-metrics-framework.md` — architecture decision record
+- Design mapping for #498: OTel MCP semconv fields in `mcp_server/dogma_server.py` (span attrs + duration histogram)  
 **Depends on**: Phase 2 Review APPROVED  
 **Gate**: Phase 3 Review does not start until deliverables committed  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete
 
 **Design constraints:**
 - Schema must support: tool name, metric dimension, value, test case ID, timestamp, methodology notes
+- Schema/ADR must include OTel MCP semconv mapping (`gen_ai.tool.name`, `gen_ai.operation.name=execute_tool`, `error.type=tool_error`, `mcp.server.operation.duration`)
 - Each Correctness/Completeness/Precision score stored as float 0.0–1.0
 - Usability stored as enum (actionable/partial/unclear) OR float proxy
 - Performance stored as latency_ms + error_rate_pct
 - Schema versioned (v1 initial) to support future format changes without data loss
 
 **Acceptance criteria:**
-- [ ] `data/mcp-metrics-schema.yml` with JSON Schema or YAML structure, all 5 dimensions represented
-- [ ] ADR documents: dimension definitions, quantitative proxies, rationale for schema choices
-- [ ] ADR references Phase 2 survey findings (endogenous source)
-- [ ] Schema supports all 8 MCP tools
+- [x] `data/mcp-metrics-schema.yml` with JSON Schema or YAML structure, all 5 dimensions represented
+- [x] ADR documents: dimension definitions, quantitative proxies, rationale for schema choices
+- [x] ADR references Phase 2 survey findings (endogenous source)
+- [x] Schema supports all 8 MCP tools
 
 ### Phase 3 Review — Review Gate
 
@@ -180,8 +183,10 @@ Research informs metric definitions (which define the data schema, which constra
 **Deliverables**:
 - `scripts/capture_mcp_metrics.py` — runs measurement suite against specified MCP tool(s)
 - `scripts/report_mcp_metrics.py` — generates human-readable report from stored measurements
+- `scripts/check_mcp_quality_gate.py` (or extension to `scripts/check_phase_gate.py`) — enforces fail rule: faithfulness <0.75 OR tool_error >5% over last 100 calls
 - `tests/test_capture_mcp_metrics.py` — unit tests (≥80% coverage, per Testing-First Requirement)
-- `docs/metrics/` directory created (or confirmed existing)  
+- `docs/metrics/` directory created (or confirmed existing)
+- `mcp_server/dogma_server.py` instrumented with OTel MCP semconv per #498  
 **Depends on**: Phase 3 Review APPROVED  
 **Gate**: Phase 4 Review does not start until deliverables committed  
 **Status**: ⬜ Not started
@@ -198,8 +203,13 @@ Research informs metric definitions (which define the data schema, which constra
 **Acceptance criteria:**
 - [ ] `capture_mcp_metrics.py` with `--dry-run`, `--tool`, `--all` flags
 - [ ] `report_mcp_metrics.py` generating Markdown summary table
+- [ ] Quality gate script enforces fail condition (faithfulness <0.75 OR tool_error >5% over last 100 calls)
+- [ ] `mcp_server/dogma_server.py` emits OTel MCP semconv fields for all current tools
 - [ ] Tests passing: `uv run pytest tests/test_capture_mcp_metrics.py -v`
 - [ ] Ruff clean: `uv run ruff check scripts/capture_mcp_metrics.py scripts/report_mcp_metrics.py`
+
+**Deferred from this sprint:**
+- #500 (DeepEval + UMUX-Lite + weekly RAGAS workflow) is tracked as follow-up and not required to close this sprint's #495 baseline deliverables
 
 ### Phase 4 Review — Review Gate
 

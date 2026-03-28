@@ -1,0 +1,150 @@
+schema_version: 1
+name: mcp_quality_metrics_schema
+owner_issue: 495
+purpose: Metrics schema and quality gate contracts for MCP telemetry and evaluation.
+
+identity:
+  tool_name:
+    type: string
+    required: true
+    description: Canonical MCP tool identifier.
+    allowed_values:
+      - check_substrate
+      - validate_agent_file
+      - validate_synthesis
+      - scaffold_agent
+      - scaffold_workplan
+      - run_research_scout
+      - query_docs
+      - prune_scratchpad
+  tool_version:
+    type: string
+    required: true
+    description: Version string for the instrumented tool.
+  run_id:
+    type: string
+    required: true
+    description: Unique ID for a measurement run or capture window.
+  timestamp_utc:
+    type: string
+    format: date-time
+    required: true
+    description: UTC timestamp in ISO-8601 format.
+
+measurement_record:
+  metric_dimension:
+    type: string
+    required: true
+    description: Dimension name for the metric value (performance|semantic|defect|classical_quality|usability_proxy).
+  value:
+    type: number
+    required: true
+    description: Scalar metric value for the selected dimension and field.
+  test_case_id:
+    type: string
+    required: true
+    description: Identifier of test case or scenario used to generate the metric.
+  methodology_notes:
+    type: string
+    required: true
+    description: Notes on how the metric was produced, sampled, or normalized.
+
+measurement_surfaces:
+  performance:
+    latency_ms:
+      type: number
+      unit: ms
+      required: true
+    error_rate_pct:
+      type: number
+      unit: percent
+      required: true
+      min: 0.0
+      max: 100.0
+    tool_error_count:
+      type: integer
+      required: true
+      min: 0
+    sample_size:
+      type: integer
+      required: true
+      min: 1
+  semantic:
+    faithfulness:
+      type: number
+      required: true
+      min: 0.0
+      max: 1.0
+    answer_relevance:
+      type: number
+      required: true
+      min: 0.0
+      max: 1.0
+    context_precision:
+      type: number
+      required: true
+      min: 0.0
+      max: 1.0
+  defect:
+    severity_level_mean:
+      type: number
+      required: true
+      min: 0.0
+      max: 4.0
+    severity_distribution_0_to_4:
+      type: object
+      required: true
+      required_keys: ["0", "1", "2", "3", "4"]
+      value_type: integer
+      description: Count distribution by Nielsen-adapted severity levels.
+  classical_quality:
+    correctness:
+      type: number
+      required: true
+      min: 0.0
+      max: 1.0
+    completeness:
+      type: number
+      required: true
+      min: 0.0
+      max: 1.0
+    precision:
+      type: number
+      required: true
+      min: 0.0
+      max: 1.0
+  usability_proxy:
+    umux_lite_equivalent:
+      type: number
+      required: true
+      description: Agent-facing UMUX-Lite-equivalent usability proxy score.
+
+telemetry_source_fields:
+  gen_ai.tool.name:
+    maps_to: identity.tool_name
+    required: true
+  gen_ai.operation.name:
+    expected_value: execute_tool
+    required: true
+  error.type:
+    expected_value: tool_error
+    maps_to: measurement_surfaces.performance.tool_error_count
+    required: false
+  mcp.server.operation.duration:
+    maps_to: measurement_surfaces.performance.latency_ms
+    source_unit: s
+    normalized_unit: ms
+    required: true
+
+quality_gate_thresholds:
+  evaluation_window_calls: 100
+  target_latency_p95_sec: 2.0
+  alert_if_latency_p95_above_sec: 2.0
+  fail_if_faithfulness_below: 0.75
+  fail_if_tool_error_rate_above_pct: 5.0
+  target_faithfulness: 0.80
+  target_answer_relevance: 0.75
+  target_context_precision: 0.70
+  target_deepeval_task_completion: 0.75
+  target_nielsen_severity_mean_max: 1.5
+  target_umux_lite_equivalent_min: 68.0
