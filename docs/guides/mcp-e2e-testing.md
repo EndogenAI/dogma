@@ -14,6 +14,18 @@ Run the full MCP E2E matrix:
 uv run pytest tests/integration/test_mcp_e2e.py -m integration -v
 ```
 
+Run only filesystem-sensitive (`io`-marked) tests:
+
+```bash
+uv run pytest tests/integration/test_mcp_e2e.py -m io -v
+```
+
+Fail-fast triage — stop on first failure:
+
+```bash
+uv run pytest tests/integration/test_mcp_e2e.py -m integration -x --maxfail=1 -v
+```
+
 Re-run one specific case by pytest node id:
 
 ```bash

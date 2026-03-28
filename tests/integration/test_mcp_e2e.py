@@ -318,6 +318,7 @@ def test_mcp_e2e_cross_tool_scaffold_then_validate(monkeypatch: pytest.MonkeyPat
     assert validated["file_path"] == str(generated.resolve())
 
 
+@pytest.mark.io
 def test_mcp_e2e_validate_tools_reject_invalid_paths() -> None:
     """Invalid path edge case for both validate_* tools."""
     invalid = "/tmp/outside-repo.md"

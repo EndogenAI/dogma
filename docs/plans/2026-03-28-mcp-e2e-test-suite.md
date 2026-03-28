@@ -19,16 +19,16 @@ Build an end-to-end integration test suite for the 8 canonical dogma MCP governa
 
 ## Phase Plan
 
-### Phase 0 — Workplan Review ⬜
+### Phase 0 — Workplan Review ✅
 **Agent**: Review  
 **Deliverables**:
 - `## Workplan Review Output` in scratchpad, APPROVED verdict
 
 **Depends on**: workplan committed  
 **CI**: n/a (review only)  
-**Status**: Not started
+**Status**: Complete — APPROVED (commit `30518f8`)
 
-### Phase 1 — E2E Test Suite Implementation ⬜
+### Phase 1 — E2E Test Suite Implementation ✅
 **Agent**: Executive Scripter  
 **Deliverables**:
 - `tests/integration/__init__.py` — marks integration test package
@@ -39,43 +39,37 @@ Build an end-to-end integration test suite for the 8 canonical dogma MCP governa
 
 **Depends on**: Phase 0 APPROVED  
 **CI**: `uv run pytest tests/integration/ -m integration -v`  
-**Status**: Not started
+**Status**: Complete — 21/21 passing (commit `7d9346e`)
 
-### Phase 1 Review — Review Gate ⬜
+### Phase 1 Review — Review Gate ✅
 **Agent**: Review  
 **Deliverables**:
 - `## Review Output` in scratchpad, APPROVED verdict
 
 **Depends on**: Phase 1 deliverables committed  
 **Gate**: Phase 2 does not begin until APPROVED  
-**Status**: Not started
+**Status**: Complete — APPROVED
 
-### Phase 2 — Runbook Documentation ⬜
+### Phase 2 — Runbook Documentation ✅
 **Agent**: Executive Docs  
 **Deliverables**:
 - `docs/guides/mcp-e2e-testing.md` — strictly retrospective runbook covering: how to run the E2E test suite (`pytest` invocation commands), marker usage (`-m integration`), and how to interpret test output (pass/fail signals, fixture setup). Cross-references to the existing `docs/guides/mcp-quality-metrics.md` for metrics pipeline integration — does NOT re-document the metrics pipeline or define result interpretation criteria (those are already encoded in `mcp-quality-metrics.md`).
 
 **Depends on**: Phase 1 Review APPROVED  
 **CI**: n/a  
-**Status**: Not started
+**Status**: Complete (commit `ffa9857`)
 
-### Phase 2 Review — Review Gate ⬜
+### Phase 2 Review — Review Gate ✅
 **Agent**: Review  
 **Deliverables**:
 - `## Review Output Phase 2` in scratchpad, APPROVED verdict
 
 **Depends on**: Phase 2 committed  
 **Gate**: Session close after this gate  
-**Status**: Not started
+**Status**: Complete — APPROVED
 
-### Phase 3 — Session Close ⬜
-**Agent**: <Agent Name>
-**Deliverables**:
-- Fleet integration (if adding new agents/skills: run `uv run python scripts/check_fleet_integration.py --dry-run`)
-- Session close (archive session, update scratchpad summary, push branch)
-- <!-- add other deliverables -->
-
-**Agent**: Executive Orchestrator  
+### Phase 3 — Session Close ✅
+**Agent**: Executive Orchestrator
 **Deliverables**:
 - Session summary in scratchpad
 - Issue #494 body checkboxes updated
@@ -84,7 +78,7 @@ Build an end-to-end integration test suite for the 8 canonical dogma MCP governa
 
 **Depends on**: Phase 2 Review APPROVED  
 **CI**: n/a  
-**Status**: Not started
+**Status**: Complete — PR #502 opened
 
 ---
 
