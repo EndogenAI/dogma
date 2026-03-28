@@ -35,9 +35,18 @@ See mcp_server/README.md for full setup, Cursor config, and environment variable
 
 from __future__ import annotations
 
+import time
+from collections.abc import Callable
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
+
+try:
+    from opentelemetry import metrics as _otel_metrics
+    from opentelemetry import trace as _otel_trace
+except ImportError:  # pragma: no cover - optional dependency
+    _otel_metrics = None
+    _otel_trace = None
 
 from mcp_server.tools.cross_platform_tools import normalize_path as _normalize_path
 from mcp_server.tools.cross_platform_tools import resolve_env_path as _resolve_env_path
@@ -75,6 +84,51 @@ Common workflow:
 
 mcp = FastMCP("dogma-governance", instructions=_INSTRUCTIONS)
 
+_TRACER = _otel_trace.get_tracer("dogma.mcp.server") if _otel_trace else None
+_METER = _otel_metrics.get_meter("dogma.mcp.server") if _otel_metrics else None
+_OP_DURATION_HISTOGRAM = (
+    _METER.create_histogram(
+        "mcp.server.operation.duration",
+        unit="s",
+        description="Duration of MCP tool-call operations in seconds",
+    )
+    if _METER
+    else None
+)
+
+
+def _run_with_mcp_telemetry(tool_name: str, call: Callable[[], dict]) -> dict:
+    """Run tool call with MCP semconv span/metric emission when OTel is available."""
+    attributes = {
+        "gen_ai.tool.name": tool_name,
+        "gen_ai.operation.name": "execute_tool",
+    }
+    started = time.perf_counter()
+
+    if _TRACER:
+        with _TRACER.start_as_current_span("mcp.server.execute_tool") as span:
+            span.set_attribute("gen_ai.tool.name", tool_name)
+            span.set_attribute("gen_ai.operation.name", "execute_tool")
+            try:
+                result = call()
+                if result.get("ok") is False or result.get("errors"):
+                    span.set_attribute("error.type", "tool_error")
+                return result
+            except Exception:
+                span.set_attribute("error.type", "tool_error")
+                raise
+            finally:
+                duration_s = time.perf_counter() - started
+                if _OP_DURATION_HISTOGRAM:
+                    _OP_DURATION_HISTOGRAM.record(duration_s, attributes)
+
+    try:
+        return call()
+    finally:
+        duration_s = time.perf_counter() - started
+        if _OP_DURATION_HISTOGRAM:
+            _OP_DURATION_HISTOGRAM.record(duration_s, attributes)
+
 
 # ---------------------------------------------------------------------------
 # Validation tools
@@ -91,7 +145,7 @@ def validate_agent_file(file_path: str) -> dict:
     Returns:
         {"ok": bool, "errors": list[str], "file_path": str}
     """
-    return _validate_agent_file(file_path)
+    return _run_with_mcp_telemetry("validate_agent_file", lambda: _validate_agent_file(file_path))
 
 
 @mcp.tool()
@@ -105,7 +159,7 @@ def validate_synthesis(file_path: str, min_lines: int = 80) -> dict:
     Returns:
         {"ok": bool, "errors": list[str], "file_path": str}
     """
-    return _validate_synthesis(file_path, min_lines)
+    return _run_with_mcp_telemetry("validate_synthesis", lambda: _validate_synthesis(file_path, min_lines))
 
 
 @mcp.tool()
@@ -115,7 +169,7 @@ def check_substrate() -> dict:
     Returns:
         {"ok": bool, "errors": list[str], "report": str}
     """
-    return _check_substrate()
+    return _run_with_mcp_telemetry("check_substrate", _check_substrate)
 
 
 # ---------------------------------------------------------------------------
@@ -141,7 +195,10 @@ def scaffold_agent(
     Returns:
         {"ok": bool, "output_path": str | None, "errors": list[str]}
     """
-    return _scaffold_agent(name, description, area, posture)
+    return _run_with_mcp_telemetry(
+        "scaffold_agent",
+        lambda: _scaffold_agent(name, description, area, posture),
+    )
 
 
 @mcp.tool()
@@ -155,7 +212,7 @@ def scaffold_workplan(slug: str, issues: str = "") -> dict:
     Returns:
         {"ok": bool, "output_path": str | None, "errors": list[str]}
     """
-    return _scaffold_workplan(slug, issues)
+    return _run_with_mcp_telemetry("scaffold_workplan", lambda: _scaffold_workplan(slug, issues))
 
 
 # ---------------------------------------------------------------------------
@@ -177,7 +234,7 @@ def run_research_scout(url: str, force: bool = False) -> dict:
     Returns:
         {"ok": bool, "url": str, "cache_path": str | None, "errors": list[str]}
     """
-    return _run_research_scout(url, force)
+    return _run_with_mcp_telemetry("run_research_scout", lambda: _run_research_scout(url, force))
 
 
 @mcp.tool()
@@ -193,7 +250,7 @@ def query_docs(query: str, scope: str = "all", top_n: int = 5) -> dict:
     Returns:
         {"ok": bool, "results": list[dict], "errors": list[str]}
     """
-    return _query_docs(query, scope, top_n)
+    return _run_with_mcp_telemetry("query_docs", lambda: _query_docs(query, scope, top_n))
 
 
 # ---------------------------------------------------------------------------
@@ -216,7 +273,7 @@ def prune_scratchpad(branch: str = "", dry_run: bool = False) -> dict:
         {"ok": bool, "file_path": str | None, "exists": bool,
          "lines": int | None, "errors": list[str]}
     """
-    return _prune_scratchpad(branch, dry_run)
+    return _run_with_mcp_telemetry("prune_scratchpad", lambda: _prune_scratchpad(branch, dry_run))
 
 
 @mcp.tool()
@@ -234,7 +291,7 @@ def detect_user_interrupt(message: str) -> dict:
     Returns:
         {"ok": bool, "interrupted": bool, "signal": str | None, "errors": list[str]}
     """
-    return _detect_user_interrupt(message)
+    return _run_with_mcp_telemetry("detect_user_interrupt", lambda: _detect_user_interrupt(message))
 
 
 # ---------------------------------------------------------------------------
@@ -255,11 +312,15 @@ def normalize_path(path_str: str) -> dict[str, Any]:
     Returns:
         Dict following {ok, errors, result} contract.
     """
-    try:
-        res = _normalize_path(path_str)
-        return {"ok": True, "errors": [], "result": res}
-    except Exception as exc:
-        return {"ok": False, "errors": [str(exc)], "result": ""}
+
+    def _call() -> dict[str, Any]:
+        try:
+            res = _normalize_path(path_str)
+            return {"ok": True, "errors": [], "result": res}
+        except Exception as exc:
+            return {"ok": False, "errors": [str(exc)], "result": ""}
+
+    return _run_with_mcp_telemetry("normalize_path", _call)
 
 
 @mcp.tool()
@@ -276,7 +337,7 @@ def resolve_env_path(key: str, default: str = "") -> dict[str, Any]:
     Returns:
         Normalized path string, or `default` if the variable is absent/empty.
     """
-    return _resolve_env_path(key, default)
+    return _run_with_mcp_telemetry("resolve_env_path", lambda: _resolve_env_path(key, default))
 
 
 # ---------------------------------------------------------------------------
@@ -308,7 +369,10 @@ def route_inference_request(
          "local": bool, "cost_tier": str | None, "response": str | None,
          "errors": list[str]}
     """
-    return _route_inference_request(prompt, model_id, max_tokens, temperature)
+    return _run_with_mcp_telemetry(
+        "route_inference_request",
+        lambda: _route_inference_request(prompt, model_id, max_tokens, temperature),
+    )
 
 
 if __name__ == "__main__":

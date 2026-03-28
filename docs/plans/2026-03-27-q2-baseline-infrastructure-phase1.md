@@ -173,7 +173,7 @@ Research informs metric definitions (which define the data schema, which constra
 **Deliverables**: `## Phase 3 Review Output` in scratchpad, verdict APPROVED  
 **Depends on**: Phase 3 deliverables committed  
 **Gate**: Phase 4 does not begin until APPROVED  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED
 
 ---
 
@@ -189,7 +189,7 @@ Research informs metric definitions (which define the data schema, which constra
 - `mcp_server/dogma_server.py` instrumented with OTel MCP semconv per #498  
 **Depends on**: Phase 3 Review APPROVED  
 **Gate**: Phase 4 Review does not start until deliverables committed  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete
 
 **Implementation constraints:**
 - `capture_mcp_metrics.py` supports `--tool <name>` (single) and `--all` (all 8 tools)
@@ -201,12 +201,12 @@ Research informs metric definitions (which define the data schema, which constra
 - Full test cases added in Phase 4 when baseline data is available
 
 **Acceptance criteria:**
-- [ ] `capture_mcp_metrics.py` with `--dry-run`, `--tool`, `--all` flags
-- [ ] `report_mcp_metrics.py` generating Markdown summary table
-- [ ] Quality gate script enforces fail condition (faithfulness <0.75 OR tool_error >5% over last 100 calls)
-- [ ] `mcp_server/dogma_server.py` emits OTel MCP semconv fields for all current tools
-- [ ] Tests passing: `uv run pytest tests/test_capture_mcp_metrics.py -v`
-- [ ] Ruff clean: `uv run ruff check scripts/capture_mcp_metrics.py scripts/report_mcp_metrics.py`
+- [x] `capture_mcp_metrics.py` with `--dry-run`, `--tool`, `--all` flags
+- [x] `report_mcp_metrics.py` generating Markdown summary table
+- [x] Quality gate script enforces fail condition (faithfulness <0.75 OR tool_error >5% over last 100 calls)
+- [x] `mcp_server/dogma_server.py` emits OTel MCP semconv fields for all current tools
+- [x] Tests passing: `uv run pytest tests/test_capture_mcp_metrics.py -v`
+- [x] Ruff clean: `uv run ruff check scripts/capture_mcp_metrics.py scripts/report_mcp_metrics.py`
 
 **Deferred from this sprint:**
 - #500 (DeepEval + UMUX-Lite + weekly RAGAS workflow) is tracked as follow-up and not required to close this sprint's #495 baseline deliverables
@@ -217,7 +217,7 @@ Research informs metric definitions (which define the data schema, which constra
 **Deliverables**: `## Phase 4 Review Output` in scratchpad, verdict APPROVED  
 **Depends on**: Phase 4 deliverables committed  
 **Gate**: Phase 5 does not begin until APPROVED  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED
 
 ---
 
@@ -229,7 +229,7 @@ Research informs metric definitions (which define the data schema, which constra
 - `docs/metrics/mcp-quality-baseline-2026-03-27.md` — human-readable report (via report script)  
 **Depends on**: Phase 4 Review APPROVED  
 **Gate**: Phase 5 Review does not start until deliverables committed  
-**Status**: ⬜ Not started
+**Status**: ⏳ In progress
 
 **Execution constraints:**
 - Run `scripts/capture_mcp_metrics.py --all` against live MCP server
