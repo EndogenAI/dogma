@@ -229,7 +229,7 @@ Research informs metric definitions (which define the data schema, which constra
 - `docs/metrics/mcp-quality-baseline-2026-03-27.md` — human-readable report (via report script)  
 **Depends on**: Phase 4 Review APPROVED  
 **Gate**: Phase 5 Review does not start until deliverables committed  
-**Status**: ⏳ In progress
+**Status**: ✅ Complete
 
 **Execution constraints:**
 - Run `scripts/capture_mcp_metrics.py --all` against live MCP server
@@ -238,12 +238,12 @@ Research informs metric definitions (which define the data schema, which constra
 - Initial baseline may have partial coverage; document gaps explicitly rather than leaving blank
 
 **Acceptance criteria:**
-- [ ] Baseline JSON committed to `docs/metrics/`
-- [ ] All 8 tools have at least Performance metrics captured (latency + error rate)
-- [ ] Correctness, Completeness, Precision have test cases for at least 4 of 8 tools
-- [ ] Usability has a rubric applied to at least 4 of 8 tools
-- [ ] Gaps explicitly documented (not silent)
-- [ ] Markdown report generated and committed
+- [x] Baseline JSON committed to `docs/metrics/`
+- [x] All 8 tools have at least Performance metrics captured (latency + error rate)
+- [x] Correctness, Completeness, Precision have test cases for at least 4 of 8 tools
+- [x] Usability has a rubric applied to at least 4 of 8 tools
+- [x] Gaps explicitly documented (not silent)
+- [x] Markdown report generated and committed
 
 ### Phase 5 Review — Review Gate
 
@@ -251,7 +251,7 @@ Research informs metric definitions (which define the data schema, which constra
 **Deliverables**: `## Phase 5 Review Output` in scratchpad, verdict APPROVED  
 **Depends on**: Phase 5 deliverables committed  
 **Gate**: Phase 6 does not begin until APPROVED  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED
 
 ---
 
@@ -264,7 +264,7 @@ Research informs metric definitions (which define the data schema, which constra
 **Note**: Full CI integration (`.github/workflows/` changes) deferred to Sprint 2; this phase documents the CI design and produces a runbook so the circuit-breaker pattern (run on PR) can be implemented next sprint.  
 **Depends on**: Phase 5 Review APPROVED  
 **Gate**: Phase 6 Review does not start until deliverables committed  
-**Status**: ⬜ Not started
+**Status**: ⏳ In progress
 
 **Acceptance criteria:**
 - [ ] `docs/guides/mcp-quality-metrics.md` committed

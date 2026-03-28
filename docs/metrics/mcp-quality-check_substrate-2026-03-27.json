@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "tool_name": "check_substrate",
+  "tool_version": "v1",
+  "run_id": "mcp-metrics-2026-03-27",
+  "timestamp_utc": "2026-03-28T03:11:08.080672+00:00",
+  "metrics": {
+    "performance": {
+      "latency_ms_p95": 1316.42,
+      "error_rate_pct": 3.0,
+      "tool_error_count": 3,
+      "sample_size": 100,
+      "window_calls": 100
+    },
+    "semantic": {
+      "faithfulness": 0.84902,
+      "answer_relevance": 0.84656,
+      "context_precision": 0.80189
+    },
+    "classical_quality": {
+      "correctness": 0.87638,
+      "completeness": 0.85712,
+      "precision": 0.8743
+    },
+    "defect": {
+      "severity_level_mean": 1.17439
+    },
+    "usability_proxy": {
+      "umux_lite_equivalent": 73.0555
+    }
+  }
+}

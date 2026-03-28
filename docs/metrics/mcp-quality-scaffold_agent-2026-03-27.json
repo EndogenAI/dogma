@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "tool_name": "scaffold_agent",
+  "tool_version": "v1",
+  "run_id": "mcp-metrics-2026-03-27",
+  "timestamp_utc": "2026-03-28T03:11:08.080672+00:00",
+  "metrics": {
+    "performance": {
+      "latency_ms_p95": 1337.27,
+      "error_rate_pct": 3.0,
+      "tool_error_count": 3,
+      "sample_size": 100,
+      "window_calls": 100
+    },
+    "semantic": {
+      "faithfulness": 0.84365,
+      "answer_relevance": 0.82701,
+      "context_precision": 0.80507
+    },
+    "classical_quality": {
+      "correctness": 0.88186,
+      "completeness": 0.86582,
+      "precision": 0.87843
+    },
+    "defect": {
+      "severity_level_mean": 1.18454
+    },
+    "usability_proxy": {
+      "umux_lite_equivalent": 72.9147
+    }
+  }
+}
