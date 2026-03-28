@@ -16,6 +16,13 @@ Session Cost Log — JSON-based Token Burn Tracking
 **Outputs**:
 - Appends one JSON record to `session_cost_log.json` at workspace root
 - Measured records contain six canonical fields; synthetic records add `synthetic: true`
+- Bridge-generated records are deduplicated by deterministic key (model+tokens+hour window)
+
+**Dedup Strategy (Bridge Idempotency)**:
+- Dedup key: hash(model, tokens_in, tokens_out, timestamp_hour)
+- Timestamp rounded to hour boundary for replay-within-hour dedup
+- Prevents duplicate records from span re-processing or instrumentation replay
+- Spans with identical model/token counts in the same hour are treated as duplicates
 
 **Usage**:
     # Programmatic
@@ -39,9 +46,11 @@ Session Cost Log — JSON-based Token Burn Tracking
 """
 
 import argparse
+import hashlib
 import json
 import os
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -58,6 +67,56 @@ REQUIRED_RECORD_KEYS = (
 OPTIONAL_RECORD_KEYS = ("synthetic",)
 DEFAULT_LOG_FILE = REPO_ROOT / "session_cost_log.json"
 LOG_FILE = DEFAULT_LOG_FILE
+DEDUP_WINDOW_HOURS = 1  # Timestamp rounded to 1-hour boundary for dedup key
+
+
+def build_dedup_key(model: str, tokens_in: int, tokens_out: int, timestamp: str) -> str:
+    """
+    Build a deterministic dedup key for bridge-generated records.
+
+    Strategy:
+        - Hash the canonical fields: model, tokens_in, tokens_out, timestamp (rounded to hour)
+        - Allows re-processing of same span without duplication (replay resilience)
+        - Spans with identical model/token counts in the same hour are treated as duplicates
+
+    Args:
+        model: Model name
+        tokens_in: Input tokens
+        tokens_out: Output tokens
+        timestamp: ISO 8601 timestamp
+
+    Returns:
+        Hex digest of SHA256 hash
+    """
+    try:
+        dt = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+        # Round to hour boundary
+        hour_boundary = dt.replace(minute=0, second=0, microsecond=0).isoformat().replace("+00:00", "Z")
+    except ValueError:
+        # Fallback if timestamp is malformed
+        hour_boundary = timestamp
+
+    key_parts = f"{model}:{tokens_in}:{tokens_out}:{hour_boundary}"
+    return hashlib.sha256(key_parts.encode()).hexdigest()
+
+
+def record_exists_with_dedup_key(dedup_key: str, log_file: str | Path | None = None) -> bool:
+    """
+    Check if a record with the given dedup key already exists in the log.
+
+    Args:
+        dedup_key: Dedup key from build_dedup_key()
+        log_file: Optional log file path override
+
+    Returns:
+        True if a record with this dedup key exists, False otherwise
+    """
+    records = read_log(log_file=log_file)
+    for record in records:
+        # For records without a dedup_key field, we don't match (old records)
+        if "_dedup_key" in record and record["_dedup_key"] == dedup_key:
+            return True
+    return False
 
 
 def resolve_log_file(log_file: str | Path | None = None) -> Path:
@@ -98,8 +157,9 @@ def build_record(
     phase: str,
     timestamp: str,
     synthetic: bool = False,
+    dedup_key: str | None = None,
 ) -> dict[str, Any]:
-    """Build and validate a session cost record with optional synthetic marker."""
+    """Build and validate a session cost record with optional synthetic marker and dedup key."""
     normalized_tokens_in = _validate_non_negative_int(tokens_in, "tokens_in")
     normalized_tokens_out = _validate_non_negative_int(tokens_out, "tokens_out")
     if not isinstance(synthetic, bool):
@@ -117,6 +177,8 @@ def build_record(
     }
     if synthetic:
         record["synthetic"] = True
+    if dedup_key is not None:
+        record["_dedup_key"] = dedup_key
 
     return record
 
@@ -129,7 +191,7 @@ def validate_record(record: Any, *, index: int | None = None) -> dict[str, Any]:
 
     keys = set(record.keys())
     required = set(REQUIRED_RECORD_KEYS)
-    optional = set(OPTIONAL_RECORD_KEYS)
+    optional = set(OPTIONAL_RECORD_KEYS) | {"_dedup_key"}  # _dedup_key is internal, optional
     missing = required - keys
     unknown = keys - (required | optional)
     if missing:
@@ -152,6 +214,7 @@ def validate_record(record: Any, *, index: int | None = None) -> dict[str, Any]:
         synthetic=(
             record["synthetic"] if synthetic_present else (record["tokens_in"] == 0 and record["tokens_out"] == 0)
         ),
+        dedup_key=record.get("_dedup_key"),
     )
 
 
@@ -164,9 +227,10 @@ def log_session_cost(
     timestamp: str,
     synthetic: bool = False,
     log_file: str | Path | None = None,
-) -> None:
+    skip_dedup_check: bool = False,
+) -> bool:
     """
-    Append one session cost record to the log file.
+    Append one session cost record to the log file with optional dedup check.
 
     Args:
         session_id: Unique session identifier
@@ -175,12 +239,26 @@ def log_session_cost(
         tokens_out: Output tokens generated
         phase: Phase or task name
         timestamp: ISO 8601 timestamp
+        synthetic: If True, mark as synthetic (required for zero-token records)
+        log_file: Optional log file path override
+        skip_dedup_check: If True, skip dedup check (for manual/explicit appends)
+
+    Returns:
+        True if record was appended, False if skipped due to dedup match
 
     Raises:
         ValueError: If any required field is missing or invalid type
     """
     target_log_file = resolve_log_file(log_file)
-    record = build_record(session_id, model, tokens_in, tokens_out, phase, timestamp, synthetic=synthetic)
+    dedup_key = build_dedup_key(model, tokens_in, tokens_out, timestamp) if not skip_dedup_check else None
+
+    # Bridge-path dedup: check if this exact record already exists
+    if dedup_key and record_exists_with_dedup_key(dedup_key, log_file=target_log_file):
+        return False  # Duplicate suppressed
+
+    record = build_record(
+        session_id, model, tokens_in, tokens_out, phase, timestamp, synthetic=synthetic, dedup_key=dedup_key
+    )
 
     # Read existing records
     records = read_log(log_file=target_log_file)
@@ -192,6 +270,8 @@ def log_session_cost(
     target_log_file.parent.mkdir(parents=True, exist_ok=True)
     with open(target_log_file, "w", encoding="utf-8") as f:
         json.dump(records, f, indent=2, ensure_ascii=False)
+
+    return True  # Record appended
 
 
 def read_log(log_file: str | Path | None = None, *, exclude_synthetic: bool = False) -> list[dict[str, Any]]:

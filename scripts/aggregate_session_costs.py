@@ -103,6 +103,35 @@ def derive_agent_role(session_id: str) -> str:
     return role_candidate if role_candidate in known_agent_roles() else "unknown"
 
 
+def read_archived_records(archive_dir: str | Path | None = None) -> list[dict[str, Any]]:
+    """
+    Read all archived session cost records from .cache/session_cost_archives/.
+    Archives are JSON arrays named session_cost_log_archive_<start>_to_<end>.json.
+    Returns concatenated list of all archived records; returns empty list if no archives exist.
+    """
+    repo_root = Path(__file__).resolve().parent.parent
+    if archive_dir is None:
+        archive_dir = repo_root / ".cache" / "session_cost_archives"
+    else:
+        archive_dir = Path(archive_dir)
+
+    if not archive_dir.exists():
+        return []
+
+    all_archived = []
+    for archive_file in sorted(archive_dir.glob("session_cost_log_archive_*.json")):
+        try:
+            with open(archive_file, "r", encoding="utf-8") as f:
+                archived_records = json.load(f)
+                if isinstance(archived_records, list):
+                    all_archived.extend(archived_records)
+        except (json.JSONDecodeError, ValueError, IOError):
+            # Skip malformed archives; continue processing others
+            pass
+
+    return all_archived
+
+
 def aggregate_records(
     records: list[dict[str, Any]],
     *,
@@ -165,10 +194,27 @@ def aggregate_log(
     start_date: date | None = None,
     end_date: date | None = None,
     aggregate_by: str = "model-phase",
+    include_archives: bool = True,
 ) -> dict[str, Any]:
-    """Read the canonical source log and return the Phase 1 aggregation payload."""
+    """Read the canonical source log and archives; return Phase 1 aggregation payload.
+
+    Args:
+        log_file: Optional path override for session_cost_log.json
+        start_date: Inclusive lower date bound
+        end_date: Inclusive upper date bound
+        aggregate_by: Aggregation mode (model-phase or role)
+        include_archives: If True (default), include archived records from .cache/session_cost_archives/
+    """
     resolved_log_file = resolve_log_file(log_file)
     records = read_log(log_file=resolved_log_file)
+
+    # Include archived records if requested
+    if include_archives:
+        repo_root = resolved_log_file.parent
+        archive_dir = repo_root / ".cache" / "session_cost_archives"
+        archived_records = read_archived_records(archive_dir)
+        records.extend(archived_records)
+
     return {
         "source_boundary": SOURCE_BOUNDARY,
         "output_boundary": ROLE_OUTPUT_BOUNDARY if aggregate_by == "role" else OUTPUT_BOUNDARY,
@@ -199,6 +245,11 @@ def main() -> int:
         default="model-phase",
         help="Aggregation mode: model-phase (default) or role",
     )
+    parser.add_argument(
+        "--no-archives",
+        action="store_true",
+        help="Exclude archived records; aggregate active log only",
+    )
     args = parser.parse_args()
 
     try:
@@ -207,6 +258,7 @@ def main() -> int:
             start_date=parse_date_arg(args.start_date, "--start-date"),
             end_date=parse_date_arg(args.end_date, "--end-date"),
             aggregate_by=args.aggregate_by,
+            include_archives=not args.no_archives,
         )
         print(json.dumps(payload, indent=2))
         return 0

@@ -117,6 +117,7 @@ def test_span_creation_with_genai_attributes():
     with tracer.start_as_current_span("llm.call") as span:
         span.set_attribute("gen_ai.operation.name", "chat")
         span.set_attribute("gen_ai.provider.name", "test-provider")
+        span.set_attribute("gen_ai.system", "test-provider")
         span.set_attribute("gen_ai.request.model", "test-model")
         span.set_attribute("gen_ai.usage.input_tokens", 100)
         span.set_attribute("gen_ai.usage.output_tokens", 50)
