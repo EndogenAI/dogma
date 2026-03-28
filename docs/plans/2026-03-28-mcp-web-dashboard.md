@@ -228,7 +228,8 @@ scripts/start_dashboard.py      — single launcher for both processes
 **Deliverables**:
 
 - `web/` directory scaffold:
-  - `package.json` (Svelte + Vite)
+  - `package.json` (scaffolded via `npm init vite web -- --template svelte && cd web && npm install`;
+    do NOT use `sveltejs/template` — archived Feb 2023)
   - `.nvmrc` (Node version pin)
   - `web/README.md` (local developer guide)
 - `web/server.py` FastAPI sidecar stub (endpoint signatures + docstrings; no logic yet)
@@ -238,8 +239,11 @@ scripts/start_dashboard.py      — single launcher for both processes
 - `.vscode/tasks.json` entry: **Start MCP Dashboard**
 - `.github/workflows/web.yml` — CI stub: `npm install`, `npm run build`, `npm run check`
   (isolated from `tests.yml`)
-- `docs/decisions/ADR-009-webmcp-architecture.md` — records build-vs-extend decision,
-  sidecar pattern rationale, `web/` isolation strategy
+- `docs/decisions/ADR-009-webmcp-architecture.md` — records build-alongside-Inspector decision
+  AND all 7 locked technical decisions: LayerCake for data viz; `npm init vite --template svelte`
+  scaffold; hardcoded `allow_origins=["http://localhost:5173"]` CORS; FastAPI `StreamingResponse`
+  → browser `EventSource` for SSE; `activeTab` reactive variable (no routing library);
+  LIVE → STALE → ERROR connection state machine; `web/src/assets/fixture.json` offline fallback
 
 ### Phase 2 Review ⬜
 
@@ -260,17 +264,20 @@ scripts/start_dashboard.py      — single launcher for both processes
 
 - `web/server.py` complete:
   - `GET /api/metrics` — reads `.cache/mcp-metrics/metrics.json`, returns snapshot
-  - `GET /api/metrics/stream` — SSE, polls metrics file at configurable interval, pushes
+  - `GET /api/metrics/stream` — SSE via `fastapi.responses.StreamingResponse` with
+    `media_type="text/event-stream"`; polls metrics file at configurable interval, pushes
     updates; graceful close on client disconnect
   - `GET /api/health` — returns `{"ok": bool, "last_updated": str, "tool_count": int}`
-  - CORS configured for `localhost:5173`; no external origins permitted
+  - CORS hardcoded: `allow_origins=["http://localhost:5173"]`; no external origins permitted;
+    inline comment `# TODO(v2): read CORS_ALLOWED_ORIGINS from env (#506)`
 - `tests/test_web_server.py` — pytest coverage ≥ 80%:
   - Mock metrics file reads
   - SSE stream yields updates
   - Health endpoint returns expected shape
   - CORS headers present on all routes
-- `tests/fixtures/mcp-metrics-sample.json` — realistic sample fixture (all 12 tools
-  represented)
+- `tests/fixtures/mcp-metrics-sample.json` — pytest server mock fixture (all 12 tools represented)
+- `web/src/assets/fixture.json` — offline fallback fixture (all 12 tools represented); loaded by
+  `api.js` via static Vite `import` before first successful SSE connection
 
 ### Phase 3 Review ⬜
 
@@ -289,19 +296,27 @@ scripts/start_dashboard.py      — single launcher for both processes
 
 **Deliverables** (`web/src/`):
 
-- `App.svelte` — root layout: top nav (health indicator + last-updated badge) + tabbed
-  main area + stacked sidebar
+- `App.svelte` — root layout: top nav (health indicator + last-updated badge) + tabbed main
+  area + stacked sidebar; tab switching via `let activeTab = 'overview'` reactive variable;
+  no routing library; no SvelteKit router
 - `lib/Overview.svelte` — summary cards (total invocations, error rate %, avg latency ms),
-  trend sparklines (7-day if available, else session)
+  trend sparklines (7-day if available, else session); sparklines rendered via LayerCake
+  (install `layercake`; copy chart component to `web/src/charts/`); do NOT install
+  `svelte-chartjs` or `chart.js`
 - `lib/Tools.svelte` — per-tool table: name | invocations | avg latency | error rate | last
-  invoked | status badge (green/yellow/red); click row to expand latency histogram
+  invoked | status badge (green/yellow/red); click row to expand latency histogram rendered
+  via LayerCake; do NOT install `svelte-chartjs` or `chart.js`
 - `lib/Errors.svelte` — error log list; search by tool name; filter by date range; expand
   row for message + error type
-- `lib/Sidebar.svelte` — real-time panel: MCP server health indicator, last 5 tool calls
-  with status icons, refresh rate slider (5s / 10s / 30s / paused)
-- `lib/api.js` — fetch wrapper: `getSnapshot()` (REST), `subscribeStream(callback)` (SSE)
-- **Offline fallback**: if sidecar unreachable on load, dashboard reads from a bundled
-  sample JSON and displays a "Offline — showing cached data" banner
+- `lib/Sidebar.svelte` — real-time panel implementing LIVE → STALE → ERROR connection state
+  machine: `LIVE` (green dot) on `EventSource.onopen`; `STALE` (amber + 'Last updated X min ago')
+  on `EventSource.onerror`; exponential backoff reconnect 2 s → 4 s → 8 s, cap 30 s; successful
+  reconnect resets to LIVE; connection exhaustion renders ERROR state; last 5 tool calls with
+  status icons; refresh rate slider (5s / 10s / 30s / paused)
+- `lib/api.js` — fetch wrapper: `getSnapshot()` (REST), `subscribeStream(callback)` (SSE via
+  browser-native `EventSource`; no frontend SSE library needed); `getSnapshot()` falls back to
+  `import fixture from '../assets/fixture.json'` before first successful connection; displays
+  'Offline — showing cached data' banner when fallback is active
 - Responsive layout: sidebar collapses at < 900px width
 
 ### Phase 4 Review ⬜
