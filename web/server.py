@@ -56,7 +56,7 @@ def create_app() -> FastAPI:
 
         Endpoint signature placeholder for future MCP metrics aggregation.
         """
-        return {"status": "stub"}
+        raise NotImplementedError("Phase 2 stub: implement in Phase 3")
 
     @app.get("/api/metrics/stream")
     async def stream_metrics() -> StreamingResponse:
@@ -65,16 +65,12 @@ def create_app() -> FastAPI:
         Browser clients should consume this endpoint with EventSource.
         This is a signature-level scaffold for a future live stream implementation.
         """
-
-        async def _event_stream():
-            yield "event: heartbeat\ndata: stub\n\n"
-
-        return StreamingResponse(_event_stream(), media_type="text/event-stream")
+        raise NotImplementedError("Phase 2 stub: implement in Phase 3")
 
     @app.get("/api/health")
     async def health() -> dict[str, str]:
         """Return sidecar health status stub."""
-        return {"status": "ok", "mode": "stub"}
+        raise NotImplementedError("Phase 2 stub: implement in Phase 3")
 
     return app
 
