@@ -59,7 +59,7 @@ Deliver the remaining open Sprint 21 scope only: #487, #488, and #489. Sequence 
 **Depends on**: Phase 1
 **Gate**: Phase 2 does not start until APPROVED verdict is recorded in scratchpad
 **CI**: N/A (review only)
-**Status**: ⏳ In progress
+**Status**: ✅ Complete — APPROVED
 
 ---
 
@@ -78,7 +78,7 @@ Deliver the remaining open Sprint 21 scope only: #487, #488, and #489. Sequence 
 - `uv run pytest tests/test_session_cost_log.py tests/test_emit_otel_genai_spans.py -x -q`
 - `uv run ruff check scripts/ tests/`
 - `uv run ruff format --check scripts/ tests/`
-**Status**: Not started
+**Status**: ⏳ In progress
 
 ---
 
