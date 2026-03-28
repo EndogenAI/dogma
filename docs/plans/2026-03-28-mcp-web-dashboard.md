@@ -38,6 +38,7 @@ protocol compatibility).
 | Backend | **FastAPI sidecar** (`web/server.py`) — MCP stdio transport unchanged |
 | Data viz | **LayerCake** (~6 KB gzip, copy-paste components) — selected over svelte-chartjs (~62 KB Chart.js dependency) |
 | Data | Real-time = SSE from sidecar; Static = pre-computed JSON from `.cache/mcp-metrics/metrics.json` |
+| CORS | **Hardcoded** `allow_origins=["http://localhost:5173"]` for MVP; env-var escape hatch deferred to #506 (V2) |
 | Interaction | **Read-only MVP**; interactive (manual E2E trigger) is deferred scope |
 | IDE story | **MVP = browser URL** (`localhost:5173`); VS Code webview = V2 sprint |
 | OSS gate | Research phase must survey MCP Inspector upstream before building anything |
