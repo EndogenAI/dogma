@@ -220,11 +220,11 @@ scripts/start_dashboard.py      — single launcher for both processes
 
 ---
 
-### Phase 2 — Architecture + Schema Design ⬜
+### Phase 2 — Architecture + Schema Design ✅
 
 **Agent**: Executive Scripter + Executive Docs
 **Depends on**: Phase 1 Review APPROVED; build-vs-extend decision from Phase 1
-**Status**: Not started
+**Status**: ✅ Complete — commits `3e3303c`, `2dbce54`
 
 **Deliverables**:
 
@@ -246,12 +246,12 @@ scripts/start_dashboard.py      — single launcher for both processes
   → browser `EventSource` for SSE; `activeTab` reactive variable (no routing library);
   LIVE → STALE → ERROR connection state machine; `web/src/assets/fixture.json` offline fallback
 
-### Phase 2 Review ⬜
+### Phase 2 Review ✅
 
 **Agent**: Review
 **Deliverables**: APPROVED; schema extension is backward-compatible; no Node/Python pipeline bleed
 **Depends on**: Phase 2 deliverables committed
-**Status**: Not started
+**Status**: ✅ Complete — APPROVED after 1 fix cycle
 
 ---
 
