@@ -11,6 +11,8 @@
 
 Build an end-to-end integration test suite for the 8 canonical dogma MCP governance tools (`check_substrate`, `validate_agent_file`, `validate_synthesis`, `scaffold_agent`, `scaffold_workplan`, `run_research_scout`, `query_docs`, `prune_scratchpad`). Tests call real tool callables against the live repository, covering happy-path, cross-tool workflow, and error/edge cases. The harness integrates with the Sprint 1 metrics capture pipeline and is marked `@pytest.mark.integration` for CI gating. A runbook is added to `docs/guides/` documenting E2E test execution and result interpretation.
 
+**Phase ordering rationale**: The runbook (Phase 2) is explicitly retrospective documentation — it consolidates the completed test harness into a guide for future operators. It does NOT provide guidance that Phase 1 needs; Phase 1 draws from existing test patterns in `tests/test_mcp_server.py` and the Sprint 1 metrics baseline (both already committed). Per AGENTS.md: "Retrospective documentation (consolidating completed work) is the natural exception and may trail its phase." Therefore Phase 2 (docs) follows Phase 1 (implementation) by design.
+
 **Governing axiom**: Endogenous-First — survey existing test patterns in `tests/test_mcp_server.py` and `tests/test_mcp_server_telemetry.py` before designing the harness. Re-use baseline metric structure from `docs/metrics/mcp-quality-baseline-2026-03-27.*`.
 
 ---
