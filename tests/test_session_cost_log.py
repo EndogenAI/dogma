@@ -7,7 +7,14 @@ from pathlib import Path
 
 import pytest
 
-from scripts.session_cost_log import REQUIRED_RECORD_KEYS, log_session_cost, main, read_log
+from scripts.session_cost_log import (
+    REQUIRED_RECORD_KEYS,
+    build_dedup_key,
+    log_session_cost,
+    main,
+    read_log,
+    record_exists_with_dedup_key,
+)
 
 
 @pytest.fixture
@@ -36,7 +43,8 @@ def test_log_session_cost_happy_path(temp_log_file):
 
     assert len(records) == 1
     record = records[0]
-    assert set(record.keys()) == set(REQUIRED_RECORD_KEYS)
+    assert set(REQUIRED_RECORD_KEYS).issubset(record.keys())
+    assert "_dedup_key" in record
     assert record["session_id"] == "main/2026-03-27"
     assert record["model"] == "claude-sonnet-4"
     assert record["tokens_in"] == 1500
@@ -455,3 +463,150 @@ def test_main_invalid_args(monkeypatch):
     with pytest.raises(SystemExit) as exc_info:
         main()
     assert exc_info.value.code == 2  # argparse exits with 2 for missing required arg
+
+
+# ============================================================================
+# Dedup Tests — Bridge Idempotency and Duplicate Suppression
+# ============================================================================
+
+
+@pytest.mark.io
+def test_build_dedup_key_is_deterministic(temp_log_file):
+    """build_dedup_key produces identical hash for same inputs."""
+    key1 = build_dedup_key("claude-sonnet", 100, 50, "2026-03-27T14:30:45Z")
+    key2 = build_dedup_key("claude-sonnet", 100, 50, "2026-03-27T14:59:45Z")
+    # Both are in same hour, so keys should match
+    assert key1 == key2 == build_dedup_key("claude-sonnet", 100, 50, "2026-03-27T14:15:00Z")
+
+
+@pytest.mark.io
+def test_build_dedup_key_differs_across_hours(temp_log_file):
+    """build_dedup_key produces different hash when timestamp crosses hour boundary."""
+    key1 = build_dedup_key("claude-sonnet", 100, 50, "2026-03-27T14:59:00Z")
+    key2 = build_dedup_key("claude-sonnet", 100, 50, "2026-03-27T15:00:00Z")
+    assert key1 != key2
+
+
+@pytest.mark.io
+def test_build_dedup_key_differs_by_model(temp_log_file):
+    """build_dedup_key produces different hash for different model."""
+    key1 = build_dedup_key("claude-sonnet", 100, 50, "2026-03-27T14:30:00Z")
+    key2 = build_dedup_key("gpt-4", 100, 50, "2026-03-27T14:30:00Z")
+    assert key1 != key2
+
+
+@pytest.mark.io
+def test_build_dedup_key_differs_by_token_count(temp_log_file):
+    """build_dedup_key produces different hash for different token counts."""
+    key1 = build_dedup_key("claude-sonnet", 100, 50, "2026-03-27T14:30:00Z")
+    key2 = build_dedup_key("claude-sonnet", 100, 51, "2026-03-27T14:30:00Z")
+    key3 = build_dedup_key("claude-sonnet", 101, 50, "2026-03-27T14:30:00Z")
+    assert key1 != key2
+    assert key1 != key3
+    assert key2 != key3
+
+
+@pytest.mark.io
+def test_log_session_cost_returns_true_on_append(temp_log_file):
+    """log_session_cost returns True when record is successfully appended."""
+    result = log_session_cost("session-1", "claude-sonnet", 100, 50, "Phase 1", "2026-03-27T14:30:00Z")
+    assert result is True
+
+
+@pytest.mark.io
+def test_log_session_cost_dedup_suppresses_identical_replay(temp_log_file):
+    """log_session_cost returns False when duplicate (same model+tokens in same hour) is suppressed."""
+    # First append — should succeed
+    result1 = log_session_cost("session-1", "claude-sonnet", 100, 50, "Phase 1", "2026-03-27T14:30:00Z")
+    assert result1 is True
+    assert len(read_log()) == 1
+
+    # Second append (same model, same tokens, same hour) — should be suppressed
+    result2 = log_session_cost("session-2", "claude-sonnet", 100, 50, "Phase 1", "2026-03-27T14:45:00Z")
+    assert result2 is False  # Duplicate suppressed
+    assert len(read_log()) == 1  # Still only 1 record
+
+
+@pytest.mark.io
+def test_log_session_cost_allows_distinct_spans_same_hour(temp_log_file):
+    """log_session_cost does NOT suppress distinct spans (different tokens) in same hour."""
+    # First span: 100 in, 50 out
+    result1 = log_session_cost("session-1", "claude-sonnet", 100, 50, "Phase 1", "2026-03-27T14:30:00Z")
+    assert result1 is True
+    assert len(read_log()) == 1
+
+    # Second span: same model, DIFFERENT tokens, same hour
+    result2 = log_session_cost("session-2", "claude-sonnet", 100, 51, "Phase 1", "2026-03-27T14:45:00Z")
+    assert result2 is True  # Should NOT be suppressed
+    assert len(read_log()) == 2  # Both records appended
+
+
+@pytest.mark.io
+def test_log_session_cost_skip_dedup_check_bypasses_guard(temp_log_file):
+    """log_session_cost with skip_dedup_check=True appends despite duplicate key."""
+    # First append
+    result1 = log_session_cost("session-1", "claude-sonnet", 100, 50, "Phase 1", "2026-03-27T14:30:00Z")
+    assert result1 is True
+
+    # Second append with same content but skip_dedup_check=True
+    result2 = log_session_cost(
+        "session-2", "claude-sonnet", 100, 50, "Phase 1", "2026-03-27T14:45:00Z", skip_dedup_check=True
+    )
+    assert result2 is True  # Should append because dedup check is skipped
+    assert len(read_log()) == 2
+
+
+@pytest.mark.io
+def test_record_exists_with_dedup_key_returns_false_for_empty_log(temp_log_file):
+    """record_exists_with_dedup_key returns False when log is empty."""
+    key = build_dedup_key("claude-sonnet", 100, 50, "2026-03-27T14:30:00Z")
+    assert record_exists_with_dedup_key(key) is False
+
+
+@pytest.mark.io
+def test_record_exists_with_dedup_key_finds_existing_key(temp_log_file):
+    """record_exists_with_dedup_key returns True after record with that key is appended."""
+    log_session_cost("session-1", "claude-sonnet", 100, 50, "Phase 1", "2026-03-27T14:30:00Z")
+    key = build_dedup_key("claude-sonnet", 100, 50, "2026-03-27T14:30:00Z")
+    assert record_exists_with_dedup_key(key) is True
+
+
+@pytest.mark.io
+def test_record_exists_with_dedup_key_false_for_absent_key(temp_log_file):
+    """record_exists_with_dedup_key returns False when key doesn't match any record."""
+    log_session_cost("session-1", "claude-sonnet", 100, 50, "Phase 1", "2026-03-27T14:30:00Z")
+    key = build_dedup_key("gpt-4", 100, 50, "2026-03-27T14:30:00Z")
+    assert record_exists_with_dedup_key(key) is False
+
+
+@pytest.mark.io
+def test_dedup_allows_different_hour_same_span(temp_log_file):
+    """log_session_cost allows same span in different hours (dedup window is 1 hour)."""
+    # First span at 14:30
+    result1 = log_session_cost("session-1", "claude-sonnet", 100, 50, "Phase 1", "2026-03-27T14:30:00Z")
+    assert result1 is True
+
+    # Same span at 15:30 (next hour)
+    result2 = log_session_cost("session-2", "claude-sonnet", 100, 50, "Phase 1", "2026-03-27T15:30:00Z")
+    assert result2 is True  # Different hour, so NOT suppressed
+    assert len(read_log()) == 2
+
+
+@pytest.mark.io
+def test_dedup_key_in_record_on_append(temp_log_file):
+    """Appended record includes _dedup_key field for bridge-generated records."""
+    log_session_cost("session-1", "claude-sonnet", 100, 50, "Phase 1", "2026-03-27T14:30:00Z")
+    records = read_log()
+    assert len(records) == 1
+    assert "_dedup_key" in records[0]
+    expected_key = build_dedup_key("claude-sonnet", 100, 50, "2026-03-27T14:30:00Z")
+    assert records[0]["_dedup_key"] == expected_key
+
+
+@pytest.mark.io
+def test_skip_dedup_check_no_dedup_key_in_record(temp_log_file):
+    """Record appended with skip_dedup_check=True does NOT include _dedup_key."""
+    log_session_cost("session-1", "claude-sonnet", 100, 50, "Phase 1", "2026-03-27T14:30:00Z", skip_dedup_check=True)
+    records = read_log()
+    assert len(records) == 1
+    assert "_dedup_key" not in records[0]

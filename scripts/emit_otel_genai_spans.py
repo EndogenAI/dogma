@@ -6,12 +6,16 @@ Purpose:
     Extends instrument_agent_calls.py with a convenience wrapper that enforces
     GenAI semantic convention attribute presence for LLM call spans.
 
-    Required GenAI attributes (per OTel semconv gen-ai-spans spec):
-    - gen_ai.system (e.g., "anthropic")
+    Canonical provider attribute policy:
+    - Canonical key: gen_ai.provider.name (e.g., "anthropic")
+    - Compatibility alias: gen_ai.system (legacy readers)
+
+    Required GenAI attributes (per OTel semconv gen-ai-spans spec + compatibility policy):
+    - gen_ai.provider.name (canonical provider identity)
     - gen_ai.request.model (e.g., "claude-3-5-sonnet-20241022")
     - gen_ai.usage.input_tokens (int)
     - gen_ai.usage.output_tokens (int)
-    - gen_ai.response.finish_reason (string or list)
+    - gen_ai.response.finish_reasons (string or list)
 
 Inputs:
     - model: Model identifier (e.g., "claude-3-5-sonnet-20241022")
@@ -70,6 +74,9 @@ except ImportError as exc:
 
 logger = logging.getLogger(__name__)
 
+GENAI_PROVIDER_ATTR = "gen_ai.provider.name"
+GENAI_PROVIDER_LEGACY_ATTR = "gen_ai.system"
+
 
 def _coerce_token_count(value: object) -> int | None:
     if isinstance(value, bool):
@@ -82,6 +89,14 @@ def _coerce_token_count(value: object) -> int | None:
 
 
 def _append_session_cost_from_span(span_attributes: dict[str, object]) -> None:
+    """Append session cost from span via bridge path with idempotency/dedup guard.
+
+    Idempotency strategy:
+    - Dedup key is deterministic: hash(model, tokens_in, tokens_out, timestamp_hour)
+    - Suppresses duplicate spans in same hour (replay resilience)
+    - Spans with identical model/token counts in the same hour are treated as duplicates
+    - Logs dedup suppression at debug level (expected behavior, not an error)
+    """
     model = span_attributes.get("gen_ai.request.model")
     input_tokens = _coerce_token_count(span_attributes.get("gen_ai.usage.input_tokens"))
     output_tokens = _coerce_token_count(span_attributes.get("gen_ai.usage.output_tokens"))
@@ -102,7 +117,7 @@ def _append_session_cost_from_span(span_attributes: dict[str, object]) -> None:
     phase = "bridge: span-close token capture"
 
     try:
-        log_session_cost(
+        appended = log_session_cost(
             session_id=session_id,
             model=model,
             tokens_in=input_tokens,
@@ -110,10 +125,35 @@ def _append_session_cost_from_span(span_attributes: dict[str, object]) -> None:
             phase=phase,
             timestamp=timestamp,
         )
+        if not appended:
+            logger.debug(
+                "session-cost bridge dedup: duplicate record suppressed (model=%s, tokens=%d+%d)",
+                model,
+                input_tokens,
+                output_tokens,
+            )
     except ValueError as exc:
         logger.warning("session-cost bridge skipped due to validation error: %s", exc)
     except OSError as exc:
         logger.warning("session-cost bridge skipped due to write error: %s", exc)
+
+
+def get_provider_identity(span_attributes: dict[str, object]) -> str | None:
+    """Return provider identity with canonical-first fallback behavior.
+
+    Policy:
+        1) Prefer gen_ai.provider.name (canonical)
+        2) Fall back to gen_ai.system (legacy alias)
+    """
+    provider = span_attributes.get(GENAI_PROVIDER_ATTR)
+    if isinstance(provider, str) and provider:
+        return provider
+
+    legacy_provider = span_attributes.get(GENAI_PROVIDER_LEGACY_ATTR)
+    if isinstance(legacy_provider, str) and legacy_provider:
+        return legacy_provider
+
+    return None
 
 
 @contextmanager
@@ -165,8 +205,9 @@ def emit_genai_span(
 
     with tracer.start_as_current_span(span_name) as span:
         # Required GenAI attributes
-        span.set_attribute("gen_ai.system", provider_name)
-        span.set_attribute("gen_ai.provider.name", provider_name)
+        span.set_attribute(GENAI_PROVIDER_ATTR, provider_name)
+        # Compatibility alias for legacy readers still keyed on gen_ai.system.
+        span.set_attribute(GENAI_PROVIDER_LEGACY_ATTR, provider_name)
         span.set_attribute("gen_ai.operation.name", operation_name)
         span.set_attribute("gen_ai.request.model", model)
         span.set_attribute("gen_ai.usage.input_tokens", input_tokens)
@@ -205,7 +246,7 @@ def validate_genai_span_attributes(span_attributes: dict) -> tuple[bool, list[st
     ]
 
     missing = [attr for attr in required_attrs if attr not in span_attributes]
-    if "gen_ai.system" not in span_attributes and "gen_ai.provider.name" not in span_attributes:
+    if get_provider_identity(span_attributes) is None:
         missing.append("gen_ai.provider.name|gen_ai.system")
 
     return (len(missing) == 0, missing)
@@ -230,8 +271,8 @@ def main():
         sample_span = {
             "name": f"chat {args.model}",
             "attributes": {
-                "gen_ai.system": provider_name,
                 "gen_ai.provider.name": provider_name,
+                "gen_ai.system": provider_name,
                 "gen_ai.request.model": args.model,
                 "gen_ai.usage.input_tokens": args.input_tokens,
                 "gen_ai.usage.output_tokens": args.output_tokens,

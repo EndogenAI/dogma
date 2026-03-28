@@ -63,11 +63,12 @@ scripts/
   generate_sweep_table.py      # Generate the corpus sweep table for back-propagation planning from research doc metadata
   health_check_services.py     # Poll /health endpoints for services in data/substrate-atlas.yml; exits 0 if all healthy, 1 if degraded, 2 if unreachable; --timeout, --services, --dry-run (closes #342)
   encoding_coverage.py         # Check MANIFESTO F1-F4 encoding coverage for named principles/axioms; outputs Markdown table (--manifesto, --agents)
-  emit_otel_genai_spans.py     # Emit OTel spans with GenAI semantic convention attributes (gen_ai.system, gen_ai.request.model, gen_ai.usage.input_tokens, gen_ai.usage.output_tokens, gen_ai.response.finish_reason); extends instrument_agent_calls.py; --model, --input-tokens, --output-tokens, --finish-reason (closes #369)
+  emit_otel_genai_spans.py     # Emit OTel spans with GenAI semantic convention attributes (canonical: gen_ai.provider.name; compatibility alias: gen_ai.system; plus gen_ai.request.model, gen_ai.usage.input_tokens, gen_ai.usage.output_tokens, gen_ai.response.finish_reasons); extends instrument_agent_calls.py; --model, --input-tokens, --output-tokens, --finish-reason (closes #369)
   emit_otel_metrics.py         # Emit OTel metrics for LLM usage (input/output tokens, duration) and system health (status); supports --dry-run and console export; --metric, --value, --model, --system
   capture_mcp_metrics.py       # Aggregate last-N (default 100) MCP tool-call observations from JSONL into per-tool metrics artifacts; supports --tool/--all, --window-calls, --dry-run (phase #499)
   report_mcp_metrics.py        # Render per-tool MCP metric artifacts into a Markdown report table including semantic, classical, defect, and usability surfaces (phase #499)
   check_mcp_quality_gate.py    # Enforce MCP quality gate on exact last-N window artifacts; fails on threshold breaches or window contract mismatches (phase #499)
+  rotate_session_cost_log.py   # Archive old session cost records; enforce retention window (default: 90 days); rotation triggers: size-based (≥10MB) or time-based (≥30 days); compatible with aggregate_session_costs.py; --retention-days, --size-threshold, --dry-run, --check-only (closes #489)
   adopt_wizard.py              # Dogma framework onboarding wizard — generates client-values.yml and scaffolds AGENTS.md for new adopters; --org, --repo required; --non-interactive, --load-values, --output-dir flags; runs validate_agent_files.py before reporting success (closes #56, #125)
   orientation_snapshot.py      # Pre-computed session orientation digest — writes .cache/github/orientation-snapshot.md with open issue counts, recent commits, active branches, milestone summary; --branch includes scratchpad ## Session Summary (closes #241)
   bulk_github_operations.py    # Batch GitHub issue/PR write operations (issue-create, issue-edit, issue-close, pr-edit) from a JSON/YAML spec file or stdin; --dry-run safety gate; --rate-limit-delay throttling; JSON results to stdout (closes #260)
@@ -214,9 +215,17 @@ Commit the README entry in the same commit as the script. If the entry cannot be
 
 **Job**: Enable agents to record canonical baseline token-usage events so Phase 1 aggregation reads one exact, trustworthy source substrate.
 
-**Purpose**: Append canonical records to `session_cost_log.json`: required keys are `session_id`, `model`, `tokens_in`, `tokens_out`, `phase`, `timestamp`; optional `synthetic: true` is supported for explicit placeholder/boundary events.
+**Purpose**: Append canonical records to `session_cost_log.json`: required keys are `session_id`, `model`, `tokens_in`, `tokens_out`, `phase`, `timestamp`; optional `synthetic: true` is supported for explicit placeholder/boundary events. **Bridge idempotency guard** (Sprint 21 #488): deterministic dedup key prevents duplicate records from span re-processing or bridge instrumentation replay.
 
-**Tests**: [tests/test_session_cost_log.py](../tests/test_session_cost_log.py)
+**Dedup Strategy**:
+- Dedup key: `hash(model, tokens_in, tokens_out, timestamp_hour)`
+- Timestamp rounded to hour boundary for replay-within-hour dedup
+- Suppresses exact duplicates (same model + token counts within calendar hour)
+- Allows distinct spans in same hour (different token counts = different dedup key)
+- Dedup applies to all `log_session_cost()` callers by default (including CLI/manual paths); bridge path uses the same default behavior
+- Internal field `_dedup_key` stored in each record for audit/replay detection
+
+**Tests**: [tests/test_session_cost_log.py](../tests/test_session_cost_log.py) (includes dedup/replay scenarios)
 
 **Usage**:
 
@@ -256,7 +265,7 @@ uv run python scripts/session_cost_log.py \
 
 **Path precedence**: `SESSION_COST_LOG_FILE` (if set) overrides the module default; if unset, the default file is repository-root `session_cost_log.json`.
 
-**Accepted source boundary**: Records must include all required keys and may include `synthetic` only. Unknown extra keys are rejected.
+**Accepted source boundary**: Records must include all required keys. The only user-writable optional extension field is `synthetic`; unknown extra keys are rejected. Internal field `_dedup_key` is reserved for dedup logic and auto-populated by default append paths.
 
 **Observability boundary**: See [docs/guides/observability-boundaries.md](../docs/guides/observability-boundaries.md) for what this local substrate can and cannot capture.
 
@@ -290,6 +299,86 @@ uv run python scripts/aggregate_session_costs.py \
 **Lean Phase 2 snapshot gate**: Phase 2 starts only once this aggregation can produce a reproducible, non-empty grouped result from accepted `session_cost_log` inputs; Phase 2 then turns that grouped result into a deterministic snapshot artifact.
 
 **Lean Phase 2 rerun path**: Reproduce the committed baseline snapshot with `uv run python scripts/aggregate_session_costs.py --log-file tests/fixtures/baseline_data/session_cost_log_baseline.json --start-date 2026-03-27 --end-date 2026-03-28`; the expected grouped payload is committed at [tests/fixtures/baseline_data/aggregate_session_costs_baseline_snapshot.json](../tests/fixtures/baseline_data/aggregate_session_costs_baseline_snapshot.json).
+
+---
+
+## scripts/rotate_session_cost_log.py
+
+**Job**: Enable operators to enforce data retention policy on `session_cost_log.json` — archiving old records automatically and triggering rotation on size/time thresholds — so the log remains manageable and aggregation workflows remain fast.
+
+**Purpose**: Archive session cost records older than a retention window (default: 90 days) to timestamped files in `.cache/session_cost_archives/`. Rotation triggers: size-based (≥10MB main log) or time-based (≥30 days since last rotation). Archived records remain queryable by aggregate_session_costs.py (via `--no-archives` flag to exclude).
+
+**Retention Policy**:
+- Default retention window: **90 days** from current date
+- Records older than cutoff are archived to `.cache/session_cost_archives/session_cost_log_archive_YYYY-MM-DD_to_YYYY-MM-DD.json`
+- Main log file is truncated to only retain records within the window
+- Rotation metadata is tracked in `.cache/session_cost_archives/rotation_metadata.json`
+- Archived files are immutable once written (no re-rotation of archives)
+
+**Rotation Triggers**:
+- **Size-based**: main log file exceeds 10MB (default; override with `--size-threshold`)
+- **Time-based**: ≥30 days since last rotation (default; override with `--last-rotation-threshold-days`)
+- **Manual**: operator runs `rotate_session_cost_log.py` explicitly
+
+**Aggregation Compatibility**:
+- `aggregate_session_costs.py` reads both active log AND archives by default (`--no-archives` flag excludes archives)
+- Queries spanning the archive boundary work seamlessly (no client-side joining required)
+- Old baselines remain queryable: `uv run python scripts/aggregate_session_costs.py --start-date 2026-01-01 --end-date 2026-12-31` includes both archived and active
+
+**Tests**: [tests/test_rotate_session_cost_log.py](../tests/test_rotate_session_cost_log.py)
+
+**Usage**:
+
+```bash
+# Check if rotation is needed (advisory only; always exits 0)
+uv run python scripts/rotate_session_cost_log.py --check-only
+
+# Perform rotation with default policy (90-day retention, 10MB threshold)
+uv run python scripts/rotate_session_cost_log.py
+
+# Dry-run: print what would be archived without writing
+uv run python scripts/rotate_session_cost_log.py --dry-run
+
+# Custom retention window (365 days)
+uv run python scripts/rotate_session_cost_log.py --retention-days 365
+
+# Custom size threshold (5MB instead of 10MB)
+uv run python scripts/rotate_session_cost_log.py --size-threshold 5242880
+
+# Combine overrides
+uv run python scripts/rotate_session_cost_log.py \
+  --retention-days 180 \
+  --size-threshold 20971520 \
+  --last-rotation-threshold-days 60
+```
+
+**Flags**:
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--retention-days` | no | Retention window in days (default: 90) |
+| `--size-threshold` | no | Size limit in bytes; rotation triggers if exceeded (default: 10485760 = 10MB) |
+| `--last-rotation-threshold-days` | no | Days since last rotation before time-based trigger (default: 30) |
+| `--log-file` | no | Path to session_cost_log.json (default: repo root) |
+| `--dry-run` | no | Print actions without writing |
+| `--check-only` | no | Check if rotation is needed; always exits 0 (advisory) |
+
+**Exit codes**: 
+- `0` rotation completed or not needed
+- `1` I/O error or rotation failure
+- `2` invalid retention window (e.g., negative days)
+
+**Operational Notes**:
+- Archive files are **never** re-rotated; once archived, records remain in their original archive file
+- Rotation metadata (`rotation_metadata.json`) is updated on every successful rotation
+- If rotation fails mid-operation (e.g., disk full), the main log is unchanged; retry after fixing the error
+- Operators should run this periodically via cron or CI cron job (suggested: weekly or monthly depending on volume)
+
+**Integration with CI/monitoring**:
+```bash
+# Example cron job (run monthly)
+0 2 1 * * cd /repo && uv run python scripts/rotate_session_cost_log.py --retention-days 365 >> /var/log/dogma-rotation.log 2>&1
+```
 
 ---
 
