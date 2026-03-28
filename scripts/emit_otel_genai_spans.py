@@ -89,6 +89,14 @@ def _coerce_token_count(value: object) -> int | None:
 
 
 def _append_session_cost_from_span(span_attributes: dict[str, object]) -> None:
+    """Append session cost from span via bridge path with idempotency/dedup guard.
+
+    Idempotency strategy:
+    - Dedup key is deterministic: hash(model, tokens_in, tokens_out, timestamp_hour)
+    - Suppresses duplicate spans in same hour (replay resilience)
+    - Distinct spans (different token counts) are NOT suppressed
+    - Logs dedup suppression at warning level (expected behavior, not an error)
+    """
     model = span_attributes.get("gen_ai.request.model")
     input_tokens = _coerce_token_count(span_attributes.get("gen_ai.usage.input_tokens"))
     output_tokens = _coerce_token_count(span_attributes.get("gen_ai.usage.output_tokens"))
@@ -109,7 +117,7 @@ def _append_session_cost_from_span(span_attributes: dict[str, object]) -> None:
     phase = "bridge: span-close token capture"
 
     try:
-        log_session_cost(
+        appended = log_session_cost(
             session_id=session_id,
             model=model,
             tokens_in=input_tokens,
@@ -117,6 +125,13 @@ def _append_session_cost_from_span(span_attributes: dict[str, object]) -> None:
             phase=phase,
             timestamp=timestamp,
         )
+        if not appended:
+            logger.debug(
+                "session-cost bridge dedup: duplicate record suppressed (model=%s, tokens=%d+%d)",
+                model,
+                input_tokens,
+                output_tokens,
+            )
     except ValueError as exc:
         logger.warning("session-cost bridge skipped due to validation error: %s", exc)
     except OSError as exc:

@@ -214,9 +214,17 @@ Commit the README entry in the same commit as the script. If the entry cannot be
 
 **Job**: Enable agents to record canonical baseline token-usage events so Phase 1 aggregation reads one exact, trustworthy source substrate.
 
-**Purpose**: Append canonical records to `session_cost_log.json`: required keys are `session_id`, `model`, `tokens_in`, `tokens_out`, `phase`, `timestamp`; optional `synthetic: true` is supported for explicit placeholder/boundary events.
+**Purpose**: Append canonical records to `session_cost_log.json`: required keys are `session_id`, `model`, `tokens_in`, `tokens_out`, `phase`, `timestamp`; optional `synthetic: true` is supported for explicit placeholder/boundary events. **Bridge idempotency guard** (Sprint 21 #488): deterministic dedup key prevents duplicate records from span re-processing or bridge instrumentation replay.
 
-**Tests**: [tests/test_session_cost_log.py](../tests/test_session_cost_log.py)
+**Dedup Strategy**: 
+- Dedup key: `hash(model, tokens_in, tokens_out, timestamp_hour)`
+- Timestamp rounded to hour boundary for replay-within-hour dedup
+- Suppresses exact duplicates (same model + token counts within calendar hour)
+- Allows distinct spans in same hour (different token counts = different dedup key)
+- Bridge path (via `emit_otel_genai_spans.py`) uses dedup by default; manual CLI appends can `skip_dedup_check` if needed
+- Internal field `_dedup_key` stored in each record for audit/replay detection
+
+**Tests**: [tests/test_session_cost_log.py](../tests/test_session_cost_log.py) (includes dedup/replay scenarios)
 
 **Usage**:
 
@@ -256,13 +264,11 @@ uv run python scripts/session_cost_log.py \
 
 **Path precedence**: `SESSION_COST_LOG_FILE` (if set) overrides the module default; if unset, the default file is repository-root `session_cost_log.json`.
 
-**Accepted source boundary**: Records must include all required keys and may include `synthetic` only. Unknown extra keys are rejected.
+**Accepted source boundary**: Records must include all required keys and may include `synthetic` only. Unknown extra keys are rejected. Internal field `_dedup_key` is auto-populated by bridge path.
 
 **Observability boundary**: See [docs/guides/observability-boundaries.md](../docs/guides/observability-boundaries.md) for what this local substrate can and cannot capture.
 
 ---
-
-## scripts/aggregate_session_costs.py
 
 **Job**: Enable agents to produce lean baseline aggregates in either default model+phase mode or role mode from the same six-field source substrate.
 

@@ -256,3 +256,53 @@ def test_bridge_warns_on_invalid_payload(monkeypatch, caplog):
 
     assert called["value"] is False
     assert "invalid token attributes" in caplog.text
+
+
+def test_bridge_dedup_suppresses_duplicate_spans(monkeypatch, caplog):
+    """Bridge dedup: log_session_cost returning False logs debug dedup message."""
+    calls = []
+
+    def fake_log_session_cost(*args, **kwargs):
+        calls.append((args, kwargs))
+        return False  # Simulate dedup suppression
+
+    monkeypatch.setattr("emit_otel_genai_spans.log_session_cost", fake_log_session_cost)
+
+    with caplog.at_level(logging.DEBUG):
+        _append_session_cost_from_span(
+            {
+                "gen_ai.request.model": "test-model",
+                "gen_ai.usage.input_tokens": 10,
+                "gen_ai.usage.output_tokens": 5,
+            }
+        )
+
+    assert len(calls) == 1
+    # Should log dedup suppression at debug level
+    assert any("dedup" in record.message.lower() for record in caplog.records if record.levelname == "DEBUG")
+
+
+def test_bridge_dedup_appends_distinct_spans(monkeypatch):
+    """Bridge dedup: log_session_cost returning True indicates successful append."""
+    calls = []
+
+    def fake_log_session_cost(*args, **kwargs):
+        calls.append((args, kwargs))
+        return True  # Record was appended
+
+    monkeypatch.setattr("emit_otel_genai_spans.log_session_cost", fake_log_session_cost)
+
+    _append_session_cost_from_span(
+        {
+            "gen_ai.request.model": "test-model",
+            "gen_ai.usage.input_tokens": 10,
+            "gen_ai.usage.output_tokens": 5,
+        }
+    )
+
+    assert len(calls) == 1
+    # Verify log_session_cost was called with proper kwargs
+    _, kwargs = calls[0]
+    assert kwargs["model"] == "test-model"
+    assert kwargs["tokens_in"] == 10
+    assert kwargs["tokens_out"] == 5
