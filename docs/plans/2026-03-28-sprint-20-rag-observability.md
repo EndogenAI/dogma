@@ -28,7 +28,7 @@ Instrument the MCP server with OpenTelemetry spans, build the metrics capture/re
 
 **Depends on**: workplan committed
 **CI**: n/a (review only)
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED
 
 ---
 
