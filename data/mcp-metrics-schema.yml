@@ -34,24 +34,24 @@ identity:
 measurement_record:
   metric_dimension:
     type: string
-    required: true
+    required: false
     description: Dimension name for the metric value (performance|semantic|defect|classical_quality|usability_proxy).
   value:
     type: number
-    required: true
+    required: false
     description: Scalar metric value for the selected dimension and field.
   test_case_id:
     type: string
-    required: true
+    required: false
     description: Identifier of test case or scenario used to generate the metric.
   methodology_notes:
     type: string
-    required: true
+    required: false
     description: Notes on how the metric was produced, sampled, or normalized.
 
 measurement_surfaces:
   performance:
-    latency_ms:
+    latency_ms_p95:
       type: number
       unit: ms
       required: true
@@ -93,7 +93,7 @@ measurement_surfaces:
       max: 4.0
     severity_distribution_0_to_4:
       type: object
-      required: true
+      required: false
       required_keys: ["0", "1", "2", "3", "4"]
       value_type: integer
       description: Count distribution by Nielsen-adapted severity levels.

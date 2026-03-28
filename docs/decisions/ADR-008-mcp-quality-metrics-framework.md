@@ -55,13 +55,12 @@ The schema and implementation are scoped to all current MCP tools:
 - prune_scratchpad
 
 ### Field-Level Contract (Plan Traceability)
-The schema contract required by the sprint plan is explicitly encoded with required keys:
-- tool_name
-- metric_dimension
-- value
-- test_case_id
-- timestamp_utc
-- methodology_notes
+The schema contract required by the sprint plan is implemented as per-tool JSON artifacts emitted by `scripts/capture_mcp_metrics.py`. Each artifact includes:
+- `tool_name`
+- `timestamp_utc`
+- a nested `metrics` object that contains per-dimension summaries (for example: `metrics.correctness`, `metrics.completeness`, `metrics.precision`, `metrics.performance`, `metrics.semantic_quality`, `metrics.defect_severity`, `metrics.usability_proxy`), with fields defined in `data/mcp-metrics-schema.yml`.
+
+The earlier planning-only flat contract that listed `metric_dimension`, `value`, `test_case_id`, and `methodology_notes` as required top-level keys is superseded by this implemented schema. For exact field names and structure, `data/mcp-metrics-schema.yml` and `scripts/capture_mcp_metrics.py` are the authoritative references.
 
 ## Consequences
 1. Step 1: instrument mcp_server/dogma_server.py.

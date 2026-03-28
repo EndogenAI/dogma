@@ -11,7 +11,6 @@ from scripts.report_mcp_metrics import (
 )
 
 
-@pytest.mark.io
 def test_build_markdown_contains_table_rows() -> None:
     rows = [
         {
