@@ -63,7 +63,7 @@ scripts/
   generate_sweep_table.py      # Generate the corpus sweep table for back-propagation planning from research doc metadata
   health_check_services.py     # Poll /health endpoints for services in data/substrate-atlas.yml; exits 0 if all healthy, 1 if degraded, 2 if unreachable; --timeout, --services, --dry-run (closes #342)
   encoding_coverage.py         # Check MANIFESTO F1-F4 encoding coverage for named principles/axioms; outputs Markdown table (--manifesto, --agents)
-  emit_otel_genai_spans.py     # Emit OTel spans with GenAI semantic convention attributes (gen_ai.system, gen_ai.request.model, gen_ai.usage.input_tokens, gen_ai.usage.output_tokens, gen_ai.response.finish_reason); extends instrument_agent_calls.py; --model, --input-tokens, --output-tokens, --finish-reason (closes #369)
+  emit_otel_genai_spans.py     # Emit OTel spans with GenAI semantic convention attributes (canonical: gen_ai.provider.name; compatibility alias: gen_ai.system; plus gen_ai.request.model, gen_ai.usage.input_tokens, gen_ai.usage.output_tokens, gen_ai.response.finish_reason); extends instrument_agent_calls.py; --model, --input-tokens, --output-tokens, --finish-reason (closes #369)
   emit_otel_metrics.py         # Emit OTel metrics for LLM usage (input/output tokens, duration) and system health (status); supports --dry-run and console export; --metric, --value, --model, --system
   capture_mcp_metrics.py       # Aggregate last-N (default 100) MCP tool-call observations from JSONL into per-tool metrics artifacts; supports --tool/--all, --window-calls, --dry-run (phase #499)
   report_mcp_metrics.py        # Render per-tool MCP metric artifacts into a Markdown report table including semantic, classical, defect, and usability surfaces (phase #499)

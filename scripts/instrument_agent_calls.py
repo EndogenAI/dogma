@@ -165,6 +165,7 @@ def main():
         with tracer.start_as_current_span("llm.call.test") as span:
             span.set_attribute("gen_ai.operation.name", "chat")
             span.set_attribute("gen_ai.provider.name", provider_name)
+            span.set_attribute("gen_ai.system", provider_name)
             span.set_attribute("gen_ai.request.model", args.model)
             span.set_attribute("gen_ai.request.temperature", 0.0)
             span.set_attribute("gen_ai.usage.input_tokens", 150)

@@ -6,8 +6,12 @@ Purpose:
     Extends instrument_agent_calls.py with a convenience wrapper that enforces
     GenAI semantic convention attribute presence for LLM call spans.
 
-    Required GenAI attributes (per OTel semconv gen-ai-spans spec):
-    - gen_ai.system (e.g., "anthropic")
+    Canonical provider attribute policy:
+    - Canonical key: gen_ai.provider.name (e.g., "anthropic")
+    - Compatibility alias: gen_ai.system (legacy readers)
+
+    Required GenAI attributes (per OTel semconv gen-ai-spans spec + compatibility policy):
+    - gen_ai.provider.name (canonical provider identity)
     - gen_ai.request.model (e.g., "claude-3-5-sonnet-20241022")
     - gen_ai.usage.input_tokens (int)
     - gen_ai.usage.output_tokens (int)

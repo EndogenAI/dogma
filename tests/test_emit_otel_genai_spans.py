@@ -16,6 +16,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 from emit_otel_genai_spans import (
     _append_session_cost_from_span,
     emit_genai_span,
+    get_provider_identity,
     validate_genai_span_attributes,
 )
 
@@ -82,9 +83,9 @@ def test_emit_genai_span_accepts_custom_temperature():
 
 
 def test_validate_genai_span_attributes_passes_complete_set():
-    """Verify validate_genai_span_attributes returns True for complete attribute set."""
+    """Verify validation passes with canonical provider attribute."""
     attributes = {
-        "gen_ai.system": "anthropic",
+        "gen_ai.provider.name": "anthropic",
         "gen_ai.request.model": "claude-3-5-sonnet-20241022",
         "gen_ai.usage.input_tokens": 150,
         "gen_ai.usage.output_tokens": 42,
@@ -97,7 +98,7 @@ def test_validate_genai_span_attributes_passes_complete_set():
 
 
 def test_validate_genai_span_attributes_accepts_provider_name_without_system():
-    """Either gen_ai.provider.name or gen_ai.system should satisfy provider identity."""
+    """Canonical provider key alone should satisfy provider identity."""
     attributes = {
         "gen_ai.provider.name": "anthropic",
         "gen_ai.request.model": "test-model",
@@ -141,7 +142,7 @@ def test_validate_genai_span_attributes_fails_missing_provider_and_system():
 def test_validate_genai_span_attributes_ignores_extra_attributes():
     """Verify validate_genai_span_attributes allows extra attributes beyond required."""
     attributes = {
-        "gen_ai.system": "anthropic",
+        "gen_ai.provider.name": "anthropic",
         "gen_ai.request.model": "test-model",
         "gen_ai.usage.input_tokens": 100,
         "gen_ai.usage.output_tokens": 50,
@@ -153,6 +154,25 @@ def test_validate_genai_span_attributes_ignores_extra_attributes():
     valid, missing = validate_genai_span_attributes(attributes)
     assert valid is True
     assert len(missing) == 0
+
+
+def test_get_provider_identity_prefers_canonical_key():
+    """Canonical provider key should take precedence when both keys are present."""
+    provider = get_provider_identity(
+        {
+            "gen_ai.provider.name": "anthropic",
+            "gen_ai.system": "legacy-anthropic",
+        }
+    )
+
+    assert provider == "anthropic"
+
+
+def test_get_provider_identity_falls_back_to_legacy_key():
+    """Legacy provider key remains supported for compatibility reads."""
+    provider = get_provider_identity({"gen_ai.system": "anthropic"})
+
+    assert provider == "anthropic"
 
 
 def test_main_emits_test_span(capsys, monkeypatch):
