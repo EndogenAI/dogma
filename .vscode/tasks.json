@@ -1,0 +1,11 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start MCP Dashboard",
+      "type": "shell",
+      "command": "uv run python scripts/start_dashboard.py",
+      "problemMatcher": []
+    }
+  ]
+}
