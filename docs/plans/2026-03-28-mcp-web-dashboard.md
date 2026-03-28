@@ -34,9 +34,10 @@ protocol compatibility).
 
 | # | Decision |
 |---|----------|
-| Frontend | **Svelte** (repo root `web/`, Vite dev server) |
+| Frontend | **Svelte** (repo root `web/`, Vite dev server — scaffold via `npm init vite web -- --template svelte`) |
 | Backend | **FastAPI sidecar** (`web/server.py`) — MCP stdio transport unchanged |
-| Data | Real-time = SSE from sidecar; Static = pre-computed JSON from `docs/metrics/` |
+| Data viz | **LayerCake** (~6 KB gzip, copy-paste components) — selected over svelte-chartjs (~62 KB Chart.js dependency) |
+| Data | Real-time = SSE from sidecar; Static = pre-computed JSON from `.cache/mcp-metrics/metrics.json` |
 | Interaction | **Read-only MVP**; interactive (manual E2E trigger) is deferred scope |
 | IDE story | **MVP = browser URL** (`localhost:5173`); VS Code webview = V2 sprint |
 | OSS gate | Research phase must survey MCP Inspector upstream before building anything |
@@ -359,7 +360,8 @@ no external CDN calls in production build
 |-------|------|
 | Interactive — manual E2E test trigger from dashboard UI | V2 sprint |
 | VS Code webview extension | V2 sprint |
-| MCP Inspector protocol compatibility | Research output dependent |
+| MCP Inspector protocol compatibility | #505 (V2 sprint) |
+| CORS environment variable for production deployments | #506 (V2 sprint) |
 | Historical metrics rolling window (> 7 days) | After sidecar stabilises |
 | Multi-provider routing viz (local vs external model) | After `route_inference_request` metrics land |
 | Authentication / multi-user | If/when dogma is deployed as a shared service |
