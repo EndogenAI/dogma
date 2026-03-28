@@ -148,3 +148,104 @@ quality_gate_thresholds:
   target_deepeval_task_completion: 0.75
   target_nielsen_severity_mean_max: 1.5
   target_umux_lite_equivalent_min: 68.0
+
+dashboard_contract:
+  purpose: Read-only architecture contract fields for MCP Web Dashboard (Phase 2).
+  compatibility: Additive-only section; existing telemetry contracts remain unchanged.
+
+  transport:
+    snapshot_endpoint:
+      type: string
+      required: false
+      default: /api/metrics
+      description: REST snapshot endpoint consumed by dashboard client.
+    stream_endpoint:
+      type: string
+      required: false
+      default: /api/metrics/stream
+      description: SSE endpoint consumed by browser EventSource.
+    server_stream_type:
+      type: string
+      required: false
+      allowed_values: [StreamingResponse]
+      description: FastAPI transport primitive locked for MVP stream implementation.
+    client_stream_type:
+      type: string
+      required: false
+      allowed_values: [EventSource]
+      description: Browser-native SSE client primitive locked for MVP frontend.
+    stream_media_type:
+      type: string
+      required: false
+      default: text/event-stream
+      description: Expected media type for SSE responses.
+
+  cors:
+    allow_origins:
+      type: array
+      required: false
+      default: ["http://localhost:5173"]
+      items:
+        type: string
+      description: Locked MVP origin allowlist for local Vite development.
+    config_mode:
+      type: string
+      required: false
+      allowed_values: [hardcoded_mvp]
+      description: CORS configuration mode for MVP.
+    v2_escape_hatch_issue:
+      type: integer
+      required: false
+      default: 506
+      description: Tracking issue for env-configurable CORS origins in v2.
+
+  ui:
+    default_active_tab:
+      type: string
+      required: false
+      default: overview
+      allowed_values: [overview, tools, errors]
+      description: MVP default tab state.
+    tab_state_mode:
+      type: string
+      required: false
+      allowed_values: [reactive_variable]
+      description: Tab state managed by local reactive variable, not a router.
+    routing_library:
+      type: string
+      required: false
+      allowed_values: [none]
+      description: Routing library usage is intentionally excluded from MVP.
+    connection_states:
+      type: array
+      required: false
+      default: [LIVE, STALE, ERROR]
+      items:
+        type: string
+      description: Locked connection state machine order for stream status.
+
+  visualization:
+    chart_library:
+      type: string
+      required: false
+      allowed_values: [layercake]
+      description: Locked MVP chart library.
+    prohibited_libraries:
+      type: array
+      required: false
+      default: [svelte-chartjs, chart.js]
+      items:
+        type: string
+      description: Explicitly prohibited chart libraries for MVP.
+
+  offline_fallback:
+    fixture_path:
+      type: string
+      required: false
+      default: web/src/assets/fixture.json
+      description: Static fixture path used before first successful live connection.
+    activation_condition:
+      type: string
+      required: false
+      default: before_first_successful_connection
+      description: Condition when offline fixture is shown by dashboard client.
