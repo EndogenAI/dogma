@@ -44,7 +44,7 @@ Issue #495 requires a Phase 3 design contract that is directly implementable by 
 5. Quality targets: DeepEval task completion >= 0.75, mean severity <= 1.5, UMUX-Lite equivalent >= 68.
 
 ### Canonical Tool Set Coverage
-The schema and implementation are scoped to all current MCP tools:
+The schema and implementation are scoped to the 8 canonical governance tools provided by `mcp_server/dogma_server.py` (excluding auxiliary utility tools such as path resolution and routing helpers):
 - check_substrate
 - validate_agent_file
 - validate_synthesis
