@@ -15,7 +15,7 @@ Purpose:
     - gen_ai.request.model (e.g., "claude-3-5-sonnet-20241022")
     - gen_ai.usage.input_tokens (int)
     - gen_ai.usage.output_tokens (int)
-    - gen_ai.response.finish_reason (string or list)
+        - gen_ai.response.finish_reasons (string or list)
 
 Inputs:
     - model: Model identifier (e.g., "claude-3-5-sonnet-20241022")
