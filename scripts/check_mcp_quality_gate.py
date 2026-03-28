@@ -75,10 +75,22 @@ def main() -> int:
             failures.append(f"{tool}: missing required performance.error_rate_pct")
             continue
 
-        if float(faithfulness) < args.faithfulness_threshold:
-            failures.append(f"{tool}: faithfulness={faithfulness:.3f} < {args.faithfulness_threshold:.3f}")
-        if float(error_rate) > args.error_rate_threshold_pct:
-            failures.append(f"{tool}: error_rate_pct={error_rate:.3f} > {args.error_rate_threshold_pct:.3f}")
+        try:
+            faithfulness_value = float(faithfulness)
+        except (TypeError, ValueError):
+            failures.append(f"{tool}: semantic.faithfulness={faithfulness!r} is not a valid number")
+            continue
+
+        try:
+            error_rate_value = float(error_rate)
+        except (TypeError, ValueError):
+            failures.append(f"{tool}: performance.error_rate_pct={error_rate!r} is not a valid number")
+            continue
+
+        if faithfulness_value < args.faithfulness_threshold:
+            failures.append(f"{tool}: faithfulness={faithfulness_value:.3f} < {args.faithfulness_threshold:.3f}")
+        if error_rate_value > args.error_rate_threshold_pct:
+            failures.append(f"{tool}: error_rate_pct={error_rate_value:.3f} > {args.error_rate_threshold_pct:.3f}")
 
     if failures:
         print("FAIL")

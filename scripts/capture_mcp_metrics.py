@@ -108,13 +108,17 @@ def summarize_tool(tool_name: str, observations: list[dict], window_calls: int =
 
 def load_observations(input_jsonl: Path) -> list[dict]:
     if not input_jsonl.exists():
-        return []
+        print(f"ERROR: input file {input_jsonl} does not exist", file=__import__("sys").stderr)
+        __import__("sys").exit(1)
     rows: list[dict] = []
     for raw in input_jsonl.read_text(encoding="utf-8").splitlines():
         line = raw.strip()
         if not line:
             continue
         rows.append(json.loads(line))
+    if not rows:
+        print(f"ERROR: input file {input_jsonl} is empty", file=__import__("sys").stderr)
+        __import__("sys").exit(1)
     return rows
 
 

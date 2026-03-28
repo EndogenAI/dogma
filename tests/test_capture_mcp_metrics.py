@@ -12,7 +12,6 @@ from scripts.capture_mcp_metrics import (
 )
 
 
-@pytest.mark.io
 def test_summarize_tool_aggregates_basic_metrics() -> None:
     observations = [
         {
@@ -99,7 +98,6 @@ def test_capture_main_writes_all_tools(monkeypatch: pytest.MonkeyPatch, tmp_path
     assert query_payload["metrics"]["performance"]["window_calls"] == 100
 
 
-@pytest.mark.io
 def test_summarize_tool_uses_last_100_calls() -> None:
     observations = []
     for i in range(120):
