@@ -264,12 +264,12 @@ Research informs metric definitions (which define the data schema, which constra
 **Note**: Full CI integration (`.github/workflows/` changes) deferred to Sprint 2; this phase documents the CI design and produces a runbook so the circuit-breaker pattern (run on PR) can be implemented next sprint.  
 **Depends on**: Phase 5 Review APPROVED  
 **Gate**: Phase 6 Review does not start until deliverables committed  
-**Status**: ⏳ In progress
+**Status**: ✅ Complete
 
 **Acceptance criteria:**
-- [ ] `docs/guides/mcp-quality-metrics.md` committed
-- [ ] Runbook covers: run command, output interpretation, threshold definitions, degradation response
-- [ ] CI design documented (even if not yet wired): which checks gate which PR stage
+- [x] `docs/guides/mcp-quality-metrics.md` committed
+- [x] Runbook covers: run command, output interpretation, threshold definitions, degradation response
+- [x] CI design documented (even if not yet wired): which checks gate which PR stage
 
 ### Phase 6 Review — Review Gate
 
@@ -277,7 +277,7 @@ Research informs metric definitions (which define the data schema, which constra
 **Deliverables**: `## Phase 6 Review Output` in scratchpad, verdict APPROVED  
 **Depends on**: Phase 6 deliverables committed  
 **Gate**: Phase 7 does not begin until APPROVED  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED
 
 ---
 
@@ -290,7 +290,7 @@ Research informs metric definitions (which define the data schema, which constra
 - `Closes #495` in PR body  
 **Depends on**: Phase 6 Review APPROVED  
 **Gate**: Session closes when PR URL returned  
-**Status**: ⬜ Not started
+**Status**: ⏳ In progress
 
 ---
 
