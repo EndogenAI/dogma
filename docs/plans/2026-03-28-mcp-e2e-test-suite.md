@@ -11,7 +11,7 @@
 
 Build an end-to-end integration test suite for the 8 canonical dogma MCP governance tools (`check_substrate`, `validate_agent_file`, `validate_synthesis`, `scaffold_agent`, `scaffold_workplan`, `run_research_scout`, `query_docs`, `prune_scratchpad`). Tests call real tool callables against the live repository, covering happy-path, cross-tool workflow, and error/edge cases. The harness integrates with the Sprint 1 metrics capture pipeline and is marked `@pytest.mark.integration` for CI gating. A runbook is added to `docs/guides/` documenting E2E test execution and result interpretation.
 
-**Phase ordering rationale**: The runbook (Phase 2) is explicitly retrospective documentation — it consolidates the completed test harness into a guide for future operators. It does NOT provide guidance that Phase 1 needs; Phase 1 draws from: (1) existing test patterns in `tests/test_mcp_server.py`, (2) the `@pytest.mark.integration` marker already registered in `pyproject.toml`, and (3) tool signatures documented in `mcp_server/tools/`. The runbook's CI workflow guidance documents invocation of already-written tests (e.g., `uv run pytest tests/integration/ -m integration -v`) — it does not shape test design, query structure, or marker usage in Phase 1. Per AGENTS.md: "Retrospective documentation (consolidating completed work) is the natural exception and may trail its phase." CI integration per #494 acceptance criteria is explicitly noted as "(optional: may defer to follow-up)."
+**Phase ordering rationale**: The runbook (Phase 2) is strictly retrospective — it documents test execution commands and `pytest` marker usage for the harness built in Phase 1. It does NOT cover metrics pipeline integration (already in `docs/guides/mcp-quality-metrics.md`) or result interpretation criteria (already in metrics baseline files). Phase 1 inputs are fully specified as: (1) existing test patterns in `tests/test_mcp_server.py`, (2) `@pytest.mark.integration` marker already registered in `pyproject.toml`, and (3) tool signatures in `mcp_server/tools/`. Per AGENTS.md: "Retrospective documentation (consolidating completed work) is the natural exception and may trail its phase."
 
 **Governing axiom**: Endogenous-First — survey existing test patterns in `tests/test_mcp_server.py` and `tests/test_mcp_server_telemetry.py` before designing the harness. Re-use baseline metric structure from `docs/metrics/mcp-quality-baseline-2026-03-27.*`.
 
@@ -53,10 +53,10 @@ Build an end-to-end integration test suite for the 8 canonical dogma MCP governa
 ### Phase 2 — Runbook Documentation ⬜
 **Agent**: Executive Docs  
 **Deliverables**:
-- `docs/guides/mcp-e2e-testing.md` — runbook covering: test execution commands, marker usage, result interpretation, integration with metrics pipeline, CI workflow guidance
+- `docs/guides/mcp-e2e-testing.md` — strictly retrospective runbook covering: how to run the E2E test suite (`pytest` invocation commands), marker usage (`-m integration`), and how to interpret test output (pass/fail signals, fixture setup). Cross-references to the existing `docs/guides/mcp-quality-metrics.md` for metrics pipeline integration — does NOT re-document the metrics pipeline or define result interpretation criteria (those are already encoded in `mcp-quality-metrics.md`).
 
 **Depends on**: Phase 1 Review APPROVED  
-**CI**: `uv run python scripts/validate_synthesis.py` (if applicable)  
+**CI**: n/a  
 **Status**: Not started
 
 ### Phase 2 Review — Review Gate ⬜
@@ -96,6 +96,6 @@ Build an end-to-end integration test suite for the 8 canonical dogma MCP governa
 - [ ] Error/edge case tests for malformed inputs
 - [ ] All integration tests marked `@pytest.mark.integration`
 - [ ] Tests pass: `uv run pytest tests/integration/ -m integration -v`
-- [ ] `docs/guides/mcp-e2e-testing.md` runbook committed
+- [ ] `docs/guides/mcp-e2e-testing.md` retrospective runbook committed (pytest invocation, marker usage, test output interpretation)
 - [ ] Issue #494 acceptance criteria checkboxes updated
 - [ ] Progress comment posted on #494
