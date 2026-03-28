@@ -185,10 +185,18 @@ def perform_rotation(
             "archive_file": None,
         }
 
-    # Generate archive filename
+    # Generate archive filename from parseable timestamps only.
     ARCHIVE_DIR.mkdir(parents=True, exist_ok=True)
-    start_date = min((parse_timestamp(r.get("timestamp", "")) for r in to_archive), default=None)
-    end_date = max((parse_timestamp(r.get("timestamp", "")) for r in to_archive), default=None)
+    parsed_timestamps = []
+    for record in to_archive:
+        timestamp = record.get("timestamp", "")
+        try:
+            parsed_timestamps.append(parse_timestamp(timestamp))
+        except (ValueError, TypeError):
+            continue
+
+    start_date = min(parsed_timestamps) if parsed_timestamps else None
+    end_date = max(parsed_timestamps) if parsed_timestamps else None
 
     if start_date and end_date:
         start_str = start_date.date().isoformat()

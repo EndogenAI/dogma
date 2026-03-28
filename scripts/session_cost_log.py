@@ -22,7 +22,7 @@ Session Cost Log — JSON-based Token Burn Tracking
 - Dedup key: hash(model, tokens_in, tokens_out, timestamp_hour)
 - Timestamp rounded to hour boundary for replay-within-hour dedup
 - Prevents duplicate records from span re-processing or instrumentation replay
-- Distinct spans in same hour are NOT suppressed (dedup is content-based, not time-based)
+- Spans with identical model/token counts in the same hour are treated as duplicates
 
 **Usage**:
     # Programmatic
@@ -77,7 +77,7 @@ def build_dedup_key(model: str, tokens_in: int, tokens_out: int, timestamp: str)
     Strategy:
         - Hash the canonical fields: model, tokens_in, tokens_out, timestamp (rounded to hour)
         - Allows re-processing of same span without duplication (replay resilience)
-        - Does NOT suppress distinct spans (e.g., different token counts) in same hour
+        - Spans with identical model/token counts in the same hour are treated as duplicates
 
     Args:
         model: Model name

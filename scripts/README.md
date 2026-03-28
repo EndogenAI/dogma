@@ -64,7 +64,6 @@ scripts/
   health_check_services.py     # Poll /health endpoints for services in data/substrate-atlas.yml; exits 0 if all healthy, 1 if degraded, 2 if unreachable; --timeout, --services, --dry-run (closes #342)
   encoding_coverage.py         # Check MANIFESTO F1-F4 encoding coverage for named principles/axioms; outputs Markdown table (--manifesto, --agents)
   emit_otel_genai_spans.py     # Emit OTel spans with GenAI semantic convention attributes (canonical: gen_ai.provider.name; compatibility alias: gen_ai.system; plus gen_ai.request.model, gen_ai.usage.input_tokens, gen_ai.usage.output_tokens, gen_ai.response.finish_reasons); extends instrument_agent_calls.py; --model, --input-tokens, --output-tokens, --finish-reason (closes #369)
-  emit_otel_genai_spans.py     # Emit OTel spans with GenAI semantic convention attributes (canonical: gen_ai.provider.name; compatibility alias: gen_ai.system; plus gen_ai.request.model, gen_ai.usage.input_tokens, gen_ai.usage.output_tokens, gen_ai.response.finish_reasons); extends instrument_agent_calls.py; --model, --input-tokens, --output-tokens, --finish-reason (closes #369)
   emit_otel_metrics.py         # Emit OTel metrics for LLM usage (input/output tokens, duration) and system health (status); supports --dry-run and console export; --metric, --value, --model, --system
   capture_mcp_metrics.py       # Aggregate last-N (default 100) MCP tool-call observations from JSONL into per-tool metrics artifacts; supports --tool/--all, --window-calls, --dry-run (phase #499)
   report_mcp_metrics.py        # Render per-tool MCP metric artifacts into a Markdown report table including semantic, classical, defect, and usability surfaces (phase #499)
@@ -218,12 +217,12 @@ Commit the README entry in the same commit as the script. If the entry cannot be
 
 **Purpose**: Append canonical records to `session_cost_log.json`: required keys are `session_id`, `model`, `tokens_in`, `tokens_out`, `phase`, `timestamp`; optional `synthetic: true` is supported for explicit placeholder/boundary events. **Bridge idempotency guard** (Sprint 21 #488): deterministic dedup key prevents duplicate records from span re-processing or bridge instrumentation replay.
 
-**Dedup Strategy**: 
+**Dedup Strategy**:
 - Dedup key: `hash(model, tokens_in, tokens_out, timestamp_hour)`
 - Timestamp rounded to hour boundary for replay-within-hour dedup
 - Suppresses exact duplicates (same model + token counts within calendar hour)
 - Allows distinct spans in same hour (different token counts = different dedup key)
-- Bridge path (via `emit_otel_genai_spans.py`) uses dedup by default; manual CLI appends can `skip_dedup_check` if needed
+- Dedup applies to all `log_session_cost()` callers by default (including CLI/manual paths); bridge path uses the same default behavior
 - Internal field `_dedup_key` stored in each record for audit/replay detection
 
 **Tests**: [tests/test_session_cost_log.py](../tests/test_session_cost_log.py) (includes dedup/replay scenarios)
@@ -266,11 +265,13 @@ uv run python scripts/session_cost_log.py \
 
 **Path precedence**: `SESSION_COST_LOG_FILE` (if set) overrides the module default; if unset, the default file is repository-root `session_cost_log.json`.
 
-**Accepted source boundary**: Records must include all required keys and may include `synthetic` only. Unknown extra keys are rejected. Internal field `_dedup_key` is auto-populated by bridge path.
+**Accepted source boundary**: Records must include all required keys. The only user-writable optional extension field is `synthetic`; unknown extra keys are rejected. Internal field `_dedup_key` is reserved for dedup logic and auto-populated by default append paths.
 
 **Observability boundary**: See [docs/guides/observability-boundaries.md](../docs/guides/observability-boundaries.md) for what this local substrate can and cannot capture.
 
 ---
+
+## scripts/aggregate_session_costs.py
 
 **Job**: Enable agents to produce lean baseline aggregates in either default model+phase mode or role mode from the same six-field source substrate.
 

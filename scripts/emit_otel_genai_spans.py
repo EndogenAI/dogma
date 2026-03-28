@@ -94,8 +94,8 @@ def _append_session_cost_from_span(span_attributes: dict[str, object]) -> None:
     Idempotency strategy:
     - Dedup key is deterministic: hash(model, tokens_in, tokens_out, timestamp_hour)
     - Suppresses duplicate spans in same hour (replay resilience)
-    - Distinct spans (different token counts) are NOT suppressed
-    - Logs dedup suppression at warning level (expected behavior, not an error)
+    - Spans with identical model/token counts in the same hour are treated as duplicates
+    - Logs dedup suppression at debug level (expected behavior, not an error)
     """
     model = span_attributes.get("gen_ai.request.model")
     input_tokens = _coerce_token_count(span_attributes.get("gen_ai.usage.input_tokens"))
