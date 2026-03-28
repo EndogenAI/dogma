@@ -80,52 +80,141 @@ scripts/start_dashboard.py      — single launcher for both processes
 
 ---
 
-### Phase 1 — Research Sprint ⬜
+### Phase 1 — Research Sprint (10-Step Model-Swap Cadence) ⬜
 
-**Agent**: Executive Researcher → Research Scout → Research Synthesizer
 **Depends on**: Phase 0 APPROVED
-**Rate-limit risk**: HIGH — three delegations; rest gap between A and B
+**Rate-limit risk**: HIGH — multiple model swaps; deliberate pause points between substeps
 **Status**: Not started
 
-#### Delegation A — MCP Inspector + Upstream Survey (GATE for all implementation)
+**Cadence**: Alternates between Sonnet 4.5 (scouting/execution) and Sonnet 4.6 High Reasoning
+(synthesis/gap-detection/planning). Each substep pauses for human confirmation before proceeding.
 
-- Deep dive on [MCP Inspector](https://github.com/modelcontextprotocol/inspector): what it
-  does, coverage gaps, license, extensibility
-- Survey MCP ecosystem for any other dashboard/inspector tools
-- **Key question**: build-on-top vs. build-alongside vs. build-from-scratch?
-- Output: `docs/research/mcp-inspector-landscape.md` (Status: Final) + explicit
-  build-vs-extend recommendation that gates Phase 2+
+---
 
-#### Delegation B — Svelte Ecosystem (gates implementation tech choices)
+#### Phase 1A — Initial Research Scouting ⬜
+**Model**: Claude Sonnet 4.5
+**Agent**: Research Scout
+**Task**: Fetch and cache external sources:
+  - MCP Inspector GitHub repo (README, architecture, license)
+  - MCP ecosystem survey (npm packages, GitHub topics, Anthropic blog)
+  - Svelte ecosystem: SvelteKit vs Vite, data viz libraries
+  - Observability UX patterns (dashboards, real-time vs static)
+**Output**: Raw findings appended to scratchpad under `## Phase 1A Output`
+**Pause**: ✋ Human confirmation before Phase 1B
 
-- SvelteKit vs. bare Svelte + Vite for a local dev server SPA (no SSR needed)
-- Data viz libraries: LayerCake, Chart.js Svelte wrapper, D3 bindings, Recharts port —
-  which fits best for latency histograms + sparklines on low-resource devices
-- Key mental model shifts for React-background developers (reactivity model, stores vs
-  context, Svelte component lifecycle vs React hooks)
-- Output: `docs/research/svelte-ecosystem-for-webmcp.md` (Status: Final)
+---
 
-#### Delegation C — Observability UX Patterns
+#### Phase 1B — Initial Gap Detection ⬜
+**Model**: Claude Sonnet 4.6 High Reasoning
+**Agent**: Research Synthesizer
+**Task**: Analyze Phase 1A findings; identify knowledge gaps:
+  - What's unclear about MCP Inspector extensibility?
+  - Which Svelte data viz library is unvetted for low-resource devices?
+  - What observability patterns are mentioned but not detailed?
+**Output**: Gap list appended to scratchpad under `## Phase 1B Output — Knowledge Gaps`
+**Pause**: ✋ Surface questions to human before Phase 1C
 
-- Real-time vs static observability UX best practices — side-by-side coexistence patterns
-- Dashboard layout patterns for developer tooling (tabs + stacked sidebar)
-- MCP-centered data visualization patterns (tool invocation timelines, error waterfalls,
-  latency percentile charts)
-- Output: key decisions encoded back into Phase 3 scope in this workplan
+---
 
-#### Phase 1 Close: Knowledge Gap Identification
+#### Phase 1C — Secondary Scouting ⬜
+**Model**: Claude Sonnet 4.5
+**Agent**: Research Scout
+**Task**: Target fetch for Phase 1B gaps:
+  - Deep dive MCP Inspector source code (src/ directory scan)
+  - Benchmark reports for Svelte data viz libraries
+  - Observability UX case studies (Grafana, Datadog, Honeycomb patterns)
+**Output**: Secondary findings appended to scratchpad under `## Phase 1C Output`
+**Pause**: ✋ Human confirmation before Phase 1D
 
-After all three delegations, Research Scout explicitly surfaces: *"What do we still not know
-that would block implementation?"* — gaps logged in scratchpad under `## Knowledge Gaps`
-before Phase 1 Review is requested.
+---
 
-### Phase 1 Review ⬜
+#### Phase 1D — Initial Synthesis ⬜
+**Model**: Claude Sonnet 4.6 High Reasoning
+**Agent**: Research Synthesizer
+**Task**: Synthesize Phases 1A + 1C into preliminary findings:
+  - MCP Inspector: build-on-top vs. build-alongside recommendation (DRAFT)
+  - Svelte stack: SvelteKit vs Vite + data viz library shortlist
+  - Observability UX: real-time/static coexistence pattern candidates
+**Output**: Draft synthesis appended to scratchpad under `## Phase 1D Output — Draft Findings`
+**Pause**: ✋ Surface findings + open questions to human before Phase 1E
 
+---
+
+#### Phase 1E — Tertiary Gap Detection ⬜
+**Model**: Claude Sonnet 4.6 High Reasoning
+**Agent**: Research Synthesizer
+**Task**: Review Phase 1D synthesis; identify final-round gaps:
+  - Implementation blockers (license conflicts, architectural constraints)
+  - Tech stack uncertainties (Svelte + FastAPI integration gotchas)
+  - Deferred scope candidates (features to punt to V2)
+**Output**: Final gap list appended to scratchpad under `## Phase 1E Output — Final Gaps`
+**Pause**: ✋ Human confirmation of gap list before Phase 1F
+
+---
+
+#### Phase 1F — Tertiary Scouting ⬜
+**Model**: Claude Sonnet 4.5
+**Agent**: Research Scout
+**Task**: Resolve Phase 1E final gaps:
+  - License compatibility check (MCP Inspector MIT, dogma MIT)
+  - Svelte + FastAPI CORS/SSE integration examples
+  - V2 scope precedent from other MCP tooling
+**Output**: Final findings appended to scratchpad under `## Phase 1F Output`
+**Pause**: ✋ Human confirmation before Phase 1G
+
+---
+
+#### Phase 1G — Secondary Synthesis + Final Recommendations ⬜
+**Model**: Claude Sonnet 4.6 High Reasoning
+**Agent**: Research Synthesizer
+**Task**: Produce final research outputs:
+  - `docs/research/mcp-inspector-landscape.md` (Status: Final)
+  - `docs/research/svelte-ecosystem-for-webmcp.md` (Status: Final)
+  - Build-vs-extend decision (FINAL) that gates Phase 2+
+  - Tech stack locked: Svelte + Vite, data viz library chosen, sidecar pattern confirmed
+**Output**: Two committed research docs + decision record in scratchpad
+**Pause**: ✋ Surface final recommendations to human before Phase 1H
+
+---
+
+#### Phase 1H — Recommendation Issue/Comment Creation ⬜
+**Model**: Claude Sonnet 4.5
+**Agent**: Executive PM
+**Task**: Seed GitHub issues for deferred scope:
+  - Interactive dashboard (manual E2E trigger) → new issue
+  - VS Code webview extension → new issue
+  - MCP Inspector protocol compatibility → new issue (if relevant)
+**Output**: 2–3 new issues created; numbers logged in scratchpad
+**Pause**: ✋ Human confirmation before Phase 1I
+
+---
+
+#### Phase 1I — Sprint Replanning + Workplan Update ⬜
+**Model**: Claude Sonnet 4.6 High Reasoning
+**Agent**: Executive Planner
+**Task**: Update this workplan based on Phase 1G recommendations:
+  - Adjust Phase 2–5 scope if build-on-top changes architecture
+  - Lock tech stack decisions into Phase 2 deliverables
+  - Update deferred scope table with new issue numbers from Phase 1H
+  - Refine effort estimates if research surfaced complexity
+**Output**: `docs/plans/2026-03-28-mcp-web-dashboard.md` updated and committed
+**Pause**: ✋ Human approval of updated workplan before Phase 1J
+
+---
+
+#### Phase 1J — Phase 1 Review Gate ⬜
+**Model**: Auto (Review agent)
 **Agent**: Review
-**Deliverables**: APPROVED verdict; build-vs-extend recommendation confirmed; tech stack locked
-**Depends on**: Phase 1 deliverables committed
-**Gate**: Phase 2 does not begin until APPROVED and build-vs-extend decision is recorded
+**Task**: Validate Phase 1 outputs:
+  - Two research docs committed with Status: Final
+  - Build-vs-extend decision explicitly recorded
+  - Workplan updated and internally consistent
+  - Deferred scope issues seeded
+**Output**: APPROVED verdict logged under `## Phase 1 Review Output` in scratchpad
+**Gate**: Phase 2 does not begin until APPROVED
 **Status**: Not started
+
+
 
 ---
 
