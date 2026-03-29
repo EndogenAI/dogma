@@ -37,7 +37,7 @@ protocol compatibility).
 | Frontend | **Svelte** (repo root `web/`, Vite dev server — scaffold via `npm init vite web -- --template svelte`) |
 | Backend | **FastAPI sidecar** (`web/server.py`) — MCP stdio transport unchanged |
 | Data viz | **LayerCake** (~6 KB gzip, copy-paste components) — selected over svelte-chartjs (~62 KB Chart.js dependency) |
-| Data | Real-time = SSE from sidecar; Static = pre-computed JSON from `.cache/mcp-metrics/metrics.json` |
+| Data | Real-time = SSE from sidecar; Static = aggregated snapshot from `.cache/mcp-metrics/tool_calls.jsonl` |
 | CORS | **Hardcoded** `allow_origins=["http://localhost:5173"]` for MVP; env-var escape hatch deferred to #506 (V2) |
 | Interaction | **Read-only MVP**; interactive (manual E2E trigger) is deferred scope |
 | IDE story | **MVP = browser URL** (`localhost:5173`); VS Code webview = V2 sprint |
@@ -50,10 +50,10 @@ protocol compatibility).
 MCP Server (stdio)
        │
        ↓ writes
-.cache/mcp-metrics/metrics.json  ←— scripts/capture_mcp_metrics.py
+.cache/mcp-metrics/tool_calls.jsonl  ←— scripts/capture_mcp_metrics.py
        │
        ↓ reads
-web/server.py  (FastAPI sidecar, localhost:8080)
+web/server.py  (FastAPI sidecar, localhost:8000)
   ├── GET /api/metrics          (snapshot JSON)
   ├── GET /api/metrics/stream   (SSE — real-time updates, configurable interval)
   └── GET /api/health           (server status + last metrics timestamp)
@@ -63,7 +63,7 @@ web/src/  (Svelte SPA, localhost:5173 via Vite dev)
   ├── Overview Tab   — summary cards + trend sparklines
   ├── Tools Tab      — per-tool breakdown table + latency histogram (click-to-expand)
   ├── Errors Tab     — error log, searchable/filterable by tool + date range
-  └── Sidebar        — real-time panel: MCP server health, last 5 tool calls, refresh rate slider
+  └── Sidebar        — real-time panel: MCP server health, last 5 tool calls, polling interval buttons
 
 scripts/start_dashboard.py      — single launcher for both processes
 .vscode/tasks.json              — VS Code task: "Start MCP Dashboard"
@@ -264,20 +264,20 @@ scripts/start_dashboard.py      — single launcher for both processes
 **Deliverables**:
 
 - `web/server.py` complete:
-  - `GET /api/metrics` — reads `.cache/mcp-metrics/metrics.json`, returns snapshot
+  - `GET /api/metrics` — reads `.cache/mcp-metrics/tool_calls.jsonl`, returns snapshot
   - `GET /api/metrics/stream` — SSE via `fastapi.responses.StreamingResponse` with
     `media_type="text/event-stream"`; polls metrics file at configurable interval, pushes
     updates; graceful close on client disconnect
   - `GET /api/health` — returns `{"ok": bool, "last_updated": str, "tool_count": int}`
   - CORS hardcoded: `allow_origins=["http://localhost:5173"]`; no external origins permitted;
-    inline comment `# TODO(v2): read CORS_ALLOWED_ORIGINS from env (#506)`
+    inline comment `# TODO(v2): read WEBMCP_CORS_ORIGINS from env (#506)`
 - `tests/test_web_server.py` — pytest coverage ≥ 80%:
   - Mock metrics file reads
   - SSE stream yields updates
   - Health endpoint returns expected shape
   - CORS headers present on all routes
-- `tests/fixtures/mcp-metrics-sample.json` — pytest server mock fixture (all 12 tools represented)
-- `web/src/assets/fixture.json` — offline fallback fixture (all 12 tools represented); loaded by
+- `tests/fixtures/mcp-metrics-sample.json` — pytest server mock fixture (all 8 canonical tools represented)
+- `web/src/assets/fixture.json` — offline fallback fixture (all 8 canonical tools represented); loaded by
   `api.js` via static Vite `import` before first successful SSE connection
 
 ### Phase 3 Review ✅
@@ -313,7 +313,7 @@ scripts/start_dashboard.py      — single launcher for both processes
   machine: `LIVE` (green dot) on `EventSource.onopen`; `STALE` (amber + 'Last updated X min ago')
   on `EventSource.onerror`; exponential backoff reconnect 2 s → 4 s → 8 s, cap 30 s; successful
   reconnect resets to LIVE; connection exhaustion renders ERROR state; last 5 tool calls with
-  status icons; refresh rate slider (5s / 10s / 30s / paused)
+  status icons; polling interval buttons (5s / 10s / 30s / paused)
 - `lib/api.js` — fetch wrapper: `getSnapshot()` (REST), `subscribeStream(callback)` (SSE via
   browser-native `EventSource`; no frontend SSE library needed); `getSnapshot()` falls back to
   `import fixture from '../assets/fixture.json'` before first successful connection; displays

@@ -9,11 +9,11 @@ Behavior:
 - Waits until interrupted, then terminates both child processes.
 
 Usage:
-- uv run python scripts/start_dashboard.py
+- uv run --extra web python scripts/start_dashboard.py
 
 Exit codes:
 - 0: Clean shutdown after interrupt.
-- 1: Startup failure.
+- 1: Startup failure or child process crash.
 """
 
 from __future__ import annotations
@@ -24,11 +24,19 @@ import time
 from pathlib import Path
 
 
-def _spawn_processes(repo_root: Path) -> tuple[subprocess.Popen, subprocess.Popen]:
-    """Start sidecar and frontend as child processes.
+def _terminate(proc: subprocess.Popen) -> None:
+    """Attempt graceful shutdown, then force kill if needed."""
+    if proc.poll() is not None:
+        return
+    proc.terminate()
+    try:
+        proc.wait(timeout=5)
+    except subprocess.TimeoutExpired:
+        proc.kill()
 
-    This is a scaffold launcher for Phase 2 and intentionally keeps behavior minimal.
-    """
+
+def _spawn_processes(repo_root: Path) -> tuple[subprocess.Popen, subprocess.Popen]:
+    """Start sidecar and frontend as child processes."""
     web_dir = repo_root / "web"
     sidecar_cmd = [
         sys.executable,
@@ -43,23 +51,16 @@ def _spawn_processes(repo_root: Path) -> tuple[subprocess.Popen, subprocess.Pope
     frontend_cmd = ["npm", "run", "dev"]
 
     sidecar = subprocess.Popen(sidecar_cmd, cwd=repo_root)
-    frontend = subprocess.Popen(frontend_cmd, cwd=web_dir)
+    try:
+        frontend = subprocess.Popen(frontend_cmd, cwd=web_dir)
+    except OSError:
+        _terminate(sidecar)
+        raise
     return sidecar, frontend
 
 
-def _terminate(proc: subprocess.Popen) -> None:
-    """Attempt graceful shutdown, then force kill if needed."""
-    if proc.poll() is not None:
-        return
-    proc.terminate()
-    try:
-        proc.wait(timeout=5)
-    except subprocess.TimeoutExpired:
-        proc.kill()
-
-
 def main() -> int:
-    """Run placeholder dashboard launcher until interrupted."""
+    """Run dashboard launcher until interrupted or child failure."""
     repo_root = Path(__file__).resolve().parents[1]
     if not (repo_root / "web").exists():
         print("web/ directory not found; scaffold is required before launch.")
@@ -71,11 +72,21 @@ def main() -> int:
         print(f"Failed to start dashboard processes: {exc}")
         return 1
 
-    print("MCP dashboard stub launcher started. Press Ctrl+C to stop.")
+    print("MCP dashboard launcher started. Press Ctrl+C to stop.")
+    exit_code = 0
     try:
         while True:
             if sidecar.poll() is not None or frontend.poll() is not None:
-                print("A child process exited; shutting down launcher.")
+                sidecar_rc = sidecar.poll()
+                frontend_rc = frontend.poll()
+                if (sidecar_rc not in (None, 0)) or (frontend_rc not in (None, 0)):
+                    print(
+                        "A child process exited with failure "
+                        f"(sidecar={sidecar_rc}, frontend={frontend_rc}); shutting down launcher."
+                    )
+                    exit_code = 1
+                else:
+                    print("A child process exited cleanly; shutting down launcher.")
                 break
             time.sleep(0.5)
     except KeyboardInterrupt:
@@ -84,7 +95,7 @@ def main() -> int:
         _terminate(frontend)
         _terminate(sidecar)
 
-    return 0
+    return exit_code
 
 
 if __name__ == "__main__":

@@ -17,7 +17,8 @@ A browser observability dashboard for visualising MCP tool call telemetry from
 ## Quick Start
 
 ```bash
-uv run python scripts/start_dashboard.py
+uv sync --extra web
+uv run --extra web python scripts/start_dashboard.py
 ```
 
 Then open `http://localhost:5173` in your browser.
@@ -44,7 +45,7 @@ Per-tool breakdown for each of the 8 tracked tools:
 `check_substrate`, `validate_agent_file`, `validate_synthesis`, `scaffold_agent`,
 `scaffold_workplan`, `run_research_scout`, `query_docs`, `prune_scratchpad`.
 
-Each row shows: invocation count, error count, average latency, last-called timestamp.
+Each row shows: invocation count, error count, average latency, and p95 latency.
 
 ### Errors
 
@@ -63,7 +64,8 @@ The sidebar provides real-time connection status:
 | `STALE` | Connection lost; last-received snapshot displayed |
 | `ERROR` | Sidecar unreachable; offline fallback active |
 
-**Refresh rate slider** — controls the polling cadence: 5s / 10s / 30s / paused.
+**Polling interval buttons** — control REST polling cadence: 5s / 10s / 30s / paused.
+SSE updates remain live while connected.
 
 ---
 
@@ -82,7 +84,7 @@ No setup required — offline mode is automatic.
 CORS is hardcoded to `localhost:5173` for local development. This is intentional for the
 MVP: no external hosts can reach the sidecar API.
 
-V2 will add `DOGMA_DASHBOARD_ORIGIN` environment variable support to override the default
+V2 will add `WEBMCP_CORS_ORIGINS` environment variable support to override the default
 (tracked in #506).
 
 ---
@@ -100,7 +102,7 @@ Vite will serve the SPA with hot module replacement. The sidecar does **not** re
 automatically in this mode — start it separately:
 
 ```bash
-uv run python scripts/start_dashboard.py
+uv run --extra web python -m uvicorn web.server:app --host 127.0.0.1 --port 8000
 ```
 
 The `start_dashboard.py` script restarts both processes when run again.

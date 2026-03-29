@@ -13,7 +13,7 @@ npm install
 2. Start both sidecar + frontend:
 
 ```bash
-uv run python ../scripts/start_dashboard.py
+uv run --extra web python ../scripts/start_dashboard.py
 ```
 
 3. Optional frontend-only dev server:
