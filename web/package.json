@@ -9,6 +9,9 @@
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./jsconfig.json"
   },
+  "dependencies": {
+    "layercake": "^8.4.4"
+  },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^4.0.0",
     "svelte": "^5.0.0",
