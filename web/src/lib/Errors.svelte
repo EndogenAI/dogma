@@ -1,10 +1,12 @@
-<script>
+<script lang="ts">
   /**
    * Errors tab — tools with error_count > 0, filterable.
    */
-  let { data } = $props();
+  import type { MetricsSnapshot } from './types';
 
-  let searchQuery = $state('');
+  let { data }: { data: MetricsSnapshot } = $props();
+
+  let searchQuery = $state<string>('');
 
   let toolsWithErrors = $derived(
     Object.entries(data?.tools ?? {})

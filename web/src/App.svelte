@@ -1,24 +1,25 @@
-<script>
+<script lang="ts">
   /**
    * MCP Dashboard — root shell.
    * Manages data state, SSE updates (via Sidebar), and polling.
    */
   import { onMount } from 'svelte';
-  import { getSnapshot, isOffline } from './lib/api.js';
+  import { getSnapshot, isOffline } from './lib/api';
+  import type { MetricsSnapshot, ConnStatus } from './lib/types';
   import Overview from './lib/Overview.svelte';
   import Tools    from './lib/Tools.svelte';
   import Errors   from './lib/Errors.svelte';
   import Sidebar  from './lib/Sidebar.svelte';
   import fixtureData from './assets/fixture.json';
 
-  let activeTab      = $state('overview');
-  let data           = $state(fixtureData);
-  let connStatus     = $state(/** @type {'LIVE'|'STALE'|'ERROR'} */ ('LIVE'));
-  let refreshInterval = $state(10000);
-  let offline        = $state(true);
+  let activeTab       = $state('overview');
+  let data            = $state<MetricsSnapshot>(fixtureData as MetricsSnapshot);
+  let connStatus      = $state<ConnStatus>('LIVE');
+  let refreshInterval = $state<number>(10000);
+  let offline         = $state<boolean>(true);
 
   /** Called by Sidebar when SSE delivers a new snapshot */
-  function onData(snapshot) {
+  function onData(snapshot: MetricsSnapshot): void {
     data = snapshot;
     offline = false;
   }
@@ -74,6 +75,7 @@
       <!-- Tab bar -->
       <div class="tabs" role="tablist">
         <button
+          type="button"
           class="tab"
           class:active={activeTab === 'overview'}
           role="tab"
@@ -81,6 +83,7 @@
           onclick={() => { activeTab = 'overview'; }}
         >Overview</button>
         <button
+          type="button"
           class="tab"
           class:active={activeTab === 'tools'}
           role="tab"
@@ -88,6 +91,7 @@
           onclick={() => { activeTab = 'tools'; }}
         >Tools</button>
         <button
+          type="button"
           class="tab"
           class:active={activeTab === 'errors'}
           role="tab"
