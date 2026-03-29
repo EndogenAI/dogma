@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """Wait for a GitHub PR review (e.g., Copilot auto-review) to land.
 
-Polls `gh pr view <pr> --json latestReviews` at regular intervals until at
-least one review is present or the timeout is reached. Useful in agent
+Polls `gh pr view <pr> --json reviews` at regular intervals until at least
+one qualifying review is present or the timeout is reached. Useful in agent
 workflows where the next step (triage, reply, re-request) cannot begin until
 the automated review exists.
+
+Reviews with an empty body (e.g., thread-resolve actions that GitHub logs as
+COMMENTED reviews) are excluded by default via --min-body-len (default: 1).
 
 Usage:
     uv run python scripts/wait_for_pr_review.py <pr-number> [--timeout-secs 600] [--repo EndogenAI/dogma]
@@ -15,6 +18,11 @@ Arguments:
     --repo              Repository in format owner/repo (default: EndogenAI/dogma)
     --interval-secs     Poll interval in seconds (default: 15)
     --min-reviews       Minimum number of reviews to wait for (default: 1)
+    --min-body-len      Minimum body character length for a review to count (default: 1).
+                        Set to 0 to count all reviews including empty-body entries.
+    --states            Space-separated list of review states to accept. If omitted,
+                        all states are accepted. Options: APPROVED CHANGES_REQUESTED
+                        COMMENTED DISMISSED PENDING.
 
 Exit Codes:
     0                   At least --min-reviews review(s) have landed
@@ -22,8 +30,11 @@ Exit Codes:
     2                   PR not found or gh CLI error
 
 Examples:
-    # Wait for Copilot review on PR 510
+    # Wait for any non-empty review on PR 510
     uv run python scripts/wait_for_pr_review.py 510
+
+    # Wait only for APPROVED or CHANGES_REQUESTED reviews
+    uv run python scripts/wait_for_pr_review.py 510 --states APPROVED CHANGES_REQUESTED
 
     # Wait with 5-minute timeout, checking every 10 seconds
     uv run python scripts/wait_for_pr_review.py 510 --timeout-secs 300 --interval-secs 10
@@ -66,18 +77,44 @@ def parse_args() -> argparse.Namespace:
         default=1,
         help="Minimum number of reviews to wait for (default: 1)",
     )
+    parser.add_argument(
+        "--min-body-len",
+        type=int,
+        default=1,
+        help="Minimum body character length for a review to count (default: 1). "
+        "Set to 0 to include empty-body entries.",
+    )
+    parser.add_argument(
+        "--states",
+        nargs="*",
+        default=None,
+        metavar="STATE",
+        help="Space-separated list of review states to accept "
+        "(APPROVED CHANGES_REQUESTED COMMENTED DISMISSED PENDING). "
+        "If omitted, all states are accepted.",
+    )
     return parser.parse_args()
 
 
-def get_review_count(pr: int, repo: str) -> int | None:
-    """Fetch the current number of reviews on a PR.
+def get_review_count(
+    pr: int,
+    repo: str,
+    min_body_len: int = 1,
+    states: list[str] | None = None,
+) -> int | None:
+    """Fetch the current number of qualifying reviews on a PR.
 
     Args:
         pr: Pull request number
         repo: Repository in format owner/repo
+        min_body_len: Minimum body character length for a review to count.
+            Defaults to 1, which excludes empty-body thread-resolve events.
+        states: If provided, only reviews whose ``state`` is in this list are
+            counted. If None, all states are accepted.
 
     Returns:
-        Number of reviews, or None if fetch fails (PR not found or CLI error)
+        Number of qualifying reviews, or None if fetch fails (PR not found or
+        CLI error)
     """
     try:
         result = subprocess.run(
@@ -98,7 +135,13 @@ def get_review_count(pr: int, repo: str) -> int | None:
         if result.returncode != 0:
             return None
         data = json.loads(result.stdout)
-        return len(data.get("reviews", []))
+        reviews = data.get("reviews", [])
+        filtered = [
+            r
+            for r in reviews
+            if len(r.get("body", "")) >= min_body_len and (states is None or r.get("state") in states)
+        ]
+        return len(filtered)
     except (subprocess.TimeoutExpired, json.JSONDecodeError, KeyError):
         return None
 
@@ -122,7 +165,7 @@ def main() -> int:
     )
 
     while time.monotonic() < deadline:
-        count = get_review_count(args.pr, args.repo)
+        count = get_review_count(args.pr, args.repo, min_body_len=args.min_body_len, states=args.states)
 
         if count is None:
             consecutive_errors += 1
