@@ -330,28 +330,26 @@ no external CDN calls in production build
 
 ---
 
-### Phase 5 — Integration, Docs, CI ⬜
+### Phase 5 — Integration, Docs, CI ✅
 
 **Agent**: Executive Docs + CI Monitor
 **Depends on**: Phase 4 Review APPROVED
-**Status**: Not started
+**Status**: ✅ Complete — commit `5f228ae`
 
 **Deliverables**:
 
-- `docs/guides/mcp-dashboard.md` — setup guide: prerequisites (Python, Node), one-command
-  start, how to read each tab, how to configure refresh interval
-- `mcp_server/README.md` — cross-reference to dashboard guide
-- `README.md` — "MCP Dashboard" section with quick-start (`scripts/start_dashboard.py`)
-- `.github/workflows/web.yml` — finalised CI: lint + build + type-check (Svelte); fails PR
-  if build breaks; isolated from `tests.yml`
-- `web/README.md` — developer guide: how to add a new tab, how to extend the sidecar API
+- `docs/guides/mcp-dashboard.md` ✅ — setup guide committed
+- `mcp_server/README.md` ✅ — MCP Dashboard cross-reference added
+- `README.md` ✅ — MCP Dashboard section with quick-start added
+- `.github/workflows/web.yml` ✅ — **already finalised in Phase 2** (npm install + build + check); no further changes required
+- `web/README.md` ✅ — Extending the Dashboard section (add tab + sidecar API) added
 
-### Phase 5 Review ⬜
+### Phase 5 Review ✅
 
 **Agent**: Review
 **Deliverables**: APPROVED; CI workflow passes on branch; all docs cross-linked
 **Depends on**: Phase 5 deliverables committed
-**Status**: Not started
+**Status**: ✅ Complete — APPROVED (after workplan Phase 5 status fix)
 
 ---
 
