@@ -66,10 +66,13 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
+
+import yaml
 
 # ===========================================================================
 # Data Classes & Risk Assessment
@@ -175,6 +178,154 @@ def assess_agent_risk(
         f"Moderate axiom grounding ({axiom_cites} cite(s), {cite_intensity:.1%} intensity), "
         f"{coverage_note}. Monitor for drift.",
     )
+
+
+def risk_score(risk_level: str) -> int:
+    """Map risk level string to numeric score (higher = better)."""
+    return {"green": 2, "yellow": 1, "red": 0}.get(risk_level, 0)
+
+
+def get_base_risk_level(agent_path: str, base_sha: str, threshold: float = 0.5) -> Optional[str]:
+    """
+    Compute the risk level for an agent as it existed on base_sha.
+
+    Args:
+        agent_path: Repo-relative path to the agent file (e.g. '.github/agents/foo.agent.md').
+        base_sha: Git SHA of the PR base commit.
+        threshold: Citation threshold (same as assess_agent_risk).
+
+    Returns:
+        Risk level string ("green"/"yellow"/"red"), or None if file didn't exist on base branch.
+    """
+    try:
+        result = subprocess.run(
+            ["git", "show", f"{base_sha}:{agent_path}"],
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=30,
+        )
+        content = result.stdout
+    except subprocess.CalledProcessError:
+        return None  # File didn't exist on base branch (new agent)
+    except FileNotFoundError:
+        return None  # git not found
+    except subprocess.TimeoutExpired:
+        return None  # git show hung
+
+    # Extract YAML frontmatter
+    file_lines = content.splitlines()
+    if not file_lines or file_lines[0].strip() != "---":
+        axiom_cites = 0
+    else:
+        fm_lines = []
+        for line in file_lines[1:]:
+            if line.strip() == "---":
+                break
+            fm_lines.append(line)
+        try:
+            fm = yaml.safe_load("\n".join(fm_lines)) or {}
+        except yaml.YAMLError:
+            fm = {}
+        governs = fm.get("x-governs", [])
+        if isinstance(governs, list):
+            axiom_cites = len(governs)
+        elif governs:
+            axiom_cites = 1
+        else:
+            axiom_cites = 0
+
+    risk_level, _ = assess_agent_risk(
+        name=agent_path,
+        axiom_cites=axiom_cites,
+        test_coverage=None,
+        threshold=threshold,
+    )
+    return risk_level
+
+
+def generate_drift_section(
+    assessments: list[AgentRiskAssessment],
+    changed_files: set[str],
+    base_sha: Optional[str],
+    threshold: float = 0.5,
+) -> str:
+    """
+    Generate the Agent Drift Assessment Markdown section.
+
+    Args:
+        assessments: Current risk assessments for all agents.
+        changed_files: Set of repo-relative file paths changed in this PR.
+        base_sha: Git SHA of the PR base commit, or None.
+        threshold: Citation threshold passed to risk assessment.
+
+    Returns:
+        Markdown string for the drift section (empty string if no changed_files).
+    """
+    if not changed_files:
+        return ""
+
+    risk_emoji = {"green": "🟢", "yellow": "🟡", "red": "🔴"}
+
+    # Map agent name → assessment for O(1) lookup
+    assessment_map = {a.name: a for a in assessments}
+
+    # Find agents whose .agent.md file appears in changed_files
+    changed_agents: list[tuple[AgentRiskAssessment, str]] = []
+    for agent_path in sorted(changed_files):
+        if not agent_path.endswith(".agent.md"):
+            continue
+        agent_name = Path(agent_path).stem
+        if agent_name in assessment_map:
+            changed_agents.append((assessment_map[agent_name], agent_path))
+
+    lines = [
+        "",
+        "## Agent Drift Assessment",
+        "",
+        "> Agents whose provenance score changed or whose `.agent.md` file was modified in this PR.",
+        "",
+    ]
+
+    if not changed_agents:
+        lines.append("> No agent files modified in this PR.")
+        return "\n".join(lines)
+
+    lines.extend(
+        [
+            "| Agent | Change Type | Risk Before | Risk After | Delta |",
+            "|-------|-------------|-------------|------------|-------|",
+        ]
+    )
+
+    for assessment, agent_path in changed_agents:
+        change_type = "Direct"
+        after_emoji = risk_emoji.get(assessment.risk_level, "?")
+        after_label = f"{after_emoji} {assessment.risk_level}"
+
+        if base_sha:
+            before_level = get_base_risk_level(agent_path, base_sha, threshold)
+        else:
+            before_level = None
+
+        if before_level is None:
+            before_label = "—"
+            delta = "✨ new agent"
+        else:
+            before_emoji = risk_emoji.get(before_level, "?")
+            before_label = f"{before_emoji} {before_level}"
+            before_s = risk_score(before_level)
+            after_s = risk_score(assessment.risk_level)
+            if after_s > before_s:
+                delta = "↑ improved"
+            elif after_s < before_s:
+                delta = "↓ degraded"
+            else:
+                delta = "~ unchanged"
+
+        lines.append(f"| {assessment.name} | {change_type} | {before_label} | {after_label} | {delta} |")
+
+    return "\n".join(lines)
 
 
 # ===========================================================================
@@ -389,23 +540,33 @@ def generate_markdown_report(
             lines.append(f"- {rec}")
         lines.append("")
 
-    lines.extend(
-        [
-            "## Agent Risk Assessment",
-            "",
-            "| Agent | Status | Risk | Cites | Notes |",
-            "|-------|--------|------|-------|-------|",
-        ]
-    )
+    lines.append("## Agent Risk Assessment")
+    lines.append("")
 
-    for assessment in sorted(assessments, key=lambda a: ("red", "yellow", "green").index(a.risk_level)):
-        emoji = risk_emoji.get(assessment.risk_level, "?")
-        # Truncate notes if too long
-        notes_short = assessment.notes[:80] + "..." if len(assessment.notes) > 80 else assessment.notes
-        lines.append(
-            f"| {assessment.name} | {assessment.status} | "
-            f"{emoji} {assessment.risk_level} | {assessment.axiom_cites} | {notes_short} |"
+    n_green = sum(1 for a in assessments if a.risk_level == "green")
+    n_yellow = sum(1 for a in assessments if a.risk_level == "yellow")
+    n_red = sum(1 for a in assessments if a.risk_level == "red")
+    non_green = [a for a in assessments if a.risk_level in ("yellow", "red")]
+
+    if not non_green:
+        lines.append(f"✅ All {len(assessments)} agents green — no risk issues found.")
+    else:
+        lines.append(f"**{n_green} agent(s) green — omitted. {n_yellow} yellow, {n_red} red shown below.**")
+        lines.append("")
+        lines.extend(
+            [
+                "| Agent | Status | Risk | Cites | Notes |",
+                "|-------|--------|------|-------|-------|",
+            ]
         )
+        for assessment in sorted(non_green, key=lambda a: ("red", "yellow", "green").index(a.risk_level)):
+            emoji = risk_emoji.get(assessment.risk_level, "?")
+            # Truncate notes if too long
+            notes_short = assessment.notes[:80] + "..." if len(assessment.notes) > 80 else assessment.notes
+            lines.append(
+                f"| {assessment.name} | {assessment.status} | "
+                f"{emoji} {assessment.risk_level} | {assessment.axiom_cites} | {notes_short} |"
+            )
 
     lines.extend(
         [
@@ -459,6 +620,20 @@ def main():
         default=None,
         help="Write JSON risk assessment to file (default: stdout if --pr-comment, else JSON)",
     )
+    parser.add_argument(
+        "--changed-files",
+        nargs="*",
+        default=None,
+        help=(
+            "Space-separated list of repo-relative file paths changed in this PR (for Agent Drift Assessment section)"
+        ),
+    )
+    parser.add_argument(
+        "--base-sha",
+        type=str,
+        default=None,
+        help="Git SHA of the PR base commit (used to compute before-scores in drift assessment)",
+    )
 
     args = parser.parse_args()
 
@@ -485,7 +660,17 @@ def main():
     if args.pr_comment:
         # Write markdown to PR comment file
         comment_file = Path("/tmp/audit-comment.md")
-        comment_file.write_text(result.markdown_report, encoding="utf-8")
+        changed_files_set: set[str] = set(args.changed_files) if args.changed_files else set()
+        drift_section = generate_drift_section(
+            assessments=result.agents,
+            changed_files=changed_files_set,
+            base_sha=args.base_sha,
+            threshold=args.threshold,
+        )
+        full_comment = result.markdown_report
+        if drift_section:
+            full_comment = full_comment + "\n" + drift_section
+        comment_file.write_text(full_comment, encoding="utf-8")
         print(f"PR comment written to: {comment_file}", file=sys.stderr)
 
     # Always write JSON to output file if specified, or stdout

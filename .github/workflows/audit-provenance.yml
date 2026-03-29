@@ -54,11 +54,15 @@ jobs:
         id: parse
         if: always()
         run: |
+          readarray -t CHANGED_ARRAY < <(git diff --name-only ${{ github.event.pull_request.base.sha }} HEAD 2>/dev/null || true)
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
           uv run python scripts/parse_audit_result.py \
             /tmp/audit-report.json \
             --threshold 0.5 \
             --pr-comment \
-            --output /tmp/risk-assessment.json
+            --output /tmp/risk-assessment.json \
+            ${CHANGED_ARRAY:+--changed-files "${CHANGED_ARRAY[@]}"} \
+            --base-sha "$BASE_SHA"
         continue-on-error: true
 
       - name: "Display Audit Summary"
