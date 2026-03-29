@@ -353,18 +353,18 @@ no external CDN calls in production build
 
 ---
 
-### Phase 6 — Session Close ⬜
+### Phase 6 — Session Close ✅
 
 **Agent**: GitHub
 **Depends on**: Phase 5 Review APPROVED
-**Status**: Not started
+**Status**: ✅ Complete — PR #508 `https://github.com/EndogenAI/dogma/pull/508`
 
 **Deliverables**:
 
-- All changes pushed to `feat/mcp-web-dashboard`
-- PR opened: `feat(web): MCP dashboard MVP — WebMCP Explorer`
-- Fleet integration check run: `uv run python scripts/check_fleet_integration.py --dry-run`
-- Session scratchpad archived; `## Session Summary` written
+- ✅ All changes pushed to `feat/mcp-web-dashboard`
+- ✅ PR #508 opened: `https://github.com/EndogenAI/dogma/pull/508`
+- ✅ Fleet integration check run: `uv run python scripts/check_fleet_integration.py --dry-run` → clean
+- ✅ Session scratchpad archived; `## Session Summary` written
 
 ---
 
