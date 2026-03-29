@@ -8,8 +8,15 @@ Behavior:
 - Starts frontend dev server with `npm run dev` in `web/`.
 - Waits until interrupted, then terminates both child processes.
 
+Development mode (--development / -d):
+- Sidecar is launched with `--reload` (uvicorn auto-reloads on Python file changes).
+- Frontend already uses Vite HMR by default — no additional flag needed.
+- Add this flag when iterating on server.py or the Svelte UI source to avoid
+  manually restarting the launcher on every change.
+
 Usage:
 - uv run --extra web python scripts/start_dashboard.py
+- uv run --extra web python scripts/start_dashboard.py --development
 
 Exit codes:
 - 0: Clean shutdown after interrupt.
@@ -18,6 +25,7 @@ Exit codes:
 
 from __future__ import annotations
 
+import argparse
 import subprocess
 import sys
 import time
@@ -35,8 +43,15 @@ def _terminate(proc: subprocess.Popen) -> None:
         proc.kill()
 
 
-def _spawn_processes(repo_root: Path) -> tuple[subprocess.Popen, subprocess.Popen]:
-    """Start sidecar and frontend as child processes."""
+def _spawn_processes(repo_root: Path, *, development: bool = False) -> tuple[subprocess.Popen, subprocess.Popen]:
+    """Start sidecar and frontend as child processes.
+
+    Args:
+        repo_root:   Absolute path to the repository root.
+        development: When True, passes ``--reload`` to uvicorn so the
+                     sidecar automatically restarts on Python source changes.
+                     The frontend (Vite) already uses HMR unconditionally.
+    """
     web_dir = repo_root / "web"
     sidecar_cmd = [
         sys.executable,
@@ -48,6 +63,8 @@ def _spawn_processes(repo_root: Path) -> tuple[subprocess.Popen, subprocess.Pope
         "--port",
         "8000",
     ]
+    if development:
+        sidecar_cmd.append("--reload")
     frontend_cmd = ["npm", "run", "dev"]
 
     sidecar = subprocess.Popen(sidecar_cmd, cwd=repo_root)
@@ -61,13 +78,30 @@ def _spawn_processes(repo_root: Path) -> tuple[subprocess.Popen, subprocess.Pope
 
 def main() -> int:
     """Run dashboard launcher until interrupted or child failure."""
+    parser = argparse.ArgumentParser(description="Launch MCP dashboard sidecar and Svelte dev server.")
+    parser.add_argument(
+        "-d",
+        "--development",
+        action="store_true",
+        default=False,
+        help=(
+            "Enable development mode: sidecar runs with uvicorn --reload "
+            "(auto-restarts on Python file changes). "
+            "Frontend HMR is always active via Vite."
+        ),
+    )
+    args = parser.parse_args()
+
     repo_root = Path(__file__).resolve().parents[1]
     if not (repo_root / "web").exists():
         print("web/ directory not found; scaffold is required before launch.")
         return 1
 
+    if args.development:
+        print("Development mode: sidecar will reload on source changes.")
+
     try:
-        sidecar, frontend = _spawn_processes(repo_root)
+        sidecar, frontend = _spawn_processes(repo_root, development=args.development)
     except OSError as exc:
         print(f"Failed to start dashboard processes: {exc}")
         return 1
