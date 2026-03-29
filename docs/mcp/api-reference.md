@@ -5,7 +5,7 @@ status: Active
 
 # MCP Server API Reference
 
-The dogma governance MCP server exposes 8 tools for substrate validation, scaffolding, research, and session management.
+The dogma governance MCP server exposes 13 tools for substrate validation, scaffolding, research, session management, cross-platform path handling, inference routing, and live trace health checks.
 
 **Setup**: See [`mcp_server/README.md`](../../mcp_server/README.md) for installation and configuration.
 
@@ -239,6 +239,33 @@ prune_scratchpad(dry_run=true)
 
 ---
 
+### get_trace_health
+
+Return live JSONL trace capture health counters.
+
+**Parameters**: None
+
+**Returns** (JSON):
+```json
+{
+  "ok": true|false,
+  "write_success_count": int,
+  "write_fail_count": int,
+  "jsonl_path": "str",
+  "jsonl_exists": bool
+}
+```
+
+`ok` is `false` if any write failures have occurred since server start.
+
+**Example**:
+```
+get_trace_health()
+# Returns capture health before checking dashboard data
+```
+
+---
+
 ## Governance Package API
 
 The `packages/dogma-governance/` package exports core validation and scaffolding modules. See the package README for module structure and imports.
@@ -293,3 +320,24 @@ check_substrate()
 # Returns ok: true + full health report
 # If failures: fix & retry before proceeding with new phase
 ```
+
+---
+
+## Live Trace Record Schema
+
+Live tool-call records are appended as JSONL rows in `.cache/mcp-metrics/tool_calls.jsonl`.
+
+| Field | Type | Required |
+|-------|------|----------|
+| `tool_name` | string | Required |
+| `timestamp_utc` | string (ISO-8601 UTC) | Required |
+| `latency_ms` | number | Required |
+| `is_error` | boolean | Required |
+| `error_type` | string or null | Optional |
+| `source` | string | Required |
+| `tool_version` | string | Required |
+
+Quality fields such as `faithfulness` and `answer_relevance` are intentionally omitted
+from live records.
+
+Design rationale (Q4): [docs/research/mcp-live-trace-design.md](../research/mcp-live-trace-design.md).

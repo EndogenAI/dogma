@@ -27,6 +27,16 @@ The command launches two processes:
 - **Svelte SPA** — served by Vite at `http://localhost:5173`
 - **FastAPI sidecar** — served at `http://localhost:8000` (endpoints: `/api/metrics`, `/api/metrics/stream`, `/api/health`)
 
+## Data Source
+
+The dashboard reads from `.cache/mcp-metrics/tool_calls.jsonl`.
+
+- Records with `"source": "live"` are written by the instrumented MCP server
+- Records with `"source": "synthetic"` are seed data
+
+For the migration procedure, see [mcp_server/README.md#live-trace-capture](../../mcp_server/README.md#live-trace-capture).
+For design rationale, see [docs/research/mcp-live-trace-design.md](../research/mcp-live-trace-design.md).
+
 ---
 
 ## Understanding the Tabs
@@ -51,6 +61,8 @@ Each row shows: invocation count, error count, average latency, and p95 latency.
 
 Filtered view showing only tools with non-zero error counts. Use this tab to quickly
 identify degraded tools without scanning the full Tools table.
+
+> **Note**: Before the live JSONL capture migration (`uv run python scripts/migrate_tool_calls.py`), the Errors tab may show "no timestamp" because the 800 synthetic seed records lack a `timestamp_utc` field. After running the migration and triggering one real tool call, the Errors tab will show real ISO-8601 timestamps and `error_type` values.
 
 ---
 

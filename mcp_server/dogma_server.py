@@ -35,8 +35,14 @@ See mcp_server/README.md for full setup, Cursor config, and environment variable
 
 from __future__ import annotations
 
+import json
+import logging as _logging
+import pathlib
+import queue
+import threading
 import time
 from collections.abc import Callable
+from datetime import UTC, datetime
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
@@ -48,6 +54,7 @@ except ImportError:  # pragma: no cover - optional dependency
     _otel_metrics = None
     _otel_trace = None
 
+from mcp_server._version import TOOL_VERSION as _TOOL_VERSION
 from mcp_server.tools.cross_platform_tools import normalize_path as _normalize_path
 from mcp_server.tools.cross_platform_tools import resolve_env_path as _resolve_env_path
 from mcp_server.tools.inference import route_inference_request as _route_inference_request
@@ -60,6 +67,8 @@ from mcp_server.tools.scratchpad import prune_scratchpad as _prune_scratchpad
 from mcp_server.tools.validation import check_substrate as _check_substrate
 from mcp_server.tools.validation import validate_agent_file as _validate_agent_file
 from mcp_server.tools.validation import validate_synthesis as _validate_synthesis
+
+_logger = _logging.getLogger(__name__)
 
 _INSTRUCTIONS = """\
 You are connected to the dogma governance toolset.
@@ -83,6 +92,47 @@ Common workflow:
 """
 
 mcp = FastMCP("dogma-governance", instructions=_INSTRUCTIONS)
+
+# ---------------------------------------------------------------------------
+# JSONL trace writer — non-blocking background daemon
+# ---------------------------------------------------------------------------
+
+_JSONL_PATH = pathlib.Path(".cache/mcp-metrics/tool_calls.jsonl")
+_JSONL_QUEUE: queue.Queue = queue.Queue(maxsize=0)  # unbounded
+
+# Module-level counters — thread-safe for int assignment under CPython GIL
+_WRITE_SUCCESS_COUNT: int = 0
+_WRITE_FAIL_COUNT: int = 0
+
+
+def _jsonl_writer() -> None:
+    """Background daemon: drain _JSONL_QUEUE and append records to JSONL file.
+
+    Counters _WRITE_SUCCESS_COUNT / _WRITE_FAIL_COUNT track write outcomes.
+    OSError is logged as WARNING but never propagates to the tool caller.
+    """
+    global _WRITE_SUCCESS_COUNT, _WRITE_FAIL_COUNT  # noqa: PLW0603
+    _JSONL_PATH.parent.mkdir(parents=True, exist_ok=True)
+    while True:
+        record = _JSONL_QUEUE.get()
+        if record is None:  # sentinel — clean shutdown
+            break
+        try:
+            with _JSONL_PATH.open("a", encoding="utf-8") as fh:
+                fh.write(json.dumps(record, ensure_ascii=False) + "\n")
+            _WRITE_SUCCESS_COUNT += 1
+        except OSError as exc:
+            _WRITE_FAIL_COUNT += 1
+            _logger.warning(
+                "mcp-jsonl-writer: write failed (path=%s, error=%s: %s)",
+                _JSONL_PATH,
+                type(exc).__name__,
+                exc,
+            )
+
+
+_writer_thread = threading.Thread(target=_jsonl_writer, daemon=True, name="mcp-jsonl-writer")
+_writer_thread.start()
 
 _TRACER = _otel_trace.get_tracer("dogma.mcp.server") if _otel_trace else None
 _METER = _otel_metrics.get_meter("dogma.mcp.server") if _otel_metrics else None
@@ -109,25 +159,62 @@ def _run_with_mcp_telemetry(tool_name: str, call: Callable[[], dict]) -> dict:
         with _TRACER.start_as_current_span("mcp.server.execute_tool") as span:
             span.set_attribute("gen_ai.tool.name", tool_name)
             span.set_attribute("gen_ai.operation.name", "execute_tool")
+            _trace_is_error: bool = False
+            _trace_error_type: str | None = None
             try:
                 result = call()
-                if result.get("ok") is False or result.get("errors"):
+                _trace_is_error = bool(result.get("ok") is False or result.get("errors"))
+                _trace_error_type = "tool_error" if _trace_is_error else None
+                if _trace_is_error:
                     span.set_attribute("error.type", "tool_error")
                 return result
-            except Exception:
+            except Exception as exc:
+                _trace_is_error = True
+                _trace_error_type = type(exc).__name__
                 span.set_attribute("error.type", "tool_error")
                 raise
             finally:
                 duration_s = time.perf_counter() - started
                 if _OP_DURATION_HISTOGRAM:
                     _OP_DURATION_HISTOGRAM.record(duration_s, attributes)
+                _JSONL_QUEUE.put_nowait(
+                    {
+                        "tool_name": tool_name,
+                        "timestamp_utc": datetime.now(UTC).isoformat(),
+                        "latency_ms": round(duration_s * 1000, 3),
+                        "is_error": _trace_is_error,
+                        "error_type": _trace_error_type,
+                        "source": "live",
+                        "tool_version": _TOOL_VERSION,
+                    }
+                )
 
+    _trace_is_error: bool = False
+    _trace_error_type: str | None = None
     try:
-        return call()
+        result = call()
+        _trace_is_error = bool(result.get("ok") is False or result.get("errors"))
+        _trace_error_type = "tool_error" if _trace_is_error else None
+        return result
+    except Exception as exc:
+        _trace_is_error = True
+        _trace_error_type = type(exc).__name__
+        raise
     finally:
         duration_s = time.perf_counter() - started
         if _OP_DURATION_HISTOGRAM:
             _OP_DURATION_HISTOGRAM.record(duration_s, attributes)
+        _JSONL_QUEUE.put_nowait(
+            {
+                "tool_name": tool_name,
+                "timestamp_utc": datetime.now(UTC).isoformat(),
+                "latency_ms": round(duration_s * 1000, 3),
+                "is_error": _trace_is_error,
+                "error_type": _trace_error_type,
+                "source": "live",
+                "tool_version": _TOOL_VERSION,
+            }
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -373,6 +460,33 @@ def route_inference_request(
         "route_inference_request",
         lambda: _route_inference_request(prompt, model_id, max_tokens, temperature),
     )
+
+
+# ---------------------------------------------------------------------------
+# Trace capture observability
+# ---------------------------------------------------------------------------
+
+
+@mcp.tool()
+def get_trace_health() -> dict:
+    """Return live JSONL trace capture health counters.
+
+    Returns:
+        {
+          "ok": bool,
+          "write_success_count": int,
+          "write_fail_count": int,
+          "jsonl_path": str,
+          "jsonl_exists": bool,
+        }
+    """
+    return {
+        "ok": _WRITE_FAIL_COUNT == 0,
+        "write_success_count": _WRITE_SUCCESS_COUNT,
+        "write_fail_count": _WRITE_FAIL_COUNT,
+        "jsonl_path": str(_JSONL_PATH),
+        "jsonl_exists": _JSONL_PATH.exists(),
+    }
 
 
 if __name__ == "__main__":

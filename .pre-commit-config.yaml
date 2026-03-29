@@ -65,6 +65,12 @@ repos:
         language: system
         pass_filenames: false
         stages: [pre-push]
+      - id: check-branch-counter
+        name: Warn if BRANCH_COUNTER != 0 before push to main
+        entry: python3 scripts/check_branch_counter.py
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
       - id: check-doc-links
         name: Check relative file links in Markdown docs
         entry: python3 scripts/check_doc_links.py

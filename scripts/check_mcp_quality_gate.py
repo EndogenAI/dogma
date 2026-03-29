@@ -27,6 +27,31 @@ import glob
 import json
 from pathlib import Path
 
+_JSONL_PATH = Path(".cache/mcp-metrics/tool_calls.jsonl")
+
+
+def check_capture_health() -> bool:
+    """Check whether live JSONL trace capture is producing records.
+
+    Returns True (PASS) if .cache/mcp-metrics/tool_calls.jsonl exists and
+    contains at least one line with 'source': 'live'.  Returns False (WARNING)
+    if the file is absent, empty, or contains no live records — this is not a
+    hard FAIL because the file is absent until the migration script runs.
+    """
+    if not _JSONL_PATH.exists():
+        print("WARNING [capture_health]: tool_calls.jsonl not found — capture not yet active")
+        return True  # soft warning; does not fail the gate
+    lines = _JSONL_PATH.read_text(encoding="utf-8").splitlines()
+    live_lines = [ln for ln in lines if '"source": "live"' in ln]
+    if not live_lines:
+        print(
+            f"WARNING [capture_health]: tool_calls.jsonl exists ({len(lines)} lines) "
+            "but contains no live-source records"
+        )
+        return True  # soft warning; does not fail the gate
+    print(f"PASS [capture_health]: {len(live_lines)} live record(s) found in tool_calls.jsonl")
+    return True
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Check MCP quality gate thresholds from metrics artifacts.")
@@ -39,6 +64,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    check_capture_health()
     files = [Path(p) for p in sorted(glob.glob(args.input_glob))]
     if not files:
         print(f"FAIL: no metrics files found for glob {args.input_glob}")

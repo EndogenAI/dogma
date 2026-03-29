@@ -1,7 +1,7 @@
 # dogma MCP Server
 
 Exposes the dogma governance toolset as an [MCP](https://modelcontextprotocol.io/) server
-using [FastMCP](https://github.com/jlowin/fastmcp). Provides 12 tools for validating,
+using [FastMCP](https://github.com/jlowin/fastmcp). Provides 13 tools for validating,
 scaffolding, researching, managing sessions, routing inference, and normalizing cross-platform paths within the dogma repository.
 
 ---
@@ -20,6 +20,7 @@ scaffolding, researching, managing sessions, routing inference, and normalizing 
 | `prune_scratchpad` | Initialise or inspect the session scratchpad |
 | `detect_user_interrupt` | **Per-phase** — check for user STOP/ABORT/CANCEL signals before any phase action; returns `interrupted: true` if detected |
 | `route_inference_request` | Route inference requests to local or external providers based on model_id (Local-Compute-First) |
+| `get_trace_health` | Return live JSONL trace capture health counters (write_success_count, write_fail_count, jsonl_exists) |
 
 ---
 
@@ -52,6 +53,25 @@ browser dashboard.
 
 See [docs/guides/mcp-dashboard.md](../docs/guides/mcp-dashboard.md) for the full setup
 guide, tab descriptions, and offline mode.
+
+## Live Trace Capture
+
+Every tool call routed through `_run_with_mcp_telemetry()` appends a JSONL record to
+`.cache/mcp-metrics/tool_calls.jsonl`.
+
+Record shape:
+
+```json
+{"tool_name": "check_substrate", "timestamp_utc": "2026-03-29T...", "latency_ms": 42.1, "is_error": false, "error_type": null, "source": "live", "tool_version": "0.1.0.0"}
+```
+
+`tool_version` format is `{pkg_version}.{BRANCH_COUNTER}` from `mcp_server/_version.py`.
+`BRANCH_COUNTER` must be `0` before merging to `main`.
+
+Migration: run `uv run python scripts/migrate_tool_calls.py` once to archive the 800
+synthetic seed records before enabling live capture.
+
+Design rationale: [docs/research/mcp-live-trace-design.md](../docs/research/mcp-live-trace-design.md).
 
 ---
 
