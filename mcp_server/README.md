@@ -42,6 +42,19 @@ Reads provider configuration from `data/inference-providers.yml`. Returns routin
 
 ---
 
+## MCP Dashboard
+
+Visualise MCP tool call telemetry from `.cache/mcp-metrics/tool_calls.jsonl` in a
+browser dashboard.
+
+**Quick start**: `uv run python scripts/start_dashboard.py` — opens the Svelte SPA at
+`http://localhost:5173` and the FastAPI sidecar at `http://localhost:8000`.
+
+See [docs/guides/mcp-dashboard.md](../docs/guides/mcp-dashboard.md) for the full setup
+guide, tab descriptions, and offline mode.
+
+---
+
 ## Prerequisites
 
 ```bash

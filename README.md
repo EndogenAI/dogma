@@ -121,6 +121,26 @@ MANIFESTO.md               # Endogenic development philosophy and dogma
 
 ---
 
+## MCP Dashboard
+
+A browser dashboard for visualising MCP tool call telemetry from `.cache/mcp-metrics/tool_calls.jsonl`.
+
+**Quick start**:
+```bash
+uv run python scripts/start_dashboard.py
+```
+Then open `http://localhost:5173`.
+
+- **Overview tab** — total invocations, error rate %, avg latency
+- **Tools tab** — per-tool breakdown with latency and error stats
+- **Errors tab** — tools with non-zero error counts
+- **Sidebar** — real-time LIVE/STALE/ERROR connection status
+
+Offline fallback: dashboard loads from bundled fixture when sidecar is unreachable.
+See [docs/guides/mcp-dashboard.md](docs/guides/mcp-dashboard.md) for full docs.
+
+---
+
 ## Related
 
 - [AccessiTech/EndogenAI](https://github.com/AccessiTech/EndogenAI) — the experimental MCP framework where these patterns were pioneered

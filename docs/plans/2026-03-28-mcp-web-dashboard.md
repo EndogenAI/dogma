@@ -289,11 +289,11 @@ scripts/start_dashboard.py      — single launcher for both processes
 
 ---
 
-### Phase 4 — Svelte Frontend Implementation ⬜
+### Phase 4 — Svelte Frontend Implementation ✅
 
 **Agent**: Executive Scripter (Svelte focus)
 **Depends on**: Phase 3 Review APPROVED
-**Status**: Not started
+**Status**: ✅ Complete — commits `50d92f6` (UI) + `64456e3` (.gitignore fix)
 
 **Deliverables** (`web/src/`):
 
@@ -320,13 +320,13 @@ scripts/start_dashboard.py      — single launcher for both processes
   'Offline — showing cached data' banner when fallback is active
 - Responsive layout: sidebar collapses at < 900px width
 
-### Phase 4 Review ⬜
+### Phase 4 Review ✅
 
 **Agent**: Review
 **Deliverables**: APPROVED; all three tabs render with sample fixture; offline fallback confirmed;
 no external CDN calls in production build
 **Depends on**: Phase 4 deliverables committed
-**Status**: Not started
+**Status**: ✅ Complete — APPROVED
 
 ---
 
