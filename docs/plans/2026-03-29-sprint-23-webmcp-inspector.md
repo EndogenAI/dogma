@@ -15,14 +15,16 @@ Implement MCP-based browser inspector capability that allows VS Code Copilot to 
 
 ## Phase Plan
 
-### Phase 0 — Workplan Review ⬜
-**Agent**: Review
+### Phase 0 — Gap Analysis & Deep Dive Research ⬜
+**Agent**: Executive Orchestrator + Executive Planner
 **Deliverables**:
-- Workplan validated against phase ordering constraints
-- APPROVED verdict logged under `## Workplan Review Output` in scratchpad
+- Gap analysis: survey existing MCP tooling, identify what's unknown
+- Deep dive research: review MCP protocol spec, browser security constraints, existing implementations
+- Replanning: adjust phase scope based on findings (may split/merge phases)
+- Workplan doc reviewed by Review agent (APPROVED verdict in scratchpad)
 
 **Depends on**: nothing
-**Gate**: Phase 1 does not begin until APPROVED
+**Gate**: Phase 1 does not begin until replanning complete and workplan APPROVED
 **Status**: Not started
 
 ### Phase 1 — WebMCP Ecosystem Research ⬜
