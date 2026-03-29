@@ -16,6 +16,17 @@ Instrument `mcp_server/dogma_server.py` to append real JSONL records to `.cache/
 
 ## Phase Plan
 
+### Phase 0 — Workplan Review Gate ⬜
+**Agent**: Review  
+**Deliverables**:
+- `## Workplan Review Output` appended to scratchpad, verdict: APPROVED
+
+**Depends on**: workplan committed  
+**Gate**: Phase 1 does not begin until Review returns APPROVED  
+**Status**: ⬜ Not started
+
+---
+
 ### Phase 1 — Research & Design Decisions ⬜
 **Agent**: Executive Researcher  
 **Effort**: S (2–3 hours)  
@@ -24,7 +35,7 @@ Instrument `mcp_server/dogma_server.py` to append real JSONL records to `.cache/
 - D1.2: Research doc includes canonical examples of the chosen append pattern (e.g., file locking pseudocode or queue+thread architecture)
 - D1.3: Explicit decision on synthetic data handling (delete, archive, or keep+append with metadata flag)
 
-**Depends on**: nothing  
+**Depends on**: Phase 0 APPROVED  
 **Gate**: Phase 2 does not start until `docs/research/mcp-live-trace-design.md` is committed with all 4 design questions answered and recommendation for each marked ADOPT or DEFER.  
 **Script opportunity**: `uv run python scripts/query_docs.py "file I/O atomicity Python"` to check if prior research exists.  
 **Status**: ⬜ Not started

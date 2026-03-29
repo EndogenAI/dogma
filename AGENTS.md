@@ -672,13 +672,18 @@ Full protocol: see [`session-management` SKILL.md](.github/skills/session-manage
 
 These constraints govern the phase ordering of every committed workplan. Violating them is the primary cause of re-review debt: implementation phases completed before their informing research or documentation must be re-examined once those inputs land.
 
-**Research-First (cross-cutting)**: Research that informs two or more implementation phases must be placed in the earliest executable phase (Phase 2 by convention) and treated as a hard gate on all implementation phases it informs. It may **not** be annotated as "parallel with" any phase it informs. Marking cross-cutting research as parallel with implementation creates a loophole — parallel becomes deferred in practice, and re-review debt accumulates silently.
+**Phase Numbering Convention**:
+- **Phase 0**: Workplan Review Gate (mandatory for all workplans)
+- **Phase 1**: Sprint-specific research (highly recommended — identifies gaps and design questions before implementation begins)
+- **Phase 2+**: Implementation phases
+
+**Research-First (cross-cutting)**: Research that informs two or more implementation phases must be placed in **Phase 1** (the earliest executable phase) and treated as a hard gate on all implementation phases it informs. It may **not** be annotated as "parallel with" any phase it informs. Marking cross-cutting research as parallel with implementation creates a loophole — parallel becomes deferred in practice, and re-review debt accumulates silently.
 
 **Research-First (phase-specific)**: Research that informs exactly one later phase must be placed immediately before that phase (Phase N−1 pattern). It still gates that phase — it is never parallel with it.
 
 **Documentation-First**: Documentation that encodes guidance for agents, workflows, or conventions must precede phases that depend on that guidance. Retrospective documentation (consolidating completed work) is the natural exception and may trail its phase. When documentation provides guidance that agents need during a phase, it must gate that phase the same way research does.
 
-**Workplan Review Gate**: Every workplan must pass a Review gate *before* Phase 1 (the first execution phase) begins. The Review agent validates phase ordering, research front-loading, and documentation prioritization. No execution phase may begin until the workplan Review returns APPROVED and the verdict is logged in the scratchpad under `## Workplan Review Output`.
+**Workplan Review Gate**: Every workplan must include **Phase 0** — a Review gate that validates phase ordering, research front-loading, and documentation prioritization before any execution begins. The Review agent returns APPROVED or REQUEST CHANGES; the verdict is logged in the scratchpad under `## Workplan Review Output`. No execution phase may begin until Phase 0 returns APPROVED.
 
 **Chicken-and-Egg Resolution** — when research and documentation both compete for the earliest phase:
 
