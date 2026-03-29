@@ -10,243 +10,245 @@ import pytest
 # Add scripts directory to path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scripts"))
 
-from wait_for_pr_review import get_review_count, main
+from wait_for_pr_review import get_pr_state, main
 
 
-class TestGetReviewCount:
-    """Test get_review_count function."""
+class TestGetPrState:
+    """Test get_pr_state function."""
 
     @patch("subprocess.run")
     def test_no_reviews_yet(self, mock_run):
-        """Test PR with empty-body review returns 0 (filtered out by default)."""
+        """pending=[copilot], reviews=[] → state returned correctly."""
         mock_run.return_value = MagicMock(
             returncode=0,
-            stdout='{"reviews": [{"body": "", "state": "COMMENTED"}]}\n',
+            stdout='{"reviewRequests": [{"login": "copilot"}], "reviews": []}\n',
         )
-        count = get_review_count(510, "owner/repo")
-        assert count == 0
+        state = get_pr_state(510, "owner/repo")
+        assert state is not None
+        assert state["pending"] == ["copilot"]
+        assert state["reviews"] == []
 
     @patch("subprocess.run")
-    def test_one_review_present(self, mock_run):
-        """Test PR with one non-empty review returns 1."""
+    def test_all_reviews_landed(self, mock_run):
+        """pending=[], reviews=[{id, body, state, author}] → parsed correctly."""
         mock_run.return_value = MagicMock(
             returncode=0,
             stdout=(
-                '{"reviews": [{"author": {"login": "copilot-pull-request-reviewer"},'
-                ' "state": "COMMENTED", "body": "Review comment"}]}\n'
+                '{"reviewRequests": [], "reviews": [{"id": "r1", "body": "lgtm", '
+                '"state": "APPROVED", "author": {"login": "copilot"}}]}\n'
             ),
         )
-        count = get_review_count(510, "owner/repo")
-        assert count == 1
-
-    @patch("subprocess.run")
-    def test_multiple_reviews(self, mock_run):
-        """Test PR with multiple non-empty reviews returns correct count."""
-        mock_run.return_value = MagicMock(
-            returncode=0,
-            stdout=(
-                '{"reviews": [{"state": "COMMENTED", "body": "first review"}, {"state": "APPROVED", "body": "lgtm"}]}\n'
-            ),
-        )
-        count = get_review_count(510, "owner/repo")
-        assert count == 2
-
-    @patch("subprocess.run")
-    def test_filter_empty_body(self, mock_run):
-        """Test that empty-body reviews are filtered out by default."""
-        mock_run.return_value = MagicMock(
-            returncode=0,
-            stdout=(
-                '{"reviews": [{"body": "", "state": "COMMENTED"},'
-                ' {"body": "", "state": "COMMENTED"},'
-                ' {"body": "Real review text", "state": "COMMENTED"}]}\n'
-            ),
-        )
-        count = get_review_count(510, "owner/repo")
-        assert count == 1
-
-    @patch("subprocess.run")
-    def test_filter_by_state(self, mock_run):
-        """Test state filtering returns only reviews matching given states."""
-        mock_run.return_value = MagicMock(
-            returncode=0,
-            stdout=(
-                '{"reviews": [{"body": "approved!", "state": "APPROVED"},'
-                ' {"body": "looks ok", "state": "COMMENTED"}]}\n'
-            ),
-        )
-        count = get_review_count(510, "owner/repo", states=["APPROVED"])
-        assert count == 1
-
-    @patch("subprocess.run")
-    def test_min_body_len_custom(self, mock_run):
-        """Test custom min_body_len excludes reviews with short bodies."""
-        mock_run.return_value = MagicMock(
-            returncode=0,
-            stdout='{"reviews": [{"body": "short", "state": "COMMENTED"}]}\n',
-        )
-        count = get_review_count(510, "owner/repo", min_body_len=10)
-        assert count == 0
+        state = get_pr_state(510, "owner/repo")
+        assert state is not None
+        assert state["pending"] == []
+        assert len(state["reviews"]) == 1
+        assert state["reviews"][0] == {
+            "id": "r1",
+            "body": "lgtm",
+            "state": "APPROVED",
+            "author": "copilot",
+        }
 
     @patch("subprocess.run")
     def test_gh_cli_error(self, mock_run):
-        """Test gh CLI error returns None."""
+        """returncode=1 → None."""
         mock_run.return_value = MagicMock(returncode=1, stderr="pull request not found")
-        count = get_review_count(999, "owner/repo")
-        assert count is None
+        assert get_pr_state(999, "owner/repo") is None
 
     @patch("subprocess.run")
     def test_invalid_json(self, mock_run):
-        """Test invalid JSON response returns None."""
+        """Invalid JSON response → None."""
         mock_run.return_value = MagicMock(returncode=0, stdout="not json\n")
-        count = get_review_count(510, "owner/repo")
-        assert count is None
+        assert get_pr_state(510, "owner/repo") is None
 
     @patch("subprocess.run")
     def test_timeout(self, mock_run):
-        """Test subprocess timeout returns None."""
+        """TimeoutExpired → None."""
         mock_run.side_effect = subprocess.TimeoutExpired("cmd", 30)
-        count = get_review_count(510, "owner/repo")
-        assert count is None
+        assert get_pr_state(510, "owner/repo") is None
 
     @patch("subprocess.run")
     def test_missing_key(self, mock_run):
-        """Test missing reviews key returns 0 (treats as empty list)."""
-        mock_run.return_value = MagicMock(returncode=0, stdout='{"other": "data"}\n')
-        count = get_review_count(510, "owner/repo")
-        assert count == 0
+        """Missing reviewRequests key → None."""
+        mock_run.return_value = MagicMock(returncode=0, stdout='{"reviews": []}\n')
+        assert get_pr_state(510, "owner/repo") is None
+
+    @patch("subprocess.run")
+    def test_file_not_found(self, mock_run):
+        """FileNotFoundError (gh CLI missing) → None."""
+        mock_run.side_effect = FileNotFoundError("gh: command not found")
+        assert get_pr_state(510, "owner/repo") is None
 
     @patch("subprocess.run")
     def test_correct_args_passed(self, mock_run):
-        """Test gh is called with correct arguments."""
+        """gh called with --json reviewRequests,reviews."""
         mock_run.return_value = MagicMock(
             returncode=0,
-            stdout='{"reviews": []}\n',
+            stdout='{"reviewRequests": [], "reviews": []}\n',
         )
-        get_review_count(42, "myorg/myrepo")
+        get_pr_state(42, "myorg/myrepo")
         call_args = mock_run.call_args[0][0]
         assert "gh" in call_args
-        assert "pr" in call_args
-        assert "view" in call_args
-        assert "42" in call_args
+        assert "42" in [str(a) for a in call_args]
         assert "--repo" in call_args
         assert "myorg/myrepo" in call_args
-        assert "reviews" in " ".join(call_args)
-        assert "reviews" in call_args[-1]  # reviews requested in --json field
+        assert "--json" in call_args
+        json_idx = call_args.index("--json")
+        json_fields = call_args[json_idx + 1]
+        assert "reviewRequests" in json_fields
+        assert "reviews" in json_fields
 
 
 class TestMain:
     """Test main polling logic."""
 
-    @patch("wait_for_pr_review.get_review_count")
-    def test_review_already_present(self, mock_count, capsys):
-        """Test review already present on first poll — returns 0 immediately."""
-        mock_count.return_value = 1
-
+    @patch("wait_for_pr_review.get_pr_state")
+    def test_all_already_landed(self, mock_state, capsys):
+        """initial_pending=[], reviews=[one review with body] → exit 0 immediately."""
+        mock_state.return_value = {
+            "pending": [],
+            "reviews": [{"id": "r1", "body": "lgtm", "state": "APPROVED", "author": "copilot"}],
+        }
         with patch.object(sys, "argv", ["wait_for_pr_review.py", "510"]):
             result = main()
-
         assert result == 0
         captured = capsys.readouterr()
         assert "✓" in captured.out
         assert "510" in captured.out
+        # Exits before the polling loop — only baseline call made
+        assert mock_state.call_count == 1
 
-    @patch("wait_for_pr_review.get_review_count")
+    @patch("wait_for_pr_review.get_pr_state")
     @patch("time.sleep")
-    def test_review_lands_after_polling(self, mock_sleep, mock_count, capsys):
-        """Test review arrives after a few polls."""
-        mock_count.side_effect = [0, 0, 1]
-
-        with patch.object(sys, "argv", ["wait_for_pr_review.py", "510"]):
+    def test_nothing_at_startup_exits_immediately(self, mock_sleep, mock_state, capsys):
+        """initial_pending=[], reviews=[] → fallback, 1 review appears → exit 0."""
+        baseline = {"pending": [], "reviews": []}
+        poll1 = {
+            "pending": [],
+            "reviews": [{"id": "r1", "body": "lgtm", "state": "COMMENTED", "author": "copilot"}],
+        }
+        mock_state.side_effect = [baseline, poll1]
+        with patch.object(sys, "argv", ["wait_for_pr_review.py", "510", "--timeout-secs", "60"]):
             result = main()
-
         assert result == 0
-        assert mock_sleep.call_count == 2
+        captured = capsys.readouterr()
+        assert "auto-detect unavailable" in captured.out
+        assert "✓" in captured.out
 
-    @patch("wait_for_pr_review.get_review_count")
+    @patch("wait_for_pr_review.get_pr_state")
     @patch("time.sleep")
-    def test_timeout_no_review(self, mock_sleep, mock_count, capsys):
-        """Test timeout reached with no review."""
-        mock_count.return_value = 0
+    def test_pending_then_lands(self, mock_sleep, mock_state, capsys):
+        """initial_pending=[copilot], first poll: still pending; second poll: pending=[], new review → exit 0."""
+        baseline = {"pending": ["copilot"], "reviews": []}
+        poll1 = {"pending": ["copilot"], "reviews": []}
+        poll2 = {
+            "pending": [],
+            "reviews": [{"id": "r1", "body": "LGTM!", "state": "APPROVED", "author": "copilot"}],
+        }
+        mock_state.side_effect = [baseline, poll1, poll2]
+        with patch.object(sys, "argv", ["wait_for_pr_review.py", "510", "--timeout-secs", "60"]):
+            result = main()
+        assert result == 0
+        captured = capsys.readouterr()
+        assert "✓" in captured.out
+        # One sleep between poll1 and poll2
+        assert mock_sleep.call_count == 1
 
+    @patch("wait_for_pr_review.get_pr_state")
+    @patch("time.sleep")
+    def test_timeout(self, mock_sleep, mock_state, capsys):
+        """Pending never empties → exit 1."""
+        mock_state.return_value = {"pending": ["copilot"], "reviews": []}
         with patch.object(
             sys,
             "argv",
-            ["wait_for_pr_review.py", "510", "--timeout-secs", "10", "--interval-secs", "5"],
+            ["wait_for_pr_review.py", "510", "--timeout-secs", "1", "--interval-secs", "0"],
         ):
             result = main()
-
         assert result == 1
         captured = capsys.readouterr()
-        assert "Timeout reached" in captured.out
+        assert "Timed out" in captured.out
 
-    @patch("wait_for_pr_review.get_review_count")
-    def test_pr_not_found_consecutive_errors(self, mock_count, capsys):
-        """Test 3 consecutive fetch errors triggers exit code 2."""
-        mock_count.return_value = None
-
-        with patch.object(
-            sys,
-            "argv",
-            ["wait_for_pr_review.py", "999", "--timeout-secs", "60", "--interval-secs", "1"],
-        ):
-            with patch("time.sleep"):
-                result = main()
-
-        assert result == 2
-        captured = capsys.readouterr()
-        assert "consecutive fetch errors" in captured.out
-
-    @patch("wait_for_pr_review.get_review_count")
+    @patch("wait_for_pr_review.get_pr_state")
     @patch("time.sleep")
-    def test_error_then_recovery(self, mock_sleep, mock_count, capsys):
-        """Test transient fetch error recovers and succeeds."""
-        mock_count.side_effect = [None, None, 1]
-
+    def test_consecutive_errors_exit_2(self, mock_sleep, mock_state, capsys):
+        """3 consecutive None returns → exit 2."""
+        mock_state.return_value = None
         with patch.object(
             sys,
             "argv",
             ["wait_for_pr_review.py", "510", "--timeout-secs", "60"],
         ):
             result = main()
+        assert result == 2
+        captured = capsys.readouterr()
+        assert "consecutive fetch errors" in captured.out
 
+    @patch("wait_for_pr_review.get_pr_state")
+    @patch("time.sleep")
+    def test_filter_empty_body(self, mock_sleep, mock_state, capsys):
+        """Review with empty body not counted as new; only real review triggers exit."""
+        baseline = {"pending": ["copilot"], "reviews": []}
+        poll1 = {
+            "pending": [],
+            "reviews": [{"id": "r1", "body": "", "state": "COMMENTED", "author": "copilot"}],
+        }
+        poll2 = {
+            "pending": [],
+            "reviews": [
+                {"id": "r1", "body": "", "state": "COMMENTED", "author": "copilot"},
+                {"id": "r2", "body": "Here is my review", "state": "COMMENTED", "author": "copilot"},
+            ],
+        }
+        mock_state.side_effect = [baseline, poll1, poll2]
+        with patch.object(sys, "argv", ["wait_for_pr_review.py", "510", "--timeout-secs", "60"]):
+            result = main()
         assert result == 0
+        # poll1 should not have triggered exit (empty body filtered out)
+        assert mock_state.call_count == 3
 
-    @patch("wait_for_pr_review.get_review_count")
-    def test_min_reviews_two(self, mock_count, capsys):
-        """Test --min-reviews 2 waits until 2 reviews present."""
-        mock_count.side_effect = [1, 2]
-
+    @patch("wait_for_pr_review.get_pr_state")
+    @patch("time.sleep")
+    def test_filter_by_state(self, mock_sleep, mock_state, capsys):
+        """--states APPROVED only; COMMENTED review not counted as qualifying."""
+        baseline = {"pending": ["copilot"], "reviews": []}
+        poll1 = {
+            "pending": [],
+            "reviews": [{"id": "r1", "body": "looks ok", "state": "COMMENTED", "author": "copilot"}],
+        }
+        poll2 = {
+            "pending": [],
+            "reviews": [
+                {"id": "r1", "body": "looks ok", "state": "COMMENTED", "author": "copilot"},
+                {"id": "r2", "body": "approved!", "state": "APPROVED", "author": "copilot"},
+            ],
+        }
+        mock_state.side_effect = [baseline, poll1, poll2]
         with patch.object(
             sys,
             "argv",
-            ["wait_for_pr_review.py", "510", "--min-reviews", "2"],
-        ):
-            with patch("time.sleep"):
-                result = main()
-
-        assert result == 0
-
-    @patch("wait_for_pr_review.get_review_count")
-    def test_custom_repo(self, mock_count, capsys):
-        """Test custom --repo is passed through to get_review_count."""
-        mock_count.return_value = 1
-
-        with patch.object(
-            sys,
-            "argv",
-            ["wait_for_pr_review.py", "42", "--repo", "other/repo"],
+            ["wait_for_pr_review.py", "510", "--timeout-secs", "60", "--states", "APPROVED"],
         ):
             result = main()
-
         assert result == 0
-        mock_count.assert_called_with(42, "other/repo", min_body_len=1, states=None)
+        # poll1 should not have triggered exit (COMMENTED filtered by --states APPROVED)
+        assert mock_state.call_count == 3
+
+    @patch("wait_for_pr_review.get_pr_state")
+    def test_custom_repo(self, mock_state, capsys):
+        """--repo passed through to get_pr_state."""
+        mock_state.return_value = {
+            "pending": [],
+            "reviews": [{"id": "r1", "body": "lgtm", "state": "APPROVED", "author": "user"}],
+        }
+        with patch.object(sys, "argv", ["wait_for_pr_review.py", "42", "--repo", "other/repo"]):
+            result = main()
+        assert result == 0
+        mock_state.assert_called_with(42, "other/repo")
 
     @pytest.mark.io
     def test_help_flag(self):
-        """Test --help exits cleanly with usage info."""
-        import subprocess
-
+        """--help exits cleanly with usage info."""
         result = subprocess.run(
             [sys.executable, "scripts/wait_for_pr_review.py", "--help"],
             capture_output=True,
@@ -254,4 +256,4 @@ class TestMain:
             cwd=os.path.join(os.path.dirname(__file__), ".."),
         )
         assert result.returncode == 0
-        assert "pr-number" in result.stdout or "pr" in result.stdout
+        assert "pr" in result.stdout.lower()
