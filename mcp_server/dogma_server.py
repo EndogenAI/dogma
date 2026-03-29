@@ -36,6 +36,7 @@ See mcp_server/README.md for full setup, Cursor config, and environment variable
 from __future__ import annotations
 
 import json
+import logging as _logging
 import pathlib
 import queue
 import threading
@@ -67,6 +68,8 @@ from mcp_server.tools.validation import check_substrate as _check_substrate
 from mcp_server.tools.validation import validate_agent_file as _validate_agent_file
 from mcp_server.tools.validation import validate_synthesis as _validate_synthesis
 
+_logger = _logging.getLogger(__name__)
+
 _INSTRUCTIONS = """\
 You are connected to the dogma governance toolset.
 
@@ -97,9 +100,18 @@ mcp = FastMCP("dogma-governance", instructions=_INSTRUCTIONS)
 _JSONL_PATH = pathlib.Path(".cache/mcp-metrics/tool_calls.jsonl")
 _JSONL_QUEUE: queue.Queue = queue.Queue(maxsize=0)  # unbounded
 
+# Module-level counters — thread-safe for int assignment under CPython GIL
+_WRITE_SUCCESS_COUNT: int = 0
+_WRITE_FAIL_COUNT: int = 0
+
 
 def _jsonl_writer() -> None:
-    """Background daemon: drain _JSONL_QUEUE and append records to JSONL file."""
+    """Background daemon: drain _JSONL_QUEUE and append records to JSONL file.
+
+    Counters _WRITE_SUCCESS_COUNT / _WRITE_FAIL_COUNT track write outcomes.
+    OSError is logged as WARNING but never propagates to the tool caller.
+    """
+    global _WRITE_SUCCESS_COUNT, _WRITE_FAIL_COUNT  # noqa: PLW0603
     _JSONL_PATH.parent.mkdir(parents=True, exist_ok=True)
     while True:
         record = _JSONL_QUEUE.get()
@@ -108,8 +120,15 @@ def _jsonl_writer() -> None:
         try:
             with _JSONL_PATH.open("a", encoding="utf-8") as fh:
                 fh.write(json.dumps(record, ensure_ascii=False) + "\n")
-        except OSError:
-            pass  # local telemetry; swallow write errors silently
+            _WRITE_SUCCESS_COUNT += 1
+        except OSError as exc:
+            _WRITE_FAIL_COUNT += 1
+            _logger.warning(
+                "mcp-jsonl-writer: write failed (path=%s, error=%s: %s)",
+                _JSONL_PATH,
+                type(exc).__name__,
+                exc,
+            )
 
 
 _writer_thread = threading.Thread(target=_jsonl_writer, daemon=True, name="mcp-jsonl-writer")
@@ -441,6 +460,33 @@ def route_inference_request(
         "route_inference_request",
         lambda: _route_inference_request(prompt, model_id, max_tokens, temperature),
     )
+
+
+# ---------------------------------------------------------------------------
+# Trace capture observability
+# ---------------------------------------------------------------------------
+
+
+@mcp.tool()
+def get_trace_health() -> dict:
+    """Return live JSONL trace capture health counters.
+
+    Returns:
+        {
+          "ok": bool,
+          "write_success_count": int,
+          "write_fail_count": int,
+          "jsonl_path": str,
+          "jsonl_exists": bool,
+        }
+    """
+    return {
+        "ok": _WRITE_FAIL_COUNT == 0,
+        "write_success_count": _WRITE_SUCCESS_COUNT,
+        "write_fail_count": _WRITE_FAIL_COUNT,
+        "jsonl_path": str(_JSONL_PATH),
+        "jsonl_exists": _JSONL_PATH.exists(),
+    }
 
 
 if __name__ == "__main__":
