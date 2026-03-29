@@ -255,11 +255,11 @@ scripts/start_dashboard.py      — single launcher for both processes
 
 ---
 
-### Phase 3 — Sidecar Implementation ⬜
+### Phase 3 — Sidecar Implementation ✅
 
 **Agent**: Executive Scripter
 **Depends on**: Phase 2 Review APPROVED
-**Status**: Not started
+**Status**: ✅ Complete — commit `37839a7`
 
 **Deliverables**:
 
@@ -280,12 +280,12 @@ scripts/start_dashboard.py      — single launcher for both processes
 - `web/src/assets/fixture.json` — offline fallback fixture (all 12 tools represented); loaded by
   `api.js` via static Vite `import` before first successful SSE connection
 
-### Phase 3 Review ⬜
+### Phase 3 Review ✅
 
 **Agent**: Review
 **Deliverables**: APPROVED; no hardcoded paths; CORS restricted to localhost; SSE closes cleanly
 **Depends on**: Phase 3 deliverables committed
-**Status**: Not started
+**Status**: ✅ Complete — APPROVED
 
 ---
 
