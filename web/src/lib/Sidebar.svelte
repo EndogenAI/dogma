@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   /**
    * Sidebar — connection state machine (LIVE → STALE → ERROR),
     * recent tool calls, and polling interval controls.
@@ -15,19 +15,27 @@
    *   onData         — callback(snapshot) when SSE delivers new data
    */
   import { onMount } from 'svelte';
-  import { subscribeStream } from './api.js';
+  import { subscribeStream } from './api';
+  import type { MetricsSnapshot, ConnStatus } from './types';
+
+  interface Props {
+    data: MetricsSnapshot;
+    connStatus?: ConnStatus;
+    refreshInterval?: number;
+    onData?: ((s: MetricsSnapshot) => void) | null;
+  }
 
   let {
     data,
-    connStatus = $bindable(/** @type {'LIVE'|'STALE'|'ERROR'} */ ('LIVE')),
+    connStatus = $bindable('LIVE' as ConnStatus),
     refreshInterval = $bindable(10000),
-    onData = /** @type {((s: any) => void) | null} */ (null)
-  } = $props();
+    onData = null
+  }: Props = $props();
 
-  let failCount = $state(0);
-  let lastUpdated = $state(/** @type {Date|null} */ (null));
-  let backoffMs = $state(2000);
-  let reconnectTimer = $state(0);
+  let failCount    = $state<number>(0);
+  let lastUpdated  = $state<Date | null>(null);
+  let backoffMs    = $state<number>(2000);
+  let reconnectTimer = $state<ReturnType<typeof setTimeout> | null>(null);
 
   let recentTools = $derived(
     Object.entries(data?.tools ?? {})
@@ -43,9 +51,9 @@
     return mins === 0 ? 'just now' : `${mins} min ago`;
   });
 
-  let currentUnsub = /** @type {(() => void) | null} */ (null);
+  let currentUnsub: (() => void) | null = null;
 
-  function connect() {
+  function connect(): void {
     if (currentUnsub) { currentUnsub(); currentUnsub = null; }
 
     currentUnsub = subscribeStream(
@@ -64,10 +72,10 @@
         } else {
           connStatus = 'STALE';
           const delay = backoffMs;
-          reconnectTimer = /** @type {any} */ (setTimeout(() => {
+          reconnectTimer = setTimeout(() => {
             backoffMs = Math.min(backoffMs * 2, 30000);
             connect();
-          }, delay));
+          }, delay);
         }
       }
     );
@@ -131,8 +139,9 @@
     <h4 class="section-title">Polling Interval</h4>
     <p class="section-help">Applies to REST polling; live SSE updates continue.</p>
     <div class="refresh-btns">
-      {#each INTERVALS as opt}
+      {#each INTERVALS as opt (opt.value)}
         <button
+          type="button"
           class="refresh-btn"
           class:active={refreshInterval === opt.value}
           onclick={() => { refreshInterval = opt.value; }}

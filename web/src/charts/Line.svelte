@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   /**
    * Line.svelte — Sparkline chart component.
    *
@@ -8,11 +8,11 @@
    * add any desired spacing or responsive sizing externally.
    *
    * Props:
-   *   data {Array<{x: number, y: number}>}
-   *     The data series to plot.  Only the `y` value is used for positioning;
-   *     `x` is accepted for schema compatibility but the points are evenly
-   *     distributed along the horizontal axis regardless of `x` values.
-   *     Defaults to [] (renders a flat midline when empty or single point).
+   *   data  The data series to plot.  Only the `y` value is used for
+   *         positioning; `x` is accepted for schema compatibility but the
+   *         points are evenly distributed along the horizontal axis regardless
+   *         of `x` values.  Defaults to [] (renders a flat midline when empty
+   *         or single point).
    *
    * Rendering details:
    *   - Y-axis is auto-scaled to the [minY, maxY] range of the supplied data.
@@ -22,7 +22,9 @@
    *     avoid division-by-zero.
    *   - Stroke: #4f8ef7 (matches the dashboard's primary accent colour).
    */
-  let { data = [] } = $props();
+  import type { DataPoint } from '../lib/types';
+
+  let { data = [] }: { data?: DataPoint[] } = $props();
 
   /** SVG viewport width in pixels. */
   const W = 140;
@@ -57,6 +59,7 @@
   });
 </script>
 
+<!-- eslint-disable-next-line svelte/no-inline-styles -->
 <svg width={W} height={H} style="display:block;overflow:visible">
   <polyline
     {points}

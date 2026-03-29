@@ -1,10 +1,12 @@
-<script>
+<script lang="ts">
   /**
    * Tools tab — sortable table with inline latency bar chart on row click.
    */
-  let { data } = $props();
+  import type { MetricsSnapshot } from './types';
 
-  let selectedTool = $state(/** @type {string|null} */ (null));
+  let { data }: { data: MetricsSnapshot } = $props();
+
+  let selectedTool = $state<string | null>(null);
 
   let toolsArray = $derived(
     Object.entries(data?.tools ?? {})
@@ -25,18 +27,13 @@
     Math.max(...toolsArray.map((t) => t.p95_latency_ms), 1)
   );
 
-  /**
-   * @param {number} rate
-   * @returns {{ label: string, cls: string }}
-   */
-  function badge(rate) {
+  function badge(rate: number): { label: string; cls: string } {
     if (rate === 0) return { label: 'OK', cls: 'green' };
     if (rate < 10) return { label: 'WARN', cls: 'amber' };
     return { label: 'ERROR', cls: 'red' };
   }
 
-  /** @param {string} name */
-  function toggle(name) {
+  function toggle(name: string): void {
     selectedTool = selectedTool === name ? null : name;
   }
 </script>
@@ -78,6 +75,7 @@
                 <div class="bar-chart">
                   <div class="bar-row">
                     <span class="bar-label">Avg</span>
+                    <!-- eslint-disable-next-line svelte/no-inline-styles -->
                     <div
                       class="bar bar-avg"
                       style="width:{Math.round(tool.avg_latency_ms / maxP95 * 200)}px"
@@ -86,6 +84,7 @@
                   </div>
                   <div class="bar-row">
                     <span class="bar-label">p95</span>
+                    <!-- eslint-disable-next-line svelte/no-inline-styles -->
                     <div
                       class="bar bar-p95"
                       style="width:{Math.round(tool.p95_latency_ms / maxP95 * 200)}px"

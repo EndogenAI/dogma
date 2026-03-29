@@ -1,12 +1,13 @@
-<script>
+<script lang="ts">
   /**
    * Overview tab — summary cards + top-3 sparklines.
     * Uses the local Line component for lightweight trend rendering.
     * Keep charting lightweight and LayerCake-compatible per ADR-009.
    */
   import Line from '../charts/Line.svelte';
+  import type { MetricsSnapshot } from './types';
 
-  let { data } = $props();
+  let { data }: { data: MetricsSnapshot } = $props();
 
   let toolsArray = $derived(
     Object.entries(data?.tools ?? {}).map(([name, stats]) => ({ name, ...stats }))
