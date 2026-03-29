@@ -1,6 +1,6 @@
 # Workplan: WebMCP Browser Inspector
 
-**Branch**: `feat/sprint-22-webmcp-inspector`
+**Branch**: `feat/sprint-23-webmcp-inspector`
 **Date**: 2026-03-29
 **Orchestrator**: Executive Orchestrator
 **Closes Issues**: #513 (epic), #514 (research), #515 (implementation), #516 (integration), #517 (docs/tests)
