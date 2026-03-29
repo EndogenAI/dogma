@@ -35,8 +35,8 @@ Arguments:
                         COMMENTED DISMISSED PENDING.
 
 Exit Codes:
-    0                   All requested reviews have landed (or fallback threshold met)
-    1                   Timeout reached before reviews landed
+    0                   Review threshold met (all pending reviewers resolved, or --min-reviews count reached)
+    1                   Timeout reached before the --min-reviews threshold was met
     2                   PR not found, gh CLI missing, or persistent fetch error
 
 Examples:
@@ -196,16 +196,17 @@ def main() -> int:
     # --- Determine mode and denominator ---
     if initial_pending is not None and len(initial_pending) == 0:
         # No pending reviewers at startup
-        if len(baseline_qualifying) > 0:
-            # All reviews already landed before we arrived
+        if len(baseline_qualifying) >= args.min_reviews:
+            # Already at or above the required review count
             print(f"✓ All {len(baseline_qualifying)} review(s) landed on PR #{args.pr}")
             return 0
-        # Nothing at startup → fall through to --min-reviews fallback
+        # Below --min-reviews threshold → fall through to fallback and keep polling
         use_fallback = True
         denominator = args.min_reviews
         print(
             f"(auto-detect unavailable: no pending reviewers at startup; "
-            f"waiting for --min-reviews {args.min_reviews} new review(s))"
+            f"waiting for --min-reviews {args.min_reviews} total qualifying review(s), "
+            f"{len(baseline_qualifying)} already present)"
         )
     else:
         # Either pending reviewers exist, or baseline fetch failed → use fallback if no denominator
@@ -218,6 +219,7 @@ def main() -> int:
     )
 
     latest_new_count = 0
+    latest_total_count = len(baseline_qualifying)
 
     while time.monotonic() < deadline:
         state = get_pr_state(args.pr, args.repo)
@@ -237,11 +239,21 @@ def main() -> int:
             latest_new_count = new_count
             pending_count = len(current_pending)
 
-            print(f"  [{new_count}/{denominator}] {new_count} new review(s) landed, {pending_count} still pending")
+            total_so_far = len(current_qualifying)
+            latest_total_count = total_so_far
+            if use_fallback:
+                remaining = max(0, denominator - total_so_far)
+                print(f"  [{total_so_far}/{denominator}] {total_so_far} qualifying review(s), {remaining} more needed")
+            else:
+                display_count = min(new_count, denominator)
+                landed = f"{new_count} new review(s) landed"
+                print(f"  [{display_count}/{denominator}] {landed}, {pending_count} still pending")
 
             if use_fallback:
-                if new_count >= args.min_reviews:
-                    print(f"✓ All {new_count} review(s) landed on PR #{args.pr}")
+                # Count total qualifying reviews (baseline + new)
+                total_count = len(current_qualifying)
+                if total_count >= args.min_reviews:
+                    print(f"✓ {total_count} review(s) landed on PR #{args.pr} (threshold: {args.min_reviews})")
                     return 0
             else:
                 # Primary exit: all pending resolved AND at least one new review
@@ -251,7 +263,11 @@ def main() -> int:
 
         time.sleep(args.interval_secs)
 
-    print(f"✗ Timed out: {latest_new_count} of {denominator} review(s) landed before timeout")
+    if use_fallback:
+        msg = f"{latest_total_count}/{denominator} qualifying review(s) present"
+        print(f"✗ Timed out: {msg} — threshold not reached before timeout")
+    else:
+        print(f"✗ Timed out: {latest_new_count} of {denominator} new review(s) landed before timeout")
     return 1
 
 

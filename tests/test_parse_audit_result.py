@@ -9,7 +9,9 @@ and test coverage metrics.
 import pytest
 
 from scripts.parse_audit_result import (
+    AgentRiskAssessment,
     assess_agent_risk,
+    generate_drift_section,
     generate_recommendations,
     parse_audit_result,
 )
@@ -423,3 +425,52 @@ class TestAuditProvenianceIntegration:
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
+
+
+# ===========================================================================
+# Drift Section Tests (4 tests)
+# ===========================================================================
+
+
+class TestDriftSection:
+    """Tests for generate_drift_section()."""
+
+    def _make_assessment(self, name: str, risk_level: str = "green") -> AgentRiskAssessment:
+        return AgentRiskAssessment(
+            name=name,
+            status="verified",
+            axiom_cites=3,
+            test_coverage=None,
+            risk_level=risk_level,
+            notes="ok",
+        )
+
+    def test_no_changed_files_returns_empty(self):
+        """Empty changed_files set produces an empty string (no section)."""
+        assessments = [self._make_assessment("exec-docs")]
+        result = generate_drift_section(assessments, set(), base_sha=None, threshold=0.5)
+        assert result == ""
+
+    def test_changed_agent_appears_in_table(self):
+        """An agent whose .agent.md is in changed_files appears as a Direct row."""
+        assessments = [self._make_assessment("exec-docs.agent", risk_level="yellow")]
+        changed = {".github/agents/exec-docs.agent.md"}
+        result = generate_drift_section(assessments, changed, base_sha=None, threshold=0.5)
+        assert "## Agent Drift Assessment" in result
+        assert "exec-docs.agent" in result
+        assert "Direct" in result
+
+    def test_no_base_sha_shows_dash_before(self):
+        """Without a base SHA the Risk Before column shows dash and delta is new agent."""
+        assessments = [self._make_assessment("exec-fleet.agent", risk_level="green")]
+        changed = {".github/agents/exec-fleet.agent.md"}
+        result = generate_drift_section(assessments, changed, base_sha=None, threshold=0.5)
+        assert "new agent" in result
+
+    def test_no_agent_files_in_changed_set_shows_no_agents(self):
+        """Changed files with only non-agent paths produce the no-agent-files message."""
+        assessments = [self._make_assessment("exec-docs.agent")]
+        changed = {"scripts/some_script.py", "docs/guides/foo.md"}
+        result = generate_drift_section(assessments, changed, base_sha=None, threshold=0.5)
+        assert "## Agent Drift Assessment" in result
+        assert "No agent files modified" in result

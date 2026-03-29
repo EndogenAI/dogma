@@ -380,7 +380,7 @@ When updating `docs/toolchain/*.md`, run `uv run python scripts/fetch_toolchain_
 
 **Canonical example — GitHub Actions run polling**: [`scripts/wait_for_github_run.py`](scripts/wait_for_github_run.py) encodes the full polling pattern for CI runs. After `git push`, use this script to wait for the run to complete instead of ad-hoc bash polling. Exit codes are semantically clean: 0 = success, 1 = failure or timeout, 2 = run not found.
 
-**Canonical example — PR review polling**: [`scripts/wait_for_pr_review.py`](scripts/wait_for_pr_review.py) encodes the polling pattern for waiting until a GitHub PR review lands. After pushing to a PR branch, use this script to wait for the Copilot (or human) review before beginning triage — do not begin the `pr-review-triage` workflow until this script exits 0. Exit codes are semantically clean: 0 = review present, 1 = timeout, 2 = PR not found.
+**Canonical example — PR review polling**: [`scripts/wait_for_pr_review.py`](scripts/wait_for_pr_review.py) encodes the polling pattern for waiting until a GitHub PR review lands. After pushing to a PR branch, use this script to wait for the Copilot (or human) review before beginning triage — do not begin the `pr-review-triage` workflow until this script exits 0. Exit codes are semantically clean: 0 = review threshold met, 1 = timeout before threshold reached, 2 = PR not found. Use `--min-reviews` to configure the required review count (default 1).
 
 For a full pattern reference including polling algorithms, observable status APIs, and detailed timeout guidance, see [`docs/research/async-process-handling.md`](./docs/research/infrastructure/async-process-handling.md).
 

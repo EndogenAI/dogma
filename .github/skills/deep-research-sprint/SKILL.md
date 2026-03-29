@@ -239,7 +239,7 @@ In the `## Sources` section, list all sources used. For each committed source st
 
 ### Skip-Step Optimisation (Phase 1F Gap Triage)
 
-After a Gap Triage step (typically Phase 1E), evaluate whether tertiary scouting is necessary:
+After a Gap Triage step (typically Phase 1F), evaluate whether tertiary scouting is necessary:
 
 **Gap Triage status tags** — each open question from the prior synthesis step must be assigned one of these tags before applying the skip rule:
 
