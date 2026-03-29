@@ -57,7 +57,7 @@
           onclick={() => toggle(tool.name)}
           role="button"
           tabindex="0"
-          onkeydown={(e) => e.key === 'Enter' && toggle(tool.name)}
+          onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(tool.name); } }}
         >
           <td class="name-cell">{tool.name}</td>
           <td class="num">{tool.invocation_count}</td>

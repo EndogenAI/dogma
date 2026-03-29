@@ -2,7 +2,8 @@
   /**
    * Overview tab — summary cards + top-3 sparklines.
     * Uses the local Line component for lightweight trend rendering.
-    * Keep charting lightweight and LayerCake-compatible per ADR-009.
+    * Uses a lightweight custom SVG sparkline (Line.svelte). LayerCake is
+    * available as a dep (package.json) for future tab expansion per ADR-009.
    */
   import Line from '../charts/Line.svelte';
   import type { MetricsSnapshot } from './types';

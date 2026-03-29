@@ -7,7 +7,7 @@ A browser observability dashboard for visualising MCP tool call telemetry from
 
 ## Prerequisites
 
-- Python ≥ 3.11
+- Python ≥ 3.10
 - Node 20 (see `.nvmrc`)
 - `uv` installed (`pip install uv` or `brew install uv`)
 - `npm` installed (comes with Node 20)
