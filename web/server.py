@@ -73,7 +73,7 @@ def _build_snapshot() -> dict:
 
     tools_out: dict[str, dict] = {}
     for tool, records in per_tool.items():
-        latencies = [r["latency_ms"] for r in records if "latency_ms" in r]
+        latencies = [r["latency_ms"] for r in records if "latency_ms" in r and r["latency_ms"] is not None]
         error_records = [r for r in records if r.get("is_error")]
         avg_lat = round(statistics.mean(latencies), 2) if latencies else 0.0
         if len(latencies) >= 2:

@@ -525,6 +525,7 @@ dev = [
     { name = "pytest-cov" },
     { name = "pytest-mock" },
     { name = "ruff" },
+    { name = "uvicorn" },
 ]
 mcp = [
     { name = "mcp" },
@@ -559,6 +560,7 @@ requires-dist = [
     { name = "requests", specifier = ">=2.31.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.1.0" },
     { name = "textstat", specifier = ">=0.7.13" },
+    { name = "uvicorn", marker = "extra == 'dev'", specifier = ">=0.20.0" },
     { name = "uvicorn", marker = "extra == 'web'", specifier = ">=0.20.0" },
     { name = "watchdog", specifier = ">=3.0.0" },
     { name = "youtube-transcript-api", extras = ["dev"], specifier = ">=1.2.4" },

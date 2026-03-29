@@ -1,7 +1,7 @@
 <script lang="ts">
   /**
    * Sidebar — connection state machine (LIVE → STALE → ERROR),
-    * recent tool calls, and polling interval controls.
+   * recent tool calls, and polling interval controls.
    *
    * Connection state machine:
    *   LIVE  — EventSource.onopen fired; green dot
