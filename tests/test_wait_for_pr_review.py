@@ -18,33 +18,75 @@ class TestGetReviewCount:
 
     @patch("subprocess.run")
     def test_no_reviews_yet(self, mock_run):
-        """Test PR with no reviews returns 0."""
+        """Test PR with empty-body review returns 0 (filtered out by default)."""
         mock_run.return_value = MagicMock(
             returncode=0,
-            stdout='{"reviews": []}\n',
+            stdout='{"reviews": [{"body": "", "state": "COMMENTED"}]}\n',
         )
         count = get_review_count(510, "owner/repo")
         assert count == 0
 
     @patch("subprocess.run")
     def test_one_review_present(self, mock_run):
-        """Test PR with one review returns 1."""
+        """Test PR with one non-empty review returns 1."""
         mock_run.return_value = MagicMock(
             returncode=0,
-            stdout=('{"reviews": [{"author": {"login": "copilot-pull-request-reviewer"}, "state": "COMMENTED"}]}\n'),
+            stdout=(
+                '{"reviews": [{"author": {"login": "copilot-pull-request-reviewer"},'
+                ' "state": "COMMENTED", "body": "Review comment"}]}\n'
+            ),
         )
         count = get_review_count(510, "owner/repo")
         assert count == 1
 
     @patch("subprocess.run")
     def test_multiple_reviews(self, mock_run):
-        """Test PR with multiple reviews returns correct count."""
+        """Test PR with multiple non-empty reviews returns correct count."""
         mock_run.return_value = MagicMock(
             returncode=0,
-            stdout='{"reviews": [{"state": "COMMENTED"}, {"state": "APPROVED"}]}\n',
+            stdout=(
+                '{"reviews": [{"state": "COMMENTED", "body": "first review"}, {"state": "APPROVED", "body": "lgtm"}]}\n'
+            ),
         )
         count = get_review_count(510, "owner/repo")
         assert count == 2
+
+    @patch("subprocess.run")
+    def test_filter_empty_body(self, mock_run):
+        """Test that empty-body reviews are filtered out by default."""
+        mock_run.return_value = MagicMock(
+            returncode=0,
+            stdout=(
+                '{"reviews": [{"body": "", "state": "COMMENTED"},'
+                ' {"body": "", "state": "COMMENTED"},'
+                ' {"body": "Real review text", "state": "COMMENTED"}]}\n'
+            ),
+        )
+        count = get_review_count(510, "owner/repo")
+        assert count == 1
+
+    @patch("subprocess.run")
+    def test_filter_by_state(self, mock_run):
+        """Test state filtering returns only reviews matching given states."""
+        mock_run.return_value = MagicMock(
+            returncode=0,
+            stdout=(
+                '{"reviews": [{"body": "approved!", "state": "APPROVED"},'
+                ' {"body": "looks ok", "state": "COMMENTED"}]}\n'
+            ),
+        )
+        count = get_review_count(510, "owner/repo", states=["APPROVED"])
+        assert count == 1
+
+    @patch("subprocess.run")
+    def test_min_body_len_custom(self, mock_run):
+        """Test custom min_body_len excludes reviews with short bodies."""
+        mock_run.return_value = MagicMock(
+            returncode=0,
+            stdout='{"reviews": [{"body": "short", "state": "COMMENTED"}]}\n',
+        )
+        count = get_review_count(510, "owner/repo", min_body_len=10)
+        assert count == 0
 
     @patch("subprocess.run")
     def test_gh_cli_error(self, mock_run):
@@ -90,6 +132,7 @@ class TestGetReviewCount:
         assert "--repo" in call_args
         assert "myorg/myrepo" in call_args
         assert "reviews" in " ".join(call_args)
+        assert "reviews" in call_args[-1]  # reviews requested in --json field
 
 
 class TestMain:
@@ -197,7 +240,7 @@ class TestMain:
             result = main()
 
         assert result == 0
-        mock_count.assert_called_with(42, "other/repo")
+        mock_count.assert_called_with(42, "other/repo", min_body_len=1, states=None)
 
     @pytest.mark.io
     def test_help_flag(self):
