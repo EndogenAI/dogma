@@ -57,13 +57,16 @@ Instrument `mcp_server/dogma_server.py` to append real JSONL records to `.cache/
 **Agent**: Executive Scripter  
 **Effort**: M (4–5 hours)  
 **Deliverables**:
-- D2.1: `mcp_server/dogma_server.py` modified with trace capture wrapper on all tool functions
-- D2.2: Error handling for write failures (log but do not crash tool execution)
-- D2.3: Append is atomic per Phase 1 design (file lock, queue+thread, or simple append with justification)
-- D2.4: Records written to `.cache/mcp-metrics/tool_calls.jsonl`
+- D2.1: `mcp_server/dogma_server.py` modified — `queue.Queue` writer injected into both `finally:` blocks of `_run_with_mcp_telemetry()`; daemon thread started at module load
+- D2.2: `mcp_server/_version.py` created — `BRANCH_COUNTER: int = 0`; `_TOOL_VERSION = f"{pkg}.{BRANCH_COUNTER}"`
+- D2.3: `scripts/migrate_tool_calls.py` — one-time archive: `tool_calls.jsonl` → `tool_calls.synthetic.bak.jsonl`; `--dry-run` guard
+- D2.4: Live records include `timestamp_utc`, `error_type`, `error_message`, `source: "live"`, `tool_version`; quality fields omitted
+- D2.5: `data/mcp-metrics-schema.yml` updated with `per_record_jsonl` section
+- D2.6: Pre-push hook warns when `BRANCH_COUNTER != 0` on a push to `main` (merge warning)
+- D2.7: Error handling for write failures (log, do not crash tool execution)
 
 **Depends on**: Phase 1 Review APPROVED  
-**Gate**: Phase 3 does not start until `git diff mcp_server/dogma_server.py` shows instrumentation on all tool handlers and error path includes `is_error: true`.  
+**Gate**: Phase 3 does not start until records appear in `tool_calls.jsonl` with `"source": "live"` after one real tool call; `BRANCH_COUNTER` exists in `mcp_server/_version.py`.  
 **Status**: ⬜ Not started
 
 ---
@@ -109,13 +112,14 @@ Instrument `mcp_server/dogma_server.py` to append real JSONL records to `.cache/
 **Agent**: Executive Docs  
 **Effort**: S (2 hours)  
 **Deliverables**:
-- D4.1: `mcp_server/README.md` updated with section on live trace capture (where data goes, schema, rotation if applicable)
-- D4.2: `docs/mcp/` guide updated to explain dashboard now shows live data, not synthetic
-- D4.3: `docs/guides/mcp-dashboard.md` updated with note that Errors tab shows real timestamps after a session
-- D4.4: All docs link to Phase 1 research doc for design rationale
+- D4.1: `mcp_server/README.md` — section on live trace capture (record shape, `tool_version` format, `BRANCH_COUNTER` increment/reset convention)
+- D4.2: `docs/mcp/api-reference.md` — `tool_version` field documented in per-record JSONL shape; format: `{pkg}.{BRANCH_COUNTER}`
+- D4.3: `docs/guides/mcp-dashboard.md` — note that dashboard shows live data post-migration; Errors tab shows real timestamps
+- D4.4: `CONTRIBUTING.md § Commit Discipline` — `BRANCH_COUNTER` reset rule: must be `0` before merging to main; pre-push hook enforces
+- D4.5: All docs link to `docs/research/mcp-live-trace-design.md` for design rationale
 
 **Depends on**: Phase 3 Review APPROVED  
-**Gate**: Phase 5 does not start until `git log --oneline -3` shows commits for all 3 documentation files.  
+**Gate**: Phase 5 does not start until `git log --oneline -5` shows commits for D4.1–D4.4.  
 **Script opportunity**: Run `uv run python scripts/validate_synthesis.py docs/research/mcp-live-trace-design.md` before documenting to ensure research is compliant.  
 **Status**: ⬜ Not started
 

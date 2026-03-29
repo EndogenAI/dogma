@@ -30,8 +30,9 @@ recommendations:
     status: accepted-for-adoption
     linked_issue: 509
   - id: rec-mcp-live-trace-design-007
-    title: "Add tool_version field to live records once versioning strategy is established"
-    status: deferred
+    title: "ADOPT importlib.metadata + branch counter for tool_version in live records"
+    status: accepted-for-adoption
+    linked_issue: 509
 ---
 
 # MCP Live Trace Capture — Design Decisions
@@ -376,7 +377,7 @@ With 8 tools × 100 synthetic records each, a tool receiving only 10 live calls 
 has 90 synthetic rows in its 100-record window, producing misleading P95 and error-rate
 figures on the dashboard during the entire ramp-up period.
 
-**Canonical example — live record shape (Q4)**:
+**Canonical example — live record shape (Q4 + R7)**:
 
 ```json
 {
@@ -385,9 +386,16 @@ figures on the dashboard during the entire ramp-up period.
   "latency_ms": 412.7,
   "is_error": false,
   "error_type": null,
-  "source": "live"
+  "source": "live",
+  "tool_version": "0.1.0.0"
 }
 ```
+
+`tool_version` format: `{importlib.metadata.version('dogma-governance')}.{BRANCH_COUNTER}` where
+`BRANCH_COUNTER` is a module-level constant in `mcp_server/_version.py`, starting at `0` on every
+branch from main, incremented manually when tool behaviour changes mid-branch, and reset to `0`
+on merge. This gives per-release correlation (first 3 digits) and per-branch-change correlation
+(last digit) without requiring a separate versioning system.
 
 ---
 
@@ -416,9 +424,13 @@ figures on the dashboard during the entire ramp-up period.
    formalises the live-record shape and explicitly annotates quality fields as
    `applicable_to: ["evaluation"]` only.
 
-7. **Add `tool_version` field** to live records once a versioning strategy is established
-   (currently `"v1"` is hardcoded in `capture_mcp_metrics.py`; for live records, derive
-   from `importlib.metadata` or a module-level constant).
+7. **ADOPT `tool_version` field** in live records using `importlib.metadata` + branch counter.
+   Create `mcp_server/_version.py` with a single `BRANCH_COUNTER: int = 0` constant.
+   In `dogma_server.py` at module load: `_TOOL_VERSION = f"{importlib.metadata.version('dogma-governance')}.{BRANCH_COUNTER}"`.
+   Convention: increment `BRANCH_COUNTER` when tool behaviour changes mid-branch; reset to `0`
+   before merging to main. A pre-push hook warns when `BRANCH_COUNTER != 0` on a merge-to-main
+   push. This is the field that lets the dashboard correlate latency/error shifts with specific
+   code changes — it answers "which version of `check_substrate` produced these metrics?".
 
 ---
 
