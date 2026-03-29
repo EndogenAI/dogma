@@ -35,8 +35,13 @@ See mcp_server/README.md for full setup, Cursor config, and environment variable
 
 from __future__ import annotations
 
+import json
+import pathlib
+import queue
+import threading
 import time
 from collections.abc import Callable
+from datetime import UTC, datetime
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
@@ -48,6 +53,7 @@ except ImportError:  # pragma: no cover - optional dependency
     _otel_metrics = None
     _otel_trace = None
 
+from mcp_server._version import TOOL_VERSION as _TOOL_VERSION
 from mcp_server.tools.cross_platform_tools import normalize_path as _normalize_path
 from mcp_server.tools.cross_platform_tools import resolve_env_path as _resolve_env_path
 from mcp_server.tools.inference import route_inference_request as _route_inference_request
@@ -84,6 +90,31 @@ Common workflow:
 
 mcp = FastMCP("dogma-governance", instructions=_INSTRUCTIONS)
 
+# ---------------------------------------------------------------------------
+# JSONL trace writer — non-blocking background daemon
+# ---------------------------------------------------------------------------
+
+_JSONL_PATH = pathlib.Path(".cache/mcp-metrics/tool_calls.jsonl")
+_JSONL_QUEUE: queue.Queue = queue.Queue(maxsize=0)  # unbounded
+
+
+def _jsonl_writer() -> None:
+    """Background daemon: drain _JSONL_QUEUE and append records to JSONL file."""
+    _JSONL_PATH.parent.mkdir(parents=True, exist_ok=True)
+    while True:
+        record = _JSONL_QUEUE.get()
+        if record is None:  # sentinel — clean shutdown
+            break
+        try:
+            with _JSONL_PATH.open("a", encoding="utf-8") as fh:
+                fh.write(json.dumps(record, ensure_ascii=False) + "\n")
+        except OSError:
+            pass  # local telemetry; swallow write errors silently
+
+
+_writer_thread = threading.Thread(target=_jsonl_writer, daemon=True, name="mcp-jsonl-writer")
+_writer_thread.start()
+
 _TRACER = _otel_trace.get_tracer("dogma.mcp.server") if _otel_trace else None
 _METER = _otel_metrics.get_meter("dogma.mcp.server") if _otel_metrics else None
 _OP_DURATION_HISTOGRAM = (
@@ -109,25 +140,62 @@ def _run_with_mcp_telemetry(tool_name: str, call: Callable[[], dict]) -> dict:
         with _TRACER.start_as_current_span("mcp.server.execute_tool") as span:
             span.set_attribute("gen_ai.tool.name", tool_name)
             span.set_attribute("gen_ai.operation.name", "execute_tool")
+            _trace_is_error: bool = False
+            _trace_error_type: str | None = None
             try:
                 result = call()
-                if result.get("ok") is False or result.get("errors"):
+                _trace_is_error = bool(result.get("ok") is False or result.get("errors"))
+                _trace_error_type = "tool_error" if _trace_is_error else None
+                if _trace_is_error:
                     span.set_attribute("error.type", "tool_error")
                 return result
-            except Exception:
+            except Exception as exc:
+                _trace_is_error = True
+                _trace_error_type = type(exc).__name__
                 span.set_attribute("error.type", "tool_error")
                 raise
             finally:
                 duration_s = time.perf_counter() - started
                 if _OP_DURATION_HISTOGRAM:
                     _OP_DURATION_HISTOGRAM.record(duration_s, attributes)
+                _JSONL_QUEUE.put_nowait(
+                    {
+                        "tool_name": tool_name,
+                        "timestamp_utc": datetime.now(UTC).isoformat(),
+                        "latency_ms": round(duration_s * 1000, 3),
+                        "is_error": _trace_is_error,
+                        "error_type": _trace_error_type,
+                        "source": "live",
+                        "tool_version": _TOOL_VERSION,
+                    }
+                )
 
+    _trace_is_error: bool = False
+    _trace_error_type: str | None = None
     try:
-        return call()
+        result = call()
+        _trace_is_error = bool(result.get("ok") is False or result.get("errors"))
+        _trace_error_type = "tool_error" if _trace_is_error else None
+        return result
+    except Exception as exc:
+        _trace_is_error = True
+        _trace_error_type = type(exc).__name__
+        raise
     finally:
         duration_s = time.perf_counter() - started
         if _OP_DURATION_HISTOGRAM:
             _OP_DURATION_HISTOGRAM.record(duration_s, attributes)
+        _JSONL_QUEUE.put_nowait(
+            {
+                "tool_name": tool_name,
+                "timestamp_utc": datetime.now(UTC).isoformat(),
+                "latency_ms": round(duration_s * 1000, 3),
+                "is_error": _trace_is_error,
+                "error_type": _trace_error_type,
+                "source": "live",
+                "tool_version": _TOOL_VERSION,
+            }
+        )
 
 
 # ---------------------------------------------------------------------------

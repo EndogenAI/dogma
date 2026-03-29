@@ -49,6 +49,44 @@ measurement_record:
     required: false
     description: Notes on how the metric was produced, sampled, or normalized.
 
+per_record_jsonl:
+  # Schema for individual JSONL rows written by the background writer in dogma_server.py.
+  # Note: required: false on all fields — JSONL rows are observation inputs, not governed outputs.
+  # Governed outputs (aggregated metrics) are defined in measurement_surfaces above.
+  tool_name:
+    type: string
+    required: true
+    description: Canonical MCP tool identifier (matches identity.tool_name allowed_values).
+  timestamp_utc:
+    type: string
+    format: date-time
+    required: true
+    description: UTC timestamp of tool invocation in ISO-8601 format.
+  latency_ms:
+    type: number
+    unit: ms
+    required: true
+    description: Wall-clock duration of the tool call in milliseconds.
+  is_error:
+    type: boolean
+    required: true
+    description: True if the tool call raised an exception or returned ok=false.
+  error_type:
+    type: string
+    required: false
+    description: Exception class name or "tool_error" for logic failures. Absent (not null) if no error.
+  source:
+    type: string
+    required: true
+    allowed_values:
+      - live
+      - synthetic
+    description: "live" for records written by the instrumented server; "synthetic" for seed data.
+  tool_version:
+    type: string
+    required: true
+    description: "Version string from mcp_server/_version.py; format: {pkg_version}.{BRANCH_COUNTER}."
+
 measurement_surfaces:
   performance:
     latency_ms_p95:
