@@ -75,20 +75,12 @@
                 <div class="bar-chart">
                   <div class="bar-row">
                     <span class="bar-label">Avg</span>
-                    <!-- eslint-disable-next-line svelte/no-inline-styles -->
-                    <div
-                      class="bar bar-avg"
-                      style="width:{Math.round(tool.avg_latency_ms / maxP95 * 200)}px"
-                    ></div>
+                    <div class="bar bar-avg" style="width:{Math.round(tool.avg_latency_ms / maxP95 * 200)}px"></div>
                     <span class="bar-val">{tool.avg_latency_ms}ms</span>
                   </div>
                   <div class="bar-row">
                     <span class="bar-label">p95</span>
-                    <!-- eslint-disable-next-line svelte/no-inline-styles -->
-                    <div
-                      class="bar bar-p95"
-                      style="width:{Math.round(tool.p95_latency_ms / maxP95 * 200)}px"
-                    ></div>
+                    <div class="bar bar-p95" style="width:{Math.round(tool.p95_latency_ms / maxP95 * 200)}px"></div>
                     <span class="bar-val">{tool.p95_latency_ms}ms</span>
                   </div>
                 </div>

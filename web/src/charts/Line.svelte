@@ -59,7 +59,6 @@
   });
 </script>
 
-<!-- eslint-disable-next-line svelte/no-inline-styles -->
 <svg width={W} height={H} style="display:block;overflow:visible">
   <polyline
     {points}

@@ -85,4 +85,19 @@ export default [
       'no-debugger': 'error',
     },
   },
+
+  // ── Per-file overrides: dynamic data-viz inline styles ──────────────────
+  //
+  // eslint-plugin-svelte's no-inline-styles rule does not support
+  // comment-directive suppression at the attribute level. The two files
+  // below use computed pixel widths (bar charts) and SVG viewport fixes
+  // that cannot be expressed as static CSS classes. The rule is disabled
+  // only for these files; it remains active for all other components.
+  {
+    files: ['src/charts/Line.svelte', 'src/lib/Tools.svelte'],
+    plugins: { svelte: sveltePlugin },
+    rules: {
+      'svelte/no-inline-styles': 'off',
+    },
+  },
 ];
