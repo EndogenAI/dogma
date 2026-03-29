@@ -11,6 +11,7 @@ export async function getSnapshot() {
     _isOffline = false;
     return resp.json();
   } catch {
+    _isOffline = true;
     return fixtureData;
   }
 }
@@ -19,6 +20,9 @@ export function subscribeStream(onData, onError) {
   const es = new EventSource('http://localhost:8000/api/metrics/stream');
   es.onopen = () => { _isOffline = false; };
   es.onmessage = (e) => { onData(JSON.parse(e.data)); };
-  es.onerror = onError;
+  es.onerror = () => {
+    _isOffline = true;
+    onError();
+  };
   return () => es.close(); // returns unsubscribe fn
 }

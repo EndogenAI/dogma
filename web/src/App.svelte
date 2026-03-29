@@ -4,7 +4,7 @@
    * Manages data state, SSE updates (via Sidebar), and polling.
    */
   import { onMount } from 'svelte';
-  import { getSnapshot } from './lib/api.js';
+  import { getSnapshot, isOffline } from './lib/api.js';
   import Overview from './lib/Overview.svelte';
   import Tools    from './lib/Tools.svelte';
   import Errors   from './lib/Errors.svelte';
@@ -26,8 +26,7 @@
   onMount(async () => {
     const snapshot = await getSnapshot();
     data = snapshot;
-    // getSnapshot() sets _isOffline = false on success; any error returns fixture
-    offline = false;
+    offline = isOffline();
   });
 
   // Re-create polling interval whenever refreshInterval changes
@@ -36,6 +35,7 @@
     const timer = setInterval(async () => {
       const snapshot = await getSnapshot();
       data = snapshot;
+      offline = isOffline();
     }, refreshInterval);
     return () => clearInterval(timer);
   });

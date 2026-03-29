@@ -127,7 +127,8 @@ A browser dashboard for visualising MCP tool call telemetry from `.cache/mcp-met
 
 **Quick start**:
 ```bash
-uv run python scripts/start_dashboard.py
+uv sync --extra web
+uv run --extra web python scripts/start_dashboard.py
 ```
 Then open `http://localhost:5173`.
 

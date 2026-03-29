@@ -4,7 +4,7 @@
     {
       "label": "Start MCP Dashboard",
       "type": "shell",
-      "command": "uv run python scripts/start_dashboard.py",
+      "command": "uv run --extra web python scripts/start_dashboard.py",
       "problemMatcher": []
     }
   ]

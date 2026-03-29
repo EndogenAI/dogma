@@ -1,8 +1,8 @@
 <script>
   /**
    * Overview tab — summary cards + top-3 sparklines.
-   * LayerCake integration ready: run `npm install layercake` then
-   * uncomment: import { LayerCake, Svg } from 'layercake';
+    * Uses the local Line component for lightweight trend rendering.
+    * Keep charting lightweight and LayerCake-compatible per ADR-009.
    */
   import Line from '../charts/Line.svelte';
 

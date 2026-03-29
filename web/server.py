@@ -1,18 +1,17 @@
-"""FastAPI sidecar stub for the MCP Web Dashboard.
+"""FastAPI sidecar for the MCP Web Dashboard.
 
-This module defines API endpoint signatures only for Phase 2 architecture scaffolding.
-The app currently configures CORS with a hardcoded frontend origin for local development:
-`http://localhost:5173`.
+Provides a working FastAPI application that exposes MCP metrics endpoints,
+including a snapshot builder that aggregates per-tool statistics from
+`.cache/mcp-metrics/tool_calls.jsonl`.
 """
 
+import asyncio
+import json
 import pathlib
+import statistics
+from datetime import datetime, timezone
 
 try:
-    import asyncio
-    import json
-    import statistics
-    from datetime import datetime, timezone
-
     from fastapi import FastAPI  # type: ignore[import-not-found]
     from fastapi.middleware.cors import CORSMiddleware  # type: ignore[import-not-found]
     from fastapi.responses import StreamingResponse  # type: ignore[import-not-found]
@@ -102,11 +101,11 @@ def create_app() -> FastAPI:
     """Create the sidecar app with local CORS policy.
 
     Hardcoded CORS origin is limited to `http://localhost:5173` for local Vite dev.
-    # TODO(v2): CORS_ALLOWED_ORIGINS from env (#506)
+    # TODO(v2): WEBMCP_CORS_ORIGINS from env (#506)
     """
-    app = FastAPI(title="MCP Dashboard Sidecar", version="0.1.0-stub")
+    app = FastAPI(title="MCP Dashboard Sidecar", version="0.1.0")
 
-    # TODO(v2): CORS_ALLOWED_ORIGINS from env (#506)
+    # TODO(v2): WEBMCP_CORS_ORIGINS from env (#506)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["http://localhost:5173"],

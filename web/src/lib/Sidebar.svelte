@@ -1,7 +1,7 @@
 <script>
   /**
    * Sidebar — connection state machine (LIVE → STALE → ERROR),
-   * recent tool calls, and refresh rate slider.
+    * recent tool calls, and polling interval controls.
    *
    * Connection state machine:
    *   LIVE  — EventSource.onopen fired; green dot
@@ -126,9 +126,10 @@
     </ul>
   </section>
 
-  <!-- Refresh rate -->
+  <!-- Polling interval -->
   <section class="section">
-    <h4 class="section-title">Refresh Rate</h4>
+    <h4 class="section-title">Polling Interval</h4>
+    <p class="section-help">Applies to REST polling; live SSE updates continue.</p>
     <div class="refresh-btns">
       {#each INTERVALS as opt}
         <button
@@ -177,6 +178,12 @@
   .status-label { font-size: 0.82rem; color: #555; }
 
   .section { display: flex; flex-direction: column; gap: 0.5rem; }
+
+  .section-help {
+    margin: 0;
+    font-size: 0.72rem;
+    color: #7a7a7a;
+  }
 
   .section-title {
     margin: 0;
