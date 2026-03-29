@@ -89,7 +89,7 @@ def get_review_count(pr: int, repo: str) -> int | None:
                 "--repo",
                 repo,
                 "--json",
-                "latestReviews",
+                "reviews",
             ],
             capture_output=True,
             text=True,
@@ -98,7 +98,7 @@ def get_review_count(pr: int, repo: str) -> int | None:
         if result.returncode != 0:
             return None
         data = json.loads(result.stdout)
-        return len(data.get("latestReviews", []))
+        return len(data.get("reviews", []))
     except (subprocess.TimeoutExpired, json.JSONDecodeError, KeyError):
         return None
 

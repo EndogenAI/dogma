@@ -21,7 +21,7 @@ class TestGetReviewCount:
         """Test PR with no reviews returns 0."""
         mock_run.return_value = MagicMock(
             returncode=0,
-            stdout='{"latestReviews": []}\n',
+            stdout='{"reviews": []}\n',
         )
         count = get_review_count(510, "owner/repo")
         assert count == 0
@@ -31,9 +31,7 @@ class TestGetReviewCount:
         """Test PR with one review returns 1."""
         mock_run.return_value = MagicMock(
             returncode=0,
-            stdout=(
-                '{"latestReviews": [{"author": {"login": "copilot-pull-request-reviewer"}, "state": "COMMENTED"}]}\n'
-            ),
+            stdout=('{"reviews": [{"author": {"login": "copilot-pull-request-reviewer"}, "state": "COMMENTED"}]}\n'),
         )
         count = get_review_count(510, "owner/repo")
         assert count == 1
@@ -43,7 +41,7 @@ class TestGetReviewCount:
         """Test PR with multiple reviews returns correct count."""
         mock_run.return_value = MagicMock(
             returncode=0,
-            stdout='{"latestReviews": [{"state": "COMMENTED"}, {"state": "APPROVED"}]}\n',
+            stdout='{"reviews": [{"state": "COMMENTED"}, {"state": "APPROVED"}]}\n',
         )
         count = get_review_count(510, "owner/repo")
         assert count == 2
@@ -71,7 +69,7 @@ class TestGetReviewCount:
 
     @patch("subprocess.run")
     def test_missing_key(self, mock_run):
-        """Test missing latestReviews key returns 0 (treats as empty list)."""
+        """Test missing reviews key returns 0 (treats as empty list)."""
         mock_run.return_value = MagicMock(returncode=0, stdout='{"other": "data"}\n')
         count = get_review_count(510, "owner/repo")
         assert count == 0
@@ -81,7 +79,7 @@ class TestGetReviewCount:
         """Test gh is called with correct arguments."""
         mock_run.return_value = MagicMock(
             returncode=0,
-            stdout='{"latestReviews": []}\n',
+            stdout='{"reviews": []}\n',
         )
         get_review_count(42, "myorg/myrepo")
         call_args = mock_run.call_args[0][0]
@@ -91,7 +89,7 @@ class TestGetReviewCount:
         assert "42" in call_args
         assert "--repo" in call_args
         assert "myorg/myrepo" in call_args
-        assert "latestReviews" in " ".join(call_args)
+        assert "reviews" in " ".join(call_args)
 
 
 class TestMain:
