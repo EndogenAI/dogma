@@ -354,6 +354,7 @@ Long-running terminal operations (model downloads, container startup, test suite
 | Ollama daemon startup | poll health check | 10 × 3 s |
 | `gh` CLI operations (quick) | blocking | 30 s |
 | GitHub Actions run polling | poll | 2.5–10 min (use [`scripts/wait_for_github_run.py`](scripts/wait_for_github_run.py)) |
+| PR review polling | poll | up to 10 min (use [`scripts/wait_for_pr_review.py`](scripts/wait_for_pr_review.py)) |
 
 ### Service Readiness Checks
 
@@ -378,6 +379,8 @@ When updating `docs/toolchain/*.md`, run `uv run python scripts/fetch_toolchain_
 - **Never** silently swallow a failure and proceed to the next step.
 
 **Canonical example — GitHub Actions run polling**: [`scripts/wait_for_github_run.py`](scripts/wait_for_github_run.py) encodes the full polling pattern for CI runs. After `git push`, use this script to wait for the run to complete instead of ad-hoc bash polling. Exit codes are semantically clean: 0 = success, 1 = failure or timeout, 2 = run not found.
+
+**Canonical example — PR review polling**: [`scripts/wait_for_pr_review.py`](scripts/wait_for_pr_review.py) encodes the polling pattern for waiting until a GitHub PR review lands. After pushing to a PR branch, use this script to wait for the Copilot (or human) review before beginning triage — do not begin the `pr-review-triage` workflow until this script exits 0. Exit codes are semantically clean: 0 = review present, 1 = timeout, 2 = PR not found.
 
 For a full pattern reference including polling algorithms, observable status APIs, and detailed timeout guidance, see [`docs/research/async-process-handling.md`](./docs/research/infrastructure/async-process-handling.md).
 
@@ -722,7 +725,7 @@ Any command that creates or modifies a remote side effect must be immediately pr
 |---------|-------------------|------------|
 | `Pre-filing duplicate check` | `gh issue list --state all --limit 120 \| grep -i "<keyword>"` | N/A |
 | `gh issue create` | `test -s /tmp/file && file /tmp/file \| grep -q "UTF-8"` | `gh issue list --state open --limit 5` |
-| `git push` | N/A (local commit) | `git log --oneline -1` then `gh run list --limit 3` to monitor CI |
+| `git push` | N/A (local commit) | `git log --oneline -1` then `uv run python scripts/wait_for_github_run.py $(gh run list --branch <branch> --limit 1 --json databaseId -q '.[0].databaseId')` to monitor CI |
 | `gh pr create` | `test -s /tmp/file && file /tmp/file \| grep -q "UTF-8"` | `gh pr view` |
 | `gh issue close` | N/A (no file) | `gh issue view <number>` |
 | `gh issue edit <num>` (labels/milestone) | N/A (no file) | `gh issue view <num> --json labels,milestone` |
@@ -734,9 +737,9 @@ Any command that creates or modifies a remote side effect must be immediately pr
 
 **Zero error output is not confirmation of success.** Output truncation, network timeouts, and silent API failures all produce clean exits. Always verify.
 
-**CI must pass before requesting review.** After every `git push` to a PR branch: check CI status with `gh run list --limit 3` before requesting or re-requesting Copilot review. A passing push with failing CI is a broken PR — fix CI before doing anything else. Common CI failure modes: lychee dead link (add to `.lycheeignore`), ruff format (run `uv run ruff format scripts/ tests/`), validate_synthesis missing headings.
+**CI must pass before requesting review.** After every `git push` to a PR branch: wait for CI to pass using `uv run python scripts/wait_for_github_run.py $(gh run list --branch <branch> --limit 1 --json databaseId -q '.[0].databaseId')` before requesting or re-requesting Copilot review. A passing push with failing CI is a broken PR — fix CI before doing anything else. Common CI failure modes: lychee dead link (add to `.lycheeignore`), ruff format (run `uv run ruff format scripts/ tests/`), validate_synthesis missing headings.
 
-**PR Review Triage is mandatory before any merge suggestion.** After a Copilot review lands (automatically triggered on PR open and re-push), retrieve and triage all comments before treating the PR as merge-ready: `gh pr view <num> --json reviews,reviewThreads`. A PR with un-triaged reviews, unresolved blocking comments, or un-replied-to threads is **not** merge-ready — CI alone is insufficient. Follow the [`pr-review-triage` skill](.github/skills/pr-review-triage/SKILL.md) for the classify → fix → batch-reply → resolve → re-request workflow. See [`docs/guides/github-workflow.md` § PR Review Triage Gate](docs/guides/github-workflow.md#pr-review-triage-gate).
+**PR Review Triage is mandatory before any merge suggestion.** After a Copilot review lands (automatically triggered on PR open and re-push), wait for it using `uv run python scripts/wait_for_pr_review.py <pr>`, then retrieve and triage all comments before treating the PR as merge-ready: `gh pr view <num> --json reviews,reviewThreads`. A PR with un-triaged reviews, unresolved blocking comments, or un-replied-to threads is **not** merge-ready — CI alone is insufficient. Follow the [`pr-review-triage` skill](.github/skills/pr-review-triage/SKILL.md) for the classify → fix → batch-reply → resolve → re-request workflow. See [`docs/guides/github-workflow.md` § PR Review Triage Gate](docs/guides/github-workflow.md#pr-review-triage-gate).
 
 <a name="subagent-commit-authority"></a>
 ### Subagent Commit Authority
