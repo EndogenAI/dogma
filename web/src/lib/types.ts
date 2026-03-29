@@ -7,11 +7,22 @@
  */
 
 /** Per-tool telemetry aggregates. */
+export interface ErrorEvent {
+  ts: string;
+  latency_ms: number | null;
+  error_type: string;
+  message: string;
+  faithfulness?: number | null;
+  correctness?: number | null;
+  severity_level?: number | null;
+}
+
 export interface ToolStats {
   invocation_count: number;
   error_count: number;
   avg_latency_ms: number;
   p95_latency_ms: number;
+  recent_errors?: ErrorEvent[];
 }
 
 /** Top-level metrics envelope returned by `/api/metrics`. */

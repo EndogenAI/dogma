@@ -74,7 +74,7 @@ def _build_snapshot() -> dict:
     tools_out: dict[str, dict] = {}
     for tool, records in per_tool.items():
         latencies = [r["latency_ms"] for r in records if "latency_ms" in r]
-        errors = sum(1 for r in records if r.get("is_error"))
+        error_records = [r for r in records if r.get("is_error")]
         avg_lat = round(statistics.mean(latencies), 2) if latencies else 0.0
         if len(latencies) >= 2:
             p95 = round(statistics.quantiles(latencies, n=20)[-1], 2)
@@ -82,11 +82,29 @@ def _build_snapshot() -> dict:
             p95 = round(latencies[0], 2)
         else:
             p95 = 0.0
+        # Collect up to 10 most recent error events for display
+        recent_errors = [
+            {
+                "ts": r.get("timestamp_utc", ""),
+                "latency_ms": r.get("latency_ms"),
+                "error_type": r.get("error_type", "tool_error"),
+                "message": r.get("error_message") or r.get("message") or r.get("methodology_notes") or "",
+                "faithfulness": r.get("faithfulness"),
+                "correctness": r.get("correctness"),
+                "severity_level": r.get("severity_level"),
+            }
+            for r in sorted(
+                error_records,
+                key=lambda x: x.get("timestamp_utc", ""),
+                reverse=True,
+            )[:10]
+        ]
         tools_out[tool] = {
             "invocation_count": len(records),
-            "error_count": errors,
+            "error_count": len(error_records),
             "avg_latency_ms": avg_lat,
             "p95_latency_ms": p95,
+            "recent_errors": recent_errors,
         }
 
     mtime = path.stat().st_mtime
