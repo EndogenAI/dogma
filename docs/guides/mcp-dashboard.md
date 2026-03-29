@@ -91,21 +91,31 @@ V2 will add `WEBMCP_CORS_ORIGINS` environment variable support to override the d
 
 ## Development
 
-### Frontend (Vite hot reload)
+### Development mode (recommended — hot reload for both frontend and sidecar)
+
+Use the `--development` / `-d` flag to run both the Vite frontend (HMR always active) and
+the FastAPI sidecar with `uvicorn --reload` (auto-restarts on Python file changes):
 
 ```bash
+uv run --extra web python scripts/start_dashboard.py --development
+# or
+uv run --extra web python scripts/start_dashboard.py -d
+```
+
+This is the recommended workflow for iterating on `web/server.py` or the Svelte source.
+
+### Manual sidecar + frontend (separate terminals)
+
+If you need independent control of each process:
+
+```bash
+# Terminal 1 — sidecar with hot reload
+uv run --extra web python -m uvicorn web.server:app --host 127.0.0.1 --port 8000 --reload
+
+# Terminal 2 — Vite dev server (HMR always active)
 cd web
 npm run dev
 ```
-
-Vite will serve the SPA with hot module replacement. The sidecar does **not** restart
-automatically in this mode — start it separately:
-
-```bash
-uv run --extra web python -m uvicorn web.server:app --host 127.0.0.1 --port 8000
-```
-
-The `start_dashboard.py` script restarts both processes when run again.
 
 ### Quality checks
 

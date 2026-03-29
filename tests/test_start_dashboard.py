@@ -1,11 +1,13 @@
 """Tests for scripts/start_dashboard.py.
 
-Covers launcher exit-code semantics and startup-failure cleanup behavior.
+Covers launcher exit-code semantics, startup-failure cleanup behavior,
+and --development flag passthrough to uvicorn.
 """
 
 from __future__ import annotations
 
 import importlib.util
+import sys
 from pathlib import Path
 from unittest.mock import patch
 
@@ -60,7 +62,8 @@ def test_main_returns_nonzero_when_child_process_fails(sd_mod, monkeypatch):
     frontend = _DummyProc(poll_value=None)
 
     monkeypatch.setattr(sd_mod.Path, "exists", lambda _self: True)
-    monkeypatch.setattr(sd_mod, "_spawn_processes", lambda _repo_root: (sidecar, frontend))
+    monkeypatch.setattr(sd_mod, "_spawn_processes", lambda _repo_root, **_kw: (sidecar, frontend))
+    monkeypatch.setattr(sys, "argv", ["start_dashboard.py"])
 
     rc = sd_mod.main()
 
@@ -73,7 +76,8 @@ def test_main_returns_zero_on_keyboard_interrupt(sd_mod, monkeypatch):
     frontend = _DummyProc(poll_value=None)
 
     monkeypatch.setattr(sd_mod.Path, "exists", lambda _self: True)
-    monkeypatch.setattr(sd_mod, "_spawn_processes", lambda _repo_root: (sidecar, frontend))
+    monkeypatch.setattr(sd_mod, "_spawn_processes", lambda _repo_root, **_kw: (sidecar, frontend))
+    monkeypatch.setattr(sys, "argv", ["start_dashboard.py"])
 
     def _raise_keyboard_interrupt(_seconds):
         raise KeyboardInterrupt()
@@ -83,3 +87,66 @@ def test_main_returns_zero_on_keyboard_interrupt(sd_mod, monkeypatch):
     rc = sd_mod.main()
 
     assert rc == 0
+
+
+@pytest.mark.integration
+def test_spawn_processes_includes_reload_flag_in_dev_mode(sd_mod):
+    """--development flag must add --reload to the uvicorn command."""
+    sidecar = _DummyProc()
+    frontend = _DummyProc()
+
+    captured_cmds = []
+
+    def _popen(cmd, **kwargs):
+        captured_cmds.append(list(cmd))
+        return sidecar if "uvicorn" in cmd else frontend
+
+    with patch("subprocess.Popen", side_effect=_popen):
+        sd_mod._spawn_processes(Path("."), development=True)
+
+    assert any("uvicorn" in c for c in captured_cmds[0]), "sidecar cmd missing"
+    assert "--reload" in captured_cmds[0], "--reload not added in dev mode"
+
+
+@pytest.mark.integration
+def test_spawn_processes_excludes_reload_flag_in_prod_mode(sd_mod):
+    """Without --development, uvicorn must NOT receive --reload."""
+    sidecar = _DummyProc()
+    frontend = _DummyProc()
+
+    captured_cmds = []
+
+    def _popen(cmd, **kwargs):
+        captured_cmds.append(list(cmd))
+        return sidecar if "uvicorn" in cmd else frontend
+
+    with patch("subprocess.Popen", side_effect=_popen):
+        sd_mod._spawn_processes(Path("."), development=False)
+
+    assert "--reload" not in captured_cmds[0], "--reload present without dev flag"
+
+
+@pytest.mark.integration
+def test_main_dev_flag_propagates_to_spawn(sd_mod, monkeypatch):
+    """-d / --development flag in argv is forwarded to _spawn_processes."""
+    sidecar = _DummyProc(poll_value=None)
+    frontend = _DummyProc(poll_value=None)
+
+    seen_kwargs = {}
+
+    def _fake_spawn(repo_root, *, development=False):
+        seen_kwargs["development"] = development
+        return sidecar, frontend
+
+    monkeypatch.setattr(sd_mod.Path, "exists", lambda _self: True)
+    monkeypatch.setattr(sd_mod, "_spawn_processes", _fake_spawn)
+    monkeypatch.setattr(sys, "argv", ["start_dashboard.py", "--development"])
+
+    def _interrupt(_seconds):
+        raise KeyboardInterrupt()
+
+    monkeypatch.setattr(sd_mod.time, "sleep", _interrupt)
+
+    sd_mod.main()
+
+    assert seen_kwargs.get("development") is True, "development flag not forwarded"
