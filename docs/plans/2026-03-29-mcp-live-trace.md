@@ -27,7 +27,7 @@ Instrument `mcp_server/dogma_server.py` to append real JSONL records to `.cache/
 
 ---
 
-### Phase 1 — Research & Design Decisions ⬜
+### Phase 1 — Research & Design Decisions ✅
 **Agent**: Executive Researcher  
 **Effort**: S (2–3 hours)  
 **Deliverables**:
@@ -38,18 +38,18 @@ Instrument `mcp_server/dogma_server.py` to append real JSONL records to `.cache/
 **Depends on**: Phase 0 APPROVED  
 **Gate**: Phase 2 does not start until `docs/research/mcp-live-trace-design.md` is committed with all 4 design questions answered and recommendation for each marked ADOPT or DEFER.  
 **Script opportunity**: `uv run python scripts/query_docs.py "file I/O atomicity Python"` to check if prior research exists.  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — `docs/research/mcp-live-trace-design.md` committed (992d25f)
 
 ---
 
-### Phase 1 Review — Review Gate ⬜
+### Phase 1 Review — Review Gate ✅
 **Agent**: Review  
 **Deliverables**:
 - `## Review Output` appended to scratchpad, verdict: APPROVED
 
 **Depends on**: Phase 1 committed  
 **Gate**: Phase 2 does not begin until Review returns APPROVED  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED 2026-03-29
 
 ---
 
