@@ -16,14 +16,14 @@ Instrument `mcp_server/dogma_server.py` to append real JSONL records to `.cache/
 
 ## Phase Plan
 
-### Phase 0 — Workplan Review Gate ⬜
+### Phase 0 — Workplan Review Gate ✅
 **Agent**: Review  
 **Deliverables**:
 - `## Workplan Review Output` appended to scratchpad, verdict: APPROVED
 
 **Depends on**: workplan committed  
 **Gate**: Phase 1 does not begin until Review returns APPROVED  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED 2026-03-29
 
 ---
 
