@@ -53,7 +53,7 @@ Instrument `mcp_server/dogma_server.py` to append real JSONL records to `.cache/
 
 ---
 
-### Phase 2 — Instrumentation Implementation ⬜
+### Phase 2 — Instrumentation Implementation ✅
 **Agent**: Executive Scripter  
 **Effort**: M (4–5 hours)  
 **Deliverables**:
@@ -67,18 +67,18 @@ Instrument `mcp_server/dogma_server.py` to append real JSONL records to `.cache/
 
 **Depends on**: Phase 1 Review APPROVED  
 **Gate**: Phase 3 does not start until records appear in `tool_calls.jsonl` with `"source": "live"` after one real tool call; `BRANCH_COUNTER` exists in `mcp_server/_version.py`.  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — committed 01a114e 2026-03-29
 
 ---
 
-### Phase 2 Review — Review Gate ⬜
+### Phase 2 Review — Review Gate ✅
 **Agent**: Review  
 **Deliverables**:
 - `## Review Output` appended to scratchpad, verdict: APPROVED
 
 **Depends on**: Phase 2 committed  
 **Gate**: Phase 3 does not begin until Review returns APPROVED  
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED 2026-03-29
 
 ---
 

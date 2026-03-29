@@ -51,7 +51,9 @@ measurement_record:
 
 per_record_jsonl:
   # Schema for individual JSONL rows written by the background writer in dogma_server.py.
-  # Note: required: false on all fields — JSONL rows are observation inputs, not governed outputs.
+  # Core fields (tool_name, timestamp_utc, latency_ms, is_error, source, tool_version)
+  # are required: true. Optional fields (error_type) are omitted when not applicable —
+  # absent means "not applicable", not "measured but missing".
   # Governed outputs (aggregated metrics) are defined in measurement_surfaces above.
   tool_name:
     type: string
