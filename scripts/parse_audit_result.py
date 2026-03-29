@@ -283,7 +283,8 @@ def generate_drift_section(
         "",
         "## Agent Drift Assessment",
         "",
-        "> Agents whose provenance score changed or whose `.agent.md` file was modified in this PR.",
+        "> Agents whose `.agent.md` files were modified in this PR.",
+        "> Risk Before is an approximation based on `x-governs` citation count from the base branch.",
         "",
     ]
 
