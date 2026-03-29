@@ -5,6 +5,7 @@
    */
   import { onMount } from 'svelte';
   import { getSnapshot, isOffline } from './lib/api';
+  import { BrowserMcpServer } from './lib/mcp-server';
   import type { MetricsSnapshot, ConnStatus } from './lib/types';
   import Overview from './lib/Overview.svelte';
   import Tools    from './lib/Tools.svelte';
@@ -17,6 +18,7 @@
   let connStatus      = $state<ConnStatus>('LIVE');
   let refreshInterval = $state<number>(10000);
   let offline         = $state<boolean>(true);
+  let mcpServer       = $state<BrowserMcpServer | null>(null);
 
   /** Called by Sidebar when SSE delivers a new snapshot */
   function onData(snapshot: MetricsSnapshot): void {
@@ -24,10 +26,22 @@
     offline = false;
   }
 
-  onMount(async () => {
-    const snapshot = await getSnapshot();
-    data = snapshot;
-    offline = isOffline();
+  onMount(() => {
+    mcpServer = new BrowserMcpServer();
+    void mcpServer.start();
+
+    void (async () => {
+      const snapshot = await getSnapshot();
+      data = snapshot;
+      offline = isOffline();
+    })();
+
+    return () => {
+      if (mcpServer) {
+        void mcpServer.stop();
+      }
+      mcpServer = null;
+    };
   });
 
   // Re-create polling interval whenever refreshInterval changes
