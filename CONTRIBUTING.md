@@ -170,6 +170,18 @@ git commit -m "feat(agents): add executive-researcher agent"
 # Open PR with all three commits — history is clear and granular
 ```
 
+### BRANCH_COUNTER Reset Rule
+
+`mcp_server/_version.py` contains `BRANCH_COUNTER: int = 0`. This counter is available for
+local debugging — increment it to distinguish branch-specific traces from main traces.
+
+**Before opening a PR or merging to main**:
+1. Reset `BRANCH_COUNTER` to `0` in `mcp_server/_version.py`
+2. The pre-push hook (`check-branch-counter`) will block the push if `BRANCH_COUNTER != 0`
+
+This ensures `tool_version` in merged traces always reads `{pkg_version}.0`, keeping the
+main branch trace history clean. See [`docs/research/mcp-live-trace-design.md`](docs/research/mcp-live-trace-design.md) for the full versioning rationale.
+
 ---
 
 ## Pull Request Template
