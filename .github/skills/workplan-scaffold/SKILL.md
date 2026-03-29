@@ -77,6 +77,29 @@ Every committed workplan must include the following sections:
 ...
 
 ---
+```
+
+### 3.1 Deliverable Specification Conventions
+
+When a deliverable involves a technology where a prominent prohibited alternative exists (heavier library, deprecated tool, framework mismatch), **explicitly name the prohibition alongside the chosen technology** in the deliverable spec.
+
+**Format**: `use X (do NOT install Y — reason)`
+
+**Canonical example** (Phase 4, MCP web-dashboard sprint 2026-03-28):
+```
+Deliverables:
+- Chart component using LayerCake (do NOT install svelte-chartjs or chart.js — 56 KB overhead)
+```
+
+**Why this matters**: Abstract deliverable specs like "use LayerCake" are insufficient guardrail. Implementers default to familiar libraries they have used before. Without an explicit prohibition, an engineer who knows chart.js well will reach for it — the constraint is invisible unless named.
+
+**When to apply**: Any time the delivery spec involves a technology choice and the following are both true:
+1. There is a more popular or familiar alternative that would violate a constraint (size, license, framework compatibility, deprecation)
+2. The constraint is not obvious from the technology name alone
+
+**Anti-pattern**: `Deliverables: implement charting feature` — implementer unknown library preference, no guard against prohibited alternatives.
+
+**Good pattern**: `Deliverables: implement charting using LayerCake (do NOT install chart.js or recharts — both import full D3 bundle, +120 KB)` — constraint is self-documenting.
 
 ## Acceptance Criteria
 

@@ -135,7 +135,38 @@ Produce a structured plan in the scratchpad under `## Plan — <title>`:
 <anything the Orchestrator must decide before starting>
 ```
 
-### 5. Return the Plan
+### 5. Workplan Amendment Input Format
+
+When the delegation task is to **amend an existing workplan** (not create one from scratch), use the amendment-list format rather than prose instructions. This format produces surgical, non-overlapping changes instead of structural rewrites.
+
+**Input format for amendment delegations**:
+
+Provide to the Planner:
+- **(a) A numbered list of exact locked decisions** — these are the inputs that drive the amendments (e.g., technology choices from committed research docs, constraint changes from a Review gate).
+- **(b) A concrete amendment format mandate** for each deliverable change:
+
+```
+[Phase N — Section/File]: ADD/CHANGE/CLARIFY "exact proposed text" (reason: ...)
+```
+
+**Canonical example** (Phase 1I, MCP web-dashboard sprint 2026-03-28, produced 8 high-precision amendments):
+```
+Locked decisions from docs/research/svelte-ecosystem-for-webmcp.md (commit e71ba8f):
+1. Use LayerCake for charting (do NOT install svelte-chartjs or chart.js — 56 KB overhead)
+2. Use Svelte 5 runes syntax, not Svelte 4 reactive ($:) blocks
+3. WebSocket transport is required; SSE is a fallback only
+
+Amendments:
+[Phase 4 — Deliverables]: CHANGE "charting library" → "LayerCake (do NOT install svelte-chartjs or chart.js — 56 KB overhead)" (reason: locked in research)
+[Phase 4 — Technology stack]: ADD "Svelte 5 runes syntax mandatory — no $: reactive blocks" (reason: locked in research)
+[Phase 5 — Transport spec]: CLARIFY "WebSocket is primary transport; SSE is fallback only — not equivalent" (reason: locked in research)
+```
+
+**Anti-pattern**: A vague delegation — "update the workplan to reflect research findings" — produces structural prose rephrasing rather than surgical, per-deliverable changes. Always provide locked decisions and the amendment format.
+
+**Why this works**: Explicit format constraints eliminate interpretive drift. Locked decisions prevent fabrication. Per-deliverable format lets the Planner produce non-overlapping, individually verifiable changes that can be reviewed and committed atomically.
+
+### 6. Return the Plan
 
 Use the `Return plan to Executive Orchestrator` handoff. Do not begin executing anything.
 
