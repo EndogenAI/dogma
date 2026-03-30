@@ -20,9 +20,11 @@ Sprint 23 introduced a browser-local inspector facade at
 - `trigger_action`
 - `ping`
 
-This facade is currently local to the dashboard runtime and is not yet exported as a
-network MCP endpoint from `web/server.py`. As a result, these tools are not listed in
-the dogma governance MCP server tool inventory below.
+This facade is now reachable over HTTP via the MCP bridge exposed by `web/server.py`
+at the `/mcp` endpoint, which routes `tools/call` requests through the browser bridge.
+Because this bridge depends on an active dashboard browser session and is not part of
+the always-on dogma governance MCP server process, these tools are not listed in the
+core dogma governance MCP server tool inventory below.
 
 For invocation workflow and troubleshooting, see:
 - [`docs/guides/dogma-browser-inspector.md`](../guides/dogma-browser-inspector.md)

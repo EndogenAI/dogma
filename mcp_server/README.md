@@ -67,9 +67,9 @@ Sprint 23 Phase 3 added a browser-local inspector facade in
 
 Current posture:
 - Tool logic is implemented and invocable in-browser.
-- The FastAPI sidecar does not yet expose a network MCP transport endpoint
-  (`/mcp`, `/mcp/handshake`), so these tools are not discoverable as a separate
-  VS Code MCP server entry today.
+- The FastAPI sidecar exposes a network MCP transport endpoint
+  (`/mcp`, `/mcp/handshake`), allowing these tools to be discovered as a
+  separate VS Code MCP server entry when configured as an MCP server.
 
 Use the session guide for setup and invocation patterns:
 - [docs/guides/dogma-browser-inspector.md](../docs/guides/dogma-browser-inspector.md)
