@@ -112,7 +112,7 @@ Implement MCP-based browser inspector capability that allows VS Code Copilot to 
 **Gate**: Phase 5 does not begin until APPROVED
 **Status**: ✅ Complete (2026-03-29) — APPROVED
 
-### Phase 5 — Documentation ⬜
+### Phase 5 — Documentation ✅
 **Agent**: Executive Docs
 **Deliverables**:
 - `docs/guides/webmcp-browser-inspector.md` — usage guide for Copilot sessions
@@ -122,16 +122,16 @@ Implement MCP-based browser inspector capability that allows VS Code Copilot to 
 
 **Depends on**: Phase 4 Review APPROVED
 **CI**: lychee, validate_synthesis (if touching research docs)
-**Status**: Not started
+**Status**: ✅ Complete (2026-03-29) — browser inspector guide added, MCP docs updated, research doc canonical example added
 
-### Phase 5 Review — Review Gate ⬜
+### Phase 5 Review — Review Gate ✅
 **Agent**: Review
 **Deliverables**:
 - `## Phase 5 Review Output` with verdict
 
 **Depends on**: Phase 5 deliverables committed
 **Gate**: Phase 6 does not begin until APPROVED
-**Status**: Not started
+**Status**: ✅ Complete (2026-03-29) — APPROVED
 
 ### Phase 6 — Testing ⬜
 **Agent**: Executive Scripter
