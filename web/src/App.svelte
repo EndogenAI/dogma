@@ -26,9 +26,19 @@
     offline = false;
   }
 
+  function inspectorAutostartEnabled(): boolean {
+    const params = new URLSearchParams(window.location.search);
+    return (
+      params.get('inspector') === '1' ||
+      window.localStorage.getItem('webmcp.inspector.autostart') === '1'
+    );
+  }
+
   onMount(() => {
-    mcpServer = new BrowserMcpServer();
-    void mcpServer.start();
+    if (inspectorAutostartEnabled()) {
+      mcpServer = new BrowserMcpServer();
+      void mcpServer.start();
+    }
 
     void (async () => {
       const snapshot = await getSnapshot();
