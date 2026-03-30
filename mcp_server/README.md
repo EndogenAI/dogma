@@ -57,12 +57,13 @@ guide, tab descriptions, and offline mode.
 ## Browser Inspector Integration (Sprint 23)
 
 Sprint 23 Phase 3 added a browser-local inspector facade in
-[web/src/lib/mcp-server.ts](../web/src/lib/mcp-server.ts) with four tools:
+[web/src/lib/mcp-server.ts](../web/src/lib/mcp-server.ts) with five tools (four inspector tools plus one baseline debug tool):
 
 - `query_dom`
 - `get_console_logs`
 - `get_component_state`
 - `trigger_action`
+- `ping` (baseline/debug connectivity check)
 
 Current posture:
 - Tool logic is implemented and invocable in-browser.

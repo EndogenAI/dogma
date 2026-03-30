@@ -18,6 +18,7 @@ Sprint 23 introduced a browser-local inspector facade at
 - `get_console_logs`
 - `get_component_state`
 - `trigger_action`
+- `ping`
 
 This facade is currently local to the dashboard runtime and is not yet exported as a
 network MCP endpoint from `web/server.py`. As a result, these tools are not listed in

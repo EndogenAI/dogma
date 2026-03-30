@@ -7,6 +7,7 @@ Use this guide during Copilot sessions to inspect the MCP Dashboard frontend via
 ## Purpose
 
 The browser inspector facade in [web/src/lib/mcp-server.ts](../../web/src/lib/mcp-server.ts) provides local tool calls for:
+- `ping` (baseline/debug connectivity check)
 - `query_dom`
 - `get_console_logs`
 - `get_component_state`
@@ -138,6 +139,13 @@ inspector.registerComponentState('dashboard', () => ({
   title: document.querySelector('.app-title')?.textContent?.trim() ?? null,
   activeTab: document.querySelector('.tab.active')?.textContent?.trim() ?? null,
 }));
+```
+
+Optional autostart during dev hot-reload sessions:
+
+```typescript
+localStorage.setItem('webmcp.inspector.autostart', '1');
+// or open the app with ?inspector=1
 ```
 
 ---

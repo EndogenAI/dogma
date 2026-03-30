@@ -28,12 +28,44 @@ export type ConsoleBufferOptions = {
 const DEFAULT_MAX_ENTRIES = 250;
 const MAX_ALLOWED_ENTRIES = 1000;
 const MAX_STRING_LENGTH = 400;
+const REDACTION_PATTERNS: RegExp[] = [
+  /Bearer\s+[A-Za-z0-9._\-]+/gi,
+  /github_pat_[A-Za-z0-9_]+/g,
+  /\bsk-[A-Za-z0-9]+\b/g,
+];
+const CONSOLE_BUFFER_STATE_KEY = Symbol.for('dogma.consoleBuffer.state');
 
-let initialized = false;
-let maxEntries = DEFAULT_MAX_ENTRIES;
-let counter = 0;
+type SharedConsoleBufferState = {
+  initialized: boolean;
+  maxEntries: number;
+  counter: number;
+  entries: ConsoleEntry[];
+};
 
-const entries: ConsoleEntry[] = [];
+function getSharedState(): SharedConsoleBufferState {
+  const globalScope = globalThis as typeof globalThis & {
+    [CONSOLE_BUFFER_STATE_KEY]?: SharedConsoleBufferState;
+  };
+
+  if (!globalScope[CONSOLE_BUFFER_STATE_KEY]) {
+    globalScope[CONSOLE_BUFFER_STATE_KEY] = {
+      initialized: false,
+      maxEntries: DEFAULT_MAX_ENTRIES,
+      counter: 0,
+      entries: [],
+    };
+  }
+
+  return globalScope[CONSOLE_BUFFER_STATE_KEY] as SharedConsoleBufferState;
+}
+
+const sharedState = getSharedState();
+
+let initialized = sharedState.initialized;
+let maxEntries = sharedState.maxEntries;
+let counter = sharedState.counter;
+
+const entries: ConsoleEntry[] = sharedState.entries;
 
 function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
@@ -44,13 +76,21 @@ function truncate(value: string, limit = MAX_STRING_LENGTH): string {
   return `${value.slice(0, limit - 1)}...`;
 }
 
+function redactSecrets(value: string): string {
+  let redacted = value;
+  for (const pattern of REDACTION_PATTERNS) {
+    redacted = redacted.replace(pattern, '[REDACTED]');
+  }
+  return redacted;
+}
+
 function safeStringify(value: unknown): string {
   if (typeof value === 'string') {
-    return truncate(value);
+    return truncate(redactSecrets(value));
   }
 
   if (value instanceof Error) {
-    return truncate(value.stack ?? `${value.name}: ${value.message}`);
+    return truncate(redactSecrets(value.stack ?? `${value.name}: ${value.message}`));
   }
 
   if (value === null || value === undefined) {
@@ -65,7 +105,8 @@ function safeStringify(value: unknown): string {
     const seen = new WeakSet<object>();
     try {
       return truncate(
-        JSON.stringify(value, (_, inner: unknown) => {
+        redactSecrets(
+          JSON.stringify(value, (_, inner: unknown) => {
           if (typeof inner === 'function') return '[function]';
           if (typeof inner === 'bigint') return String(inner);
           if (inner && typeof inner === 'object') {
@@ -73,7 +114,8 @@ function safeStringify(value: unknown): string {
             seen.add(inner as object);
           }
           return inner;
-        })
+          })
+        )
       );
     } catch {
       return '[unserializable object]';
@@ -84,8 +126,9 @@ function safeStringify(value: unknown): string {
 }
 
 function appendEntry(level: ConsoleLevel, args: unknown[]): void {
+  // Redact + normalize captured args before exposing them through inspector tools.
   const normalizedArgs = args.map((arg) => safeStringify(arg));
-  const message = truncate(normalizedArgs.join(' '));
+  const message = truncate(redactSecrets(normalizedArgs.join(' ')));
 
   entries.push({
     id: ++counter,
@@ -102,6 +145,7 @@ function appendEntry(level: ConsoleLevel, args: unknown[]): void {
 }
 
 function initConsoleBuffer(options: ConsoleBufferOptions = {}): void {
+  // Guard against duplicate wrapping under Vite HMR/module reloads.
   if (initialized) return;
 
   maxEntries = clamp(
@@ -122,11 +166,14 @@ function initConsoleBuffer(options: ConsoleBufferOptions = {}): void {
   }
 
   initialized = true;
+  sharedState.initialized = true;
+  sharedState.maxEntries = maxEntries;
 }
 
 export function installConsoleBuffer(
   options: ConsoleBufferOptions = {}
 ): ConsoleBufferApi {
+  // Install once globally and return read/clear helpers for callers.
   initConsoleBuffer(options);
 
   return {

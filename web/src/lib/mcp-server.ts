@@ -139,6 +139,7 @@ export class BrowserMcpServer {
     this.registerTool('trigger_action', (input) => this.triggerAction(input));
   }
 
+  // Start optional transport probing hooks for local diagnostics.
   async start(): Promise<void> {
     if (this.started) return;
     this.started = true;
@@ -189,12 +190,17 @@ export class BrowserMcpServer {
     return await handler(input);
   }
 
+  // Treat network failures as unreachable handshake, not fatal errors.
   async probeHandshake(): Promise<boolean> {
-    const response = await fetch(`${this.endpoint}/handshake`, {
-      method: 'GET',
-      headers: { Accept: 'application/json' },
-    });
-    return response.ok;
+    try {
+      const response = await fetch(`${this.endpoint}/handshake`, {
+        method: 'GET',
+        headers: { Accept: 'application/json' },
+      });
+      return response.ok;
+    } catch {
+      return false;
+    }
   }
 
   registerComponentState(component: string, snapshotter: ComponentSnapshotter): void {
@@ -209,6 +215,7 @@ export class BrowserMcpServer {
     this.componentRegistry.delete(component);
   }
 
+  // Query DOM with selector validation and bounded response payloads.
   private queryDom(input: unknown): QueryDomResult {
     const selector = sanitizeSelector(input);
     let nodes: Element[];
@@ -224,7 +231,7 @@ export class BrowserMcpServer {
       return {
         tag: node.tagName.toLowerCase(),
         id: node.id ?? '',
-        className: node.className?.toString() ?? '',
+        className: node.getAttribute('class') ?? '',
         text: truncateText(element.innerText ?? node.textContent ?? ''),
       };
     });
@@ -235,6 +242,7 @@ export class BrowserMcpServer {
     };
   }
 
+  // Return buffered console entries, optionally filtered by level.
   private getConsoleLogs(input?: unknown): GetConsoleLogsResult {
     const level =
       input && typeof input === 'object' && 'level' in input
@@ -257,6 +265,7 @@ export class BrowserMcpServer {
     };
   }
 
+  // Return one registered component snapshot or all registered snapshots.
   private getComponentState(input?: unknown): GetComponentStateResult {
     const component =
       input && typeof input === 'object' && 'component' in input
@@ -287,6 +296,7 @@ export class BrowserMcpServer {
     };
   }
 
+  // Trigger constrained UI actions for testing (click/input only).
   private triggerAction(input: unknown): TriggerActionResult {
     if (!input || typeof input !== 'object') {
       throw new Error('event payload must be an object');
