@@ -292,7 +292,7 @@ export class BrowserMcpServer {
       throw new Error('event payload must be an object');
     }
 
-    const payload = input as Partial<TriggerActionInput>;
+    const payload = input as Record<string, unknown>;
     const actionType = ensureString(payload.type, 'type').toLowerCase();
     if (actionType !== 'click' && actionType !== 'input') {
       throw new Error('unsupported action type');
