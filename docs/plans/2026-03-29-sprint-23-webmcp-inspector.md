@@ -153,7 +153,7 @@ Implement MCP-based browser inspector capability that allows VS Code Copilot to 
 **Gate**: Phase 7 does not begin until APPROVED
 **Status**: ✅ Complete (2026-03-29) — APPROVED
 
-### Phase 7 — PR & Close ⬜
+### Phase 7 — PR & Close ✅
 **Agent**: GitHub
 **Deliverables**:
 - Branch pushed to origin
@@ -163,18 +163,18 @@ Implement MCP-based browser inspector capability that allows VS Code Copilot to 
 
 **Depends on**: Phase 6 Review APPROVED
 **CI**: All checks passing
-**Status**: Not started
+**Status**: ✅ Complete (2026-03-29) — PR opened: https://github.com/EndogenAI/dogma/pull/518, issue #513 session-close comment posted, #513 intentionally remains open due documented VS Code transport blocker
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] All 7 phases complete and committed
-- [ ] Research doc validates WebMCP is viable (or documents constraints if not)
+- [x] All 7 phases complete and committed
+- [x] Research doc validates WebMCP is viable (or documents constraints if not)
 - [ ] At least 1 MCP tool successfully invocable from VS Code Copilot against running dashboard
-- [ ] Documentation includes usage guide and canonical examples
-- [ ] PR created and all CI checks passing
-- [ ] Issue progress comments posted at session close
+- [x] Documentation includes usage guide and canonical examples
+- [x] PR created and all CI checks passing
+- [x] Issue progress comments posted at session close
 
 ---
 
