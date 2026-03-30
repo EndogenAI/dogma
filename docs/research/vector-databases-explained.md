@@ -1,6 +1,7 @@
 ---
 title: "Vector Databases Explained — Indexing Algorithms, Distance Metrics, and DB Selection for RAG"
 status: Final
+size: m
 closes_issue: 503
 x-governs:
   - local-compute-first

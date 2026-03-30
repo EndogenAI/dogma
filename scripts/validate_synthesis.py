@@ -23,8 +23,12 @@ Checks (D3 per-source synthesizer output):
 
 Checks (D4 issue synthesis):
     1. File exists and is readable.
-    2. File has at least MIN_LINES (default: 80) non-blank lines.
-     3. Required numbered headings include Executive Summary, Hypothesis
+    2. Non-blank line count ≥ tier floor AND source array length ≥ tier minimum,
+       where the tier is read from frontmatter ``size:`` (xs/s/m/l/xl/xxl).
+       If ``size:`` is absent the document defaults to the ``m`` tier.
+       Tier floors: xs=80/2src, s=100/3src, m=130/4src, l=180/6src,
+       xl=260/9src, xxl=380/13src.  Both checks are hard gates (exit 1).
+    3. Required numbered headings include Executive Summary, Hypothesis
          Validation, and Pattern Catalog, and the document must contain at least
          4 H2 headings overall.
     4. YAML frontmatter contains: title, status.
@@ -98,6 +102,21 @@ D3_REQUIRED_FRONTMATTER: list[str] = ["slug", "title", "cache_path"]
 D3_URL_KEYS: list[str] = ["url", "source_url"]  # accept either alias
 
 D4_REQUIRED_FRONTMATTER: list[str] = ["title", "status"]
+
+# ---------------------------------------------------------------------------
+# Size tier configuration (issue #477)
+# ---------------------------------------------------------------------------
+
+TIER_CONFIG: dict[str, tuple[int, int]] = {
+    "xs": (80, 2),
+    "s": (100, 3),
+    "m": (130, 4),
+    "l": (180, 6),
+    "xl": (260, 9),
+    "xxl": (380, 13),
+}
+DEFAULT_TIER = "m"
+VALID_TIERS: frozenset[str] = frozenset(TIER_CONFIG.keys())
 
 
 # ---------------------------------------------------------------------------
@@ -173,6 +192,22 @@ def is_d4_synthesis_doc(file_path: Path) -> bool:
 def is_synthesis(file_path: Path) -> bool:
     """True if *file_path* points to a synthesis document (D3 or D4)."""
     return is_d3(file_path) or is_d4_synthesis_doc(file_path)
+
+
+def resolve_tier(text: str) -> str:
+    """Return the size tier from frontmatter ``size:`` field, defaulting to DEFAULT_TIER.
+
+    Valid values: xs, s, m, l, xl, xxl (case-insensitive).  Unknown or absent
+    values silently fall back to DEFAULT_TIER so existing docs without the field
+    are treated as ``m``-tier.
+    """
+    fm = _parse_frontmatter_yaml(text)
+    if not fm or not isinstance(fm, dict):
+        return DEFAULT_TIER
+    raw = str(fm.get("size", "")).strip().lower()
+    if not raw or raw not in VALID_TIERS:
+        return DEFAULT_TIER
+    return raw
 
 
 def _parse_frontmatter_yaml(text: str) -> dict | None:
@@ -417,7 +452,7 @@ def check_axiom_citations(lines: list[str], filepath: str) -> None:
 # ---------------------------------------------------------------------------
 
 
-def validate(file_path: Path, min_lines: int) -> tuple[bool, list[str]]:
+def validate(file_path: Path, min_lines: int = 80) -> tuple[bool, list[str]]:
     """Validate *file_path*. Returns (passed, list_of_failure_messages)."""
     failures: list[str] = []
 
@@ -429,10 +464,25 @@ def validate(file_path: Path, min_lines: int) -> tuple[bool, list[str]]:
 
     text = file_path.read_text(encoding="utf-8")
 
-    # --- Check 2: minimum non-blank line count ---
+    # --- Check 2: minimum non-blank line count (tier-aware for D4 docs) ---
     actual_lines = non_blank_line_count(text)
-    if actual_lines < min_lines:
-        failures.append(f"Line count too low: {actual_lines} non-blank lines (minimum: {min_lines})")
+    if is_d3(file_path):
+        if actual_lines < min_lines:
+            failures.append(f"Line count too low: {actual_lines} non-blank lines (minimum: {min_lines})")
+    else:
+        # D4: derive floor and source minimum from frontmatter `size:` tier.
+        tier = resolve_tier(text)
+        tier_min_lines, tier_min_sources = TIER_CONFIG[tier]
+        if actual_lines < tier_min_lines:
+            failures.append(
+                f"FAIL: size '{tier}' requires \u2265{tier_min_lines} non-blank lines; found {actual_lines}"
+            )
+        # Source count check — independent of line count, both are hard gates.
+        _tier_fm = _parse_frontmatter_yaml(text)
+        _raw_sources: object = _tier_fm.get("sources") if isinstance(_tier_fm, dict) else None
+        source_count = len(_raw_sources) if isinstance(_raw_sources, list) else 0
+        if source_count < tier_min_sources:
+            failures.append(f"FAIL: size '{tier}' requires \u2265{tier_min_sources} sources; found {source_count}")
 
     # --- Check 3: required section headings ---
     present_headings = extract_headings(text)

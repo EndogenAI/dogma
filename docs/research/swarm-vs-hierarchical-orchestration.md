@@ -1,6 +1,7 @@
 ---
 title: "Swarm vs. Hierarchical Multi-Agent Orchestration"
 status: Final
+size: s
 closes_issue: 415
 x-governs:
   - endogenous-first

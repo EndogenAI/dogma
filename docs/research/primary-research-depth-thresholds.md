@@ -1,6 +1,7 @@
 ---
 title: "Primary Research Depth Thresholds for Agent-Driven Synthesis"
 status: Final
+size: s
 closes_issue: 478
 created: "2026-03-30"
 x-governs: [algorithms-before-tokens, endogenous-first]
