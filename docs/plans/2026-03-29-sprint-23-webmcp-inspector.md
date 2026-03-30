@@ -133,7 +133,7 @@ Implement MCP-based browser inspector capability that allows VS Code Copilot to 
 **Gate**: Phase 6 does not begin until APPROVED
 **Status**: ✅ Complete (2026-03-29) — APPROVED
 
-### Phase 6 — Testing ⬜
+### Phase 6 — Testing ✅
 **Agent**: Executive Scripter
 **Deliverables**:
 - `tests/test_mcp_browser_server.py` — unit tests for TypeScript server (if feasible via pytest-playwright or similar)
@@ -142,16 +142,16 @@ Implement MCP-based browser inspector capability that allows VS Code Copilot to 
 
 **Depends on**: Phase 5 Review APPROVED
 **CI**: pytest fast suite
-**Status**: Not started
+**Status**: ✅ Complete (2026-03-29) — contract tests added and manual checklist completed; VS Code-side invocation remains blocked by missing exported `/mcp` transport endpoint (documented)
 
-### Phase 6 Review — Review Gate ⬜
+### Phase 6 Review — Review Gate ✅
 **Agent**: Review
 **Deliverables**:
 - `## Phase 6 Review Output` with verdict
 
 **Depends on**: Phase 6 deliverables committed
 **Gate**: Phase 7 does not begin until APPROVED
-**Status**: Not started
+**Status**: ✅ Complete (2026-03-29) — APPROVED
 
 ### Phase 7 — PR & Close ⬜
 **Agent**: GitHub
