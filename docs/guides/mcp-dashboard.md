@@ -49,11 +49,26 @@ Workaround path (until browser MCP transport is exposed):
    implemented as a real MCP transport endpoint.
 
 Manual verification note for `query_dom` from Copilot:
-- Current expected outcome is a missing tool/server signal rather than a
-  successful invocation.
-- After a real browser MCP transport endpoint is added, re-run with a
-  `.vscode/mcp.json` HTTP server entry pointing to that endpoint and then test:
-  `Call query_dom with selector ".app-title"`.
+- The current dashboard runtime exposes an MCP HTTP transport endpoint
+  (`/mcp` / `/mcp/handshake`) from the FastAPI sidecar.
+- `query_dom` exists in `web/src/lib/mcp-server.ts` and can be reached by MCP
+  clients via this HTTP bridge when configured in `.vscode/mcp.json`.
+
+Verification path (with browser MCP transport exposed):
+1. Start dashboard: `uv run --extra web python scripts/start_dashboard.py`
+2. Verify sidecar health: `curl -sf http://127.0.0.1:8000/api/health`
+3. Verify MCP handshake succeeds:
+   - `curl -i http://127.0.0.1:8000/mcp/handshake` (expected: `200` with MCP
+     handshake JSON payload)
+4. In VS Code Copilot Chat, configure a `.vscode/mcp.json` HTTP server entry
+   pointing to `http://127.0.0.1:8000/mcp` and expect `query_dom` to appear as
+   an available MCP tool.
+
+Manual verification note for `query_dom` from Copilot:
+- Current expected outcome is a successful tool invocation via the MCP HTTP
+  bridge.
+- With `.vscode/mcp.json` configured to point to the dashboard MCP endpoint,
+  test from Copilot: `Call query_dom with selector ".app-title"`.
 
 ## Data Source
 

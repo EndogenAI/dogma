@@ -103,7 +103,7 @@ Implement MCP-based browser inspector capability that allows VS Code Copilot to 
 
 **Depends on**: Phase 3 Review APPROVED
 **CI**: manual verification (no automated test for VS Code MCP client)
-**Status**: ✅ Complete (2026-03-29, Branch B) — direct browser MCP connection is not currently viable because dashboard runtime does not expose `/mcp` transport; workaround and manual validation path documented in `docs/guides/mcp-dashboard.md`
+**Status**: ✅ Complete (2026-03-29, updated 2026-03-30 with cb9e092) — `/mcp` and `/mcp/handshake` endpoints added to `web/server.py`, enabling HTTP MCP transport for VS Code client discovery; browser bridge routes tool calls through active dashboard session
 
 ### Phase 4 Review — Review Gate ✅
 **Agent**: Review
