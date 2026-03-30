@@ -27,6 +27,34 @@ The command launches two processes:
 - **Svelte SPA** — served by Vite at `http://localhost:5173`
 - **FastAPI sidecar** — served at `http://localhost:8000` (endpoints: `/api/metrics`, `/api/metrics/stream`, `/api/health`)
 
+## VS Code MCP Client Status (Phase 4)
+
+Phase 4 evaluated whether VS Code Copilot can connect to a browser MCP inspector
+server through `.vscode/mcp.json` at runtime.
+
+Result:
+- VS Code MCP config supports local HTTP server entries.
+- The current dashboard runtime does **not** expose an MCP transport endpoint
+  (`/mcp` / `/mcp/handshake`) from the FastAPI sidecar.
+- `query_dom` exists in `web/src/lib/mcp-server.ts`, but it is currently
+  browser-local logic and is not exported over a network MCP endpoint.
+
+Workaround path (until browser MCP transport is exposed):
+1. Start dashboard: `uv run --extra web python scripts/start_dashboard.py`
+2. Verify sidecar health: `curl -sf http://127.0.0.1:8000/api/health`
+3. Verify missing MCP endpoint signal:
+   - `curl -i http://127.0.0.1:8000/mcp/handshake` (expected: `404`)
+4. In VS Code Copilot Chat, use the existing `dogma-governance` MCP server for
+   repository tools; do not expect `query_dom` to appear until `/mcp` is
+   implemented as a real MCP transport endpoint.
+
+Manual verification note for `query_dom` from Copilot:
+- Current expected outcome is a missing tool/server signal rather than a
+  successful invocation.
+- After a real browser MCP transport endpoint is added, re-run with a
+  `.vscode/mcp.json` HTTP server entry pointing to that endpoint and then test:
+  `Call query_dom with selector ".app-title"`.
+
 ## Data Source
 
 The dashboard reads from `.cache/mcp-metrics/tool_calls.jsonl`.

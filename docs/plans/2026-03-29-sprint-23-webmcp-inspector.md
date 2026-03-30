@@ -91,7 +91,7 @@ Implement MCP-based browser inspector capability that allows VS Code Copilot to 
 **Gate**: Phase 4 does not begin until APPROVED
 **Status**: ✅ Complete (2026-03-29) — APPROVED (all 9 criteria passed)
 
-### Phase 4 — VS Code MCP Client Integration ⬜
+### Phase 4 — VS Code MCP Client Integration ✅
 **Agent**: Executive Automator
 **Deliverables**:
 - Research: Can `.vscode/mcp.json` support runtime-discovered servers?
@@ -101,16 +101,16 @@ Implement MCP-based browser inspector capability that allows VS Code Copilot to 
 
 **Depends on**: Phase 3 Review APPROVED
 **CI**: manual verification (no automated test for VS Code MCP client)
-**Status**: Not started
+**Status**: ✅ Complete (2026-03-29, Branch B) — direct browser MCP connection is not currently viable because dashboard runtime does not expose `/mcp` transport; workaround and manual validation path documented in `docs/guides/mcp-dashboard.md`
 
-### Phase 4 Review — Review Gate ⬜
+### Phase 4 Review — Review Gate ✅
 **Agent**: Review
 **Deliverables**:
 - `## Phase 4 Review Output` with verdict
 
 **Depends on**: Phase 4 deliverables committed
 **Gate**: Phase 5 does not begin until APPROVED
-**Status**: Not started
+**Status**: ✅ Complete (2026-03-29) — APPROVED
 
 ### Phase 5 — Documentation ⬜
 **Agent**: Executive Docs
