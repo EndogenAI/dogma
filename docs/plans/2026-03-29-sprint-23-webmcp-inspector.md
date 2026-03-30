@@ -5,6 +5,8 @@
 **Orchestrator**: Executive Orchestrator
 **Closes Issues**: #513 (epic), #514 (research), #515 (implementation), #516 (integration), #517 (docs/tests)
 
+> **Historical Note**: This feature was renamed from "webmcp-browser-inspector" to "dogma-browser-inspector" on 2026-03-30 (commit cb9e092) to avoid namespace confusion with Chrome's official WebMCP extension. File path references in this workplan have been updated; original naming preserved in section headers for archaeological clarity.
+
 ---
 
 ## Objective
@@ -115,7 +117,7 @@ Implement MCP-based browser inspector capability that allows VS Code Copilot to 
 ### Phase 5 — Documentation ✅
 **Agent**: Executive Docs
 **Deliverables**:
-- `docs/guides/webmcp-browser-inspector.md` — usage guide for Copilot sessions
+- `docs/guides/dogma-browser-inspector.md` — usage guide for Copilot sessions (renamed from webmcp-browser-inspector.md on 2026-03-30)
 - Update `mcp_server/README.md` with WebMCP browser server section
 - Update `docs/mcp/` (if separate API docs exist)
 - Add canonical examples to `docs/research/webmcp-browser-integration.md`
@@ -137,7 +139,7 @@ Implement MCP-based browser inspector capability that allows VS Code Copilot to 
 **Agent**: Executive Scripter
 **Deliverables**:
 - `tests/test_mcp_browser_server.py` — unit tests for TypeScript server (if feasible via pytest-playwright or similar)
-- Manual test checklist in `docs/guides/webmcp-browser-inspector.md`
+- Manual test checklist in `docs/guides/dogma-browser-inspector.md` (renamed from webmcp-browser-inspector.md on 2026-03-30)
 - Integration validation: all 4 tools invocable from VS Code
 
 **Depends on**: Phase 5 Review APPROVED

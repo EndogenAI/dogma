@@ -234,16 +234,16 @@ tools:
   - terminal
   - execute
   # dogma-governance MCP tools
-  - mcp_dogma-governa_check_substrate
-  - mcp_dogma-governa_validate_agent_file
-  - mcp_dogma-governa_validate_synthesis
+  - dogma-governance/check_substrate
+  - dogma-governance/validate_agent_file
+  - dogma-governance/validate_synthesis
   # ... (10 more governance tools)
   # dogma-browser-inspector MCP tools
-  - mcp_dogma-browse_ping
-  - mcp_dogma-browse_query_dom
-  - mcp_dogma-browse_get_console_logs
-  - mcp_dogma-browse_get_component_state
-  - mcp_dogma-browse_trigger_action
+  - dogma-browser-inspector/ping
+  - dogma-browser-inspector/query_dom
+  - dogma-browser-inspector/get_console_logs
+  - dogma-browser-inspector/get_component_state
+  - dogma-browser-inspector/trigger_action
 ```
 
 ## Key Implementation Files
