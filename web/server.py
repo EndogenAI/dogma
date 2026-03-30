@@ -476,7 +476,14 @@ def create_app() -> FastAPI:
     @app.post("/mcp/browser/respond")
     async def respond_browser_request(request: Request) -> dict[str, object]:
         """Accept the browser-side result for a queued tool request."""
-        payload = await request.json()
+        try:
+            payload = await request.json()
+        except Exception:
+            raise HTTPException(status_code=400, detail="Invalid JSON payload")
+
+        if not isinstance(payload, dict):
+            raise HTTPException(status_code=400, detail="Payload must be a JSON object")
+
         session_id = payload.get("sessionId")
         request_id = payload.get("requestId")
         if not isinstance(session_id, str) or not session_id:

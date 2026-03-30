@@ -204,15 +204,20 @@ Tool access is declared in `.agent.md` frontmatter `tools:` array. Executive Orc
 ### .vscode/mcp.json
 ```json
 {
-  "mcpServers": {
+  "servers": {
     "github": {
       "type": "stdio",
-      "command": "mcp-server-github"
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${env:GITHUB_TOKEN}"
+      }
     },
     "dogma-governance": {
       "type": "stdio",
       "command": "uv",
-      "args": ["run", "--extra", "mcp", "python", "mcp_server/dogma_server.py"]
+      "args": ["run", "--extra", "mcp", "python", "-m", "mcp_server.dogma_server"],
+      "cwd": "${workspaceFolder}"
     },
     "dogma-browser-inspector": {
       "type": "http",

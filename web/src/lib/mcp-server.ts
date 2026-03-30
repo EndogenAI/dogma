@@ -471,7 +471,15 @@ export class BrowserMcpServer {
       // but MCP arguments arrive as {selector: string}. Unwrap it.
       let toolInput: unknown = request.arguments;
       if (request.toolName === 'query_dom') {
-        toolInput = (request.arguments as Record<string, unknown>).selector;
+        const args = request.arguments;
+        if (
+          args === null ||
+          typeof args !== 'object' ||
+          typeof (args as { selector?: unknown }).selector !== 'string'
+        ) {
+          throw new Error('query_dom requires arguments.selector (string)');
+        }
+        toolInput = (args as { selector: string }).selector;
       }
 
       // TypeScript overload resolution: use type assertion to match general signature

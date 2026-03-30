@@ -184,7 +184,7 @@ inspector.registerComponentState('dashboard', () => ({
 Optional autostart during dev hot-reload sessions:
 
 ```typescript
-localStorage.setItem('webmcp.inspector.autostart', '1');
+localStorage.setItem('dogma-browser-inspector.autostart', '1');
 // or open the app with ?inspector=1
 ```
 
