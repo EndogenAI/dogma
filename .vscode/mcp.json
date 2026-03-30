@@ -14,9 +14,10 @@
       "args": ["run", "--extra", "mcp", "python", "-m", "mcp_server.dogma_server"],
       "cwd": "${workspaceFolder}"
     },
-    "webmcp-browser-inspector": {
+    "dogma-browser-inspector": {
       "type": "http",
-      "url": "http://127.0.0.1:8000/mcp"
+      "url": "http://127.0.0.1:8000/mcp",
+      "description": "Optional — Browser inspection MCP server for dashboard workflows"
     }
   }
 }

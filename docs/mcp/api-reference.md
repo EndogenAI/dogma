@@ -25,7 +25,7 @@ network MCP endpoint from `web/server.py`. As a result, these tools are not list
 the dogma governance MCP server tool inventory below.
 
 For invocation workflow and troubleshooting, see:
-- [`docs/guides/webmcp-browser-inspector.md`](../guides/webmcp-browser-inspector.md)
+- [`docs/guides/dogma-browser-inspector.md`](../guides/dogma-browser-inspector.md)
 - [`docs/guides/mcp-dashboard.md#vs-code-mcp-client-status-phase-4`](../guides/mcp-dashboard.md#vs-code-mcp-client-status-phase-4)
 
 ---

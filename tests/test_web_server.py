@@ -225,7 +225,7 @@ def test_mcp_initialize_returns_server_capabilities(tmp_path, monkeypatch):
     payload = response.json()
     assert payload["result"]["protocolVersion"] == "2025-03-26"
     assert payload["result"]["capabilities"] == {"tools": {"listChanged": False}}
-    assert payload["result"]["serverInfo"]["name"] == "webmcp-browser-inspector"
+    assert payload["result"]["serverInfo"]["name"] == "dogma-browser-inspector"
 
 
 @pytest.mark.io
