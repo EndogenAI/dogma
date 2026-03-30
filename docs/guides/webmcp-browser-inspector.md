@@ -18,10 +18,24 @@ This is useful for reproducible UI state checks without manual DevTools copy/pas
 ## Current Integration Posture
 
 - Phase 3 tools are implemented and callable in-browser.
-- Phase 4 confirmed there is no exported HTTP MCP transport endpoint yet (`/mcp` is not exposed by `web/server.py`).
-- For now, use local in-browser invocation as the operational workaround.
+- The sidecar now exposes an HTTP MCP bridge at `http://127.0.0.1:8000/mcp` plus a diagnostic handshake endpoint at `http://127.0.0.1:8000/mcp/handshake`.
+- The dashboard page must still run `BrowserMcpServer.start()` so the browser can register itself as the tool executor behind that bridge.
+- VS Code can treat this as a separate HTTP MCP server from the existing stdio `dogma-governance` server.
 
 See [docs/guides/mcp-dashboard.md](mcp-dashboard.md#vs-code-mcp-client-status-phase-4) for the Phase 4 transport limitation details.
+
+## Topology
+
+There are two MCP surfaces involved:
+
+1. `dogma-governance`
+  - transport: stdio
+  - purpose: repository governance, validation, scaffolding, scratchpad tooling
+2. `webmcp-browser-inspector`
+  - transport: HTTP at `http://127.0.0.1:8000/mcp`
+  - purpose: bridge browser-local inspector tools to VS Code through the dashboard sidecar
+
+These are separate MCP servers. The new sidecar work does not replace `dogma-governance`; it adds a second server dedicated to browser inspection.
 
 ## Phase 6 Manual Test Checklist
 
@@ -79,7 +93,7 @@ await inspector.callTool('trigger_action', {
 });
 ```
 
-### VS Code transport limitation check
+### VS Code bridge availability check
 
 - [ ] Confirm sidecar health is reachable:
 
@@ -87,13 +101,38 @@ await inspector.callTool('trigger_action', {
 curl -sf http://127.0.0.1:8000/api/health
 ```
 
-- [ ] Confirm MCP handshake endpoint is still missing (expected `404`):
+- [ ] Confirm MCP handshake endpoint is reachable and returns bridge state:
 
 ```bash
-curl -i http://127.0.0.1:8000/mcp/handshake
+curl -sf http://127.0.0.1:8000/mcp/handshake
 ```
 
-Expected outcome: local browser tool invocation works, but VS Code cannot invoke browser tools via MCP transport until `/mcp` is implemented.
+- [ ] Confirm the dashboard page has registered with the sidecar:
+
+Expected handshake fields after `await inspector.start()`:
+
+```json
+{
+  "ok": true,
+  "browserConnected": true,
+  "toolCount": 5
+}
+```
+
+- [ ] Optional: add an HTTP MCP entry in `.vscode/mcp.json` for the browser bridge:
+
+```json
+{
+  "servers": {
+    "webmcp-browser-inspector": {
+      "type": "http",
+      "url": "http://127.0.0.1:8000/mcp"
+    }
+  }
+}
+```
+
+Expected outcome: local browser tool invocation works directly, `GET /mcp/handshake` returns bridge state, and the sidecar advertises a browser-connected MCP bridge once the page registers.
 
 ## Integration Validation Status (Phase 6)
 
@@ -104,7 +143,8 @@ Expected outcome: local browser tool invocation works, but VS Code cannot invoke
 | Local browser `get_console_logs` tool invocation | Validated (manual) | `info` log appears in returned entries |
 | Local browser `get_component_state` tool invocation | Validated (manual) | registered `dashboard` snapshot is returned |
 | Local browser `trigger_action` tool invocation | Validated (manual) | click/input actions return `{ ok: true }` on valid targets |
-| VS Code MCP transport to browser inspector | Blocked (known limitation) | `GET /mcp/handshake` returns `404`; no exported HTTP MCP endpoint |
+| Sidecar MCP transport export | Implemented | `GET /mcp/handshake` returns browser bridge state; `POST /mcp` serves JSON-RPC tool routing |
+| VS Code MCP invocation through the browser bridge | Implemented; local invocation verification pending | configure `.vscode/mcp.json` with `type: "http"` and `url: "http://127.0.0.1:8000/mcp"` |
 
 ---
 
@@ -311,11 +351,12 @@ Fix:
 
 ### Copilot cannot call browser inspector tools directly
 
-Cause: Phase 4 limitation; no network MCP endpoint exported.
+Cause: the dashboard page has not registered with the sidecar bridge yet, or VS Code has not been pointed at the HTTP MCP endpoint.
 
 Fix:
-- Continue with local in-browser invocation workflow.
-- Track transport endpoint implementation before attempting `.vscode/mcp.json` HTTP wiring.
+- Ensure the dashboard is open and `await inspector.start()` has run.
+- Check `curl -sf http://127.0.0.1:8000/mcp/handshake` and confirm `browserConnected: true`.
+- Add the `webmcp-browser-inspector` HTTP server entry to `.vscode/mcp.json` if it is not already present.
 
 ---
 

@@ -1,6 +1,7 @@
 {
-  "mcpServers": {
+  "servers": {
     "github": {
+      "type": "stdio",
       "command": "npx",
       "args": ["@modelcontextprotocol/server-github"],
       "env": {
@@ -8,9 +9,14 @@
       }
     },
     "dogma-governance": {
+      "type": "stdio",
       "command": "uv",
-      "args": ["run", "python", "-m", "mcp_server.dogma_server"],
+      "args": ["run", "--extra", "mcp", "python", "-m", "mcp_server.dogma_server"],
       "cwd": "${workspaceFolder}"
+    },
+    "webmcp-browser-inspector": {
+      "type": "http",
+      "url": "http://127.0.0.1:8000/mcp"
     }
   }
 }
