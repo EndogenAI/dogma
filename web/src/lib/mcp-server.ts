@@ -67,6 +67,18 @@ export type BrowserMcpServerOptions = {
   maxConsoleEntries?: number;
 };
 
+type BridgeSessionResponse = {
+  sessionId: string;
+  pollMaxSeconds?: number;
+  toolNames?: string[];
+};
+
+type BridgeToolRequest = {
+  requestId: string;
+  toolName: string;
+  arguments?: unknown;
+};
+
 type ToolName =
   | 'ping'
   | 'query_dom'
@@ -123,10 +135,13 @@ export class BrowserMcpServer {
   private readonly consoleBuffer: ConsoleBufferApi;
   private readonly componentRegistry = new Map<string, ComponentSnapshotter>();
   private eventSource: EventSource | null = null;
+  private bridgeSessionId: string | null = null;
+  private bridgeLoop: Promise<void> | null = null;
+  private bridgeAbortController: AbortController | null = null;
   private started = false;
 
   constructor(options: BrowserMcpServerOptions = {}) {
-    this.endpoint = options.endpoint ?? '/mcp';
+    this.endpoint = options.endpoint ?? 'http://localhost:8000/mcp';
     this.enableSseProbe = options.enableSseProbe ?? false;
     this.consoleBuffer = installConsoleBuffer({
       maxEntries: options.maxConsoleEntries,
@@ -144,6 +159,12 @@ export class BrowserMcpServer {
     if (this.started) return;
     this.started = true;
 
+    const bridgeRegistered = await this.registerBridgeSession();
+    if (bridgeRegistered) {
+      this.bridgeAbortController = new AbortController();
+      this.bridgeLoop = this.runBridgeLoop(this.bridgeAbortController.signal);
+    }
+
     if (!this.enableSseProbe) return;
 
     // SSE alignment: EventSource over HTTP, no WebSocket transport in this phase.
@@ -155,6 +176,16 @@ export class BrowserMcpServer {
   }
 
   async stop(): Promise<void> {
+    this.bridgeAbortController?.abort();
+    this.bridgeAbortController = null;
+    try {
+      await this.bridgeLoop;
+    } catch {
+      // Ignore shutdown races from aborted fetch calls.
+    }
+    this.bridgeLoop = null;
+    this.bridgeSessionId = null;
+
     this.eventSource?.close();
     this.eventSource = null;
     this.started = false;
@@ -351,6 +382,148 @@ export class BrowserMcpServer {
   private registerTool(name: ToolName, handler: ToolHandler): void {
     this.tools.set(name, handler);
   }
+
+  private async registerBridgeSession(): Promise<boolean> {
+    try {
+      const response = await fetch(`${this.endpoint}/browser/session`, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+      });
+      if (!response.ok) {
+        return false;
+      }
+
+      const payload = (await response.json()) as Partial<BridgeSessionResponse>;
+      if (typeof payload.sessionId !== 'string' || !payload.sessionId) {
+        return false;
+      }
+
+      this.bridgeSessionId = payload.sessionId;
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  private async runBridgeLoop(signal: AbortSignal): Promise<void> {
+    while (this.started && this.bridgeSessionId && !signal.aborted) {
+      try {
+        const sessionId = this.bridgeSessionId;
+        if (!sessionId) {
+          break;
+        }
+
+        const response = await fetch(
+          `${this.endpoint}/browser/poll?session_id=${encodeURIComponent(sessionId)}`,
+          {
+            method: 'GET',
+            headers: { Accept: 'application/json' },
+            signal,
+          }
+        );
+
+        if (response.status === 204) {
+          continue;
+        }
+
+        if (!response.ok) {
+          this.bridgeSessionId = null;
+          const rebound = await this.registerBridgeSession();
+          if (!rebound) {
+            await this.sleep(1000, signal);
+          }
+          continue;
+        }
+
+        const payload = (await response.json()) as Partial<BridgeToolRequest>;
+        if (typeof payload.requestId !== 'string' || typeof payload.toolName !== 'string') {
+          await this.sleep(250, signal);
+          continue;
+        }
+
+        await this.fulfillBridgeRequest(payload as BridgeToolRequest, signal);
+      } catch {
+        if (signal.aborted) {
+          return;
+        }
+        await this.sleep(1000, signal);
+      }
+    }
+  }
+
+  private async fulfillBridgeRequest(request: BridgeToolRequest, signal: AbortSignal): Promise<void> {
+    if (!this.bridgeSessionId) {
+      return;
+    }
+
+    const responsePayload: Record<string, unknown> = {
+      sessionId: this.bridgeSessionId,
+      requestId: request.requestId,
+      ok: false,
+    };
+
+    try {
+      if (!isToolName(request.toolName)) {
+        throw new Error(`Unknown tool: ${request.toolName}`);
+      }
+
+      // query_dom's callTool overload expects a bare selector string,
+      // but MCP arguments arrive as {selector: string}. Unwrap it.
+      let toolInput: unknown = request.arguments;
+      if (request.toolName === 'query_dom') {
+        toolInput = (request.arguments as Record<string, unknown>).selector;
+      }
+
+      responsePayload.result = await this.callTool(request.toolName, toolInput);
+      responsePayload.ok = true;
+    } catch (error) {
+      responsePayload.error = error instanceof Error ? error.message : 'Unknown bridge error';
+    }
+
+    await fetch(`${this.endpoint}/browser/respond`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(responsePayload),
+      signal,
+    });
+  }
+
+  private async sleep(delayMs: number, signal: AbortSignal): Promise<void> {
+    await new Promise<void>((resolve) => {
+      let settled = false;
+      let timeoutId = 0;
+
+      const finish = () => {
+        if (settled) {
+          return;
+        }
+        settled = true;
+        window.clearTimeout(timeoutId);
+        signal.removeEventListener('abort', onAbort);
+        resolve();
+      };
+
+      const onAbort = () => {
+        finish();
+      };
+
+      timeoutId = window.setTimeout(finish, delayMs);
+      signal.addEventListener('abort', onAbort, { once: true });
+    });
+  }
+}
+
+function isToolName(value: string): value is ToolName {
+  return [
+    'ping',
+    'query_dom',
+    'get_console_logs',
+    'get_component_state',
+    'trigger_action',
+  ].includes(value);
 }
 
 /**

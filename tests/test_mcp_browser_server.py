@@ -54,8 +54,19 @@ def test_ping_and_handshake_contracts_remain_present() -> None:
     source = _source()
 
     assert "registerTool('ping', async () => ({ status: 'ok' }))" in source
-    assert "this.endpoint = options.endpoint ?? '/mcp';" in source
+    assert "this.endpoint = options.endpoint ?? 'http://localhost:8000/mcp';" in source
     assert "fetch(`${this.endpoint}/handshake`" in source
+
+
+def test_browser_bridge_contracts_remain_present() -> None:
+    source = _source()
+
+    assert "fetch(`${this.endpoint}/browser/session`" in source
+    assert "`${this.endpoint}/browser/poll?session_id=${encodeURIComponent(sessionId)}`" in source
+    assert "fetch(`${this.endpoint}/browser/respond`" in source
+    assert "sessionId: this.bridgeSessionId" in source
+    assert "requestId: request.requestId" in source
+    assert "signal.removeEventListener('abort', onAbort)" in source
 
 
 def test_sse_transport_probe_is_opt_in() -> None:

@@ -5,12 +5,32 @@ preferred_model_tier: frontier
 tools:
   - read
   - search
+  - usages
   - edit
   - execute
   - terminal
   - agent
   - changes
-  - dogma-governance/substrate-management # Groups check_substrate + prune_scratchpad
+  # dogma-governance MCP tools (13)
+  - dogma-governance/check_substrate
+  - dogma-governance/prune_scratchpad
+  - dogma-governance/validate_agent_file
+  - dogma-governance/validate_synthesis
+  - dogma-governance/scaffold_agent
+  - dogma-governance/scaffold_workplan
+  - dogma-governance/run_research_scout
+  - dogma-governance/query_docs
+  - dogma-governance/detect_user_interrupt
+  - dogma-governance/normalize_path
+  - dogma-governance/resolve_env_path
+  - dogma-governance/route_inference_request
+  - dogma-governance/get_trace_health
+  # webmcp-browser-inspector MCP tools (5)
+  - webmcp-browser-inspector/ping
+  - webmcp-browser-inspector/query_dom
+  - webmcp-browser-inspector/get_console_logs
+  - webmcp-browser-inspector/get_component_state
+  - webmcp-browser-inspector/trigger_action
 handoffs:
   - label: Executive Planner
     agent: Executive Planner
