@@ -89,6 +89,7 @@ in this sprint plan.
 - Passes `uv run ruff check scripts/validate_synthesis.py`
 
 **Depends on**: Phase 2 Review APPROVED (calibration source required before implementation)
+**Additional informing source** (noted 2026-03-30): `docs/research/swarm-vs-hierarchical-orchestration.md` (closes #415) is also a direct input to this implementation. The swarm paper's hierarchical takeback pattern documents the same enforcement-proximity principle at play in synthesis validation — tiers that gate agent output belong at the same layer as the workplan phase gate (T2 static enforcement, not runtime suggestion). The Scripter must read both `primary-research-depth-thresholds.md` (#478) **and** `swarm-vs-hierarchical-orchestration.md` (#415) before implementing.
 **CI**: pytest, ruff
 **Status**: Not started
 
