@@ -72,7 +72,7 @@ Current posture:
   VS Code MCP server entry today.
 
 Use the session guide for setup and invocation patterns:
-- [docs/guides/webmcp-browser-inspector.md](../docs/guides/webmcp-browser-inspector.md)
+- [docs/guides/dogma-browser-inspector.md](../docs/guides/dogma-browser-inspector.md)
 
 Reference limitation and validation notes:
 - [docs/guides/mcp-dashboard.md#vs-code-mcp-client-status-phase-4](../docs/guides/mcp-dashboard.md#vs-code-mcp-client-status-phase-4)

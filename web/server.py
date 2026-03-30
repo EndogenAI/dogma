@@ -70,7 +70,7 @@ except ImportError:  # pragma: no cover
 
 METRICS_JSONL_PATH = pathlib.Path(__file__).parent.parent / ".cache/mcp-metrics/tool_calls.jsonl"
 MCP_PROTOCOL_VERSION = "2025-03-26"
-MCP_SERVER_NAME = "webmcp-browser-inspector"
+MCP_SERVER_NAME = "dogma-browser-inspector"
 MCP_SERVER_VERSION = "0.2.0"
 MCP_REQUEST_TIMEOUT_SECONDS = 10.0
 MCP_BROWSER_SESSION_TTL_SECONDS = 60.0

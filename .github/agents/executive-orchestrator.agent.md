@@ -11,6 +11,7 @@ tools:
   - terminal
   - agent
   - changes
+  - vscode.mermaid-chat-features/renderMermaidDiagram
   # dogma-governance MCP tools (13)
   - dogma-governance/check_substrate
   - dogma-governance/prune_scratchpad
@@ -25,12 +26,12 @@ tools:
   - dogma-governance/resolve_env_path
   - dogma-governance/route_inference_request
   - dogma-governance/get_trace_health
-  # webmcp-browser-inspector MCP tools (5)
-  - webmcp-browser-inspector/ping
-  - webmcp-browser-inspector/query_dom
-  - webmcp-browser-inspector/get_console_logs
-  - webmcp-browser-inspector/get_component_state
-  - webmcp-browser-inspector/trigger_action
+  # dogma-browser-inspector MCP tools (5) — Optional: for dashboard inspection workflows
+  - dogma-browser-inspector/ping
+  - dogma-browser-inspector/query_dom
+  - dogma-browser-inspector/get_console_logs
+  - dogma-browser-inspector/get_component_state
+  - dogma-browser-inspector/trigger_action
 handoffs:
   - label: Executive Planner
     agent: Executive Planner

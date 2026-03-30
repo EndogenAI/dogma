@@ -1,4 +1,4 @@
-# WebMCP Browser Inspector Guide
+# dogma-browser-inspector Guide
 
 Use this guide during Copilot sessions to inspect the MCP Dashboard frontend via the Phase 3 browser inspector tools.
 
@@ -31,7 +31,7 @@ There are two MCP surfaces involved:
 1. `dogma-governance`
   - transport: stdio
   - purpose: repository governance, validation, scaffolding, scratchpad tooling
-2. `webmcp-browser-inspector`
+2. `dogma-browser-inspector`
   - transport: HTTP at `http://127.0.0.1:8000/mcp`
   - purpose: bridge browser-local inspector tools to VS Code through the dashboard sidecar
 
@@ -124,7 +124,7 @@ Expected handshake fields after `await inspector.start()`:
 ```json
 {
   "servers": {
-    "webmcp-browser-inspector": {
+    "dogma-browser-inspector": {
       "type": "http",
       "url": "http://127.0.0.1:8000/mcp"
     }
@@ -356,7 +356,7 @@ Cause: the dashboard page has not registered with the sidecar bridge yet, or VS 
 Fix:
 - Ensure the dashboard is open and `await inspector.start()` has run.
 - Check `curl -sf http://127.0.0.1:8000/mcp/handshake` and confirm `browserConnected: true`.
-- Add the `webmcp-browser-inspector` HTTP server entry to `.vscode/mcp.json` if it is not already present.
+- Add the `dogma-browser-inspector` HTTP server entry to `.vscode/mcp.json` if it is not already present.
 
 ---
 
