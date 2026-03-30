@@ -474,7 +474,11 @@ export class BrowserMcpServer {
         toolInput = (request.arguments as Record<string, unknown>).selector;
       }
 
-      responsePayload.result = await this.callTool(request.toolName, toolInput);
+      // TypeScript overload resolution: use type assertion to match general signature
+      responsePayload.result = await (this.callTool as (name: ToolName, input?: unknown) => Promise<ToolResult>)(
+        request.toolName,
+        toolInput
+      );
       responsePayload.ok = true;
     } catch (error) {
       responsePayload.error = error instanceof Error ? error.message : 'Unknown bridge error';
