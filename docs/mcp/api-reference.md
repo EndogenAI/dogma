@@ -9,6 +9,24 @@ The dogma governance MCP server exposes 13 tools for substrate validation, scaff
 
 **Setup**: See [`mcp_server/README.md`](../../mcp_server/README.md) for installation and configuration.
 
+## Browser Inspector Facade (Phase 3)
+
+Sprint 23 introduced a browser-local inspector facade at
+[`web/src/lib/mcp-server.ts`](../../web/src/lib/mcp-server.ts) with these tool names:
+
+- `query_dom`
+- `get_console_logs`
+- `get_component_state`
+- `trigger_action`
+
+This facade is currently local to the dashboard runtime and is not yet exported as a
+network MCP endpoint from `web/server.py`. As a result, these tools are not listed in
+the dogma governance MCP server tool inventory below.
+
+For invocation workflow and troubleshooting, see:
+- [`docs/guides/webmcp-browser-inspector.md`](../guides/webmcp-browser-inspector.md)
+- [`docs/guides/mcp-dashboard.md#vs-code-mcp-client-status-phase-4`](../guides/mcp-dashboard.md#vs-code-mcp-client-status-phase-4)
+
 ---
 
 ## MCP Tool Inventory

@@ -54,6 +54,29 @@ browser dashboard.
 See [docs/guides/mcp-dashboard.md](../docs/guides/mcp-dashboard.md) for the full setup
 guide, tab descriptions, and offline mode.
 
+## Browser Inspector Integration (Sprint 23)
+
+Sprint 23 Phase 3 added a browser-local inspector facade in
+[web/src/lib/mcp-server.ts](../web/src/lib/mcp-server.ts) with four tools:
+
+- `query_dom`
+- `get_console_logs`
+- `get_component_state`
+- `trigger_action`
+
+Current posture:
+- Tool logic is implemented and invocable in-browser.
+- The FastAPI sidecar does not yet expose a network MCP transport endpoint
+  (`/mcp`, `/mcp/handshake`), so these tools are not discoverable as a separate
+  VS Code MCP server entry today.
+
+Use the session guide for setup and invocation patterns:
+- [docs/guides/webmcp-browser-inspector.md](../docs/guides/webmcp-browser-inspector.md)
+
+Reference limitation and validation notes:
+- [docs/guides/mcp-dashboard.md#vs-code-mcp-client-status-phase-4](../docs/guides/mcp-dashboard.md#vs-code-mcp-client-status-phase-4)
+- [docs/mcp/api-reference.md#browser-inspector-facade-phase-3](../docs/mcp/api-reference.md#browser-inspector-facade-phase-3)
+
 ## Live Trace Capture
 
 Every tool call routed through `_run_with_mcp_telemetry()` appends a JSONL record to

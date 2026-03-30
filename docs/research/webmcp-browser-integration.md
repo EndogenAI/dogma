@@ -411,6 +411,51 @@ export const TOOLS = {
 
 ---
 
+### Pattern 3.5: Phase 3 Browser Inspector Tool Calls (Implemented)
+
+**Context**: Sprint 23 Phase 3 implemented browser inspector tool behavior in
+`web/src/lib/mcp-server.ts` using the concrete tool names `query_dom`,
+`get_console_logs`, `get_component_state`, and `trigger_action`.
+
+**Canonical example — direct invocation against implemented tool handlers**:
+
+```typescript
+// Browser console on localhost:5173 (Vite dev runtime)
+const { BrowserMcpServer } = await import('/src/lib/mcp-server.ts');
+const inspector = new BrowserMcpServer();
+await inspector.start();
+
+// 1) DOM query
+const dom = await inspector.callTool('query_dom', '.app-title');
+// dom => { elements: [{ tag, id, className, text }], count }
+
+// 2) Console logs
+console.info('phase3-canonical-example');
+const logs = await inspector.callTool('get_console_logs', { level: 'info' });
+// logs => { entries: ConsoleEntry[], count }
+
+// 3) Component state
+inspector.registerComponentState('dashboard', () => ({ initialized: true }));
+const state = await inspector.callTool('get_component_state', { component: 'dashboard' });
+// state => { component: 'dashboard', state: { initialized: true }, count: 1 }
+
+// 4) Action trigger
+const action = await inspector.callTool('trigger_action', {
+  type: 'click',
+  selector: '.tab:nth-child(2)',
+});
+// action => { ok: true, action: 'click', selector: '.tab:nth-child(2)' }
+```
+
+**Why this matters**: This example is tied to the actual Phase 3 implementation
+surface (tool names + typed return shapes) rather than projected API names.
+
+**Anti-pattern**: Documenting only hypothetical `browser_read_*` tool names when
+the implemented runtime currently exposes `query_dom`/`get_console_logs`/
+`get_component_state`/`trigger_action`.
+
+---
+
 ## 4. Security Constraints
 
 ### 4.1 SSRF Prevention (Mandatory)
