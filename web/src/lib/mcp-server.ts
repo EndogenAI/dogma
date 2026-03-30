@@ -6,33 +6,137 @@
  * - Keep transport posture aligned with SSE/fetch (no WebSocket).
  *
  * Scope:
- * - Registers a single `ping` tool.
- * - `ping` returns { status: "ok" }.
+ * - Registers `ping` plus Phase 3 inspector tools.
+ * - Provides safe DOM querying, console log inspection, component-state snapshots,
+ *   and constrained UI action triggering.
  */
 
+import {
+  installConsoleBuffer,
+  type ConsoleBufferApi,
+  type ConsoleEntry,
+  type ConsoleLevel,
+} from './console-buffer';
+
 export type PingResult = { status: 'ok' };
+
+export type DomElementSummary = {
+  tag: string;
+  id: string;
+  className: string;
+  text: string;
+};
+
+export type QueryDomResult = {
+  elements: DomElementSummary[];
+  count: number;
+};
+
+export type GetConsoleLogsResult = {
+  entries: ConsoleEntry[];
+  count: number;
+};
+
+export type GetComponentStateResult = {
+  component?: string;
+  state: Record<string, unknown> | unknown;
+  count: number;
+};
+
+export type TriggerActionInput =
+  | { type: 'click'; selector: string }
+  | {
+      type: 'input';
+      selector: string;
+      value: string;
+      eventType?: 'input' | 'change' | 'both';
+    };
+
+export type TriggerActionResult = {
+  ok: boolean;
+  action: TriggerActionInput['type'];
+  selector: string;
+};
 
 export type BrowserMcpServerOptions = {
   /** Same-origin endpoint root used for optional fetch/SSE handshake checks. */
   endpoint?: string;
   /** Off by default so app startup does not depend on live SSE during Phase 2 PoC. */
   enableSseProbe?: boolean;
+  /** Console entry retention bound for get_console_logs. */
+  maxConsoleEntries?: number;
 };
 
-type ToolHandler = () => PingResult | Promise<PingResult>;
+type ToolName =
+  | 'ping'
+  | 'query_dom'
+  | 'get_console_logs'
+  | 'get_component_state'
+  | 'trigger_action';
+
+type ComponentSnapshotter = () => unknown;
+
+type ToolResult =
+  | PingResult
+  | QueryDomResult
+  | GetConsoleLogsResult
+  | GetComponentStateResult
+  | TriggerActionResult;
+
+type ToolHandler = (input?: unknown) => ToolResult | Promise<ToolResult>;
+
+const MAX_SELECTOR_LENGTH = 256;
+const MAX_QUERY_RESULTS = 100;
+const MAX_INPUT_VALUE_LENGTH = 5000;
+
+function ensureString(value: unknown, fieldName: string): string {
+  if (typeof value !== 'string') {
+    throw new Error(`${fieldName} must be a string`);
+  }
+  return value;
+}
+
+function sanitizeSelector(selector: unknown): string {
+  const value = ensureString(selector, 'selector').trim();
+  if (!value) {
+    throw new Error('selector cannot be empty');
+  }
+  if (value.length > MAX_SELECTOR_LENGTH) {
+    throw new Error(`selector too long (max ${MAX_SELECTOR_LENGTH})`);
+  }
+  if (/[\n\r\0]/.test(value)) {
+    throw new Error('selector contains invalid control characters');
+  }
+  return value;
+}
+
+function truncateText(value: string, max = 200): string {
+  const normalized = value.replace(/\s+/g, ' ').trim();
+  if (normalized.length <= max) return normalized;
+  return `${normalized.slice(0, max - 1)}...`;
+}
 
 export class BrowserMcpServer {
   private readonly endpoint: string;
   private readonly enableSseProbe: boolean;
-  private readonly tools = new Map<string, ToolHandler>();
+  private readonly tools = new Map<ToolName, ToolHandler>();
+  private readonly consoleBuffer: ConsoleBufferApi;
+  private readonly componentRegistry = new Map<string, ComponentSnapshotter>();
   private eventSource: EventSource | null = null;
   private started = false;
 
   constructor(options: BrowserMcpServerOptions = {}) {
     this.endpoint = options.endpoint ?? '/mcp';
     this.enableSseProbe = options.enableSseProbe ?? false;
+    this.consoleBuffer = installConsoleBuffer({
+      maxEntries: options.maxConsoleEntries,
+    });
 
     this.registerTool('ping', async () => ({ status: 'ok' }));
+    this.registerTool('query_dom', (input) => this.queryDom(input));
+    this.registerTool('get_console_logs', (input) => this.getConsoleLogs(input));
+    this.registerTool('get_component_state', (input) => this.getComponentState(input));
+    this.registerTool('trigger_action', (input) => this.triggerAction(input));
   }
 
   async start(): Promise<void> {
@@ -60,14 +164,29 @@ export class BrowserMcpServer {
     if (!handler) {
       throw new Error('ping tool not registered');
     }
-    return await handler();
+    return (await handler()) as PingResult;
   }
 
-  async callTool(name: 'ping'): Promise<PingResult> {
-    if (name !== 'ping') {
+  async callTool(name: 'ping'): Promise<PingResult>;
+  async callTool(name: 'query_dom', input: string): Promise<QueryDomResult>;
+  async callTool(
+    name: 'get_console_logs',
+    input?: { level?: ConsoleLevel }
+  ): Promise<GetConsoleLogsResult>;
+  async callTool(
+    name: 'get_component_state',
+    input?: { component?: string }
+  ): Promise<GetComponentStateResult>;
+  async callTool(
+    name: 'trigger_action',
+    input: TriggerActionInput
+  ): Promise<TriggerActionResult>;
+  async callTool(name: ToolName, input?: unknown): Promise<ToolResult> {
+    const handler = this.tools.get(name);
+    if (!handler) {
       throw new Error(`Unknown tool: ${name}`);
     }
-    return this.ping();
+    return await handler(input);
   }
 
   async probeHandshake(): Promise<boolean> {
@@ -78,7 +197,148 @@ export class BrowserMcpServer {
     return response.ok;
   }
 
-  private registerTool(name: 'ping', handler: ToolHandler): void {
+  registerComponentState(component: string, snapshotter: ComponentSnapshotter): void {
+    const name = ensureString(component, 'component').trim();
+    if (!name) {
+      throw new Error('component cannot be empty');
+    }
+    this.componentRegistry.set(name, snapshotter);
+  }
+
+  unregisterComponentState(component: string): void {
+    this.componentRegistry.delete(component);
+  }
+
+  private queryDom(input: unknown): QueryDomResult {
+    const selector = sanitizeSelector(input);
+    let nodes: Element[];
+
+    try {
+      nodes = Array.from(document.querySelectorAll(selector));
+    } catch {
+      throw new Error('invalid CSS selector');
+    }
+
+    const elements = nodes.slice(0, MAX_QUERY_RESULTS).map((node) => {
+      const element = node as HTMLElement;
+      return {
+        tag: node.tagName.toLowerCase(),
+        id: node.id ?? '',
+        className: node.className?.toString() ?? '',
+        text: truncateText(element.innerText ?? node.textContent ?? ''),
+      };
+    });
+
+    return {
+      elements,
+      count: nodes.length,
+    };
+  }
+
+  private getConsoleLogs(input?: unknown): GetConsoleLogsResult {
+    const level =
+      input && typeof input === 'object' && 'level' in input
+        ? (input as { level?: unknown }).level
+        : undefined;
+
+    let normalizedLevel: ConsoleLevel | undefined;
+    if (level !== undefined) {
+      const value = ensureString(level, 'level').toLowerCase();
+      if (!['debug', 'info', 'log', 'warn', 'error'].includes(value)) {
+        throw new Error('invalid console level');
+      }
+      normalizedLevel = value as ConsoleLevel;
+    }
+
+    const entries = this.consoleBuffer.getEntries(normalizedLevel);
+    return {
+      entries,
+      count: entries.length,
+    };
+  }
+
+  private getComponentState(input?: unknown): GetComponentStateResult {
+    const component =
+      input && typeof input === 'object' && 'component' in input
+        ? (input as { component?: unknown }).component
+        : undefined;
+
+    if (component !== undefined) {
+      const key = ensureString(component, 'component').trim();
+      const snapshotter = this.componentRegistry.get(key);
+      if (!snapshotter) {
+        throw new Error(`component not registered: ${key}`);
+      }
+      return {
+        component: key,
+        state: snapshotter(),
+        count: 1,
+      };
+    }
+
+    const state: Record<string, unknown> = {};
+    for (const [name, snapshotter] of this.componentRegistry.entries()) {
+      state[name] = snapshotter();
+    }
+
+    return {
+      state,
+      count: Object.keys(state).length,
+    };
+  }
+
+  private triggerAction(input: unknown): TriggerActionResult {
+    if (!input || typeof input !== 'object') {
+      throw new Error('event payload must be an object');
+    }
+
+    const payload = input as Partial<TriggerActionInput>;
+    const actionType = ensureString(payload.type, 'type').toLowerCase();
+    if (actionType !== 'click' && actionType !== 'input') {
+      throw new Error('unsupported action type');
+    }
+
+    const selector = sanitizeSelector(payload.selector);
+    const element = document.querySelector(selector);
+    if (!element) {
+      throw new Error(`element not found for selector: ${selector}`);
+    }
+
+    if (actionType === 'click') {
+      if (!(element instanceof HTMLElement)) {
+        throw new Error('target element is not clickable');
+      }
+      element.click();
+      return { ok: true, action: 'click', selector };
+    }
+
+    if (!(element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement)) {
+      throw new Error('input action requires input or textarea element');
+    }
+
+    const value = ensureString(payload.value, 'value');
+    if (value.length > MAX_INPUT_VALUE_LENGTH) {
+      throw new Error(`value too long (max ${MAX_INPUT_VALUE_LENGTH})`);
+    }
+
+    const eventTypeRaw = payload.eventType ?? 'both';
+    const eventType = ensureString(eventTypeRaw, 'eventType').toLowerCase();
+    if (!['input', 'change', 'both'].includes(eventType)) {
+      throw new Error('eventType must be input, change, or both');
+    }
+
+    element.value = value;
+    if (eventType === 'input' || eventType === 'both') {
+      element.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    if (eventType === 'change' || eventType === 'both') {
+      element.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+
+    return { ok: true, action: 'input', selector };
+  }
+
+  private registerTool(name: ToolName, handler: ToolHandler): void {
     this.tools.set(name, handler);
   }
 }
