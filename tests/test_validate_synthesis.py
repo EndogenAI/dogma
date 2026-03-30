@@ -552,8 +552,16 @@ def _import_vs():
     return vs
 
 
-def _minimal_d4_text(*, status="Final", extra_frontmatter="", body_lines=80):
-    """Return minimal D4 synthesis text with enough lines to pass line-count gate."""
+def _minimal_d4_text(*, status="Final", extra_frontmatter="", body_lines=130, num_sources=4):
+    """Return minimal D4 synthesis text that satisfies the m-tier gate by default.
+
+    Defaults to body_lines=130 and num_sources=4 so that a doc without an
+    explicit ``size:`` field passes the m-tier gate (130 lines / 4 sources).
+    Pass smaller values to test failure scenarios.
+    """
+    sources_block = "sources:\n" + "".join(
+        f"  - url: https://example.com/source-{i}\n    title: Source {i}\n" for i in range(1, num_sources + 1)
+    )
     body = (
         "\n## 1. Executive Summary\n\nSummary.\n\n"
         "## 2. Hypothesis Validation\n\nValidation.\n\n"
@@ -561,7 +569,7 @@ def _minimal_d4_text(*, status="Final", extra_frontmatter="", body_lines=80):
         "## 4. Recommendations\n\nRecommendations.\n\n"
     )
     padding = "\n".join(f"Line {i}." for i in range(body_lines))
-    return f"---\ntitle: Test Synthesis\nstatus: {status}\n{extra_frontmatter}\n---\n{body}{padding}\n"
+    return f"---\ntitle: Test Synthesis\nstatus: {status}\n{sources_block}{extra_frontmatter}\n---\n{body}{padding}\n"
 
 
 class TestValidateRecommendationsBlock:
@@ -744,3 +752,116 @@ class TestValidateRecommendationsBlock:
         text = _minimal_d4_text(status="Final", extra_frontmatter=block)
         errors = self._call(tmp_path, text, is_synthesis=True)
         assert any("'status'" in e for e in errors), errors
+
+
+# ---------------------------------------------------------------------------
+# Helpers for tier boundary tests (issue #477)
+# ---------------------------------------------------------------------------
+
+
+def _d4_with_exact_lines(
+    tmp_path,
+    *,
+    size: str | None,
+    num_sources: int,
+    nonblank_lines: int,
+    name: str = "tier-test.md",
+):
+    """Write a minimal D4 doc with exactly *nonblank_lines* non-blank lines.
+
+    Uses ``vs.non_blank_line_count`` to measure the fixed overhead (frontmatter
+    + required headings) and adds precisely enough padding lines to reach the
+    requested total.
+    """
+    vs = _import_vs()
+    size_fm = f"size: {size}\n" if size is not None else ""
+    src_block = "sources:\n" + "".join(
+        f"  - url: https://example.com/src-{i}\n    title: Src {i}\n" for i in range(1, num_sources + 1)
+    )
+    body = (
+        "\n## 1. Executive Summary\n\nSummary.\n\n"
+        "## 2. Hypothesis Validation\n\nValidation.\n\n"
+        "## 3. Pattern Catalog\n\nPatterns.\n\n"
+        "## 4. Recommendations\n\nRecommendations.\n\n"
+    )
+    base = f"---\ntitle: T\nstatus: Draft\n{size_fm}{src_block}---\n{body}"
+    overhead = vs.non_blank_line_count(base)
+    padding = "\n".join(f"P{i}." for i in range(max(0, nonblank_lines - overhead)))
+    content = base + padding + "\n"
+    f = tmp_path / "docs" / "research" / name
+    f.parent.mkdir(parents=True, exist_ok=True)
+    f.write_text(content)
+    return f
+
+
+class TestD4SizeTierChecks:
+    """Tests for XS\u2013XXL dynamic size tier validation (issue #477)."""
+
+    @pytest.mark.io
+    def test_xs_tier_at_floor_passes(self, tmp_path):
+        """D4 with size: xs at exactly 80 non-blank lines and 2 sources passes."""
+        vs = _import_vs()
+        d4 = _d4_with_exact_lines(tmp_path, size="xs", num_sources=2, nonblank_lines=80)
+        passed, failures = vs.validate(d4)
+        assert passed, failures
+
+    @pytest.mark.io
+    def test_xs_tier_below_floor_fails_line_count(self, tmp_path):
+        """D4 with size: xs and 79 non-blank lines fails with tier FAIL message."""
+        vs = _import_vs()
+        d4 = _d4_with_exact_lines(tmp_path, size="xs", num_sources=2, nonblank_lines=79)
+        passed, failures = vs.validate(d4)
+        assert not passed
+        assert any("size 'xs' requires \u226580 non-blank lines" in f for f in failures), failures
+
+    @pytest.mark.io
+    def test_m_tier_at_floor_passes(self, tmp_path):
+        """D4 with size: m at exactly 130 non-blank lines and 4 sources passes."""
+        vs = _import_vs()
+        d4 = _d4_with_exact_lines(tmp_path, size="m", num_sources=4, nonblank_lines=130)
+        passed, failures = vs.validate(d4)
+        assert passed, failures
+
+    @pytest.mark.io
+    def test_m_tier_below_floor_fails_line_count(self, tmp_path):
+        """D4 with size: m and 129 non-blank lines fails with tier FAIL message."""
+        vs = _import_vs()
+        d4 = _d4_with_exact_lines(tmp_path, size="m", num_sources=4, nonblank_lines=129)
+        passed, failures = vs.validate(d4)
+        assert not passed
+        assert any("size 'm' requires \u2265130 non-blank lines" in f for f in failures), failures
+
+    @pytest.mark.io
+    def test_xs_source_count_too_low_fails(self, tmp_path):
+        """D4 with size: xs and only 1 source fails the source gate."""
+        vs = _import_vs()
+        d4 = _d4_with_exact_lines(tmp_path, size="xs", num_sources=1, nonblank_lines=80)
+        passed, failures = vs.validate(d4)
+        assert not passed
+        assert any("size 'xs' requires \u22652 sources" in f for f in failures), failures
+
+    @pytest.mark.io
+    def test_m_source_count_too_low_fails(self, tmp_path):
+        """D4 with size: m and only 3 sources fails the source gate."""
+        vs = _import_vs()
+        d4 = _d4_with_exact_lines(tmp_path, size="m", num_sources=3, nonblank_lines=130)
+        passed, failures = vs.validate(d4)
+        assert not passed
+        assert any("size 'm' requires \u22654 sources" in f for f in failures), failures
+
+    @pytest.mark.io
+    def test_default_tier_m_below_floor_fails(self, tmp_path):
+        """D4 without size: field defaults to m-tier; 129 lines fails."""
+        vs = _import_vs()
+        d4 = _d4_with_exact_lines(tmp_path, size=None, num_sources=4, nonblank_lines=129)
+        passed, failures = vs.validate(d4)
+        assert not passed
+        assert any("size 'm' requires \u2265130 non-blank lines" in f for f in failures), failures
+
+    @pytest.mark.io
+    def test_default_tier_m_at_floor_passes(self, tmp_path):
+        """D4 without size: field defaults to m-tier and passes at 130 lines / 4 sources."""
+        vs = _import_vs()
+        d4 = _d4_with_exact_lines(tmp_path, size=None, num_sources=4, nonblank_lines=130)
+        passed, failures = vs.validate(d4)
+        assert passed, failures

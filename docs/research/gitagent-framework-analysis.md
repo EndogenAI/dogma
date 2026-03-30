@@ -1,6 +1,7 @@
 ---
 title: "GitAgent: Framework-Agnostic Agent Portability and Git-Native Supervision"
 status: Final
+size: xs
 closes_issue: 419
 x-governs:
   - endogenous-first
