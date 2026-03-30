@@ -45,7 +45,9 @@ def test_exposes_calltool_overloads_for_all_tools() -> None:
     source = _source()
 
     for tool_name in EXPECTED_TOOLS:
-        assert f"async callTool(name: '{tool_name}'" in source
+        # Overload signatures may wrap lines, so match name declarations flexibly.
+        pattern = rf"async\s+callTool\(\s*name:\s*'{tool_name}'"
+        assert re.search(pattern, source)
 
 
 def test_ping_and_handshake_contracts_remain_present() -> None:
