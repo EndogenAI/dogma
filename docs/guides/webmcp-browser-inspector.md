@@ -22,6 +22,89 @@ This is useful for reproducible UI state checks without manual DevTools copy/pas
 
 See [docs/guides/mcp-dashboard.md](mcp-dashboard.md#vs-code-mcp-client-status-phase-4) for the Phase 4 transport limitation details.
 
+## Phase 6 Manual Test Checklist
+
+Run these steps in order and record pass/fail for each item.
+
+### Environment boot
+
+- [ ] Run `uv sync --extra web`.
+- [ ] Start runtime: `uv run --extra web python scripts/start_dashboard.py`.
+- [ ] Open `http://localhost:5173`.
+- [ ] In DevTools console, initialize inspector:
+
+```typescript
+const { BrowserMcpServer } = await import('/src/lib/mcp-server.ts');
+const inspector = new BrowserMcpServer();
+await inspector.start();
+```
+
+### Tool checks
+
+- [ ] `ping` returns `{ status: 'ok' }`:
+
+```typescript
+await inspector.callTool('ping');
+```
+
+- [ ] `query_dom` returns at least one `.app-title` element with `count >= 1`:
+
+```typescript
+await inspector.callTool('query_dom', '.app-title');
+```
+
+- [ ] `get_console_logs` returns at least one `info` entry after writing an info log:
+
+```typescript
+console.info('phase6-manual-check');
+await inspector.callTool('get_console_logs', { level: 'info' });
+```
+
+- [ ] `get_component_state` returns registered snapshot data and `count >= 1`:
+
+```typescript
+inspector.registerComponentState('dashboard', () => ({
+  title: document.querySelector('.app-title')?.textContent?.trim() ?? null,
+}));
+await inspector.callTool('get_component_state', { component: 'dashboard' });
+```
+
+- [ ] `trigger_action` click returns `{ ok: true, action: 'click' }` for an existing tab selector:
+
+```typescript
+await inspector.callTool('trigger_action', {
+  type: 'click',
+  selector: '.tab:nth-child(2)'
+});
+```
+
+### VS Code transport limitation check
+
+- [ ] Confirm sidecar health is reachable:
+
+```bash
+curl -sf http://127.0.0.1:8000/api/health
+```
+
+- [ ] Confirm MCP handshake endpoint is still missing (expected `404`):
+
+```bash
+curl -i http://127.0.0.1:8000/mcp/handshake
+```
+
+Expected outcome: local browser tool invocation works, but VS Code cannot invoke browser tools via MCP transport until `/mcp` is implemented.
+
+## Integration Validation Status (Phase 6)
+
+| Capability | Status | Evidence |
+|---|---|---|
+| Local browser `ping` tool invocation | Validated (manual) | `await inspector.callTool('ping')` returns `{ status: 'ok' }` |
+| Local browser `query_dom` tool invocation | Validated (manual) | `.app-title` query returns element summary + count |
+| Local browser `get_console_logs` tool invocation | Validated (manual) | `info` log appears in returned entries |
+| Local browser `get_component_state` tool invocation | Validated (manual) | registered `dashboard` snapshot is returned |
+| Local browser `trigger_action` tool invocation | Validated (manual) | click/input actions return `{ ok: true }` on valid targets |
+| VS Code MCP transport to browser inspector | Blocked (known limitation) | `GET /mcp/handshake` returns `404`; no exported HTTP MCP endpoint |
+
 ---
 
 ## Setup
