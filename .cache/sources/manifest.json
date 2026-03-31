@@ -1809,6 +1809,105 @@
       "file": ".cache/sources/arxiv-org-abs-2305-14251.md",
       "content_type": "text/html",
       "size_bytes": 7922
+    },
+    "prometheus-recording-rules": {
+      "url": "https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/",
+      "slug": "prometheus-recording-rules",
+      "title": "",
+      "fetched_at": "2026-03-31T06:14:31",
+      "file": ".cache/sources/prometheus-recording-rules.md",
+      "content_type": "text/html",
+      "size_bytes": 5819
+    },
+    "google-sre-monitoring": {
+      "url": "https://sre.google/sre-book/monitoring-distributed-systems/",
+      "slug": "google-sre-monitoring",
+      "title": "",
+      "fetched_at": "2026-03-31T06:14:37",
+      "file": ".cache/sources/google-sre-monitoring.md",
+      "content_type": "text/html",
+      "size_bytes": 33657
+    },
+    "otel-metrics-temporality": {
+      "url": "https://opentelemetry.io/docs/specs/otel/metrics/sdk/#temporality",
+      "slug": "otel-metrics-temporality",
+      "title": "",
+      "fetched_at": "2026-03-31T06:14:42",
+      "file": ".cache/sources/otel-metrics-temporality.md",
+      "content_type": "text/html",
+      "size_bytes": 82960
+    },
+    "otel-python-exporters": {
+      "url": "https://opentelemetry.io/docs/languages/python/exporters/",
+      "slug": "otel-python-exporters",
+      "title": "",
+      "fetched_at": "2026-03-31T06:14:49",
+      "file": ".cache/sources/otel-python-exporters.md",
+      "content_type": "text/html",
+      "size_bytes": 14818
+    },
+    "otel-mcp-semconv": {
+      "url": "https://opentelemetry.io/docs/specs/semconv/gen-ai/mcp/",
+      "slug": "otel-mcp-semconv",
+      "title": "",
+      "fetched_at": "2026-03-31T06:14:54",
+      "file": ".cache/sources/otel-mcp-semconv.md",
+      "content_type": "text/html",
+      "size_bytes": 66427
+    },
+    "fastapi-jinja2-templates": {
+      "url": "https://fastapi.tiangolo.com/advanced/templates/",
+      "slug": "fastapi-jinja2-templates",
+      "title": "",
+      "fetched_at": "2026-03-31T06:15:07",
+      "file": ".cache/sources/fastapi-jinja2-templates.md",
+      "content_type": "text/html",
+      "size_bytes": 4059
+    },
+    "ssr-vs-spa-tradeoffs": {
+      "url": "https://web.dev/rendering-on-the-web/",
+      "slug": "ssr-vs-spa-tradeoffs",
+      "title": "X",
+      "fetched_at": "2026-03-31T06:15:12",
+      "file": ".cache/sources/ssr-vs-spa-tradeoffs.md",
+      "content_type": "text/html",
+      "size_bytes": 22056
+    },
+    "jinja2-best-practices": {
+      "url": "https://jinja.palletsprojects.com/en/3.1.x/templates/#for",
+      "slug": "jinja2-best-practices",
+      "title": "",
+      "fetched_at": "2026-03-31T06:15:22",
+      "file": ".cache/sources/jinja2-best-practices.md",
+      "content_type": "text/html",
+      "size_bytes": 98323
+    },
+    "otel-histogram-spec": {
+      "url": "https://opentelemetry.io/docs/specs/otel/metrics/sdk/#histogram",
+      "slug": "otel-histogram-spec",
+      "title": "",
+      "fetched_at": "2026-03-31T06:15:28",
+      "file": ".cache/sources/otel-histogram-spec.md",
+      "content_type": "text/html",
+      "size_bytes": 82960
+    },
+    "prometheus-histogram-vs-summary": {
+      "url": "https://prometheus.io/docs/practices/histograms/",
+      "slug": "prometheus-histogram-vs-summary",
+      "title": "",
+      "fetched_at": "2026-03-31T06:15:33",
+      "file": ".cache/sources/prometheus-histogram-vs-summary.md",
+      "content_type": "text/html",
+      "size_bytes": 12540
+    },
+    "otel-python-histogram-example": {
+      "url": "https://opentelemetry.io/docs/languages/python/instrumentation/#metrics",
+      "slug": "otel-python-histogram-example",
+      "title": "",
+      "fetched_at": "2026-03-31T06:15:38",
+      "file": ".cache/sources/otel-python-histogram-example.md",
+      "content_type": "text/html",
+      "size_bytes": 14983
     }
   }
 }
