@@ -11,8 +11,6 @@ permissions:
   contents: read
 
 env:
-  MCP_FAITHFULNESS_MIN: 0.75
-  MCP_ERROR_RATE_MAX: 5.0
   MCP_EVALUATION_WINDOW: 100
 
 jobs:
@@ -58,6 +56,6 @@ jobs:
       - name: Alert on threshold breach
         if: steps.gate.outcome == 'failure'
         run: |
-          echo "::error::MCP quality gate failed — faithfulness < $MCP_FAITHFULNESS_MIN or error_rate > $MCP_ERROR_RATE_MAX%"
-          echo "Review MCP metrics in .cache/mcp-metrics/ and investigate degraded tool performance"
+          echo "::error::MCP quality gate failed — see scripts/check_mcp_quality_gate.py and the MCP metrics schema/config for current thresholds"
+          echo "Review MCP metrics in .cache/mcp-metrics/ and use the script/schema as the source of truth for remediation"
           exit 1

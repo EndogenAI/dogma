@@ -1,8 +1,11 @@
 # MCP Metrics Report
 
-**Report Date**: 2026-03-31 07:55 UTC
+**Baseline Label**: Sprint 20 baseline (2026-03-30)
+**Observed Sample Date**: 2026-03-31
 **Input**: .cache/mcp-metrics/tool_calls.jsonl
 **Total Records**: 2
+
+This file preserves the Sprint 20 baseline artifact name from 2026-03-30, but the example observations shown below were captured during validation on 2026-03-31. The later timestamps reflect when the sample was recorded, not a parsing mismatch.
 
 ## Summary Statistics
 

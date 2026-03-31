@@ -103,6 +103,7 @@ type ToolHandler = (input?: unknown) => ToolResult | Promise<ToolResult>;
 const MAX_SELECTOR_LENGTH = 256;
 const MAX_QUERY_RESULTS = 100;
 const MAX_INPUT_VALUE_LENGTH = 5000;
+const BRIDGE_EMPTY_POLL_DELAY_MS = 150;
 
 function ensureString(value: unknown, fieldName: string): string {
   if (typeof value !== 'string') {
@@ -393,6 +394,7 @@ export class BrowserMcpServer {
 
   private async registerBridgeSession(): Promise<boolean> {
     try {
+      // Acquire one server-side session token that the long-poll loop reuses until it expires.
       const response = await fetch(`${this.endpoint}/browser/session`, {
         method: 'POST',
         headers: { Accept: 'application/json' },
@@ -443,7 +445,9 @@ export class BrowserMcpServer {
         );
 
         if (response.status === 204) {
+          // Back off briefly when no work is queued so the browser loop does not hot-spin.
           this.emitStatus('CONNECTED');
+          await this.sleep(BRIDGE_EMPTY_POLL_DELAY_MS, signal);
           continue;
         }
 
@@ -477,6 +481,7 @@ export class BrowserMcpServer {
       return;
     }
 
+    // Always reply to the sidecar with a shaped payload so one bad tool call does not stall the queue.
     const responsePayload: Record<string, unknown> = {
       sessionId: this.bridgeSessionId,
       requestId: request.requestId,

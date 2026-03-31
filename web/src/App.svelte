@@ -21,6 +21,7 @@
   let refreshInterval = $state<number>(10000);
   let offline         = $state<boolean>(true);
   let mcpServer       = $state<BrowserMcpServer | null>(null);
+  let bridgeTransition: Promise<void> = Promise.resolve();
 
   /** Called by Sidebar when SSE delivers a new snapshot */
   function onData(snapshot: MetricsSnapshot): void {
@@ -39,6 +40,17 @@
     bridgeStatus = status;
   }
 
+  // Serialize start/stop requests so rapid toggles cannot leave two bridge instances running.
+  function queueBridgeTransition<T>(transition: () => Promise<T>): Promise<T> {
+    const run = bridgeTransition.then(transition, transition);
+    bridgeTransition = run.then(
+      () => undefined,
+      () => undefined
+    );
+    return run;
+  }
+
+  // Start the browser bridge only after any prior stop has fully drained.
   async function enableBridge(): Promise<void> {
     if (mcpServer) return;
     const server = new BrowserMcpServer({ onStatusChange: setBridgeStatus });
@@ -46,22 +58,26 @@
     await server.start();
   }
 
+  // Keep the current instance registered until stop resolves to avoid overlap during disable/enable races.
   async function disableBridge(): Promise<void> {
     const server = mcpServer;
-    mcpServer = null;
     if (server) {
       await server.stop();
+      if (mcpServer === server) {
+        mcpServer = null;
+      }
     } else {
       bridgeStatus = 'DISABLED';
     }
   }
 
+  // Apply persisted bridge preference through the serialized transition queue.
   async function syncBridge(enabled: boolean): Promise<void> {
     window.localStorage.setItem('webmcp.inspector.autostart', enabled ? '1' : '0');
     if (enabled) {
-      await enableBridge();
+      await queueBridgeTransition(() => enableBridge());
     } else {
-      await disableBridge();
+      await queueBridgeTransition(() => disableBridge());
     }
   }
 
@@ -73,7 +89,7 @@
   onMount(() => {
     bridgeEnabled = bridgeAutostartEnabled();
     if (bridgeEnabled) {
-      void enableBridge();
+      void queueBridgeTransition(() => enableBridge());
     } else {
       bridgeStatus = 'DISABLED';
     }
@@ -85,7 +101,7 @@
     })();
 
     return () => {
-      void disableBridge();
+      void queueBridgeTransition(() => disableBridge());
     };
   });
 
