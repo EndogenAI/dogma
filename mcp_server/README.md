@@ -86,8 +86,13 @@ Every tool call routed through `_run_with_mcp_telemetry()` appends a JSONL recor
 Record shape:
 
 ```json
-{"tool_name": "check_substrate", "timestamp_utc": "2026-03-29T...", "latency_ms": 42.1, "is_error": false, "error_type": null, "source": "live", "tool_version": "0.1.0.0"}
+{"tool_name": "check_substrate", "timestamp_utc": "2026-03-29T...", "latency_ms": 42.1, "is_error": false, "error_type": null, "error_message": null, "source": "live", "tool_version": "0.1.0.0"}
 ```
+
+For failed calls, `error_type` records the coarse failure class (`tool_error`,
+`RuntimeError`, etc.) and `error_message` stores a compact summary of the tool's
+structured `errors` payload or the raised exception text. This makes the trace
+log diagnostically useful without requiring a separate log join.
 
 `tool_version` format is `{pkg_version}.{BRANCH_COUNTER}` from `mcp_server/_version.py`.
 `BRANCH_COUNTER` must be `0` before merging to `main`.

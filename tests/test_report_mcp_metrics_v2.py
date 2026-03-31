@@ -35,6 +35,8 @@ def sample_jsonl(tmp_path: Path) -> Path:
             "timestamp_utc": "2026-03-30T10:02:00+00:00",
             "latency_ms": 100.0,
             "is_error": True,
+            "error_type": "tool_error",
+            "error_message": "docs index unavailable",
         },
         {
             "tool_name": "validate_synthesis",
@@ -81,6 +83,9 @@ def test_aggregate_metrics(sample_jsonl: Path):
     assert query_stats["success_rate"] == pytest.approx(66.67, rel=0.01)
     assert query_stats["mean_duration_ms"] == pytest.approx(70.0)  # (50 + 60 + 100) / 3
     assert query_stats["max_duration_ms"] == 100.0
+    assert metrics["error_stats"]["query_docs"]["error_count"] == 1
+    assert metrics["error_stats"]["query_docs"]["error_types"] == {"tool_error": 1}
+    assert metrics["error_stats"]["query_docs"]["error_messages"] == {"docs index unavailable": 1}
 
     validate_stats = metrics["tool_stats"]["validate_synthesis"]
     assert validate_stats["call_count"] == 2
@@ -175,11 +180,13 @@ def test_markdown_rendering(sample_jsonl: Path, tmp_path: Path):
     assert "# MCP Metrics Report" in markdown
     assert "## Summary Statistics" in markdown
     assert "## Per-Tool Breakdown" in markdown
+    assert "## Error Summary" in markdown
     assert "## Top 5 Slowest Calls" in markdown
 
     # Check values appear
     assert "Total Records**: 5" in markdown
     assert "80.0%" in markdown  # Global success rate
+    assert "docs index unavailable (1)" in markdown
 
 
 @pytest.mark.io

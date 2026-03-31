@@ -84,6 +84,7 @@ def aggregate_metrics(records: list[dict]) -> dict:
         tool_records[tool_name].append(r)
 
     tool_stats = {}
+    error_stats = {}
     for tool_name, tool_recs in tool_records.items():
         call_count = len(tool_recs)
         success_count = sum(1 for r in tool_recs if not r.get("is_error", False))
@@ -104,6 +105,22 @@ def aggregate_metrics(records: list[dict]) -> dict:
             "p95_duration_ms": p95_duration,
         }
 
+        error_types: dict[str, int] = defaultdict(int)
+        error_messages: dict[str, int] = defaultdict(int)
+        for r in tool_recs:
+            if not r.get("is_error", False):
+                continue
+            error_types[str(r.get("error_type") or "unknown")] += 1
+            error_message = r.get("error_message")
+            if error_message:
+                error_messages[str(error_message)] += 1
+
+        error_stats[tool_name] = {
+            "error_count": call_count - success_count,
+            "error_types": dict(error_types),
+            "error_messages": dict(error_messages),
+        }
+
     # Global aggregates
     total_calls = len(records)
     global_success_count = sum(1 for r in records if not r.get("is_error", False))
@@ -113,6 +130,7 @@ def aggregate_metrics(records: list[dict]) -> dict:
 
     return {
         "tool_stats": tool_stats,
+        "error_stats": error_stats,
         "total_calls": total_calls,
         "global_success_rate": global_success_rate,
         "mean_duration_global": mean_duration_global,
@@ -165,6 +183,27 @@ def build_markdown(metrics: dict, input_path: str) -> str:
             f"| {tool_name} | {stats['call_count']:,} | {format_value(stats['success_rate'])}% | "
             f"{mean_d} | {p95_d} | {max_d} |"
         )
+
+    lines.extend(["", "## Error Summary", "", "| Tool | Error Count | Error Types | Sample Messages |"])
+    lines.append("|------|-------------|-------------|------------------|")
+
+    for tool_name, err in sorted(metrics["error_stats"].items(), key=lambda x: x[0]):
+        if err["error_count"] == 0:
+            continue
+
+        error_types = ", ".join(
+            f"{name} ({count})"
+            for name, count in sorted(err["error_types"].items(), key=lambda item: (-item[1], item[0]))
+        )
+        if err["error_messages"]:
+            sample_messages = "; ".join(
+                f"{msg} ({count})"
+                for msg, count in sorted(err["error_messages"].items(), key=lambda item: (-item[1], item[0]))[:3]
+            )
+        else:
+            sample_messages = "No error_message captured"
+
+        lines.append(f"| {tool_name} | {err['error_count']} | {error_types} | {sample_messages} |")
 
     # Top 5 slowest calls
     lines.extend(["", "## Top 5 Slowest Calls", "", "| Tool | Duration (ms) | Timestamp | Status |"])
