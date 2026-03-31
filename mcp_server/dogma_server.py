@@ -173,6 +173,7 @@ def _summarize_error_value(value: Any, *, max_items: int = 3, max_chars: int = 2
         except TypeError:
             return str(value)[:max_chars]
     if isinstance(value, list):
+        # Collapse long error lists into a short semicolon-joined summary for JSONL telemetry.
         parts: list[str] = []
         for item in value[:max_items]:
             rendered = _summarize_error_value(item, max_items=1, max_chars=max_chars)
@@ -237,6 +238,7 @@ def _run_with_mcp_telemetry(tool_name: str, call: Callable[[], dict]) -> dict:
                 duration_s = time.perf_counter() - started
                 if _OP_DURATION_HISTOGRAM:
                     _OP_DURATION_HISTOGRAM.record(duration_s, attributes)
+                # Emit the same compact record shape with and without OTel so downstream reports stay uniform.
                 _JSONL_QUEUE.put_nowait(
                     {
                         "tool_name": tool_name,
@@ -268,6 +270,7 @@ def _run_with_mcp_telemetry(tool_name: str, call: Callable[[], dict]) -> dict:
         duration_s = time.perf_counter() - started
         if _OP_DURATION_HISTOGRAM:
             _OP_DURATION_HISTOGRAM.record(duration_s, attributes)
+        # Keep the fallback path aligned with the traced path for JSONL consumers and tests.
         _JSONL_QUEUE.put_nowait(
             {
                 "tool_name": tool_name,

@@ -155,6 +155,16 @@ def test_cors_comma_separated_origins(tmp_path, monkeypatch):
     assert acao != "http://evil.example.com"
 
 
+@pytest.mark.io
+def test_cors_empty_env_raises_runtime_error(monkeypatch):
+    """Reject empty WEBMCP_CORS_ORIGINS values instead of silently blocking all origins."""
+
+    monkeypatch.setenv("WEBMCP_CORS_ORIGINS", "   ,   ")
+
+    with pytest.raises(RuntimeError, match="WEBMCP_CORS_ORIGINS is set but empty"):
+        create_app()
+
+
 # ---------------------------------------------------------------------------
 # /api/metrics/stream (SSE)
 # ---------------------------------------------------------------------------

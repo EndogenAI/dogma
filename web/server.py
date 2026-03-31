@@ -390,9 +390,15 @@ def create_app() -> FastAPI:
     app = FastAPI(title="MCP Dashboard Sidecar", version="0.1.0")
     bridge = BrowserInspectorBridge()
 
-    # Parse CORS origins from environment variable (comma-separated)
-    cors_origins_str = os.getenv("WEBMCP_CORS_ORIGINS", "http://localhost:5173")
-    cors_origins = [origin.strip() for origin in cors_origins_str.split(",") if origin.strip()]
+    cors_origins_env = os.getenv("WEBMCP_CORS_ORIGINS")
+    if cors_origins_env is None:
+        cors_origins = ["http://localhost:5173"]
+    else:
+        cors_origins = [origin.strip() for origin in cors_origins_env.split(",") if origin.strip()]
+        if not cors_origins:
+            raise RuntimeError(
+                "WEBMCP_CORS_ORIGINS is set but empty; provide one or more comma-separated origins or unset it"
+            )
 
     app.add_middleware(
         CORSMiddleware,

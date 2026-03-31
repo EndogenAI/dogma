@@ -77,9 +77,9 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 ### Phase 3A — CORS Environment Variable Support (#506) ⬜
 **Agent**: Executive Scripter
 **Deliverables**:
-- `mcp_server/dogma_server.py` updated with CORS env var handling
-- `mcp_server/README.md` updated with CORS configuration instructions
-- Test coverage for CORS env var parsing
+- `web/server.py` updated with CORS env var handling
+- `docs/guides/mcp-dashboard.md` updated with CORS configuration instructions
+- `tests/test_web_server.py` updated with CORS env var coverage
 - `## Phase 3A Output` appended to scratchpad
 
 **Depends on**: Phase 2 Review APPROVED
@@ -401,7 +401,7 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 
 **Depends on**: Phase 10 PR triage complete, all threads replied-to
 **Gate**: Phase 11 does not start until APPROVED
-**Status**: Complete — APPROVED (all 9 comments addressed in 15e87ff; all threads replied-to)
+**Status**: Complete — APPROVED for the first review round; superseded by additional PR feedback on 2026-03-31
 
 ### Phase 11 — Session Close ⬜
 **Agent**: Executive Orchestrator

@@ -72,8 +72,13 @@ def compute_p95(values: list[float]) -> float | None:
     if len(values) < 20:
         return None
     sorted_values = sorted(values)
-    idx = int(0.95 * (len(sorted_values) - 1))
-    return sorted_values[idx]
+    position = 0.95 * (len(sorted_values) - 1)
+    lower_idx = int(position)
+    upper_idx = min(lower_idx + 1, len(sorted_values) - 1)
+    weight = position - lower_idx
+    lower_value = sorted_values[lower_idx]
+    upper_value = sorted_values[upper_idx]
+    return lower_value + (upper_value - lower_value) * weight
 
 
 def aggregate_metrics(records: list[dict]) -> dict:
@@ -81,6 +86,7 @@ def aggregate_metrics(records: list[dict]) -> dict:
     tool_records = defaultdict(list)
     for r in records:
         tool_name = r.get("tool_name", "unknown")
+        # Group raw JSONL observations first so reporting can derive both per-tool and global views.
         tool_records[tool_name].append(r)
 
     tool_stats = {}
@@ -110,6 +116,7 @@ def aggregate_metrics(records: list[dict]) -> dict:
         for r in tool_recs:
             if not r.get("is_error", False):
                 continue
+            # Keep error rollups compact: type totals plus a few repeated messages for triage.
             error_types[str(r.get("error_type") or "unknown")] += 1
             error_message = r.get("error_message")
             if error_message:
@@ -191,6 +198,7 @@ def build_markdown(metrics: dict, input_path: str) -> str:
         if err["error_count"] == 0:
             continue
 
+        # Prioritize the most frequent failures so the markdown stays readable on busy datasets.
         error_types = ", ".join(
             f"{name} ({count})"
             for name, count in sorted(err["error_types"].items(), key=lambda item: (-item[1], item[0]))
@@ -215,6 +223,7 @@ def build_markdown(metrics: dict, input_path: str) -> str:
         reverse=True,
     )[:5]
 
+    # Report concrete outliers rather than aggregates so follow-up debugging has exact timestamps.
     for r in slowest:
         status = "error" if r.get("is_error", False) else "success"
         timestamp = r.get("timestamp_utc", "N/A")
