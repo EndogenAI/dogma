@@ -391,9 +391,9 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 **Depends on**: Phase 9 APPROVED
 **Gate**: Phase 11 does not start until all Blocking comments are fixed and all threads replied-to
 **CI**: All existing hooks must pass before PR open
-**Status**: Not started
+**Status**: Complete
 
-### Phase 10 Review — Review Gate ⬜
+### Phase 10 Review — Review Gate ✅
 **Agent**: Review
 **Deliverables**:
 - `## Phase 10 Review Output` appended to scratchpad
@@ -401,7 +401,7 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 
 **Depends on**: Phase 10 PR triage complete, all threads replied-to
 **Gate**: Phase 11 does not start until APPROVED
-**Status**: Not started
+**Status**: Complete — APPROVED (all 9 comments addressed in 15e87ff; all threads replied-to)
 
 ### Phase 11 — Session Close ⬜
 **Agent**: Executive Orchestrator
