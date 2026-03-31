@@ -6,7 +6,7 @@
   import { onMount } from 'svelte';
   import { getSnapshot, isOffline } from './lib/api';
   import { BrowserMcpServer } from './lib/mcp-server';
-  import type { MetricsSnapshot, ConnStatus } from './lib/types';
+  import type { MetricsSnapshot, ConnStatus, BridgeStatus } from './lib/types';
   import Overview from './lib/Overview.svelte';
   import Tools    from './lib/Tools.svelte';
   import Errors   from './lib/Errors.svelte';
@@ -16,6 +16,8 @@
   let activeTab       = $state('overview');
   let data            = $state<MetricsSnapshot>(fixtureData as MetricsSnapshot);
   let connStatus      = $state<ConnStatus>('LIVE');
+  let bridgeStatus    = $state<BridgeStatus>('CONNECTING');
+  let bridgeEnabled   = $state<boolean>(true);
   let refreshInterval = $state<number>(10000);
   let offline         = $state<boolean>(true);
   let mcpServer       = $state<BrowserMcpServer | null>(null);
@@ -26,18 +28,54 @@
     offline = false;
   }
 
-  function inspectorAutostartEnabled(): boolean {
+  function bridgeAutostartEnabled(): boolean {
     const params = new URLSearchParams(window.location.search);
-    return (
-      params.get('inspector') === '1' ||
-      window.localStorage.getItem('webmcp.inspector.autostart') === '1'
-    );
+    if (params.get('inspector') === '0') return false;
+    if (params.get('inspector') === '1') return true;
+    return window.localStorage.getItem('webmcp.inspector.autostart') !== '0';
+  }
+
+  function setBridgeStatus(status: BridgeStatus): void {
+    bridgeStatus = status;
+  }
+
+  async function enableBridge(): Promise<void> {
+    if (mcpServer) return;
+    const server = new BrowserMcpServer({ onStatusChange: setBridgeStatus });
+    mcpServer = server;
+    await server.start();
+  }
+
+  async function disableBridge(): Promise<void> {
+    const server = mcpServer;
+    mcpServer = null;
+    if (server) {
+      await server.stop();
+    } else {
+      bridgeStatus = 'DISABLED';
+    }
+  }
+
+  async function syncBridge(enabled: boolean): Promise<void> {
+    window.localStorage.setItem('webmcp.inspector.autostart', enabled ? '1' : '0');
+    if (enabled) {
+      await enableBridge();
+    } else {
+      await disableBridge();
+    }
+  }
+
+  function toggleBridge(): void {
+    bridgeEnabled = !bridgeEnabled;
+    void syncBridge(bridgeEnabled);
   }
 
   onMount(() => {
-    if (inspectorAutostartEnabled()) {
-      mcpServer = new BrowserMcpServer();
-      void mcpServer.start();
+    bridgeEnabled = bridgeAutostartEnabled();
+    if (bridgeEnabled) {
+      void enableBridge();
+    } else {
+      bridgeStatus = 'DISABLED';
     }
 
     void (async () => {
@@ -47,10 +85,7 @@
     })();
 
     return () => {
-      if (mcpServer) {
-        void mcpServer.stop();
-      }
-      mcpServer = null;
+      void disableBridge();
     };
   });
 
@@ -76,13 +111,27 @@
       : connStatus === 'STALE' ? 'dot-amber'
       : 'dot-red'
   );
+
+  let bridgeDotClass = $derived(
+    bridgeStatus === 'CONNECTED' ? 'dot-green'
+      : bridgeStatus === 'CONNECTING' ? 'dot-amber'
+      : bridgeStatus === 'ERROR' ? 'dot-red'
+      : 'dot-gray'
+  );
 </script>
 
 <div class="app">
   <!-- Top navigation bar -->
   <nav class="topnav">
     <span class="app-title">MCP Dashboard</span>
-    <span class="health-dot {healthDotClass}" title={connStatus}></span>
+    <span class="status-chip" title={`Sidecar stream: ${connStatus}`}>
+      <span class="health-dot {healthDotClass}"></span>
+      <span>Sidecar</span>
+    </span>
+    <span class="status-chip" title={`Browser bridge: ${bridgeStatus}`}>
+      <span class="health-dot {bridgeDotClass}"></span>
+      <span>Bridge</span>
+    </span>
     <span class="ts-badge">Last updated: {snapshotTs}</span>
   </nav>
 
@@ -136,7 +185,15 @@
       </div>
     </main>
 
-    <Sidebar {data} bind:connStatus bind:refreshInterval {onData} />
+    <Sidebar
+      {data}
+      bind:connStatus
+      bind:refreshInterval
+      {onData}
+      {bridgeStatus}
+      {bridgeEnabled}
+      onToggleBridge={toggleBridge}
+    />
   </div>
 </div>
 
@@ -185,6 +242,18 @@
   .dot-green { background: #27ae60; }
   .dot-amber { background: #e67e22; }
   .dot-red   { background: #e74c3c; }
+  .dot-gray  { background: #9aa0a6; }
+
+  .status-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.18rem 0.5rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.08);
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.88);
+  }
 
   .ts-badge {
     font-size: 0.78rem;

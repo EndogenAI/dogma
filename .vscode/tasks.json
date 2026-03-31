@@ -6,6 +6,42 @@
       "type": "shell",
       "command": "uv run --extra web python scripts/start_dashboard.py",
       "problemMatcher": []
+    },
+    {
+      "label": "Start MCP Dashboard (Dev)",
+      "type": "shell",
+      "command": "uv run --extra web python scripts/start_dashboard.py --development",
+      "problemMatcher": []
+    },
+    {
+      "label": "Stop MCP Dashboard",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "pids=\"$(lsof -tiTCP:8000 -sTCP:LISTEN 2>/dev/null; lsof -tiTCP:5173 -sTCP:LISTEN 2>/dev/null)\"; if [ -n \"$pids\" ]; then kill $pids; fi; pkill -f \"scripts/start_dashboard.py\" 2>/dev/null || true"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Restart MCP Dashboard",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "pids=\"$(lsof -tiTCP:8000 -sTCP:LISTEN 2>/dev/null; lsof -tiTCP:5173 -sTCP:LISTEN 2>/dev/null)\"; if [ -n \"$pids\" ]; then kill $pids; fi; pkill -f \"scripts/start_dashboard.py\" 2>/dev/null || true; uv run --extra web python scripts/start_dashboard.py"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Restart MCP Dashboard (Dev)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "pids=\"$(lsof -tiTCP:8000 -sTCP:LISTEN 2>/dev/null; lsof -tiTCP:5173 -sTCP:LISTEN 2>/dev/null)\"; if [ -n \"$pids\" ]; then kill $pids; fi; pkill -f \"scripts/start_dashboard.py\" 2>/dev/null || true; uv run --extra web python scripts/start_dashboard.py --development"
+      ],
+      "problemMatcher": []
     }
   ]
 }

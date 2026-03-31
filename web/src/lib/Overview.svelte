@@ -44,7 +44,7 @@
 <div class="overview">
   <div class="cards">
     <div class="card">
-      <div class="label">Total Invocations</div>
+      <div class="label">Telemetry Invocations</div>
       <div class="value">{totalInvocations}</div>
     </div>
     <div class="card">
@@ -58,7 +58,7 @@
   </div>
 
   <h3>Top 3 Tools — Latency Trend</h3>
-  <p class="note">Trend data available after live capture</p>
+  <p class="note">Trend data derived from recorded telemetry in the JSONL trace.</p>
 
   <div class="sparklines">
     {#each top3 as tool (tool.name)}
