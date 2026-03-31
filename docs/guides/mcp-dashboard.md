@@ -136,11 +136,25 @@ No setup required — offline mode is automatic.
 
 ## Configuration
 
-CORS is hardcoded to `localhost:5173` for local development. This is intentional for the
-MVP: no external hosts can reach the sidecar API.
+### CORS Origins (Production Deployment)
 
-V2 will add `WEBMCP_CORS_ORIGINS` environment variable support to override the default
-(tracked in #506).
+By default, the FastAPI sidecar allows requests only from `http://localhost:5173` (the local Vite dev server).
+
+For production deployments where the frontend is served from a different origin, set the `WEBMCP_CORS_ORIGINS` environment variable:
+
+```bash
+# Single origin
+export WEBMCP_CORS_ORIGINS="https://dashboard.example.com"
+uv run --extra web python scripts/start_dashboard.py
+
+# Multiple origins (comma-separated)
+export WEBMCP_CORS_ORIGINS="http://example.com:5173,https://other.com"
+uv run --extra web python scripts/start_dashboard.py
+```
+
+**⚠️ Security Warning**: Only set `WEBMCP_CORS_ORIGINS` if you understand CORS security implications. Allowing arbitrary origins can expose your MCP metrics to unauthorized clients. Always use specific, trusted origins — never use wildcards (`*`) in production.
+
+**Default behavior**: If `WEBMCP_CORS_ORIGINS` is not set, the sidecar defaults to `http://localhost:5173` (no behavior change for local development).
 
 ---
 

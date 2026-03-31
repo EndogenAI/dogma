@@ -127,6 +127,34 @@ def test_cors_blocked(tmp_path, monkeypatch):
     assert acao != "http://evil.example.com"
 
 
+@pytest.mark.io
+def test_cors_comma_separated_origins(tmp_path, monkeypatch):
+    """Test that WEBMCP_CORS_ORIGINS accepts comma-separated values."""
+
+    jsonl = tmp_path / "tool_calls.jsonl"
+    _write_jsonl(jsonl, _SAMPLE_RECORDS)
+
+    # Set environment variable with multiple origins
+    monkeypatch.setenv("WEBMCP_CORS_ORIGINS", "http://example.com:5173,https://other.com")
+    client = _make_client(monkeypatch, jsonl)
+
+    # Test first origin
+    response = client.get("/api/health", headers={"Origin": "http://example.com:5173"})
+    assert response.status_code == 200
+    assert response.headers.get("access-control-allow-origin") == "http://example.com:5173"
+
+    # Test second origin
+    response = client.get("/api/health", headers={"Origin": "https://other.com"})
+    assert response.status_code == 200
+    assert response.headers.get("access-control-allow-origin") == "https://other.com"
+
+    # Test blocked origin
+    response = client.get("/api/health", headers={"Origin": "http://evil.example.com"})
+    assert response.status_code == 200
+    acao = response.headers.get("access-control-allow-origin")
+    assert acao != "http://evil.example.com"
+
+
 # ---------------------------------------------------------------------------
 # /api/metrics/stream (SSE)
 # ---------------------------------------------------------------------------

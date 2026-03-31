@@ -7,6 +7,7 @@ including a snapshot builder that aggregates per-tool statistics from
 
 import asyncio
 import json
+import os
 import pathlib
 import statistics
 import threading
@@ -382,16 +383,20 @@ def _build_snapshot() -> dict:
 def create_app() -> FastAPI:
     """Create the sidecar app with local CORS policy.
 
-    Hardcoded CORS origin is limited to `http://localhost:5173` for local Vite dev.
-    # TODO(v2): WEBMCP_CORS_ORIGINS from env (#506)
+    CORS origins can be configured via WEBMCP_CORS_ORIGINS environment variable.
+    Defaults to `http://localhost:5173` for local Vite dev server.
+    Multiple origins can be specified as comma-separated values.
     """
     app = FastAPI(title="MCP Dashboard Sidecar", version="0.1.0")
     bridge = BrowserInspectorBridge()
 
-    # TODO(v2): WEBMCP_CORS_ORIGINS from env (#506)
+    # Parse CORS origins from environment variable (comma-separated)
+    cors_origins_str = os.getenv("WEBMCP_CORS_ORIGINS", "http://localhost:5173")
+    cors_origins = [origin.strip() for origin in cors_origins_str.split(",") if origin.strip()]
+
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["http://localhost:5173"],
+        allow_origins=cors_origins,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
