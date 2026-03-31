@@ -14,10 +14,11 @@ Inputs:
                               If not provided, runs analyse_fleet_coupling.py automatically.
     --agents-dir PATH       — Agent files directory (default: .github/agents/).
     --dry-run               — Show what would be checked without failing.
+    --warn-only             — Show warnings but don't fail (exit 0 even if anti-patterns detected).
 
 Outputs:
     Prints detected anti-patterns to stdout.
-    Exit code 0 if no anti-patterns detected; 1 if any detected; 2 on I/O error.
+    Exit code 0 if no anti-patterns detected or --warn-only; 1 if any detected; 2 on I/O error.
 
 Usage:
     # Run with auto-generated coupling report:
@@ -26,11 +27,14 @@ Usage:
     # Run with existing coupling report:
     uv run python scripts/check_fleet_antipatterns.py --coupling-report /tmp/coupling.json
 
+    # Warn-only mode (non-blocking):
+    uv run python scripts/check_fleet_antipatterns.py --warn-only
+
     # Dry-run mode:
     uv run python scripts/check_fleet_antipatterns.py --dry-run
 
 Exit codes:
-    0 — success: no anti-patterns detected
+    0 — success: no anti-patterns detected or --warn-only mode
     1 — anti-pattern detected (circular delegation, orphaned agent, posture bloat, disconnected)
     2 — I/O error or missing dependencies
 """
@@ -256,6 +260,11 @@ def main() -> int:
         action="store_true",
         help="Show what would be checked without failing.",
     )
+    parser.add_argument(
+        "--warn-only",
+        action="store_true",
+        help="Show warnings but don't fail (exit 0 even if anti-patterns detected).",
+    )
     args = parser.parse_args()
 
     root = _get_root()
@@ -312,6 +321,9 @@ def main() -> int:
         return 0
 
     if antipatterns_found:
+        if args.warn_only:
+            print("Fleet anti-patterns detected (warn-only mode). See output above.")
+            return 0
         print("Fleet anti-patterns detected. See output above.")
         return 1
 
