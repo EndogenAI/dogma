@@ -194,19 +194,19 @@ def is_synthesis(file_path: Path) -> bool:
     return is_d3(file_path) or is_d4_synthesis_doc(file_path)
 
 
-def resolve_tier(text: str) -> str:
-    """Return the size tier from frontmatter ``size:`` field, defaulting to DEFAULT_TIER.
+def resolve_tier(text: str) -> str | None:
+    """Return the size tier from frontmatter ``size:`` field, or None if absent.
 
-    Valid values: xs, s, m, l, xl, xxl (case-insensitive).  Unknown or absent
-    values silently fall back to DEFAULT_TIER so existing docs without the field
-    are treated as ``m``-tier.
+    Valid values: xs, s, m, l, xl, xxl (case-insensitive).  Unknown values
+    silently fall back to None so existing docs without the field skip
+    tier-based enforcement.
     """
     fm = _parse_frontmatter_yaml(text)
     if not fm or not isinstance(fm, dict):
-        return DEFAULT_TIER
+        return None
     raw = str(fm.get("size", "")).strip().lower()
     if not raw or raw not in VALID_TIERS:
-        return DEFAULT_TIER
+        return None
     return raw
 
 
@@ -472,17 +472,21 @@ def validate(file_path: Path, min_lines: int = 80) -> tuple[bool, list[str]]:
     else:
         # D4: derive floor and source minimum from frontmatter `size:` tier.
         tier = resolve_tier(text)
-        tier_min_lines, tier_min_sources = TIER_CONFIG[tier]
-        if actual_lines < tier_min_lines:
-            failures.append(
-                f"FAIL: size '{tier}' requires \u2265{tier_min_lines} non-blank lines; found {actual_lines}"
-            )
-        # Source count check — independent of line count, both are hard gates.
-        _tier_fm = _parse_frontmatter_yaml(text)
-        _raw_sources: object = _tier_fm.get("sources") if isinstance(_tier_fm, dict) else None
-        source_count = len(_raw_sources) if isinstance(_raw_sources, list) else 0
-        if source_count < tier_min_sources:
-            failures.append(f"FAIL: size '{tier}' requires \u2265{tier_min_sources} sources; found {source_count}")
+        if tier:
+            tier_min_lines, tier_min_sources = TIER_CONFIG[tier]
+            if actual_lines < tier_min_lines:
+                failures.append(
+                    f"FAIL: size '{tier}' requires \u2265{tier_min_lines} non-blank lines; found {actual_lines}"
+                )
+            # Source count check — independent of line count, both are hard gates.
+            _tier_fm = _parse_frontmatter_yaml(text)
+            _raw_sources: object = _tier_fm.get("sources") if isinstance(_tier_fm, dict) else None
+            source_count = len(_raw_sources) if isinstance(_raw_sources, list) else 0
+            if source_count < tier_min_sources:
+                failures.append(f"FAIL: size '{tier}' requires \u2265{tier_min_sources} sources; found {source_count}")
+        elif actual_lines < min_lines:
+            # Fallback for docs without explicit size: field
+            failures.append(f"Line count too low: {actual_lines} non-blank lines (minimum: {min_lines})")
 
     # --- Check 3: required section headings ---
     present_headings = extract_headings(text)
