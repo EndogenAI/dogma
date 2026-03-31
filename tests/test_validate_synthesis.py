@@ -850,18 +850,18 @@ class TestD4SizeTierChecks:
         assert any("size 'm' requires \u22654 sources" in f for f in failures), failures
 
     @pytest.mark.io
-    def test_default_tier_m_below_floor_fails(self, tmp_path):
-        """D4 without size: field defaults to m-tier; 129 lines fails."""
+    def test_no_size_field_uses_min_lines_floor(self, tmp_path):
+        """D4 without size: field uses basic min_lines floor (80), not tier enforcement."""
         vs = _import_vs()
-        d4 = _d4_with_exact_lines(tmp_path, size=None, num_sources=4, nonblank_lines=129)
+        d4 = _d4_with_exact_lines(tmp_path, size=None, num_sources=1, nonblank_lines=79)
         passed, failures = vs.validate(d4)
         assert not passed
-        assert any("size 'm' requires \u2265130 non-blank lines" in f for f in failures), failures
+        assert any("Line count too low" in f for f in failures), failures
 
     @pytest.mark.io
-    def test_default_tier_m_at_floor_passes(self, tmp_path):
-        """D4 without size: field defaults to m-tier and passes at 130 lines / 4 sources."""
+    def test_no_size_field_passes_above_min_lines(self, tmp_path):
+        """D4 without size: field passes as long as it meets basic min_lines (80)."""
         vs = _import_vs()
-        d4 = _d4_with_exact_lines(tmp_path, size=None, num_sources=4, nonblank_lines=130)
+        d4 = _d4_with_exact_lines(tmp_path, size=None, num_sources=1, nonblank_lines=80)
         passed, failures = vs.validate(d4)
         assert passed, failures
