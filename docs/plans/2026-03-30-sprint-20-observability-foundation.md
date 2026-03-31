@@ -365,7 +365,7 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 **Gate**: Phase 9 does not start until APPROVED
 **Status**: Complete — APPROVED
 
-### Phase 9 — Final Review Gate ⬜
+### Phase 9 — Final Review Gate ✅
 **Agent**: Review
 **Deliverables**:
 - `## Phase 9 Review Output` appended to scratchpad
@@ -373,19 +373,47 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 
 **Depends on**: Phase 8C Review APPROVED
 **Gate**: Session close requires APPROVED
+**Status**: Complete — APPROVED (deterministic fallback; subagent rate-limited)
+
+### Phase 10 — PR Open & Review Triage ⬜
+**Agent**: Executive Orchestrator + GitHub Agent
+**Deliverables**:
+- PR opened from `feat/sprint-20-observability-foundation` → `main`
+- Copilot review auto-triggered on PR open
+- All Copilot inline comments retrieved: `gh pr view <num> --json reviews,reviewThreads` + `gh api .../pulls/<num>/comments`
+- Every comment classified: Blocking / Suggestion / Nit / Question
+- All Blocking comments addressed with committed fixes
+- All comments replied to via `scripts/pr_review_reply.py` batch mode (referencing fix commit SHAs)
+- All addressed threads resolved
+- Re-request review if state was CHANGES_REQUESTED
+- `## Phase 10 Output` appended to scratchpad with PR number + triage summary
+
+**Depends on**: Phase 9 APPROVED
+**Gate**: Phase 11 does not start until all Blocking comments are fixed and all threads replied-to
+**CI**: All existing hooks must pass before PR open
 **Status**: Not started
 
-### Phase 10 — Session Close ⬜
+### Phase 10 Review — Review Gate ⬜
+**Agent**: Review
+**Deliverables**:
+- `## Phase 10 Review Output` appended to scratchpad
+- Verdict: APPROVED or REQUEST CHANGES
+
+**Depends on**: Phase 10 PR triage complete, all threads replied-to
+**Gate**: Phase 11 does not start until APPROVED
+**Status**: Not started
+
+### Phase 11 — Session Close ⬜
 **Agent**: Executive Orchestrator
 **Deliverables**:
 - Update issue bodies (#506, #505, #499, #511) with completed checkboxes
-- Post progress comment on each implemented issue
+- Post progress comment on each implemented issue (with PR number + commit range)
 - Seed #500 as Sprint 21 deferred work
 - Write `## Session Summary` to scratchpad
 - Run `uv run python scripts/prune_scratchpad.py --force`
-- Push all commits
+- Confirm all commits pushed
 
-**Depends on**: Phase 9 Review APPROVED
+**Depends on**: Phase 10 Review APPROVED
 **CI**: N/A
 **Status**: Not started
 
@@ -397,9 +425,10 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 - [ ] #500 (eval harness) deferred to Sprint 21 — rationale: large effort per Phase 1; accepting incomplete metrics surfaces as tracked technical debt
 - [ ] No integration gaps flagged in Phase 5 cross-agent review (CORS → inspector → metrics chain validated)
 - [ ] All deliverables committed to feat/sprint-20-observability-foundation branch
-- [ ] All changes pushed and PR opened
+- [ ] PR opened from `feat/sprint-20-observability-foundation` → `main`
+- [ ] Copilot review triaged: all Blocking comments addressed, all threads replied-to and resolved
 - [ ] Issue bodies updated with completed checkboxes for 4 implemented issues
-- [ ] Progress comments posted on #506, #505, #499, #511
+- [ ] Progress comments posted on #506, #505, #499, #511 (with PR number)
 - [ ] #500 seeded with "Sprint 21 — deferred from Sprint 20" milestone/label
 
 **Branch**: `main`
