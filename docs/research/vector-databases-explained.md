@@ -356,7 +356,7 @@ first; LanceDB is simply the best-of-class embedded option for Python-native wor
 For all dogma-local RAG workflows, LanceDB remains the default (Local Compute First, MANIFESTO §3).
 When a Postgres instance is already deployed (e.g. a client `client-values.yml` stack includes
 Postgres), pgvector eliminates a dependency while providing adequate ANN performance at
-moderate scale (< 5M vectors). Do not introduce a dedicated VDB server before exhausing
+moderate scale (< 5M vectors). Do not introduce a dedicated VDB server before exhausting
 embedded and extension options.
 
 **Acceptance criteria**: `intelligence-architecture-synthesis.md` and `local-rag-adoption-patterns.md`
