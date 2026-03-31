@@ -252,12 +252,6 @@ def main() -> int:
         help="Path to JSON coupling report from analyse_fleet_coupling.py.",
     )
     parser.add_argument(
-        "--agents-dir",
-        type=Path,
-        default=None,
-        help="Agent files directory (default: .github/agents/).",
-    )
-    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Show what would be checked without failing.",

@@ -45,7 +45,7 @@ jobs:
           import json, sys
           with open('fleet-coupling.json') as f:
               data = json.load(f)
-          high_k = [n for n, d in data.get('nodes', {}).items() if d.get('out_degree', 0) > 6]
+          high_k = data.get('high_k_nodes', [])
           if high_k:
               print(f'::warning::High-K agents detected: {high_k}')
           "
