@@ -74,50 +74,128 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 **Gate**: Phase 3 does not start until APPROVED
 **Status**: Not started
 
-### Phases 3–N — Implementation ⬜
-**Agent**: To be determined by Executive Planner in Phase 2
+### Phase 3A — CORS Environment Variable Support (#506) ⬜
+**Agent**: Executive Scripter
 **Deliverables**:
-- Implementation of issues #511, #506, #505, #500, #499
-- Each implementation phase followed by its own Review gate
-- All changes committed with conventional commit messages
+- `mcp_server/dogma_server.py` updated with CORS env var handling
+- `mcp_server/README.md` updated with CORS configuration instructions
+- Test coverage for CORS env var parsing
+- `## Phase 3A Output` appended to scratchpad
 
 **Depends on**: Phase 2 Review APPROVED
-**CI**: Tests, ruff, validate-agent-files (if agent files changed)
+**CI**: pytest, ruff
 **Status**: Not started
 
-### Phase N+1 — Cross-Agent Integration Review ⬜
+### Phase 3A Review — Review Gate ⬜
+**Agent**: Review
+**Deliverables**:
+- `## Phase 3A Review Output` appended to scratchpad
+- Verdict: APPROVED or REQUEST CHANGES
+
+**Depends on**: Phase 3A complete
+**Gate**: Phase 3B does not start until APPROVED
+**Status**: Not started
+
+### Phase 3B — Inspector Protocol Integration (#505) ⬜
+**Agent**: Executive Scripter
+**Deliverables**:
+- `.vscode/mcp.json` entry for HTTP server endpoint
+- Integration test: browser inspector → MCP server
+- Documentation: `docs/mcp/inspector-integration.md`
+- `## Phase 3B Output` appended to scratchpad
+
+**Depends on**: Phase 3A Review APPROVED (CORS must be working)
+**CI**: pytest, ruff
+**Status**: Not started
+
+### Phase 3B Review — Review Gate ⬜
+**Agent**: Review
+**Deliverables**:
+- `## Phase 3B Review Output` appended to scratchpad
+- Verdict: APPROVED or REQUEST CHANGES
+
+**Depends on**: Phase 3B complete
+**Gate**: Phase 3C does not start until APPROVED
+**Status**: Not started
+
+### Phase 3C — Metrics Capture CI Gate (#499) ⬜
+**Agent**: Executive Automator
+**Deliverables**:
+- CI workflow: `.github/workflows/metrics-quality-gate.yml`
+- Quality threshold enforcement script (or extend existing metrics script)
+- Alert mechanism documentation
+- `## Phase 3C Output` appended to scratchpad
+
+**Depends on**: Phase 3B Review APPROVED
+**CI**: yaml-lint, workflow validation
+**Status**: Not started
+
+### Phase 3C Review — Review Gate ⬜
+**Agent**: Review
+**Deliverables**:
+- `## Phase 3C Review Output` appended to scratchpad
+- Verdict: APPROVED or REQUEST CHANGES
+
+**Depends on**: Phase 3C complete
+**Gate**: Phase 4 does not start until APPROVED
+**Status**: Not started
+
+### Phase 4 — Fleet Capability Audit Integration (#511) ⬜
+**Agent**: Executive Fleet
+**Deliverables**:
+- Pre-commit hook or CI gate for fleet audit script
+- Tool/capability drift detection integration
+- Documentation: when and how the audit runs
+- `## Phase 4 Output` appended to scratchpad
+
+**Depends on**: Phase 3C Review APPROVED
+**CI**: pre-commit config validation
+**Status**: Not started
+
+### Phase 4 Review — Review Gate ⬜
+**Agent**: Review
+**Deliverables**:
+- `## Phase 4 Review Output` appended to scratchpad
+- Verdict: APPROVED or REQUEST CHANGES
+
+**Depends on**: Phase 4 complete
+**Gate**: Phase 5 does not start until APPROVED
+**Status**: Not started
+
+### Phase 5 — Cross-Agent Integration Review ⬜
 **Agent**: Executive Orchestrator (self)
 **Deliverables**:
-- `## Phase N+1 Output` appended to scratchpad
-- Verify all 5 issues' acceptance criteria satisfied
-- Spot-check integration gaps (e.g., metrics capture feeding eval harness)
+- `## Phase 5 Output` appended to scratchpad
+- Verify all 4 implemented issues' (#506, #505, #499, #511) acceptance criteria satisfied
+- Spot-check integration: CORS → inspector protocol → metrics capture
 - Flag incomplete issues or new technical debt
 - Return: Bullets only — "Issues ready" or "Issues flagged: [list with reason]"
 
-**Depends on**: All implementation phases complete
+**Depends on**: Phase 4 Review APPROVED
 **CI**: N/A (internal QA phase)
 **Status**: Not started
 
-### Phase N+2 — Final Review Gate ⬜
+### Phase 6 — Final Review Gate ⬜
 **Agent**: Review
 **Deliverables**:
-- `## Phase N+2 Review Output` appended to scratchpad
+- `## Phase 6 Review Output` appended to scratchpad
 - Verdict: APPROVED (gates session close)
 
-**Depends on**: Phase N+1 integration review complete
+**Depends on**: Phase 5 integration review complete
 **Gate**: Session close requires APPROVED
 **Status**: Not started
 
-### Phase N+3 — Session Close ⬜
+### Phase 7 — Session Close ⬜
 **Agent**: Executive Orchestrator
 **Deliverables**:
-- Update all 5 issue bodies with checklist completeness (mark `[x]` for satisfied criteria)
-- Post progress comment on each issue: "Completed in Sprint 20 — Observability Foundation"
+- Update issue bodies (#506, #505, #499, #511) with completed checkboxes
+- Post progress comment on each implemented issue
+- Seed #500 as Sprint 21 deferred work
 - Write `## Session Summary` to scratchpad
 - Run `uv run python scripts/prune_scratchpad.py --force`
 - Push all commits
 
-**Depends on**: Phase N+2 Review APPROVED
+**Depends on**: Phase 6 Review APPROVED
 **CI**: N/A
 **Status**: Not started
 
@@ -125,12 +203,14 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 
 ## Acceptance Criteria
 
-- [ ] All 5 issues (#511, #506, #505, #500, #499) have acceptance criteria satisfied
-- [ ] No integration gaps flagged in Phase N+1 cross-agent review
+- [ ] 4 issues (#506, #505, #499, #511) implemented with acceptance criteria satisfied
+- [ ] #500 (eval harness) deferred to Sprint 21 — rationale: large effort per Phase 1; accepting incomplete metrics surfaces as tracked technical debt
+- [ ] No integration gaps flagged in Phase 5 cross-agent review (CORS → inspector → metrics chain validated)
 - [ ] All deliverables committed to feat/sprint-20-observability-foundation branch
 - [ ] All changes pushed and PR opened
-- [ ] Issue bodies updated with completed checkboxes
-- [ ] Progress comments posted on all 5 issues
+- [ ] Issue bodies updated with completed checkboxes for 4 implemented issues
+- [ ] Progress comments posted on #506, #505, #499, #511
+- [ ] #500 seeded with "Sprint 21 — deferred from Sprint 20" milestone/label
 
 **Branch**: `main`
 **Date**: 2026-03-30
