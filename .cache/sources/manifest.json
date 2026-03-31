@@ -1908,6 +1908,15 @@
       "file": ".cache/sources/otel-python-histogram-example.md",
       "content_type": "text/html",
       "size_bytes": 14983
+    },
+    "github-com-microsoft-vscode-issues-306729": {
+      "url": "https://github.com/microsoft/vscode/issues/306729",
+      "slug": "github-com-microsoft-vscode-issues-306729",
+      "title": "",
+      "fetched_at": "2026-03-31T18:31:22",
+      "file": ".cache/sources/github-com-microsoft-vscode-issues-306729.md",
+      "content_type": "text/html",
+      "size_bytes": 6021
     }
   }
 }

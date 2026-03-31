@@ -30,11 +30,7 @@ def test_jsonl_writer_drains_queue_and_writes_parseable_line(tmp_path: Path) -> 
     local_queue.put(payload)
     local_queue.put(None)
 
-    with (
-        patch("mcp_server.dogma_server._JSONL_PATH", jsonl_path),
-        patch("mcp_server.dogma_server._JSONL_QUEUE", local_queue),
-    ):
-        dogma_server._jsonl_writer()
+    dogma_server._jsonl_writer(local_queue, jsonl_path)
 
     lines = jsonl_path.read_text(encoding="utf-8").splitlines()
     assert len(lines) == 1
@@ -113,6 +109,28 @@ def test_run_with_mcp_telemetry_tool_error_enqueues_structured_error_message() -
 
 
 @_requires_mcp
+def test_run_with_mcp_telemetry_tool_error_without_details_enqueues_fallback_message() -> None:
+    dogma_server = importlib.import_module("mcp_server.dogma_server")
+    captured: list[dict] = []
+
+    def _capture(item: dict) -> None:
+        captured.append(item)
+
+    def tool_fn() -> dict:
+        return {"ok": False}
+
+    with patch.object(dogma_server._JSONL_QUEUE, "put_nowait", side_effect=_capture):
+        result = dogma_server._run_with_mcp_telemetry("get_trace_health", tool_fn)
+
+    assert result["ok"] is False
+    assert len(captured) == 1
+    payload = captured[0]
+    assert payload["is_error"] is True
+    assert payload["error_type"] == "tool_error"
+    assert payload["error_message"] == "The tool reported a problem but did not include any details."
+
+
+@_requires_mcp
 def test_get_trace_health_success_state() -> None:
     dogma_server = importlib.import_module("mcp_server.dogma_server")
     jsonl_path = dogma_server._JSONL_PATH
@@ -140,6 +158,27 @@ def test_get_trace_health_failure_state() -> None:
         health = dogma_server.get_trace_health()
 
     assert health["ok"] is False
+    assert health["errors"] == ["JSONL trace capture has recorded 1 write failure(s)."]
+
+
+@_requires_mcp
+def test_get_trace_health_enqueues_telemetry_row() -> None:
+    dogma_server = importlib.import_module("mcp_server.dogma_server")
+    captured: list[dict] = []
+
+    def _capture(item: dict) -> None:
+        captured.append(item)
+
+    with patch.object(dogma_server._JSONL_QUEUE, "put_nowait", side_effect=_capture):
+        health = dogma_server.get_trace_health()
+
+    assert health["jsonl_path"] == str(dogma_server._JSONL_PATH)
+    assert len(captured) == 1
+    payload = captured[0]
+    assert payload["tool_name"] == "get_trace_health"
+    assert payload["is_error"] is False
+    assert payload["error_type"] is None
+    assert payload["error_message"] is None
 
 
 @pytest.mark.io
