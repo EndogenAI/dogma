@@ -110,7 +110,7 @@
                         <td class="col-score">{ev.faithfulness != null ? ev.faithfulness.toFixed(2) : '—'}</td>
                         <td class="col-score">{ev.correctness != null ? ev.correctness.toFixed(2) : '—'}</td>
                         <td class="col-score col-sev" class:sev-high={ev.severity_level != null && ev.severity_level > 1}>{ev.severity_level != null ? ev.severity_level.toFixed(2) : '—'}</td>
-                        <td class="col-msg">{ev.message || '—'}</td>
+                        <td class="col-msg">{ev.message || 'This error did not include any details.'}</td>
                       </tr>
                     {/each}
                   </tbody>

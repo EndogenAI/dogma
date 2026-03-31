@@ -105,33 +105,44 @@ _WRITE_SUCCESS_COUNT: int = 0
 _WRITE_FAIL_COUNT: int = 0
 
 
-def _jsonl_writer() -> None:
+def _jsonl_writer(
+    jsonl_queue: queue.Queue | None = None,
+    jsonl_path: pathlib.Path | None = None,
+) -> None:
     """Background daemon: drain _JSONL_QUEUE and append records to JSONL file.
 
     Counters _WRITE_SUCCESS_COUNT / _WRITE_FAIL_COUNT track write outcomes.
     OSError is logged as WARNING but never propagates to the tool caller.
     """
     global _WRITE_SUCCESS_COUNT, _WRITE_FAIL_COUNT  # noqa: PLW0603
-    _JSONL_PATH.parent.mkdir(parents=True, exist_ok=True)
+    active_queue = _JSONL_QUEUE if jsonl_queue is None else jsonl_queue
+    active_path = _JSONL_PATH if jsonl_path is None else jsonl_path
+
+    active_path.parent.mkdir(parents=True, exist_ok=True)
     while True:
-        record = _JSONL_QUEUE.get()
+        record = active_queue.get()
         if record is None:  # sentinel — clean shutdown
             break
         try:
-            with _JSONL_PATH.open("a", encoding="utf-8") as fh:
+            with active_path.open("a", encoding="utf-8") as fh:
                 fh.write(json.dumps(record, ensure_ascii=False) + "\n")
             _WRITE_SUCCESS_COUNT += 1
         except OSError as exc:
             _WRITE_FAIL_COUNT += 1
             _logger.warning(
                 "mcp-jsonl-writer: write failed (path=%s, error=%s: %s)",
-                _JSONL_PATH,
+                active_path,
                 type(exc).__name__,
                 exc,
             )
 
 
-_writer_thread = threading.Thread(target=_jsonl_writer, daemon=True, name="mcp-jsonl-writer")
+_writer_thread = threading.Thread(
+    target=_jsonl_writer,
+    args=(_JSONL_QUEUE, _JSONL_PATH),
+    daemon=True,
+    name="mcp-jsonl-writer",
+)
 _writer_thread.start()
 
 _TRACER = _otel_trace.get_tracer("dogma.mcp.server") if _otel_trace else None
@@ -176,6 +187,20 @@ def _summarize_error_value(value: Any, *, max_items: int = 3, max_chars: int = 2
     return str(value)[:max_chars]
 
 
+def _summarize_tool_result_error(result: dict[str, Any]) -> str | None:
+    """Return the best available human-readable error summary from a tool result."""
+    summary = (
+        _summarize_error_value(result.get("errors"))
+        or _summarize_error_value(result.get("error"))
+        or _summarize_error_value(result.get("message"))
+    )
+    if summary:
+        return summary
+    if result.get("ok") is False:
+        return "The tool reported a problem but did not include any details."
+    return None
+
+
 def _run_with_mcp_telemetry(tool_name: str, call: Callable[[], dict]) -> dict:
     """Run tool call with MCP semconv span/metric emission when OTel is available."""
     attributes = {
@@ -195,11 +220,7 @@ def _run_with_mcp_telemetry(tool_name: str, call: Callable[[], dict]) -> dict:
                 result = call()
                 _trace_is_error = bool(result.get("ok") is False or result.get("errors"))
                 _trace_error_type = "tool_error" if _trace_is_error else None
-                _trace_error_message = (
-                    _summarize_error_value(result.get("errors"))
-                    or _summarize_error_value(result.get("error"))
-                    or _summarize_error_value(result.get("message"))
-                )
+                _trace_error_message = _summarize_tool_result_error(result)
                 if _trace_is_error:
                     span.set_attribute("error.type", "tool_error")
                     if _trace_error_message:
@@ -236,11 +257,7 @@ def _run_with_mcp_telemetry(tool_name: str, call: Callable[[], dict]) -> dict:
         result = call()
         _trace_is_error = bool(result.get("ok") is False or result.get("errors"))
         _trace_error_type = "tool_error" if _trace_is_error else None
-        _trace_error_message = (
-            _summarize_error_value(result.get("errors"))
-            or _summarize_error_value(result.get("error"))
-            or _summarize_error_value(result.get("message"))
-        )
+        _trace_error_message = _summarize_tool_result_error(result)
         return result
     except Exception as exc:
         _trace_is_error = True
@@ -526,15 +543,24 @@ def get_trace_health() -> dict:
           "write_fail_count": int,
           "jsonl_path": str,
           "jsonl_exists": bool,
+                    "errors": list[str],
         }
     """
-    return {
-        "ok": _WRITE_FAIL_COUNT == 0,
-        "write_success_count": _WRITE_SUCCESS_COUNT,
-        "write_fail_count": _WRITE_FAIL_COUNT,
-        "jsonl_path": str(_JSONL_PATH),
-        "jsonl_exists": _JSONL_PATH.exists(),
-    }
+    return _run_with_mcp_telemetry(
+        "get_trace_health",
+        lambda: {
+            "ok": _WRITE_FAIL_COUNT == 0,
+            "write_success_count": _WRITE_SUCCESS_COUNT,
+            "write_fail_count": _WRITE_FAIL_COUNT,
+            "jsonl_path": str(_JSONL_PATH),
+            "jsonl_exists": _JSONL_PATH.exists(),
+            "errors": (
+                [f"JSONL trace capture has recorded {_WRITE_FAIL_COUNT} write failure(s)."]
+                if _WRITE_FAIL_COUNT > 0
+                else []
+            ),
+        },
+    )
 
 
 if __name__ == "__main__":
