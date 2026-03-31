@@ -237,7 +237,7 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 ### Phase 6 — Cross-Agent Integration Review ⬜
 **Agent**: Executive Orchestrator (self)
 **Deliverables**:
-- `## Phase 5 Output` appended to scratchpad
+- `## Phase 6 Output` appended to scratchpad
 - Verify all 4 implemented issues' (#506, #505, #499, #511) acceptance criteria satisfied
 - Spot-check integration: CORS → inspector protocol → metrics capture
 - Flag incomplete issues or new technical debt
@@ -247,17 +247,64 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 **CI**: N/A (internal QA phase)
 **Status**: Not started
 
-### Phase 7 — Final Review Gate ⬜
+### Phase 7A — Research: Metrics Capture/Report Pipeline (#499) ⬜
+**Agent**: Research Scout
+**Deliverables**:
+- External research on metrics capture/report patterns for OpenTelemetry/observability systems
+- JSONL → structured report transformation patterns
+- Gap analysis: what's missing in our corpus for metrics pipeline implementation?
+- Source URLs cached in `.cache/sources/`
+- `## Phase 7A Output` appended to scratchpad (≤2000 tokens)
+
+**Depends on**: Phase 6 integration review complete (identified #499 partial scope)
+**CI**: N/A (research phase)
+**Status**: Not started
+
+### Phase 7A Review — Review Gate ⬜
 **Agent**: Review
 **Deliverables**:
-- `## Phase 6 Review Output` appended to scratchpad
+- `## Phase 7A Review Output` appended to scratchpad
+- Verdict: APPROVED or REQUEST CHANGES
+
+**Depends on**: Phase 7A research complete
+**Gate**: Phase 7B does not start until APPROVED
+**Status**: Not started
+
+### Phase 7B — Implementation: Capture/Report Pipeline (#499) ⬜
+**Agent**: Executive Scripter
+**Deliverables**:
+- `scripts/capture_mcp_metrics.py` — reads `.cache/mcp-metrics/tool_calls.jsonl`, outputs structured metrics
+- `scripts/report_mcp_metrics.py` — formats metrics as Markdown report
+- Baseline metrics report generated and committed to `docs/metrics/`
+- Test coverage for both scripts
+- Documentation: usage + integration with quality gate
+- `## Phase 7B Output` appended to scratchpad
+
+**Depends on**: Phase 7A Review APPROVED
+**CI**: pytest, ruff
+**Status**: Not started
+
+### Phase 7B Review — Review Gate ⬜
+**Agent**: Review
+**Deliverables**:
+- `## Phase 7B Review Output` appended to scratchpad
+- Verdict: APPROVED or REQUEST CHANGES
+
+**Depends on**: Phase 7B implementation complete
+**Gate**: Phase 8 does not start until APPROVED
+**Status**: Not started
+
+### Phase 8 — Final Review Gate ⬜
+**Agent**: Review
+**Deliverables**:
+- `## Phase 8 Review Output` appended to scratchpad
 - Verdict: APPROVED (gates session close)
 
-**Depends on**: Phase 6 integration review complete
+**Depends on**: Phase 7B Review APPROVED
 **Gate**: Session close requires APPROVED
 **Status**: Not started
 
-### Phase 8 — Session Close ⬜
+### Phase 9 — Session Close ⬜
 **Agent**: Executive Orchestrator
 **Deliverables**:
 - Update issue bodies (#506, #505, #499, #511) with completed checkboxes
@@ -267,7 +314,7 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 - Run `uv run python scripts/prune_scratchpad.py --force`
 - Push all commits
 
-**Depends on**: Phase 7 Review APPROVED
+**Depends on**: Phase 8 Review APPROVED
 **CI**: N/A
 **Status**: Not started
 
