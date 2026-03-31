@@ -1755,6 +1755,60 @@
       "file": ".cache/sources/openrouter-ai-models-openai-gpt-4o-mini.md",
       "content_type": "text/html",
       "size_bytes": 2895
+    },
+    "arxiv-org-abs-2212-09561": {
+      "url": "https://arxiv.org/abs/2212.09561",
+      "slug": "arxiv-org-abs-2212-09561",
+      "title": "",
+      "fetched_at": "2026-03-30T23:20:13",
+      "file": ".cache/sources/arxiv-org-abs-2212-09561.md",
+      "content_type": "text/html",
+      "size_bytes": 7585
+    },
+    "arxiv-org-abs-2307-03987": {
+      "url": "https://arxiv.org/abs/2307.03987",
+      "slug": "arxiv-org-abs-2307-03987",
+      "title": "",
+      "fetched_at": "2026-03-30T23:20:13",
+      "file": ".cache/sources/arxiv-org-abs-2307-03987.md",
+      "content_type": "text/html",
+      "size_bytes": 7786
+    },
+    "arxiv-org-abs-2309-01431": {
+      "url": "https://arxiv.org/abs/2309.01431",
+      "slug": "arxiv-org-abs-2309-01431",
+      "title": "",
+      "fetched_at": "2026-03-30T23:20:44",
+      "file": ".cache/sources/arxiv-org-abs-2309-01431.md",
+      "content_type": "text/html",
+      "size_bytes": 7234
+    },
+    "arxiv-org-abs-2401-13190": {
+      "url": "https://arxiv.org/abs/2401.13190",
+      "slug": "arxiv-org-abs-2401-13190",
+      "title": "",
+      "fetched_at": "2026-03-30T23:20:54",
+      "file": ".cache/sources/arxiv-org-abs-2401-13190.md",
+      "content_type": "text/html",
+      "size_bytes": 6762
+    },
+    "arxiv-org-abs-2306-04757": {
+      "url": "https://arxiv.org/abs/2306.04757",
+      "slug": "arxiv-org-abs-2306-04757",
+      "title": "",
+      "fetched_at": "2026-03-30T23:20:54",
+      "file": ".cache/sources/arxiv-org-abs-2306-04757.md",
+      "content_type": "text/html",
+      "size_bytes": 7728
+    },
+    "arxiv-org-abs-2305-14251": {
+      "url": "https://arxiv.org/abs/2305.14251",
+      "slug": "arxiv-org-abs-2305-14251",
+      "title": "",
+      "fetched_at": "2026-03-30T23:21:05",
+      "file": ".cache/sources/arxiv-org-abs-2305-14251.md",
+      "content_type": "text/html",
+      "size_bytes": 7922
     }
   }
 }
