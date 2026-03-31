@@ -291,20 +291,91 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 - Verdict: APPROVED or REQUEST CHANGES
 
 **Depends on**: Phase 7B implementation complete
-**Gate**: Phase 8 does not start until APPROVED
+**Gate**: Phase 8A does not start until APPROVED
 **Status**: Not started
 
-### Phase 8 — Final Review Gate ⬜
-**Agent**: Review
+### Phase 8A — Gap Analysis: Sprint 21 Issues (#530-533) ⬜
+**Agent**: Research Scout
 **Deliverables**:
-- `## Phase 8 Review Output` appended to scratchpad
-- Verdict: APPROVED (gates session close)
+- Corpus gap audit: what do we already have about time-windowed metrics, OTel SDK, Jinja2 templates, Histograms?
+- Review existing scripts/docs/patterns for overlap with Sprint 21 requirements
+- Identify missing knowledge domains (what external research is needed)
+- `## Phase 8A Output` appended to scratchpad (≤2000 tokens)
 
 **Depends on**: Phase 7B Review APPROVED
+**CI**: N/A (research phase)
+**Status**: Not started
+
+### Phase 8A Review — Review Gate ⬜
+**Agent**: Review
+**Deliverables**:
+- `## Phase 8A Review Output` appended to scratchpad
+- Verdict: APPROVED or REQUEST CHANGES
+
+**Depends on**: Phase 8A gap analysis complete
+**Gate**: Phase 8B does not start until APPROVED
+**Status**: Not started
+
+### Phase 8B — Deep Web Research: Sprint 21 External Sources ⬜
+**Agent**: Research Scout
+**Deliverables**:
+- Scout external sources for Sprint 21 topics (Phase 8A gaps):
+  - Time-windowed aggregation patterns (Prometheus, Grafana time-series queries)
+  - OpenTelemetry SDK integration (Python BatchSpanProcessor, exporters)
+  - Jinja2 template best practices (observability dashboards, report generation)
+  - OTel Histogram semantics (bucket configuration, percentile computation)
+- Cache all discovered sources in `.cache/sources/`
+- Document canonical examples and anti-patterns from external sources
+- `## Phase 8B Output` appended to scratchpad (≤2000 tokens, WITH citations)
+
+**Depends on**: Phase 8A Review APPROVED
+**CI**: N/A (research phase)
+**Status**: Not started
+
+### Phase 8B Review — Review Gate ⬜
+**Agent**: Review
+**Deliverables**:
+- `## Phase 8B Review Output` appended to scratchpad
+- Verdict: APPROVED or REQUEST CHANGES
+
+**Depends on**: Phase 8B research complete
+**Gate**: Phase 8C does not start until APPROVED
+**Status**: Not started
+
+### Phase 8C — Synthesis: Sprint 21 Workplan ⬜
+**Agent**: Research Synthesizer
+**Deliverables**:
+- Synthesize Phase 8A (gaps) + Phase 8B (external patterns) into Sprint 21 implementation recommendations
+- Draft workplan outline for Sprint 21 (4 issues: #530-533)
+- Identify implementation ordering (dependency graph)
+- Estimate effort per issue (XS/S/M/L)
+- `## Phase 8C Output` appended to scratchpad (≤2000 tokens)
+
+**Depends on**: Phase 8B Review APPROVED
+**CI**: N/A (synthesis phase)
+**Status**: Not started
+
+### Phase 8C Review — Review Gate ⬜
+**Agent**: Review
+**Deliverables**:
+- `## Phase 8C Review Output` appended to scratchpad
+- Verdict: APPROVED or REQUEST CHANGES
+
+**Depends on**: Phase 8C synthesis complete
+**Gate**: Phase 9 does not start until APPROVED
+**Status**: Not started
+
+### Phase 9 — Final Review Gate ⬜
+**Agent**: Review
+**Deliverables**:
+- `## Phase 9 Review Output` appended to scratchpad
+- Verdict: APPROVED (gates session close)
+
+**Depends on**: Phase 8C Review APPROVED
 **Gate**: Session close requires APPROVED
 **Status**: Not started
 
-### Phase 9 — Session Close ⬜
+### Phase 10 — Session Close ⬜
 **Agent**: Executive Orchestrator
 **Deliverables**:
 - Update issue bodies (#506, #505, #499, #511) with completed checkboxes
@@ -314,7 +385,7 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 - Run `uv run python scripts/prune_scratchpad.py --force`
 - Push all commits
 
-**Depends on**: Phase 8 Review APPROVED
+**Depends on**: Phase 9 Review APPROVED
 **CI**: N/A
 **Status**: Not started
 
