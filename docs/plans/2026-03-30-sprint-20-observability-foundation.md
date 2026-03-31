@@ -96,16 +96,17 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 **Gate**: Phase 3B does not start until APPROVED
 **Status**: Not started
 
-### Phase 3B — Inspector Protocol Integration (#505) ⬜
-**Agent**: Executive Scripter
+### Phase 3B — Research: Inspector Protocol Compatibility (#505) ⬜
+**Agent**: Research Scout
 **Deliverables**:
-- `.vscode/mcp.json` entry for HTTP server endpoint
-- Integration test: browser inspector → MCP server
-- Documentation: `docs/mcp/inspector-integration.md`
-- `## Phase 3B Output` appended to scratchpad
+- External research on MCP Inspector proxy bridge patterns
+- Gap analysis: what's missing in our corpus for Inspector integration?
+- Findings on session replay/debugging integration contracts
+- Source URLs cached in `.cache/sources/`
+- `## Phase 3B Output` appended to scratchpad (≤2000 tokens)
 
-**Depends on**: Phase 3A Review APPROVED (CORS must be working)
-**CI**: pytest, ruff
+**Depends on**: Phase 3A Review APPROVED
+**CI**: N/A (research phase)
 **Status**: Not started
 
 ### Phase 3B Review — Review Gate ⬜
@@ -114,20 +115,21 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 - `## Phase 3B Review Output` appended to scratchpad
 - Verdict: APPROVED or REQUEST CHANGES
 
-**Depends on**: Phase 3B complete
+**Depends on**: Phase 3B research complete
 **Gate**: Phase 3C does not start until APPROVED
 **Status**: Not started
 
-### Phase 3C — Metrics Capture CI Gate (#499) ⬜
-**Agent**: Executive Automator
+### Phase 3C — Implementation: Inspector Protocol (#505) ⬜
+**Agent**: Executive Scripter or Executive Docs
 **Deliverables**:
-- CI workflow: `.github/workflows/metrics-quality-gate.yml`
-- Quality threshold enforcement script (or extend existing metrics script)
-- Alert mechanism documentation
+- Research Inspector's proxy bridge implementation (from Phase 3B findings)
+- Design minimal adapter layer for session replay integration
+- Document integration contract in ADR-009 or follow-up ADR
+- Prototype "Debug This Call" button export format (if time permits)
 - `## Phase 3C Output` appended to scratchpad
 
 **Depends on**: Phase 3B Review APPROVED
-**CI**: yaml-lint, workflow validation
+**CI**: ruff, validate-synthesis (if ADR created)
 **Status**: Not started
 
 ### Phase 3C Review — Review Gate ⬜
@@ -136,33 +138,103 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 - `## Phase 3C Review Output` appended to scratchpad
 - Verdict: APPROVED or REQUEST CHANGES
 
-**Depends on**: Phase 3C complete
-**Gate**: Phase 4 does not start until APPROVED
+**Depends on**: Phase 3C implementation complete
+**Gate**: Phase 4A does not start until APPROVED
 **Status**: Not started
 
-### Phase 4 — Fleet Capability Audit Integration (#511) ⬜
+### Phase 4A — Research: Metrics CI Gate Best Practices (#499) ⬜
+**Agent**: Research Scout
+**Deliverables**:
+- External research on CI quality gates for observability metrics
+- Survey alert mechanisms (Slack, GitHub Actions annotations, etc.)
+- Gap analysis: what's missing in our corpus for metrics enforcement?
+- Source URLs cached in `.cache/sources/`
+- `## Phase 4A Output` appended to scratchpad (≤2000 tokens)
+
+**Depends on**: Phase 3C Review APPROVED
+**CI**: N/A (research phase)
+**Status**: Not started
+
+### Phase 4A Review — Review Gate ⬜
+**Agent**: Review
+**Deliverables**:
+- `## Phase 4A Review Output` appended to scratchpad
+- Verdict: APPROVED or REQUEST CHANGES
+
+**Depends on**: Phase 4A research complete
+**Gate**: Phase 4B does not start until APPROVED
+**Status**: Not started
+
+### Phase 4B — Implementation: Metrics CI Gate (#499) ⬜
+**Agent**: Executive Automator
+**Deliverables**:
+- CI workflow: `.github/workflows/metrics-quality-gate.yml`
+- Quality threshold enforcement (informed by Phase 4A research)
+- Alert mechanism (strategy from Phase 4A)
+- Documentation: when gate runs, how to respond to failures
+- `## Phase 4B Output` appended to scratchpad
+
+**Depends on**: Phase 4A Review APPROVED
+**CI**: yaml-lint, workflow validation
+**Status**: Not started
+
+### Phase 4B Review — Review Gate ⬜
+**Agent**: Review
+**Deliverables**:
+- `## Phase 4B Review Output` appended to scratchpad
+- Verdict: APPROVED or REQUEST CHANGES
+
+**Depends on**: Phase 4B implementation complete
+**Gate**: Phase 5A does not start until APPROVED
+**Status**: Not started
+
+### Phase 5A — Research: Fleet Audit Anti-Patterns (#511) ⬜
+**Agent**: Research Scout
+**Deliverables**:
+- External research on lowest-friction anti-patterns in agent fleets
+- Survey fleet coupling analysis tools/frameworks
+- Gap analysis: what's missing in our corpus for fleet audits?
+- Source URLs cached in `.cache/sources/`
+- `## Phase 5A Output` appended to scratchpad (≤2000 tokens)
+
+**Depends on**: Phase 4B Review APPROVED
+**CI**: N/A (research phase)
+**Status**: Not started
+
+### Phase 5A Review — Review Gate ⬜
+**Agent**: Review
+**Deliverables**:
+- `## Phase 5A Review Output` appended to scratchpad
+- Verdict: APPROVED or REQUEST CHANGES
+
+**Depends on**: Phase 5A research complete
+**Gate**: Phase 5B does not start until APPROVED
+**Status**: Not started
+
+### Phase 5B — Implementation: Fleet Audit Integration (#511) ⬜
 **Agent**: Executive Fleet
 **Deliverables**:
 - Pre-commit hook or CI gate for fleet audit script
 - Tool/capability drift detection integration
+- Anti-pattern detection (informed by Phase 5A research)
 - Documentation: when and how the audit runs
-- `## Phase 4 Output` appended to scratchpad
+- `## Phase 5B Output` appended to scratchpad
 
-**Depends on**: Phase 3C Review APPROVED
+**Depends on**: Phase 5A Review APPROVED
 **CI**: pre-commit config validation
 **Status**: Not started
 
-### Phase 4 Review — Review Gate ⬜
+### Phase 5B Review — Review Gate ⬜
 **Agent**: Review
 **Deliverables**:
-- `## Phase 4 Review Output` appended to scratchpad
+- `## Phase 5B Review Output` appended to scratchpad
 - Verdict: APPROVED or REQUEST CHANGES
 
-**Depends on**: Phase 4 complete
-**Gate**: Phase 5 does not start until APPROVED
+**Depends on**: Phase 5B implementation complete
+**Gate**: Phase 6 does not start until APPROVED
 **Status**: Not started
 
-### Phase 5 — Cross-Agent Integration Review ⬜
+### Phase 6 — Cross-Agent Integration Review ⬜
 **Agent**: Executive Orchestrator (self)
 **Deliverables**:
 - `## Phase 5 Output` appended to scratchpad
@@ -171,21 +243,21 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 - Flag incomplete issues or new technical debt
 - Return: Bullets only — "Issues ready" or "Issues flagged: [list with reason]"
 
-**Depends on**: Phase 4 Review APPROVED
+**Depends on**: Phase 5B Review APPROVED
 **CI**: N/A (internal QA phase)
 **Status**: Not started
 
-### Phase 6 — Final Review Gate ⬜
+### Phase 7 — Final Review Gate ⬜
 **Agent**: Review
 **Deliverables**:
 - `## Phase 6 Review Output` appended to scratchpad
 - Verdict: APPROVED (gates session close)
 
-**Depends on**: Phase 5 integration review complete
+**Depends on**: Phase 6 integration review complete
 **Gate**: Session close requires APPROVED
 **Status**: Not started
 
-### Phase 7 — Session Close ⬜
+### Phase 8 — Session Close ⬜
 **Agent**: Executive Orchestrator
 **Deliverables**:
 - Update issue bodies (#506, #505, #499, #511) with completed checkboxes
@@ -195,7 +267,7 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 - Run `uv run python scripts/prune_scratchpad.py --force`
 - Push all commits
 
-**Depends on**: Phase 6 Review APPROVED
+**Depends on**: Phase 7 Review APPROVED
 **CI**: N/A
 **Status**: Not started
 
