@@ -1,135 +1,191 @@
 #!/usr/bin/env python3
-"""Fail/Pass gate for MCP quality metrics.
+"""
+check_mcp_quality_gate.py — Validate MCP metrics against quality thresholds.
+
+Purpose:
+    Reads JSONL observation records from .cache/mcp-metrics/, computes aggregate metrics
+    (faithfulness mean, error_rate %), and compares them against thresholds defined in
+    data/mcp-metrics-schema.yml. Implements the MCP Quality Gate as a programmatic check.
 
 Inputs:
-- Per-tool metric artifacts matched by `--input-glob`.
+    --evaluation-window N  — Number of most recent records to evaluate (default: 100).
+    --dry-run              — Show what would be checked without failing the gate.
 
 Outputs:
-- PASS/FAIL summary lines written to stdout.
-
-Exit codes:
-- 0: all tools satisfy thresholds and exact window contract
-- 1: missing files, contract mismatch, or threshold failure
-
-Fails when:
-- faithfulness < threshold
-- error rate > threshold
-- sample/window contract is invalid (not exact last-N window)
+    Prints a summary of metrics and threshold violations to stdout.
+    Exit code 0 if thresholds pass; 1 if thresholds breached; 2 if no data or I/O error.
 
 Usage:
-- uv run python scripts/check_mcp_quality_gate.py --input-glob "docs/metrics/mcp-quality-*.json"
+    # Default evaluation (last 100 records):
+    uv run python scripts/check_mcp_quality_gate.py
+
+    # Custom evaluation window:
+    uv run python scripts/check_mcp_quality_gate.py --evaluation-window 200
+
+    # Dry-run to preview metrics without failing:
+    uv run python scripts/check_mcp_quality_gate.py --dry-run
+
+Exit codes:
+    0 — success: all thresholds pass
+    1 — threshold breach (faithfulness < 0.75 or error_rate > 5%)
+    2 — no data available or I/O error
 """
 
 from __future__ import annotations
 
 import argparse
-import glob
 import json
+import sys
 from pathlib import Path
+from statistics import mean
 
-_JSONL_PATH = Path(".cache/mcp-metrics/tool_calls.jsonl")
+import yaml
 
 
-def check_capture_health() -> bool:
-    """Check whether live JSONL trace capture is producing records.
+def _get_root() -> Path:
+    """Return the workspace root (parent of scripts/). Monkeypatched in tests."""
+    return Path(__file__).resolve().parent.parent
 
-    Returns True (PASS) if .cache/mcp-metrics/tool_calls.jsonl exists and
-    contains at least one line with 'source': 'live'.  Returns False (WARNING)
-    if the file is absent, empty, or contains no live records — this is not a
-    hard FAIL because the file is absent until the migration script runs.
+
+def load_thresholds(root: Path) -> dict:
+    """Load quality_gate_thresholds from data/mcp-metrics-schema.yml.
+
+    Returns:
+        Dict with keys: fail_if_faithfulness_below, fail_if_tool_error_rate_above_pct.
+        Returns empty dict on error.
     """
-    if not _JSONL_PATH.exists():
-        print("WARNING [capture_health]: tool_calls.jsonl not found — capture not yet active")
-        return True  # soft warning; does not fail the gate
-    lines = _JSONL_PATH.read_text(encoding="utf-8").splitlines()
-    live_lines = [ln for ln in lines if '"source": "live"' in ln]
-    if not live_lines:
-        print(
-            f"WARNING [capture_health]: tool_calls.jsonl exists ({len(lines)} lines) "
-            "but contains no live-source records"
-        )
-        return True  # soft warning; does not fail the gate
-    print(f"PASS [capture_health]: {len(live_lines)} live record(s) found in tool_calls.jsonl")
-    return True
+    schema_path = root / "data" / "mcp-metrics-schema.yml"
+    try:
+        with schema_path.open("r", encoding="utf-8") as f:
+            schema = yaml.safe_load(f)
+        return schema.get("quality_gate_thresholds", {})
+    except Exception as exc:
+        print(f"ERROR: Failed to load {schema_path}: {exc}", file=sys.stderr)
+        return {}
 
 
-def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Check MCP quality gate thresholds from metrics artifacts.")
-    parser.add_argument("--input-glob", default="docs/metrics/mcp-quality-*.json", help="Glob of metrics JSON files")
-    parser.add_argument("--faithfulness-threshold", type=float, default=0.75)
-    parser.add_argument("--error-rate-threshold-pct", type=float, default=5.0)
-    parser.add_argument("--window-calls", type=int, default=100)
-    return parser.parse_args()
+def load_metrics(root: Path, window: int) -> list[dict] | None:
+    """Load last N JSONL records from .cache/mcp-metrics/.
+
+    Args:
+        root: Workspace root path.
+        window: Number of most recent records to load.
+
+    Returns:
+        List of observation dicts, or None on I/O error. Empty list if dir exists but is empty.
+    """
+    metrics_dir = root / ".cache" / "mcp-metrics"
+    if not metrics_dir.exists():
+        return []
+
+    observations = []
+    try:
+        # Read all .jsonl files in directory
+        for jsonl_file in sorted(metrics_dir.glob("*.jsonl")):
+            with jsonl_file.open("r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line:
+                        observations.append(json.loads(line))
+    except Exception as exc:
+        print(f"ERROR: Failed to read metrics from {metrics_dir}: {exc}", file=sys.stderr)
+        return None
+
+    # Return last N records
+    return observations[-window:] if window > 0 else observations
 
 
-def main() -> int:
-    args = parse_args()
-    check_capture_health()
-    files = [Path(p) for p in sorted(glob.glob(args.input_glob))]
-    if not files:
-        print(f"FAIL: no metrics files found for glob {args.input_glob}")
-        return 1
+def check_thresholds(observations: list[dict], thresholds: dict, dry_run: bool = False) -> int:
+    """Compute metrics and check against thresholds.
 
-    failures: list[str] = []
-    for path in files:
-        payload = json.loads(path.read_text(encoding="utf-8"))
-        tool = payload.get("tool_name", path.name)
-        semantic = payload.get("metrics", {}).get("semantic", {})
-        perf = payload.get("metrics", {}).get("performance", {})
+    Args:
+        observations: List of JSONL observation records.
+        thresholds: Dict with fail_if_faithfulness_below, fail_if_tool_error_rate_above_pct.
+        dry_run: If True, print results but always return 0.
 
-        faithfulness = semantic.get("faithfulness")
-        error_rate = perf.get("error_rate_pct")
-        sample_size = perf.get("sample_size")
-        artifact_window = perf.get("window_calls")
+    Returns:
+        0 if thresholds pass, 1 if breached.
+    """
+    if not observations:
+        print("WARNING: No observations to evaluate.", file=sys.stderr)
+        return 0 if dry_run else 2
 
-        if artifact_window is None or int(artifact_window) != args.window_calls:
-            failures.append(
-                f"{tool}: artifact window_calls={artifact_window} does not match required {args.window_calls}"
-            )
-            continue
+    # Extract faithfulness values
+    faithfulness_values = [float(r["faithfulness"]) for r in observations if r.get("faithfulness") is not None]
 
-        if sample_size is None or int(sample_size) != args.window_calls:
-            failures.append(
-                f"{tool}: sample_size={sample_size} does not equal required window_calls={args.window_calls}"
-            )
-            continue
+    # Count errors
+    error_count = sum(1 for r in observations if bool(r.get("is_error")))
+    sample_size = len(observations)
+    error_rate_pct = (error_count / sample_size * 100.0) if sample_size > 0 else 0.0
 
-        if faithfulness is None:
-            failures.append(f"{tool}: missing required semantic.faithfulness")
-            continue
-        if error_rate is None:
-            failures.append(f"{tool}: missing required performance.error_rate_pct")
-            continue
+    # Compute faithfulness mean
+    faithfulness_mean = mean(faithfulness_values) if faithfulness_values else None
 
-        try:
-            faithfulness_value = float(faithfulness)
-        except (TypeError, ValueError):
-            failures.append(f"{tool}: semantic.faithfulness={faithfulness!r} is not a valid number")
-            continue
+    # Get thresholds
+    min_faithfulness = thresholds.get("fail_if_faithfulness_below", 0.75)
+    max_error_rate = thresholds.get("fail_if_tool_error_rate_above_pct", 5.0)
 
-        try:
-            error_rate_value = float(error_rate)
-        except (TypeError, ValueError):
-            failures.append(f"{tool}: performance.error_rate_pct={error_rate!r} is not a valid number")
-            continue
+    # Print summary
+    print(f"MCP Quality Gate Evaluation (n={sample_size}):")
+    if faithfulness_mean is not None:
+        print(f"  Faithfulness (mean): {faithfulness_mean:.3f} (threshold: ≥{min_faithfulness})")
+    else:
+        print("  Faithfulness (mean): N/A (no data)")
+    print(f"  Error rate: {error_rate_pct:.1f}% (threshold: ≤{max_error_rate}%)")
 
-        if faithfulness_value < args.faithfulness_threshold:
-            failures.append(f"{tool}: faithfulness={faithfulness_value:.3f} < {args.faithfulness_threshold:.3f}")
-        if error_rate_value > args.error_rate_threshold_pct:
-            failures.append(f"{tool}: error_rate_pct={error_rate_value:.3f} > {args.error_rate_threshold_pct:.3f}")
+    # Check violations
+    violations = []
+    if faithfulness_mean is not None and faithfulness_mean < min_faithfulness:
+        violations.append(f"faithfulness {faithfulness_mean:.3f} < {min_faithfulness}")
+    if error_rate_pct > max_error_rate:
+        violations.append(f"error_rate {error_rate_pct:.1f}% > {max_error_rate}%")
 
-    if failures:
-        print("FAIL")
-        for item in failures:
-            print(f"- {item}")
-        return 1
+    if violations:
+        print("\nTHRESHOLD VIOLATIONS:")
+        for v in violations:
+            print(f"  ✗ {v}")
+        return 0 if dry_run else 1
 
-    print("PASS")
-    print("All tools satisfied:")
-    print(f"- faithfulness >= {args.faithfulness_threshold:.2f}")
-    print(f"- error_rate_pct <= {args.error_rate_threshold_pct:.2f}")
+    print("\n✓ All thresholds pass")
     return 0
 
 
+def main(argv: list[str] | None = None) -> int:
+    """Main entry point."""
+    parser = argparse.ArgumentParser(description="Validate MCP metrics against quality gate thresholds.")
+    parser.add_argument(
+        "--evaluation-window",
+        type=int,
+        default=100,
+        help="Number of most recent records to evaluate (default: 100)",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Show metrics without failing the gate",
+    )
+    args = parser.parse_args(argv)
+
+    root = _get_root()
+
+    # Load thresholds
+    thresholds = load_thresholds(root)
+    if not thresholds:
+        print("ERROR: Failed to load thresholds from schema.", file=sys.stderr)
+        return 2
+
+    # Load metrics
+    observations = load_metrics(root, args.evaluation_window)
+    if observations is None:
+        return 2
+
+    if not observations:
+        print("INFO: No MCP metrics found in .cache/mcp-metrics/", file=sys.stderr)
+        return 0 if args.dry_run else 2
+
+    # Check thresholds
+    return check_thresholds(observations, thresholds, args.dry_run)
+
+
 if __name__ == "__main__":
-    raise SystemExit(main())
+    sys.exit(main())
