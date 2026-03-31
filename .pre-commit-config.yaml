@@ -99,6 +99,13 @@ repos:
         types: [markdown]
         files: ^\.github/(agents/|skills/)
         pass_filenames: true
+      - id: fleet-coupling-check
+        name: Fleet coupling analysis (advisory during calibration)
+        entry: python3 scripts/analyse_fleet_coupling.py --format summary --threshold 6
+        language: system
+        files: ^\.github/agents/.*\.agent\.md$
+        pass_filenames: false
+        stages: [manual]
       - id: no-heredoc-writes
         name: Block heredoc file-write commands (use create_file / replace_string_in_file tools instead)
         language: pygrep

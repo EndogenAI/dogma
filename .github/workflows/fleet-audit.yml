@@ -1,0 +1,126 @@
+name: Fleet Audit
+
+on:
+  workflow_dispatch: # Allow manual trigger
+  push:
+    branches:
+      - main
+      - 'feat/**'
+
+permissions:
+  contents: read
+
+jobs:
+  fleet-coupling:
+    name: Fleet coupling analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "latest"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: uv sync --extra dev
+
+      - name: Run fleet coupling analysis
+        id: coupling
+        run: |
+          echo "Running fleet coupling analysis..."
+          uv run python scripts/analyse_fleet_coupling.py --format json > fleet-coupling.json
+          cat fleet-coupling.json
+
+      - name: Check high-K threshold
+        run: |
+          uv run python -c "
+          import json, sys
+          with open('fleet-coupling.json') as f:
+              data = json.load(f)
+          high_k = [n for n, d in data.get('nodes', {}).items() if d.get('out_degree', 0) > 6]
+          if high_k:
+              print(f'::warning::High-K agents detected: {high_k}')
+          "
+
+      - name: Upload coupling report
+        uses: actions/upload-artifact@v4
+        with:
+          name: fleet-coupling-report
+          path: fleet-coupling.json
+
+  anti-patterns:
+    name: Fleet anti-pattern detection
+    runs-on: ubuntu-latest
+    needs: fleet-coupling
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "latest"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: uv sync --extra dev
+
+      - name: Download coupling report
+        uses: actions/download-artifact@v4
+        with:
+          name: fleet-coupling-report
+
+      - name: Run anti-pattern detection
+        run: |
+          echo "Running fleet anti-pattern detection..."
+          uv run python scripts/check_fleet_antipatterns.py --coupling-report fleet-coupling.json
+
+  registry-completeness:
+    name: Agent registry completeness
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "latest"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: uv sync --extra dev
+
+      - name: Validate agent registry
+        run: |
+          echo "Validating agent registry completeness..."
+          uv run python scripts/agent_registry.py --json > registry.json
+          uv run python -c "
+          import json, sys
+          with open('registry.json') as f:
+              data = json.load(f)
+          agents = data.get('agents', [])
+          incomplete = [a for a in agents if not all(k in a for k in ['name', 'description', 'tools'])]
+          if incomplete:
+              print(f'::error::Incomplete agent metadata for: {[a.get(\"name\", \"unknown\") for a in incomplete]}')
+              sys.exit(1)
+          print(f'✓ All {len(agents)} agents have complete metadata')
+          "
