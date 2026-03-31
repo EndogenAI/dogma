@@ -247,7 +247,7 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 **CI**: N/A (internal QA phase)
 **Status**: Not started
 
-### Phase 7A — Research: Metrics Capture/Report Pipeline (#499) ⬜
+### Phase 7A — Research: Metrics Capture/Report Pipeline (#499) ✅
 **Agent**: Research Scout
 **Deliverables**:
 - External research on metrics capture/report patterns for OpenTelemetry/observability systems
@@ -258,9 +258,9 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 
 **Depends on**: Phase 6 integration review complete (identified #499 partial scope)
 **CI**: N/A (research phase)
-**Status**: Not started
+**Status**: Complete
 
-### Phase 7A Review — Review Gate ⬜
+### Phase 7A Review — Review Gate ✅
 **Agent**: Review
 **Deliverables**:
 - `## Phase 7A Review Output` appended to scratchpad
@@ -268,9 +268,9 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 
 **Depends on**: Phase 7A research complete
 **Gate**: Phase 7B does not start until APPROVED
-**Status**: Not started
+**Status**: Complete — APPROVED
 
-### Phase 7B — Implementation: Capture/Report Pipeline (#499) ⬜
+### Phase 7B — Implementation: Capture/Report Pipeline (#499) ✅
 **Agent**: Executive Scripter
 **Deliverables**:
 - `scripts/capture_mcp_metrics.py` — reads `.cache/mcp-metrics/tool_calls.jsonl`, outputs structured metrics
@@ -282,9 +282,9 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 
 **Depends on**: Phase 7A Review APPROVED
 **CI**: pytest, ruff
-**Status**: Not started
+**Status**: Complete
 
-### Phase 7B Review — Review Gate ⬜
+### Phase 7B Review — Review Gate ✅
 **Agent**: Review
 **Deliverables**:
 - `## Phase 7B Review Output` appended to scratchpad
@@ -292,9 +292,9 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 
 **Depends on**: Phase 7B implementation complete
 **Gate**: Phase 8A does not start until APPROVED
-**Status**: Not started
+**Status**: Complete — APPROVED
 
-### Phase 8A — Gap Analysis: Sprint 21 Issues (#530-533) ⬜
+### Phase 8A — Gap Analysis: Sprint 21 Issues (#530-533) ✅
 **Agent**: Research Scout
 **Deliverables**:
 - Corpus gap audit: what do we already have about time-windowed metrics, OTel SDK, Jinja2 templates, Histograms?
@@ -304,9 +304,9 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 
 **Depends on**: Phase 7B Review APPROVED
 **CI**: N/A (research phase)
-**Status**: Not started
+**Status**: Complete
 
-### Phase 8A Review — Review Gate ⬜
+### Phase 8A Review — Review Gate ✅
 **Agent**: Review
 **Deliverables**:
 - `## Phase 8A Review Output` appended to scratchpad
@@ -314,9 +314,9 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 
 **Depends on**: Phase 8A gap analysis complete
 **Gate**: Phase 8B does not start until APPROVED
-**Status**: Not started
+**Status**: Complete — APPROVED
 
-### Phase 8B — Deep Web Research: Sprint 21 External Sources ⬜
+### Phase 8B — Deep Web Research: Sprint 21 External Sources ✅
 **Agent**: Research Scout
 **Deliverables**:
 - Scout external sources for Sprint 21 topics (Phase 8A gaps):
@@ -330,9 +330,9 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 
 **Depends on**: Phase 8A Review APPROVED
 **CI**: N/A (research phase)
-**Status**: Not started
+**Status**: Complete
 
-### Phase 8B Review — Review Gate ⬜
+### Phase 8B Review — Review Gate ✅
 **Agent**: Review
 **Deliverables**:
 - `## Phase 8B Review Output` appended to scratchpad
@@ -340,9 +340,9 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 
 **Depends on**: Phase 8B research complete
 **Gate**: Phase 8C does not start until APPROVED
-**Status**: Not started
+**Status**: Complete — APPROVED
 
-### Phase 8C — Synthesis: Sprint 21 Workplan ⬜
+### Phase 8C — Synthesis: Sprint 21 Workplan ✅
 **Agent**: Research Synthesizer
 **Deliverables**:
 - Synthesize Phase 8A (gaps) + Phase 8B (external patterns) into Sprint 21 implementation recommendations
@@ -353,9 +353,9 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 
 **Depends on**: Phase 8B Review APPROVED
 **CI**: N/A (synthesis phase)
-**Status**: Not started
+**Status**: Complete
 
-### Phase 8C Review — Review Gate ⬜
+### Phase 8C Review — Review Gate ✅
 **Agent**: Review
 **Deliverables**:
 - `## Phase 8C Review Output` appended to scratchpad
@@ -363,7 +363,7 @@ Build observability infrastructure (CORS, eval harness, metrics capture, protoco
 
 **Depends on**: Phase 8C synthesis complete
 **Gate**: Phase 9 does not start until APPROVED
-**Status**: Not started
+**Status**: Complete — APPROVED
 
 ### Phase 9 — Final Review Gate ⬜
 **Agent**: Review
