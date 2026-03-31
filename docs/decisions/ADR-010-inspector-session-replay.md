@@ -1,4 +1,5 @@
 ---
+title: "MCP Inspector Session Replay Integration Contract"
 status: Proposed
 date: 2026-03-30
 deciders: EndogenAI core team
