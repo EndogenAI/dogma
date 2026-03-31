@@ -110,8 +110,19 @@ def check_thresholds(observations: list[dict], thresholds: dict, dry_run: bool =
         print("WARNING: No observations to evaluate.", file=sys.stderr)
         return 0 if dry_run else 2
 
-    # Extract faithfulness values
-    faithfulness_values = [float(r["faithfulness"]) for r in observations if r.get("faithfulness") is not None]
+    # Extract faithfulness values — validate each entry to avoid ValueError on bad input
+    faithfulness_values = []
+    for r in observations:
+        raw = r.get("faithfulness")
+        if raw is None:
+            continue
+        try:
+            faithfulness_values.append(float(raw))
+        except (ValueError, TypeError):
+            print(
+                f"WARNING: skipping invalid faithfulness value {raw!r} in record {r}",
+                file=sys.stderr,
+            )
 
     # Count errors
     error_count = sum(1 for r in observations if bool(r.get("is_error")))

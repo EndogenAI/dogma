@@ -120,10 +120,15 @@ def aggregate_metrics(records: list[dict]) -> dict:
     }
 
 
-def format_value(value: float | None, decimals: int = 1) -> str:
-    """Null-safe formatting."""
+def format_value(value: float | None, decimals: int = 1, is_duration: bool = False) -> str:
+    """Null-safe formatting. Uses adaptive precision for durations to preserve sub-ms values."""
     if value is None:
         return "N/A"
+    if is_duration:
+        # Adaptive precision: use 3 decimal places for sub-ms, 1 for larger values
+        if value < 1.0:
+            return f"{value:.3f}"
+        return f"{value:.1f}"
     return f"{value:.{decimals}f}"
 
 
@@ -143,7 +148,7 @@ def build_markdown(metrics: dict, input_path: str) -> str:
         "|--------|-------|",
         f"| Total Calls | {metrics['total_calls']:,} |",
         f"| Success Rate | {format_value(metrics['global_success_rate'])}% |",
-        f"| Mean Duration | {format_value(metrics['mean_duration_global'])} ms |",
+        f"| Mean Duration | {format_value(metrics['mean_duration_global'], is_duration=True)} ms |",
         "",
         "## Per-Tool Breakdown",
         "",
@@ -153,10 +158,12 @@ def build_markdown(metrics: dict, input_path: str) -> str:
 
     # Sort by call count descending
     for tool_name, stats in sorted(metrics["tool_stats"].items(), key=lambda x: x[1]["call_count"], reverse=True):
+        mean_d = format_value(stats["mean_duration_ms"], is_duration=True)
+        p95_d = format_value(stats["p95_duration_ms"], is_duration=True)
+        max_d = format_value(stats["max_duration_ms"], is_duration=True)
         lines.append(
             f"| {tool_name} | {stats['call_count']:,} | {format_value(stats['success_rate'])}% | "
-            f"{format_value(stats['mean_duration_ms'])} | {format_value(stats['p95_duration_ms'])} | "
-            f"{format_value(stats['max_duration_ms'])} |"
+            f"{mean_d} | {p95_d} | {max_d} |"
         )
 
     # Top 5 slowest calls
@@ -172,7 +179,8 @@ def build_markdown(metrics: dict, input_path: str) -> str:
     for r in slowest:
         status = "error" if r.get("is_error", False) else "success"
         timestamp = r.get("timestamp_utc", "N/A")
-        lines.append(f"| {r.get('tool_name', 'unknown')} | {format_value(r['latency_ms'])} | {timestamp} | {status} |")
+        lat = format_value(r["latency_ms"], is_duration=True)
+        lines.append(f"| {r.get('tool_name', 'unknown')} | {lat} | {timestamp} | {status} |")
 
     return "\n".join(lines) + "\n"
 

@@ -157,8 +157,9 @@ def test_p95_calculation_sufficient_samples(tmp_path: Path):
     loaded = report_script.read_jsonl(str(jsonl_path))
     metrics = report_script.aggregate_metrics(loaded)
 
-    # Should compute p95 (95% of 24 indices = index 22.8 → index 22)
-    # latencies: [0, 10, 20, ..., 240] → sorted[22] = 220.0
+    # Should compute p95 using linear interpolation:
+    # 25 values [0, 10, 20, ..., 240]; index at 95th percentile = 0.95 * 24 = 22.8
+    # interpolate between sorted[22]=220 and sorted[23]=230 → 220 + 0.8*(230-220) = 228.0
     assert metrics["tool_stats"]["query_docs"]["p95_duration_ms"] is not None
     assert metrics["tool_stats"]["query_docs"]["p95_duration_ms"] == pytest.approx(228.0, rel=0.1)
 

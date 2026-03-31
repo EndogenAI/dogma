@@ -26,6 +26,7 @@ Exit codes:
 from __future__ import annotations
 
 import argparse
+import os
 import subprocess
 import sys
 import time
@@ -67,12 +68,8 @@ def _spawn_processes(repo_root: Path, *, development: bool = False) -> tuple[sub
         sidecar_cmd.append("--reload")
     frontend_cmd = ["npm", "run", "dev"]
 
-    # Pass through WEBMCP_CORS_ORIGINS environment variable if set
-    import os
-
+    # Inherit full environment (includes WEBMCP_CORS_ORIGINS when set)
     sidecar_env = os.environ.copy()
-    if "WEBMCP_CORS_ORIGINS" in os.environ:
-        sidecar_env["WEBMCP_CORS_ORIGINS"] = os.environ["WEBMCP_CORS_ORIGINS"]
 
     sidecar = subprocess.Popen(sidecar_cmd, cwd=repo_root, env=sidecar_env)
     try:

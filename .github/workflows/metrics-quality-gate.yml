@@ -37,8 +37,19 @@ jobs:
       - name: Install dependencies
         run: uv sync --extra dev --extra mcp
 
+      - name: Check for metrics data
+        id: metrics_check
+        run: |
+          if [ ! -f ".cache/mcp-metrics/tool_calls.jsonl" ] || [ ! -s ".cache/mcp-metrics/tool_calls.jsonl" ]; then
+            echo "No MCP metrics data found — skipping quality gate (expected on clean checkout)"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Run MCP quality gate
         id: gate
+        if: steps.metrics_check.outputs.skip == 'false'
         continue-on-error: true
         run: |
           echo "Running MCP quality gate (evaluation window: $MCP_EVALUATION_WINDOW records)..."

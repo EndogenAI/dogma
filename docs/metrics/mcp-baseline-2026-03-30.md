@@ -29,7 +29,7 @@
 
 ## Notes
 
-This baseline report was generated from a minimal dataset (2 error records only). Both records show `latency_ms: 0.003` and `0.004` respectively in the JSONL, but the script interpreted them as 0.0 ms due to their small magnitude.
+This baseline report was generated from a minimal dataset (2 error records only). Both records show `latency_ms: 0.003` and `0.004` in the JSONL; the report rendered them as `0.0 ms` due to 1-decimal-place rounding in the reporter's output formatting (not a parsing issue). Sub-ms latencies are now rendered with 3 decimal places after the precision fix in `report_mcp_metrics_v2.py`.
 
 **To generate updated reports**:
 ```bash
