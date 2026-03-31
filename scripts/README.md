@@ -68,6 +68,7 @@ scripts/
   emit_otel_metrics.py         # Emit OTel metrics for LLM usage (input/output tokens, duration) and system health (status); supports --dry-run and console export; --metric, --value, --model, --system
   capture_mcp_metrics.py       # Aggregate last-N (default 100) MCP tool-call observations from JSONL into per-tool metrics artifacts; supports --tool/--all, --window-calls, --dry-run (phase #499)
   report_mcp_metrics.py        # Render per-tool MCP metric artifacts into a Markdown report table including semantic, classical, defect, and usability surfaces (phase #499)
+  report_mcp_metrics_v2.py     # Generate markdown report from raw JSONL tool-call observations (Sprint 20 minimum viable pipeline); reads .cache/mcp-metrics/tool_calls.jsonl, computes per-tool aggregates (call count, success rate, mean/p95/max duration), outputs markdown report to stdout or --output; stdlib-only, no external dependencies
   check_mcp_quality_gate.py    # Validate MCP metrics against quality thresholds from data/mcp-metrics-schema.yml; reads JSONL from .cache/mcp-metrics/; exits 0 if thresholds pass, 1 if breached, 2 if no data; --evaluation-window, --dry-run (phase #499)
   rotate_session_cost_log.py   # Archive old session cost records; enforce retention window (default: 90 days); rotation triggers: size-based (≥10MB) or time-based (≥30 days); compatible with aggregate_session_costs.py; --retention-days, --size-threshold, --dry-run, --check-only (closes #489)
   adopt_wizard.py              # Dogma framework onboarding wizard — generates client-values.yml and scaffolds AGENTS.md for new adopters; --org, --repo required; --non-interactive, --load-values, --output-dir flags; runs validate_agent_files.py before reporting success (closes #56, #125)
@@ -173,6 +174,45 @@ Tests enforce:
 Before committing any script changes, verify: `uv run pytest tests/test_<script_name>.py --cov=scripts`
 
 For detailed testing guidance, see [`docs/guides/testing.md`](../docs/guides/testing.md).
+
+---
+
+## scripts/report_mcp_metrics_v2.py
+
+**Job**: Enable agents and humans to assess MCP tool performance trends from raw JSONL observations without pre-aggregation.
+
+**Purpose**: Generate human-readable markdown reports from `.cache/mcp-metrics/tool_calls.jsonl` showing per-tool call counts, success rates, latency percentiles (P95, mean, max), and slowest calls. Sprint 20 minimum viable pipeline — stdlib only, no external dependencies. Designed to run periodically and commit snapshots to `docs/metrics/` for historical trend analysis.
+
+**Tests**: [`tests/test_report_mcp_metrics_v2.py`](../tests/test_report_mcp_metrics_v2.py)
+
+**Usage**:
+
+```bash
+# Generate report to stdout
+uv run python scripts/report_mcp_metrics_v2.py
+
+# Write to file
+uv run python scripts/report_mcp_metrics_v2.py --output docs/metrics/mcp-report-$(date +%Y-%m-%d).md
+
+# Read from custom JSONL path
+uv run python scripts/report_mcp_metrics_v2.py --input /path/to/custom.jsonl
+```
+
+**Flags**:
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--input` | no | JSONL input file path (default: `.cache/mcp-metrics/tool_calls.jsonl`; use `-` for stdin) |
+| `--output` | no | Output markdown file path (default: stdout) |
+
+**Exit codes**: `0` success; `1` input file missing or invalid JSON; `2` no records found
+
+**Output sections**:
+- Summary Statistics: total calls, global success rate, mean duration
+- Per-Tool Breakdown table: call count, success %, mean/P95/max latency
+- Top 5 Slowest Calls: detailed breakdown with timestamps
+
+**Note**: P95 latency requires ≥20 samples per tool; displayed as "N/A" if insufficient data.
 
 ---
 
