@@ -1,0 +1,52 @@
+name: MCP Quality Gate
+
+on:
+  workflow_dispatch: # Allow manual trigger
+  push:
+    branches:
+      - main
+      - 'feat/**'
+
+permissions:
+  contents: read
+
+env:
+  MCP_FAITHFULNESS_MIN: 0.75
+  MCP_ERROR_RATE_MAX: 5.0
+  MCP_EVALUATION_WINDOW: 100
+
+jobs:
+  quality-gate:
+    name: MCP metrics quality gate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "latest"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: uv sync --extra dev --extra mcp
+
+      - name: Run MCP quality gate
+        id: gate
+        continue-on-error: true
+        run: |
+          echo "Running MCP quality gate (evaluation window: $MCP_EVALUATION_WINDOW records)..."
+          uv run python scripts/check_mcp_quality_gate.py --evaluation-window "$MCP_EVALUATION_WINDOW"
+
+      - name: Alert on threshold breach
+        if: steps.gate.outcome == 'failure'
+        run: |
+          echo "::error::MCP quality gate failed — faithfulness < $MCP_FAITHFULNESS_MIN or error_rate > $MCP_ERROR_RATE_MAX%"
+          echo "Review MCP metrics in .cache/mcp-metrics/ and investigate degraded tool performance"
+          exit 1
