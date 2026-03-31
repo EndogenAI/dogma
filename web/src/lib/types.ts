@@ -34,6 +34,9 @@ export interface MetricsSnapshot {
 /** Connection status union — drives the nav-bar health dot. */
 export type ConnStatus = 'LIVE' | 'STALE' | 'ERROR';
 
+/** Browser-side MCP bridge lifecycle state. */
+export type BridgeStatus = 'DISABLED' | 'CONNECTING' | 'CONNECTED' | 'ERROR';
+
 /** (x, y) data point for sparkline / chart components. */
 export interface DataPoint {
   x: number;

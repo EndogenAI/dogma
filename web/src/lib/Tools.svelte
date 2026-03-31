@@ -43,7 +43,7 @@
     <thead>
       <tr>
         <th>Tool Name</th>
-        <th class="num">Invocations</th>
+        <th class="num">Telemetry Invocations</th>
         <th class="num">Avg Latency ms</th>
         <th class="num">Error Rate %</th>
         <th>Status</th>

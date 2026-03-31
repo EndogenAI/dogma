@@ -17,6 +17,7 @@ import {
   type ConsoleEntry,
   type ConsoleLevel,
 } from './console-buffer';
+import type { BridgeStatus } from './types';
 
 export type PingResult = { status: 'ok' };
 
@@ -65,6 +66,8 @@ export type BrowserMcpServerOptions = {
   enableSseProbe?: boolean;
   /** Console entry retention bound for get_console_logs. */
   maxConsoleEntries?: number;
+  /** Optional callback for bridge lifecycle status changes. */
+  onStatusChange?: (status: BridgeStatus) => void;
 };
 
 type BridgeSessionResponse = {
@@ -131,6 +134,7 @@ function truncateText(value: string, max = 200): string {
 export class BrowserMcpServer {
   private readonly endpoint: string;
   private readonly enableSseProbe: boolean;
+  private readonly onStatusChange?: (status: BridgeStatus) => void;
   private readonly tools = new Map<ToolName, ToolHandler>();
   private readonly consoleBuffer: ConsoleBufferApi;
   private readonly componentRegistry = new Map<string, ComponentSnapshotter>();
@@ -143,6 +147,7 @@ export class BrowserMcpServer {
   constructor(options: BrowserMcpServerOptions = {}) {
     this.endpoint = options.endpoint ?? 'http://localhost:8000/mcp';
     this.enableSseProbe = options.enableSseProbe ?? false;
+    this.onStatusChange = options.onStatusChange;
     this.consoleBuffer = installConsoleBuffer({
       maxEntries: options.maxConsoleEntries,
     });
@@ -158,12 +163,10 @@ export class BrowserMcpServer {
   async start(): Promise<void> {
     if (this.started) return;
     this.started = true;
+    this.emitStatus('CONNECTING');
 
-    const bridgeRegistered = await this.registerBridgeSession();
-    if (bridgeRegistered) {
-      this.bridgeAbortController = new AbortController();
-      this.bridgeLoop = this.runBridgeLoop(this.bridgeAbortController.signal);
-    }
+    this.bridgeAbortController = new AbortController();
+    this.bridgeLoop = this.runBridgeLoop(this.bridgeAbortController.signal);
 
     if (!this.enableSseProbe) return;
 
@@ -189,6 +192,7 @@ export class BrowserMcpServer {
     this.eventSource?.close();
     this.eventSource = null;
     this.started = false;
+    this.emitStatus('DISABLED');
   }
 
   async ping(): Promise<PingResult> {
@@ -383,6 +387,10 @@ export class BrowserMcpServer {
     this.tools.set(name, handler);
   }
 
+  private emitStatus(status: BridgeStatus): void {
+    this.onStatusChange?.(status);
+  }
+
   private async registerBridgeSession(): Promise<boolean> {
     try {
       const response = await fetch(`${this.endpoint}/browser/session`, {
@@ -399,6 +407,7 @@ export class BrowserMcpServer {
       }
 
       this.bridgeSessionId = payload.sessionId;
+      this.emitStatus('CONNECTED');
       return true;
     } catch {
       return false;
@@ -406,11 +415,22 @@ export class BrowserMcpServer {
   }
 
   private async runBridgeLoop(signal: AbortSignal): Promise<void> {
-    while (this.started && this.bridgeSessionId && !signal.aborted) {
+    while (this.started && !signal.aborted) {
       try {
+        if (!this.bridgeSessionId) {
+          this.emitStatus('CONNECTING');
+          const registered = await this.registerBridgeSession();
+          if (!registered) {
+            this.emitStatus('ERROR');
+            await this.sleep(1000, signal);
+            continue;
+          }
+        }
+
         const sessionId = this.bridgeSessionId;
         if (!sessionId) {
-          break;
+          await this.sleep(250, signal);
+          continue;
         }
 
         const response = await fetch(
@@ -423,15 +443,14 @@ export class BrowserMcpServer {
         );
 
         if (response.status === 204) {
+          this.emitStatus('CONNECTED');
           continue;
         }
 
         if (!response.ok) {
           this.bridgeSessionId = null;
-          const rebound = await this.registerBridgeSession();
-          if (!rebound) {
-            await this.sleep(1000, signal);
-          }
+          this.emitStatus('CONNECTING');
+          await this.sleep(500, signal);
           continue;
         }
 
@@ -446,6 +465,8 @@ export class BrowserMcpServer {
         if (signal.aborted) {
           return;
         }
+        this.bridgeSessionId = null;
+        this.emitStatus('ERROR');
         await this.sleep(1000, signal);
       }
     }

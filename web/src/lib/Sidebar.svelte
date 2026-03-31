@@ -16,20 +16,26 @@
    */
   import { onMount } from 'svelte';
   import { subscribeStream } from './api';
-  import type { MetricsSnapshot, ConnStatus } from './types';
+  import type { MetricsSnapshot, ConnStatus, BridgeStatus } from './types';
 
   interface Props {
     data: MetricsSnapshot;
     connStatus?: ConnStatus;
+    bridgeStatus: BridgeStatus;
+    bridgeEnabled: boolean;
     refreshInterval?: number;
     onData?: ((s: MetricsSnapshot) => void) | null;
+    onToggleBridge: () => void;
   }
 
   let {
     data,
     connStatus = $bindable('LIVE' as ConnStatus),
+    bridgeStatus,
+    bridgeEnabled,
     refreshInterval = $bindable(10000),
-    onData = null
+    onData = null,
+    onToggleBridge
   }: Props = $props();
 
   let failCount    = $state<number>(0);
@@ -50,6 +56,13 @@
     const mins = Math.floor(diffMs / 60000);
     return mins === 0 ? 'just now' : `${mins} min ago`;
   });
+
+  let bridgeLabel = $derived(
+    bridgeStatus === 'CONNECTED' ? 'Bridge connected'
+      : bridgeStatus === 'CONNECTING' ? 'Bridge connecting'
+      : bridgeStatus === 'ERROR' ? 'Bridge unavailable'
+      : 'Bridge disabled'
+  );
 
   let currentUnsub: (() => void) | null = null;
 
@@ -100,24 +113,52 @@
 <aside class="sidebar">
   <!-- Connection status -->
   <div class="status-section">
-    <span
-      class="dot"
-      class:dot-green={connStatus === 'LIVE'}
-      class:dot-amber={connStatus === 'STALE'}
-      class:dot-red={connStatus === 'ERROR'}
-    ></span>
-    {#if connStatus === 'LIVE'}
-      <span class="status-label">Connected</span>
-    {:else if connStatus === 'STALE'}
-      <span class="status-label">Last updated {lastUpdatedStr}</span>
-    {:else}
-      <span class="status-label">Connection lost</span>
-    {/if}
+    <div class="status-stack">
+      <div class="status-row">
+        <span
+          class="dot"
+          class:dot-green={connStatus === 'LIVE'}
+          class:dot-amber={connStatus === 'STALE'}
+          class:dot-red={connStatus === 'ERROR'}
+        ></span>
+        {#if connStatus === 'LIVE'}
+          <span class="status-label">Sidecar stream connected</span>
+        {:else if connStatus === 'STALE'}
+          <span class="status-label">Sidecar stale — last updated {lastUpdatedStr}</span>
+        {:else}
+          <span class="status-label">Sidecar connection lost</span>
+        {/if}
+      </div>
+
+      <div class="status-row">
+        <span
+          class="dot"
+          class:dot-green={bridgeStatus === 'CONNECTED'}
+          class:dot-amber={bridgeStatus === 'CONNECTING'}
+          class:dot-red={bridgeStatus === 'ERROR'}
+          class:dot-gray={bridgeStatus === 'DISABLED'}
+        ></span>
+        <span class="status-label">{bridgeLabel}</span>
+      </div>
+    </div>
   </div>
+
+  <section class="section">
+    <h4 class="section-title">Browser Bridge</h4>
+    <p class="section-help">Separate from telemetry streaming. Enables browser MCP inspector tools.</p>
+    <button
+      type="button"
+      class="bridge-btn"
+      class:bridge-on={bridgeEnabled}
+      onclick={onToggleBridge}
+    >
+      {bridgeEnabled ? 'Disable bridge' : 'Enable bridge'}
+    </button>
+  </section>
 
   <!-- Recent tools -->
   <section class="section">
-    <h4 class="section-title">Recent Tools</h4>
+    <h4 class="section-title">Recent Telemetry Tools</h4>
     <ul class="tool-list">
       {#each recentTools as tool (tool.name)}
         <li class="tool-entry">
@@ -167,10 +208,23 @@
 
   .status-section {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 0.5rem;
     padding: 0.5rem 0;
     border-bottom: 1px solid #e0e0e0;
+  }
+
+  .status-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    width: 100%;
+  }
+
+  .status-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   .dot {
@@ -183,6 +237,7 @@
   .dot-green { background: #27ae60; box-shadow: 0 0 0 2px rgba(39,174,96,0.25); }
   .dot-amber { background: #e67e22; box-shadow: 0 0 0 2px rgba(230,126,34,0.25); }
   .dot-red   { background: #e74c3c; box-shadow: 0 0 0 2px rgba(231,76,60,0.25);  }
+  .dot-gray  { background: #9aa0a6; box-shadow: 0 0 0 2px rgba(154,160,166,0.22); }
 
   .status-label { font-size: 0.82rem; color: #555; }
 
@@ -260,5 +315,28 @@
     background: #4f8ef7;
     border-color: #4f8ef7;
     color: #fff;
+  }
+
+  .bridge-btn {
+    align-self: flex-start;
+    padding: 0.35rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: #555;
+    transition: all 0.15s;
+  }
+
+  .bridge-btn:hover {
+    border-color: #4f8ef7;
+    color: #4f8ef7;
+  }
+
+  .bridge-btn.bridge-on {
+    background: #eefaf1;
+    border-color: #27ae60;
+    color: #155724;
   }
 </style>
