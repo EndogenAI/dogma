@@ -23,6 +23,7 @@ def test_jsonl_writer_drains_queue_and_writes_parseable_line(tmp_path: Path) -> 
         "latency_ms": 1.23,
         "is_error": False,
         "error_type": None,
+        "error_message": None,
         "source": "live",
         "tool_version": "0.0.0.0",
     }
@@ -61,6 +62,7 @@ def test_run_with_mcp_telemetry_non_error_enqueues_expected_payload() -> None:
     assert payload["tool_name"] == "test_tool"
     assert payload["is_error"] is False
     assert payload["error_type"] is None
+    assert payload["error_message"] is None
     assert payload["source"] == "live"
     assert payload["latency_ms"] >= 0
 
@@ -85,6 +87,29 @@ def test_run_with_mcp_telemetry_error_enqueues_error_and_reraises() -> None:
     assert payload["tool_name"] == "error_tool"
     assert payload["is_error"] is True
     assert payload["error_type"] == "RuntimeError"
+    assert payload["error_message"] == "boom"
+
+
+@_requires_mcp
+def test_run_with_mcp_telemetry_tool_error_enqueues_structured_error_message() -> None:
+    dogma_server = importlib.import_module("mcp_server.dogma_server")
+    captured: list[dict] = []
+
+    def _capture(item: dict) -> None:
+        captured.append(item)
+
+    def tool_fn() -> dict:
+        return {"ok": False, "errors": ["index unavailable", {"message": "backend offline"}]}
+
+    with patch.object(dogma_server._JSONL_QUEUE, "put_nowait", side_effect=_capture):
+        result = dogma_server._run_with_mcp_telemetry("query_docs", tool_fn)
+
+    assert result["ok"] is False
+    assert len(captured) == 1
+    payload = captured[0]
+    assert payload["is_error"] is True
+    assert payload["error_type"] == "tool_error"
+    assert payload["error_message"] == "index unavailable; backend offline"
 
 
 @_requires_mcp

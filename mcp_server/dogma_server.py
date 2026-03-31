@@ -147,6 +147,35 @@ _OP_DURATION_HISTOGRAM = (
 )
 
 
+def _summarize_error_value(value: Any, *, max_items: int = 3, max_chars: int = 240) -> str | None:
+    """Return a compact, JSON-safe error summary for trace records."""
+    if value is None:
+        return None
+    if isinstance(value, str):
+        return value[:max_chars]
+    if isinstance(value, dict):
+        message = value.get("message")
+        if isinstance(message, str) and message:
+            return message[:max_chars]
+        try:
+            return json.dumps(value, ensure_ascii=False, sort_keys=True)[:max_chars]
+        except TypeError:
+            return str(value)[:max_chars]
+    if isinstance(value, list):
+        parts: list[str] = []
+        for item in value[:max_items]:
+            rendered = _summarize_error_value(item, max_items=1, max_chars=max_chars)
+            if rendered:
+                parts.append(rendered)
+        if not parts:
+            return None
+        summary = "; ".join(parts)
+        if len(value) > max_items:
+            summary += f" (+{len(value) - max_items} more)"
+        return summary[:max_chars]
+    return str(value)[:max_chars]
+
+
 def _run_with_mcp_telemetry(tool_name: str, call: Callable[[], dict]) -> dict:
     """Run tool call with MCP semconv span/metric emission when OTel is available."""
     attributes = {
@@ -161,17 +190,27 @@ def _run_with_mcp_telemetry(tool_name: str, call: Callable[[], dict]) -> dict:
             span.set_attribute("gen_ai.operation.name", "execute_tool")
             _trace_is_error: bool = False
             _trace_error_type: str | None = None
+            _trace_error_message: str | None = None
             try:
                 result = call()
                 _trace_is_error = bool(result.get("ok") is False or result.get("errors"))
                 _trace_error_type = "tool_error" if _trace_is_error else None
+                _trace_error_message = (
+                    _summarize_error_value(result.get("errors"))
+                    or _summarize_error_value(result.get("error"))
+                    or _summarize_error_value(result.get("message"))
+                )
                 if _trace_is_error:
                     span.set_attribute("error.type", "tool_error")
+                    if _trace_error_message:
+                        span.set_attribute("error.message", _trace_error_message)
                 return result
             except Exception as exc:
                 _trace_is_error = True
                 _trace_error_type = type(exc).__name__
+                _trace_error_message = str(exc)
                 span.set_attribute("error.type", "tool_error")
+                span.set_attribute("error.message", _trace_error_message)
                 raise
             finally:
                 duration_s = time.perf_counter() - started
@@ -184,6 +223,7 @@ def _run_with_mcp_telemetry(tool_name: str, call: Callable[[], dict]) -> dict:
                         "latency_ms": round(duration_s * 1000, 3),
                         "is_error": _trace_is_error,
                         "error_type": _trace_error_type,
+                        "error_message": _trace_error_message,
                         "source": "live",
                         "tool_version": _TOOL_VERSION,
                     }
@@ -191,14 +231,21 @@ def _run_with_mcp_telemetry(tool_name: str, call: Callable[[], dict]) -> dict:
 
     _trace_is_error: bool = False
     _trace_error_type: str | None = None
+    _trace_error_message: str | None = None
     try:
         result = call()
         _trace_is_error = bool(result.get("ok") is False or result.get("errors"))
         _trace_error_type = "tool_error" if _trace_is_error else None
+        _trace_error_message = (
+            _summarize_error_value(result.get("errors"))
+            or _summarize_error_value(result.get("error"))
+            or _summarize_error_value(result.get("message"))
+        )
         return result
     except Exception as exc:
         _trace_is_error = True
         _trace_error_type = type(exc).__name__
+        _trace_error_message = str(exc)
         raise
     finally:
         duration_s = time.perf_counter() - started
@@ -211,6 +258,7 @@ def _run_with_mcp_telemetry(tool_name: str, call: Callable[[], dict]) -> dict:
                 "latency_ms": round(duration_s * 1000, 3),
                 "is_error": _trace_is_error,
                 "error_type": _trace_error_type,
+                "error_message": _trace_error_message,
                 "source": "live",
                 "tool_version": _TOOL_VERSION,
             }

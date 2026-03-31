@@ -39,8 +39,10 @@ class _DummyHistogram:
 def test_run_with_mcp_telemetry_emits_semconv_fields(monkeypatch) -> None:
     tracer = _DummyTracer()
     histogram = _DummyHistogram()
+    captured: list[dict] = []
     monkeypatch.setattr(dogma_server, "_TRACER", tracer)
     monkeypatch.setattr(dogma_server, "_OP_DURATION_HISTOGRAM", histogram)
+    monkeypatch.setattr(dogma_server._JSONL_QUEUE, "put_nowait", captured.append)
 
     result = dogma_server._run_with_mcp_telemetry(
         "query_docs",
@@ -52,6 +54,9 @@ def test_run_with_mcp_telemetry_emits_semconv_fields(monkeypatch) -> None:
     assert tracer.last_span.attrs["gen_ai.tool.name"] == "query_docs"
     assert tracer.last_span.attrs["gen_ai.operation.name"] == "execute_tool"
     assert tracer.last_span.attrs["error.type"] == "tool_error"
+    assert tracer.last_span.attrs["error.message"] == "boom"
+    assert len(captured) == 1
+    assert captured[0]["error_message"] == "boom"
 
     assert len(histogram.records) == 1
     _, attrs = histogram.records[0]
@@ -62,8 +67,10 @@ def test_run_with_mcp_telemetry_emits_semconv_fields(monkeypatch) -> None:
 def test_run_with_mcp_telemetry_records_error_on_exception(monkeypatch) -> None:
     tracer = _DummyTracer()
     histogram = _DummyHistogram()
+    captured: list[dict] = []
     monkeypatch.setattr(dogma_server, "_TRACER", tracer)
     monkeypatch.setattr(dogma_server, "_OP_DURATION_HISTOGRAM", histogram)
+    monkeypatch.setattr(dogma_server._JSONL_QUEUE, "put_nowait", captured.append)
 
     def _raise() -> dict:
         raise RuntimeError("boom")
@@ -73,4 +80,8 @@ def test_run_with_mcp_telemetry_records_error_on_exception(monkeypatch) -> None:
 
     assert tracer.last_span is not None
     assert tracer.last_span.attrs["error.type"] == "tool_error"
+    assert tracer.last_span.attrs["error.message"] == "boom"
+    assert len(captured) == 1
+    assert captured[0]["error_type"] == "RuntimeError"
+    assert captured[0]["error_message"] == "boom"
     assert len(histogram.records) == 1
