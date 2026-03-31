@@ -67,7 +67,14 @@ def _spawn_processes(repo_root: Path, *, development: bool = False) -> tuple[sub
         sidecar_cmd.append("--reload")
     frontend_cmd = ["npm", "run", "dev"]
 
-    sidecar = subprocess.Popen(sidecar_cmd, cwd=repo_root)
+    # Pass through WEBMCP_CORS_ORIGINS environment variable if set
+    import os
+
+    sidecar_env = os.environ.copy()
+    if "WEBMCP_CORS_ORIGINS" in os.environ:
+        sidecar_env["WEBMCP_CORS_ORIGINS"] = os.environ["WEBMCP_CORS_ORIGINS"]
+
+    sidecar = subprocess.Popen(sidecar_cmd, cwd=repo_root, env=sidecar_env)
     try:
         frontend = subprocess.Popen(frontend_cmd, cwd=web_dir)
     except OSError:
