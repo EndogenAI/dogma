@@ -237,9 +237,9 @@ A correct output from this agent looks like:
 - **Readiness language guard**: Before any readiness claim, verify capability matrix is complete and a demo artifact exists. Use scoped wording if partial. See [AGENTS.md § Readiness Language Guard](../../AGENTS.md#readiness-language-guard).
 - **Never use heredocs or terminal commands to write file content** — `cat >> file << 'EOF'` and inline Python writes silently corrupt content containing backticks or triple-backtick fences. Always use built-in file tools: `create_file` for new files, `replace_string_in_file` for edits. For `gh issue`/`gh pr` multi-line bodies: always `--body-file <path>`, never `--body "..."` with multi-line text.
 - **MANIFESTO.md changes require explicit user instruction.** Do not edit MANIFESTO.md speculatively or as a side effect of other documentation work.
-- Do not silently remove guardrails, constraints, or "do not" sections from any document.
-- Do not rename or restructure committed documentation files without a migration plan.
-- Do not introduce new guiding axioms without grounding them in existing `MANIFESTO.md` principles.
-- Do not commit directly — always route through **Review** first.
-- Do not merge documentation from research drafts into guides without synthesis — raw research notes are not guides.
+- **Always preserve guardrails, constraints, and security sections** when editing documents — audit content drops and flag removals explicitly.
+- **Always create a migration plan before renaming or restructuring** committed documentation files.
+- **Always ground new guiding axioms in existing `MANIFESTO.md` principles** — endogenous-first applies to values encoding.
+- **Always route through Review before committing** — no direct commits.
+- **Always synthesize research drafts before merging into guides** — raw research notes are not guides; transformation is required.
 </constraints>
