@@ -1,0 +1,60 @@
+# emit_genai_spans.py
+
+emit_genai_spans.py — Emit GenAI semantic convention attributes in OTel spans.
+
+## Purpose
+
+Extends instrument_agent_calls.py with a convenience wrapper that enforces
+GenAI semantic convention attribute presence for LLM call spans.
+
+Canonical provider attribute policy:
+- Canonical key: gen_ai.provider.name (e.g., "anthropic")
+- Compatibility alias: gen_ai.system (legacy readers)
+
+Required GenAI attributes (per OTel semconv gen-ai-spans spec + compatibility policy):
+- gen_ai.provider.name (canonical provider identity)
+- gen_ai.request.model (e.g., "claude-3-5-sonnet-20241022")
+- gen_ai.usage.input_tokens (int)
+- gen_ai.usage.output_tokens (int)
+- gen_ai.response.finish_reasons (string or list)
+
+## Inputs
+
+- model: Model identifier (e.g., "claude-3-5-sonnet-20241022")
+- input_tokens: Number of input tokens
+- output_tokens: Number of output tokens
+- finish_reason: Completion finish reason (e.g., "end_turn", "max_tokens")
+- temperature: Optional temperature parameter (default: 0.0)
+
+## Outputs
+
+- Span emitted with all required GenAI attributes
+
+## Usage
+
+```python
+from scripts.emit_genai_spans import emit_genai_span
+
+with emit_genai_span(
+    model="claude-3-5-sonnet-20241022",
+    input_tokens=150,
+    output_tokens=42,
+    finish_reason="end_turn"
+) as span:
+    # Perform LLM call here
+    # span is automatically populated with GenAI attributes
+    pass
+```
+
+## Exit codes
+
+0 — success
+1 — configuration error
+
+## Reference
+
+- docs/research/otel-agent-instrumentation.md § Pattern 1 (H2)
+- AGENTS.md § Programmatic-First Principle
+- MANIFESTO.md § 2 Algorithms-Before-Tokens
+
+Closes: #369, #529

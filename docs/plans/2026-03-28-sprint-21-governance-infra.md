@@ -43,7 +43,7 @@ Deliver the remaining open Sprint 21 scope only: #487, #488, and #489. Sequence 
 **Depends on**: Phase 0 APPROVED
 **Gate**: #487 implementation complete, tests pass, commits pushed
 **CI**:
-- `uv run pytest tests/test_emit_otel_genai_spans.py -x -q`
+- `uv run pytest tests/test_emit_genai_spans.py -x -q`
 - `uv run ruff check scripts/ tests/`
 - `uv run ruff format --check scripts/ tests/`
 **Status**: ✅ Complete (pending Phase 1 Review)
@@ -75,7 +75,7 @@ Deliver the remaining open Sprint 21 scope only: #487, #488, and #489. Sequence 
 **Depends on**: Phase 1 Review APPROVED
 **Gate**: #488 implementation complete, tests pass, commits pushed
 **CI**:
-- `uv run pytest tests/test_session_cost_log.py tests/test_emit_otel_genai_spans.py -x -q`
+- `uv run pytest tests/test_session_cost_log.py tests/test_emit_genai_spans.py -x -q`
 - `uv run ruff check scripts/ tests/`
 - `uv run ruff format --check scripts/ tests/`
 **Status**: ⏳ In progress
