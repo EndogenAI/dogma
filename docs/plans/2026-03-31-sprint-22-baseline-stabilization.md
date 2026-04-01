@@ -102,7 +102,7 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 
 ---
 
-### Phase 4 — OTel Instrumentation, Docker Stack, Prometheus Metrics (#534, #531, #533) ⬜
+### Phase 4 — OTel Instrumentation, Docker Stack, Prometheus Metrics (#534, #531, #533) ✅
 
 **Agent**: Executive Scripter
 **Deliverables**:
@@ -117,15 +117,15 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 **Depends on**: Phase 3 Review APPROVED
 **CI**: Tests, Lint, Auto-validate
 **Effort**: L
-**Status**: Not started
+**Status**: ✅ Complete — commits d97be83, ca11a05
 
-### Phase 4 Review Gate ⬜
+### Phase 4 Review Gate ✅
 
 **Agent**: Review
 **Deliverables**: `## Phase 4 Review Output` appended to scratchpad with verdict: APPROVED
 
 **Depends on**: Phase 4 deliverables committed
-**Status**: Not started
+**Status**: ✅ Complete — APPROVED
 
 ---
 
