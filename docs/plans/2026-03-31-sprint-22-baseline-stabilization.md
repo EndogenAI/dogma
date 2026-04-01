@@ -17,6 +17,7 @@ Sprint 22 establishes empirical baselines for the dogma project by executing a f
 - Agents run **sequentially** (no parallel delegations) to manage rate-limit exposure
 - All agents write findings directly to `.tmp/feat-sprint-22-baseline-stabilization/2026-03-31.md`
 - **PAUSE POINT** after Phase 2 Review: Orchestrator surfaces findings to human; Phase 3 requires explicit human confirmation
+- **New Issue Seeding**: If a phase uncovers work not tracked by an existing issue, seed a new issue before the phase ends. Use `gh issue create --body-file` per the verify-after-act protocol. Record the new issue number in this workplan and add a `Closes #NNN` line to the PR Description Template.
 
 ---
 
@@ -109,7 +110,7 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 - `DOGMA_OTEL_EXPORTER` env var: `otlp` default, `jsonl` fallback — resolves #531 (JSONL capture → OTel span export migration)
 - OTel Histogram for MCP tool latency emitted per span — resolves #533
 - `docker-compose.yml`: OTel Collector + Jaeger stack
-- `scripts/start_otel_stack.py` + VS Code task (⚠️ seed **New Issue A** via `gh issue create` before Phase 4 execution begins)
+- `scripts/start_otel_stack.py` + VS Code task (⚠️ **#540** must be open before Phase 4 execution begins)
 - Tests updated; CI green
 - `## Phase 4 Output` written to scratchpad
 
@@ -208,7 +209,7 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 **Deliverables**:
 - `.github/agents/*.agent.md`: task-critical constraints front-loaded per R7 + Cluster 2 Pattern Catalog guidance
 - `docs/guides/`: factorial/sequential experiment design note added (R6 from #497 — no new issue required)
-- `docs/guides/observability.md`: OTel stack startup + instrumentation guide (⚠️ seed **New Issue B** via `gh issue create` before Phase 8 execution begins; include `Closes #<NewB>` in PR body)
+- `docs/guides/observability.md`: OTel stack startup + instrumentation guide (⚠️ **#541** must be open before Phase 8 execution begins; include `Closes #541` in PR body)
 - `## Phase 8 Output` written to scratchpad
 
 **Depends on**: Phase 7 Review APPROVED (requires Phase 5 renames before agent file updates; requires Phase 4 for observability guide)
@@ -244,7 +245,7 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 **Agent**: GitHub
 **Deliverables**:
 - PR opened against `main` from `feat/sprint-22-baseline-stabilization`
-- PR body includes: `Closes #534, Closes #531, Closes #533, Closes #529, Closes #539, Closes #482, Closes #425, Closes #491` + `Closes #<NewIssueA>, Closes #<NewIssueB>` (fill after seeding at Phases 4 and 8)
+- PR body includes: `Closes #534, Closes #531, Closes #533, Closes #529, Closes #539, Closes #482, Closes #425, Closes #491, Closes #540, Closes #541`
 - Session scratchpad archived
 
 **Depends on**: Final Cross-Fleet Review APPROVED
@@ -262,8 +263,8 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 - [x] Human confirmed continuation after PAUSE POINT (OQ-1 through OQ-4 resolved)
 - [x] Phase 3 sprint execution plan committed to this workplan (Phases 4–8 + Final + GitHub)
 - [ ] Phase 3 Review APPROVED
-- [ ] New Issue A seeded (docker-compose.yml + start_otel_stack.py) before Phase 4
-- [ ] New Issue B seeded (docs/guides/observability.md) before Phase 8
+- [ ] New Issue A seeded: #540 (docker-compose.yml + start_otel_stack.py) ✅
+- [ ] New Issue B seeded: #541 (docs/guides/observability.md) ✅
 - [ ] Phase 4 (#534, #531, #533) complete and reviewed
 - [ ] Phase 5 (#529, #539) complete and reviewed
 - [ ] Phase 6 (#482) complete and reviewed
@@ -276,4 +277,4 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 
 <!-- Copy to PR description when opening the PR -->
 
-Closes #497, Closes #491, Closes #482, Closes #529, Closes #430, Closes #425, Closes #534, Closes #506, Closes #531, Closes #533, Closes #539, Closes #<NewIssueA>, Closes #<NewIssueB>
+Closes #497, Closes #491, Closes #482, Closes #529, Closes #430, Closes #425, Closes #534, Closes #506, Closes #531, Closes #533, Closes #539, Closes #540, Closes #541
