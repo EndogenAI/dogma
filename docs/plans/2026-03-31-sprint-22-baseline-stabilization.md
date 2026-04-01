@@ -217,13 +217,13 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 **Effort**: S
 **Status**: ✅ Complete — commit c5f1896
 
-### Phase 8 Review Gate ⬜
+### Phase 8 Review Gate ✅
 
 **Agent**: Review
 **Deliverables**: `## Phase 8 Review Output` appended to scratchpad with verdict: APPROVED
 
 **Depends on**: Phase 8 deliverables committed
-**Status**: Not started
+**Status**: ✅ Complete — APPROVED (review fixes in commit 8640830)
 
 ---
 
