@@ -97,6 +97,7 @@ def test_configure_telemetry_jsonl_mode_skips_otlp() -> None:
 
 
 @_requires_mcp
+@pytest.mark.integration
 def test_start_otel_stack_help_exits_cleanly() -> None:
     import subprocess as _subprocess
 
