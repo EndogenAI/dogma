@@ -9,7 +9,7 @@
 
 ## Objective
 
-Harden the session cost tracking substrate across three axes: (1) prevent silent pollution of `session_cost_log.json` with zero-token placeholder records by introducing a zero-guard with a `synthetic` flag, (2) wire the existing OTel instrumentation chain (`instrument_agent_calls` → `emit_otel_genai_spans`) to auto-append real token counts to the cost log for all model calls made by scripts we directly control, and (3) publish a clear operational guide formally defining the observability boundary between what the local substrate CAN capture and what it cannot (GitHub Copilot Chat, VS Code extension layer). This sprint closes issues #484, #485, and #486, which were seeded from the post-merge cooldown observation that zero-token records were being accepted without challenge.
+Harden the session cost tracking substrate across three axes: (1) prevent silent pollution of `session_cost_log.json` with zero-token placeholder records by introducing a zero-guard with a `synthetic` flag, (2) wire the existing OTel instrumentation chain (`instrument_agent_calls` → `emit_genai_spans`) to auto-append real token counts to the cost log for all model calls made by scripts we directly control, and (3) publish a clear operational guide formally defining the observability boundary between what the local substrate CAN capture and what it cannot (GitHub Copilot Chat, VS Code extension layer). This sprint closes issues #484, #485, and #486, which were seeded from the post-merge cooldown observation that zero-token records were being accepted without challenge.
 
 ---
 
@@ -184,14 +184,14 @@ Harden the session cost tracking substrate across three axes: (1) prevent silent
 **Agent**: Executive Scripter
 **Deliverables**:
 - `scripts/session_cost_log.py` — zero-guard + optional `synthetic` field + `exclude_synthetic` filter in `read_log()`
-- `scripts/emit_otel_genai_spans.py` — span-close bridge hook calling `log_session_cost()` with explicit extraction contract for `gen_ai.usage.input_tokens` / `gen_ai.usage.output_tokens`; catches `ValueError`, emits `logging.warning`
+- `scripts/emit_genai_spans.py` — span-close bridge hook calling `log_session_cost()` with explicit extraction contract for `gen_ai.usage.input_tokens` / `gen_ai.usage.output_tokens`; catches `ValueError`, emits `logging.warning`
 - `docs/guides/observability-boundaries.md` — new operational guide (see Issue #486 AC)
 - `tests/test_session_cost_log.py` — updated: zero-guard raise, synthetic-flag write, exclude_synthetic filter, backward-compat records
-- `tests/test_emit_otel_genai_spans.py` — new/updated: integration tests for bridge success path, zero-token warning fallback, and invalid payload warning fallback
-- `scripts/emit_otel_genai_spans.py` + tests — include semconv provider-attribute alignment work from issue #487
+- `tests/test_emit_genai_spans.py` — new/updated: integration tests for bridge success path, zero-token warning fallback, and invalid payload warning fallback
+- `scripts/emit_genai_spans.py` + tests — include semconv provider-attribute alignment work from issue #487
 
 **Depends on**: Phase D (decisions confirmed by human)
-**Gate**: `uv run pytest tests/test_session_cost_log.py tests/test_emit_otel_genai_spans.py -x -q` exits 0; `uv run ruff check scripts/ tests/` exits 0
+**Gate**: `uv run pytest tests/test_session_cost_log.py tests/test_emit_genai_spans.py -x -q` exits 0; `uv run ruff check scripts/ tests/` exits 0
 **CI**: Tests, Auto-validate
 **Status**: Complete
 
@@ -271,7 +271,7 @@ Triage per `pr-review-triage` skill before merge.
 ## Acceptance Criteria
 
 - [ ] Issue #484 closed: zero-guard implemented, backward-compatible `synthetic` field, `exclude_synthetic` filter, all tests green
-- [ ] Issue #485 closed: span-close bridge in `emit_otel_genai_spans.py`; always-on for `instrument_agent_calls` importers; failsafe logging; integration tests green
+- [ ] Issue #485 closed: span-close bridge in `emit_genai_spans.py`; always-on for `instrument_agent_calls` importers; failsafe logging; integration tests green
 - [ ] Issue #486 closed: `docs/guides/observability-boundaries.md` published, cross-referenced from `scripts/README.md`, lint-clean
 - [ ] Issue #487 sprint slice delivered: provider-attribute semconv alignment applied in emitter path with test coverage
 - [ ] All existing tests continue to pass (no regressions in `tests/test_session_cost_log.py`, `tests/test_aggregate_session_costs.py`)

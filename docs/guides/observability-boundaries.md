@@ -18,7 +18,7 @@ Define what token usage is observable from this repository's local substrate and
 
 | Symptom | Likely boundary class | Next action |
 |---|---|---|
-| Expected script invocation produced no session-cost row | Observable | Check `scripts/emit_otel_genai_spans.py` warning logs; verify span has non-zero numeric `gen_ai.usage.*` attrs; rerun tests for bridge path |
+| Expected script invocation produced no session-cost row | Observable | Check `scripts/emit_genai_spans.py` warning logs; verify span has non-zero numeric `gen_ai.usage.*` attrs; rerun tests for bridge path |
 | Warning: zero-token record skipped | Observable | Confirm whether this was a placeholder event; if intentional, log with explicit synthetic marker via `--synthetic` in `session_cost_log.py` |
 | Copilot Chat usage appears in UI but no local token rows exist | Unobservable (managed layer) | Do not treat as logging failure; annotate as boundary limitation in session notes and use synthetic marker only if explicitly desired |
 | Billing/entitlement dashboard differs from local totals | Cross-boundary | Compare local log scope (script-only) against managed scope (product-wide), then document scope mismatch in reporting |
@@ -43,7 +43,7 @@ uv run python scripts/session_cost_log.py \
 ## References
 
 - [scripts/session_cost_log.py](../../scripts/session_cost_log.py)
-- [scripts/emit_otel_genai_spans.py](../../scripts/emit_otel_genai_spans.py)
+- [scripts/emit_genai_spans.py](../../scripts/emit_genai_spans.py)
 - [scripts/instrument_agent_calls.py](../../scripts/instrument_agent_calls.py)
 - [docs/guides/copilot-ecosystem-limits.md](copilot-ecosystem-limits.md)
 - [GitHub Copilot usage and entitlements](https://docs.github.com/en/copilot/managing-copilot/monitoring-usage-and-entitlements/monitoring-your-copilot-usage-and-entitlements)
