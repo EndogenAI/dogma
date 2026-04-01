@@ -169,8 +169,8 @@ class TestCheckThresholds:
             "fail_if_tool_error_rate_above_pct": 5.0,
         }
 
-        result = check_thresholds(observations, thresholds, {})
-        assert result == 0
+        exit_code, _ = check_thresholds(observations, thresholds, {})
+        assert exit_code == 0
 
     def test_check_thresholds_fail_faithfulness(self):
         """Test threshold check fails when faithfulness is too low."""
@@ -184,8 +184,8 @@ class TestCheckThresholds:
             "fail_if_tool_error_rate_above_pct": 5.0,
         }
 
-        result = check_thresholds(observations, thresholds, {})
-        assert result == 1
+        exit_code, _ = check_thresholds(observations, thresholds, {})
+        assert exit_code == 1
 
     def test_check_thresholds_fail_error_rate(self):
         """Test threshold check fails when error rate is too high."""
@@ -200,8 +200,8 @@ class TestCheckThresholds:
         }
 
         # Error rate: 2/3 = 66.7% > 5%
-        result = check_thresholds(observations, thresholds, {})
-        assert result == 1
+        exit_code, _ = check_thresholds(observations, thresholds, {})
+        assert exit_code == 1
 
     def test_check_thresholds_dry_run(self):
         """Test dry-run mode always returns 0."""
@@ -214,8 +214,8 @@ class TestCheckThresholds:
             "fail_if_tool_error_rate_above_pct": 5.0,
         }
 
-        result = check_thresholds(observations, thresholds, {}, dry_run=True)
-        assert result == 0
+        exit_code, _ = check_thresholds(observations, thresholds, {}, dry_run=True)
+        assert exit_code == 0
 
     def test_check_thresholds_no_observations(self):
         """Test with no observations."""
@@ -224,8 +224,8 @@ class TestCheckThresholds:
             "fail_if_tool_error_rate_above_pct": 5.0,
         }
 
-        result = check_thresholds([], thresholds, {})
-        assert result == 2
+        exit_code, _ = check_thresholds([], thresholds, {})
+        assert exit_code == 2
 
     def test_calibration_baseline_within_variance_passes(self):
         """Test that metrics within calibration variance pass the gate."""
@@ -248,8 +248,8 @@ class TestCheckThresholds:
             }
         }
 
-        result = check_thresholds(observations, thresholds, calibration_baselines)
-        assert result == 0
+        exit_code, _ = check_thresholds(observations, thresholds, calibration_baselines)
+        assert exit_code == 0
 
     def test_calibration_baseline_exceeds_variance_fails(self):
         """Test that metrics exceeding calibration variance × 2 fail the gate."""
@@ -271,8 +271,8 @@ class TestCheckThresholds:
             }
         }
 
-        result = check_thresholds(observations, thresholds, calibration_baselines)
-        assert result == 1
+        exit_code, _ = check_thresholds(observations, thresholds, calibration_baselines)
+        assert exit_code == 1
 
 
 @pytest.mark.io
@@ -350,3 +350,125 @@ quality_gate_thresholds:
             result = main([])
 
         assert result == 2
+
+
+@pytest.mark.io
+class TestRAGASMetrics:
+    """Test RAGAS complement metric extraction and baseline checks (Phase 7)."""
+
+    def test_ragas_metrics_extraction(self):
+        """Test extraction of response_completeness, parameter_efficiency, output_completeness."""
+        observations = [
+            {
+                "faithfulness": 0.8,
+                "response_completeness": 0.9,
+                "parameter_efficiency": 0.85,
+                "output_completeness": 0.92,
+                "is_error": False,
+            },
+            {
+                "faithfulness": 0.82,
+                "response_completeness": 0.88,
+                "parameter_efficiency": 0.83,
+                "output_completeness": 0.91,
+                "is_error": False,
+            },
+        ]
+        thresholds = {
+            "fail_if_faithfulness_below": 0.75,
+            "fail_if_tool_error_rate_above_pct": 5.0,
+        }
+
+        exit_code, result = check_thresholds(observations, thresholds, {}, json_output=True)
+        assert exit_code == 0
+        assert result is not None
+        assert result["metrics"]["response_completeness_mean"] == pytest.approx(0.89, abs=0.01)
+        assert result["metrics"]["parameter_efficiency_mean"] == pytest.approx(0.84, abs=0.01)
+        assert result["metrics"]["output_completeness_mean"] == pytest.approx(0.915, abs=0.01)
+
+    def test_ragas_metrics_missing_values_skipped(self):
+        """Test that missing RAGAS metric values are skipped gracefully."""
+        observations = [
+            {"faithfulness": 0.8, "is_error": False},  # No RAGAS metrics
+            {
+                "faithfulness": 0.82,
+                "response_completeness": 0.9,
+                "is_error": False,
+            },  # Partial
+        ]
+        thresholds = {
+            "fail_if_faithfulness_below": 0.75,
+            "fail_if_tool_error_rate_above_pct": 5.0,
+        }
+
+        exit_code, result = check_thresholds(observations, thresholds, {}, json_output=True)
+        assert exit_code == 0
+        assert result is not None
+        assert result["metrics"]["response_completeness_mean"] == 0.9  # Only 1 value
+        assert result["metrics"]["parameter_efficiency_mean"] is None  # No values
+        assert result["metrics"]["output_completeness_mean"] is None  # No values
+
+    def test_ragas_baseline_checks(self):
+        """Test RAGAS metrics checked against calibration baselines."""
+        observations = [
+            {
+                "faithfulness": 0.8,
+                "response_completeness": 0.5,  # Well below baseline
+                "parameter_efficiency": 0.75,
+                "output_completeness": 0.78,
+                "is_error": False,
+            },
+        ]
+        thresholds = {
+            "fail_if_faithfulness_below": 0.75,
+            "fail_if_tool_error_rate_above_pct": 5.0,
+        }
+        baselines = {
+            "response_completeness_mean": {
+                "mean": 0.85,  # Current 0.5, delta = -0.35
+                "variance": 0.05,  # variance × 2 = 0.1, so delta 0.35 > 0.1 → FAIL
+            },
+        }
+
+        exit_code, result = check_thresholds(observations, thresholds, baselines, json_output=True)
+        assert exit_code == 1  # Should fail due to response_completeness below baseline
+        assert len(result["violations"]) > 0
+        assert any("response_completeness" in v for v in result["violations"])
+
+    def test_json_output_format_validation(self):
+        """Test JSON output schema matches documented format."""
+        observations = [
+            {
+                "faithfulness": 0.8,
+                "response_completeness": 0.9,
+                "parameter_efficiency": 0.85,
+                "output_completeness": 0.92,
+                "is_error": False,
+            },
+        ]
+        thresholds = {
+            "fail_if_faithfulness_below": 0.75,
+            "fail_if_tool_error_rate_above_pct": 5.0,
+        }
+        baselines = {
+            "faithfulness_mean": {"mean": 0.8, "variance": 0.01},
+        }
+
+        exit_code, result = check_thresholds(observations, thresholds, baselines, json_output=True)
+
+        # Validate schema structure
+        assert "status" in result
+        assert result["status"] in ["pass", "fail", "no_data"]
+        assert "sample_size" in result
+        assert result["sample_size"] == 1
+        assert "metrics" in result
+        assert "faithfulness_mean" in result["metrics"]
+        assert "error_rate_pct" in result["metrics"]
+        assert "response_completeness_mean" in result["metrics"]
+        assert "parameter_efficiency_mean" in result["metrics"]
+        assert "output_completeness_mean" in result["metrics"]
+        assert "violations" in result
+        assert isinstance(result["violations"], list)
+        assert "baselines" in result
+        assert "faithfulness_mean" in result["baselines"]
+        assert result["baselines"]["faithfulness_mean"] == {"mean": 0.8, "variance": 0.01}
