@@ -31,7 +31,7 @@ Sprint 22 establishes empirical baselines for the dogma project by executing a f
 
 ---
 
-### Phase 1 — Carry-Ins (#430, #506) ⬜
+### Phase 1 — Carry-Ins (#430, #506) ✅
 **Agent**: Executive Scripter (for #506 test verification); Executive Docs (for #430 closure)
 **Deliverables**:
 - Verify #506 CORS env var is fully implemented and tested in `web/server.py`; confirm test coverage passes
@@ -40,18 +40,18 @@ Sprint 22 establishes empirical baselines for the dogma project by executing a f
 
 **Depends on**: Phase 0 APPROVED
 **CI**: Tests, Lint, Auto-validate
-**Status**: Not started
+**Status**: ✅ Complete
 
-### Phase 1 Review Gate ⬜
+### Phase 1 Review Gate ✅
 **Agent**: Review
 **Deliverables**: `## Phase 1 Review Output` appended to scratchpad with verdict: APPROVED
 
 **Depends on**: Phase 1 deliverables committed
-**Status**: Not started
+**Status**: ✅ Complete — APPROVED
 
 ---
 
-### Phase 2 — Deep-Dive Research: Per-Topic Source Notes + Unified D4 Synthesis ⬜
+### Phase 2 — Deep-Dive Research: Per-Topic Source Notes + Unified D4 Synthesis ✅
 **Agent**: Executive Researcher -> Research Scout (per topic) -> Research Synthesizer -> Research Reviewer -> Research Archivist
 **Deliverables**:
 - Per-topic source notes in `docs/research/sources/` (one file per issue cluster):
@@ -66,21 +66,21 @@ Sprint 22 establishes empirical baselines for the dogma project by executing a f
 
 **Depends on**: Phase 1 Review APPROVED
 **CI**: Tests, Lint, Auto-validate (synthesis schema)
-**Status**: Not started
+**Status**: ✅ Complete — commits df6b05b, b060ea7
 
-### Phase 2 Review Gate ⬜
+### Phase 2 Review Gate ✅
 **Agent**: Review
 **Deliverables**: `## Phase 2 Review Output` appended to scratchpad with verdict: APPROVED
 
 **Depends on**: Phase 2 D4 synthesis doc committed
-**Status**: Not started
+**Status**: ✅ Complete — APPROVED
 
 ### PAUSE POINT — Surface Research Findings to Human
 _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scratchpad and surfaces findings summary, D4 Recommendations, and emergent decision points to the human. **Phase 3 does not begin without explicit human confirmation.**
 
 ---
 
-### Phase 3 — Sprint Planning (informed by Phase 2) ⬜
+### Phase 3 — Sprint Planning (informed by Phase 2) ✅
 **Agent**: Executive Planner
 **Deliverables**:
 - `## Sprint Execution Plan` section added to this workplan (Phases 4-N) with agent assignments, effort estimates (XS/S/M/L), sequencing rationale from Phase 2 D4 recommendations
@@ -90,7 +90,7 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 
 **Depends on**: Phase 2 Review APPROVED + human confirmation after PAUSE POINT
 **CI**: Tests, Lint, Auto-validate
-**Status**: Not started
+**Status**: ✅ Complete — Phases 4-8 + Final Review + GitHub Phase defined below
 
 ### Phase 3 Review Gate ⬜
 **Agent**: Review
@@ -101,38 +101,153 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 
 ---
 
-### Phases 4-N — Implementation (TBD after Phase 3) ⬜
-**Agent**: TBD — assigned by Phase 3 planning output
-**Deliverables**: TBD — at minimum:
-  - **Phase 4: Instruction Format + KPI Guide** — closes #491, #482 (Executive Docs)
-  - **Phase 5: Scripts Audit + Observability** — closes #529, #534, #425 (Executive Scripter)
-  - Each domain phase immediately followed by a Review gate
+### Phase 4 — OTel Instrumentation, Docker Stack, Prometheus Metrics (#534, #531, #533) ⬜
+
+**Agent**: Executive Scripter
+**Deliverables**:
+- `mcp_server/dogma_server.py`: spans for every tool call; attributes `mcp.server.operation.duration`, `gen_ai.operation.name`, `error.type`; semconv pinned to v1.40.0
+- `DOGMA_OTEL_EXPORTER` env var: `otlp` default, `jsonl` fallback — resolves #531 (JSONL capture → OTel span export migration)
+- OTel Histogram for MCP tool latency emitted per span — resolves #533
+- `docker-compose.yml`: OTel Collector + Jaeger stack
+- `scripts/start_otel_stack.py` + VS Code task (⚠️ seed **New Issue A** via `gh issue create` before Phase 4 execution begins)
+- Tests updated; CI green
+- `## Phase 4 Output` written to scratchpad
 
 **Depends on**: Phase 3 Review APPROVED
-**Status**: Not started — populated by Phase 3
+**CI**: Tests, Lint, Auto-validate
+**Effort**: L
+**Status**: Not started
+
+### Phase 4 Review Gate ⬜
+
+**Agent**: Review
+**Deliverables**: `## Phase 4 Review Output` appended to scratchpad with verdict: APPROVED
+
+**Depends on**: Phase 4 deliverables committed
+**Status**: Not started
+
+---
+
+### Phase 5 — Scripts Friction Audit + Rename (#529, #539) ⬜
+
+**Agent**: Executive Scripter
+**Deliverables**:
+- Deprecation convention in place: `# DEPRECATED: superseded by <script>` at docstring line 2 + `sys.exit(1)` with human-readable message on invocation
+- `scripts/DEPRECATED.md` register created and populated
+- Non-conformant script names renamed per OQ-3 (breaking — all callers, `scripts/README.md`, and agent file references updated)
+- Inline documentation audit against encoded standard — resolves #539
+- Tests updated; CI green
+- `## Phase 5 Output` written to scratchpad
+
+**Depends on**: Phase 4 Review APPROVED
+**CI**: Tests, Lint, Auto-validate
+**Effort**: M
+**Status**: Not started
+
+### Phase 5 Review Gate ⬜
+
+**Agent**: Review
+**Deliverables**: `## Phase 5 Review Output` appended to scratchpad with verdict: APPROVED
+
+**Depends on**: Phase 5 deliverables committed
+**Status**: Not started
+
+---
+
+### Phase 6 — KPI Calibration Baseline (#482) ⬜
+
+**Agent**: Executive Docs + Executive Scripter
+**Deliverables**:
+- Control set curated manually: 5–10 known-good + 5 known-bad tool call runs (per OQ-4)
+- `scripts/check_mcp_quality_gate.py`: calibration run step added; gate trigger requires delta to exceed calibration variance (noise-floor guard)
+- `data/governance-thresholds.yml`: calibration baseline values committed
+- `## Phase 6 Output` written to scratchpad
+
+**Depends on**: Phase 5 Review APPROVED (transitively requires Phase 4 — #534 must precede #482)
+**CI**: Tests, Lint, Auto-validate
+**Effort**: S
+**Status**: Not started
+
+### Phase 6 Review Gate ⬜
+
+**Agent**: Review
+**Deliverables**: `## Phase 6 Review Output` appended to scratchpad with verdict: APPROVED
+
+**Depends on**: Phase 6 deliverables committed
+**Status**: Not started
+
+---
+
+### Phase 7 — Quality Gate + RAGAS Complement (#425) ⬜
+
+**Agent**: Executive Scripter
+**Deliverables**:
+- `scripts/check_mcp_quality_gate.py`: RAGAS + Nielsen quality complement integrated; gate logic reads calibration baseline from Phase 6 `governance-thresholds.yml`
+- Structured JSON output added to gate script
+- Tests updated; CI green
+- `## Phase 7 Output` written to scratchpad
+
+**Depends on**: Phase 6 Review APPROVED (transitively requires Phases 4 and 6)
+**CI**: Tests, Lint, Auto-validate
+**Effort**: M
+**Status**: Not started
+
+### Phase 7 Review Gate ⬜
+
+**Agent**: Review
+**Deliverables**: `## Phase 7 Review Output` appended to scratchpad with verdict: APPROVED
+
+**Depends on**: Phase 7 deliverables committed
+**Status**: Not started
+
+---
+
+### Phase 8 — Instruction Format Front-Loading, Observability Guide, R6 Encoding (#491) ⬜
+
+**Agent**: Executive Docs + Executive Fleet
+**Deliverables**:
+- `.github/agents/*.agent.md`: task-critical constraints front-loaded per R7 + Cluster 2 Pattern Catalog guidance
+- `docs/guides/`: factorial/sequential experiment design note added (R6 from #497 — no new issue required)
+- `docs/guides/observability.md`: OTel stack startup + instrumentation guide (⚠️ seed **New Issue B** via `gh issue create` before Phase 8 execution begins; include `Closes #<NewB>` in PR body)
+- `## Phase 8 Output` written to scratchpad
+
+**Depends on**: Phase 7 Review APPROVED (requires Phase 5 renames before agent file updates; requires Phase 4 for observability guide)
+**CI**: Tests, Lint, Auto-validate
+**Effort**: S
+**Status**: Not started
+
+### Phase 8 Review Gate ⬜
+
+**Agent**: Review
+**Deliverables**: `## Phase 8 Review Output` appended to scratchpad with verdict: APPROVED
+
+**Depends on**: Phase 8 deliverables committed
+**Status**: Not started
 
 ---
 
 ### Final Review Phase — Cross-Fleet Intensive Review ⬜
-**Agent**: Review + Executive Docs + Executive Scripter + Executive Researcher + Executive Fleet + Security Researcher + (additional topically relevant agents determined by Phase 3)
+
+**Agent**: Review + Executive Docs + Executive Scripter + Executive Fleet + Security Researcher
 **Deliverables**:
 - Each agent appends `## Final Review — <AgentName> Output` to scratchpad with their domain verdict
 - All blocking findings resolved before GitHub phase begins
 - `## Final Cross-Fleet Review Output` aggregated in scratchpad
 
-**Depends on**: All implementation phases complete and committed
+**Depends on**: Phases 4–8 Review gates all APPROVED
 **CI**: Tests, Lint, Auto-validate
+**Effort**: M
 **Status**: Not started
 
 ### GitHub Phase — PR Open ⬜
+
 **Agent**: GitHub
 **Deliverables**:
 - PR opened against `main` from `feat/sprint-22-baseline-stabilization`
-- PR body links all `Closes` references
+- PR body includes: `Closes #534, Closes #531, Closes #533, Closes #529, Closes #539, Closes #482, Closes #425, Closes #491` + `Closes #<NewIssueA>, Closes #<NewIssueB>` (fill after seeding at Phases 4 and 8)
 - Session scratchpad archived
 
 **Depends on**: Final Cross-Fleet Review APPROVED
-**CI**: Tests, Lint, Auto-validate
 **Status**: Not started
 
 ---
@@ -140,19 +255,25 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 ## Acceptance Criteria
 
 - [x] Phase 0 Workplan Review APPROVED
-- [ ] Phase 1 carry-ins complete and committed (#430 closed, #506 verified)
-- [ ] Phase 1 Review APPROVED
-- [ ] Phase 2 D4 synthesis committed (status: Final) with per-topic source notes
-- [ ] Phase 2 Review APPROVED
-- [ ] Human confirmed continuation after PAUSE POINT
-- [ ] Phase 3 sprint execution plan committed to this workplan
+- [x] Phase 1 carry-ins complete and committed (#430 closed, #506 verified)
+- [x] Phase 1 Review APPROVED
+- [x] Phase 2 D4 synthesis committed (status: Final, commits df6b05b, b060ea7) with 5 per-topic source notes
+- [x] Phase 2 Review APPROVED
+- [x] Human confirmed continuation after PAUSE POINT (OQ-1 through OQ-4 resolved)
+- [x] Phase 3 sprint execution plan committed to this workplan (Phases 4–8 + Final + GitHub)
 - [ ] Phase 3 Review APPROVED
-- [ ] All implementation phases complete, reviewed, and committed
-- [ ] Final cross-fleet review APPROVED (6+ agents)
+- [ ] New Issue A seeded (docker-compose.yml + start_otel_stack.py) before Phase 4
+- [ ] New Issue B seeded (docs/guides/observability.md) before Phase 8
+- [ ] Phase 4 (#534, #531, #533) complete and reviewed
+- [ ] Phase 5 (#529, #539) complete and reviewed
+- [ ] Phase 6 (#482) complete and reviewed
+- [ ] Phase 7 (#425) complete and reviewed
+- [ ] Phase 8 (#491) complete and reviewed
+- [ ] Final cross-fleet review APPROVED (5+ agents)
 - [ ] All changes pushed and PR opened against main
 
 ## PR Description Template
 
 <!-- Copy to PR description when opening the PR -->
 
-Closes #497, Closes #491, Closes #482, Closes #529, Closes #430, Closes #425, Closes #534, Closes #506
+Closes #497, Closes #491, Closes #482, Closes #529, Closes #430, Closes #425, Closes #534, Closes #506, Closes #531, Closes #533, Closes #539, Closes #<NewIssueA>, Closes #<NewIssueB>
