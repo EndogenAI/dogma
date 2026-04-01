@@ -129,7 +129,7 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 
 ---
 
-### Phase 5 — Scripts Friction Audit + Rename (#529, #539) ⬜
+### Phase 5 — Scripts Friction Audit + Rename (#529, #539) ✅
 
 **Agent**: Executive Scripter
 **Deliverables**:
@@ -143,15 +143,15 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 **Depends on**: Phase 4 Review APPROVED
 **CI**: Tests, Lint, Auto-validate
 **Effort**: M
-**Status**: Not started
+**Status**: ✅ Complete — commits 5723fe7, 9aa8401
 
-### Phase 5 Review Gate ⬜
+### Phase 5 Review Gate ✅
 
 **Agent**: Review
 **Deliverables**: `## Phase 5 Review Output` appended to scratchpad with verdict: APPROVED
 
 **Depends on**: Phase 5 deliverables committed
-**Status**: Not started
+**Status**: ✅ Complete — APPROVED
 
 ---
 
