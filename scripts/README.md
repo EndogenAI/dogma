@@ -102,6 +102,7 @@ scripts/
   repaired_audit.py            # Post-audit repair validator — checks that identified gaps in a prior audit result have been resolved (closes #301)
   token_spin_detector.py       # Detect "token spinning" (repeated loops with no progress) in session logs using Hamming distance and regex entropy (closes #310)
   instrument_agent_calls.py    # Wrap LLM call sites with OTel Python SDK spans; reads provider config from data/inference-providers.yml; exports to stdout JSONL by default, OTLP via OTEL_EXPORTER_OTLP_ENDPOINT env var; --test emits test span (closes #334)
+  start_otel_stack.py          # Start (or stop) the local OTel Collector + Jaeger docker-compose stack; polls http://localhost:16686 until ready (20 retries × 1s); --stop tears the stack down; exits 0=ready/stopped, 1=timeout, 2=docker not found (closes #540)
   index_recommendations.py     # Scan finalized synthesis docs and write data/recommendations-registry.yml; --dry-run, --check, --docs-dir (closes #407)
   audit_recommendation_status.py  # Audit recommendation status across finalized docs; fuzzy-match to GitHub issues; write data/retrofit-patches/<slug>.yml patch files; --dry-run, --doc, --no-github (closes #409)
   test_newlines.py             # Internal utility to test newline handling in terminal scripts
