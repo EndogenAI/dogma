@@ -158,6 +158,50 @@ _OP_DURATION_HISTOGRAM = (
 )
 
 
+def _configure_telemetry() -> None:
+    """Configure OTel TracerProvider and MeterProvider based on DOGMA_OTEL_EXPORTER env var.
+
+    DOGMA_OTEL_EXPORTER=otlp (default) — OTLP gRPC exporter to localhost:4317.
+    DOGMA_OTEL_EXPORTER=jsonl         — no-op OTel provider; spans go to JSONL only.
+    """
+    import os
+
+    exporter_mode = os.environ.get("DOGMA_OTEL_EXPORTER", "otlp").lower()
+    if exporter_mode == "jsonl" or _otel_trace is None:
+        return  # Leave global no-op provider in place; JSONL path handles capture.
+
+    from opentelemetry.exporter.otlp.proto.grpc.metric_exporter import OTLPMetricExporter
+    from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+    from opentelemetry.sdk.metrics import MeterProvider
+    from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader
+    from opentelemetry.sdk.trace import TracerProvider
+    from opentelemetry.sdk.trace.export import BatchSpanProcessor
+
+    endpoint = os.environ.get("OTEL_EXPORTER_OTLP_ENDPOINT", "http://localhost:4317")
+    span_exporter = OTLPSpanExporter(endpoint=endpoint, insecure=True)
+    tracer_provider = TracerProvider()
+    tracer_provider.add_span_processor(BatchSpanProcessor(span_exporter))
+    _otel_trace.set_tracer_provider(tracer_provider)
+
+    metric_exporter = OTLPMetricExporter(endpoint=endpoint, insecure=True)
+    reader = PeriodicExportingMetricReader(metric_exporter, export_interval_millis=10_000)
+    meter_provider = MeterProvider(metric_readers=[reader])
+    _otel_metrics.set_meter_provider(meter_provider)
+
+    # Re-bind module-level tracer/meter to the newly configured providers.
+    global _TRACER, _METER, _OP_DURATION_HISTOGRAM  # noqa: PLW0603
+    _TRACER = _otel_trace.get_tracer("dogma.mcp.server")
+    _METER = _otel_metrics.get_meter("dogma.mcp.server")
+    _OP_DURATION_HISTOGRAM = _METER.create_histogram(
+        "mcp.server.operation.duration",
+        unit="s",
+        description="Duration of MCP tool-call operations in seconds",
+    )
+
+
+_configure_telemetry()
+
+
 def _summarize_error_value(value: Any, *, max_items: int = 3, max_chars: int = 240) -> str | None:
     """Return a compact, JSON-safe error summary for trace records."""
     if value is None:
