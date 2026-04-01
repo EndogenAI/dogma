@@ -57,7 +57,8 @@ Across five source notes covering optimization interaction effects, instruction 
 KPI interpretation, scripts repository maintenance, and LLM observability, the central cross-cutting
 finding is that **no dogma quality improvement is additive in isolation — every optimization
 interacts with others, and every metric can be gamed by an agent with sufficient capability**.
-The multi-surface architecture that dogma has already adopted (OTel + RAGAS + Nielsen + Programmatic-First)
+The multi-surface architecture that dogma has already adopted (OTel + RAGAS + Nielsen + Programmatic-First,
+instantiating [MANIFESTO.md § 2 Algorithms-Before-Tokens](../../MANIFESTO.md#2-algorithms-before-tokens))
 is architecturally correct but has three implementation gaps: zero OTel instrumentation in
 `dogma_server.py`, a `scripts/` deprecation/discoverability gap that grows with every new script,
 and quality gate thresholds that lack a calibration baseline. The instruction format baseline is
@@ -299,5 +300,5 @@ as provisional ground-truth? **Human decision required before #482 implementatio
 - `data/mcp-metrics-schema.yml` (owner: #495)
 - `docs/research/ai-workload-observability.md` (Status: Final, closes #316)
 - `docs/research/agents/xml-agent-instruction-format.md` (Status: Final, ADOPTED)
-- `AGENTS.md` § Programmatic-First Principle
+- `AGENTS.md` § Programmatic-First Principle (instantiates [MANIFESTO.md § 2 Algorithms-Before-Tokens](../../MANIFESTO.md#2-algorithms-before-tokens) and [MANIFESTO.md § 3 Local-Compute-First](../../MANIFESTO.md#3-local-compute-first))
 - `scripts/README.md`
