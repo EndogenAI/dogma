@@ -64,6 +64,28 @@ def load_thresholds(root: Path) -> dict:
         return {}
 
 
+def load_calibration_baselines(root: Path) -> dict:
+    """Load calibration_baseline from data/governance-thresholds.yml.
+
+    Returns:
+        Dict with per-metric baselines (mean, variance). Empty dict if not found or on error.
+        Expected structure: {
+            "faithfulness_mean": {"mean": float, "variance": float},
+            "error_rate_pct": {"mean": float, "variance": float}
+        }
+    """
+    thresholds_path = root / "data" / "governance-thresholds.yml"
+    try:
+        with thresholds_path.open("r", encoding="utf-8") as f:
+            config = yaml.safe_load(f)
+        baseline = config.get("calibration_baseline", {})
+        # Return the full baseline dict; caller will check for per-metric entries
+        return baseline
+    except Exception as exc:
+        print(f"WARNING: Failed to load {thresholds_path}: {exc}", file=sys.stderr)
+        return {}
+
+
 def load_metrics(root: Path, window: int) -> list[dict] | None:
     """Load last N JSONL records from .cache/mcp-metrics/.
 
@@ -95,16 +117,22 @@ def load_metrics(root: Path, window: int) -> list[dict] | None:
     return observations[-window:] if window > 0 else observations
 
 
-def check_thresholds(observations: list[dict], thresholds: dict, dry_run: bool = False) -> int:
-    """Compute metrics and check against thresholds.
+def check_thresholds(
+    observations: list[dict],
+    thresholds: dict,
+    baselines: dict,
+    dry_run: bool = False,
+) -> int:
+    """Compute metrics and check against thresholds or calibration baselines.
 
     Args:
         observations: List of JSONL observation records.
         thresholds: Dict with fail_if_faithfulness_below, fail_if_tool_error_rate_above_pct.
+        baselines: Dict with per-metric calibration baselines (mean, variance).
         dry_run: If True, print results but always return 0.
 
     Returns:
-        0 if thresholds pass, 1 if breached.
+        0 if thresholds pass, 1 if breached, 2 if no data.
     """
     if not observations:
         print("WARNING: No observations to evaluate.", file=sys.stderr)
@@ -132,24 +160,64 @@ def check_thresholds(observations: list[dict], thresholds: dict, dry_run: bool =
     # Compute faithfulness mean
     faithfulness_mean = mean(faithfulness_values) if faithfulness_values else None
 
-    # Get thresholds
+    # Get static thresholds (fallback)
     min_faithfulness = thresholds.get("fail_if_faithfulness_below", 0.75)
     max_error_rate = thresholds.get("fail_if_tool_error_rate_above_pct", 5.0)
 
     # Print summary
     print(f"MCP Quality Gate Evaluation (n={sample_size}):")
+
+    violations = []
+
+    # Check faithfulness_mean — use calibration baseline if available
     if faithfulness_mean is not None:
-        print(f"  Faithfulness (mean): {faithfulness_mean:.3f} (threshold: ≥{min_faithfulness})")
+        baseline_faith = baselines.get("faithfulness_mean", {})
+        if "mean" in baseline_faith and "variance" in baseline_faith:
+            # Use delta-vs-variance logic
+            baseline_mean = baseline_faith["mean"]
+            baseline_var = baseline_faith["variance"]
+            variance_threshold = baseline_var * 2
+            delta = faithfulness_mean - baseline_mean
+            print(
+                f"  Faithfulness (mean): {faithfulness_mean:.3f} "
+                f"(baseline: {baseline_mean:.3f}, delta: {delta:+.3f}, "
+                f"variance threshold: {variance_threshold:.3f})"
+            )
+            if delta < -variance_threshold:  # Negative delta = performance degraded
+                violations.append(
+                    f"faithfulness delta {delta:.3f} exceeds variance threshold "
+                    f"{-variance_threshold:.3f} (below baseline)"
+                )
+        else:
+            # Use static threshold
+            print(f"  Faithfulness (mean): {faithfulness_mean:.3f} (threshold: ≥{min_faithfulness})")
+            if faithfulness_mean < min_faithfulness:
+                violations.append(f"faithfulness {faithfulness_mean:.3f} < {min_faithfulness}")
     else:
         print("  Faithfulness (mean): N/A (no data)")
-    print(f"  Error rate: {error_rate_pct:.1f}% (threshold: ≤{max_error_rate}%)")
 
-    # Check violations
-    violations = []
-    if faithfulness_mean is not None and faithfulness_mean < min_faithfulness:
-        violations.append(f"faithfulness {faithfulness_mean:.3f} < {min_faithfulness}")
-    if error_rate_pct > max_error_rate:
-        violations.append(f"error_rate {error_rate_pct:.1f}% > {max_error_rate}%")
+    # Check error_rate_pct — use calibration baseline if available
+    baseline_error = baselines.get("error_rate_pct", {})
+    if "mean" in baseline_error and "variance" in baseline_error:
+        # Use delta-vs-variance logic
+        baseline_mean = baseline_error["mean"]
+        baseline_var = baseline_error["variance"]
+        variance_threshold = baseline_var * 2
+        delta = error_rate_pct - baseline_mean
+        print(
+            f"  Error rate: {error_rate_pct:.1f}% "
+            f"(baseline: {baseline_mean:.1f}%, delta: {delta:+.1f}%, "
+            f"variance threshold: {variance_threshold:.1f}%)"
+        )
+        if delta > variance_threshold:  # Positive delta = more errors
+            violations.append(
+                f"error_rate delta {delta:.1f}% exceeds variance threshold +{variance_threshold:.1f}% (above baseline)"
+            )
+    else:
+        # Use static threshold
+        print(f"  Error rate: {error_rate_pct:.1f}% (threshold: ≤{max_error_rate}%)")
+        if error_rate_pct > max_error_rate:
+            violations.append(f"error_rate {error_rate_pct:.1f}% > {max_error_rate}%")
 
     if violations:
         print("\nTHRESHOLD VIOLATIONS:")
@@ -185,6 +253,9 @@ def main(argv: list[str] | None = None) -> int:
         print("ERROR: Failed to load thresholds from schema.", file=sys.stderr)
         return 2
 
+    # Load calibration baselines
+    baselines = load_calibration_baselines(root)
+
     # Load metrics
     observations = load_metrics(root, args.evaluation_window)
     if observations is None:
@@ -195,7 +266,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if args.dry_run else 2
 
     # Check thresholds
-    return check_thresholds(observations, thresholds, args.dry_run)
+    return check_thresholds(observations, thresholds, baselines, args.dry_run)
 
 
 if __name__ == "__main__":

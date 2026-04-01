@@ -20,6 +20,7 @@ import pytest
 import scripts.check_mcp_quality_gate as check_mcp_quality_gate_module  # noqa: F401
 from scripts.check_mcp_quality_gate import (
     check_thresholds,
+    load_calibration_baselines,
     load_metrics,
     load_thresholds,
     main,
@@ -52,6 +53,42 @@ quality_gate_thresholds:
             thresholds = load_thresholds(tmp_path)
 
         assert thresholds == {}
+
+
+@pytest.mark.io
+class TestLoadCalibrationBaselines:
+    """Test load_calibration_baselines()."""
+
+    def test_load_calibration_baselines_success(self, tmp_path):
+        """Test successful loading of calibration baselines from YAML."""
+        thresholds_content = """
+calibration_baseline:
+  faithfulness_mean:
+    mean: 0.85
+    variance: 0.01
+  error_rate_pct:
+    mean: 2.5
+    variance: 1.2
+"""
+        (tmp_path / "data").mkdir()
+        (tmp_path / "data" / "governance-thresholds.yml").write_text(thresholds_content, encoding="utf-8")
+
+        with patch("scripts.check_mcp_quality_gate._get_root", return_value=tmp_path):
+            baselines = load_calibration_baselines(tmp_path)
+
+        assert "faithfulness_mean" in baselines
+        assert baselines["faithfulness_mean"]["mean"] == 0.85
+        assert baselines["faithfulness_mean"]["variance"] == 0.01
+        assert "error_rate_pct" in baselines
+        assert baselines["error_rate_pct"]["mean"] == 2.5
+        assert baselines["error_rate_pct"]["variance"] == 1.2
+
+    def test_load_calibration_baselines_missing_file(self, tmp_path):
+        """Test with missing governance-thresholds file."""
+        with patch("scripts.check_mcp_quality_gate._get_root", return_value=tmp_path):
+            baselines = load_calibration_baselines(tmp_path)
+
+        assert baselines == {}
 
 
 @pytest.mark.io
@@ -132,7 +169,7 @@ class TestCheckThresholds:
             "fail_if_tool_error_rate_above_pct": 5.0,
         }
 
-        result = check_thresholds(observations, thresholds)
+        result = check_thresholds(observations, thresholds, {})
         assert result == 0
 
     def test_check_thresholds_fail_faithfulness(self):
@@ -147,7 +184,7 @@ class TestCheckThresholds:
             "fail_if_tool_error_rate_above_pct": 5.0,
         }
 
-        result = check_thresholds(observations, thresholds)
+        result = check_thresholds(observations, thresholds, {})
         assert result == 1
 
     def test_check_thresholds_fail_error_rate(self):
@@ -163,7 +200,7 @@ class TestCheckThresholds:
         }
 
         # Error rate: 2/3 = 66.7% > 5%
-        result = check_thresholds(observations, thresholds)
+        result = check_thresholds(observations, thresholds, {})
         assert result == 1
 
     def test_check_thresholds_dry_run(self):
@@ -177,7 +214,7 @@ class TestCheckThresholds:
             "fail_if_tool_error_rate_above_pct": 5.0,
         }
 
-        result = check_thresholds(observations, thresholds, dry_run=True)
+        result = check_thresholds(observations, thresholds, {}, dry_run=True)
         assert result == 0
 
     def test_check_thresholds_no_observations(self):
@@ -187,8 +224,55 @@ class TestCheckThresholds:
             "fail_if_tool_error_rate_above_pct": 5.0,
         }
 
-        result = check_thresholds([], thresholds)
+        result = check_thresholds([], thresholds, {})
         assert result == 2
+
+    def test_calibration_baseline_within_variance_passes(self):
+        """Test that metrics within calibration variance pass the gate."""
+        # Mock calibration baseline: mean=54.698, variance=2450.113
+        # Current metric = mean + variance (56.698 + 2450.113 = 2506.811)
+        # This is delta = 2452.113, which is < variance × 2 (4900.226), so should PASS
+        observations = [
+            {"faithfulness": 0.8, "is_error": False},
+            {"faithfulness": 0.82, "is_error": False},
+            {"faithfulness": 0.85, "is_error": False},
+        ]
+        thresholds = {
+            "fail_if_faithfulness_below": 0.75,
+            "fail_if_tool_error_rate_above_pct": 5.0,
+        }
+        calibration_baselines = {
+            "faithfulness_mean": {
+                "mean": 0.81,  # Mean of observations is ~0.823
+                "variance": 0.01,  # Delta ~0.013 < variance × 2 (0.02)
+            }
+        }
+
+        result = check_thresholds(observations, thresholds, calibration_baselines)
+        assert result == 0
+
+    def test_calibration_baseline_exceeds_variance_fails(self):
+        """Test that metrics exceeding calibration variance × 2 fail the gate."""
+        # Current metric = mean + (variance × 3)
+        # This exceeds variance × 2 threshold, so should FAIL
+        observations = [
+            {"faithfulness": 0.5, "is_error": False},
+            {"faithfulness": 0.52, "is_error": False},
+            {"faithfulness": 0.48, "is_error": False},
+        ]
+        thresholds = {
+            "fail_if_faithfulness_below": 0.75,
+            "fail_if_tool_error_rate_above_pct": 5.0,
+        }
+        calibration_baselines = {
+            "faithfulness_mean": {
+                "mean": 0.85,  # Mean of observations is 0.5, delta = 0.35
+                "variance": 0.05,  # variance × 2 = 0.1, so delta 0.35 > 0.1 → FAIL
+            }
+        }
+
+        result = check_thresholds(observations, thresholds, calibration_baselines)
+        assert result == 1
 
 
 @pytest.mark.io
