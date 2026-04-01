@@ -1,5 +1,5 @@
 """
-test_emit_otel_genai_spans.py — Unit tests for GenAI semantic convention span emitter.
+test_emit_genai_spans.py — Unit tests for GenAI semantic convention span emitter.
 
 Verifies all 5 required GenAI attributes are present in emitted spans.
 """
@@ -13,7 +13,7 @@ import pytest
 # Add scripts/ to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
-from emit_otel_genai_spans import (
+from emit_genai_spans import (
     _append_session_cost_from_span,
     emit_genai_span,
     get_provider_identity,
@@ -177,8 +177,8 @@ def test_get_provider_identity_falls_back_to_legacy_key():
 
 def test_main_emits_test_span(capsys, monkeypatch):
     """Verify main CLI emits a test span."""
-    monkeypatch.setattr("sys.argv", ["emit_otel_genai_spans.py"])
-    from emit_otel_genai_spans import main
+    monkeypatch.setattr("sys.argv", ["emit_genai_spans.py"])
+    from emit_genai_spans import main
 
     exit_code = main()
 
@@ -199,7 +199,7 @@ def test_bridge_appends_non_zero_tokens(monkeypatch):
         captured["phase"] = phase
         captured["timestamp"] = timestamp
 
-    monkeypatch.setattr("emit_otel_genai_spans.log_session_cost", fake_log_session_cost)
+    monkeypatch.setattr("emit_genai_spans.log_session_cost", fake_log_session_cost)
 
     _append_session_cost_from_span(
         {
@@ -221,7 +221,7 @@ def test_bridge_warns_and_skips_zero_tokens(monkeypatch, caplog):
     def fake_log_session_cost(*args, **kwargs):
         called["value"] = True
 
-    monkeypatch.setattr("emit_otel_genai_spans.log_session_cost", fake_log_session_cost)
+    monkeypatch.setattr("emit_genai_spans.log_session_cost", fake_log_session_cost)
 
     with caplog.at_level(logging.WARNING):
         _append_session_cost_from_span(
@@ -243,7 +243,7 @@ def test_bridge_warns_on_invalid_payload(monkeypatch, caplog):
     def fake_log_session_cost(*args, **kwargs):
         called["value"] = True
 
-    monkeypatch.setattr("emit_otel_genai_spans.log_session_cost", fake_log_session_cost)
+    monkeypatch.setattr("emit_genai_spans.log_session_cost", fake_log_session_cost)
 
     with caplog.at_level(logging.WARNING):
         _append_session_cost_from_span(
@@ -266,7 +266,7 @@ def test_bridge_dedup_suppresses_duplicate_spans(monkeypatch, caplog):
         calls.append((args, kwargs))
         return False  # Simulate dedup suppression
 
-    monkeypatch.setattr("emit_otel_genai_spans.log_session_cost", fake_log_session_cost)
+    monkeypatch.setattr("emit_genai_spans.log_session_cost", fake_log_session_cost)
 
     with caplog.at_level(logging.DEBUG):
         _append_session_cost_from_span(
@@ -290,7 +290,7 @@ def test_bridge_dedup_appends_distinct_spans(monkeypatch):
         calls.append((args, kwargs))
         return True  # Record was appended
 
-    monkeypatch.setattr("emit_otel_genai_spans.log_session_cost", fake_log_session_cost)
+    monkeypatch.setattr("emit_genai_spans.log_session_cost", fake_log_session_cost)
 
     _append_session_cost_from_span(
         {
