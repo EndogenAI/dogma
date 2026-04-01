@@ -203,7 +203,7 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 
 ---
 
-### Phase 8 — Instruction Format Front-Loading, Observability Guide, R6 Encoding (#491) ⬜
+### Phase 8 — Instruction Format Front-Loading, Observability Guide, R6 Encoding (#491) ✅
 
 **Agent**: Executive Docs + Executive Fleet
 **Deliverables**:
@@ -215,7 +215,7 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 **Depends on**: Phase 7 Review APPROVED (requires Phase 5 renames before agent file updates; requires Phase 4 for observability guide)
 **CI**: Tests, Lint, Auto-validate
 **Effort**: S
-**Status**: Not started
+**Status**: ✅ Complete — commit c5f1896
 
 ### Phase 8 Review Gate ⬜
 
