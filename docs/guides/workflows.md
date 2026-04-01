@@ -21,6 +21,7 @@ directly to design thinking methodology and is the endogenic approach to all kno
 - [Scripting Workflow](#scripting-workflow)
 - [Automation Workflow](#automation-workflow)
 - [Multi-Workflow Orchestration](#multi-workflow-orchestration)
+- [Optimization Experiment Design](#optimization-experiment-design)
 - [Fleet Management Workflow](#fleet-management-workflow)
 - [Project Management Workflow](#project-management-workflow)
 - [PR Review Response Workflow](#pr-review-response-workflow)
@@ -47,11 +48,11 @@ Human → Executive
            ↓ (delegate)
         Sub-agent A
            ↓ (takeback)
-        Executive  ← evaluator-optimizer loop fires here: "✓ A done — review & decide"
+        Executive  ← evaluator-optimizer loop fires here: "✓ A returned — review & decide"
            ↓ (delegate)
         Sub-agent B
            ↓ (takeback)
-        Executive  ← evaluator-optimizer loop fires here: "✓ B done — review & decide"
+        Executive  ← evaluator-optimizer loop fires here: "✓ B returned — review & decide"
            ↓
         Review → GitHub
 ```
@@ -61,7 +62,7 @@ the just-completed output and the decision to be made. It enforces a review paus
 sub-agent output from propagating unchecked into the next phase.
 
 **Authoring rule**: every executive agent should have one evaluator-optimizer loop handoff per phase boundary,
-labeled `✓ <Phase> done — review & decide`. The prompt should name where to find the output
+labeled `✓ <Phase> returned — review & decide`. The prompt should name where to find the output
 and what the gate criteria are.
 
 ### 2. Prompt Enrichment Chain
@@ -235,7 +236,7 @@ gh issue view <N> --json number,title,labels -q '"#\(.number): \(.title)\nLabels
 
 | Gate | Criteria |
 |------|----------|
-| Before fetching | Workspace check done; no duplicate issue or research doc found |
+| Before fetching | Workspace check passed; no duplicate issue or research doc found |
 | Before framing | ≥2 primary sources read; seed sources table populated; Qs drafted |
 | Before creating | All 7 body sections present; deliverables are concrete file paths |
 | After creating | Verified with `gh issue view #N`; labels confirmed |
@@ -416,7 +417,7 @@ Pass 3 — Issue synthesis        (one Synthesizer invocation, cross-source conc
 **One Synthesizer invocation per source.** Each invocation:
 1. Receives a brief naming one source slug and the research question.
 2. Reads the **entire** `.cache/sources/<slug>.md` (the full cached distillation — not a sample).
-3. Writes a complete synthesis report to `docs/research/sources/<slug>.md`.
+3. Writes a full synthesis report to `docs/research/sources/<slug>.md`.
 
 The output is a research-quality academic synthesis report, not a summary or an index card:
 - `## Citation` — full bibliographic reference (APA or equivalent)
@@ -898,6 +899,81 @@ Plan (Executive Planner) → Approve plan → Orchestrate phases (Executive Orch
 | Between phases | Prior phase deliverables committed; Review agent invoked; APPROVED verdict logged to scratchpad under `## Review Output`; both required before next phase starts |
 | Before final commit | Review APPROVED for all phases; GitHub agent handles commit/push |
 | Session close | All phases done; session summary written; scratchpad pruned |
+
+---
+
+## Optimization Experiment Design
+
+When evaluating prompt optimization techniques (few-shot examples, chain-of-thought, XML structure, output format constraints), **design experiments as factorial conditions — not cumulative stacks**. This pattern applies to all agent instruction tuning, research efficiency investigations, and quality improvement sprints.
+
+### Factorial vs. Sequential Experiment Postures
+
+| Posture | Definition | When to Use |
+|---------|-----------|-------------|
+| **Factorial** | Test all combinations of ≥2 techniques independently | Techniques may interact (CoT + JSON output, few-shot + XML) |
+| **Sequential (A/B)** | Test one technique at a time vs. baseline | Single-technique validation with known-independent effects |
+| **Cumulative (anti-pattern)** | Stack all techniques together and measure combined output | Never — violates interaction evidence (see canonical example below) |
+
+### Decision Table
+
+Use this table at the start of any optimization sprint to determine experiment design:
+
+| Question | Answer | Design |
+|----------|--------|--------|
+| Are you testing ≥2 prompt techniques? | Yes | Factorial (or at minimum sequential with stable interim baselines) |
+| Do the techniques compete for the same resource (context space, reasoning tokens, output structure)? | Yes | Factorial (interactions are probable) |
+| Is this a single-technique validation against a control? | Yes | Sequential A/B (baseline → +technique) |
+| Are you applying all techniques discovered in research to see "total improvement"? | ❌ **Stop** | This is cumulative stacking — refactor to factorial or sequential |
+
+### Canonical Example: CoT Interferes with Output Structure
+
+From Anthropic's prompt engineering guidance and validated by [`docs/research/sprint-22-baseline-stabilization.md`](../research/sprint-22-baseline-stabilization.md) Cluster 1:
+
+> "Chain of thought prompting can interfere with output structure requirements. When an agent must produce structured JSON output, enabling CoT reasoning tokens competes for context space and the model prioritizes format compliance over full reasoning."
+
+**Implication**: An agent optimized for **both** CoT **and** strict JSON schema compliance may produce *lower*-quality reasoning than one optimized for CoT alone. This is a negative interaction — not an additive improvement.
+
+**Correct experiment design**:
+
+| Condition | CoT Enabled | JSON Schema | Baseline Comparison |
+|-----------|-------------|-------------|---------------------|
+| Control | No | No | (Reference quality score) |
+| CoT only | Yes | No | Compare to Control |
+| JSON only | No | Yes | Compare to Control |
+| CoT + JSON | Yes | Yes | Compare to CoT only **and** JSON only |
+
+If `CoT + JSON` produces worse results than `CoT only`, the interaction is confirmed. A cumulative design would have missed this — it would have compared `CoT + JSON` only to Control and attributed any improvement (or degradation) incorrectly.
+
+### Anti-Pattern: Cumulative Stacking
+
+Applying few-shot examples + XML structure + CoT + output format constraints simultaneously, measuring combined output improvement against a single baseline, then attributing the delta to each technique independently.
+
+**Why this fails**:
+- Interactions are not decomposable post-hoc
+- A negative interaction in one pair (e.g., CoT + JSON) is masked by positive effects elsewhere
+- Optimization decisions are made on noisy, confounded data
+
+**What gets missed**:
+- Which techniques actually contribute to quality improvement
+- Which combinations are harmful
+- The cost-benefit curve for each technique in isolation
+
+### Implementation for Dogma
+
+When designing the next prompt optimization sprint:
+
+1. **Register a baseline session** (no new techniques) and measure output quality on a consistent eval set (10–20 cases per tool).
+2. **Add techniques sequentially** with a stable interim measurement between each addition.
+3. **Track interactions** — if adding technique B after technique A degrades quality vs. A-alone, log the interaction explicitly.
+4. **Use the calibration control set** from `scripts/check_mcp_quality_gate.py` as your eval corpus (see [Observability guide](observability.md) for setup).
+
+**Gate criterion**: Before any optimization finding is encoded into an agent instruction or AGENTS.md constraint, confirm that the isolated effect of that technique has been measured against a control — not inferred from a multi-technique stack.
+
+### Reference
+
+- **Research synthesis**: [docs/research/sprint-22-baseline-stabilization.md](../research/sprint-22-baseline-stabilization.md) § Cluster 1
+- **Anthropic source**: Prompt engineering best practices (Chain of thought interferes with output structure)
+- **Observability baseline**: [docs/guides/observability.md](observability.md) § Verification Queries
 
 ---
 

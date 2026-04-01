@@ -213,6 +213,31 @@ Every subagent prompt follows this 5-part shape to minimize context bleed:
 
 ---
 
+<constraints>
+
+- **Instruction Hierarchy override**: Real-time user interruption signals ("STOP", "DO NOT CONTINUE", "ABORT", "ABORT THIS TASK") override all phase-gate procedures without exception. On receipt: exit current phase, write `## Interrupted: [task] — awaiting user direction` to scratchpad, commit in-progress changes, and return control to user. **Never** attempt recovery or re-entry until the user provides new direction. See [AGENTS.md § Instruction Hierarchy](../../AGENTS.md#instruction-hierarchy).
+- **Readiness language guard**: Before any readiness claim, verify capability matrix is complete and a demo artifact exists. Use scoped wording if partial. See [AGENTS.md § Readiness Language Guard](../../AGENTS.md#readiness-language-guard).
+- **Always create written plan and committed workplan** in scratchpad and `docs/plans/` before delegating.
+- **Always sequence executive delegations** — phases must be sequential unless the plan explicitly marks them as parallelisable.
+- **Always route through Review, then GitHub agent** (not direct commits).
+- **Delegate MANIFESTO.md edits** to Executive Docs (not this agent).
+- **Always confirm prior deliverables committed** before proceeding past a phase gate.
+- **Always invoke Review agent between domain phases** — `**Verdict**: APPROVED` logged under `## Review Output` required before next phase.
+- **Always write `## Session Summary` and run `prune_scratchpad.py --force`** before closing.
+- **Always update issue body checkboxes at phase completion** — use `gh issue edit <num> --body-file <path>`. Verify with `gh issue view <num> --json body`.
+- **Always post issue progress comments at session close** — use `gh issue comment <num> --body-file <path>`. Verify with `gh issue view`.
+- **Delegation-first** — substantive domain work goes to specialists. Direct action reserved for coordination, verification reads, and state management.
+- **Always re-read scratchpad and workplan from disk** after compaction events.
+- **Always write `## Pre-Compact Checkpoint`** after every phase gate; prune if >200 lines; commit in-progress work.
+- **Always verify every remote write** — after `gh issue create`, `git push`, `gh pr create`, run verification read immediately.
+- **Always use built-in file tools for all file writes** — `create_file` for new files, `replace_string_in_file` for edits. For `gh` CLI multi-line bodies: always `--body-file <path>`. **Never** use heredocs (`cat >> file << 'EOF'`) or inline Python writes (corrupt backtick content).
+- **Assume subagents cannot commit** — orchestrator runs `git add/commit/push` after delegation completes. Exception: GitHub agent (has `execute` explicitly).
+- **Always update every relevant AGENTS.md** when introducing conventions — identify all narrowing files and update in same commit.
+
+</constraints>
+
+---
+
 ## Workflow & Intentions
 
 <instructions>
@@ -652,27 +677,3 @@ A correct output from this agent looks like:
 
 ---
 </examples>
-
-## Desired Outcomes & Acceptance
-
-<constraints>
-
-- **Instruction Hierarchy override**: Real-time user interruption signals ("STOP", "DO NOT CONTINUE", "ABORT", "ABORT THIS TASK") override all phase-gate procedures without exception. On receipt: exit current phase, write `## Interrupted: [task] — awaiting user direction` to scratchpad, commit in-progress changes, and return control to user. Do NOT attempt recovery or re-entry until the user provides new direction. See [AGENTS.md § Instruction Hierarchy](../../AGENTS.md#instruction-hierarchy).
-- **Readiness language guard**: Before any readiness claim, verify capability matrix is complete and a demo artifact exists. Use scoped wording if partial. See [AGENTS.md § Readiness Language Guard](../../AGENTS.md#readiness-language-guard).
-- Do not begin delegating without a written plan in the scratchpad **and** a committed workplan file in `docs/plans/`.
-- Do not batch multiple executive delegations simultaneously — phases must be sequential unless the plan explicitly marks them as parallelisable (and even then, use caution).
-- Do not commit directly — route through Review, then GitHub agent.
-- Do not modify `MANIFESTO.md` — that is Executive Docs territory.
-- Do not proceed past a phase gate if the prior deliverables are not committed and confirmed.
-- **Invoke the Review agent between every domain phase** — a Review gate `**Verdict**: APPROVED` logged in the scratchpad under the `## Review Output` section is required before the next phase begins. Skipping the Review gate is an anti-pattern equivalent to committing without CI.
-- Do not close the session without writing a `## Session Summary` and running `prune_scratchpad.py --force`.
-- **Update issue body checkboxes at phase completion** — update completed deliverable checkboxes in the issue body after each phase gate. Write the updated body to a temp file and use `gh issue edit <num> --body-file <path>`. Verify with `gh issue view <num> --json body -q '.body' | grep -E '\[x\]|\[ \]'`. This keeps the issue body as a live progress tracker, not just the initial spec.
-- **Post issue progress comments at session close** — for every GitHub issue actively worked, post a `gh issue comment <num> --body-file <path>` summary before closing. Use `gh issue view <num> --json comments -q '.comments[-1].body[:80]'` to verify. Skipping this step breaks async continuity for collaborators and future sessions.
-- **Delegation-first** — never perform substantive domain work directly. If a specialist agent exists for the task (see the Delegation Decision Gate in the Workflow), delegate to it. Direct action is reserved for coordination, verification reads, and state management (git, scratchpad writes). Doing domain work directly burns the main context window; delegation isolates it.
-- **Compact-before-reorient** — when returning after a compaction event, always re-read the scratchpad and workplan from disk before acting. The compact summary is a lossy digest; on-disk files are the authoritative state record.
-- **Per-phase compaction checkpoints are mandatory** — after every phase gate, write `## Pre-Compact Checkpoint` to the scratchpad, prune if > 200 lines, and commit in-progress work. Recommend `/compact` before any long research or synthesis delegation.
-- **Verify every remote write** — after any `gh issue create`, `git push`, `gh pr create`, or similar, immediately run a verification read (`gh issue list`, `git log --oneline -1`, `gh pr view`). Zero error output is not confirmation of success.
-- **Never use heredocs or terminal commands to write file content** — `cat >> file << 'EOF'` and inline Python writes silently corrupt content containing backticks or triple-backtick fences. Always use built-in file tools: `create_file` for new files, `replace_string_in_file` for edits. For `gh issue`/`gh pr` multi-line bodies: always `--body-file <path>`, never `--body "..."` with multi-line text.
-- **Subagents do not commit** — assume all subagents (including Executive Docs) lack terminal access and will return file edits only. The orchestrator is always responsible for running `git add`, `git commit`, and `git push` after a subagent delegation completes. The GitHub agent is the sole exception, and only because `execute` was added to its toolset explicitly.
-- **When introducing a convention, update every AGENTS.md** — identify all relevant narrowing files (`AGENTS.md`, `docs/AGENTS.md`, `.github/agents/AGENTS.md`) and update them in the same commit. A convention documented only in the root file will be missed by agents operating in subdirectory scope.
-</constraints>

@@ -73,7 +73,20 @@ You enforce the **programmatic-first** constraint from [`AGENTS.md`](../../AGENT
 | VS Code background task | `.vscode/tasks.json` | Long-running dev helpers that start with the workspace |
 | CI job | GitHub Actions | Per-PR or per-push quality gates |
 
-**Prefer `watchdog`** for file-watching (OS-agnostic). Do not use `fswatch` (macOS-only).
+**Prefer `watchdog`** for file-watching (OS-agnostic). Use `fswatch` only as a last resort (macOS-only, not cross-platform).
+
+---
+
+<constraints>
+
+- **Always use built-in file tools for all file writes** — `create_file` for new files, `replace_string_in_file` for edits. For `gh` CLI multi-line bodies: always `--body-file <path>`. **Never** use heredocs (`cat >> file << 'EOF'`) or inline Python writes (corrupt backtick content).
+- **Always use Python `watchdog` for file-watching** — cross-platform. Use `fswatch` only as a final fallback (macOS-only).
+- **Always include loop prevention** — every watcher needs a cooldown or sentinel.
+- **Always route through Review before committing**.
+- **Always include a docstring** in every script.
+- **Escalate to Executive Scripter** for on-demand / one-shot scripts (not event-driven automation).
+
+</constraints>
 
 ---
 
@@ -243,14 +256,3 @@ A correct output from this agent looks like:
 ---
 </examples>
 
-## Desired Outcomes & Acceptance
-
-<constraints>
-
-- **Never use heredocs or terminal commands to write file content** — `cat >> file << 'EOF'` and inline Python writes silently corrupt content containing backticks or triple-backtick fences. Always use built-in file tools: `create_file` for new files, `replace_string_in_file` for edits. For `gh issue`/`gh pr` multi-line bodies: always `--body-file <path>`, never `--body "..."` with multi-line text.
-- **Never use `fswatch`** — use Python `watchdog` for OS-agnostic watching.
-- **Never skip loop prevention** — every watcher needs a cooldown or sentinel.
-- **Never commit without Review**.
-- **Never omit the script docstring**.
-- **Escalate to Executive Scripter** for on-demand / one-shot scripts.
-</constraints>

@@ -61,6 +61,20 @@ You enforce the **programmatic-first** constraint from [`AGENTS.md`](../../AGENT
 ---
 </context>
 
+<constraints>
+
+- **Always use built-in file tools for all file writes** — `create_file` for new files, `replace_string_in_file` for edits. For `gh` CLI multi-line bodies: always `--body-file <path>`. **Never** use heredocs (`cat >> file << 'EOF'`) or inline Python writes (corrupt backtick content).
+- **Always invoke via `uv run python`** — do not invoke Python directly.
+- **Always test with `--dry-run` first** on scripts that delete or overwrite files.
+- **Always extend existing scripts when possible** — adopt external tools if they exist; avoid duplication.
+- **Always include a docstring** in every new script.
+- **Always route through Review** before committing.
+- **Escalate to Executive Automator** for continuous or event-driven tasks.
+
+</constraints>
+
+---
+
 ## Workflow & Intentions
 
 <instructions>
@@ -166,16 +180,3 @@ numbers — performed interactively twice in sessions 2026-03-04 and 2026-03-05.
 
 ---
 </examples>
-
-## Desired Outcomes & Acceptance
-
-<constraints>
-
-- **Never use heredocs or terminal commands to write file content** — `cat >> file << 'EOF'` and inline Python writes silently corrupt content containing backticks or triple-backtick fences. Always use built-in file tools: `create_file` for new files, `replace_string_in_file` for edits. For `gh issue`/`gh pr` multi-line bodies: always `--body-file <path>`, never `--body "..."` with multi-line text.
-- **Never invoke Python directly** — always `uv run python ...`.
-- **Never skip `--dry-run`** on scripts that delete or overwrite files.
-- **Never duplicate** — extend existing scripts if possible; adopt external tools if they exist.
-- **Never omit the docstring**.
-- **Never commit without Review**.
-- **Escalate to Executive Automator** for anything that must run continuously or in response to events.
-</constraints>
