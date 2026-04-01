@@ -61,7 +61,7 @@ Or use the VS Code task **Stop OTel Stack**.
 
 ---
 
-## Span Instrumentation Patterns
+## Span Patterns
 
 The `mcp_server/dogma_server.py` implementation follows the OTel semantic conventions for GenAI and MCP operations. See [`mcp_server/dogma_server.py`](../../mcp_server/dogma_server.py) `_configure_telemetry()` for the full setup.
 
