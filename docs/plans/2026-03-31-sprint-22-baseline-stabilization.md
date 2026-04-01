@@ -155,7 +155,7 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 
 ---
 
-### Phase 6 — KPI Calibration Baseline (#482) ⬜
+### Phase 6 — KPI Calibration Baseline (#482) ✅
 
 **Agent**: Executive Docs + Executive Scripter
 **Deliverables**:
@@ -167,15 +167,15 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 **Depends on**: Phase 5 Review APPROVED (transitively requires Phase 4 — #534 must precede #482)
 **CI**: Tests, Lint, Auto-validate
 **Effort**: S
-**Status**: Not started
+**Status**: ✅ Complete — commit 17bd336
 
-### Phase 6 Review Gate ⬜
+### Phase 6 Review Gate ✅
 
 **Agent**: Review
 **Deliverables**: `## Phase 6 Review Output` appended to scratchpad with verdict: APPROVED
 
 **Depends on**: Phase 6 deliverables committed
-**Status**: Not started
+**Status**: ✅ Complete — APPROVED
 
 ---
 
