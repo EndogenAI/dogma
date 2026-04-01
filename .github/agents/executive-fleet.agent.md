@@ -85,6 +85,21 @@ Every agent file must meet these criteria:
 
 ---
 
+<constraints>
+
+- **Always use built-in file tools for all file writes** — `create_file` for new files, `replace_string_in_file` for edits. For `gh` CLI multi-line bodies: always `--body-file <path>`. **Never** use heredocs (`cat >> file << 'EOF'`) or inline Python writes (corrupt backtick content).
+- **Always use `scaffold_agent.py` when creating agents** — manual authoring introduces structural drift.
+- **Always remove TODO placeholders** before completing any create or update operation.
+- **Always justify and document** any tool assignments beyond declared posture.
+- **Always move deprecated agent files** to `deprecated/` with a reason (not deletion).
+- **Always note guardrail changes and rationale** in commit messages when modifying another agent's guardrails.
+- **Always route through Review** before committing.
+- **Always delegate MANIFESTO.md and root AGENTS.md edits** to Executive Docs.
+
+</constraints>
+
+---
+
 ## Workflow & Intentions
 
 <instructions>
@@ -215,17 +230,3 @@ A correct output from this agent looks like:
 
 ---
 </examples>
-
-## Desired Outcomes & Acceptance
-
-<constraints>
-
-- **Never use heredocs or terminal commands to write file content** — `cat >> file << 'EOF'` and inline Python writes silently corrupt content containing backticks or triple-backtick fences. Always use built-in file tools: `create_file` for new files, `replace_string_in_file` for edits. For `gh issue`/`gh pr` multi-line bodies: always `--body-file <path>`, never `--body "..."` with multi-line text.
-- Do not create agents without using `scaffold_agent.py` — manual authoring introduces structural drift.
-- Do not leave TODO placeholders in any agent file after completing a create or update operation.
-- Do not assign tools to an agent beyond its declared posture without a documented justification.
-- Do not delete agent files — move to `deprecated/` with a reason instead.
-- Do not change another agent's guardrails without explicitly noting the change and why in the commit message.
-- Do not commit directly — always route through Review first.
-- Do not edit `MANIFESTO.md` or `AGENTS.md` (root) for fleet changes — those belong to Executive Docs.
-</constraints>
