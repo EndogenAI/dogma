@@ -11,9 +11,13 @@ Provides:
 - sample_research_md: Generates sample research synthesis documents
 """
 
+import os
 import subprocess
 from datetime import date
 from unittest.mock import MagicMock
+
+# Prevent _configure_telemetry() from attempting OTLP connections during tests.
+os.environ.setdefault("DOGMA_OTEL_EXPORTER", "jsonl")
 
 import pytest
 

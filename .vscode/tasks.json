@@ -42,6 +42,18 @@
         "pids=\"$(lsof -tiTCP:8000 -sTCP:LISTEN 2>/dev/null; lsof -tiTCP:5173 -sTCP:LISTEN 2>/dev/null)\"; if [ -n \"$pids\" ]; then kill $pids; fi; pkill -f \"scripts/start_dashboard.py\" 2>/dev/null || true; uv run --extra web python scripts/start_dashboard.py --development"
       ],
       "problemMatcher": []
+    },
+    {
+      "label": "Start OTel Stack",
+      "type": "shell",
+      "command": "uv run python scripts/start_otel_stack.py",
+      "problemMatcher": []
+    },
+    {
+      "label": "Stop OTel Stack",
+      "type": "shell",
+      "command": "uv run python scripts/start_otel_stack.py --stop",
+      "problemMatcher": []
     }
   ]
 }

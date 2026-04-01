@@ -1,0 +1,22 @@
+# docker-compose.yml — local OTel observability stack for dogma
+# Usage: docker compose up -d
+# Traces: http://localhost:16686 (Jaeger UI)
+# OTLP gRPC: localhost:4317  OTLP HTTP: localhost:4318
+version: "3.9"
+services:
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.100.0
+    command: ["--config=/etc/otel-collector-config.yml"]
+    volumes:
+      - ./otel-collector-config.yml:/etc/otel-collector-config.yml:ro
+    ports:
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP
+    depends_on:
+      - jaeger
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.57
+    ports:
+      - "16686:16686"  # Jaeger UI
+      - "14250:14250"  # Collector → Jaeger gRPC

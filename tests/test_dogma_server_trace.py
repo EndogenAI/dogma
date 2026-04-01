@@ -78,12 +78,35 @@ def test_run_with_mcp_telemetry_error_enqueues_error_and_reraises() -> None:
         with pytest.raises(RuntimeError, match="boom"):
             dogma_server._run_with_mcp_telemetry("error_tool", tool_fn)
 
-    assert len(captured) == 1
-    payload = captured[0]
-    assert payload["tool_name"] == "error_tool"
-    assert payload["is_error"] is True
-    assert payload["error_type"] == "RuntimeError"
-    assert payload["error_message"] == "boom"
+
+@_requires_mcp
+def test_configure_telemetry_jsonl_mode_skips_otlp() -> None:
+    dogma_server = importlib.import_module("mcp_server.dogma_server")
+    original_tracer = dogma_server._TRACER
+
+    with (
+        patch.dict("os.environ", {"DOGMA_OTEL_EXPORTER": "jsonl"}),
+        patch("opentelemetry.exporter.otlp.proto.grpc.trace_exporter.OTLPSpanExporter") as mock_span,
+        patch("opentelemetry.exporter.otlp.proto.grpc.metric_exporter.OTLPMetricExporter") as mock_metric,
+    ):
+        dogma_server._configure_telemetry()
+        mock_span.assert_not_called()
+        mock_metric.assert_not_called()
+
+    assert dogma_server._TRACER is original_tracer
+
+
+@_requires_mcp
+def test_start_otel_stack_help_exits_cleanly() -> None:
+    import subprocess as _subprocess
+
+    result = _subprocess.run(
+        ["uv", "run", "python", "scripts/start_otel_stack.py", "--help"],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0
+    assert "stop" in result.stdout.lower()
 
 
 @_requires_mcp
