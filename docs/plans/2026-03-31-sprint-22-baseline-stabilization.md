@@ -227,6 +227,31 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 
 ---
 
+### Phase 9 — RAGAS Metric Instrumentation + Dashboard Visualization (#542) ⬜
+
+**Agent**: Executive Scripter (9A + 9B + tests) + Executive Docs (9C + 9D)
+**Deliverables**:
+- **9A — dogma_server.py RAGAS field emission**: Gen-AI semantic convention span attributes added (faithfulness, answer_relevancy, context_precision, context_recall); structural heuristics per R1; tests verify emission
+- **9B — web/server.py RAGAS extraction pipeline**: RAGAS fields extracted from span attributes and forwarded to `/api/genai-metrics` endpoint; graceful handling of missing fields; end-to-end tests
+- **9C — TypeScript type definitions**: `web/src/types.ts` RAGAS fields added to `GenAIMetric` interface; downstream components updated
+- **9D — Dashboard UI columns + threshold indicators**: 4 new columns in `GenAIMetrics.tsx`; threshold delta indicators; test fixture updated with RAGAS fields
+- `## Phase 9 Output` written to scratchpad
+
+**Depends on**: Phase 8 Review APPROVED
+**CI**: Tests, Lint, Auto-validate
+**Effort**: M
+**Status**: ⬜ Not started
+
+### Phase 9 Review Gate ⬜
+
+**Agent**: Review
+**Deliverables**: `## Phase 9 Review Output` appended to scratchpad with verdict: APPROVED
+
+**Depends on**: Phase 9 deliverables committed
+**Status**: ⬜ Not started
+
+---
+
 ### Final Review Phase — Cross-Fleet Intensive Review ⬜
 
 **Agent**: Review + Executive Docs + Executive Scripter + Executive Fleet + Security Researcher
@@ -235,10 +260,10 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 - All blocking findings resolved before GitHub phase begins
 - `## Final Cross-Fleet Review Output` aggregated in scratchpad
 
-**Depends on**: Phases 4–8 Review gates all APPROVED
+**Depends on**: Phases 4–9 Review gates all APPROVED
 **CI**: Tests, Lint, Auto-validate
 **Effort**: M
-**Status**: Not started
+**Status**: ⬜ Not started
 
 ### GitHub Phase — PR Open ⬜
 
@@ -270,6 +295,9 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 - [ ] Phase 6 (#482) complete and reviewed
 - [ ] Phase 7 (#425) complete and reviewed
 - [ ] Phase 8 (#491) complete and reviewed
+- [ ] New Issue C seeded: #542 (RAGAS metric instrumentation + dashboard visualization) ✅
+- [ ] Phase 9 (#542) complete and reviewed
+- [ ] Phase 9 Review APPROVED
 - [ ] Final cross-fleet review APPROVED (5+ agents)
 - [ ] All changes pushed and PR opened against main
 
@@ -277,4 +305,4 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 
 <!-- Copy to PR description when opening the PR -->
 
-Closes #497, Closes #491, Closes #482, Closes #529, Closes #430, Closes #425, Closes #534, Closes #506, Closes #531, Closes #533, Closes #539, Closes #540, Closes #541
+Closes #497, Closes #491, Closes #482, Closes #529, Closes #430, Closes #425, Closes #534, Closes #506, Closes #531, Closes #533, Closes #539, Closes #540, Closes #541, Closes #542
