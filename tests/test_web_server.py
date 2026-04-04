@@ -200,6 +200,125 @@ def test_metrics_stream_yields_event(tmp_path, monkeypatch):
 
 
 # ---------------------------------------------------------------------------
+# Phase 9B — RAGAS extraction pipeline tests
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.io
+def test_metrics_snapshot_includes_ragas_fields(tmp_path, monkeypatch):
+    """Phase 9B — verify RAGAS fields are extracted and forwarded to /api/metrics."""
+    jsonl = tmp_path / "tool_calls.jsonl"
+    records = [
+        {
+            "tool_name": "check_substrate",
+            "latency_ms": 500.0,
+            "is_error": False,
+            "faithfulness": 0.90,
+            "answer_relevancy": 0.85,
+            "context_precision": 0.88,
+            "context_recall": 0.87,
+        },
+        {
+            "tool_name": "check_substrate",
+            "latency_ms": 600.0,
+            "is_error": False,
+            "faithfulness": 0.75,
+            "answer_relevancy": 0.72,
+            "context_precision": 0.78,
+            "context_recall": 0.70,
+        },
+    ]
+    _write_jsonl(jsonl, records)
+    client = _make_client(monkeypatch, jsonl)
+
+    response = client.get("/api/metrics")
+    assert response.status_code == 200
+    data = response.json()
+    tools = data["tools"]
+    assert "check_substrate" in tools
+
+    cs = tools["check_substrate"]
+    # Verify RAGAS fields are present and averaged correctly
+    assert "faithfulness" in cs
+    assert "answer_relevancy" in cs
+    assert "context_precision" in cs
+    assert "context_recall" in cs
+
+    # Average of 0.90 and 0.75 = 0.825, rounded to 3 decimals
+    assert cs["faithfulness"] == 0.825
+    assert cs["answer_relevancy"] == 0.785
+    assert cs["context_precision"] == 0.83
+    assert cs["context_recall"] == 0.785
+
+
+@pytest.mark.io
+def test_metrics_snapshot_gracefully_handles_missing_ragas_fields(tmp_path, monkeypatch):
+    """Phase 9B — verify pipeline handles missing RAGAS fields gracefully (returns None)."""
+    jsonl = tmp_path / "tool_calls.jsonl"
+    records = [
+        {
+            "tool_name": "query_docs",
+            "latency_ms": 300.0,
+            "is_error": False,
+            # No RAGAS fields — old records before Phase 9A
+        },
+    ]
+    _write_jsonl(jsonl, records)
+    client = _make_client(monkeypatch, jsonl)
+
+    response = client.get("/api/metrics")
+    assert response.status_code == 200
+    data = response.json()
+    tools = data["tools"]
+    assert "query_docs" in tools
+
+    qd = tools["query_docs"]
+    # All RAGAS fields should be None when missing from records
+    assert qd["faithfulness"] is None
+    assert qd["answer_relevancy"] is None
+    assert qd["context_precision"] is None
+    assert qd["context_recall"] is None
+
+
+@pytest.mark.io
+def test_metrics_snapshot_partial_ragas_coverage(tmp_path, monkeypatch):
+    """Phase 9B — verify pipeline computes averages only from records with RAGAS fields."""
+    jsonl = tmp_path / "tool_calls.jsonl"
+    records = [
+        {
+            "tool_name": "scaffold_agent",
+            "latency_ms": 400.0,
+            "is_error": False,
+            "faithfulness": 0.80,
+            "answer_relevancy": 0.75,
+            "context_precision": 0.70,
+            "context_recall": 0.68,
+        },
+        {
+            "tool_name": "scaffold_agent",
+            "latency_ms": 450.0,
+            "is_error": False,
+            # Missing RAGAS fields — should not affect average
+        },
+    ]
+    _write_jsonl(jsonl, records)
+    client = _make_client(monkeypatch, jsonl)
+
+    response = client.get("/api/metrics")
+    assert response.status_code == 200
+    data = response.json()
+    tools = data["tools"]
+    assert "scaffold_agent" in tools
+
+    sa = tools["scaffold_agent"]
+    # Average should be computed only from the first record
+    assert sa["faithfulness"] == 0.8
+    assert sa["answer_relevancy"] == 0.75
+    assert sa["context_precision"] == 0.7
+    assert sa["context_recall"] == 0.68
+
+
+# ---------------------------------------------------------------------------
 # /mcp handshake + bridge endpoints
 # ---------------------------------------------------------------------------
 

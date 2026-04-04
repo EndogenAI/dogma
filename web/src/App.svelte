@@ -10,6 +10,7 @@
   import Overview from './lib/Overview.svelte';
   import Tools    from './lib/Tools.svelte';
   import Errors   from './lib/Errors.svelte';
+  import GenAIMetrics from './lib/GenAIMetrics.svelte';
   import Sidebar  from './lib/Sidebar.svelte';
   import fixtureData from './assets/fixture.json';
 
@@ -182,6 +183,14 @@
         <button
           type="button"
           class="tab"
+          class:active={activeTab === 'genai'}
+          role="tab"
+          aria-selected={activeTab === 'genai'}
+          onclick={() => { activeTab = 'genai'; }}
+        >GenAI Metrics</button>
+        <button
+          type="button"
+          class="tab"
           class:active={activeTab === 'errors'}
           role="tab"
           aria-selected={activeTab === 'errors'}
@@ -195,6 +204,8 @@
           <Overview {data} />
         {:else if activeTab === 'tools'}
           <Tools {data} />
+        {:else if activeTab === 'genai'}
+          <GenAIMetrics {data} />
         {:else}
           <Errors {data} />
         {/if}
