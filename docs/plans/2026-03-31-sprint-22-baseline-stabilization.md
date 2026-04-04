@@ -227,7 +227,7 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 
 ---
 
-### Phase 9 — RAGAS Metric Instrumentation + Dashboard Visualization (#542) ⬜
+### Phase 9 — RAGAS Metric Instrumentation + Dashboard Visualization (#542) ✅
 
 **Agent**: Executive Scripter (9A + 9B + tests) + Executive Docs (9C + 9D)
 **Deliverables**:
@@ -240,15 +240,15 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 **Depends on**: Phase 8 Review APPROVED
 **CI**: Tests, Lint, Auto-validate
 **Effort**: M
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — commits e04562f (implementation) + db84b71 (span emission test fix)
 
-### Phase 9 Review Gate ⬜
+### Phase 9 Review Gate ✅
 
 **Agent**: Review
 **Deliverables**: `## Phase 9 Review Output` appended to scratchpad with verdict: APPROVED
 
 **Depends on**: Phase 9 deliverables committed
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED (all 7 criteria passed; span emission test added in db84b71)
 
 ---
 
@@ -295,9 +295,9 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 - [ ] Phase 6 (#482) complete and reviewed
 - [ ] Phase 7 (#425) complete and reviewed
 - [ ] Phase 8 (#491) complete and reviewed
-- [ ] New Issue C seeded: #542 (RAGAS metric instrumentation + dashboard visualization) ✅
-- [ ] Phase 9 (#542) complete and reviewed
-- [ ] Phase 9 Review APPROVED
+- [x] New Issue C seeded: #542 (RAGAS metric instrumentation + dashboard visualization) ✅
+- [x] Phase 9 (#542) complete and reviewed
+- [x] Phase 9 Review APPROVED
 - [ ] Final cross-fleet review APPROVED (5+ agents)
 - [ ] All changes pushed and PR opened against main
 
