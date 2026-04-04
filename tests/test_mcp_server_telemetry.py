@@ -85,3 +85,32 @@ def test_run_with_mcp_telemetry_records_error_on_exception(monkeypatch) -> None:
     assert captured[0]["error_type"] == "RuntimeError"
     assert captured[0]["error_message"] == "boom"
     assert len(histogram.records) == 1
+
+
+def test_run_with_mcp_telemetry_emits_ragas_span_attributes(monkeypatch) -> None:
+    tracer = _DummyTracer()
+    histogram = _DummyHistogram()
+    captured: list[dict] = []
+    monkeypatch.setattr(dogma_server, "_TRACER", tracer)
+    monkeypatch.setattr(dogma_server, "_OP_DURATION_HISTOGRAM", histogram)
+    monkeypatch.setattr(dogma_server._JSONL_QUEUE, "put_nowait", captured.append)
+
+    result = dogma_server._run_with_mcp_telemetry(
+        "query_docs",
+        lambda: {"ok": True, "results": []},
+    )
+
+    assert result["ok"] is True
+    assert tracer.last_span is not None
+
+    # Verify all 4 RAGAS span attributes are present and numeric
+    ragas_attrs = [
+        "gen_ai.faithfulness",
+        "gen_ai.answer_relevancy",
+        "gen_ai.context_precision",
+        "gen_ai.context_recall",
+    ]
+    for attr in ragas_attrs:
+        assert attr in tracer.last_span.attrs
+        value = float(tracer.last_span.attrs[attr])
+        assert 0.0 <= value <= 1.0
