@@ -347,6 +347,22 @@ def _build_snapshot() -> dict:
             p95 = round(latencies[0], 2)
         else:
             p95 = 0.0
+
+        # Extract RAGAS metrics (Phase 9B — graceful handling of missing fields)
+        ragas_values = {
+            "faithfulness": [],
+            "answer_relevancy": [],
+            "context_precision": [],
+            "context_recall": [],
+        }
+        for r in records:
+            for field in ragas_values:
+                val = r.get(field)
+                if val is not None and isinstance(val, (int, float)):
+                    ragas_values[field].append(val)
+
+        ragas_avg = {field: round(statistics.mean(vals), 3) if vals else None for field, vals in ragas_values.items()}
+
         # Collect up to 10 most recent error events for display
         recent_errors = [
             {
@@ -370,6 +386,10 @@ def _build_snapshot() -> dict:
             "avg_latency_ms": avg_lat,
             "p95_latency_ms": p95,
             "recent_errors": recent_errors,
+            "faithfulness": ragas_avg["faithfulness"],
+            "answer_relevancy": ragas_avg["answer_relevancy"],
+            "context_precision": ragas_avg["context_precision"],
+            "context_recall": ragas_avg["context_recall"],
         }
 
     mtime = path.stat().st_mtime

@@ -3,6 +3,7 @@
   "tools": {
     "check_substrate": {
       "invocation_count": 40, "error_count": 3, "avg_latency_ms": 712.0, "p95_latency_ms": 1250.0,
+      "faithfulness": 0.852, "answer_relevancy": 0.791, "context_precision": 0.834, "context_recall": 0.763,
       "recent_errors": [
         {"ts": "2026-03-28T11:58:01Z", "latency_ms": 1843, "error_type": "timeout", "message": "Substrate health check exceeded 1800 ms deadline"},
         {"ts": "2026-03-28T09:22:14Z", "latency_ms": 1251, "error_type": "tool_error", "message": "FileNotFoundError: .tmp/feat-mcp-web-dashboard/2026-03-28.md not found"},
@@ -11,6 +12,7 @@
     },
     "validate_agent_file": {
       "invocation_count": 25, "error_count": 1, "avg_latency_ms": 540.0, "p95_latency_ms": 980.0,
+      "faithfulness": 0.923, "answer_relevancy": 0.887, "context_precision": 0.901, "context_recall": 0.856,
       "recent_errors": [
         {"ts": "2026-03-28T10:44:55Z", "latency_ms": 612, "error_type": "validation_error", "message": "Missing required frontmatter key 'x-governs' in .github/agents/review.agent.md"}
       ]
@@ -25,6 +27,7 @@
     },
     "run_research_scout": {
       "invocation_count": 35, "error_count": 5, "avg_latency_ms": 890.0, "p95_latency_ms": 1400.0,
+      "faithfulness": 0.645, "answer_relevancy": 0.712, "context_precision": 0.689, "context_recall": 0.621,
       "recent_errors": [
         {"ts": "2026-03-28T11:55:22Z", "latency_ms": 1402, "error_type": "network_error", "message": "ConnectionError: upstream source returned 503"},
         {"ts": "2026-03-28T11:20:08Z", "latency_ms": 1380, "error_type": "network_error", "message": "ConnectionError: upstream source returned 503"},
@@ -35,6 +38,7 @@
     },
     "query_docs": {
       "invocation_count": 55, "error_count": 2, "avg_latency_ms": 270.0, "p95_latency_ms": 520.0,
+      "faithfulness": 0.478, "answer_relevancy": 0.534, "context_precision": 0.512, "context_recall": 0.498,
       "recent_errors": [
         {"ts": "2026-03-28T11:02:31Z", "latency_ms": 310, "error_type": "tool_error", "message": "IndexError: BM25 index not initialised — run scripts/afs_index.py first"},
         {"ts": "2026-03-28T06:44:18Z", "latency_ms": 295, "error_type": "tool_error", "message": "IndexError: BM25 index not initialised — run scripts/afs_index.py first"}

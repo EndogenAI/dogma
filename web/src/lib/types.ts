@@ -23,6 +23,10 @@ export interface ToolStats {
   avg_latency_ms: number;
   p95_latency_ms: number;
   recent_errors?: ErrorEvent[];
+  faithfulness?: number | null;
+  answer_relevancy?: number | null;
+  context_precision?: number | null;
+  context_recall?: number | null;
 }
 
 /** Top-level metrics envelope returned by `/api/metrics`. */

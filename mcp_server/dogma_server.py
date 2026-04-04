@@ -246,6 +246,37 @@ def _summarize_tool_result_error(result: dict[str, Any]) -> str | None:
     return None
 
 
+def _compute_ragas_heuristics(is_error: bool, latency_s: float) -> dict[str, float]:
+    """Compute structural heuristic RAGAS proxy scores.
+
+    Heuristics (per R1 — structural proxies, not semantic evaluation):
+    - No error + fast latency (<1s) → high scores (0.85-0.90)
+    - No error + slow latency (>=1s) → moderate scores (0.70-0.80)
+    - Error → low scores (0.30-0.50)
+    """
+    if is_error:
+        return {
+            "faithfulness": 0.40,
+            "answer_relevancy": 0.35,
+            "context_precision": 0.45,
+            "context_recall": 0.30,
+        }
+    elif latency_s < 1.0:
+        return {
+            "faithfulness": 0.90,
+            "answer_relevancy": 0.85,
+            "context_precision": 0.88,
+            "context_recall": 0.87,
+        }
+    else:
+        return {
+            "faithfulness": 0.75,
+            "answer_relevancy": 0.72,
+            "context_precision": 0.78,
+            "context_recall": 0.70,
+        }
+
+
 def _run_with_mcp_telemetry(tool_name: str, call: Callable[[], dict]) -> dict:
     """Run tool call with MCP semconv span/metric emission when OTel is available."""
     attributes = {
@@ -280,6 +311,13 @@ def _run_with_mcp_telemetry(tool_name: str, call: Callable[[], dict]) -> dict:
                 raise
             finally:
                 duration_s = time.perf_counter() - started
+                ragas_metrics = _compute_ragas_heuristics(_trace_is_error, duration_s)
+                # Emit RAGAS fields as Gen-AI semantic convention span attributes
+                span.set_attribute("gen_ai.faithfulness", ragas_metrics["faithfulness"])
+                span.set_attribute("gen_ai.answer_relevancy", ragas_metrics["answer_relevancy"])
+                span.set_attribute("gen_ai.context_precision", ragas_metrics["context_precision"])
+                span.set_attribute("gen_ai.context_recall", ragas_metrics["context_recall"])
+
                 if _OP_DURATION_HISTOGRAM:
                     _OP_DURATION_HISTOGRAM.record(duration_s, attributes)
                 # Emit the same compact record shape with and without OTel so downstream reports stay uniform.
@@ -293,6 +331,10 @@ def _run_with_mcp_telemetry(tool_name: str, call: Callable[[], dict]) -> dict:
                         "error_message": _trace_error_message,
                         "source": "live",
                         "tool_version": _TOOL_VERSION,
+                        "faithfulness": ragas_metrics["faithfulness"],
+                        "answer_relevancy": ragas_metrics["answer_relevancy"],
+                        "context_precision": ragas_metrics["context_precision"],
+                        "context_recall": ragas_metrics["context_recall"],
                     }
                 )
 
@@ -312,6 +354,7 @@ def _run_with_mcp_telemetry(tool_name: str, call: Callable[[], dict]) -> dict:
         raise
     finally:
         duration_s = time.perf_counter() - started
+        ragas_metrics = _compute_ragas_heuristics(_trace_is_error, duration_s)
         if _OP_DURATION_HISTOGRAM:
             _OP_DURATION_HISTOGRAM.record(duration_s, attributes)
         # Keep the fallback path aligned with the traced path for JSONL consumers and tests.
@@ -325,6 +368,10 @@ def _run_with_mcp_telemetry(tool_name: str, call: Callable[[], dict]) -> dict:
                 "error_message": _trace_error_message,
                 "source": "live",
                 "tool_version": _TOOL_VERSION,
+                "faithfulness": ragas_metrics["faithfulness"],
+                "answer_relevancy": ragas_metrics["answer_relevancy"],
+                "context_precision": ragas_metrics["context_precision"],
+                "context_recall": ragas_metrics["context_recall"],
             }
         )
 
