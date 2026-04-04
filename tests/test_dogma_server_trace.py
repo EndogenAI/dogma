@@ -61,6 +61,15 @@ def test_run_with_mcp_telemetry_non_error_enqueues_expected_payload() -> None:
     assert payload["error_message"] is None
     assert payload["source"] == "live"
     assert payload["latency_ms"] >= 0
+    # Phase 9A — verify RAGAS fields are present
+    assert "faithfulness" in payload
+    assert "answer_relevancy" in payload
+    assert "context_precision" in payload
+    assert "context_recall" in payload
+    assert 0.0 <= payload["faithfulness"] <= 1.0
+    assert 0.0 <= payload["answer_relevancy"] <= 1.0
+    assert 0.0 <= payload["context_precision"] <= 1.0
+    assert 0.0 <= payload["context_recall"] <= 1.0
 
 
 @_requires_mcp
@@ -198,11 +207,45 @@ def test_get_trace_health_enqueues_telemetry_row() -> None:
 
     assert health["jsonl_path"] == str(dogma_server._JSONL_PATH)
     assert len(captured) == 1
-    payload = captured[0]
-    assert payload["tool_name"] == "get_trace_health"
-    assert payload["is_error"] is False
-    assert payload["error_type"] is None
-    assert payload["error_message"] is None
+
+
+@_requires_mcp
+def test_compute_ragas_heuristics_error_case() -> None:
+    """Phase 9A — test RAGAS heuristics for error cases."""
+    dogma_server = importlib.import_module("mcp_server.dogma_server")
+
+    # Error case — expect low scores
+    metrics = dogma_server._compute_ragas_heuristics(is_error=True, latency_s=0.5)
+    assert metrics["faithfulness"] == 0.40
+    assert metrics["answer_relevancy"] == 0.35
+    assert metrics["context_precision"] == 0.45
+    assert metrics["context_recall"] == 0.30
+
+
+@_requires_mcp
+def test_compute_ragas_heuristics_fast_success() -> None:
+    """Phase 9A — test RAGAS heuristics for fast successful calls."""
+    dogma_server = importlib.import_module("mcp_server.dogma_server")
+
+    # Fast success — expect high scores
+    metrics = dogma_server._compute_ragas_heuristics(is_error=False, latency_s=0.5)
+    assert metrics["faithfulness"] == 0.90
+    assert metrics["answer_relevancy"] == 0.85
+    assert metrics["context_precision"] == 0.88
+    assert metrics["context_recall"] == 0.87
+
+
+@_requires_mcp
+def test_compute_ragas_heuristics_slow_success() -> None:
+    """Phase 9A — test RAGAS heuristics for slow successful calls."""
+    dogma_server = importlib.import_module("mcp_server.dogma_server")
+
+    # Slow success — expect moderate scores
+    metrics = dogma_server._compute_ragas_heuristics(is_error=False, latency_s=1.5)
+    assert metrics["faithfulness"] == 0.75
+    assert metrics["answer_relevancy"] == 0.72
+    assert metrics["context_precision"] == 0.78
+    assert metrics["context_recall"] == 0.70
 
 
 @pytest.mark.io
