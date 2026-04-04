@@ -263,14 +263,14 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 **Depends on**: Phases 4–9 Review gates all APPROVED
 **CI**: Tests, Lint, Auto-validate
 **Effort**: M
-**Status**: ⬜ Not started
+**Status**: ✅ Complete — APPROVED (5 agents; 1 advisory WARNING-level finding tracked as #543)
 
 ### GitHub Phase — PR Open ⬜
 
 **Agent**: GitHub
 **Deliverables**:
 - PR opened against `main` from `feat/sprint-22-baseline-stabilization`
-- PR body includes: `Closes #534, Closes #531, Closes #533, Closes #529, Closes #539, Closes #482, Closes #425, Closes #491, Closes #540, Closes #541`
+- PR body includes: `Closes #497, Closes #491, Closes #482, Closes #529, Closes #430, Closes #425, Closes #534, Closes #506, Closes #531, Closes #533, Closes #539, Closes #540, Closes #541, Closes #542` (follow-up: #543 tool count refactor)
 - Session scratchpad archived
 
 **Depends on**: Final Cross-Fleet Review APPROVED
@@ -298,7 +298,7 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 - [x] New Issue C seeded: #542 (RAGAS metric instrumentation + dashboard visualization) ✅
 - [x] Phase 9 (#542) complete and reviewed
 - [x] Phase 9 Review APPROVED
-- [ ] Final cross-fleet review APPROVED (5+ agents)
+- [x] Final cross-fleet review APPROVED (5 agents; 1 advisory finding → #543)
 - [ ] All changes pushed and PR opened against main
 
 ## PR Description Template
@@ -306,3 +306,5 @@ _After Phase 2 Review APPROVED_: Orchestrator reads `## Phase 2 Output` from scr
 <!-- Copy to PR description when opening the PR -->
 
 Closes #497, Closes #491, Closes #482, Closes #529, Closes #430, Closes #425, Closes #534, Closes #506, Closes #531, Closes #533, Closes #539, Closes #540, Closes #541, Closes #542
+
+**Follow-up**: #543 (tool count refactor — advisory finding from Final Review)
