@@ -10,6 +10,7 @@ Instrumentation and observability patterns for the dogma MCP server. This guide 
 
 - [Stack Startup](#stack-startup)
 - [Span Instrumentation Patterns](#span-instrumentation-patterns)
+- [RAGAS Metrics](#ragas-metrics)
 - [Transport Modes](#transport-modes)
 - [Canonical Example](#canonical-example)
 - [Anti-Pattern](#anti-pattern)
@@ -127,6 +128,45 @@ finally:
     duration_s = time.perf_counter() - started
     duration_histogram.record(duration_s, {"gen_ai.tool.name": tool_name})
 ```
+
+---
+
+## RAGAS Metrics
+
+RAGAS (Retrieval-Augmented Generation Assessment) metrics are emitted as span attributes for every tool call via `_run_with_mcp_telemetry()` (Phase 9, #542). These metrics assess answer quality using structural heuristics rather than LLM-as-judge evaluation.
+
+### Metric Attributes
+
+| Attribute | Description | Range | Heuristic Tier |
+|-----------|-------------|-------|----------------|
+| `gen_ai.faithfulness` | Answer consistency with context sources | 0.0–1.0 | 3-tier (error/fast/slow) |
+| `gen_ai.answer_relevancy` | Answer alignment with query intent | 0.0–1.0 | 3-tier |
+| `gen_ai.context_precision` | Relevance of retrieved context chunks | 0.0–1.0 | 3-tier |
+| `gen_ai.context_recall` | Coverage of required context | 0.0–1.0 | 3-tier |
+
+All metrics are floats in `[0.0, 1.0]` range. Higher values indicate better quality.
+
+### Emission Timing
+
+RAGAS attributes are computed and attached to every tool call span after the operation completes. The 3-tier heuristic implementation:
+- **Error tier**: Returns `0.0` if tool call failed (`ok=False` or exception raised)
+- **Fast tier**: Returns `0.5` for successful calls with partial context
+- **Slow tier**: Returns `1.0` for successful calls with full context and citations
+
+See [`mcp_server/dogma_server.py`](../../mcp_server/dogma_server.py) `_run_with_mcp_telemetry()` for implementation details.
+
+### Querying RAGAS Metrics in Jaeger
+
+1. Open Jaeger UI: [http://localhost:16686](http://localhost:16686)
+2. Select service: `dogma.mcp.server`, operation: `mcp.server.execute_tool`
+3. Add tag filters for specific metrics:
+   - `gen_ai.faithfulness`
+   - `gen_ai.answer_relevancy`
+   - `gen_ai.context_precision`
+   - `gen_ai.context_recall`
+4. Use range operators to filter by quality threshold (e.g., `gen_ai.faithfulness > 0.7`)
+
+**Cross-reference**: Phase 9 implementation (#542) introduced the 3-tier heuristic pattern as an interim solution before full RAGAS library integration.
 
 ---
 
