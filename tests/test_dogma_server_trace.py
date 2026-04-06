@@ -87,6 +87,15 @@ def test_run_with_mcp_telemetry_error_enqueues_error_and_reraises() -> None:
         with pytest.raises(RuntimeError, match="boom"):
             dogma_server._run_with_mcp_telemetry("error_tool", tool_fn)
 
+    # Verify error telemetry was enqueued before re-raise (Copilot comment #3035069946)
+    assert len(captured) == 1
+    payload = captured[0]
+    assert payload["tool_name"] == "error_tool"
+    assert payload["is_error"] is True
+    assert payload["error_type"] == "RuntimeError"
+    assert payload["error_message"] == "boom"
+    assert payload["latency_ms"] >= 0
+
 
 @_requires_mcp
 def test_configure_telemetry_jsonl_mode_skips_otlp() -> None:
@@ -294,3 +303,258 @@ def test_check_branch_counter_non_zero_returns_one(tmp_path: Path, monkeypatch: 
     monkeypatch.chdir(tmp_path)
 
     assert check_branch_counter.main() == 1
+
+
+# ---------------------------------------------------------------------------
+# Additional coverage tests (Sprint 22 — Test Coverage Enhancement)
+# ---------------------------------------------------------------------------
+
+
+@_requires_mcp
+def test_summarize_error_value_handles_dict_with_message() -> None:
+    """Coverage: _summarize_error_value dict path (line 215)."""
+    dogma_server = importlib.import_module("mcp_server.dogma_server")
+    error_dict = {"message": "Something went wrong", "code": 500}
+    result = dogma_server._summarize_error_value(error_dict)
+    assert result == "Something went wrong"
+
+
+@_requires_mcp
+def test_summarize_error_value_handles_dict_without_message() -> None:
+    """Coverage: _summarize_error_value dict JSON fallback (line 218)."""
+    dogma_server = importlib.import_module("mcp_server.dogma_server")
+    error_dict = {"code": 404, "status": "not_found"}
+    result = dogma_server._summarize_error_value(error_dict)
+    assert "code" in result
+    assert "404" in result
+
+
+@_requires_mcp
+def test_summarize_error_value_handles_non_serializable_dict() -> None:
+    """Coverage: _summarize_error_value TypeError fallback (line 220)."""
+    dogma_server = importlib.import_module("mcp_server.dogma_server")
+
+    class CustomObject:
+        def __str__(self) -> str:
+            return "CustomObject instance"
+
+    error_dict = {"obj": CustomObject()}
+    result = dogma_server._summarize_error_value(error_dict)
+    assert result is not None
+    assert len(result) <= 240
+
+
+@_requires_mcp
+def test_summarize_error_value_handles_list_with_many_items() -> None:
+    """Coverage: _summarize_error_value list truncation (line 232)."""
+    dogma_server = importlib.import_module("mcp_server.dogma_server")
+    error_list = ["error1", "error2", "error3", "error4", "error5"]
+    result = dogma_server._summarize_error_value(error_list)
+    assert "+2 more" in result
+
+
+@_requires_mcp
+def test_summarize_error_value_handles_empty_list() -> None:
+    """Coverage: _summarize_error_value empty list path (line 230)."""
+    dogma_server = importlib.import_module("mcp_server.dogma_server")
+    result = dogma_server._summarize_error_value([])
+    assert result is None
+
+
+@_requires_mcp
+def test_configure_telemetry_otlp_mode() -> None:
+    """Coverage: _configure_telemetry OTLP path (lines 173-195)."""
+    dogma_server = importlib.import_module("mcp_server.dogma_server")
+
+    with (
+        patch.dict("os.environ", {"DOGMA_OTEL_EXPORTER": "otlp", "OTEL_EXPORTER_OTLP_ENDPOINT": "http://test:4317"}),
+        patch("opentelemetry.exporter.otlp.proto.grpc.trace_exporter.OTLPSpanExporter") as mock_span,
+        patch("opentelemetry.exporter.otlp.proto.grpc.metric_exporter.OTLPMetricExporter") as mock_metric,
+        patch("opentelemetry.sdk.trace.TracerProvider"),
+        patch("opentelemetry.sdk.metrics.MeterProvider"),
+    ):
+        dogma_server._configure_telemetry()
+        # Verify OTLP exporters were instantiated
+        mock_span.assert_called_once()
+        mock_metric.assert_called_once()
+
+
+@_requires_mcp
+@pytest.mark.io
+def test_jsonl_writer_handles_oserror(tmp_path: Path) -> None:
+    """Coverage: _jsonl_writer OSError handling (lines 130-132)."""
+    dogma_server = importlib.import_module("mcp_server.dogma_server")
+    test_queue: queue.Queue = queue.Queue()
+    test_path = tmp_path / "readonly" / "tool_calls.jsonl"
+
+    # Create readonly parent to trigger OSError
+    readonly_dir = tmp_path / "readonly"
+    readonly_dir.mkdir()
+    readonly_dir.chmod(0o444)  # Read-only directory
+
+    # Queue a record that will fail to write, then sentinel
+    test_queue.put({"test": "data"})
+    test_queue.put(None)
+
+    original_fail_count = dogma_server._WRITE_FAIL_COUNT
+
+    # Run the writer (should log warning but not crash)
+    dogma_server._jsonl_writer(test_queue, test_path)
+
+    # Verify failure was counted
+    assert dogma_server._WRITE_FAIL_COUNT > original_fail_count
+
+    # Cleanup: restore permissions
+    readonly_dir.chmod(0o755)
+
+
+@_requires_mcp
+@pytest.mark.io
+def test_run_with_mcp_telemetry_with_tracer_active(tmp_path: Path) -> None:
+    """Coverage: _run_with_mcp_telemetry with active tracer (lines 285-341)."""
+    dogma_server = importlib.import_module("mcp_server.dogma_server")
+
+    # Set up a real tracer for this test
+    from opentelemetry.sdk.trace import TracerProvider
+    from opentelemetry.sdk.trace.export import ConsoleSpanExporter, SimpleSpanProcessor
+
+    provider = TracerProvider()
+    provider.add_span_processor(SimpleSpanProcessor(ConsoleSpanExporter()))
+
+    captured: list[dict] = []
+
+    def _capture(item: dict) -> None:
+        captured.append(item)
+
+    def tool_fn() -> dict:
+        return {"ok": True, "result": "test"}
+
+    with (
+        patch.object(dogma_server, "_TRACER", provider.get_tracer("test")),
+        patch.object(dogma_server._JSONL_QUEUE, "put_nowait", side_effect=_capture),
+    ):
+        result = dogma_server._run_with_mcp_telemetry("test_tool", tool_fn)
+
+    assert result == {"ok": True, "result": "test"}
+    assert len(captured) == 1
+    assert captured[0]["is_error"] is False
+
+
+@_requires_mcp
+def test_run_with_mcp_telemetry_without_tracer() -> None:
+    """Coverage: _run_with_mcp_telemetry fallback path without tracer (lines 341-361)."""
+    dogma_server = importlib.import_module("mcp_server.dogma_server")
+
+    captured: list[dict] = []
+
+    def _capture(item: dict) -> None:
+        captured.append(item)
+
+    def tool_fn() -> dict:
+        return {"ok": True, "result": "test_no_tracer"}
+
+    with (
+        patch.object(dogma_server, "_TRACER", None),  # Disable tracer
+        patch.object(dogma_server._JSONL_QUEUE, "put_nowait", side_effect=_capture),
+    ):
+        result = dogma_server._run_with_mcp_telemetry("no_tracer_tool", tool_fn)
+
+    assert result == {"ok": True, "result": "test_no_tracer"}
+    assert len(captured) == 1
+    assert captured[0]["tool_name"] == "no_tracer_tool"
+    assert captured[0]["is_error"] is False
+
+
+@_requires_mcp
+def test_mcp_tool_wrappers_coverage() -> None:
+    """Coverage: All @mcp.tool() wrappers (lines 394-618)."""
+    dogma_server = importlib.import_module("mcp_server.dogma_server")
+
+    # Mock the underlying tool functions to avoid file I/O
+    with (
+        patch("mcp_server.tools.validation.validate_agent_file", return_value={"ok": True, "errors": []}),
+        patch("mcp_server.tools.validation.validate_synthesis", return_value={"ok": True, "errors": []}),
+        patch("mcp_server.tools.validation.check_substrate", return_value={"ok": True, "errors": []}),
+        patch("mcp_server.tools.scaffolding.scaffold_agent", return_value={"ok": True}),
+        patch("mcp_server.tools.scaffolding.scaffold_workplan", return_value={"ok": True}),
+        patch("mcp_server.tools.research.run_research_scout", return_value={"ok": True}),
+        patch("mcp_server.tools.research.query_docs", return_value={"ok": True, "results": []}),
+        patch("mcp_server.tools.scratchpad.prune_scratchpad", return_value={"ok": True}),
+        patch("mcp_server.tools.scratchpad.detect_user_interrupt", return_value={"ok": True, "interrupted": False}),
+        patch("mcp_server.tools.cross_platform_tools.normalize_path", return_value="/test/path"),
+        patch("mcp_server.tools.cross_platform_tools.resolve_env_path", return_value="/test/path"),
+        patch("mcp_server.tools.inference.route_inference_request", return_value={"ok": True}),
+        patch.object(dogma_server._JSONL_QUEUE, "put_nowait"),
+    ):
+        # Call each tool wrapper to exercise the telemetry path
+        dogma_server.validate_agent_file("test.agent.md")
+        dogma_server.validate_synthesis("test.md")
+        dogma_server.check_substrate()
+        dogma_server.scaffold_agent("Test", "Test agent")
+        dogma_server.scaffold_workplan("test")
+        dogma_server.run_research_scout("https://example.com")
+        dogma_server.query_docs("test query")
+        dogma_server.prune_scratchpad()
+        dogma_server.detect_user_interrupt("test message")
+        dogma_server.normalize_path("/test")
+        dogma_server.resolve_env_path("HOME")
+        dogma_server.route_inference_request("test prompt", "llama3.2")
+
+
+@_requires_mcp
+def test_run_with_mcp_telemetry_exception_without_tracer() -> None:
+    """Coverage: Exception path in non-tracer code (lines 350-354)."""
+    dogma_server = importlib.import_module("mcp_server.dogma_server")
+
+    captured: list[dict] = []
+
+    def _capture(item: dict) -> None:
+        captured.append(item)
+
+    def tool_fn() -> dict:
+        raise ValueError("test_error_no_tracer")
+
+    with (
+        patch.object(dogma_server, "_TRACER", None),  # Disable tracer to hit fallback path
+        patch.object(dogma_server._JSONL_QUEUE, "put_nowait", side_effect=_capture),
+        pytest.raises(ValueError, match="test_error_no_tracer"),
+    ):
+        dogma_server._run_with_mcp_telemetry("error_no_tracer", tool_fn)
+
+    # Verify error telemetry was enqueued
+    assert len(captured) == 1
+    assert captured[0]["is_error"] is True
+    assert captured[0]["error_type"] == "ValueError"
+    assert captured[0]["error_message"] == "test_error_no_tracer"
+
+
+@_requires_mcp
+def test_normalize_path_exception_handling() -> None:
+    """Coverage: normalize_path exception handler (lines 566-567)."""
+    dogma_server = importlib.import_module("mcp_server.dogma_server")
+
+    # Patch where it's imported, not where it's defined
+    with (
+        patch.object(dogma_server, "_normalize_path", side_effect=RuntimeError("path error")),
+        patch.object(dogma_server._JSONL_QUEUE, "put_nowait"),
+    ):
+        result = dogma_server.normalize_path("/test")
+
+    # The wrapper converts exceptions to error responses
+    assert result["ok"] is False
+    assert len(result["errors"]) > 0
+    assert "path error" in result["errors"][0]
+    assert result["result"] == ""
+
+
+@_requires_mcp
+def test_summarize_error_value_list_with_no_valid_summaries() -> None:
+    """Coverage: list path where no items produce summaries (line 232 edge case)."""
+    dogma_server = importlib.import_module("mcp_server.dogma_server")
+
+    # List with only None values
+    error_list = [None, None, None]
+    result = dogma_server._summarize_error_value(error_list)
+
+    # Should return None when no items produce valid summaries
+    assert result is None
