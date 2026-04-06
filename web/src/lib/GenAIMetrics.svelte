@@ -37,10 +37,11 @@
       .sort((a, b) => b.invocation_count - a.invocation_count)
   );
 
-  function statusClass(value: number | null): string {
+  function statusClass(value: number | null, metric: 'faithfulness' | 'answer_relevancy' | 'context_precision' | 'context_recall'): string {
     if (value === null) return 'na';
-    if (value >= 0.7) return 'ok';
-    if (value >= 0.5) return 'warn';
+    const thresholds = THRESHOLDS[metric];
+    if (value >= thresholds.warning) return 'ok';
+    if (value >= thresholds.critical) return 'warn';
     return 'critical';
   }
 
@@ -79,7 +80,7 @@
           <tr>
             <td class="name-cell">{tool.name}</td>
             <td class="num">{tool.invocation_count}</td>
-            <td class="metric {statusClass(tool.faithfulness)}">
+            <td class="metric {statusClass(tool.faithfulness, 'faithfulness')}">
               <span class="value">{formatMetric(tool.faithfulness)}</span>
               {#if tool.faithfulness !== null}
                 <span class="delta {tool.faithfulness >= THRESHOLDS.faithfulness.warning ? 'positive' : 'negative'}">
@@ -87,7 +88,7 @@
                 </span>
               {/if}
             </td>
-            <td class="metric {statusClass(tool.answer_relevancy)}">
+            <td class="metric {statusClass(tool.answer_relevancy, 'answer_relevancy')}">
               <span class="value">{formatMetric(tool.answer_relevancy)}</span>
               {#if tool.answer_relevancy !== null}
                 <span class="delta {tool.answer_relevancy >= THRESHOLDS.answer_relevancy.warning ? 'positive' : 'negative'}">
@@ -95,7 +96,7 @@
                 </span>
               {/if}
             </td>
-            <td class="metric {statusClass(tool.context_precision)}">
+            <td class="metric {statusClass(tool.context_precision, 'context_precision')}">
               <span class="value">{formatMetric(tool.context_precision)}</span>
               {#if tool.context_precision !== null}
                 <span class="delta {tool.context_precision >= THRESHOLDS.context_precision.warning ? 'positive' : 'negative'}">
@@ -103,7 +104,7 @@
                 </span>
               {/if}
             </td>
-            <td class="metric {statusClass(tool.context_recall)}">
+            <td class="metric {statusClass(tool.context_recall, 'context_recall')}">
               <span class="value">{formatMetric(tool.context_recall)}</span>
               {#if tool.context_recall !== null}
                 <span class="delta {tool.context_recall >= THRESHOLDS.context_recall.warning ? 'positive' : 'negative'}">
