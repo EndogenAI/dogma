@@ -114,7 +114,7 @@ def load_thresholds(root: Path) -> dict:
 
 
 def load_calibration_baselines(root: Path) -> dict:
-    """Load calibration_baseline from data/governance-thresholds.yml.
+    """Load mcp_quality_gate_baseline from data/governance-thresholds.yml.
 
     Returns:
         Dict with per-metric baselines (mean, variance). Empty dict if not found or on error.
@@ -127,7 +127,8 @@ def load_calibration_baselines(root: Path) -> dict:
     try:
         with thresholds_path.open("r", encoding="utf-8") as f:
             config = yaml.safe_load(f)
-        baseline = config.get("calibration_baseline", {})
+        # Load MCP quality gate baselines from dedicated namespace (Sprint 22 Phase 7)
+        baseline = config.get("mcp_quality_gate_baseline", {})
         # Return the full baseline dict; caller will check for per-metric entries
         return baseline
     except Exception as exc:

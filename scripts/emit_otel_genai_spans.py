@@ -15,6 +15,14 @@ DEPRECATION NOTICE:
 
 import sys
 
+# Compatibility shim: re-export from new module to avoid breaking existing imports
+# Remove this shim in Sprint 24 after verifying no external callers remain
+from emit_genai_spans import (  # noqa: F401
+    _build_genai_attributes,
+    _emit_to_jaeger,
+    emit_genai_span,
+)
+
 if __name__ == "__main__":
     print(
         "ERROR: emit_otel_genai_spans.py is deprecated and has been renamed to emit_genai_spans.py.\n"
