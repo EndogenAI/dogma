@@ -62,7 +62,7 @@ class TestLoadCalibrationBaselines:
     def test_load_calibration_baselines_success(self, tmp_path):
         """Test successful loading of calibration baselines from YAML."""
         thresholds_content = """
-calibration_baseline:
+mcp_quality_gate_baseline:
   faithfulness_mean:
     mean: 0.85
     variance: 0.01
