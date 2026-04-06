@@ -341,10 +341,14 @@ def _build_snapshot() -> dict:
         latencies = [r["latency_ms"] for r in records if "latency_ms" in r and r["latency_ms"] is not None]
         error_records = [r for r in records if r.get("is_error")]
         avg_lat = round(statistics.mean(latencies), 2) if latencies else 0.0
-        if len(latencies) >= 2:
+        # Safe p95 computation: use sorted list index for small samples instead of quantiles
+        # (quantiles requires len >= n+1 samples; for n=20 that's 21+ samples)
+        if len(latencies) >= 21:
             p95 = round(statistics.quantiles(latencies, n=20)[-1], 2)
         elif latencies:
-            p95 = round(latencies[0], 2)
+            sorted_lats = sorted(latencies)
+            p95_idx = int(0.95 * len(sorted_lats))
+            p95 = round(sorted_lats[min(p95_idx, len(sorted_lats) - 1)], 2)
         else:
             p95 = 0.0
 

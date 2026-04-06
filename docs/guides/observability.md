@@ -9,7 +9,7 @@ Instrumentation and observability patterns for the dogma MCP server. This guide 
 ## Contents
 
 - [Stack Startup](#stack-startup)
-- [Span Instrumentation Patterns](#span-instrumentation-patterns)
+- [Span Patterns](#span-patterns)
 - [RAGAS Metrics](#ragas-metrics)
 - [Transport Modes](#transport-modes)
 - [Canonical Example](#canonical-example)
@@ -20,7 +20,7 @@ Instrumentation and observability patterns for the dogma MCP server. This guide 
 
 ## Stack Startup
 
-The observability stack consists of an OTel Collector (receives spans/metrics), Jaeger (stores and visualizes traces), and Prometheus (stores metrics). The stack is orchestrated via Docker Compose.
+The observability stack consists of an OTel Collector (receives spans/metrics via OTLP) and Jaeger (stores and visualizes traces). The stack is orchestrated via Docker Compose.
 
 ### Start the Stack
 
@@ -38,19 +38,16 @@ Verify all containers are running:
 docker ps
 ```
 
-Expected output (3 containers):
+Expected output (2 containers):
 
 ```
-CONTAINER ID   IMAGE                             STATUS
-<id>           otel/opentelemetry-collector      Up
-<id>           jaegertracing/all-in-one:latest   Up
-<id>           prom/prometheus:latest            Up
+CONTAINER ID   IMAGE                                      STATUS
+<id>           otel/opentelemetry-collector-contrib       Up
+<id>           jaegertracing/all-in-one:1.57              Up
 ```
 
 Access the UIs:
 - **Jaeger**: [http://localhost:16686](http://localhost:16686)
-- **Prometheus**: [http://localhost:9090](http://localhost:9090)
-- **OTel Collector Health**: [http://localhost:13133](http://localhost:13133)
 
 ### Stop the Stack
 
@@ -75,7 +72,7 @@ Every tool call span must include:
 | `gen_ai.tool.name` | string | `"validate_agent_file"` | Always |
 | `gen_ai.operation.name` | string | `"execute_tool"` | Always |
 | `mcp.server.operation.duration` | float (seconds) | `0.142` | Always (via histogram) |
-| `error.type` | string | `"tool_error"` or exception name | When `ok=False` or exception raised |
+| `error.type` | string | `"tool_error"` | When `ok=False` or exception raised |
 | `error.message` | string | Human-readable error summary | When `error.type` is set |
 
 ### Implementation Pattern
@@ -148,12 +145,12 @@ All metrics are floats in `[0.0, 1.0]` range. Higher values indicate better qual
 
 ### Emission Timing
 
-RAGAS attributes are computed and attached to every tool call span after the operation completes. The 3-tier heuristic implementation:
-- **Error tier**: Returns `0.0` if tool call failed (`ok=False` or exception raised)
-- **Fast tier**: Returns `0.5` for successful calls with partial context
-- **Slow tier**: Returns `1.0` for successful calls with full context and citations
+RAGAS attributes are computed and attached to every tool call span after the operation completes. The current heuristic implementation uses 3 tiers, but it does **not** emit fixed `0.0` / `0.5` / `1.0` values:
+- **Error tier**: Failed tool calls (`ok=False` or exception raised) emit lower-band heuristic scores: `faithfulness=0.40`, `answer_relevancy=0.35`, `context_precision=0.45`, `context_recall=0.30`
+- **Fast tier**: Successful calls with latency < 1s emit high-band heuristic scores: `faithfulness=0.90`, `answer_relevancy=0.85`, `context_precision=0.88`, `context_recall=0.87`
+- **Slow tier**: Successful calls with latency >= 1s emit moderate-band heuristic scores: `faithfulness=0.75`, `answer_relevancy=0.72`, `context_precision=0.78`, `context_recall=0.70`
 
-See [`mcp_server/dogma_server.py`](../../mcp_server/dogma_server.py) `_run_with_mcp_telemetry()` for implementation details.
+Treat these as implementation-defined heuristic bands in the `[0.0, 1.0]` range rather than exact tier constants. See [`mcp_server/dogma_server.py`](../../mcp_server/dogma_server.py) `_run_with_mcp_telemetry()` and `_compute_ragas_heuristics()` for implementation details.
 
 ### Querying RAGAS Metrics in Jaeger
 

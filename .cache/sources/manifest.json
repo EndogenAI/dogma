@@ -1917,6 +1917,204 @@
       "file": ".cache/sources/github-com-microsoft-vscode-issues-306729.md",
       "content_type": "text/html",
       "size_bytes": 6021
+    },
+    "arxiv-org-abs-2310-03714": {
+      "url": "https://arxiv.org/abs/2310.03714",
+      "slug": "arxiv-org-abs-2310-03714",
+      "title": "",
+      "fetched_at": "2026-04-01T00:01:31",
+      "file": ".cache/sources/arxiv-org-abs-2310-03714.md",
+      "content_type": "text/html",
+      "size_bytes": 8275
+    },
+    "arxiv-org-abs-2307-03172": {
+      "url": "https://arxiv.org/abs/2307.03172",
+      "slug": "arxiv-org-abs-2307-03172",
+      "title": "",
+      "fetched_at": "2026-04-01T00:01:31",
+      "file": ".cache/sources/arxiv-org-abs-2307-03172.md",
+      "content_type": "text/html",
+      "size_bytes": 7348
+    },
+    "arxiv-org-abs-2104-08773": {
+      "url": "https://arxiv.org/abs/2104.08773",
+      "slug": "arxiv-org-abs-2104-08773",
+      "title": "",
+      "fetched_at": "2026-04-01T00:01:31",
+      "file": ".cache/sources/arxiv-org-abs-2104-08773.md",
+      "content_type": "text/html",
+      "size_bytes": 8006
+    },
+    "prometheus-io-docs-instrumenting-exposition_formats": {
+      "url": "https://prometheus.io/docs/instrumenting/exposition_formats/",
+      "slug": "prometheus-io-docs-instrumenting-exposition_formats",
+      "title": "",
+      "fetched_at": "2026-04-01T00:06:53",
+      "file": ".cache/sources/prometheus-io-docs-instrumenting-exposition_formats.md",
+      "content_type": "text/html",
+      "size_bytes": 15428
+    },
+    "opentelemetry-io-docs-concepts-observability-primer": {
+      "url": "https://opentelemetry.io/docs/concepts/observability-primer/",
+      "slug": "opentelemetry-io-docs-concepts-observability-primer",
+      "title": "",
+      "fetched_at": "2026-04-01T00:06:53",
+      "file": ".cache/sources/opentelemetry-io-docs-concepts-observability-primer.md",
+      "content_type": "text/html",
+      "size_bytes": 7014
+    },
+    "opentelemetry-io-docs-specs-otel-metrics": {
+      "url": "https://opentelemetry.io/docs/specs/otel/metrics/",
+      "slug": "opentelemetry-io-docs-specs-otel-metrics",
+      "title": "",
+      "fetched_at": "2026-04-01T00:06:54",
+      "file": ".cache/sources/opentelemetry-io-docs-specs-otel-metrics.md",
+      "content_type": "text/html",
+      "size_bytes": 4925
+    },
+    "opentelemetry-io-blog-2024-otel-generative-ai": {
+      "url": "https://opentelemetry.io/blog/2024/otel-generative-ai/",
+      "slug": "opentelemetry-io-blog-2024-otel-generative-ai",
+      "title": "",
+      "fetched_at": "2026-04-01T00:06:54",
+      "file": ".cache/sources/opentelemetry-io-blog-2024-otel-generative-ai.md",
+      "content_type": "text/html",
+      "size_bytes": 9906
+    },
+    "arxiv-org-abs-2309-05516": {
+      "url": "https://arxiv.org/abs/2309.05516",
+      "slug": "arxiv-org-abs-2309-05516",
+      "title": "",
+      "fetched_at": "2026-04-01T00:06:54",
+      "file": ".cache/sources/arxiv-org-abs-2309-05516.md",
+      "content_type": "text/html",
+      "size_bytes": 7582
+    },
+    "arxiv-org-abs-2402-01817": {
+      "url": "https://arxiv.org/abs/2402.01817",
+      "slug": "arxiv-org-abs-2402-01817",
+      "title": "",
+      "fetched_at": "2026-04-01T00:06:55",
+      "file": ".cache/sources/arxiv-org-abs-2402-01817.md",
+      "content_type": "text/html",
+      "size_bytes": 8038
+    },
+    "arxiv-org-abs-2209-07858": {
+      "url": "https://arxiv.org/abs/2209.07858",
+      "slug": "arxiv-org-abs-2209-07858",
+      "title": "",
+      "fetched_at": "2026-04-01T00:06:55",
+      "file": ".cache/sources/arxiv-org-abs-2209-07858.md",
+      "content_type": "text/html",
+      "size_bytes": 9755
+    },
+    "arxiv-org-abs-2310-12931": {
+      "url": "https://arxiv.org/abs/2310.12931",
+      "slug": "arxiv-org-abs-2310-12931",
+      "title": "",
+      "fetched_at": "2026-04-01T00:06:55",
+      "file": ".cache/sources/arxiv-org-abs-2310-12931.md",
+      "content_type": "text/html",
+      "size_bytes": 8005
+    },
+    "cloud-google-com-blog-products-devops-sre-using-the-four-key": {
+      "url": "https://cloud.google.com/blog/products/devops-sre/using-the-four-keys-to-measure-your-devops-performance",
+      "slug": "cloud-google-com-blog-products-devops-sre-using-the-four-key",
+      "title": "",
+      "fetched_at": "2026-04-01T00:06:56",
+      "file": ".cache/sources/cloud-google-com-blog-products-devops-sre-using-the-four-key.md",
+      "content_type": "text/html",
+      "size_bytes": 14689
+    },
+    "arxiv-org-abs-2307-11760": {
+      "url": "https://arxiv.org/abs/2307.11760",
+      "slug": "arxiv-org-abs-2307-11760",
+      "title": "",
+      "fetched_at": "2026-04-01T00:06:56",
+      "file": ".cache/sources/arxiv-org-abs-2307-11760.md",
+      "content_type": "text/html",
+      "size_bytes": 8662
+    },
+    "martinfowler-com-articles-developer-effectiveness-html": {
+      "url": "https://martinfowler.com/articles/developer-effectiveness.html",
+      "slug": "martinfowler-com-articles-developer-effectiveness-html",
+      "title": "",
+      "fetched_at": "2026-04-01T00:06:57",
+      "file": ".cache/sources/martinfowler-com-articles-developer-effectiveness-html.md",
+      "content_type": "text/html",
+      "size_bytes": 26546
+    },
+    "opentelemetry-io-blog-2024-llm-observability": {
+      "url": "https://opentelemetry.io/blog/2024/llm-observability/",
+      "slug": "opentelemetry-io-blog-2024-llm-observability",
+      "title": "",
+      "fetched_at": "2026-04-01T00:07:05",
+      "file": ".cache/sources/opentelemetry-io-blog-2024-llm-observability.md",
+      "content_type": "text/html",
+      "size_bytes": 8800
+    },
+    "arxiv-org-abs-2107-06255": {
+      "url": "https://arxiv.org/abs/2107.06255",
+      "slug": "arxiv-org-abs-2107-06255",
+      "title": "",
+      "fetched_at": "2026-04-01T00:07:11",
+      "file": ".cache/sources/arxiv-org-abs-2107-06255.md",
+      "content_type": "text/html",
+      "size_bytes": 7589
+    },
+    "arxiv-org-abs-1606-06565": {
+      "url": "https://arxiv.org/abs/1606.06565",
+      "slug": "arxiv-org-abs-1606-06565",
+      "title": "",
+      "fetched_at": "2026-04-01T00:07:11",
+      "file": ".cache/sources/arxiv-org-abs-1606-06565.md",
+      "content_type": "text/html",
+      "size_bytes": 7554
+    },
+    "arxiv-org-abs-1908-04734": {
+      "url": "https://arxiv.org/abs/1908.04734",
+      "slug": "arxiv-org-abs-1908-04734",
+      "title": "",
+      "fetched_at": "2026-04-01T00:07:11",
+      "file": ".cache/sources/arxiv-org-abs-1908-04734.md",
+      "content_type": "text/html",
+      "size_bytes": 7508
+    },
+    "deepmind-com-blog-specification-gaming-the-flip-side-of-ai-i": {
+      "url": "https://www.deepmind.com/blog/specification-gaming-the-flip-side-of-ai-ingenuity",
+      "slug": "deepmind-com-blog-specification-gaming-the-flip-side-of-ai-i",
+      "title": "",
+      "fetched_at": "2026-04-01T00:07:16",
+      "file": ".cache/sources/deepmind-com-blog-specification-gaming-the-flip-side-of-ai-i.md",
+      "content_type": "text/html",
+      "size_bytes": 12241
+    },
+    "anthropic-com-research-measuring-model-persuasiveness": {
+      "url": "https://www.anthropic.com/research/measuring-model-persuasiveness",
+      "slug": "anthropic-com-research-measuring-model-persuasiveness",
+      "title": "Measuring the Persuasiveness of Language Models \\ Anthropic",
+      "fetched_at": "2026-04-01T00:07:21",
+      "file": ".cache/sources/anthropic-com-research-measuring-model-persuasiveness.md",
+      "content_type": "text/html",
+      "size_bytes": 28635
+    },
+    "openai-com-research-evaluating-large-language-models-trained": {
+      "url": "https://openai.com/research/evaluating-large-language-models-trained-on-code",
+      "slug": "openai-com-research-evaluating-large-language-models-trained",
+      "title": "",
+      "fetched_at": "2026-04-01T00:07:22",
+      "file": ".cache/sources/openai-com-research-evaluating-large-language-models-trained.md",
+      "content_type": "text/html",
+      "size_bytes": 2976
+    },
+    "deepmind-google-blog-specification-gaming-the-flip-side-of-a": {
+      "url": "https://deepmind.google/blog/specification-gaming-the-flip-side-of-ai-ingenuity",
+      "slug": "deepmind-google-blog-specification-gaming-the-flip-side-of-a",
+      "title": "",
+      "fetched_at": "2026-04-01T00:07:41",
+      "file": ".cache/sources/deepmind-google-blog-specification-gaming-the-flip-side-of-a.md",
+      "content_type": "text/html",
+      "size_bytes": 12241
     }
   }
 }
