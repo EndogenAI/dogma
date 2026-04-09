@@ -143,6 +143,7 @@ export class BrowserMcpServer {
   private bridgeSessionId: string | null = null;
   private bridgeLoop: Promise<void> | null = null;
   private bridgeAbortController: AbortController | null = null;
+  private pagehideListener: (() => void) | null = null;
   private started = false;
 
   constructor(options: BrowserMcpServerOptions = {}) {
@@ -169,6 +170,15 @@ export class BrowserMcpServer {
     this.bridgeAbortController = new AbortController();
     this.bridgeLoop = this.runBridgeLoop(this.bridgeAbortController.signal);
 
+    // Abort the bridge loop when the page unloads (hard refresh / navigation away).
+    // Without this, the old loop survives into the next page load and races with the
+    // new page's loop for the server session, causing immediate 404s.
+    const onPageHide = () => {
+      this.bridgeAbortController?.abort();
+    };
+    this.pagehideListener = onPageHide;
+    window.addEventListener('pagehide', onPageHide, { once: true });
+
     if (!this.enableSseProbe) return;
 
     // SSE alignment: EventSource over HTTP, no WebSocket transport in this phase.
@@ -180,6 +190,10 @@ export class BrowserMcpServer {
   }
 
   async stop(): Promise<void> {
+    if (this.pagehideListener) {
+      window.removeEventListener('pagehide', this.pagehideListener);
+      this.pagehideListener = null;
+    }
     this.bridgeAbortController?.abort();
     this.bridgeAbortController = null;
     try {
