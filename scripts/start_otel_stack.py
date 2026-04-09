@@ -68,12 +68,12 @@ def main(argv: list[str] | None = None) -> None:
         sys.exit(0)
 
     _run_compose(["up", "-d"])
+    # Actual timeout budget accounts for both urlopen timeout and sleep per retry
+    timeout_budget = MAX_RETRIES * (2 + RETRY_SLEEP)
     if _wait_for_jaeger():
         print(f"OTel stack ready. Jaeger UI: {JAEGER_URL}")
         sys.exit(0)
     else:
-        # Actual timeout budget accounts for both urlopen timeout and sleep per retry
-        timeout_budget = MAX_RETRIES * (2 + RETRY_SLEEP)
         print(
             f"Jaeger UI did not become ready within ~{timeout_budget:.0f}s. Check `docker compose logs`.",
             file=sys.stderr,

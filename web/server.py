@@ -347,7 +347,8 @@ def _build_snapshot() -> dict:
             p95 = round(statistics.quantiles(latencies, n=20)[-1], 2)
         elif latencies:
             sorted_lats = sorted(latencies)
-            # Nearest-rank p95: ceil(0.95 * n) - 1 to avoid off-by-one at exact multiples
+            # Nearest-rank p95: ceil(0.95 * n) - 1 produces the 95th percentile index
+            # For n=20: ceil(19) - 1 = 18 (the 19th element, 0-indexed)
             p95_idx = max(0, min(int(__import__("math").ceil(0.95 * len(sorted_lats))) - 1, len(sorted_lats) - 1))
             p95 = round(sorted_lats[p95_idx], 2)
         else:
