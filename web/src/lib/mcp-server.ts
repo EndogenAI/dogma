@@ -143,7 +143,7 @@ export class BrowserMcpServer {
   private bridgeSessionId: string | null = null;
   private bridgeLoop: Promise<void> | null = null;
   private bridgeAbortController: AbortController | null = null;
-  private pagehideListener: (() => void) | null = null;
+  private pagehideListener: ((event: PageTransitionEvent) => void) | null = null;
   private started = false;
 
   constructor(options: BrowserMcpServerOptions = {}) {
@@ -173,8 +173,27 @@ export class BrowserMcpServer {
     // Abort the bridge loop when the page unloads (hard refresh / navigation away).
     // Without this, the old loop survives into the next page load and races with the
     // new page's loop for the server session, causing immediate 404s.
-    const onPageHide = () => {
+    //
+    // BFCache (back/forward cache) consideration: pagehide also fires when the page
+    // is frozen into BFCache (event.persisted === true).  In that case we still abort
+    // any in-flight fetch (the browser freezes it anyway), but we must also reset
+    // `started` so start() can re-attach when the user navigates back, and register
+    // a pageshow handler to restart the bridge loop on restoration.
+    const onPageHide = (event: PageTransitionEvent) => {
       this.bridgeAbortController?.abort();
+      if (event.persisted) {
+        // Page is entering BFCache — will be restored via pageshow.
+        this.started = false;
+        window.addEventListener(
+          'pageshow',
+          (showEvent: PageTransitionEvent) => {
+            if (showEvent.persisted) {
+              void this.start();
+            }
+          },
+          { once: true }
+        );
+      }
     };
     this.pagehideListener = onPageHide;
     window.addEventListener('pagehide', onPageHide, { once: true });
@@ -191,7 +210,10 @@ export class BrowserMcpServer {
 
   async stop(): Promise<void> {
     if (this.pagehideListener) {
-      window.removeEventListener('pagehide', this.pagehideListener);
+      window.removeEventListener(
+        'pagehide',
+        this.pagehideListener as EventListenerOrEventListenerObject
+      );
       this.pagehideListener = null;
     }
     this.bridgeAbortController?.abort();
