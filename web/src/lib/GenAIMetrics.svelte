@@ -10,7 +10,7 @@
   let { data }: { data: MetricsSnapshot } = $props();
 
   // RAGAS baseline thresholds (0.0–1.0 scale)
-  // Values from data/governance-thresholds.yml calibration_baseline section
+  // Hard-coded display thresholds (not yet plumbed from data/governance-thresholds.yml)
   const THRESHOLDS = {
     faithfulness: { warning: 0.7, critical: 0.5 },
     answer_relevancy: { warning: 0.7, critical: 0.5 },

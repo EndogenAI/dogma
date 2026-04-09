@@ -33,20 +33,22 @@ cross_reference_density:
     during normal fleet expansion.
 
 # Calibration Baseline — Quarterly Audit Performance
-# Baseline computed from 10 known-good control runs on 2026-04-01 (data/calibration-control-set.jsonl).
+# Baseline computed on 2026-04-01 from the 10 records labeled quality: "good"
+# within data/calibration-control-set.jsonl (the calibration file currently contains 18 labeled runs total).
 # Variance represents the noise floor — expected healthy fluctuation in audit runtime performance.
 # Gate trigger logic: fail only when performance degrades beyond variance × 2 threshold (2σ from baseline).
 # This prevents false positives from natural run-to-run variation while catching genuine regressions.
 # Quarterly Audit Baseline — Audit Runtime Performance
-# Baseline computed from 10 known-good control runs on 2026-04-01 (data/calibration-control-set.jsonl).
+# Baseline computed on 2026-04-01 from the 10 records labeled quality: "good"
+# within data/calibration-control-set.jsonl (the calibration file currently contains 18 labeled runs total).
 # Variance represents the noise floor — expected healthy fluctuation in audit runtime performance.
 # Gate trigger logic: fail only when performance degrades beyond variance × 2 threshold (2σ from baseline).
 # This prevents false positives from natural run-to-run variation while catching genuine regressions.
 quarterly_audit_baseline:
-  mean: 54.698  # Mean audit runtime (seconds) across 10 control runs
+  mean: 54.698  # Mean audit runtime (seconds) across the 10 quality:"good" calibration runs
   variance: 2450.113  # Variance represents noise floor — expected healthy fluctuation
   p95: 144.93  # 95th percentile runtime (seconds) — upper bound for 95% of healthy runs
-  control_set_size: 10  # Number of control runs used to compute baseline
+  control_set_size: 10  # Number of quality:"good" calibration runs used to compute baseline
   calibration_date: "2026-04-01"  # Date baseline was established; update quarterly or when audit changes materially
 
 # MCP Quality Gate RAGAS Baselines (Sprint 22 Phase 7)
