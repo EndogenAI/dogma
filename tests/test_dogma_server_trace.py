@@ -61,13 +61,13 @@ def test_run_with_mcp_telemetry_non_error_enqueues_expected_payload() -> None:
     assert payload["error_message"] is None
     assert payload["source"] == "live"
     assert payload["latency_ms"] >= 0
-    # Phase 9A — verify RAGAS fields are present
+    # Phase 9A — verify RAGAS fields are present (per data/mcp-metrics-schema.yml)
     assert "faithfulness" in payload
-    assert "answer_relevancy" in payload
+    assert "answer_relevance" in payload
     assert "context_precision" in payload
     assert "context_recall" in payload
     assert 0.0 <= payload["faithfulness"] <= 1.0
-    assert 0.0 <= payload["answer_relevancy"] <= 1.0
+    assert 0.0 <= payload["answer_relevance"] <= 1.0
     assert 0.0 <= payload["context_precision"] <= 1.0
     assert 0.0 <= payload["context_recall"] <= 1.0
 

@@ -10,7 +10,7 @@
   let { data }: { data: MetricsSnapshot } = $props();
 
   // RAGAS baseline thresholds (0.0–1.0 scale)
-  // Hard-coded display thresholds (not yet plumbed from data/governance-thresholds.yml)
+  // Hard-coded display thresholds (will be plumbed from data/governance-thresholds.yml "mcp_quality_gate_baseline" section in Sprint 23)
   const THRESHOLDS = {
     faithfulness: { warning: 0.7, critical: 0.5 },
     answer_relevancy: { warning: 0.7, critical: 0.5 },
