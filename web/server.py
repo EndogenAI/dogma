@@ -230,7 +230,15 @@ class BrowserInspectorBridge:
                 if not self._pending_requests:
                     self._condition.wait(timeout=wait_seconds)
 
-                self._require_session(session_id)
+                # Session may have been replaced while waiting (e.g. page HMR
+                # reload calls register_browser, which calls notify_all).
+                # Return None (→ 204) rather than raising 404 so the client
+                # gets a clean no-work response and re-polls immediately;
+                # the stale session_id then fails the first-check on the next
+                # round, and the client re-registers.
+                if self._session_id != session_id or not self._session_is_live():
+                    return None
+
                 self._last_seen_monotonic = time.monotonic()
 
                 if not self._pending_requests:

@@ -65,7 +65,10 @@ def _spawn_processes(repo_root: Path, *, development: bool = False) -> tuple[sub
         "8000",
     ]
     if development:
-        sidecar_cmd.append("--reload")
+        # Scope the watcher to web/ only — the repo root contains many Python
+        # files (scripts/, tests/, mcp_server/) whose edits should not restart
+        # the sidecar and orphan active browser bridge sessions.
+        sidecar_cmd.extend(["--reload", "--reload-dir", str(web_dir)])
     frontend_cmd = ["npm", "run", "dev"]
 
     # Inherit full environment (includes WEBMCP_CORS_ORIGINS when set)
