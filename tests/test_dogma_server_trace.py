@@ -471,19 +471,23 @@ def test_mcp_tool_wrappers_coverage() -> None:
     dogma_server = importlib.import_module("mcp_server.dogma_server")
 
     # Mock the underlying tool functions to avoid file I/O
+    # Note: dogma_server imports these as _scaffold_agent, _validate_agent_file, etc.
+    # so we must patch them on the dogma_server module, not the tools modules
     with (
-        patch("mcp_server.tools.validation.validate_agent_file", return_value={"ok": True, "errors": []}),
-        patch("mcp_server.tools.validation.validate_synthesis", return_value={"ok": True, "errors": []}),
-        patch("mcp_server.tools.validation.check_substrate", return_value={"ok": True, "errors": []}),
-        patch("mcp_server.tools.scaffolding.scaffold_agent", return_value={"ok": True}),
-        patch("mcp_server.tools.scaffolding.scaffold_workplan", return_value={"ok": True}),
-        patch("mcp_server.tools.research.run_research_scout", return_value={"ok": True}),
-        patch("mcp_server.tools.research.query_docs", return_value={"ok": True, "results": []}),
-        patch("mcp_server.tools.scratchpad.prune_scratchpad", return_value={"ok": True}),
-        patch("mcp_server.tools.scratchpad.detect_user_interrupt", return_value={"ok": True, "interrupted": False}),
-        patch("mcp_server.tools.cross_platform_tools.normalize_path", return_value="/test/path"),
-        patch("mcp_server.tools.cross_platform_tools.resolve_env_path", return_value="/test/path"),
-        patch("mcp_server.tools.inference.route_inference_request", return_value={"ok": True}),
+        patch.object(dogma_server, "_validate_agent_file", return_value={"ok": True, "errors": []}),
+        patch.object(dogma_server, "_validate_synthesis", return_value={"ok": True, "errors": []}),
+        patch.object(dogma_server, "_check_substrate", return_value={"ok": True, "errors": []}),
+        patch.object(dogma_server, "_scaffold_agent", return_value={"ok": True}),
+        patch.object(dogma_server, "_scaffold_workplan", return_value={"ok": True}),
+        patch.object(dogma_server, "_run_research_scout", return_value={"ok": True}),
+        patch.object(dogma_server, "_query_docs", return_value={"ok": True, "results": []}),
+        patch.object(dogma_server, "_prune_scratchpad", return_value={"ok": True}),
+        patch.object(dogma_server, "_detect_user_interrupt", return_value={"ok": True, "interrupted": False}),
+        patch.object(dogma_server, "_normalize_path", return_value="/test/path"),
+        patch.object(
+            dogma_server, "_resolve_env_path", return_value={"ok": True, "errors": [], "result": "/test/path"}
+        ),
+        patch.object(dogma_server, "_route_inference_request", return_value={"ok": True}),
         patch.object(dogma_server._JSONL_QUEUE, "put_nowait"),
     ):
         # Call each tool wrapper to exercise the telemetry path
