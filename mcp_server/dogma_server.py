@@ -332,7 +332,7 @@ def _run_with_mcp_telemetry(tool_name: str, call: Callable[[], dict]) -> dict:
                         "source": "live",
                         "tool_version": _TOOL_VERSION,
                         "faithfulness": ragas_metrics["faithfulness"],
-                        "answer_relevancy": ragas_metrics["answer_relevancy"],
+                        "answer_relevance": ragas_metrics["answer_relevancy"],
                         "context_precision": ragas_metrics["context_precision"],
                         "context_recall": ragas_metrics["context_recall"],
                     }

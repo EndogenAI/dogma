@@ -17,10 +17,9 @@ import sys
 
 # Compatibility shim: re-export from new module to avoid breaking existing imports
 # Remove this shim in Sprint 24 after verifying no external callers remain
-from emit_genai_spans import (  # noqa: F401
-    _build_genai_attributes,
-    _emit_to_jaeger,
+from scripts.emit_genai_spans import (  # noqa: F401
     emit_genai_span,
+    validate_genai_span_attributes,
 )
 
 if __name__ == "__main__":
