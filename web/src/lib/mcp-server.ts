@@ -451,6 +451,14 @@ export class BrowserMcpServer {
           continue;
         }
 
+        if (response.status === 404) {
+          // 404 means the session was not found (expired or server restarted).
+          // Re-register immediately — no back-off needed for this known-recoverable state.
+          this.bridgeSessionId = null;
+          this.emitStatus('CONNECTING');
+          continue;
+        }
+
         if (!response.ok) {
           this.bridgeSessionId = null;
           this.emitStatus('CONNECTING');

@@ -516,3 +516,34 @@ def test_browser_session_replacement_invalidates_old_session(tmp_path, monkeypat
 
     active_poll = client.get(f"/mcp/browser/poll?session_id={second_session}&wait=0")
     assert active_poll.status_code == 204
+
+
+@pytest.mark.integration
+def test_browser_poll_returns_204_when_session_replaced_during_wait(tmp_path, monkeypatch):
+    """When a new session registration replaces the active one while a poll is
+    waiting, the in-flight poll must return 204 (graceful no-work) rather than
+    404.  This covers the HMR / page-reload race: register_browser() calls
+    notify_all() which wakes the waiting poll; the poll sees the session was
+    replaced and returns None instead of raising HTTPException(404)."""
+    import time as _time
+
+    client = _make_client(monkeypatch, tmp_path / "nonexistent.jsonl")
+    session_id = client.post("/mcp/browser/session").json()["sessionId"]
+
+    poll_status: dict[str, int] = {}
+
+    def _do_poll() -> None:
+        poll_status["status_code"] = client.get(f"/mcp/browser/poll?session_id={session_id}&wait=2").status_code
+
+    poll_thread = threading.Thread(target=_do_poll)
+    poll_thread.start()
+
+    # Allow the poll thread to enter the condition.wait() before we replace the session.
+    _time.sleep(0.1)
+
+    # Registering a new session calls notify_all(), waking the in-flight poll.
+    client.post("/mcp/browser/session")
+
+    poll_thread.join(timeout=5)
+    assert not poll_thread.is_alive(), "Poll thread did not complete within 5 s"
+    assert poll_status["status_code"] == 204
