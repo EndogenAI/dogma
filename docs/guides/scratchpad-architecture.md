@@ -1,8 +1,8 @@
 ---
 title: "Scratchpad Architecture — Cross-Session Working Memory"
-status: Draft
+status: Final
 owner_issue: 552
-phase: 5
+phase: 8
 x-governs: [session-management, scratchpad, cross-session-retrieval]
 ---
 
@@ -471,9 +471,39 @@ The JSONL schema is designed to be OTel-compatible. When full distributed tracin
 
 ## Standards Compliance
 
-**Status**: Phase 8 (issue #552) — not yet implemented.
+**Status**: Final (Phase 8, issue #552)
 
-This section will consolidate all Phase 5–7 sections into a finalized guide and add compliance gates (CI validation, pre-commit hooks).
+### AGENTS.md Alignment
+
+This guide is the authoritative reference for all scratchpad conventions referenced in [`AGENTS.md § Agent Communication`](../../AGENTS.md#agent-communication). Key alignment points:
+
+- **`.tmp/` folder structure** (directory layout, branch slug, file naming) is governed by the schema in [`data/scratchpad-schema.yml`](../../data/scratchpad-schema.yml) and enforced by `scripts/validate_scratchpad.py`.
+- **Required sections** (Session State, Audit Trail, Telemetry) are the minimum structure for every scratchpad file. Optional sections (Session Start, Phase Output, Session Summary, Executive Handoff) align with the session lifecycle documented in [`session-management` SKILL.md](../../.github/skills/session-management/SKILL.md).
+- **Size Guard**: The `prune_scratchpad.py --force` flag is deprecated. Per-day files replace compression. See [AGENTS.md § Size Guard](../../AGENTS.md#size-guard).
+- **Provenance**: Events logged to `.cache/session-events.jsonl` via `scripts/log_session_event.py` link sessions to commits and issues. See [Provenance Tracking](#provenance-tracking) above.
+
+### agentskills.io Patterns
+
+The scratchpad substrate implements the **durable working memory** pattern from the agentskills.io catalog:
+
+- **Write-on-append**: Agents append under named headings; they never overwrite another agent's section. This prevents coupling between concurrent agent writes.
+- **Executive-as-integrator**: Only the Executive reads the full scratchpad to synthesise findings. Lateral reads violate memory isolation and are prohibited.
+- **Structured state block**: The YAML Session State header at the top of every file is machine-readable and human-editable — satisfying both automated tooling and human inspection requirements.
+
+### MCP Memory Tool Patterns
+
+The `prune_scratchpad` MCP tool in [`mcp_server/dogma_server.py`](../../mcp_server/dogma_server.py) exposes scratchpad operations to connected MCP clients:
+
+- `prune_scratchpad(dry_run=true)` — preferred orientation read at session start; returns current scratchpad state as structured output without writing.
+- `prune_scratchpad(init=true)` — creates a new session file with validated YAML state block.
+
+The export and query tools (`export_scratchpad.py`, `query_sessions.py`) follow the MCP memory tool pattern of **local-first retrieval**: all search and export operations run in-process against the local `.tmp/` corpus, with no external API calls required.
+
+### CI and Validation Gates
+
+- `scripts/validate_scratchpad.py` — runs before export; validates schema compliance
+- `scripts/validate_scratchpad.py` — future CI gate on `.tmp/` changes (deferred to issue #555)
+- Cross-session query: `uv run python scripts/query_sessions.py` — BM25 search across all `.tmp/*/*.md` files
 
 ---
 
