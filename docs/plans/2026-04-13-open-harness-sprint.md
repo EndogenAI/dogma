@@ -252,16 +252,23 @@ These two issues are intentionally **sequenced** (not parallel):
 **Task**:
 - Link scratchpad → commits: Auto-annotate scratchpad entries with commit SHAs after each phase
 - Link scratchpad → issues/PRs: Fetch issue metadata at session start; log in Session State YAML
+- Lightweight structured logging: Implement `.cache/session-events.jsonl` event stream for queryable provenance
+  - Event schema: `{timestamp, event_type, phase, agent, issue, commit_sha, branch, deliverables}`
+  - Query examples: `jq '.[] | select(.issue == 551)' .cache/session-events.jsonl`
+  - OTel-compatible schema (migration path to full distributed tracing via issue #554)
 - Tool: `scripts/annotate_scratchpad_provenance.py` (called after each commit)
 - Tool: `scripts/sync_scratchpad_issues.py` (called at session init)
-- OpenTelemetry integration (optional, advanced — may defer to follow-up issue)
-- Test: Commit → verify scratchpad auto-annotates; session init → verify issue metadata present
+- Tool: `scripts/scratchpad_provenance.py` writes events to `.cache/session-events.jsonl`
+- Test: Commit → verify scratchpad auto-annotates; session init → verify issue metadata present; event stream contains expected entries
 
 **Deliverables**: 
-- Provenance tools committed: `scripts/annotate_scratchpad_provenance.py`, `scripts/sync_scratchpad_issues.py`
-- Tests committed: `tests/test_annotate_scratchpad_provenance.py`, `tests/test_sync_scratchpad_issues.py`
-- Guide update: `docs/guides/scratchpad-architecture.md` (provenance section)
+- Provenance tools committed: `scripts/annotate_scratchpad_provenance.py`, `scripts/sync_scratchpad_issues.py`, `scripts/scratchpad_provenance.py`
+- Tests committed: `tests/test_annotate_scratchpad_provenance.py`, `tests/test_sync_scratchpad_issues.py`, `tests/test_scratchpad_provenance.py`
+- Event stream schema: `data/session-events-schema.yml`
+- Guide update: `docs/guides/scratchpad-architecture.md` (provenance section, event stream query examples)
 - AGENTS.md update (optional): Add provenance as phase-gate-sequence step
+
+**Note**: OpenTelemetry integration deferred to issue #554 (user decision Q4). This phase implements lightweight JSON logging baseline only.
 
 **Depends on**: Phase 6 Review APPROVED  
 **Gate**: Phase 7 Review does not start until deliverables committed  
