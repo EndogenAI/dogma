@@ -348,11 +348,122 @@ This section will document the retrieval tool for searching across all scratchpa
 
 ---
 
-## Provenance
+## Provenance Tracking
 
-**Status**: Phase 7 (issue #552) — not yet implemented.
+**Status**: Implemented (Phase 7, issue #552)
 
-This section will document the provenance tracking system linking session scratchpad entries to committed changes (via `.cache/session-events.jsonl`).
+### Overview
+
+The provenance tracking system creates a queryable audit trail linking scratchpad sessions → commits → issues/PRs using a lightweight JSONL event stream. This enables:
+- **Traceability**: Which commit closed which phase? Which agent produced which deliverables?
+- **Root cause analysis**: When a bug is found, trace back to the session + phase that introduced it
+- **Metrics**: Aggregate session costs, phase durations, delegation patterns
+
+**Architecture choice**: `.cache/session-events.jsonl` (not database, not full OpenTelemetry).
+- **Why JSONL**: Append-only, no migration, queryable via `jq`, lightweight
+- **Why not database**: Avoids schema migration pain; simple file format is portable
+- **Why not OTel now**: Full distributed tracing deferred to issue #554; JSONL is OTel-compatible migration path
+
+### Event Schema
+
+Events are logged to `.cache/session-events.jsonl` with this structure (see [`data/session-events-schema.yml`](../../data/session-events-schema.yml) for full schema):
+
+```json
+{
+  "timestamp": "2026-04-13T12:45:30.123Z",
+  "event_type": "phase_complete",
+  "branch": "feat-open-harness-sprint",
+  "phase": "Phase 7",
+  "agent": "Executive Scripter",
+  "issue": 552,
+  "commit_sha": "208ff28",
+  "pr_number": null,
+  "deliverables": [
+    "scripts/log_session_event.py",
+    "data/session-events-schema.yml"
+  ],
+  "notes": "Provenance tracking implemented"
+}
+```
+
+**Event types**: `session_start`, `session_end`, `phase_start`, `phase_complete`, `delegation`, `commit`, `review`, `issue_comment`
+
+### Logging Events
+
+Use `scripts/log_session_event.py` to append events:
+
+```bash
+# Log phase completion
+uv run python scripts/log_session_event.py \
+  --type phase_complete \
+  --phase "Phase 7" \
+  --agent "Executive Scripter" \
+  --issue 552 \
+  --commit 208ff28 \
+  --deliverables "scripts/log_session_event.py,data/session-events-schema.yml"
+
+# Log session start with multiple issues
+uv run python scripts/log_session_event.py \
+  --type session_start \
+  --agent "Executive Orchestrator" \
+  --issue 551,552 \
+  --notes "Starting Open Harness sprint"
+
+# Log delegation
+uv run python scripts/log_session_event.py \
+  --type delegation \
+  --phase "Phase 6" \
+  --agent "Executive Orchestrator" \
+  --notes "Delegated to Research Scout"
+```
+
+**Validation**: Events are validated against schema before writing. Invalid events are rejected with exit code 1.
+
+### Querying Events
+
+Use `jq` for ad-hoc queries:
+
+```bash
+# All events for issue 552
+jq 'select(.issue == 552 or (.issue | type == "array" and contains([552])))' \
+  .cache/session-events.jsonl
+
+# All commits in last 7 days
+jq 'select(.commit_sha != null and (.timestamp | fromdateiso8601) > (now - 604800))' \
+  .cache/session-events.jsonl
+
+# Events by phase
+jq 'select(.phase == "Phase 4")' .cache/session-events.jsonl
+
+# Group by agent
+jq -s 'group_by(.agent) | map({agent: .[0].agent, count: length})' \
+  .cache/session-events.jsonl
+```
+
+### When to Log Events
+
+**Required events** (logged by Executive Orchestrator or phase-gate-sequence):
+- `session_start` — At session init (after branch sync gate)
+- `phase_complete` — After each phase deliverables are committed
+- `session_end` — Before closing session
+
+**Recommended events**:
+- `delegation` — When passing work to a specialist agent
+- `commit` — After any git commit (logs commit SHA + deliverables)
+- `review` — After Review agent returns verdict
+- `issue_comment` — When posting session progress to GitHub issue
+
+### Integration with phase-gate-sequence
+
+Future work (issue TBD): Integrate `log_session_event.py` into the phase-gate-sequence so that phase completions are automatically logged without manual calls.
+
+### Migration Path to OpenTelemetry
+
+The JSONL schema is designed to be OTel-compatible. When full distributed tracing is implemented (issue #554):
+- Existing events can be imported as OTel spans
+- `timestamp` → span start time
+- `commit_sha`, `issue`, `deliverables` → span attributes
+- `event_type` → span name
 
 **Deferred dependency**: OpenTelemetry integration deferred to issue #554 (user decision Q4). Phase 7 uses `.cache/session-events.jsonl` only.
 

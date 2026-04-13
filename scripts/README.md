@@ -48,6 +48,7 @@ scripts/
   detect_delegation_conflict.py # Pre-delegation conflict detection — reads proposed delegation scope against data/l2-constraints.yml and data/decision-tables.yml; outputs JSON {"safe": bool, "conflicts": [...]}; exits 0 (safe), 1 (conflicts found), 2 (config error); --scope or --stdin JSON; closes #380
   check_substrate_health.py    # CRD health check for startup-loaded substrate files — reports PASS/WARN/BLOCK per file; exits 1 if any file is below the block threshold (--warn-below, --block-below, --files)
   check_problems_panel.py      # Audit and count VS Code Problems panel diagnostics; exits 1 if count > 0; --check-only
+  log_session_event.py         # Log session events to .cache/session-events.jsonl for provenance tracking (issue #552 Phase 7) — appends structured records (phase completions, delegations, commits) with schema validation; queryable via jq
   check_doc_links.py           # Validate that relative file links in Markdown docs resolve to existing files
   check_domain_overlap.py      # Detect concurrent work sessions via branch name overlap with open PRs; checks if proposed branch overlaps with open PR branches; --branch <name>; exit 0 if safe, 1 if overlap detected (closes #434)
   check_readiness_contract.py  # Validate capability matrix exists before "ready" claims; scans files for unqualified readiness language; --scope <path>; exit 0 if compliant, 1 if violations found (closes #445)
