@@ -57,6 +57,7 @@ scripts/
   annotate_provenance.py       # Scan Markdown and .agent.md files for MANIFESTO.md axiom mentions and write x-governs: frontmatter annotations (--scope, --dry-run, --registry, --manifesto, --no-recurse)
   propose_dogma_edit.py        # Programmatic enforcer of the back-propagation protocol — generate ADR-style dogma edit proposals from session evidence (--input, --tier, --affected-axiom, --proposed-delta, --output)
   query_docs.py                # BM25 query CLI over the documentation corpus — scoped retrieval without bulk context loading (query, --scope [manifesto|agents|guides|research|toolchain|skills|all], --top-n, --output text|json)
+  query_sessions.py            # BM25 query CLI for cross-session scratchpad retrieval — searches all .tmp/*/*.md files (excludes _index.md); --branch <slug>|all, --top-n, --output text|json (implements issue #552 Phase 6)
   weave_links.py               # Inject Markdown cross-reference links across the corpus via a YAML concept registry (--scope, --dry-run, --registry); idempotent
   validate_handoff_permeability.py  # Validate cross-substrate handoff signal preservation (Canonical examples, Anti-patterns, Axiom citations, Source URLs) per membrane type (scout-to-synthesizer, synthesizer-to-reviewer, reviewer-to-archivist); AGENTS.md § Signal Preservation Rules enforcement
   parse_audit_result.py        # Convert JSON provenance audit output to Markdown risk assessment & PR comments; compute risk levels (green/yellow/red) from axiom citation intensity and test coverage
