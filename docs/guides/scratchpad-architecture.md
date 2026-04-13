@@ -8,11 +8,9 @@ x-governs: [session-management, scratchpad, cross-session-retrieval]
 
 # Scratchpad Architecture — Cross-Session Working Memory
 
-**Status**: Draft (Phase 5) — Export section implemented. Import (Phase 5 deferred to #553), Cross-Session Retrieval (Phase 6), Provenance (Phase 7), and Standards Compliance (Phase 8) sections to be added in subsequent phases.
-
 **Purpose**: This guide documents the architecture, conventions, and tooling for the `.tmp/` scratchpad substrate — the project's file-based cross-session working memory system for agent coordination and session-state persistence.
 
-**Governing constraints**: [`AGENTS.md § Agent Communication`](../../AGENTS.md#agent-communication), [`session-management` SKILL.md](../../.github/skills/session-management/SKILL.md)
+**Governing constraints**: [`AGENTS.md § Scratchpad Governance`](../../AGENTS.md#scratchpad-governance), [`AGENTS.md § Agent Communication`](../../AGENTS.md#agent-communication), [`session-management` SKILL.md](../../.github/skills/session-management/SKILL.md)
 
 ---
 
