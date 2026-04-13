@@ -27,6 +27,7 @@ scripts/
   validate_agent_files.py      # Encoding fidelity gate for .agent.md AND SKILL.md files — agent (4 checks) + skill (7 checks); --skills flag; run in CI
   validate_skill_files.py      # Specialised validator for .github/skills/ SKILL.md files (7 mandatory checks)
   validate_adr.py              # Validate Architectural Decision Records (ADR) in docs/decisions/ against template and numbering rules
+  validate_scratchpad.py       # Schema compliance validator for .tmp/<branch>/<date>.md scratchpad files — enforces required sections (Session State, Audit Trail, Telemetry), YAML parsing, date consistency, heading hierarchy, phase numbering (exit 0 = pass, 1 = fail)
   validate_session.py          # Validate a session scratchpad against schema and consistency rules
   validate_session_state.py    # Validate the ## Session State YAML block in scratchpads
   validate_gh_body.py          # Scan for gh CLI commands using --body "..." with multi-line strings instead of --body-file; accepts [paths]; exit 0 if clean, 1 if violations found (closes #416)
