@@ -307,7 +307,7 @@ uv run python scripts/query_sessions.py "Phase 1 completed" --top-n 10
 ### When to Use
 
 **Use cross-session retrieval when**:
-- Starting a sprint and need to check if similar work was done before
+- Starting a sprint and need to check if similar work was already attempted in a prior session
 - Looking for prior decisions on a specific topic (e.g., "rate limiting", "BM25 vs vector")
 - Finding which branches/sessions dealt with a specific issue number
 - Recovering context after a compaction event
