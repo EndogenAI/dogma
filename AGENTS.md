@@ -754,6 +754,40 @@ Only **Executive Orchestrator** and **Executive Docs** agents commit to the repo
 - **Executive Docs** commits updates to governance documentation (AGENTS.md, guides, MANIFESTO.md) independently; coordinates timing with Orchestrator for phase gates
 - Subagents do not invoke GitHub agent directly; they route through their executive
 
+<a name="scratchpad-governance"></a>
+
+## Scratchpad Governance
+
+The `.tmp/` scratchpad is the project's **inspectable, exportable, portable working memory** — a file-based substrate for persisting session state, coordinating agents within a session, and preserving context across sessions. This section encodes the mandatory governance constraints; full architecture is in [`docs/guides/scratchpad-architecture.md`](docs/guides/scratchpad-architecture.md).
+
+### Required Structure
+
+Every scratchpad file (`.tmp/<branch-slug>/<YYYY-MM-DD>.md`) must include:
+
+1. **Session State** — YAML block with `branch`, `date`, `active_phase`, `active_issues`, `blockers`, `last_agent`, `phases`
+2. **Audit Trail** — table of agent decisions with justification and timestamp
+3. **Telemetry** — table of phases finished, delegations made, rate-limit events, estimated tokens
+
+Schema: [`data/scratchpad-schema.yml`](data/scratchpad-schema.yml). Validator: `uv run python scripts/validate_scratchpad.py <file>`.
+
+### Tooling Reference
+
+| Tool | Purpose |
+|------|---------|
+| `scripts/prune_scratchpad.py --init` | Create a new session file with validated structure |
+| `scripts/validate_scratchpad.py` | Validate schema compliance before export |
+| `scripts/export_scratchpad.py` | Export to JSON/YAML/Markdown for archival or migration |
+| `scripts/query_sessions.py` | BM25 search across all `.tmp/*/*.md` session files |
+| `scripts/log_session_event.py` | Append provenance events to `.cache/session-events.jsonl` |
+| MCP `prune_scratchpad` tool | Preferred orientation read; returns structured state without writing |
+
+### Retention Policy
+
+- **Active branches**: All session files in `.tmp/` are gitignored and never committed.
+- **Sprint close**: Archive completed sessions to `docs/sessions/` via `export_scratchpad.py --format markdown`.
+- **Per-day files**: Each session day is a separate file; do not compress or `--force` prune during an active sprint.
+- **Follow-up tracking**: At sprint close, untracked work items must be seeded as GitHub issues — scratchpad-only items are invisible to future sessions.
+
 <a name="executive-fleet-privileges"></a>
 ---
 

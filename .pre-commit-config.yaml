@@ -134,3 +134,9 @@ repos:
         types_or: [markdown, python, yaml]
         exclude: '^\.(pre-commit-config\.yaml|lycheeignore)$'
         pass_filenames: true
+      - id: validate-scratchpad
+        name: Validate scratchpad schema compliance (.tmp/ files)
+        entry: uv run python scripts/validate_scratchpad.py --all
+        language: system
+        pass_filenames: false
+        stages: [manual]
