@@ -31,7 +31,7 @@ Outputs:
 Exit codes:
     0  All checks passed.
     1  One or more checks failed — specific gap(s) reported to stdout.
-    2  Invalid usage or file not found.
+    2  Invalid usage — no file argument and --all not specified.
 
 Usage examples:
     # Validate a single scratchpad file
@@ -170,7 +170,9 @@ def validate_heading_hierarchy(content: str) -> list[str]:
     Returns list of error messages (empty if valid).
     """
     errors = []
-    headings = HEADING_PATTERN.findall(content)
+    # Strip fenced code blocks so headings inside them are not evaluated
+    content_no_fences = re.sub(r"```.*?```", "", content, flags=re.DOTALL)
+    headings = HEADING_PATTERN.findall(content_no_fences)
 
     prev_level = 0
     for hashes, text in headings:
@@ -198,8 +200,9 @@ def validate_phase_numbering(content: str) -> list[str]:
     """
     errors = []
 
-    # Find all Phase N Output sections
-    matches = PHASE_OUTPUT_PATTERN.findall(content)
+    # Find all Phase N Output and Phase N Review sections
+    phase_review_pattern = re.compile(r"^## Phase (\d+) Review\b", re.MULTILINE)
+    matches = PHASE_OUTPUT_PATTERN.findall(content) + phase_review_pattern.findall(content)
     if not matches:
         # No Phase sections found — valid (e.g., pre-workplan session)
         return errors

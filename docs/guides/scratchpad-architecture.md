@@ -338,11 +338,7 @@ Typical query performance on a corpus of ~50 session files (~500KB total):
 
 BM25 is fast enough for interactive use — no pre-indexing or caching required.
 
-**Status**: Phase 6 (issue #552) — not yet implemented.
-
-This section will document the retrieval tool for searching across all scratchpad files in `.tmp/*/` to find relevant prior session context.
-
-**Planned approach** (user decision Q2): Research BOTH BM25 and vector retrieval; implement based on findings.
+**Status**: Implemented (Phase 6, issue #552) — use `scripts/query_sessions.py` to search across scratchpad files.
 
 ---
 

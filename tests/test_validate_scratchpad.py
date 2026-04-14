@@ -292,7 +292,9 @@ phases: []
 def test_valid_scratchpad_passes(valid_scratchpad: Path) -> None:
     """Valid scratchpad passes all checks."""
     result = subprocess.run(
-        ["uv", "run", "python", "scripts/validate_scratchpad.py", str(valid_scratchpad)], capture_output=True, text=True
+        ["uv", "run", "python", "scripts/validate_scratchpad.py", str(valid_scratchpad)],
+        capture_output=True,
+        text=True,
     )
 
     assert result.returncode == 0

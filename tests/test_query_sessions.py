@@ -1,8 +1,6 @@
 """Tests for scripts/query_sessions.py"""
 
 import json
-
-# Import the script module
 import sys
 from pathlib import Path
 from unittest.mock import patch
@@ -10,7 +8,8 @@ from unittest.mock import patch
 import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
-import query_sessions
+
+import query_sessions  # noqa: E402
 
 
 @pytest.mark.io
