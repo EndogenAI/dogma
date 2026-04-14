@@ -13,44 +13,17 @@ import pytest
 
 
 @pytest.mark.io
-def test_log_phase_complete_event(tmp_path, monkeypatch):
+def test_log_phase_complete_event():
     """Test logging a phase_complete event with all fields."""
-    # Set up temp cache dir
-    cache_dir = tmp_path / ".cache"
-    cache_dir.mkdir()
-
-    # Mock cache location
     script_path = Path(__file__).parent.parent / "scripts" / "log_session_event.py"
+    events_file = Path(__file__).parent.parent / ".cache" / "session-events.jsonl"
 
-    # Patch the events file location by creating a wrapper
-    test_script = tmp_path / "test_log_event.py"
-    test_script.write_text(
-        f"""
-import sys
-sys.path.insert(0, '{script_path.parent.parent}')
-from scripts.log_session_event import main
+    # Record line count before to detect the new event unambiguously
+    before_count = 0
+    if events_file.exists() and events_file.read_text().strip():
+        before_count = len(events_file.read_text().strip().splitlines())
 
-# Patch cache dir
-from pathlib import Path
-import scripts.log_session_event as mod
-_orig_parent = Path(__file__).parent.parent / ".cache"
-def _patched_parent():
-    return Path('{cache_dir}')
-
-# Run
-if __name__ == '__main__':
-    # Monkey patch the cache dir lookup
-    import scripts.log_session_event
-    _old_file = scripts.log_session_event.__file__
-    scripts.log_session_event.__file__ = '{script_path}'
-    try:
-        sys.exit(main())
-    finally:
-        scripts.log_session_event.__file__ = _old_file
-"""
-    )
-
-    # Run the script
+    # Run the script directly against the real events file
     result = subprocess.run(
         [
             sys.executable,
@@ -74,19 +47,20 @@ if __name__ == '__main__':
         ],
         capture_output=True,
         text=True,
-        cwd=tmp_path,
     )
 
     # Should succeed
     assert result.returncode == 0, f"Script failed: {result.stderr}"
 
-    # Verify file was created and contains valid JSON
-    real_events = Path(__file__).parent.parent / ".cache" / "session-events.jsonl"
-    assert real_events.exists(), "Events file not created"
+    # Verify exactly one new line was appended to the events file
+    assert events_file.exists(), "Events file not created"
+    after_lines = events_file.read_text().strip().splitlines()
+    assert len(after_lines) == before_count + 1, (
+        f"Expected exactly one new event appended; before={before_count}, after={len(after_lines)}"
+    )
 
-    # Read and parse last line
-    lines = real_events.read_text().strip().split("\n")
-    last_event = json.loads(lines[-1])
+    # Parse the newly-appended event
+    last_event = json.loads(after_lines[-1])
 
     # Verify fields
     assert last_event["event_type"] == "phase_complete"
