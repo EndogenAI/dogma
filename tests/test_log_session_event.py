@@ -5,6 +5,7 @@ Validates event logging, schema validation, JSONL append, and error handling.
 """
 
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -13,17 +14,18 @@ import pytest
 
 
 @pytest.mark.io
-def test_log_phase_complete_event():
+def test_log_phase_complete_event(tmp_path: Path):
     """Test logging a phase_complete event with all fields."""
     script_path = Path(__file__).parent.parent / "scripts" / "log_session_event.py"
-    events_file = Path(__file__).parent.parent / ".cache" / "session-events.jsonl"
+    events_file = tmp_path / "session-events.jsonl"
+    env = {**os.environ, "DOGMA_EVENTS_FILE": str(events_file)}
 
     # Record line count before to detect the new event unambiguously
     before_count = 0
     if events_file.exists() and events_file.read_text().strip():
         before_count = len(events_file.read_text().strip().splitlines())
 
-    # Run the script directly against the real events file
+    # Run the script directly against the isolated temp events file
     result = subprocess.run(
         [
             sys.executable,
@@ -47,6 +49,7 @@ def test_log_phase_complete_event():
         ],
         capture_output=True,
         text=True,
+        env=env,
     )
 
     # Should succeed
@@ -75,9 +78,11 @@ def test_log_phase_complete_event():
 
 
 @pytest.mark.io
-def test_log_session_start_multiple_issues(tmp_path):
+def test_log_session_start_multiple_issues(tmp_path: Path):
     """Test logging session_start with multiple issues."""
     script_path = Path(__file__).parent.parent / "scripts" / "log_session_event.py"
+    events_file = tmp_path / "session-events.jsonl"
+    env = {**os.environ, "DOGMA_EVENTS_FILE": str(events_file)}
 
     result = subprocess.run(
         [
@@ -94,12 +99,12 @@ def test_log_session_start_multiple_issues(tmp_path):
         ],
         capture_output=True,
         text=True,
+        env=env,
     )
 
     assert result.returncode == 0
 
-    # Check that event was logged
-    events_file = Path(__file__).parent.parent / ".cache" / "session-events.jsonl"
+    # Check that event was logged to the isolated temp file
     lines = events_file.read_text().strip().split("\n")
     last_event = json.loads(lines[-1])
 
@@ -131,9 +136,11 @@ def test_invalid_event_type():
 
 
 @pytest.mark.io
-def test_minimal_event():
+def test_minimal_event(tmp_path: Path):
     """Test logging event with only required fields."""
     script_path = Path(__file__).parent.parent / "scripts" / "log_session_event.py"
+    events_file = tmp_path / "session-events.jsonl"
+    env = {**os.environ, "DOGMA_EVENTS_FILE": str(events_file)}
 
     result = subprocess.run(
         [
@@ -144,12 +151,12 @@ def test_minimal_event():
         ],
         capture_output=True,
         text=True,
+        env=env,
     )
 
     assert result.returncode == 0
 
     # Verify minimal event has required fields
-    events_file = Path(__file__).parent.parent / ".cache" / "session-events.jsonl"
     lines = events_file.read_text().strip().split("\n")
     last_event = json.loads(lines[-1])
 
@@ -159,16 +166,14 @@ def test_minimal_event():
 
 
 @pytest.mark.io
-def test_jsonl_append_preserves_existing():
+def test_jsonl_append_preserves_existing(tmp_path: Path):
     """Test that new events are appended without overwriting existing ones."""
     script_path = Path(__file__).parent.parent / "scripts" / "log_session_event.py"
-    events_file = Path(__file__).parent.parent / ".cache" / "session-events.jsonl"
+    events_file = tmp_path / "session-events.jsonl"
+    env = {**os.environ, "DOGMA_EVENTS_FILE": str(events_file)}
 
-    # Get initial line count
-    if events_file.exists():
-        initial_count = len(events_file.read_text().strip().split("\n"))
-    else:
-        initial_count = 0
+    # Start from zero — temp file is empty
+    initial_count = 0
 
     # Log 2 events
     for i in range(2):
@@ -183,6 +188,7 @@ def test_jsonl_append_preserves_existing():
             ],
             capture_output=True,
             text=True,
+            env=env,
         )
         assert result.returncode == 0
 
@@ -211,9 +217,11 @@ def test_schema_validation_missing_required():
 
 
 @pytest.mark.io
-def test_deliverables_parsing():
+def test_deliverables_parsing(tmp_path: Path):
     """Test that comma-separated deliverables are parsed correctly."""
     script_path = Path(__file__).parent.parent / "scripts" / "log_session_event.py"
+    events_file = tmp_path / "session-events.jsonl"
+    env = {**os.environ, "DOGMA_EVENTS_FILE": str(events_file)}
 
     result = subprocess.run(
         [
@@ -226,11 +234,11 @@ def test_deliverables_parsing():
         ],
         capture_output=True,
         text=True,
+        env=env,
     )
 
     assert result.returncode == 0
 
-    events_file = Path(__file__).parent.parent / ".cache" / "session-events.jsonl"
     lines = events_file.read_text().strip().split("\n")
     last_event = json.loads(lines[-1])
 

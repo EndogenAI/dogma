@@ -178,8 +178,10 @@ def validate_heading_hierarchy(content: str) -> list[str]:
     for hashes, text in headings:
         level = len(hashes)
 
-        # Allow first heading to be any level
+        # First heading must be H1 (schema requires H1 title)
         if prev_level == 0:
+            if level != 1:
+                errors.append(f"First heading must be H1, found H{level} ('{text}')")
             prev_level = level
             continue
 
@@ -200,14 +202,16 @@ def validate_phase_numbering(content: str) -> list[str]:
     """
     errors = []
 
-    # Find all Phase N Output and Phase N Review sections
-    phase_review_pattern = re.compile(r"^## Phase (\d+) Review\b", re.MULTILINE)
-    matches = PHASE_OUTPUT_PATTERN.findall(content) + phase_review_pattern.findall(content)
+    # Find all Phase N Output and Phase N Review Output sections.
+    # "Workplan Review Output" is a valid heading but has no phase number — excluded by design.
+    # Deduplicate to avoid false positives when both Output and Review Output exist for a phase.
+    phase_review_output_pattern = re.compile(r"^## Phase (\d+) Review Output\b", re.MULTILINE)
+    matches = PHASE_OUTPUT_PATTERN.findall(content) + phase_review_output_pattern.findall(content)
     if not matches:
         # No Phase sections found — valid (e.g., pre-workplan session)
         return errors
 
-    phase_numbers = sorted([int(m) for m in matches])
+    phase_numbers = sorted(set(int(m) for m in matches))
 
     # Check for gaps
     expected = 1
@@ -217,6 +221,39 @@ def validate_phase_numbering(content: str) -> list[str]:
         expected = num + 1
 
     return errors
+
+
+def validate_telemetry_table(content: str) -> list[str]:
+    """
+    Validate the Telemetry section contains at least one data row.
+
+    Schema (data/scratchpad-schema.yml) requires min_rows: 1 for Telemetry.
+    A data row is any table row that is not the separator line (e.g., |---|).
+
+    Returns list of error messages (empty if valid).
+    """
+    bounds = find_section_bounds(content, "Telemetry")
+    if not bounds:
+        return []  # Missing section is caught by required-sections check
+
+    section_content = content[bounds[0] : bounds[1]]
+    lines = section_content.splitlines()
+
+    # Table lines: any line matching | ... |
+    table_lines = [ln for ln in lines if TABLE_PATTERN.match(ln)]
+    if not table_lines:
+        return ["Telemetry section missing table structure"]
+
+    # Separator lines only contain |, -, space, colon
+    separator_re = re.compile(r"^\|[\s\-:|]+\|$")
+    # Non-separator table lines = header row + data rows
+    non_separator = [ln for ln in table_lines if not separator_re.match(ln)]
+
+    # Need at least 2 non-separator lines: header + 1 data row
+    if len(non_separator) < 2:
+        return ["Telemetry table has no data rows (schema requires min_rows: 1)"]
+
+    return []
 
 
 def validate_scratchpad(file_path: Path, verbose: bool = False) -> tuple[bool, list[str]]:
@@ -293,12 +330,9 @@ def validate_scratchpad(file_path: Path, verbose: bool = False) -> tuple[bool, l
             if "|" not in section_content:
                 errors.append("Audit Trail section missing table structure")
 
-    if not check_table_present(content, "Telemetry"):
-        if find_section_bounds(content, "Telemetry"):
-            bounds = find_section_bounds(content, "Telemetry")
-            section_content = content[bounds[0] : bounds[1]]
-            if "|" not in section_content:
-                errors.append("Telemetry section missing table structure")
+    # Check 8: Telemetry table has at least one data row (schema min_rows: 1)
+    telemetry_errors = validate_telemetry_table(content)
+    errors.extend(telemetry_errors)
 
     return (len(errors) == 0, errors)
 

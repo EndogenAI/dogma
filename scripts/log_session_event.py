@@ -57,12 +57,18 @@ Owner issue: #552
 
 import argparse
 import json
+import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 import yaml
+
+# Allow tests (and CI) to override the events file path via env var
+# so tests stay hermetic and never dirty the real .cache/ directory.
+_default_events_file = Path(__file__).parent.parent / ".cache" / "session-events.jsonl"
+EVENTS_FILE: Path = Path(os.environ["DOGMA_EVENTS_FILE"]) if "DOGMA_EVENTS_FILE" in os.environ else _default_events_file
 
 
 def load_schema() -> dict[str, Any]:
@@ -103,6 +109,24 @@ def validate_event(event: dict[str, Any], schema: dict[str, Any]) -> tuple[bool,
             datetime.fromisoformat(event["timestamp"].replace("Z", "+00:00"))
         except ValueError:
             return False, f"Invalid timestamp format: {event['timestamp']}. Must be ISO 8601"
+
+    # Validate optional field types when present (non-None values)
+    issue_val = event.get("issue")
+    if issue_val is not None:
+        if not isinstance(issue_val, (int, list)):
+            return False, f"'issue' must be an int or list of ints, got {type(issue_val).__name__}"
+        if isinstance(issue_val, list) and not all(isinstance(i, int) for i in issue_val):
+            return False, "'issue' list must contain only ints"
+
+    commit_sha_val = event.get("commit_sha")
+    if commit_sha_val is not None:
+        if not isinstance(commit_sha_val, str) or not commit_sha_val.strip():
+            return False, "'commit_sha' must be a non-empty string"
+
+    deliverables_val = event.get("deliverables")
+    if deliverables_val is not None:
+        if not isinstance(deliverables_val, list):
+            return False, f"'deliverables' must be a list, got {type(deliverables_val).__name__}"
 
     return True, ""
 
@@ -228,13 +252,11 @@ Examples:
         print(f"Validation error: {error_msg}", file=sys.stderr)
         return 1
 
-    # Ensure .cache/ exists
-    cache_dir = Path(__file__).parent.parent / ".cache"
-    cache_dir.mkdir(exist_ok=True)
+    # Ensure the events directory exists (supports tmp_path in tests)
+    EVENTS_FILE.parent.mkdir(parents=True, exist_ok=True)
 
     # Append to JSONL
-    events_file = cache_dir / "session-events.jsonl"
-    with events_file.open("a", encoding="utf-8") as f:
+    with EVENTS_FILE.open("a", encoding="utf-8") as f:
         f.write(json.dumps(event) + "\n")
 
     print(f"✓ Event logged: {args.type} ({event['timestamp']})")
