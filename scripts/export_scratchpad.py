@@ -252,8 +252,9 @@ def validate_scratchpad(file_path: Path) -> bool:
     """
     import subprocess
 
+    _validate_script = Path(__file__).parent / "validate_scratchpad.py"
     result = subprocess.run(
-        ["uv", "run", "python", "scripts/validate_scratchpad.py", str(file_path), "--check-only"],
+        ["uv", "run", "python", str(_validate_script), str(file_path), "--check-only"],
         capture_output=True,
     )
 
