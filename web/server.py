@@ -423,6 +423,7 @@ def create_app() -> FastAPI:
     """
     app = FastAPI(title="MCP Dashboard Sidecar", version="0.1.0")
     bridge = BrowserInspectorBridge()
+    app.state.bridge = bridge
 
     cors_origins_env = os.getenv("WEBMCP_CORS_ORIGINS")
     if cors_origins_env is None:
