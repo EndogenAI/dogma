@@ -2124,15 +2124,6 @@
       "file": ".cache/sources/example-com.md",
       "content_type": "text/html",
       "size_bytes": 167
-    },
-    "blog-langchain-com-your-harness-your-memory": {
-      "url": "https://blog.langchain.com/your-harness-your-memory/",
-      "slug": "blog-langchain-com-your-harness-your-memory",
-      "title": "",
-      "fetched_at": "2026-04-13T17:02:42",
-      "file": ".cache/sources/blog-langchain-com-your-harness-your-memory.md",
-      "content_type": "text/html",
-      "size_bytes": 10939
     }
   }
 }

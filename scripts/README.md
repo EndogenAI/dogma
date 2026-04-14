@@ -27,8 +27,6 @@ scripts/
   validate_agent_files.py      # Encoding fidelity gate for .agent.md AND SKILL.md files — agent (4 checks) + skill (7 checks); --skills flag; run in CI
   validate_skill_files.py      # Specialised validator for .github/skills/ SKILL.md files (7 mandatory checks)
   validate_adr.py              # Validate Architectural Decision Records (ADR) in docs/decisions/ against template and numbering rules
-  validate_scratchpad.py       # Schema compliance validator for .tmp/<branch>/<date>.md scratchpad files — enforces required sections (Session State, Audit Trail, Telemetry), YAML parsing, date consistency, heading hierarchy, phase numbering (exit 0 = pass, 1 = fail)
-  export_scratchpad.py         # Export .tmp/<branch>/<date>.md scratchpad files to JSON, YAML, or Markdown formats for archival, migration, or external tool integration; --format {json,yaml,markdown}, --all for batch export, validates schema before exporting (exit 0 = success, 1 = validation failure, 2 = usage error)
   validate_session.py          # Validate a session scratchpad against schema and consistency rules
   validate_session_state.py    # Validate the ## Session State YAML block in scratchpads
   validate_gh_body.py          # Scan for gh CLI commands using --body "..." with multi-line strings instead of --body-file; accepts [paths]; exit 0 if clean, 1 if violations found (closes #416)
@@ -48,7 +46,6 @@ scripts/
   detect_delegation_conflict.py # Pre-delegation conflict detection — reads proposed delegation scope against data/l2-constraints.yml and data/decision-tables.yml; outputs JSON {"safe": bool, "conflicts": [...]}; exits 0 (safe), 1 (conflicts found), 2 (config error); --scope or --stdin JSON; closes #380
   check_substrate_health.py    # CRD health check for startup-loaded substrate files — reports PASS/WARN/BLOCK per file; exits 1 if any file is below the block threshold (--warn-below, --block-below, --files)
   check_problems_panel.py      # Audit and count VS Code Problems panel diagnostics; exits 1 if count > 0; --check-only
-  log_session_event.py         # Log session events to .cache/session-events.jsonl for provenance tracking (issue #552 Phase 7) — appends structured records (phase completions, delegations, commits) with schema validation; queryable via jq
   check_doc_links.py           # Validate that relative file links in Markdown docs resolve to existing files
   check_domain_overlap.py      # Detect concurrent work sessions via branch name overlap with open PRs; checks if proposed branch overlaps with open PR branches; --branch <name>; exit 0 if safe, 1 if overlap detected (closes #434)
   check_readiness_contract.py  # Validate capability matrix exists before "ready" claims; scans files for unqualified readiness language; --scope <path>; exit 0 if compliant, 1 if violations found (closes #445)
@@ -58,7 +55,6 @@ scripts/
   annotate_provenance.py       # Scan Markdown and .agent.md files for MANIFESTO.md axiom mentions and write x-governs: frontmatter annotations (--scope, --dry-run, --registry, --manifesto, --no-recurse)
   propose_dogma_edit.py        # Programmatic enforcer of the back-propagation protocol — generate ADR-style dogma edit proposals from session evidence (--input, --tier, --affected-axiom, --proposed-delta, --output)
   query_docs.py                # BM25 query CLI over the documentation corpus — scoped retrieval without bulk context loading (query, --scope [manifesto|agents|guides|research|toolchain|skills|all], --top-n, --output text|json)
-  query_sessions.py            # BM25 query CLI for cross-session scratchpad retrieval — searches all .tmp/*/*.md files (excludes _index.md); --branch <slug>|all, --top-n, --output text|json (implements issue #552 Phase 6)
   weave_links.py               # Inject Markdown cross-reference links across the corpus via a YAML concept registry (--scope, --dry-run, --registry); idempotent
   validate_handoff_permeability.py  # Validate cross-substrate handoff signal preservation (Canonical examples, Anti-patterns, Axiom citations, Source URLs) per membrane type (scout-to-synthesizer, synthesizer-to-reviewer, reviewer-to-archivist); AGENTS.md § Signal Preservation Rules enforcement
   parse_audit_result.py        # Convert JSON provenance audit output to Markdown risk assessment & PR comments; compute risk levels (green/yellow/red) from axiom citation intensity and test coverage

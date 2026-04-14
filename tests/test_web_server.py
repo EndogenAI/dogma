@@ -537,11 +537,9 @@ def test_browser_poll_returns_204_when_session_replaced_during_wait(tmp_path, mo
     poll_status: dict[str, int] = {}
     entered_wait = threading.Event()
     _original_condition_wait = threading.Condition.wait
-    _bridge_condition = client.app.state.bridge._condition
 
     def _spy_condition_wait(self, timeout=None):
-        if self is _bridge_condition:
-            entered_wait.set()
+        entered_wait.set()
         return _original_condition_wait(self, timeout=timeout)
 
     # Patch Condition.wait for the duration of this test so we know exactly

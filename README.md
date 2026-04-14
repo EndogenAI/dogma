@@ -142,12 +142,6 @@ See [docs/guides/mcp-dashboard.md](docs/guides/mcp-dashboard.md) for full docs.
 
 ---
 
-## Scratchpad Working Memory
-
-Every agent session writes to `.tmp/<branch>/<date>.md` — an **inspectable, exportable, portable working memory** substrate that persists phase outputs, audit trails, and telemetry across compaction events and multi-day sprints. Query prior sessions with `uv run python scripts/query_sessions.py "<keyword>"`, export to JSON/YAML with `scripts/export_scratchpad.py`, and link session events to commits via `scripts/log_session_event.py`. See [docs/guides/scratchpad-architecture.md](docs/guides/scratchpad-architecture.md) for the full architecture guide.
-
----
-
 ## Related
 
 - [AccessiTech/EndogenAI](https://github.com/AccessiTech/EndogenAI) — the experimental MCP framework where these patterns were pioneered
