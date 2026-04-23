@@ -1124,6 +1124,19 @@ MANIFESTO.md → AGENTS.md (central) → role files (.agent.md) → SKILL.md fil
 
 Every `SKILL.md` body **must reference this file (`AGENTS.md`) as its governing constraint** — cite the governing axiom in the first substantive section.
 
+### Skill Tool Prescriptions Are Mandatory
+
+**Skills encode not just procedures, but the required tool(s) to execute them.** When a skill prescribes a specific tool, script, or workflow command (e.g., `scripts/pr_review_reply.py` for inline PR comment replies), that tool **MUST** be used — never substitute a different command that appears functionally similar.
+
+**Why**: Tool substitutions violate the deterministic encoding principle (MANIFESTO.md § 2 Algorithms-Before-Tokens). A skill's tool selection is optimized for the specific scope, output format, and constraint envelope. Substituting `gh pr comment` for `pr_review_reply.py` changes the scope (top-level vs. threaded replies) and produces wrong output.
+
+**Example of violation**:
+- Skill prescribes: `uv run python scripts/pr_review_reply.py --pr <num> --batch <file>`
+- Agent uses instead: `gh pr comment <num> --body "..."`
+- Result: Comments post at wrong scope (top-level instead of inline), side effects multiply (e.g., tagging Copilot triggers unwanted task lanes)
+
+**Enforcement**: Pre-commit hooks and CI gates validate that committed scripts do not contain substituted commands. Agents must read skills fully before acting and treat tool prescriptions as binding constraints, not optional guidance.
+
 **CI validation** — run before committing any `.github/skills/` change:
 
 ```bash

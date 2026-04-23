@@ -145,6 +145,47 @@ Do not request re-review until all threads are resolved — unresolved threads i
 
 ---
 
+## Anti-Patterns (Common Mistakes)
+
+### ❌ DO NOT use `gh pr comment` for inline replies
+
+```bash
+# WRONG — posts a top-level comment, NOT a threaded reply to the specific comment
+gh pr comment 144 --body "Fixed in abc123"
+```
+
+This posts at the wrong scope and orphans the reply from its comment thread. Use `pr_review_reply.py` instead:
+
+```bash
+# CORRECT — posts as a threaded reply to the specific comment
+uv run python scripts/pr_review_reply.py --pr 144 --batch .tmp/replies.json
+```
+
+Top-level comments cannot be tied to specific review feedback.
+
+### ❌ DO NOT use `gh pr comment` with Copilot tags
+
+```bash
+# WRONG — @github-copilot tag in top-level comment creates unwanted Copilot task lanes
+gh pr comment 144 --body "@github-copilot Fixed in abc123 by doing X"
+```
+
+This triggers secondary Copilot tasks to "fix" things mentioned in the generic comment, creating noise and forcing manual intervention.
+
+Reply directly via `pr_review_reply.py` without tags. The PR review reply should cite the commit SHA and the fix — let the code speak for itself.
+
+### ❌ DO NOT use `--body "..."` with multi-line text
+
+```bash
+# WRONG — shell quoting breaks multi-line text and backticks corrupt output
+uv run python scripts/pr_review_reply.py --pr 144 --reply-to 12345 --body "Fixed in abc123.
+Also updated the docs."
+```
+
+Use batch mode with a JSON file instead — it handles multi-line text and special characters correctly.
+
+---
+
 ## Guardrails
 
 - **Never pass multi-line reply bodies via `--body "..."`** on the command line — use `--batch` with a JSON file.

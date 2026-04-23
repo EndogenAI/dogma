@@ -223,3 +223,38 @@ acceptable. **Zero error output is not confirmation of success** — always veri
 ```
 
 **Result**: 2 fix commits, 1 batch reply call, all blocking/suggestion threads resolved.
+
+---
+
+## 6. Guardrails
+
+### ❌ DO NOT use `gh pr comment` for inline replies
+
+When moving from Step 5 (build batch file) to Step 6 (post replies), **you must use `pr_review_reply.py --batch`**, not `gh pr comment`.
+
+**Wrong**:
+```bash
+# Posts a top-level comment, orphans it from the review thread
+gh pr comment 144 --body "Fixed in abc123"
+```
+
+**Correct**:
+```bash
+# Posts as a threaded reply to the specific comment
+uv run python scripts/pr_review_reply.py --pr 144 --batch .tmp/replies.json
+```
+
+See [pr-review-reply skill](../pr-review-reply/SKILL.md) § Anti-Patterns for details on why tool substitution breaks scope.
+
+### ❌ DO NOT tag Copilot in reply comments
+
+```bash
+# WRONG — creates unwanted secondary Copilot tasks
+gh pr comment 144 --body "@github-copilot Fixed in abc123 by doing X"
+```
+
+Use `pr_review_reply.py` without tags. The fix commit SHA and explanation speak for themselves.
+
+### ✅ Delegate inline reply posting to `pr_review_reply` skill
+
+Step 6 of this workflow **requires** the [pr-review-reply skill](../pr-review-reply/SKILL.md). Do not attempt inline replies outside that skill's tools.
