@@ -61,11 +61,6 @@ POSTURE_TOOLS: dict[str, list[str]] = {
     ],
 }
 
-# NOTE: The TODO comments below are intentional template placeholders that get
-# written into newly scaffolded agent files. Users are instructed to fill them
-# in when creating a new agent. These are NOT orphaned TODOs. See:
-# - scripts/README.md: "After running: fill in the TODO sections"
-# - .github/agents/README.md: "Fill in the generated stub's TODO sections"
 TEMPLATE = """\
 ---
 name: {name}
