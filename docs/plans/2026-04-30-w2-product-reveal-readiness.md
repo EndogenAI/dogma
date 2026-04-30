@@ -114,7 +114,7 @@ Write update summary under `## Phase 0.5 PM Workplan Updates` in scratchpad.
 - Community section added to README
 - All changes committed to feat/w2-product-reveal-readiness-561-562
 
-**Depends on**: Phase 0 Review APPROVED  
+**Depends on**: Phase 0 Review APPROVED, Phase 0.5 recommendations applied to workplan  
 **Gate**: Phase 1 Review does not start until all deliverables committed  
 **Status**: ⬜ Not started
 
