@@ -438,6 +438,12 @@ Before starting any task, ask yourself:
 - Orchestrator does not commit, push, or invoke gh directly
 - Exception: `git status`, `git log --oneline` for state queries only
 
+❌ Merging a PR (`gh pr merge`):
+- Always run the PR Review Triage Gate first (§ 6 Session Close) — including `wait_for_pr_review.py`
+- Always obtain explicit user "go ahead" in the current session before any merge action
+- Never self-authorize: CI pass + Review APPROVED ≠ permission to merge
+- Exception: None
+
 ❌ GitHub content creation (labels, milestones, issue seeding):
 - Use Executive PM exclusively
 
@@ -564,14 +570,17 @@ When all phases are complete:
 **Before suggesting merge or treating any open PR as ready to merge — run the PR Review Triage Gate:**
 
 ```bash
-# Check for any open PR on this branch
+# Step 0: Wait for Copilot review to land before checking (do NOT skip — review posts async after PR open)
+uv run python scripts/wait_for_pr_review.py <pr> --min-reviews 1
+
+# Step 1: Check for any open PR on this branch
 gh pr view --json number,state,reviews,reviewThreads 2>/dev/null || echo "No PR open"
 
-# If a PR exists, retrieve all inline comments
+# Step 2: Retrieve all inline comments
 gh api repos/<owner>/<repo>/pulls/<num>/comments --jq '.[] | {id, path, body}'
 ```
 
-Triage every review comment (Blocking / Suggestion / Nit / Question) before treating the session as closed. A "PR is open — ready to merge" statement without this step is an encoding failure. See [AGENTS.md § PR Review Triage Gate](../../AGENTS.md#pr-review-triage-gate) and [pr-review-triage skill](../../.github/skills/pr-review-triage/SKILL.md).
+Triage every review comment (Blocking / Suggestion / Nit / Question) before treating the session as closed. A "PR is open — ready to merge" statement without this step is an encoding failure. **Never execute `gh pr merge` or suggest merge without explicit user "go ahead" in the current session — CI pass ≠ merge authorization.** See [AGENTS.md § PR Review Triage Gate](../../AGENTS.md#pr-review-triage-gate) and [pr-review-triage skill](../../.github/skills/pr-review-triage/SKILL.md).
 
 ### Session Delegation Audit (Optional Post-Session Check)
 
