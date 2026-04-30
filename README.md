@@ -16,6 +16,7 @@ The authoritative source for **endogenic / agentic product design and developmen
 ## Contents
 
 - [What Is This Repo?](#what-is-this-repo)
+- [Why DogmaMCP?](#why-dogmamc p)
 - [Architecture](#architecture)
 - [Core Principles](#core-principles)
 - [MCP Toolset](#mcp-toolset)
@@ -30,7 +31,9 @@ The authoritative source for **endogenic / agentic product design and developmen
 
 ## What Is This Repo?
 
-This repo holds the canonical reference for how we work with AI coding agents. It is a living manifesto, a workflow library, and a scripts catalog — not an application codebase.
+**DogmaMCP** is a governance framework and MCP server that embeds organizational values directly into AI agent workflows — ensuring AI systems operate within your constraints by design, not by policy.
+
+Instead of relying on post-hoc audits or manual oversight, DogmaMCP encodes your principles, conventions, and constraints as executable substrate: agent role files, validation scripts, and runtime enforcement tools that agents read and obey before every action.
 
 **Contents:**
 
@@ -43,6 +46,46 @@ This repo holds the canonical reference for how we work with AI coding agents. I
 | [`.github/agents/`](.github/agents/) | VS Code Copilot custom agent files |
 | [`scripts/`](scripts/) | Reusable automation and utility scripts |
 | [`docs/`](docs/) | Guides, protocols, and best practice documentation |
+
+---
+
+## Why DogmaMCP?
+
+### The Problem
+
+AI coding agents are powerful, but they often violate organizational values in subtle ways:
+- Rewriting code that breaks established conventions
+- Introducing dependencies that conflict with security policies
+- Generating documentation that misrepresents product positioning
+- Bypassing governance constraints through prompt manipulation
+
+Post-hoc review catches mistakes, but at the cost of wasted cycles, broken trust, and accumulated technical debt.
+
+### The Solution
+
+DogmaMCP shifts values enforcement from the **policy layer** (rules written in docs that agents may ignore) to the **architecture layer** (constraints embedded as code that agents must obey).
+
+Your principles become executable:
+- **Agent role files** that define authority boundaries and escalation paths
+- **Validation scripts** that gate commits before they reach version control
+- **MCP tools** that enforce conventions at runtime (e.g., path safety, schema compliance)
+
+### Key Benefits
+
+| Benefit | What It Means |
+|---------|---------------|
+| **Sovereignty** | Your values stay in your repo — no external policy servers or vendor-controlled guardrails |
+| **Auditability** | Every agent decision is logged to inspectable scratchpad files with full context trails |
+| **Portability** | Fork, customize, and adopt in minutes — no platform lock-in or API dependencies |
+| **Composability** | Mix and match agent roles, validation rules, and MCP tools to fit your workflow |
+
+### Use Cases
+
+**Regulated industries**: Encode compliance constraints (e.g., HIPAA data handling, SOC2 controls) as pre-commit hooks and MCP validation tools that agents cannot bypass.
+
+**Open-source maintainers**: Prevent agents from introducing unlicensed dependencies or violating contribution guidelines through automated substrate checks.
+
+**Product teams**: Align agent-generated documentation with brand positioning by encoding tone, terminology, and messaging guardrails as agent role files.
 
 ---
 
@@ -115,48 +158,55 @@ See [mcp_server/README.md](mcp_server/README.md) for setup and tool reference.
 
 ## Quick Start
 
-### Adopt dogma in your project
+### Adopt DogmaMCP in Your Project
 
-Use dogma as a cookiecutter template or run the adoption wizard:
+Two paths to adoption:
 
 ```bash
-# Option 1: cookiecutter
+# Option 1: Cookiecutter template (recommended for new projects)
 uvx cookiecutter gh:EndogenAI/dogma
 
-# Option 2: adoption wizard (interactive)
+# Option 2: Adoption wizard (recommended for existing repos)
 cd /path/to/your-repo
 uv run python /path/to/dogma/scripts/adopt_wizard.py
 ```
 
-For full fork initialization, see [Product Fork Initialization Guide](docs/guides/product-fork-initialization.md).
+The adoption wizard interactively scaffolds agent files, validation scripts, and MCP server configuration tailored to your project's structure.
 
-### Contribute to dogma
+For full fork initialization guidance, see [Product Fork Initialization Guide](docs/guides/product-fork-initialization.md).
 
-Fork this repo, create a feature branch, and open a PR. See [CONTRIBUTING.md](CONTRIBUTING.md) for commit conventions and pre-commit setup.
+### Contribute to DogmaMCP
+
+Contributions welcome! Fork this repo, create a feature branch, and open a PR. See [CONTRIBUTING.md](CONTRIBUTING.md) for commit conventions and pre-commit setup.
 
 ### Using the Agent Fleet
 
-The `.github/agents/` directory contains VS Code Copilot custom agents. To use them:
+DogmaMCP ships with 15+ custom agent role files for VS Code Copilot. To use them:
 
-1. Open this repo (or any consuming repo that references these agents) in VS Code
+1. Open a repo that has adopted DogmaMCP (or this repo itself) in VS Code
 2. Open Copilot Chat
-3. Use `@<agent-name>` to invoke any agent in the fleet
+3. Invoke any agent with `@<agent-name>` (e.g., `@executive-scripter`)
 
-See [`docs/guides/agents.md`](docs/guides/agents.md) for the complete guide.
+Each agent operates within defined authority boundaries and handoff paths, preventing scope creep and unauthorized actions.
 
-### Running Scripts
+See [`docs/guides/agents.md`](docs/guides/agents.md) for the complete agent catalog and authoring guide.
 
-All scripts are invoked via `uv run`:
+### Running Validation Scripts
+
+All scripts use `uv run` for deterministic environment management:
 
 ```bash
-# Initialize a scratchpad session file for today
+# Initialize a session scratchpad (portable working memory)
 uv run python scripts/prune_scratchpad.py --init
 
-# Start the scratchpad watcher (auto-annotates session files on change)
+# Start the scratchpad watcher (auto-annotates headings with line ranges)
 uv run python scripts/watch_scratchpad.py
+
+# Validate agent files before committing
+uv run python scripts/validate_agent_files.py --all
 ```
 
-See [`scripts/README.md`](scripts/README.md) for the full catalog.
+See [`scripts/README.md`](scripts/README.md) for the full script catalog.
 
 ---
 
