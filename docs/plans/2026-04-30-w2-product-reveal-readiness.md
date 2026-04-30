@@ -122,21 +122,30 @@ Write update summary under `## Phase 0.5 PM Workplan Updates` in scratchpad.
 
 ### 1.1 — README.md Refactor (2–3 hours)
 
-**Context**: Current README needs significant expansion for product reveal readiness. Issue #561 specifies:
+**Context**: Current README needs significant expansion for product reveal readiness. Issue #561 specifies hero, architecture, MCP toolset, and quick start sections. **Phase 0.5 Biz Dev research identifies 5 must-have deliverables** for inbound developer credibility (from Q1–Q3 survey of high-credibility OSS repos).
 
-- **Hero section**: DogmaMCP brand + "Values ingrained, sovereignty sustained" tagline
+**Must-Have Deliverables** (from Phase 0.5 research):
+1. **Hero tagline**: "Values ingrained, sovereignty sustained" (user-confirmed final)
+2. **License badge**: Apache 2.0 badge next to CI badge in hero section
+3. **Community section**: GitHub Discussions link + CONTRIBUTING link + CODE_OF_CONDUCT reference (≤5 lines)
+4. **Adoption flows**: Two clear paths with example commands:
+   - "Adopt dogma in your project": `cookiecutter gh:EndogenAI/dogma` or `uv run python scripts/adopt_wizard.py`
+   - "Contribute to dogma": One-line summary + link to CONTRIBUTING.md (≤3 lines)
+5. **Dashboard visual**: 1 screenshot/GIF of MCP Dashboard in "MCP Dashboard" section + link to `mcp_server/README.md` immediately after
+
+**Additional #561 Spec Items**:
 - **Two-surface architecture explanation**: permanent substrate + MCP enforcement layer
 - **MCP toolset overview table**: list of 8 MCP tools + brief descriptions
-- **Quick Start adoption path**: Two flows (adopting dogma template vs contributing to dogma)
-- **GitHub Discussions / Community section**: Link to discussions, contributor guide
 - **Repo metadata**: Updated description + topics in GitHub settings
 
 **Success Criteria**:
-- ✅ Hero section introduces "Values ingrained, sovereignty sustained" as tagline
+- ✅ All 5 must-have deliverables from Phase 0.5 research present
+- ✅ Hero section introduces tagline + license badge
 - ✅ Two-surface architecture is clearly explained (substrate + MCP)
 - ✅ MCP toolset table is present with ≥6 tools listed
-- ✅ Quick start has both adoption and contribution paths
-- ✅ Community/discussions section is linked
+- ✅ Community section has ≥2 actionable links (Discussions, CONTRIBUTING)
+- ✅ Quick start has both adoption flows with example commands
+- ✅ Dashboard visual (screenshot or GIF) present in MCP Dashboard section
 - ✅ File compiles without linting errors (`ruff check README.md` passes)
 
 **Research Gap** (if needed): Scout existing README.md to understand current structure before refactor.
@@ -204,15 +213,20 @@ Return APPROVED or REQUEST CHANGES — [criterion number: one-line reason].
 
 **Task**: Review `mcp_server/README.md` and ensure it's linked prominently from main README (Phase 1 MCP table can link here).
 
+**Note**: Phase 1 already adds dashboard visual + link to `mcp_server/README.md` per Phase 0.5 research. This task verifies completeness and enhances if needed.
+
 **Success Criteria**: mcp_server/README.md exists and is linked from main README MCP toolset section.
 
-### 2.2 — Adoption Path Clarity (45 minutes)
+### 2.2 — Optional Enhancements (Version Badge, Dashboard GIF) (45 minutes)
 
-**Task**: Clarify the two adoption flows in README Quick Start:
-1. **Adopt dogma as a template** (new projects using cookiecutter or `adopt_wizard.py`)
-2. **Contribute to dogma** (fork + feature branch + PR back to EndogenAI/dogma)
+**Task** (Phase 0.5 research — "Important" tier):
+1. **Version badge**: Add version/release badge if dogma has versioned releases (check `CHANGELOG.md` or git tags)
+2. **Dashboard GIF**: If Phase 1 used static screenshot, upgrade to animated GIF showing real telemetry/interaction (≤2MB)
+3. **Quick Start mobile optimization**: Verify Quick Start visible within 3 scrolls on mobile viewport
 
-**Success Criteria**: Quick Start section has clear, sequential steps for both flows; example commands shown.
+**Note**: Phase 1 already handles adoption flow clarity per research (two flows with example commands). This task is for enhancement polish.
+
+**Success Criteria**: Version badge present (if applicable), dashboard visual optimized, mobile Quick Start validated.
 
 ### 2.3 — TODO/FIXME Sweep (1.5 hours)
 
@@ -280,6 +294,13 @@ Return APPROVED or REQUEST CHANGES — [criterion number: one-line reason].
 
 These are tracked for future sprints; do NOT block W2 publish:
 
+**From Phase 0.5 Research (Q3 — Defer tier)**:
+- [ ] Coverage badge (requires coverage reporting setup; not critical for W2)
+- [ ] Download/install count badge (PyPI or npm stats if applicable)
+- [ ] Live demo link for MCP Dashboard (if dashboard can be hosted publicly)
+- [ ] Sponsor section (if fundraising active)
+
+**From Original #562 Nice-to-Have**:
 - [ ] Concrete examples/demos section in README
 - [ ] AccessiTech/EndogenAI relationship clarification
 - [ ] Test coverage + pre-commit.ci badges
