@@ -318,7 +318,7 @@ uv run mypy mcp_server/
 **Symptoms**: Tool calls fail with an error indicating the path "resolves outside the repository root".
 
 **Solutions**:
-1. **Use relative paths**: All file paths must be relative to the repository root (e.g., `docs/plans/file.md`, not `/absolute/path/to/file.md`)
+1. **Use paths within the repository root**: File paths may be relative to the repository root (e.g., `docs/plans/file.md`) or absolute paths that still resolve within the repository root; paths outside the repo root will be rejected
 2. **Check symlinks**: MCP server resolves symlinks — ensure requested paths do not traverse through symlinks to locations outside the repo
 3. **Repository root detection**: The server determines the repository root from its filesystem location — verify the server is running from the expected repository checkout/path
 

@@ -22,7 +22,7 @@
 **Workplan Review Criteria** (pass all 4):
 1. Cross-cutting research items (if any) are in Phase 1, not marked "parallel with" dependent phases
 2. Phase-specific research/docs precede implementation phases that depend on them
-3. Critical path items (deadline Wed EOD) are in Phase 1
+3. Critical path items (deadline Thu EOD) are in Phase 1
 4. Phase dependencies are explicit (`Depends on:` annotations present)
 
 ---
@@ -318,7 +318,7 @@ These are tracked for future sprints; do NOT block W2 publish:
 - ✅ Quick Start adoption paths documented (both flows clear)
 - ✅ Community/discussions section linked
 - ✅ GitHub repo metadata updated
-- ✅ All changes merged to main by Wed EOD
+- ✅ All changes merged to main by Thu EOD
 
 **Important Success Criteria** (Thu May 1–7):
 - ✅ TODO/FIXME resolution complete or tracked
@@ -403,7 +403,7 @@ All commits follow [Conventional Commits](../../CONTRIBUTING.md#commit-disciplin
 
 - **Issue #561**: README.md refactor spec — full acceptance criteria
 - **Issue #562**: W2 Readiness Checklist — critical/important/nice-to-have breakdown
-- **Blog Publish**: Thu May 8, 2026 — accessi.tech/blog/why-we-built-endogenai
+- **Blog Publish**: Fri May 8, 2026 — accessi.tech/blog/why-we-built-endogenai
 - **Previous Session Context**: Comms schedule + dev.to policy available in consulting repo
 - **AGENTS.md**: Governance constraints for all agent behavior in this repo
 - **mcp_server/README.md**: Existing MCP documentation to review

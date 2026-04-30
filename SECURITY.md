@@ -59,8 +59,8 @@ For detailed security architecture, see:
 
 The project maintains automated dependency auditing:
 
-- `scripts/audit_dependencies.py` — audits Python dependencies against OSV database
-- GitHub Actions workflow (`.github/workflows/quarterly-dependency-audit.yml`) — runs scheduled dependency audits quarterly
+- `scripts/audit_dependencies.py` — audits Python dependencies against OSV database (treats `.cache/cve-db.json` as optional; exits 0 if absent)
+- GitHub Actions workflow (`.github/workflows/quarterly-dependency-audit.yml`) — runs scheduled dependency audits quarterly; **requires a pre-populated `.cache/cve-db.json`** and will fail if the file is missing
 
 See [`docs/research/owasp-llm-threat-model.md`](docs/research/owasp-llm-threat-model.md) for the threat model and security design decisions.
 
