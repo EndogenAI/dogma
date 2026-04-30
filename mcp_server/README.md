@@ -261,3 +261,97 @@ uv run mypy mcp_server/
 - `prune_scratchpad(branch: str = "", dry_run: bool = False) -> dict`
   - Wraps `scripts/prune_scratchpad.py` (`--init`/`--check-only`)
   - Supports explicit branch-targeted daily scratchpad path via `--file`
+
+---
+
+## Troubleshooting
+
+### MCP Server Not Appearing in Client
+
+**Symptoms**: Tools don't appear in Claude Desktop, Cursor, or VS Code after configuring `mcp.json`.
+
+**Solutions**:
+1. **Verify configuration path**:
+   - Claude Desktop: `~/.claude/claude_desktop_config.json` (not `.claude_desktop_config.json`)
+   - Cursor: `.cursor/mcp.json` (project) or `~/.cursor/mcp.json` (global)
+   - VS Code: `.vscode/mcp.json` (project-scoped)
+2. **Check absolute path in `cwd`**: Use `pwd` in your dogma clone to get the absolute path — relative paths may not resolve correctly
+3. **Restart the client**: After saving config, fully restart Claude Desktop, Cursor, or VS Code (not just reload window)
+4. **Verify `uv` is in PATH**: Run `which uv` — if not found, install with `pip install uv` or `brew install uv`
+5. **Check Python version**: MCP SDK requires Python ≥3.10. Run `python --version` or `uv run python --version`
+
+### Dashboard Won't Start
+
+**Symptoms**: `uv run --extra web python scripts/start_dashboard.py` fails or hangs.
+
+**Solutions**:
+1. **Install web dependencies**: Run `uv sync --extra web` first
+2. **Port already in use**: Check if port 8000 or 5173 is occupied:
+   ```bash
+   lsof -i :8000
+   lsof -i :5173
+   ```
+   Kill the occupying process or change ports via environment variables
+3. **Node.js version**: Dashboard requires Node 20. Check with `node --version` — install or switch with `nvm use 20` if needed
+4. **npm dependencies**: If Vite fails to start, run:
+   ```bash
+   cd web
+   npm install
+   npm run dev
+   ```
+
+### Dashboard Shows "Offline — showing cached data"
+
+**Symptoms**: Dashboard loads but displays an offline banner.
+
+**Solutions**:
+1. **Check sidecar health**: Run `curl -sf http://127.0.0.1:8000/api/health` — should return `{"status": "healthy"}`
+2. **CORS origins mismatch**: If running dashboard from a non-standard origin, set `WEBMCP_CORS_ORIGINS`:
+   ```bash
+   export WEBMCP_CORS_ORIGINS="http://localhost:5173"
+   uv run --extra web python scripts/start_dashboard.py
+   ```
+3. **Firewall or proxy blocking**: Check if local firewall rules block `localhost:8000` connections
+
+### Tools Return Path Traversal Errors
+
+**Symptoms**: Tool calls fail with "Path outside repository root rejected".
+
+**Solutions**:
+1. **Use relative paths**: All file paths must be relative to the repository root (e.g., `docs/plans/file.md`, not `/absolute/path/to/file.md`)
+2. **Check symlinks**: MCP server resolves symlinks — ensure `.git/` is not symlinked to a location outside the repo
+3. **Repository root detection**: The server uses `git rev-parse --show-toplevel` to determine the repo root — verify this returns the expected path
+
+### Research Scout Blocks Valid URLs
+
+**Symptoms**: `run_research_scout` rejects URLs with "SSRF protection triggered".
+
+**Solutions**:
+1. **HTTPS only**: Research scout blocks non-https URLs by default (security constraint)
+2. **Private IP ranges blocked**: RFC 1918 private ranges (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`), loopback (`127.0.0.0/8`), and IPv6 link-local are blocked to prevent SSRF attacks
+3. **Localhost exceptions**: If you need to fetch from a local development server, use `force=True` (requires explicit acknowledgment of the security risk)
+
+### Dashboard Metrics Don't Update
+
+**Symptoms**: Dashboard loads but tool call counts remain static.
+
+**Solutions**:
+1. **Verify live trace capture**: Check if `.cache/mcp-metrics/tool_calls.jsonl` exists and is being written to:
+   ```bash
+   tail -f .cache/mcp-metrics/tool_calls.jsonl
+   ```
+2. **Trigger a tool call**: Invoke any MCP tool (e.g., `check_substrate()`) to generate a new record
+3. **Migration required**: If you see only synthetic seed data, run:
+   ```bash
+   uv run python scripts/migrate_tool_calls.py
+   ```
+   This archives old seed records and enables live capture
+4. **SSE connection status**: Check dashboard sidebar — should show `LIVE` badge when stream is connected
+
+---
+
+## See Also
+
+- [docs/guides/mcp-dashboard.md](../docs/guides/mcp-dashboard.md) — Dashboard tab descriptions, offline mode, and configuration
+- [docs/decisions/ADR-009-webmcp-architecture.md](../docs/decisions/ADR-009-webmcp-architecture.md) — Architecture rationale for SPA + FastAPI design
+- [docs/guides/dogma-browser-inspector.md](../docs/guides/dogma-browser-inspector.md) — Browser inspector facade setup and usage

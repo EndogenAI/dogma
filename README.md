@@ -1,7 +1,11 @@
 # EndogenAI Workflows
 
+> **Values ingrained, sovereignty sustained**
+
 [![Tests](https://github.com/EndogenAI/dogma/actions/workflows/tests.yml/badge.svg)](https://github.com/EndogenAI/dogma/actions/workflows/tests.yml)
 [![Docs](https://github.com/EndogenAI/dogma/actions/workflows/docs.yml/badge.svg)](https://endogenai.github.io/dogma/)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Version](https://img.shields.io/github/v/tag/EndogenAI/dogma?label=version)](https://github.com/EndogenAI/dogma/releases)
 
 The authoritative source for **endogenic / agentic product design and development** workflows, best practices, agent files, and automation scripts.
 
@@ -12,9 +16,12 @@ The authoritative source for **endogenic / agentic product design and developmen
 ## Contents
 
 - [What Is This Repo?](#what-is-this-repo)
+- [Architecture](#architecture)
 - [Core Principles](#core-principles)
+- [MCP Toolset](#mcp-toolset)
 - [Quick Start](#quick-start)
 - [File Directory](#file-directory)
+- [Community](#community)
 - [Related](#related)
 - [License](#license)
 
@@ -39,6 +46,29 @@ This repo holds the canonical reference for how we work with AI coding agents. I
 
 ---
 
+## Architecture
+
+**dogma** operates as a **two-surface system**:
+
+1. **Permanent substrate** — committed files encoding institutional knowledge:
+   - `MANIFESTO.md` (core philosophy)
+   - `AGENTS.md` (operational constraints)
+   - `.github/agents/` (agent role files)
+   - `scripts/` (automation and enforcement)
+   - `docs/guides/` (workflow documentation)
+
+2. **MCP enforcement layer** — runtime toolset for validating, scaffolding, and routing:
+   - Substrate health checks (`check_substrate`)
+   - Agent file validation (`validate_agent_file`)
+   - Research synthesis validation (`validate_synthesis`)
+   - Session scratchpad management (`prune_scratchpad`)
+   - BM25 corpus queries (`query_docs`)
+   - Local-first inference routing (`route_inference_request`)
+
+The substrate encodes what to do; the MCP layer enforces it at runtime.
+
+---
+
 ## Core Principles
 
 ### 1. Endogenous-First
@@ -59,9 +89,50 @@ Prefer running locally. Minimize token usage by encoding knowledge as scripts, c
 
 ---
 
+## MCP Toolset
+
+The dogma MCP server exposes 13 governance tools. Connect via VS Code MCP integration, Claude Desktop, or any MCP client.
+
+| Tool | Purpose |
+|------|--------|
+| `check_substrate` | Run at session start to validate repo health |
+| `validate_agent_file` | Check `.agent.md` compliance before committing |
+| `validate_synthesis` | Verify D4 research doc schema before archiving |
+| `scaffold_agent` | Create new agent stub from template |
+| `scaffold_workplan` | Create new `docs/plans/` skeleton |
+| `run_research_scout` | Fetch and cache external URLs (SSRF-safe) |
+| `query_docs` | BM25 search over full docs corpus |
+| `prune_scratchpad` | Initialize or inspect session scratchpad |
+| `route_inference_request` | Route to local or external providers (Local-Compute-First) |
+| `normalize_path` | Cross-platform path normalization |
+| `resolve_env_path` | Env-var path resolution with defaults |
+| `detect_user_interrupt` | Check for STOP/ABORT signals before phase actions |
+| `get_trace_health` | Return JSONL trace capture health counters |
+
+See [mcp_server/README.md](mcp_server/README.md) for setup and tool reference.
+
+---
+
 ## Quick Start
 
-For forking and adopting dogma in a new project, see [Product Fork Initialization Guide](docs/guides/product-fork-initialization.md).
+### Adopt dogma in your project
+
+Use dogma as a cookiecutter template or run the adoption wizard:
+
+```bash
+# Option 1: cookiecutter
+cookiecutter gh:EndogenAI/dogma
+
+# Option 2: adoption wizard (interactive)
+cd /path/to/your-repo
+uv run python /path/to/dogma/scripts/adopt_wizard.py
+```
+
+For full fork initialization, see [Product Fork Initialization Guide](docs/guides/product-fork-initialization.md).
+
+### Contribute to dogma
+
+Fork this repo, create a feature branch, and open a PR. See [CONTRIBUTING.md](CONTRIBUTING.md) for commit conventions and pre-commit setup.
 
 ### Using the Agent Fleet
 
@@ -123,6 +194,8 @@ MANIFESTO.md               # Endogenic development philosophy and dogma
 
 ## MCP Dashboard
 
+> **Note**: Dashboard visual (screenshot/GIF) deferred post-W2. See [mcp_server/README.md](mcp_server/README.md) for full setup and feature documentation.
+
 A browser dashboard for visualising MCP tool call telemetry from `.cache/mcp-metrics/tool_calls.jsonl`.
 
 **Quick start**:
@@ -138,13 +211,21 @@ Then open `http://localhost:5173`.
 - **Sidebar** — real-time LIVE/STALE/ERROR connection status
 
 Offline fallback: dashboard loads from bundled fixture when sidecar is unreachable.
-See [docs/guides/mcp-dashboard.md](docs/guides/mcp-dashboard.md) for full docs.
+See [mcp_server/README.md](mcp_server/README.md) and [docs/guides/mcp-dashboard.md](docs/guides/mcp-dashboard.md) for full docs.
 
 ---
 
 ## Scratchpad Working Memory
 
 Every agent session writes to `.tmp/<branch>/<date>.md` — an **inspectable, exportable, portable working memory** substrate that persists phase outputs, audit trails, and telemetry across compaction events and multi-day sprints. Query prior sessions with `uv run python scripts/query_sessions.py "<keyword>"`, export to JSON/YAML with `scripts/export_scratchpad.py`, and link session events to commits via `scripts/log_session_event.py`. See [docs/guides/scratchpad-architecture.md](docs/guides/scratchpad-architecture.md) for the full architecture guide.
+
+---
+
+## Community
+
+- **Discussions** — [github.com/EndogenAI/dogma/discussions](https://github.com/EndogenAI/dogma/discussions)
+- **Contributing** — See [CONTRIBUTING.md](CONTRIBUTING.md) for commit conventions and workflow
+- **Code of Conduct** — See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) (aligned with [MANIFESTO.md](MANIFESTO.md) values)
 
 ---
 
