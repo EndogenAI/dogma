@@ -570,14 +570,15 @@ When all phases are complete:
 **Before suggesting merge or treating any open PR as ready to merge — run the PR Review Triage Gate:**
 
 ```bash
-# Step 0: Wait for Copilot review to land before checking (do NOT skip — review posts async after PR open)
-uv run python scripts/wait_for_pr_review.py <pr> --min-reviews 1
+# Step 0: Derive PR number from the current branch (must come first — later steps depend on it)
+PR_NUM=$(gh pr view --json number -q '.number' 2>/dev/null) && echo "PR #$PR_NUM found" || echo "No PR open — skip triage"
 
-# Step 1: Check for any open PR on this branch
-gh pr view --json number,state,reviews,reviewThreads 2>/dev/null || echo "No PR open"
+# Step 1: Wait for Copilot review to land before checking (do NOT skip — review posts async after PR open)
+uv run python scripts/wait_for_pr_review.py "$PR_NUM" --min-reviews 1
 
-# Step 2: Retrieve all inline comments
-gh api repos/<owner>/<repo>/pulls/<num>/comments --jq '.[] | {id, path, body}'
+# Step 2: Retrieve reviews and all inline comments
+gh pr view "$PR_NUM" --json reviews 2>/dev/null
+gh api repos/<owner>/<repo>/pulls/"$PR_NUM"/comments --jq '.[] | {id, path, body}'
 ```
 
 Triage every review comment (Blocking / Suggestion / Nit / Question) before treating the session as closed. A "PR is open — ready to merge" statement without this step is an encoding failure. **Never execute `gh pr merge` or suggest merge without explicit user "go ahead" in the current session — CI pass ≠ merge authorization.** See [AGENTS.md § PR Review Triage Gate](../../AGENTS.md#pr-review-triage-gate) and [pr-review-triage skill](../../.github/skills/pr-review-triage/SKILL.md).

@@ -16,7 +16,7 @@ A governance framework that embeds organizational constraints into AI workflows 
 ## Contents
 
 - [What Is This Repo?](#what-is-this-repo)
-- [Why DogmaMCP?](#why-dogmamc p)
+- [Why DogmaMCP?](#why-dogmamcp)
 - [Architecture](#architecture)
 - [Core Principles](#core-principles)
 - [MCP Toolset](#mcp-toolset)
