@@ -16,7 +16,7 @@
 **Agent**: Review  
 **Deliverables**: Workplan validated against ordering constraints; `## Workplan Review Output` appended to scratchpad (verdict: APPROVED)  
 **Depends on**: Nothing  
-**Gate**: Phase 1 does not start until Review returns APPROVED  
+**Gate**: Phase 0.5 does not start until Review returns APPROVED  
 **Status**: ⬜ Not started
 
 **Workplan Review Criteria** (pass all 4):
@@ -24,6 +24,82 @@
 2. Phase-specific research/docs precede implementation phases that depend on them
 3. Critical path items (deadline Wed EOD) are in Phase 1
 4. Phase dependencies are explicit (`Depends on:` annotations present)
+
+---
+
+## Phase 0.5 — Research & Recommendations (Best Practices Scout)
+
+**Agents**: Research Scout → Biz Dev (review + recommendations) → Exec PM (workplan updates)  
+**GitHub Issues**: Informing #561, #562  
+**Deliverables**:
+- `## Phase 0.5 Research Output` in scratchpad — Scout findings on 3 research questions
+- `## Phase 0.5 Biz Dev Recommendations` in scratchpad — Biz Dev analysis + recommendations
+- Updated workplan tasks (Exec PM applies recommendations to Phase 1/2)
+
+**Depends on**: Phase 0 Review APPROVED  
+**Gate**: Phase 1 does not start until recommendations applied to workplan  
+**Status**: ⬜ Not started  
+**Effort**: 45–60 minutes (15 min Scout, 15 min Biz Dev, 15 min Exec PM updates)
+
+**Research Questions**:
+
+### Q1: OSS Repository README Best Practices for Dashboard/Demo Visuals
+
+**Context**: dogma has an MCP Dashboard (telemetry visualizer). Should visuals (screenshots, GIFs, live demo links) be:
+- In main README.md (hero or dedicated section)?
+- Only in mcp_server/README.md (sub-doc)?
+- Both (brief screenshot in main, full docs in sub-doc)?
+
+**Scout Task**: Survey 5–10 credible OSS repos with dashboards/demos (GitHub trending, high-star projects). Document patterns:
+- Where do they place visuals?
+- Screenshot vs GIF vs video?
+- Live demo links included?
+
+**Output**: Bullets in scratchpad under `## Phase 0.5 Research Output — Q1`.
+
+### Q2: Adoption Flow Documentation Patterns
+
+**Context**: dogma serves two use cases:
+1. **Adopt dogma as a template** (new projects using cookiecutter or `adopt_wizard.py`)
+2. **Contribute to dogma** (fork + feature branch + PR back to EndogenAI/dogma)
+
+**Scout Task**: Survey 5–10 template repos or framework repos (e.g., cookiecutter projects, Next.js starter templates, design systems). Document:
+- How do they separate "use this" vs "contribute to this"?
+- Do they use separate docs/guides/ files, or inline in README Quick Start?
+- Example commands included?
+
+**Output**: Bullets in scratchpad under `## Phase 0.5 Research Output — Q2`.
+
+### Q3: Repo Credibility Signals for Inbound Developers
+
+**Context**: W2 blog will drive external developers to dogma repo for the first time. What signals establish credibility quickly?
+
+**Scout Task**: Survey "first 30 seconds" of 5–10 high-credibility OSS repos (Apache, CNCF projects, popular frameworks). Document:
+- What badges are present? (CI, coverage, version, license, downloads?)
+- README structure patterns? (hero → quick start → architecture → community?)
+- What's in the first fold? (tagline, value prop, installation?)
+
+**Output**: Bullets in scratchpad under `## Phase 0.5 Research Output — Q3`.
+
+---
+
+**Biz Dev Review Task**:  
+Read all 3 Scout outputs and synthesize recommendations for Phase 1/2:
+- Q1 → Recommend dashboard visual strategy for Phase 1
+- Q2 → Recommend adoption flow structure for Phase 1
+- Q3 → Recommend credibility enhancements (badges, structure tweaks) for Phase 1
+
+Write recommendations under `## Phase 0.5 Biz Dev Recommendations` in scratchpad (bullets, ≤500 tokens).
+
+---
+
+**Exec PM Update Task**:  
+Read Biz Dev recommendations and update Phase 1/2 tasks in this workplan document:
+- Adjust README refactor tasks to incorporate recommendations
+- Flag any recommendations that belong in Phase 2 instead
+- Commit updated workplan
+
+Write update summary under `## Phase 0.5 PM Workplan Updates` in scratchpad.
 
 ---
 
