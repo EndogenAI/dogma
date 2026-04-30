@@ -1,13 +1,13 @@
 # DogmaMCP
 
-> **Values ingrained, sovereignty sustained**
+> **Governance that lives in code, not compliance docs**
 
 [![Tests](https://github.com/EndogenAI/dogma/actions/workflows/tests.yml/badge.svg)](https://github.com/EndogenAI/dogma/actions/workflows/tests.yml)
 [![Docs](https://github.com/EndogenAI/dogma/actions/workflows/docs.yml/badge.svg)](https://endogenai.github.io/dogma/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/github/v/tag/EndogenAI/dogma?label=version)](https://github.com/EndogenAI/dogma/releases)
 
-The authoritative source for **endogenic / agentic product design and development** workflows, best practices, agent files, and automation scripts.
+A governance framework that embeds organizational constraints into AI workflows — for **endogenic / agentic** development
 
 > **Endogenic development** is the practice of building AI-assisted systems from the inside out — scaffolding from existing knowledge, encoding operational wisdom as scripts and agents, and letting the system grow intelligently from a morphogenetic seed rather than through vibe-driven prompting.
 
@@ -81,7 +81,7 @@ Your principles become executable:
 
 ### Use Cases
 
-**Regulated industries**: Encode compliance constraints (e.g., HIPAA data handling, SOC2 controls) as pre-commit hooks and MCP validation tools that agents cannot bypass.
+**Regulated industries**: Encode compliance constraints as pre-commit hooks: `no_phi_in_logs.py` blocks commits containing patient identifiers, `soc2_data_retention.py` enforces log retention policies
 
 **Open-source maintainers**: Prevent agents from introducing unlicensed dependencies or violating contribution guidelines through automated substrate checks.
 
@@ -159,6 +159,8 @@ See [mcp_server/README.md](mcp_server/README.md) for setup and tool reference.
 ## Quick Start
 
 ### Adopt DogmaMCP in Your Project
+
+**Prerequisites**: Python 3.11+, [uv](https://github.com/astral-sh/uv) installed (`curl -LsSf https://astral.sh/uv/install.sh | sh`)
 
 Two paths to adoption:
 
