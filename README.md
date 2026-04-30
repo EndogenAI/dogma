@@ -5,6 +5,7 @@
 [![Tests](https://github.com/EndogenAI/dogma/actions/workflows/tests.yml/badge.svg)](https://github.com/EndogenAI/dogma/actions/workflows/tests.yml)
 [![Docs](https://github.com/EndogenAI/dogma/actions/workflows/docs.yml/badge.svg)](https://endogenai.github.io/dogma/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Version](https://img.shields.io/github/v/tag/EndogenAI/dogma?label=version)](https://github.com/EndogenAI/dogma/releases)
 
 The authoritative source for **endogenic / agentic product design and development** workflows, best practices, agent files, and automation scripts.
 
@@ -193,7 +194,7 @@ MANIFESTO.md               # Endogenic development philosophy and dogma
 
 ## MCP Dashboard
 
-<!-- TODO: Add dashboard screenshot/GIF here -->
+> **Note**: Dashboard visual (screenshot/GIF) deferred post-W2. See [mcp_server/README.md](mcp_server/README.md) for full setup and feature documentation.
 
 A browser dashboard for visualising MCP tool call telemetry from `.cache/mcp-metrics/tool_calls.jsonl`.
 
