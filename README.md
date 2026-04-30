@@ -277,6 +277,7 @@ Every agent session writes to `.tmp/<branch>/<date>.md` — an **inspectable, ex
 
 - **Discussions** — [github.com/EndogenAI/dogma/discussions](https://github.com/EndogenAI/dogma/discussions)
 - **Contributing** — See [CONTRIBUTING.md](CONTRIBUTING.md) for commit conventions and workflow
+- **Security** — Report vulnerabilities per [SECURITY.md](SECURITY.md)
 - **Code of Conduct** — See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) (aligned with [MANIFESTO.md](MANIFESTO.md) values)
 
 ---
