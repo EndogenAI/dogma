@@ -60,7 +60,7 @@ For detailed security architecture, see:
 The project maintains automated dependency auditing:
 
 - `scripts/audit_dependencies.py` — audits Python dependencies against OSV database
-- GitHub Actions workflow (`.github/workflows/security-audit.yml`) — runs dependency audits on every PR
+- GitHub Actions workflow (`.github/workflows/quarterly-dependency-audit.yml`) — runs scheduled dependency audits quarterly
 
 See [`docs/research/owasp-llm-threat-model.md`](docs/research/owasp-llm-threat-model.md) for the threat model and security design decisions.
 

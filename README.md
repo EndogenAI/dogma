@@ -1,4 +1,4 @@
-# EndogenAI Workflows
+# DogmaMCP
 
 > **Values ingrained, sovereignty sustained**
 
@@ -121,7 +121,7 @@ Use dogma as a cookiecutter template or run the adoption wizard:
 
 ```bash
 # Option 1: cookiecutter
-cookiecutter gh:EndogenAI/dogma
+uvx cookiecutter gh:EndogenAI/dogma
 
 # Option 2: adoption wizard (interactive)
 cd /path/to/your-repo

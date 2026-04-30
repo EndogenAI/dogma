@@ -315,12 +315,12 @@ uv run mypy mcp_server/
 
 ### Tools Return Path Traversal Errors
 
-**Symptoms**: Tool calls fail with "Path outside repository root rejected".
+**Symptoms**: Tool calls fail with an error indicating the path "resolves outside the repository root".
 
 **Solutions**:
 1. **Use relative paths**: All file paths must be relative to the repository root (e.g., `docs/plans/file.md`, not `/absolute/path/to/file.md`)
-2. **Check symlinks**: MCP server resolves symlinks — ensure `.git/` is not symlinked to a location outside the repo
-3. **Repository root detection**: The server uses `git rev-parse --show-toplevel` to determine the repo root — verify this returns the expected path
+2. **Check symlinks**: MCP server resolves symlinks — ensure requested paths do not traverse through symlinks to locations outside the repo
+3. **Repository root detection**: The server determines the repository root from its filesystem location — verify the server is running from the expected repository checkout/path
 
 ### Research Scout Blocks Valid URLs
 
@@ -329,7 +329,8 @@ uv run mypy mcp_server/
 **Solutions**:
 1. **HTTPS only**: Research scout blocks non-https URLs by default (security constraint)
 2. **Private IP ranges blocked**: RFC 1918 private ranges (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`), loopback (`127.0.0.0/8`), and IPv6 link-local are blocked to prevent SSRF attacks
-3. **Localhost exceptions**: If you need to fetch from a local development server, use `force=True` (requires explicit acknowledgment of the security risk)
+3. **No localhost/private-network bypass**: `force=True` does **not** create an exception for localhost, loopback, or private-network URLs; it only forces a re-fetch of a URL that is already allowed
+4. **Use a different workflow for local testing**: To test content from a local development server, expose it on a publicly reachable HTTPS URL or validate it outside `run_research_scout`; localhost/private-range targets are intentionally blocked by design
 
 ### Dashboard Metrics Don't Update
 

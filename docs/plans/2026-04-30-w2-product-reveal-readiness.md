@@ -1,12 +1,12 @@
 # Sprint Plan — W2 Product Reveal Repo Readiness (May 8, 2026)
 
-**Sprint Scope**: Execute GitHub issues #561 (README.md refactor) and #562 (W2 Readiness Checklist) to prepare dogma repository for inbound developer traffic from the EndogenAI product reveal blog (publish: Thu May 8, 2026).
+**Sprint Scope**: Execute GitHub issues #561 (README.md refactor) and #562 (W2 Readiness Checklist) to prepare dogma repository for inbound developer traffic from the EndogenAI product reveal blog (publish: Fri May 8, 2026).
 
-**Critical Deadline**: Wed May 7, 2026 (EOD) — all critical items must be merged before blog publish
+**Critical Deadline**: Thu May 7, 2026 (EOD) — all critical items must be merged before blog publish
 
 **Effort Estimate**: 6–7 hours total
-- **Critical items** (MUST complete by Wed EOD): 3–3.5 hours
-- **Important items** (complete Thu May 1–7): 3.5–4 hours  
+- **Critical items** (MUST complete by Thu EOD): 3–3.5 hours
+- **Important items** (complete Fri May 1–Thu May 7): 3.5–4 hours  
 - **Nice-to-have** (defer post-W2): TBD
 
 ---
@@ -135,18 +135,18 @@ Write update summary under `## Phase 0.5 PM Workplan Updates` in scratchpad.
 
 **Additional #561 Spec Items**:
 - **Two-surface architecture explanation**: permanent substrate + MCP enforcement layer
-- **MCP toolset overview table**: list of 8 MCP tools + brief descriptions
+- **MCP toolset overview table**: list of 13 MCP tools + brief descriptions
 - **Repo metadata**: Updated description + topics in GitHub settings
 
 **Success Criteria**:
 - ✅ All 5 must-have deliverables from Phase 0.5 research present
 - ✅ Hero section introduces tagline + license badge
 - ✅ Two-surface architecture is clearly explained (substrate + MCP)
-- ✅ MCP toolset table is present with ≥6 tools listed
+- ✅ MCP toolset table is present with 13 tools listed
 - ✅ Community section has ≥2 actionable links (Discussions, CONTRIBUTING)
 - ✅ Quick start has both adoption flows with example commands
 - ✅ Dashboard visual (screenshot or GIF) present in MCP Dashboard section
-- ✅ File compiles without linting errors (`ruff check README.md` passes)
+- ✅ README passes the repository's configured documentation validation checks (link validation, docs build)
 
 **Research Gap** (if needed): Scout existing README.md to understand current structure before refactor.
 
@@ -349,12 +349,12 @@ These are tracked for future sprints; do NOT block W2 publish:
 
 | Deadline | Items | Owner |
 |----------|-------|-------|
-| **Today (Wed Apr 30)** | Phase 0 Review + Phase 1 planning | Executive Orchestrator + Review |
-| **Thu May 1–2** | Phase 1 (Critical Items) complete | Executive Docs + Research Scout |
-| **Fri May 3** | Phase 1 Review + Phase 2 start | Review + Executive Docs |
-| **Sat May 4–6** | Phase 2 (Important Items) continue | Executive Docs + Executive Scripter |
-| **Sun May 7 (EOD)** | Phase 2 Review + PR merge complete | Review + GitHub Agent |
-| **Mon May 8** | Blog publishes; repo ready for traffic | N/A |
+| **Today (Thu Apr 30)** | Phase 0 Review + Phase 1 planning | Executive Orchestrator + Review |
+| **Fri May 1–2** | Phase 1 (Critical Items) complete | Executive Docs + Research Scout |
+| **Sat May 3** | Phase 1 Review + Phase 2 start | Review + Executive Docs |
+| **Sun May 4–6** | Phase 2 (Important Items) continue | Executive Docs + Executive Scripter |
+| **Thu May 7 (EOD)** | Phase 2 Review + PR merge complete | Review + GitHub Agent |
+| **Fri May 8** | Blog publishes; repo ready for traffic | N/A |
 
 ---
 

@@ -25,7 +25,7 @@ The EndogenAI Workflows project is committed to providing a welcoming, inclusive
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project team at [conduct@endogen.ai](mailto:conduct@endogen.ai). All complaints will be reviewed and investigated promptly and fairly.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project team at [conduct@endogenai.com](mailto:conduct@endogenai.com). All complaints will be reviewed and investigated promptly and fairly.
 
 Project maintainers are responsible for clarifying and enforcing our standards of acceptable behavior and will take appropriate and fair corrective action in response to any behavior deemed inappropriate, threatening, offensive, or harmful.
 
