@@ -77,7 +77,7 @@ Each entry cites the authoritative source where the term is introduced or most p
 | [Scratchpad](#scratchpad) | Agent Fleet Concepts |
 | [Sovereignty](#sovereignty) | Guiding Principles |
 | [Sub-agent](#executive-agent-vs-sub-agent) | Roles, Skills, and the Customization Taxonomy |
-| [Substrate](#substrate) | Substrates |
+| [Substrate (Overview)](#substrate) | Substrates |
 | [Testing-First](#testing-first) | Guiding Principles |
 | [Takeback Pattern](#takeback-pattern) | Agent Fleet Concepts |
 | [Token Burn](#token-burn) | Methodology Concepts |
@@ -89,6 +89,8 @@ Each entry cites the authoritative source where the term is introduced or most p
 ---
 
 ## Core Axioms
+
+[← Back to Quick Reference](#quick-reference-index)
 
 The three core axioms are ordered by priority. When they conflict, Endogenous-First supersedes Algorithms Before Tokens, which supersedes Local Compute-First.
 
@@ -133,6 +135,8 @@ This axiom drives:
 
 *Source: [`MANIFESTO.md` §Algorithms Before Tokens](../MANIFESTO.md#2-algorithms-before-tokens)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### Local Compute-First
@@ -149,9 +153,13 @@ Cloud LLM inference is expensive in tokens, money, and environmental cost. The e
 
 *Source: [`MANIFESTO.md` §Local Compute-First](../MANIFESTO.md#3-local-compute-first)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ## Foundational Principle
+
+[← Back to Quick Reference](#quick-reference-index)
 
 ### Augmentive Partnership
 
@@ -168,9 +176,13 @@ Descends directly from Douglas Engelbart's augmentation framework ("Augmenting H
 
 *Source: [`MANIFESTO.md` §Foundational Principle: Augmentive Partnership](../MANIFESTO.md#foundational-principle-augmentive-partnership)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ## Guiding Principles
+
+[← Back to Quick Reference](#quick-reference-index)
 
 Cross-cutting principles that reinforce the core axioms and guide all implementation decisions. They are not hierarchical but interconnected.
 
@@ -202,6 +214,8 @@ Any repeated or automatable task must be encoded as a committed script or automa
 
 *Source: [`MANIFESTO.md` §Programmatic-First](../MANIFESTO.md#programmatic-first), [`AGENTS.md` §Programmatic-First Principle](../AGENTS.md#programmatic-first-principle), [`docs/guides/programmatic-first.md`](guides/programmatic-first.md)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### Documentation-First
@@ -218,6 +232,8 @@ The documentation *is* the knowledge the system encodes for future agents. It re
 
 *Source: [`MANIFESTO.md` §Documentation-First](../MANIFESTO.md#documentation-first)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### Adopt Over Author
@@ -229,6 +245,8 @@ Adoption is not dependency — it is standing on the shoulders of giants. Docume
 **Reinforces**: [Algorithms Before Tokens](#algorithms-before-tokens) + [Endogenous-First](#endogenous-first)
 
 *Source: [`MANIFESTO.md` §Adopt Over Author (Avoid Reinventing the Wheel)](../MANIFESTO.md#adopt-over-author-avoid-reinventing-the-wheel)*
+
+[↑ Back to Contents](#contents)
 
 ---
 
@@ -247,6 +265,8 @@ Governance occurs at three levels:
 
 *Source: [`MANIFESTO.md` §Self-Governance & Guardrails](../MANIFESTO.md#self-governance--guardrails)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### Sovereignty
@@ -263,6 +283,8 @@ Sovereignty is sustained when:
 **Related terms**: [Endogenous-First](#endogenous-first), [Encoded Substrate](#encoded-substrate), [Local Compute-First](#local-compute-first)
 
 *Source: [`MANIFESTO.md` §What Is Endogenic Development?](../MANIFESTO.md#what-is-endogenic-development), [`README.md`](../README.md) tagline*
+
+[↑ Back to Contents](#contents)
 
 ---
 
@@ -282,6 +304,8 @@ Techniques include:
 
 *Source: [`MANIFESTO.md` §Compress Context, Not Content](../MANIFESTO.md#compress-context-not-content)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### Isolate Invocations, Parallelize Safely
@@ -298,6 +322,8 @@ When agents process large batches, a single large invocation suffers "context ro
 **Related terms**: [Context Rot](#context-rot), [Focus-on-Descent / Compression-on-Ascent](#focus-on-descent--compression-on-ascent)
 
 *Source: [`MANIFESTO.md` §Isolate Invocations, Parallelize Safely](../MANIFESTO.md#isolate-invocations-parallelize-safely)*
+
+[↑ Back to Contents](#contents)
 
 ---
 
@@ -316,6 +342,8 @@ Gates are the mechanism by which the system enforces governance without heavywei
 
 *Source: [`MANIFESTO.md` §Validate & Gate, Always](../MANIFESTO.md#validate--gate-always)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### Minimal Posture
@@ -331,6 +359,8 @@ Applies to:
 **Reinforces**: [Algorithms Before Tokens](#algorithms-before-tokens) + [Local Compute-First](#local-compute-first)
 
 *Source: [`MANIFESTO.md` §Minimal Posture](../MANIFESTO.md#minimal-posture)*
+
+[↑ Back to Contents](#contents)
 
 ---
 
@@ -349,9 +379,13 @@ Every script in `scripts/` must have unit tests, integration tests (for network/
 
 *Source: [`MANIFESTO.md` §Testing-First](../MANIFESTO.md#testing-first), [`docs/guides/testing.md`](guides/testing.md)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ## Methodology Concepts
+
+[← Back to Quick Reference](#quick-reference-index)
 
 ---
 
@@ -365,6 +399,8 @@ Anti-patterns are marked with the prefix `**Anti-pattern**:` in the codebase.
 
 *Source: [`MANIFESTO.md` §How to Read This Document](../MANIFESTO.md#how-to-read-this-document)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### Canonical Example
@@ -377,6 +413,8 @@ Marked with the prefix `**Canonical example**:` in the codebase.
 
 *Source: [`AGENTS.md` §Focus-on-Descent / Compression-on-Ascent](../AGENTS.md#focus-on-descent--compression-on-ascent)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### Cross-Reference Density
@@ -384,6 +422,8 @@ Marked with the prefix `**Canonical example**:` in the codebase.
 A proxy measure for [encoding fidelity](#encoding-fidelity). Cross-reference density is the count of explicit back-references to `MANIFESTO.md` (by name and section) in an agent output or document. Low density signals likely drift from foundational axioms.
 
 *Source: [`AGENTS.md` §Guiding Constraints](../AGENTS.md#guiding-constraints)*
+
+[↑ Back to Contents](#contents)
 
 ---
 
@@ -405,6 +445,8 @@ The name derives from the four-phase structure (Document, Discover, Distill, Del
 
 *Source: [`docs/guides/workflows.md` §Research Workflow](guides/workflows.md#research-workflow), [`scripts/validate_synthesis.py`](../scripts/validate_synthesis.py)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### Encoding Fidelity
@@ -416,6 +458,8 @@ Measured as a proxy by [cross-reference density](#cross-reference-density).
 **Related terms**: [Encoding Inheritance Chain](#encoding-inheritance-chain), [Cross-Reference Density](#cross-reference-density), [Signal Preservation](#signal-preservation)
 
 *Source: [`AGENTS.md` §Guiding Constraints](../AGENTS.md#guiding-constraints), [`docs/research/values-encoding.md`](./research/methodology/values-encoding.md)*
+
+[↑ Back to Contents](#contents)
 
 ---
 
@@ -438,6 +482,8 @@ When layers conflict, the higher layer governs. When a lower layer is silent on 
 
 *Source: [`MANIFESTO.md` §How to Read This Document](../MANIFESTO.md#how-to-read-this-document), [`AGENTS.md` §Guiding Constraints](../AGENTS.md#guiding-constraints)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### Endogenic Development
@@ -455,6 +501,8 @@ The name comes from biology: an endogenous process originates from within the or
 **Related terms**: [Morphogenetic Seed](#morphogenetic-seed), [Tree Rings of Knowledge](#tree-rings-of-knowledge), [DNA Metaphor](#dna-metaphor)
 
 *Source: [`MANIFESTO.md` §What Is Endogenic Development?](../MANIFESTO.md#what-is-endogenic-development)*
+
+[↑ Back to Contents](#contents)
 
 ---
 
@@ -475,6 +523,8 @@ Over time, the system accumulates scripts, agents, and guides. New sessions star
 
 *Source: [`MANIFESTO.md` §The Growth Model: Tree Rings of Knowledge](../MANIFESTO.md#the-growth-model-tree-rings-of-knowledge)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### Expansion → Contraction Pattern
@@ -487,6 +537,8 @@ This pattern originates from design thinking methodology and is the governing rh
 
 *Source: [`docs/guides/workflows.md` §Research Workflow](guides/workflows.md#research-workflow)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### R-items
@@ -494,6 +546,8 @@ This pattern originates from design thinking methodology and is the governing rh
 Recommendations extracted from a completed `docs/research/` synthesis document that are ready for implementation. Each R-item is numbered (R1, R2, …) and tracked as a GitHub issue. The Implementation Workflow is triggered when a synthesis document reaches `status: Final` and contains at least one un-implemented R-item.
 
 *Source: [`docs/guides/workflows.md` §Implementation Workflow](guides/workflows.md#implementation-workflow)*
+
+[↑ Back to Contents](#contents)
 
 ---
 
@@ -512,6 +566,8 @@ The knowledge-creation cycle (Socialization → Externalization → Combination 
 
 *Source: [`docs/guides/deep-research.md` §Core Principles](guides/deep-research.md#core-principles)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### Signal Preservation
@@ -525,6 +581,8 @@ A set of rules governing what must **not** be discarded when compressing Scout f
 **Related terms**: [Canonical Example](#canonical-example), [Anti-pattern](#anti-pattern), [Encoding Fidelity](#encoding-fidelity)
 
 *Source: [`AGENTS.md` §Focus-on-Descent / Compression-on-Ascent](../AGENTS.md#focus-on-descent--compression-on-ascent)*
+
+[↑ Back to Contents](#contents)
 
 ---
 
@@ -560,6 +618,8 @@ The degradation or complete absence of a signal after it has crossed a signal bo
 
 *Source: [`docs/research/vocabulary-bridge-encoding-models.md`](./research/methodology/vocabulary-bridge-encoding-models.md)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### Preservation Unit
@@ -569,6 +629,8 @@ A discrete element of content explicitly designated — through labeling, struct
 **Related terms**: [Canonical Example](#canonical-example), [Anti-pattern](#anti-pattern), [Signal Boundary](#signal-boundary), [Boundary Specification](#boundary-specification)
 
 *Source: [`docs/research/vocabulary-bridge-encoding-models.md`](./research/methodology/vocabulary-bridge-encoding-models.md)*
+
+[↑ Back to Contents](#contents)
 
 ---
 
@@ -580,6 +642,8 @@ The compound health property of a substrate measuring both (a) its fidelity to i
 
 *Source: [`docs/research/vocabulary-bridge-encoding-models.md`](./research/methodology/vocabulary-bridge-encoding-models.md)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### Boundary Specification
@@ -590,9 +654,11 @@ The declarative act of stating, before a signal boundary event occurs, which pre
 
 *Source: [`docs/research/vocabulary-bridge-encoding-models.md`](./research/methodology/vocabulary-bridge-encoding-models.md)*
 
----
+[↑ Back to Contents](#contents)
 
 ## Agent Fleet Concepts
+
+[← Back to Quick Reference](#quick-reference-index)
 
 ---
 
@@ -603,6 +669,8 @@ The requirement that all commits follow [Conventional Commits](https://www.conve
 Types used in this project: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `ci`, `perf`
 
 *Source: [`AGENTS.md` §Guiding Constraints](../AGENTS.md#guiding-constraints), [`CONTRIBUTING.md` §Commit Discipline](../CONTRIBUTING.md#commit-discipline)*
+
+[↑ Back to Contents](#contents)
 
 ---
 
@@ -619,6 +687,8 @@ The protocol takes priority over all in-progress work because a session that exh
 **Related terms**: [Scratchpad](#scratchpad), [Phase Gate](#phase-gate)
 
 *Source: [`.github/agents/executive-orchestrator.agent.md` §Context Window Alert Protocol](../.github/agents/executive-orchestrator.agent.md#context-window-alert-protocol)*
+
+[↑ Back to Contents](#contents)
 
 ---
 
@@ -641,6 +711,8 @@ The Orchestrator acts directly only for coordination, verification reads, and st
 
 *Source: [`docs/guides/workflows.md` §Multi-Workflow Orchestration](guides/workflows.md#multi-workflow-orchestration)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### Evaluator-Optimizer Loop
@@ -650,6 +722,8 @@ A self-referential review gate in which an executive agent reviews its own or a 
 **Related terms**: [Phase Gate](#phase-gate), [Validate and Gate, Always](#validate-and-gate-always)
 
 *Source: [`docs/guides/workflows.md` §Handoff Architecture](guides/workflows.md#handoff-architecture)*
+
+[↑ Back to Contents](#contents)
 
 ---
 
@@ -662,6 +736,8 @@ Check-before-fetch: use `scripts/fetch_source.py <url> --check` on individual UR
 **Related terms**: [Endogenous-First](#endogenous-first), [Algorithms Before Tokens](#algorithms-before-tokens)
 
 *Source: [`AGENTS.md` §Programmatic-First Principle](../AGENTS.md#programmatic-first-principle)*
+
+[↑ Back to Contents](#contents)
 
 ---
 
@@ -678,6 +754,8 @@ Both constraints serve the same purpose: a broad outbound prompt and a verbose r
 
 *Source: [`AGENTS.md` §Focus-on-Descent / Compression-on-Ascent](../AGENTS.md#focus-on-descent--compression-on-ascent)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### Phase Gate
@@ -693,6 +771,8 @@ Skipping a phase gate is an anti-pattern equivalent to committing without CI.
 **Related terms**: [Evaluator-Optimizer Loop](#evaluator-optimizer-loop), [Validate and Gate, Always](#validate-and-gate-always)
 
 *Source: [`AGENTS.md` §Agent Communication](../AGENTS.md#agent-communication), [`docs/guides/workflows.md` §Gates Reference](guides/workflows.md#gates-reference)*
+
+[↑ Back to Contents](#contents)
 
 ---
 
@@ -712,6 +792,8 @@ When a session file reaches 2,000 lines, run `scripts/prune_scratchpad.py` to co
 
 *Source: [`AGENTS.md` §Agent Communication](../AGENTS.md#agent-communication)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### Session-Start Encoding Checkpoint
@@ -725,6 +807,8 @@ The purpose is to anchor each session to the encoding inheritance chain before a
 **Related terms**: [Encoding Inheritance Chain](#encoding-inheritance-chain), [Endogenous-First](#endogenous-first), [Scratchpad](#scratchpad)
 
 *Source: [`AGENTS.md` §Guiding Constraints](../AGENTS.md#guiding-constraints), [`docs/guides/session-management.md`](guides/session-management.md)*
+
+[↑ Back to Contents](#contents)
 
 ---
 
@@ -741,6 +825,8 @@ This pattern is recommended over direct agent-to-agent chaining because it maint
 **Related terms**: [Executive Agent vs. Sub-agent](#executive-agent-vs-sub-agent), [Phase Gate](#phase-gate)
 
 *Source: [`docs/guides/agents.md` §Handoff Patterns](guides/agents.md#handoff-patterns)*
+
+[↑ Back to Contents](#contents)
 
 ---
 
@@ -762,9 +848,13 @@ The workplan is committed at the start of the session (before Phase 1 executes) 
 
 *Source: [`AGENTS.md` §docs/plans/ — Tracked Workplans](../AGENTS.md#docsplans----tracked-workplans)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ## Substrates
+
+[← Back to Quick Reference](#quick-reference-index)
 
 A substrate is a discrete layer in the endogenic architecture — a bounded region of encoded knowledge with its own mutation rate, stability tier, and specificity level. The complete set of substrates forms the [Encoding Inheritance Chain](#encoding-inheritance-chain).
 
@@ -797,6 +887,8 @@ The components of the endogenic substrate are:
 
 *Source: [`MANIFESTO.md` §What Is Endogenic Development?](../MANIFESTO.md#what-is-endogenic-development)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### Encoded Substrate
@@ -811,6 +903,8 @@ Knowledge, conventions, and procedures deliberately written into committed files
 
 *Source: [`MANIFESTO.md` §Documentation-First](../MANIFESTO.md#documentation-first), [`MANIFESTO.md` §Programmatic-First](../MANIFESTO.md#programmatic-first)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### Knowledge Substrate
@@ -822,6 +916,8 @@ The `docs/toolchain/` substrate is the canonical example: it encodes canonical s
 **Related terms**: [Substrate](#substrate), [Encoded Substrate](#encoded-substrate), [Algorithms Before Tokens](#algorithms-before-tokens)
 
 *Source: [`AGENTS.md` §Toolchain Reference](../AGENTS.md#toolchain-reference)*
+
+[↑ Back to Contents](#contents)
 
 ---
 
@@ -839,6 +935,8 @@ In the [Bubble-Cluster Model](#bubble-cluster-model), the active boundary betwee
 **Related terms**: [Bubble-Cluster Model](#bubble-cluster-model), [Signal Preservation](#signal-preservation), [Handoff Drift](#handoff-drift)
 
 *Source: [`docs/research/bubble-clusters-substrate.md`](./research/neuroscience/bubble-clusters-substrate.md)*
+
+[↑ Back to Contents](#contents)
 
 ---
 
@@ -863,9 +961,13 @@ A mental model that frames the endogenic substrate as a collection of discrete "
 
 *Source: [`docs/research/bubble-clusters-substrate.md`](./research/neuroscience/bubble-clusters-substrate.md)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ## Roles, Skills, and the Customization Taxonomy
+
+[← Back to Quick Reference](#quick-reference-index)
 
 The three first-class primitives in the repository's customization stack define *who does a task* (Roles), *what all agents must do* (AGENTS.md), and *how a task is done* (Skills).
 
@@ -923,6 +1025,8 @@ Each agent:
 
 *Source: [`docs/guides/agents.md` §What Are Agents?](guides/agents.md#what-are-agents)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### Agent Fleet
@@ -945,6 +1049,8 @@ The complete set of defined agents that work together following the endogenic me
 
 *Source: [`AGENTS.md` §Agent Fleet Overview](../AGENTS.md#agent-fleet-overview), [`docs/research/agent-fleet-design-patterns.md`](./research/agents/agent-fleet-design-patterns.md)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### Executive Agent vs. Sub-agent
@@ -960,6 +1066,8 @@ The complete set of defined agents that work together following the endogenic me
 **Related terms**: [Agent Fleet](#agent-fleet), [Takeback Pattern](#takeback-pattern), [Scratchpad](#scratchpad), [Delegation Decision Gate](#delegation-decision-gate)
 
 *Source: [`AGENTS.md` §Agent Communication](../AGENTS.md#agent-communication)*
+
+[↑ Back to Contents](#contents)
 
 ---
 
@@ -978,6 +1086,8 @@ The set of tools and capabilities an agent is permitted to use. Three tiers exis
 **Related terms**: [Minimal Posture](#minimal-posture), [Role](#role), [Agent](#agent)
 
 *Source: [`docs/guides/agents.md` §Agent Posture](guides/agents.md#agent-posture)*
+
+[↑ Back to Contents](#contents)
 
 ---
 
@@ -1010,9 +1120,13 @@ description: <one-line summary>
 
 *Source: [`AGENTS.md` §Agent Skills](../AGENTS.md#agent-skills), [`docs/guides/agents.md` §Skills](guides/agents.md), [`docs/decisions/ADR-006-agent-skills-adoption.md`](decisions/ADR-006-agent-skills-adoption.md)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ## Mental Models and Metaphors
+
+[← Back to Quick Reference](#quick-reference-index)
 
 The endogenic methodology uses three core nature metaphors. These metaphors are not decoration — they reveal the structure and patterns that run through every level of the system.
 
@@ -1027,6 +1141,8 @@ From Maturana and Varela (1972): a system is autopoietic if it produces and main
 Used in `MANIFESTO.md` to ground the [Endogenous-First](#endogenous-first) axiom in biological theory.
 
 *Source: [`MANIFESTO.md` §Endogenous-First](../MANIFESTO.md#1-endogenous-first)*
+
+[↑ Back to Contents](#contents)
 
 ---
 
@@ -1056,6 +1172,8 @@ The term references Turing's morphogenesis (1952), which describes how complex s
 
 *Source: [`MANIFESTO.md` §What Is Endogenic Development?](../MANIFESTO.md#what-is-endogenic-development)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### Tree Rings of Knowledge
@@ -1074,9 +1192,13 @@ Running `git log` should reveal readable tree rings — which sessions were prod
 
 *Source: [`MANIFESTO.md` §The Growth Model: Tree Rings of Knowledge](../MANIFESTO.md#the-growth-model-tree-rings-of-knowledge), [`docs/guides/mental-models.md` §Tree Rings](guides/mental-models.md#tree-rings-recursive-encoding-of-knowledge)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ## Ethical Values
+
+[← Back to Quick Reference](#quick-reference-index)
 
 Five values that underpin all decisions and encode the project's commitment to responsible AI development. They are not aspirational — they are enforced through documentation, scripts, and governance.
 
@@ -1084,19 +1206,59 @@ Five values that underpin all decisions and encode the project's commitment to r
 
 ---
 
-**Transparency** — All decisions are documented and traceable to a principle or axiom. No hidden heuristics or unexplained choices. Tests serve as transparent specification of behavior.
+### Transparency
 
-**Human Oversight** — Agents operate under governance and gates. Humans make strategic decisions; the system executes and surfaces information for those decisions. No unconstrained autonomy.
+All decisions are documented and traceable to a principle or axiom. No hidden heuristics or unexplained choices. Tests serve as transparent specification of behavior.
 
-**Reproducibility** — Outputs are deterministic, reviewable, and auditable. A decision made on day one can be reproduced on day 100 with the same inputs.
+*Source: [`MANIFESTO.md` §Ethical Values](../MANIFESTO.md#ethical-values)*
 
-**Sustainability** — Minimize computational cost, environmental impact, and token burn. The finite cost of local inference is a feature, not a bug — it incentivizes efficient design.
+[↑ Back to Contents](#contents)
 
-**Determinism** — Reduce randomness through encoding, scripts, and established practices. Vagueness is expensive; clarity is cheap.
+---
+
+### Human Oversight
+
+Agents operate under governance and gates. Humans make strategic decisions; the system executes and surfaces information for those decisions. No unconstrained autonomy.
+
+*Source: [`MANIFESTO.md` §Ethical Values](../MANIFESTO.md#ethical-values)*
+
+[↑ Back to Contents](#contents)
+
+---
+
+### Reproducibility
+
+Outputs are deterministic, reviewable, and auditable. A decision made on day one can be reproduced on day 100 with the same inputs.
+
+*Source: [`MANIFESTO.md` §Ethical Values](../MANIFESTO.md#ethical-values)*
+
+[↑ Back to Contents](#contents)
+
+---
+
+### Sustainability
+
+Minimize computational cost, environmental impact, and token burn. The finite cost of local inference is a feature, not a bug — it incentivizes efficient design.
+
+*Source: [`MANIFESTO.md` §Ethical Values](../MANIFESTO.md#ethical-values)*
+
+[↑ Back to Contents](#contents)
+
+---
+
+### Determinism
+
+Reduce randomness through encoding, scripts, and established practices. Vagueness is expensive; clarity is cheap.
+
+*Source: [`MANIFESTO.md` §Ethical Values](../MANIFESTO.md#ethical-values)*
+
+[↑ Back to Contents](#contents)
 
 ---
 
 ## Anti-patterns
+
+[← Back to Quick Reference](#quick-reference-index)
 
 Named violations of axioms and principles. Anti-patterns are canonical veto rules: if a proposed action matches a stated anti-pattern, reject it regardless of whether a cross-cutting principle appears to permit it.
 
@@ -1108,6 +1270,8 @@ The degradation of model output quality that occurs when a single large agent in
 
 *Source: [`MANIFESTO.md` §Isolate Invocations, Parallelize Safely](../MANIFESTO.md#isolate-invocations-parallelize-safely)*
 
+[↑ Back to Contents](#contents)
+
 ---
 
 ### Handoff Drift
@@ -1115,6 +1279,8 @@ The degradation of model output quality that occurs when a single large agent in
 The progressive loss of signal fidelity as findings are passed between agents across multiple compression steps. Handoff drift is the cumulative result of lossy re-encoding at each phase boundary. Mitigated by [Signal Preservation](#signal-preservation) rules.
 
 *Source: [`AGENTS.md` §Focus-on-Descent / Compression-on-Ascent](../AGENTS.md#focus-on-descent--compression-on-ascent)*
+
+[↑ Back to Contents](#contents)
 
 ---
 
@@ -1137,7 +1303,5 @@ The practice of prompting an AI with a vague intention and accepting whatever it
 The canonical violation of [Endogenous-First](#endogenous-first): starting a session without reading `AGENTS.md` and asking the agent to "write a script to do X."
 
 *Source: [`MANIFESTO.md` §What We Are Not Doing — Not Vibe Coding](../MANIFESTO.md#not-vibe-coding)*
-
----
 
 *This glossary is a living document. When new terms are introduced in `MANIFESTO.md`, `AGENTS.md`, or major guides, add them here. Follow [Documentation-First](#documentation-first): update the glossary in the same commit that introduces the term.*
