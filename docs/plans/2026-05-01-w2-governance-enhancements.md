@@ -181,39 +181,6 @@ Sprint is complete when:
 
 If any issue is discovered mid-sprint that addresses a problem not in original scope, add it here **immediately**, add `Closes #NNN` to Phase Final deliverables, and document the addition in the scratchpad. (This section implements #574's workplan-drift convention.)
 
-**Depends on**: Phase 1
-**CI**: Tests, Auto-validate
-**Status**: Not started
-
-### Phase 3 — <Name> ⬜
-**Agent**: <Agent Name>
-**Deliverables**:
-- <!-- list deliverables -->
-
-**Depends on**: Phase 2
-**CI**: Tests, Auto-validate
-**Status**: Not started
-
-### Phase 4 — <Name> ⬜
-**Agent**: <Agent Name>
-**Deliverables**:
-- <!-- list deliverables -->
-
-**Depends on**: Phase 3
-**CI**: Tests, Auto-validate
-**Status**: Not started
-
-### Phase 5 — <Name> ⬜
-**Agent**: <Agent Name>
-**Deliverables**:
-- Fleet integration (if adding new agents/skills: run `uv run python scripts/check_fleet_integration.py --dry-run`)
-- Session close (archive session, update scratchpad summary, push branch)
-- <!-- add other deliverables -->
-
-**Depends on**: Phase 4
-**CI**: Tests, Auto-validate
-**Status**: Not started
-
 ---
 
 ## Acceptance Criteria
