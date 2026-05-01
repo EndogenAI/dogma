@@ -52,6 +52,30 @@ Read review → Classify comments → Prioritise → Batch fixes by file → Com
 
 ## 3. Steps
 
+### Step 0 — Merge Authorization Pre-Check
+
+Before beginning triage (and again before suggesting merge), run `check_merge_authorization.py` to get a structural snapshot of the PR's authorization state:
+
+```bash
+uv run python scripts/check_merge_authorization.py <pr_num> --dry-run
+```
+
+This prints a full check table (✅/❌) for all four authorization criteria without blocking. Use it to:
+- Identify which checks are already passing (no need to re-verify manually)
+- Confirm that CI is green, no `CHANGES_REQUESTED` is outstanding, and no non-nit threads are unresolved
+
+After all triage steps complete (Steps 1–7), run without `--dry-run` to get the final authorization verdict:
+
+```bash
+uv run python scripts/check_merge_authorization.py <pr_num>
+```
+
+Write the result to the scratchpad under `## Merge Authorization — PR #NNN` with the 5-checkbox template from `AGENTS.md` § PR Review Triage Gate. **The final human-gate checkbox must be checked before suggesting merge to the user.**
+
+**Anti-pattern**: Treating `MERGE AUTHORIZED — ...` output as permission to merge without the explicit user "go ahead". The script clears the technical gate; the human confirms the strategic intent.
+
+---
+
 ### Step 1 — Read the Review
 
 Retrieve all inline comments and their body text:
