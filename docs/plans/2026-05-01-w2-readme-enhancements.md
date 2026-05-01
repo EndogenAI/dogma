@@ -59,16 +59,27 @@ User responses received 2026-05-01:
 
 ---
 
-### Phase 1B — Governance-Failure Research (Parallel)
+### Phase 1B — Governance-Failure Research → D4 Doc (Parallel)
 
-**Agent**: Executive Researcher (delegates to Research Scout)  
-**Description**: Conduct research per #570 acceptance criteria. Verify the Maven Smart System / Iran incident or identify alternative verified governance-failure examples. Research-first gate applies: no link added to README until verified source found.  
+**Agent**: Executive Researcher (delegates to Research Scout → Synthesizer → Archivist)  
+**Description**: Conduct a full D4 research sprint per #570, examining the AI governance-failure problem space (Lavender AI System 2024, Project Maven / 2026 Minab school attack) through the lens of EndogenAI/dogma/dogmaMCP. Produce a committed research doc — README links to it rather than embedding details inline. Research-first gate applies: synthesis, then link. Lavender provides the framing lens for understanding the Maven/Iran escalation.  
+
+**Sources pre-cached in `.cache/sources/`**:  
+- Lavender AI (Guardian, 2024): `theguardian-com-world-2024-apr-03-israel-gaza-ai-database-ha.md`  
+- Maven/Iran Guardian (Mar 2026): `theguardian-com-news-2026-mar-26-ai-got-the-blame-for-the-ir.md`  
+- Minab school attack (Wikipedia): `en-wikipedia-org-wiki-2026_Minab_school_attack.md`  
+- Project Maven (New Yorker): `newyorker-com-books-under-review-how-project-maven-put-ai-in.md`  
+- Maven/Iran (Military Times, Mar 2026): `militarytimes-com-news-your-military-2026-03-24-deadly-iran-.md`  
+- Maven interview (Democracy Now, Mar 2026): `democracynow-org-2026-3-31-project_maven_manson_bloomberg_ai.md`  
+- Maven/Iran (Georgia Tech Research): `research-gatech-edu-us-military-leans-ai-attack-iran-tech-do.md`  
+
 **Deliverables**:  
-- D1: Research findings documented in `.tmp/<branch>/<date>.md` under `## Research Scout Output`  
-- D2: Source cached in `.cache/sources/` if verified URL found
-- D3: If primary incident cannot be verified, surface alternative options to human for decision
+- D1: D4 research doc committed at `docs/research/ai-governance-failure-alignment.md`, Status: Final  
+- D2: Doc examines Lavender + Maven/Minab pattern through EndogenAI/dogma/dogmaMCP lens — what does this problem space reveal about why this work matters?  
+- D3: Doc includes Executive Summary, Hypothesis Validation, Pattern Catalog (Lavender as lens, Maven/Iran as escalation), Recommendations (dogmaMCP relevance), Sources  
+- D4: Committed with message `docs(research): add D4 AI governance failure research (#570)`  
 **Depends on**: Phase 0 (Review APPROVED)  
-**Gate**: If research findings affect README claims, surface to Orchestrator before Phase 4 (final review)  
+**Gate**: README link in Phase 6 points to D4 doc; Phase 1B must be committed before Phase 6 README edit  
 **Parallelization**: Runs concurrently with Phase 1A (no shared file paths, no output dependency)  
 **Status**: ⬜ Pending
 
@@ -160,7 +171,8 @@ Sprint is complete when:
 - [ ] All four issues (#567, #568, #569, #570) have acceptance criteria satisfied
 - [ ] `README.md` contains four-substrate model section, AccessiTech case study (with collective "we" voice), and improved glossary links
 - [ ] `docs/glossary.md` has Sovereignty entry and audit complete
-- [ ] Research findings from #570 are documented (verified link added or alternatives surfaced)
+- [ ] `docs/research/ai-governance-failure-alignment.md` committed as D4 doc (Status: Final)
+- [ ] README contains brief reference + internal link to `docs/research/ai-governance-failure-alignment.md`
 - [ ] MANIFESTO.md audit complete — backpropagation needs addressed or confirmed none
 - [ ] mkdocs.yml and Docs Build workflow verified and navigation structure validated
 - [ ] All clarifying questions answered and documented in scratchpad
