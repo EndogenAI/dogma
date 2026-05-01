@@ -37,11 +37,10 @@ Each entry cites the authoritative source where the term is introduced or most p
 | [Canonical Example](#canonical-example) | Methodology Concepts |
 | [Commit Discipline](#commit-discipline) | Agent Fleet Concepts |
 | [Compress Context, Not Content](#compress-context-not-content) | Guiding Principles |
-| [Compression-on-Ascent](#focus-on-descent--compression-on-ascent) | Agent Fleet Concepts |
+| [Focus-on-Descent / Compression-on-Ascent](#focus-on-descent--compression-on-ascent) | Agent Fleet Concepts |
 | [Context Rot](#context-rot) | Anti-patterns |
 | [Context Window Alert Protocol](#context-window-alert-protocol) | Agent Fleet Concepts |
 | [Cross-Reference Density](#cross-reference-density) | Methodology Concepts |
-| [Custom Agent](#agent) | Roles, Skills, and the Customization Taxonomy |
 | [D4 Research Document](#d4-research-document) | Methodology Concepts |
 | [Delegation Decision Gate](#delegation-decision-gate) | Agent Fleet Concepts |
 | [Determinism](#determinism) | Ethical Values |
@@ -1026,6 +1025,8 @@ Each agent:
 
 **In VS Code**: Agents are invoked as `@<agent-name>` in Copilot Chat. They appear as "Custom Agents."
 
+**Synonyms**: Custom Agent, `.agent.md` file
+
 **Related terms**: [Role](#role), [Agent Posture](#agent-posture), [Agent Fleet](#agent-fleet), [Executive Agent vs. Sub-agent](#executive-agent-vs-sub-agent)
 
 *Source: [`docs/guides/agents.md` §What Are Agents?](guides/agents.md#what-are-agents)*
@@ -1213,6 +1214,8 @@ Five values that underpin all decisions and encode the project's commitment to r
 
 ### Transparency
 
+[← Back to Quick Reference](#quick-reference-index)
+
 All decisions are documented and traceable to a principle or axiom. No hidden heuristics or unexplained choices. Tests serve as transparent specification of behavior.
 
 *Source: [`MANIFESTO.md` §Ethical Values](../MANIFESTO.md#ethical-values)*
@@ -1222,6 +1225,8 @@ All decisions are documented and traceable to a principle or axiom. No hidden he
 ---
 
 ### Human Oversight
+
+[← Back to Quick Reference](#quick-reference-index)
 
 Agents operate under governance and gates. Humans make strategic decisions; the system executes and surfaces information for those decisions. No unconstrained autonomy.
 
@@ -1233,6 +1238,8 @@ Agents operate under governance and gates. Humans make strategic decisions; the 
 
 ### Reproducibility
 
+[← Back to Quick Reference](#quick-reference-index)
+
 Outputs are deterministic, reviewable, and auditable. A decision made on day one can be reproduced on day 100 with the same inputs.
 
 *Source: [`MANIFESTO.md` §Ethical Values](../MANIFESTO.md#ethical-values)*
@@ -1243,6 +1250,8 @@ Outputs are deterministic, reviewable, and auditable. A decision made on day one
 
 ### Sustainability
 
+[← Back to Quick Reference](#quick-reference-index)
+
 Minimize computational cost, environmental impact, and token burn. The finite cost of local inference is a feature, not a bug — it incentivizes efficient design.
 
 *Source: [`MANIFESTO.md` §Ethical Values](../MANIFESTO.md#ethical-values)*
@@ -1252,6 +1261,8 @@ Minimize computational cost, environmental impact, and token burn. The finite co
 ---
 
 ### Determinism
+
+[← Back to Quick Reference](#quick-reference-index)
 
 Reduce randomness through encoding, scripts, and established practices. Vagueness is expensive; clarity is cheap.
 
