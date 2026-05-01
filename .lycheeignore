@@ -59,6 +59,37 @@ https://www.cyrille.martraire.com/2016/03/living-documentation-patterns/
 # intermittent outages. Referenced in docs/research/ synthesis documents.
 https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/
 
+# Legacy conorluddy/dogma repo issue references — old fork before EndogenAI rename.
+# Issues no longer accessible after repo transfer. Referenced in docs/guides/ and
+# docs/research/ files from before the rename.
+https://github.com/conorluddy/dogma/issues/417
+https://github.com/conorluddy/dogma/issues/430
+https://github.com/conorluddy/dogma/issues/506
+
+# NIST AIRC Docs — 404 after redirect. Site restructured or content removed.
+# Referenced in docs/research/ai-dependency-audit-2026.md
+https://airc.nist.gov/Docs
+
+# ENISA cloud service switching publication — 404. Content moved or removed.
+# Referenced in docs/research/ai-dependency-audit-2026.md
+https://www.enisa.europa.eu/publications/cloud-service-switching
+
+# Ollama Anthropic API blog post — 404. Article removed or URL changed.
+# Referenced in docs/research/claude-code-local-llm-integration.md
+https://ollama.com/blog/anthropic-api
+
+# Machine Learning Mastery RAG tutorial — 404. Content removed or restructured.
+# Referenced in docs/research/vector-databases-explained.md
+https://machinelearningmastery.com/build-a-rag-system-part-vii/
+
+# MCP web-mcp repo — 404. Repository not found or renamed.
+# Referenced in docs/research/webmcp-browser-integration-feasibility.md
+https://github.com/modelcontextprotocol/web-mcp
+
+# Chrome Extensions WebMCP API reference — 404. Feature not yet documented or URL incorrect.
+# Referenced in docs/research/webmcp-browser-integration.md
+https://developer.chrome.com/docs/extensions/reference/webmcp/
+
 # cicirello/issue-completion-stats — repository no longer exists (404).
 # Referenced in docs/research/issue-metrics-action.md as a DEFER candidate.
 https://github.com/cicirello/issue-completion-stats
