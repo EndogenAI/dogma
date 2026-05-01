@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feat/**
   pull_request:
     branches:
       - main
@@ -110,12 +109,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install lychee
+        run: |
+          ARCH=$(uname -m)
+          TEMP_DIR="/tmp/lychee-install"
+          mkdir -p "$TEMP_DIR"
+          cd "$TEMP_DIR"
+          DOWNLOAD_URL="https://github.com/lycheeverse/lychee/releases/latest/download/lychee-${ARCH}-unknown-linux-gnu.tar.gz"
+          echo "Downloading from: ${DOWNLOAD_URL}"
+          curl -sfLO "${DOWNLOAD_URL}"
+          tar -xzf "lychee-${ARCH}-unknown-linux-gnu.tar.gz"
+          # Find and copy the lychee binary (handle nested directory structure)
+          find . -name "lychee" -type f -executable | head -1 | xargs -I {} cp {} /usr/local/bin/lychee
+          chmod +x /usr/local/bin/lychee
+          lychee --version
+
       - name: Check links
-        uses: lycheeverse/lychee-action@v2
-        with:
-          lycheeVersion: latest
-          args: --no-progress --exclude-loopback --accept 200,403,429,502 docs/**/*.md README.md CHANGELOG.md CONTRIBUTING.md
-          fail: false
+        run: |
+          lychee --no-progress --exclude-loopback --accept 200,202,403,429,502 docs/**/*.md README.md CHANGELOG.md CONTRIBUTING.md
 
   required:
     name: All tests passed
