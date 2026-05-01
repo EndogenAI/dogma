@@ -10,6 +10,7 @@ Each entry cites the authoritative source where the term is introduced or most p
 - [Quick Reference Index](#quick-reference-index)
 - [Ethical Values](#ethical-values)
 - [Foundational Principle](#foundational-principle)
+- [Organization & Infrastructure](#organization--infrastructure)
 - [Core Axioms](#core-axioms)
 - [Guiding Principles](#guiding-principles)
 - [Methodology Concepts](#methodology-concepts)
@@ -46,8 +47,12 @@ Each entry cites the authoritative source where the term is introduced or most p
 | [Determinism](#determinism) | Ethical Values |
 | [DNA Metaphor](#dna-metaphor) | Mental Models |
 | [Documentation-First](#documentation-first) | Guiding Principles |
+| [dogma](#dogma) | Organization & Infrastructure |
+| [dogmaMCP / dogmic](#dogmamcp--dogmic) | Organization & Infrastructure |
 | [Encoded Substrate](#encoded-substrate) | Substrates |
 | [Encoding Fidelity](#encoding-fidelity) | Methodology Concepts |
+| [EndogenAI](#endogenai) | Organization & Infrastructure |
+| [Endogenous Agentic Design and Development](#endogenous-agentic-design-and-development) | Methodology Concepts |
 | [Encoding Inheritance Chain](#encoding-inheritance-chain) | Methodology Concepts |
 | [Endogenous-First](#endogenous-first) | Core Axioms |
 | [Endogenic Development](#endogenic-development) | Methodology Concepts |
@@ -58,6 +63,7 @@ Each entry cites the authoritative source where the term is introduced or most p
 | [Expansion → Contraction Pattern](#expansion--contraction-pattern) | Methodology Concepts |
 | [Fetch-Before-Act](#fetch-before-act) | Agent Fleet Concepts |
 | [Focus-on-Descent / Compression-on-Ascent](#focus-on-descent--compression-on-ascent) | Agent Fleet Concepts |
+| [Four Substrates](#four-substrates) | Substrates |
 | [Handoff Drift](#handoff-drift) | Anti-patterns |
 | [Human Oversight](#human-oversight) | Ethical Values |
 | [Isolate Invocations, Parallelize Safely](#isolate-invocations-parallelize-safely) | Guiding Principles |
@@ -160,6 +166,54 @@ Descends directly from Douglas Engelbart's augmentation framework ("Augmenting H
 **Related terms**: [Phase Gate](#phase-gate), [Self-Governance and Guardrails](#self-governance-and-guardrails)
 
 *Source: [`MANIFESTO.md` §Foundational Principle: Augmentive Partnership](../MANIFESTO.md#foundational-principle-augmentive-partnership)*
+
+[↑ Back to Contents](#contents)
+
+---
+
+## Organization & Infrastructure
+
+[← Back to Quick Reference](#quick-reference-index)
+
+---
+
+### EndogenAI
+
+The open source social endeavor and GitHub organization advancing [Endogenous Agentic Design and Development](#endogenous-agentic-design-and-development) practices collectively. Built by the community, for the community, to move beyond ["vibe coding"](#vibe-coding) via structured agentic governance frameworks.
+
+EndogenAI maintains the [dogma](#dogma) ecosystem and [dogmaMCP](#dogmamcp--dogmic) infrastructure harness.
+
+**Related terms**: [dogma](#dogma), [dogmaMCP / dogmic](#dogmamcp--dogmic), [Vibe Coding](#vibe-coding), [Endogenous-First](#endogenous-first)
+
+*Source: PR #564 review comment #r3171363709*
+
+[↑ Back to Contents](#contents)
+
+---
+
+### dogma
+
+The wider ecosystem and corpora constituting agentic governance — maintained by the EndogenAI community. When referring to the repository specifically, use "this repository" or "dogma repo"; when referring to the governance framework, use "dogma" or "dogma framework".
+
+**Internal undertone**: AI Agents should treat policy docs as the word of god.
+
+**Related terms**: [EndogenAI](#endogenai), [dogmaMCP / dogmic](#dogmamcp--dogmic), [Sovereignty](#sovereignty), [Policy Docs](#policy-docs)
+
+*Source: PR #564 review comment #r3171363709, [`MANIFESTO.md`](../MANIFESTO.md)*
+
+[↑ Back to Contents](#contents)
+
+---
+
+### dogmaMCP / dogmic
+
+The infrastructural AI harness combining [four substrates](#four-substrates) (Policy Docs, Design/Technical Docs, Agent Files, Enforcement Scripts) into a cohesive governance system. "dogmic" refers to components that comprise the harness (agent files + enforcement scripts).
+
+dogmaMCP is the execution layer that makes [dogma](#dogma) governance operational — the MCP (Model Context Protocol) server and runtime tools that enforce encoded constraints.
+
+**Related terms**: [four substrates](#four-substrates), [EndogenAI](#endogenai), [dogma](#dogma), MCP (Model Context Protocol)
+
+*Source: PR #564 review comment #r3171363709*
 
 [↑ Back to Contents](#contents)
 
@@ -453,6 +507,26 @@ The name comes from biology: an endogenous process originates from within the or
 **Related terms**: [Morphogenetic Seed](#morphogenetic-seed), [Tree Rings of Knowledge](#tree-rings-of-knowledge), [DNA Metaphor](#dna-metaphor)
 
 *Source: [`MANIFESTO.md` §What Is Endogenic Development?](../MANIFESTO.md#what-is-endogenic-development)*
+
+[↑ Back to Contents](#contents)
+
+---
+
+### Endogenous Agentic Design and Development
+
+The core methodology of building AI-augmented systems where governance constraints, values, and operational knowledge are encoded internally (within the repository) rather than delegated to external policy servers or vendor platforms. Emphasizes [sovereignty](#sovereignty), deterministic enforcement, and autopoietic substrate growth.
+
+This methodology is the foundation of [dogma](#dogma) and advanced collectively by [EndogenAI](#endogenai).
+
+**Key principles**:
+- Values encoded in-repo, not outsourced
+- Governance as executable substrate
+- Agents read constraints before acting
+- System maintains itself through encoded knowledge
+
+**Related terms**: [Endogenous-First](#endogenous-first), [Sovereignty](#sovereignty), [Endogenic Development](#endogenic-development), [dogma](#dogma)
+
+*Source: PR #564 review comment #r3171363709, [`MANIFESTO.md` §What Is Endogenic Development?](../MANIFESTO.md#what-is-endogenic-development)*
 
 [↑ Back to Contents](#contents)
 
@@ -906,6 +980,25 @@ A mental model that frames the endogenic substrate as a collection of discrete "
 **Related terms**: [Substrate](#substrate), [Membrane (Substrate Boundary)](#membrane-substrate-boundary), [Encoding Inheritance Chain](#encoding-inheritance-chain)
 
 *Source: [`docs/research/bubble-clusters-substrate.md`](./research/neuroscience/bubble-clusters-substrate.md)*
+
+[↑ Back to Contents](#contents)
+
+---
+
+### Four Substrates
+
+The canonical enumeration of [dogmaMCP](#dogmamcp--dogmic)'s substrate layers:
+
+1. **Policy Docs** — client's [dogma](#dogma); where values are codified
+2. **Design/Technical Docs** — dogma extension connecting policy to code; establishes endogenous foundation  
+3. **Agent Files** (dogmic) — text-based guardrails agents reference during execution
+4. **Enforcement Scripts** (dogmic) — automated dogma adherence (MCP-integrated or independent)
+
+Together these four substrates comprise the infrastructural AI harness that is dogmaMCP.
+
+**Related terms**: [dogmaMCP / dogmic](#dogmamcp--dogmic), [Substrate](#substrate), [Encoded Substrate](#encoded-substrate)
+
+*Source: PR #564 review comment #r3171363709*
 
 [↑ Back to Contents](#contents)
 
