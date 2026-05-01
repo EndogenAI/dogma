@@ -126,7 +126,7 @@ jobs:
 
       - name: Check links
         run: |
-          lychee --no-progress --exclude-loopback --accept 200,403,429,502 docs/**/*.md README.md CHANGELOG.md CONTRIBUTING.md
+          lychee --no-progress --exclude-loopback --accept 200,202,403,429,502 docs/**/*.md README.md CHANGELOG.md CONTRIBUTING.md
 
   required:
     name: All tests passed
