@@ -126,12 +126,12 @@ Write update summary under `## Phase 0.5 PM Workplan Updates` in scratchpad.
 
 **Must-Have Deliverables** (from Phase 0.5 research):
 1. **Hero tagline**: "Values ingrained, sovereignty sustained" (user-confirmed final)
-2. **License badge**: Apache 2.0 badge next to CI badge in hero section
+2. **Credibility signals (Phase 0.5 Q3.1)**: Badges (CI, coverage, Python, license) + AGENTS.md/MANIFESTO.md links + Active Maintainers roster + CHANGELOG link in footer
 3. **Community section**: GitHub Discussions link + CONTRIBUTING link + CODE_OF_CONDUCT reference (≤5 lines)
-4. **Adoption flows**: Two clear paths with example commands:
-   - "Adopt dogma in your project": `cookiecutter gh:EndogenAI/dogma` or `uv run python scripts/adopt_wizard.py`
-   - "Contribute to dogma": One-line summary + link to CONTRIBUTING.md (≤3 lines)
-5. **Dashboard visual**: 1 screenshot/GIF of MCP Dashboard in "MCP Dashboard" section + link to `mcp_server/README.md` immediately after
+4. **Adoption flows bifurcation (Phase 0.5 Q2)**: Two clear paths with example commands:
+   - "Use as Template" (links to docs/guides/getting-started.md): `cookiecutter gh:EndogenAI/dogma` or `uv run python scripts/adopt_wizard.py`
+   - "Extend & Contribute" (links to CONTRIBUTING.md): Fork + feature branch + submit PR workflow (≤3 lines)
+5. **Dashboard visuals (Phase 0.5 Q1)**: 1 hero screenshot + 4–5 labeled feature examples (telemetry, validation, tools) + live demo link in "MCP Dashboard" section + link to `mcp_server/README.md`
 
 **Additional #561 Spec Items**:
 - **Two-surface architecture explanation**: permanent substrate + MCP enforcement layer
@@ -140,12 +140,14 @@ Write update summary under `## Phase 0.5 PM Workplan Updates` in scratchpad.
 
 **Success Criteria**:
 - ✅ All 5 must-have deliverables from Phase 0.5 research present
-- ✅ Hero section introduces tagline + license badge
+- ✅ Hero section introduces tagline + credibility badges (CI, coverage, Python, license)
+- ✅ AGENTS.md and MANIFESTO.md linked in hero or governance section
+- ✅ Active Maintainers roster present (EndogenAI team contact links)
 - ✅ Two-surface architecture is clearly explained (substrate + MCP)
 - ✅ MCP toolset table is present with 13 tools listed
 - ✅ Community section has ≥2 actionable links (Discussions, CONTRIBUTING)
-- ✅ Quick start has both adoption flows with example commands
-- ✅ Dashboard visual (screenshot or GIF) present in MCP Dashboard section
+- ✅ Quick start has both adoption flows (Template + Contribute) with example commands and guide links
+- ✅ Dashboard visuals (1 hero + 4–5 labeled examples) present in MCP Dashboard section with live demo link
 - ✅ README passes the repository's configured documentation validation checks (link validation, docs build)
 
 **Research Gap** (if needed): Scout existing README.md to understand current structure before refactor.
@@ -201,6 +203,8 @@ Return APPROVED or REQUEST CHANGES — [criterion number: one-line reason].
 - TODO/FIXME placeholders resolved or tracked as new issues
 - SECURITY.md created or updated
 - MCP Dashboard documentation complete (in mcp_server/README.md or dedicated doc)
+- **Projects Using Dogma** section added (Phase 0.5 Q3.2) with AccessiTech + Consulting case studies + links
+- Roadmap link added to footer or community section
 - All changes committed
 
 **Depends on**: Phase 1 Review APPROVED  
@@ -209,15 +213,24 @@ Return APPROVED or REQUEST CHANGES — [criterion number: one-line reason].
 
 **Detailed Tasks**:
 
-### 2.1 — MCP Server Docs Prominence (30 minutes)
+### 2.1 — Projects Using Dogma + Roadmap (45 minutes)
 
-**Task**: Review `mcp_server/README.md` and ensure it's linked prominently from main README (Phase 1 MCP table can link here).
+**Task** (Phase 0.5 Q3.2 — Credibility Signals Phase 2): Add "Projects Using Dogma" section to README with:
+1. AccessiTech case study (1–2 lines + screenshot + link to case study doc)
+2. Consulting repo case study (1–2 lines + link to consulting repo)
+3. Roadmap link (link to docs/roadmap.md or GitHub Projects board)
 
-**Note**: Phase 1 already adds dashboard visual + link to `mcp_server/README.md` per Phase 0.5 research. This task verifies completeness and enhances if needed.
+**Success Criteria**: Case study section present with ≥2 adopter examples + working links; roadmap link added.
+
+### 2.2 — MCP Server Docs Prominence (30 minutes)
+
+**Task**: Review `mcp_server/README.md` and ensure it's linked prominently from main README (Phase 1 MCP table links here).
+
+**Note**: Phase 1 already adds dashboard visuals + link to `mcp_server/README.md` per Phase 0.5 research. This task verifies completeness and enhances if needed.
 
 **Success Criteria**: mcp_server/README.md exists and is linked from main README MCP toolset section.
 
-### 2.2 — Optional Enhancements (Version Badge, Dashboard GIF) (45 minutes)
+### 2.3 — Optional Enhancements (Version Badge, Dashboard GIF) (45 minutes)
 
 **Task** (Phase 0.5 research — "Important" tier):
 1. **Version badge**: Add version/release badge if dogma has versioned releases (check `CHANGELOG.md` or git tags)
@@ -228,7 +241,7 @@ Return APPROVED or REQUEST CHANGES — [criterion number: one-line reason].
 
 **Success Criteria**: Version badge present (if applicable), dashboard visual optimized, mobile Quick Start validated.
 
-### 2.3 — TODO/FIXME Sweep (1.5 hours)
+### 2.4 — TODO/FIXME Sweep (1.5 hours)
 
 **Task**: Run `grep -r "TODO\|FIXME" docs/ scripts/ .github/ --include="*.py" --include="*.md"` and either:
 - Resolve (implement the TODO)
@@ -239,13 +252,13 @@ Return APPROVED or REQUEST CHANGES — [criterion number: one-line reason].
 
 **Research Gap** (if needed): Scout codebase for TODO locations before deciding on resolution strategy.
 
-### 2.4 — SECURITY.md (20 minutes)
+### 2.5 — SECURITY.md (20 minutes)
 
 **Task**: Create or update SECURITY.md with vulnerability reporting guidance.
 
 **Success Criteria**: File exists with clear instructions for reporting security issues (email, private advisory, etc.).
 
-### 2.5 — MCP Dashboard Documentation (30–60 minutes)
+### 2.6 — MCP Dashboard Documentation (30–60 minutes)
 
 **Task**: Ensure MCP Dashboard is documented (setup, running, troubleshooting).
 
