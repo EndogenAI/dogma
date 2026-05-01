@@ -208,3 +208,13 @@ https://monorepo.tools/
 # Site is live; referenced in docs/research/local-inference-rag.md.
 # Transient network/firewall issue in CI environment.
 https://qdrant.tech/documentation/
+
+# Kubernetes.io liveness probes docs — connection failures from GitHub Actions runners.
+# Site is live; referenced in docs/research/otel-agent-instrumentation.md.
+# Network connectivity issue in CI environment.
+https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+
+# Vitejs.dev guide — connection failures from GitHub Actions runners.
+# Site redirects to vite.dev (301); referenced in docs/research/svelte-ecosystem-for-webmcp.md.
+# Network connectivity issue in CI environment.
+https://vitejs.dev/guide
