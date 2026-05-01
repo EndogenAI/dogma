@@ -1,4 +1,4 @@
-# Getting Started — Using Dogma as a Template
+# Getting Started (🚧 Work in Progress - WIP)
 
 This guide walks you through adopting the DogmaMCP governance framework for your own project. Choose your path below.
 
