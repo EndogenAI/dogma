@@ -8,15 +8,15 @@ Each entry cites the authoritative source where the term is introduced or most p
 ## Contents
 
 - [Quick Reference Index](#quick-reference-index)
-- [Core Axioms](#core-axioms)
+- [Ethical Values](#ethical-values)
 - [Foundational Principle](#foundational-principle)
+- [Core Axioms](#core-axioms)
 - [Guiding Principles](#guiding-principles)
 - [Methodology Concepts](#methodology-concepts)
 - [Agent Fleet Concepts](#agent-fleet-concepts)
 - [Substrates](#substrates)
 - [Roles, Skills, and the Customization Taxonomy](#roles-skills-and-the-customization-taxonomy)
 - [Mental Models and Metaphors](#mental-models-and-metaphors)
-- [Ethical Values](#ethical-values)
 - [Anti-patterns](#anti-patterns)
 
 ---
