@@ -52,9 +52,7 @@ The dogma MCP server exposes 13 governance tools for session management, validat
 
 ## MCP Dashboard
 
-Visualize governance telemetry, validation state, and MCP tool invocations in a browser dashboard:
-
-![MCP Dashboard Telemetry View](https://via.placeholder.com/600x350?text=MCP+Dashboard+-+Tool+Invocations)
+Visualize governance telemetry, validation state, and MCP tool invocations in a browser dashboard.
 
 **Key Features**:
 - **Tool Call Telemetry** — Track which tools are invoked, when, and success/failure rates
