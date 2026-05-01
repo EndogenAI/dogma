@@ -59,9 +59,11 @@ https://www.newyorker.com/books/under-review/how-project-maven-put-ai-in
 https://www.theguardian.com/news/2026/mar/26/ai-got-the-blame-for-the-ir*
 
 # OpenTelemetry documentation URLs — request timeouts from GitHub Actions runners.
-# Site is live; referenced in docs/research/otel-agent-instrumentation.md.
+# Site is live; referenced in docs/research/otel-agent-instrumentation.md and
+# docs/research/ai-workload-observability.md.
 # May be due to rate-limiting or network issues in GitHub's CI environment.
 https://opentelemetry.io/docs/collector/deployment/
+https://opentelemetry.io/docs/instrumentation/
 https://opentelemetry.io/docs/languages/python/getting-started/
 https://opentelemetry.io/docs/languages/python/instrumentation/
 
