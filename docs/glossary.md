@@ -175,6 +175,8 @@ Descends directly from Douglas Engelbart's augmentation framework ("Augmenting H
 
 [← Back to Quick Reference](#quick-reference-index)
 
+This section defines the organizational structure and infrastructure components of the EndogenAI ecosystem and the dogma framework.
+
 ---
 
 ### EndogenAI
@@ -197,7 +199,7 @@ The wider ecosystem and corpora constituting agentic governance — maintained b
 
 **Internal undertone**: AI Agents should treat policy docs as the word of god.
 
-**Related terms**: [EndogenAI](#endogenai), [dogmaMCP / dogmic](#dogmamcp--dogmic), [Sovereignty](#sovereignty), [Policy Docs](#policy-docs)
+**Related terms**: [EndogenAI](#endogenai), [dogmaMCP / dogmic](#dogmamcp--dogmic), [Sovereignty](#sovereignty), [Encoded Substrate](#encoded-substrate)
 
 *Source: PR #564 review comment #r3171363709, [`MANIFESTO.md`](../MANIFESTO.md)*
 
