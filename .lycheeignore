@@ -49,6 +49,15 @@ https://spec.modelcontextprotocol.io/
 # Referenced in README.md as historical context.
 https://github.com/AccessiTech/EndogenAI/issues/35
 
+# AI governance failure alignment — research URLs (HTTP 404)
+# Four research citations in docs/research/ai-governance-failure-alignment.md
+# that returned 404 or redirect loops at time of research (2026-03-xx).
+# Documented as "archived/moved" in research synthesis.
+https://research.gatech.edu/us-military-leans-ai-attack-iran-tech-do
+https://www.militarytimes.com/news/your-military/2026/03/24/deadly-iran-*
+https://www.newyorker.com/books/under-review/how-project-maven-put-ai-in
+https://www.theguardian.com/news/2026/mar/26/ai-got-the-blame-for-the-ir*
+
 # OpenTelemetry documentation URLs — request timeouts from GitHub Actions runners.
 # Site is live; referenced in docs/research/otel-agent-instrumentation.md.
 # May be due to rate-limiting or network issues in GitHub's CI environment.
