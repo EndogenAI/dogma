@@ -56,6 +56,17 @@ https://opentelemetry.io/docs/collector/deployment/
 https://opentelemetry.io/docs/languages/python/getting-started/
 https://opentelemetry.io/docs/languages/python/instrumentation/
 
+# OpenTelemetry documentation URLs — connection failures from GitHub Actions runners.
+# Site is live; referenced in multiple docs/research/*.md files.
+# Network connectivity issues in CI environment.
+https://opentelemetry.io/docs/specs/semconv/gen-ai/
+https://opentelemetry.io/docs/specs/semconv/gen-ai/mcp/
+https://opentelemetry.io/docs/specs/otel/logs/data-model/
+
+# Stack Overflow Blog — connection failures from GitHub Actions runners.
+# Referenced in docs/research/augmentation-axiom-validation.md.
+https://stackoverflow.blog/2026/01/23/ai-can-10x-developers-in-creating-tech-debt/
+
 # Cyrille Martraire living documentation article — connection failures from
 # GitHub Actions runners. Site may be blocking CI IPs or experiencing downtime.
 # Referenced in docs/research/ synthesis documents.
