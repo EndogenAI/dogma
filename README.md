@@ -1,6 +1,6 @@
 # DogmaMCP
 
-> **Values ingrained, sovereignty sustained** — governance framework for [endogenous](docs/glossary.md#endogenous-first) AI workflows
+> **Values ingrained, [sovereignty](docs/glossary.md#sovereignty) sustained** — governance framework for [endogenous](docs/glossary.md#endogenous-first) AI workflows
 
 [![Tests](https://github.com/EndogenAI/dogma/actions/workflows/tests.yml/badge.svg)](https://github.com/EndogenAI/dogma/actions/workflows/tests.yml)
 [![Coverage](https://codecov.io/gh/EndogenAI/dogma/branch/main/graph/badge.svg)](https://codecov.io/gh/EndogenAI/dogma)
@@ -23,6 +23,12 @@ DogmaMCP consists of two interlocking surfaces that reinforce each other:
 **MCP Enforcement Layer** — Runtime tools (MCP server, validation scripts, pre-commit hooks). Executable machinery that prevents agents from violating encoded constraints. Operates on the permanent substrate; designed to fail fast and surface violations immediately.
 
 Together: **substrate + enforcement = governance**. Your principles stay in your repo — no external policy servers, no vendor lock-in. Every agent that reads this repository's AGENTS.md and passes substrate validation operates within your governance boundary.
+
+---
+
+## About This Repository
+
+This repository is the reference implementation of **dogma**, the agentic governance framework maintained by the [EndogenAI](https://github.com/EndogenAI) community. **dogmaMCP** combines [four substrates](docs/glossary.md#four-substrates) (Policy Docs, Design/Technical Docs, Agent Files, Enforcement Scripts) into an infrastructural AI harness. Learn more in the [glossary](docs/glossary.md).
 
 ---
 
