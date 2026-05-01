@@ -43,6 +43,8 @@ See [`docs/plans/2026-03-06-formalize-workflows.md`](../plans/2026-03-06-formali
 
 **Hard gate**: For any session with ≥3 phases or ≥2 agent delegations, invoke the Executive Planner to produce per-phase numbered checklists before the first domain phase delegation. Mark "Planner checklist received" in the scratchpad. Do not skip this step — the checklist is the shared coherence artifact that prevents mid-phase re-scoping.
 
+**Workplan-Drift Convention**: If a sprint discovers and addresses an issue not in the original workplan scope, update the workplan immediately before continuing — add the issue to scope and add `Closes #NNN` to the PR-open phase. The workplan is the source of truth for PR body `Closes` lines. Workplan drift → PR scope drift → missing auto-close on merge. (Encodes the failure discovered in the W2 sprint on 2026-05-01, issue #574.)
+
 ---
 
 ## Design Rationale
