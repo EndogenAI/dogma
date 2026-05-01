@@ -31,7 +31,7 @@ A governance framework that embeds organizational constraints into AI workflows 
 
 ## What Is This Repo?
 
-**DogmaMCP** is a governance framework and MCP server that embeds organizational values directly into AI agent workflows — ensuring AI systems operate within your constraints by design, not by policy.
+**DogmaMCP** is a governance framework and MCP server that embeds organizational values directly into AI agent workflows — ensuring AI systems operate within your constraints by design, not by policy alone.
 
 Instead of relying on post-hoc audits or manual oversight, DogmaMCP encodes your principles, conventions, and constraints as executable substrate: agent role files, validation scripts, and runtime enforcement tools that agents read and obey before every action.
 
