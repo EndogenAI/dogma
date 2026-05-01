@@ -44,6 +44,7 @@ Each entry cites the authoritative source where the term is introduced or most p
 | [Custom Agent](#agent) | Roles, Skills, and the Customization Taxonomy |
 | [D4 Research Document](#d4-research-document) | Methodology Concepts |
 | [Delegation Decision Gate](#delegation-decision-gate) | Agent Fleet Concepts |
+| [Determinism](#determinism) | Ethical Values |
 | [DNA Metaphor](#dna-metaphor) | Mental Models |
 | [Documentation-First](#documentation-first) | Guiding Principles |
 | [Encoded Substrate](#encoded-substrate) | Substrates |
@@ -59,6 +60,7 @@ Each entry cites the authoritative source where the term is introduced or most p
 | [Fetch-Before-Act](#fetch-before-act) | Agent Fleet Concepts |
 | [Focus-on-Descent / Compression-on-Ascent](#focus-on-descent--compression-on-ascent) | Agent Fleet Concepts |
 | [Handoff Drift](#handoff-drift) | Anti-patterns |
+| [Human Oversight](#human-oversight) | Ethical Values |
 | [Isolate Invocations, Parallelize Safely](#isolate-invocations-parallelize-safely) | Guiding Principles |
 | [Knowledge Substrate](#knowledge-substrate) | Substrates |
 | [Local Compute-First](#local-compute-first) | Core Axioms |
@@ -68,6 +70,7 @@ Each entry cites the authoritative source where the term is introduced or most p
 | [Phase Gate](#phase-gate) | Agent Fleet Concepts |
 | [Programmatic-First](#programmatic-first) | Guiding Principles |
 | [R-items](#r-items) | Methodology Concepts |
+| [Reproducibility](#reproducibility) | Ethical Values |
 | [Role](#role) | Roles, Skills, and the Customization Taxonomy |
 | [SECI Cycle](#seci-cycle) | Methodology Concepts |
 | [Self-Governance and Guardrails](#self-governance-and-guardrails) | Guiding Principles |
@@ -78,9 +81,11 @@ Each entry cites the authoritative source where the term is introduced or most p
 | [Sovereignty](#sovereignty) | Guiding Principles |
 | [Sub-agent](#executive-agent-vs-sub-agent) | Roles, Skills, and the Customization Taxonomy |
 | [Substrate (Overview)](#substrate) | Substrates |
+| [Sustainability](#sustainability) | Ethical Values |
 | [Testing-First](#testing-first) | Guiding Principles |
 | [Takeback Pattern](#takeback-pattern) | Agent Fleet Concepts |
 | [Token Burn](#token-burn) | Methodology Concepts |
+| [Transparency](#transparency) | Ethical Values |
 | [Tree Rings of Knowledge](#tree-rings-of-knowledge) | Mental Models |
 | [Validate and Gate, Always](#validate-and-gate-always) | Guiding Principles |
 | [Vibe Coding](#vibe-coding) | Anti-patterns |
