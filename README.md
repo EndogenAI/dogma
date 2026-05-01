@@ -9,7 +9,7 @@
 
 A governance framework that embeds organizational constraints into AI workflows — encoding values, principles, and guardrails as executable substrate so agents operate within your constraints by design, not by policy alone.
 
-**Governance Layer**: [MANIFESTO.md](MANIFESTO.md) • [AGENTS.md](AGENTS.md) | **Quick Start**: [Get Started](#quick-start)
+**Governance Layer**: [MANIFESTO.md](MANIFESTO.md) • [AGENTS.md](AGENTS.md) | **Quick Start**: [Get Started](#get-started)
 
 
 ---
@@ -43,8 +43,8 @@ The dogma MCP server exposes 13 governance tools for session management, validat
 | `detect_user_interrupt` | Check for user STOP/ABORT/CANCEL signals | Before executing any phase action |
 | `route_inference_request` | Route inference to local or external providers | Prefer local execution (Local-Compute-First) |
 | `normalize_path` | Cross-platform path normalization + env-var expansion | File operations across macOS/Linux/Windows |
+| `resolve_env_path` | Read env-var as path and normalize it | Resolving env-vars like `$REPO_ROOT`, `$HOME` to normalized paths |
 | `get_trace_health` | Live OTel trace capture telemetry | Observability; validate telemetry pipeline |
-| `query_dom` | Browser inspector — query DOM state in dashboard | Browser-based debugging + testing |
 
 **Full documentation**: [mcp_server/README.md](mcp_server/README.md)
 
@@ -78,7 +78,7 @@ Adopt dogma as a template for your own endogenic governance framework.
 ```bash
 # Clone and scaffold
 cookiecutter gh:EndogenAI/dogma
-# Or: uv run --extra cli python scripts/adopt_wizard.py
+# Or: uv run python scripts/adopt_wizard.py
 
 cd <your-project>
 uv sync
