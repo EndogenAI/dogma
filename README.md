@@ -91,22 +91,73 @@ Your principles become executable:
 
 ## Architecture
 
-**dogma** operates as a **two-surface system**:
+**DogmaMCP** is an **infrastructural AI harness** built from four interlocking substrates. Together, they form a system where the whole is greater than the sum of its parts — each substrate reinforces the others, creating a governance framework that embeds organizational values directly into AI workflows.
 
-1. **Permanent substrate** — committed files encoding institutional knowledge:
-   - `MANIFESTO.md` (core philosophy)
-   - `AGENTS.md` (operational constraints)
-   - `.github/agents/` (agent role files)
-   - `scripts/` (automation and enforcement)
-   - `docs/guides/` (workflow documentation)
+### The Four-Substrate Model
 
-2. **MCP enforcement layer** — runtime toolset for validating, scaffolding, and routing:
-   - Substrate health checks (`check_substrate`)
-   - Agent file validation (`validate_agent_file`)
-   - Research synthesis validation (`validate_synthesis`)
-   - Session scratchpad management (`prune_scratchpad`)
-   - BM25 corpus queries (`query_docs`)
-   - Local-first inference routing (`route_inference_request`)
+The architecture distinguishes **EndogenAI** (the open-source methodology and community advancing endogenic development practices) from **dogmaMCP** (the technical harness that implements those practices). DogmaMCP consists of four substrates:
+
+#### 1. Policy Docs
+
+The client's dogma — values, principles, and constraints encoded as policy documentation.
+
+**Examples:** `MANIFESTO.md` (core axioms: Endogenous-First, Algorithms Before Tokens, Local Compute-First), `AGENTS.md` (operational constraints for all agents), `CONTRIBUTING.md` (contributor guidance).
+
+**Purpose:** Establish what matters and why. Policy docs are the constitutional layer — they define the system's identity and values before any code runs.
+
+#### 2. Design / Technical Docs
+
+The client's initial extension of dogma — connecting policy to implementation by documenting workflows, conventions, and technical patterns. This substrate establishes the **endogenous foundation** by encoding how principles translate into practice.
+
+**Examples:** `docs/guides/` (workflow documentation), `docs/toolchain/` (CLI tool references), `docs/decisions/` (ADRs documenting design choices).
+
+**Purpose:** Bridge abstract principles and concrete execution. Design docs answer: *"How do we apply our values in this specific context?"*
+
+#### 3. Agent Files
+
+Text-based guardrail information that AI agents **reference before every action** — a combination of verbal instructions, YAML-structured metadata, and BDI (Beliefs-Desires-Intentions) sections that define role boundaries, tool restrictions, and escalation paths.
+
+**Examples:** `.github/agents/*.agent.md` (Custom Agent role files), `.github/skills/*.md` (reusable workflow procedures), per-directory `AGENTS.md` redirection notices.
+
+**Purpose:** Make governance **legible** to AI systems. Agent files encode *who does what* and *how tasks are done* in a format agents read natively — turning policy into operational behavior.
+
+#### 4. Enforcement Scripts
+
+Automation integrated into the MCP server or running independently — encodes dogmatic adherence as deterministic, repeatable operations rather than interactive repetition. These scripts gate commits, validate schemas, and enforce conventions programmatically.
+
+**Examples:** `scripts/validate_agent_files.py` (CI gate on agent file compliance), `scripts/validate_synthesis.py` (research doc schema enforcement), pre-commit hooks (ruff format, no-heredoc-writes), MCP server tools (`check_substrate`, `validate_agent_file`).
+
+**Purpose:** Shift enforcement from **policy layer** (rules written in docs that agents may ignore) to **architecture layer** (constraints enforced in code). This is Algorithms Before Tokens in action: encode the rule once, enforce it deterministically.
+
+### How the Substrates Work Together
+
+The four substrates form a reinforcing cycle:
+
+1. **Policy Docs** define values and constraints
+2. **Design Docs** translate those values into documented workflows
+3. **Agent Files** make workflows legible and actionable for AI systems
+4. **Enforcement Scripts** validate adherence programmatically at runtime and commit-time
+
+When a violation occurs, it surfaces at multiple layers:
+- An agent reads its role file (Substrate 3) and sees the constraint
+- A pre-commit hook (Substrate 4) blocks the violating commit
+- The policy doc (Substrate 1) is updated to clarify the constraint for future sessions
+- The design doc (Substrate 2) documents the failure mode and corrective pattern
+
+This is governance that lives in code, rooted in compliance docs — **encoded, sovereignty sustained.**
+
+### MCP Enforcement Layer
+
+The MCP server exposes governance tools that span all four substrates:
+
+| Tool | Substrate(s) | Purpose |
+|------|-------------|---------|
+| `check_substrate` | All four | Validate repo health at session start |
+| `validate_agent_file` | 3 (Agent Files) | Check `.agent.md` compliance before commit |
+| `validate_synthesis` | 2 (Design Docs) | Verify research doc schema |
+| `scaffold_agent` | 3 (Agent Files) | Create new agent stub from template |
+| `query_docs` | 1, 2 (Policy + Design) | BM25 search over full docs corpus |
+| `route_inference_request` | 4 (Enforcement) | Local-first inference routing |
 
 The substrate encodes what to do; the MCP layer enforces it at runtime.
 
