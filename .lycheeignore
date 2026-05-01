@@ -49,6 +49,16 @@ https://spec.modelcontextprotocol.io/
 # Referenced in README.md as historical context.
 https://github.com/AccessiTech/EndogenAI/issues/35
 
+# Cyrille Martraire living documentation article — connection failures from
+# GitHub Actions runners. Site may be blocking CI IPs or experiencing downtime.
+# Referenced in docs/research/ synthesis documents.
+https://www.cyrille.martraire.com/2016/03/living-documentation-patterns/
+
+# OpenTelemetry GenAI semantic conventions — connection failures from GitHub
+# Actions runners. Site is live; may be blocking CI IPs or experiencing
+# intermittent outages. Referenced in docs/research/ synthesis documents.
+https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/
+
 # cicirello/issue-completion-stats — repository no longer exists (404).
 # Referenced in docs/research/issue-metrics-action.md as a DEFER candidate.
 https://github.com/cicirello/issue-completion-stats
