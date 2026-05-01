@@ -1,6 +1,6 @@
 # Getting Started — Using Dogma as a Template
 
-This guide walks you through adopting the EndogenAI Workflows governance framework (dogma) for your own project. Choose your path below.
+This guide walks you through adopting the DogmaMCP governance framework for your own project. Choose your path below.
 
 ---
 
@@ -12,7 +12,7 @@ This guide walks you through adopting the EndogenAI Workflows governance framewo
 
 ```bash
 # Option A: Use Cookiecutter (recommended)
-cookiecutter gh:EndogenAI/dogma
+uvx cookiecutter gh:EndogenAI/dogma
 
 # Option B: Use adopt_wizard script
 uv run python scripts/adopt_wizard.py \
@@ -29,7 +29,7 @@ uv sync
 **1. Generate Project from Template**
 
 ```bash
-cookiecutter gh:EndogenAI/dogma
+uvx cookiecutter gh:EndogenAI/dogma
 ```
 
 Answer the prompts:
@@ -198,7 +198,7 @@ uv run pytest
 
 **Action**:
 ```bash
-cookiecutter gh:EndogenAI/dogma
+uvx cookiecutter gh:EndogenAI/dogma
 # Answer prompts → my-saas-product
 cd my-saas-product
 uv sync
@@ -281,7 +281,7 @@ uv run python scripts/prune_scratchpad.py --init
 
 | Problem | Solution |
 |---------|----------|
-| `cookiecutter: command not found` | Install with `pip install cookiecutter` or `uv pip install cookiecutter` |
+| `cookiecutter: command not found` | Use `uvx cookiecutter` (recommended) or install with `uv pip install cookiecutter` |
 | `uv sync` fails with "Python 3.11+ required" | Install Python 3.11+ from python.org or via `brew install python@3.11` |
 | Generated files have placeholder values remaining | Run `adopt_wizard.py` again with correct `--org` and `--repo` flags |
 | `validate_agent_files.py` exits with errors | Check AGENTS.md for TODO comments; fill in required sections per AGENTS.md schema |

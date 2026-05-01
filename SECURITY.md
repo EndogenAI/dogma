@@ -2,7 +2,7 @@
 
 ## Reporting a Vulnerability
 
-We take the security of the EndogenAI Workflows (dogma) project seriously. Security decisions reflect our [core values](MANIFESTO.md#ethical-values) — see [MANIFESTO.md § Ethical Values](MANIFESTO.md#ethical-values) for the full ethical framework. If you discover a security vulnerability, please report it responsibly.
+We take the security of the DogmaMCP project seriously. Security decisions reflect our [core values](MANIFESTO.md#ethical-values) — see [MANIFESTO.md § Ethical Values](MANIFESTO.md#ethical-values) for the full ethical framework. If you discover a security vulnerability, please report it responsibly.
 
 ### How to Report
 

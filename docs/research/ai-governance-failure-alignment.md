@@ -119,14 +119,14 @@ The honest conclusion from this mapping is narrow: the four failure patterns sur
 
 1. **Lavender AI system in Gaza** — Yuval Abraham, *The Guardian*, 3 April 2024. "'The machine did it coldly': Israel used AI to identify 37,000 Hamas targets." <https://www.theguardian.com/world/2024/apr/03/israel-gaza-ai-database-hamas-airstrikes>
 
-2. **Maven / Minab school attack analysis** — Kevin T. Baker, *The Guardian*, 26 March 2026. "AI got the blame for the Iran school bombing. The truth is far more worrying." <https://www.theguardian.com/news/2026/mar/26/ai-got-the-blame-for-the-ir>
+2. **Maven / Minab school attack analysis** — Kevin T. Baker, *The Guardian*, 26 March 2026. "AI got the blame for the Iran school bombing. The truth is far more worrying." <https://www.theguardian.com/news/2026/mar/26/ai-got-the-blame-for-the-iran-school-bombing-the-truth-is-far-more-worrying>
 
 3. **2026 Minab school attack** — Wikipedia contributors, *Wikipedia*, retrieved May 2026. "2026 Minab school attack." <https://en.wikipedia.org/wiki/2026_Minab_school_attack>
 
-4. **Project Maven — book review** — Gideon Lewis-Kraus, *The New Yorker*, 2026. "How Project Maven Put AI Into the Kill Chain." Review of Katrina Manson, *Project Maven: A Marine Colonel, His Team, and the Dawn of AI Warfare* (Norton, 2026). <https://www.newyorker.com/books/under-review/how-project-maven-put-ai-in>
+4. **Project Maven — book review** — Gideon Lewis-Kraus, *The New Yorker*, 2026. "How Project Maven Put AI Into the Kill Chain." Review of Katrina Manson, *Project Maven: A Marine Colonel, His Team, and the Dawn of AI Warfare* (Norton, 2026). <https://www.newyorker.com/books/under-review/how-project-maven-put-ai-into-the-kill-chain>
 
-5. **Maven / Iran targeting investigation** — Katie Livingstone, *Military Times*, 24 March 2026. "Deadly Iran school strike casts shadow over Pentagon's AI targeting push." <https://www.militarytimes.com/news/your-military/2026/03/24/deadly-iran->
+5. **Maven / Iran targeting investigation** — Katie Livingstone, *Military Times*, 24 March 2026. "Deadly Iran school strike casts shadow over Pentagon's AI targeting push." <https://www.militarytimes.com/news/your-military/2026/03/24/deadly-iran-school-strike-casts-shadow-over-pentagons-ai-targeting-push/>
 
 6. **Project Maven interview with Katrina Manson** — *Democracy Now!*, 31 March 2026. "The AI War on Iran: Project Maven, a Secretive Palantir-Run System, Helps Pentagon Pick Bomb Targets." <https://www.democracynow.org/2026/3/31/project_maven_manson_bloomberg_ai_warfare>
 
-7. **US military AI and human judgment** — Jon R. Lindsay (Georgia Institute of Technology), *The Conversation*, republished by Georgia Tech Research, 11 March 2026. "US Military Leans Into AI for Attack on Iran, But the Tech Doesn't Lessen the Need for Human Judgment In War." <https://research.gatech.edu/us-military-leans-ai-attack-iran-tech-do>
+7. **US military AI and human judgment** — Jon R. Lindsay (Georgia Institute of Technology), *The Conversation*, republished by Georgia Tech Research, 11 March 2026. "US Military Leans Into AI for Attack on Iran, But the Tech Doesn't Lessen the Need for Human Judgment In War." <https://research.gatech.edu/us-military-leans-ai-attack-iran-tech-doesnt-lessen-need-human-judgment-war>
