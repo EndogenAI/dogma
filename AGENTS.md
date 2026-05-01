@@ -668,6 +668,8 @@ If you are mid-sprint and the scratchpad is genuinely over 2000 lines, use `--dr
 For any multi-phase session (≥ 3 phases or ≥ 2 agent delegations), create a workplan before execution begins and commit it to `docs/plans/`.
 Full protocol: see [`session-management` SKILL.md](.github/skills/session-management/SKILL.md) § 5.1 Tracked Workplans.
 
+**Workplan-Drift Convention**: When a sprint uncovers work that addresses an issue **not in the original workplan scope**, update the workplan immediately — add the issue to the in-scope list and add `Closes #NNN` to the PR-open phase deliverables before continuing. The workplan is the source of truth for the PR body's `Closes` lines. Workplan drift produces PR scope drift and missing auto-close. Emergent issues discovered after the workplan is committed must appear in the workplan's "Emergent Issue Tracking" section (or equivalent) before the PR is opened.
+
 <a name="sprint-phase-constraints"></a>
 ### Sprint Phase Ordering Constraints
 
@@ -741,6 +743,8 @@ Any command that creates or modifies a remote side effect must be immediately pr
 | `gh issue comment` (session-end update) | `test -s /tmp/file && file /tmp/file \| grep -q "UTF-8"` | `gh issue view <num> --json comments -q '.comments[-1].body[:80]'` |
 
 **Issue auto-close via PR body**: For any issue that will be resolved by a PR merge, **do not run `gh issue close` manually**. Instead add `Closes #NNN` lines to the PR body as each phase completes. GitHub closes them automatically on merge. Manual pre-merge closes break the PR→issue traceability link. See [`docs/guides/github-workflow.md` § Issue Auto-Close via PR Body](docs/guides/github-workflow.md#issue-auto-close-via-pr-body).
+
+**Workplan-Drift Gate**: Before running `gh pr create`, verify the workplan reflects the current sprint scope — not the original scope. If any issue was added to scope mid-sprint (e.g., discovered during implementation), it must appear in the workplan's in-scope list and have `Closes #NNN` in the PR-open deliverables before the PR body is written. The PR body's `Closes` lines are derived from the workplan; stale workplan = missing auto-close.
 
 **Zero error output is not confirmation of success.** Output truncation, network timeouts, and silent API failures all produce clean exits. Always verify.
 
