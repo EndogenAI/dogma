@@ -43,6 +43,7 @@ scripts/
   wait_for_unblock.py          # Poll a GitHub issue until status:blocked is removed; writes trigger file on exit 0 (--issue, --interval, --timeout, --dry-run)
   wait_for_github_run.py       # Poll a GitHub Actions run until completion; exits 0 on success, 1 on failure
   wait_for_pr_review.py        # Poll a PR until the required number of reviews land (--min-reviews, default 1); exits 0 when threshold met, 1 if not met before timeout, 2 on PR not found
+  check_merge_authorization.py # Check whether a PR is authorized for merge — evaluates four criteria (PR open, no CHANGES_REQUESTED, no pending reviewRequests, all non-nit threads resolved); --dry-run table mode; --no-allow-nit-unresolved to enforce nit threads; exit 0 = authorized, 1 = blocked, 2 = API error (closes #573)
   detect_drift.py              # Detect value-encoding drift in .agent.md files via watermark-phrase analysis (--agents-dir, --threshold, --fail-below, --format, --output)
   detect_rate_limit.py         # Detect rate-limit budget exhaustion and recommend protective action (sleep injection, phase deferral) — command: --check <remaining_tokens> <phase_cost_estimate>; outputs: OK|WARN|CRITICAL|SLEEP_REQUIRED_NNN
   detect_delegation_conflict.py # Pre-delegation conflict detection — reads proposed delegation scope against data/l2-constraints.yml and data/decision-tables.yml; outputs JSON {"safe": bool, "conflicts": [...]}; exits 0 (safe), 1 (conflicts found), 2 (config error); --scope or --stdin JSON; closes #380
