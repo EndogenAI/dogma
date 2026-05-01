@@ -75,6 +75,7 @@ Each entry cites the authoritative source where the term is introduced or most p
 | [Signal Preservation](#signal-preservation) | Methodology Concepts |
 | [Skill (SKILL.md)](#skill-skillmd) | Roles, Skills, and the Customization Taxonomy |
 | [Scratchpad](#scratchpad) | Agent Fleet Concepts |
+| [Sovereignty](#sovereignty) | Guiding Principles |
 | [Sub-agent](#executive-agent-vs-sub-agent) | Roles, Skills, and the Customization Taxonomy |
 | [Substrate](#substrate) | Substrates |
 | [Testing-First](#testing-first) | Guiding Principles |
@@ -109,6 +110,8 @@ The highest-priority axiom. Before writing any new agent, script, or document, a
 **Key distinction**: Endogenous-First is not isolationism. The system *starts* from within and *grows outward* by absorbing and encoding external knowledge.
 
 **Related terms**: [Encoding Inheritance Chain](#encoding-inheritance-chain), [Morphogenetic Seed](#morphogenetic-seed), [Fetch-Before-Act](#fetch-before-act)
+
+**Note**: The base word *endogenous* (from Greek *endo* = "within" + *genesis* = "origin") means "originating internally." See [Endogenous-First](#endogenous-first) for the axiom and [Endogenic Development](#endogenic-development) for the methodology.
 
 *Source: [`MANIFESTO.md` §Endogenous-First](../MANIFESTO.md#1-endogenous-first)*
 
@@ -243,6 +246,23 @@ Governance occurs at three levels:
 **Related terms**: [Phase Gate](#phase-gate), [Validate and Gate, Always](#validate-and-gate-always)
 
 *Source: [`MANIFESTO.md` §Self-Governance & Guardrails](../MANIFESTO.md#self-governance--guardrails)*
+
+---
+
+### Sovereignty
+
+The property of a system (or organization) where its own encoded values, constraints, and governance rules *govern its AI workflows* — rather than delegating that authority to an external policy server, vendor platform, or third-party service.
+
+Sovereignty is sustained when:
+- Governance constraints live in the repository (MANIFESTO.md, AGENTS.md, scripts/)
+- Every agent reads those constraints before acting
+- No external service can alter or override them unilaterally
+
+**Key distinction from isolation**: Sovereignty does not mean refusing external tools or knowledge — it means the *decision authority* over how those tools are used remains internal. A sovereign system can adopt an external model provider while retaining full control over the guardrails it enforces.
+
+**Related terms**: [Endogenous-First](#endogenous-first), [Encoded Substrate](#encoded-substrate), [Local Compute-First](#local-compute-first)
+
+*Source: [`MANIFESTO.md` §What Is Endogenic Development?](../MANIFESTO.md#what-is-endogenic-development), [`README.md`](../README.md) tagline*
 
 ---
 

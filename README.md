@@ -1,6 +1,6 @@
 # DogmaMCP
 
-> **Values ingrained, sovereignty sustained** — governance framework for endogenous AI workflows
+> **Values ingrained, sovereignty sustained** — governance framework for [endogenous](docs/glossary.md#endogenous-first) AI workflows
 
 [![Tests](https://github.com/EndogenAI/dogma/actions/workflows/tests.yml/badge.svg)](https://github.com/EndogenAI/dogma/actions/workflows/tests.yml)
 [![Coverage](https://codecov.io/gh/EndogenAI/dogma/branch/main/graph/badge.svg)](https://codecov.io/gh/EndogenAI/dogma)
@@ -9,7 +9,7 @@
 
 A governance framework that embeds organizational constraints into AI workflows — encoding values, principles, and guardrails as executable substrate so agents operate within your constraints by design, not by policy alone.
 
-**Governance Layer**: [MANIFESTO.md](MANIFESTO.md) • [AGENTS.md](AGENTS.md) | **Quick Start**: [Get Started](#get-started)
+**Governance Layer**: [MANIFESTO.md](MANIFESTO.md) • [AGENTS.md](AGENTS.md) • [Glossary](docs/glossary.md) | **Quick Start**: [Get Started](#get-started)
 
 
 ---
@@ -134,6 +134,7 @@ git push -u origin feat/your-feature
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Contributor setup, commit discipline, and validation gates |
 | [docs/guides/](docs/guides/) | Formalized workflows (session management, MCP setup, agent authoring) |
 | [docs/research/](docs/research/) | Research syntheses on governance, AI ethics, and methodology |
+| [docs/glossary.md](docs/glossary.md) | Canonical definitions for all key terms, axioms, and principles |
 | [.github/agents/README.md](.github/agents/README.md) | Agent fleet catalog |
 
 ---
