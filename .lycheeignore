@@ -49,6 +49,13 @@ https://spec.modelcontextprotocol.io/
 # Referenced in README.md as historical context.
 https://github.com/AccessiTech/EndogenAI/issues/35
 
+# OpenTelemetry documentation URLs — request timeouts from GitHub Actions runners.
+# Site is live; referenced in docs/research/otel-agent-instrumentation.md.
+# May be due to rate-limiting or network issues in GitHub's CI environment.
+https://opentelemetry.io/docs/collector/deployment/
+https://opentelemetry.io/docs/languages/python/getting-started/
+https://opentelemetry.io/docs/languages/python/instrumentation/
+
 # Cyrille Martraire living documentation article — connection failures from
 # GitHub Actions runners. Site may be blocking CI IPs or experiencing downtime.
 # Referenced in docs/research/ synthesis documents.
