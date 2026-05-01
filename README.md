@@ -3,7 +3,7 @@
 > **Values ingrained, sovereignty sustained** — governance framework for endogenous AI workflows
 
 [![Tests](https://github.com/EndogenAI/dogma/actions/workflows/tests.yml/badge.svg)](https://github.com/EndogenAI/dogma/actions/workflows/tests.yml)
-[![Coverage](https://img.shields.io/badge/Coverage-85%25-brightgreen)](https://github.com/EndogenAI/dogma/actions)
+[![Coverage](https://codecov.io/gh/EndogenAI/dogma/branch/main/graph/badge.svg)](https://codecov.io/gh/EndogenAI/dogma)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue)](https://www.python.org/downloads/)
 [![Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
@@ -94,7 +94,7 @@ Fork dogma, add features, and submit PRs back to the EndogenAI project.
 ```bash
 git clone https://github.com/EndogenAI/dogma.git
 cd dogma
-uv sync
+uv sync --extra dev --extra mcp  # Install dev tools (pytest, ruff, pre-commit) + MCP server
 uv run pytest
 
 # Create feature branch
@@ -104,6 +104,13 @@ git commit -m "feat(docs): describe your change"
 git push -u origin feat/your-feature
 # Open PR on GitHub
 ```
+
+**What gets installed:**
+
+| Command | Installs | Use case |
+|---------|----------|----------|
+| `uv sync` | Base dependencies only (governance scripts, OTel, docs tooling) | Adopters using dogma as a template; don't need dev tools |
+| `uv sync --extra dev --extra mcp` | Base + pytest, ruff, pre-commit, MCP server | Contributors; running tests, linting, and MCP server locally |
 
 **Next**: Read [CONTRIBUTING.md](CONTRIBUTING.md) for conventions and review process.
 
