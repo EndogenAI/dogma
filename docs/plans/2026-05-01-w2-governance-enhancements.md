@@ -97,25 +97,36 @@ Consolidate two emergent governance findings (#573, #574) with two remaining W2 
 
 ---
 
-### Phase C — #567: Glossary Audit and README Linking ⬜
+### Phase C — #567: Glossary Audit and README Relationship Disclosure ⬜
 **Agent**: Executive Docs
-**Description**: Audit `docs/glossary.md` — add `Sovereignty` entry, review `Endogenous-First` and `Endogenic Development`, audit README terms, improve README→glossary inline linking.
+**Description**: Expanded scope: Add 6 new glossary entries (original `Sovereignty` + 5 from pivot: `EndogenAI`, `dogma`, `dogmaMCP`/`dogmic`, `Endogenous Agentic Design and Development`, `four substrates`). Add brief README section after "What This Is" surfacing EndogenAI ↔ dogma ↔ dogmaMCP relationship. Includes research phase for OSS best practices on org/project relationship disclosure.
 **Deliverables**:
-- D1: `Sovereignty` entry added to glossary (definition, source citation, related terms)
-- D2: `Endogenous-First` and `Endogenic Development` entries reviewed — confirm they sufficiently define `endogenous` for README readers
-- D3: README terms audit complete — all prominent README terms without glossary entries added
-- D4: README inline links to glossary for key terms (e.g., `endogenous` in tagline/intro → glossary anchor)
-- D5: All glossary internal cross-reference links validated (no broken links)
-- D6: Committed with message `docs(glossary): audit glossary + improve README linking (#567)`
+- D1: **Research** — OSS best practices for surfacing org/project relationships in product repo root READMEs (survey 5-8 exemplar repos; 2-3 paragraph findings summary in scratchpad)
+- D2: `Sovereignty` entry added to glossary (definition, source citation, related terms)
+- D3: **5 pivot entries added**:
+  - `EndogenAI` — social endeavor, open source methodology, collective advancement beyond "vibe coding"
+  - `dogma` — wider ecosystem/corpora constituting agentic governance; policy docs substrate
+  - `dogmaMCP` / `dogmic` — infrastructure harness combining four substrates (Policy/Design/Agent/Enforcement)
+  - `Endogenous Agentic Design and Development` — core methodology term
+  - `four substrates` — enumeration with cross-links to individual substrate entries
+- D4: `Endogenous-First` and `Endogenic Development` entries reviewed — confirm sufficient for README readers
+- D5: **README new section** — after "What This Is", brief (2-3 sentences) relationship disclosure: EndogenAI social endeavor → dogma framework → dogmaMCP infrastructure harness; links to glossary for definitions
+- D6: README inline links to glossary for key terms (e.g., `endogenous` in tagline/intro → glossary anchor)
+- D7: All glossary internal cross-reference links validated (no broken links)
+- D8: Committed with message `docs(glossary): add 6 entries + README relationship disclosure (#567)`
 
 **Depends on**: Phase B2 Review `APPROVED`
 **Gate**: Phase C Review must return `APPROVED` before Phase D begins
 **Status**: ⬜ Not started
+**Notes**:
+- CI failure handling (PR #575 run 25234563946) deferred to sprint end — do not block this phase
+- Policy doc cascade (AccessiTech/consulting repos) tracked via consulting repo issues; NOT in this sprint scope
+- Four substrates definition from pivot is canonical source: Policy Docs, Design/Technical Docs, Agent Files (dogmic), Enforcement Scripts (dogmic)
 
 ### Phase C Review — Review Gate ⬜
 **Agent**: Review
 **Deliverables**: `## Phase C Review Output` in scratchpad, verdict: `APPROVED`
-**Depends on**: Phase C D6 committed
+**Depends on**: Phase C D8 committed
 **Gate**: Phase D does not start until `APPROVED`
 **Status**: ⬜ Not started
 
@@ -168,7 +179,9 @@ Sprint is complete when:
 - [ ] #573: `AGENTS.md` Merge Authorization 5-checkbox template added to PR Review Triage Gate
 - [ ] #573: `.github/skills/pr-review-triage/SKILL.md` updated with `check_merge_authorization.py` as Step 0
 - [ ] #573: `docs/research/orchestrator-autopilot-failure.md` Pattern 6 appended + Recommendation 6 added
-- [ ] #567: `Sovereignty` entry added to glossary; README→glossary linking improved
+- [ ] #567: 6 glossary entries added (`Sovereignty` + 5 pivot terms: `EndogenAI`, `dogma`, `dogmaMCP`/`dogmic`, `Endogenous Agentic Design and Development`, `four substrates`)
+- [ ] #567: README section added after "What This Is" — EndogenAI ↔ dogma ↔ dogmaMCP relationship disclosure
+- [ ] #567: README→glossary linking improved; OSS best practices research completed
 - [ ] #569: AccessiTech case study in README, collective "we" voice, Conor-approved
 - [ ] All Review gates returned `APPROVED`
 - [ ] All commits follow Conventional Commits format
