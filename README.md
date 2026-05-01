@@ -87,7 +87,7 @@ uv sync
 uv run pytest  # verify setup
 ```
 
-**Next**: Read [docs/guides/adoption.md](docs/guides/adoption.md) for customization and integration steps.
+**Next**: Read [docs/guides/getting-started.md](docs/guides/getting-started.md) for step-by-step guide, customization, and example adoption scenarios.
 
 ### Path 2: Extend & Contribute
 
