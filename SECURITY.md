@@ -2,7 +2,7 @@
 
 ## Reporting a Vulnerability
 
-We take the security of the EndogenAI Workflows (dogma) project seriously. If you discover a security vulnerability, please report it responsibly.
+We take the security of the EndogenAI Workflows (dogma) project seriously. Security decisions reflect our [core values](MANIFESTO.md#ethical-values) — see [MANIFESTO.md § Ethical Values](MANIFESTO.md#ethical-values) for the full ethical framework. If you discover a security vulnerability, please report it responsibly.
 
 ### How to Report
 
@@ -40,6 +40,10 @@ Out of scope:
 - Social engineering attacks on repository maintainers
 - Denial-of-service against the public GitHub repository
 - Issues in third-party dependencies that do not affect dogma's security model
+
+### Known Issues
+
+None currently known. See [GitHub Issues](https://github.com/EndogenAI/dogma/issues?q=label:security) for any reported security topics.
 
 ### Security Model Overview
 
