@@ -104,20 +104,9 @@ The three core axioms are ordered by priority. When they conflict, Endogenous-Fi
 
 ### Endogenous-First
 
-> Scaffold from existing system knowledge. Absorb and encode the best of what exists externally.
+Scaffold from existing system knowledge and external best practices; read and encode prior learning before spending tokens on novel work. The system starts from within and grows outward by absorbing and encoding external knowledge, not by refusing external tools.
 
-The highest-priority axiom. Before writing any new agent, script, or document, an agent must:
-
-1. Read what the system already knows about itself (`AGENTS.md`, existing scripts, existing docs).
-2. Research relevant external tools, frameworks, and prior art.
-3. Extend or adapt rather than create from zero.
-4. Encode the synthesized knowledge back into the project.
-
-**Key distinction**: Endogenous-First is not isolationism. The system *starts* from within and *grows outward* by absorbing and encoding external knowledge.
-
-**Related terms**: [Encoding Inheritance Chain](#encoding-inheritance-chain), [Morphogenetic Seed](#morphogenetic-seed), [Fetch-Before-Act](#fetch-before-act)
-
-**Note**: The base word *endogenous* (from Greek *endo* = "within" + *genesis* = "origin") means "originating internally." See [Endogenous-First](#endogenous-first) for the axiom and [Endogenic Development](#endogenic-development) for the methodology.
+**Related terms**: [Algorithms Before Tokens](#algorithms-before-tokens), [Local Compute-First](#local-compute-first), [Encoding Inheritance Chain](#encoding-inheritance-chain)
 
 *Source: [`MANIFESTO.md` §Endogenous-First](../MANIFESTO.md#1-endogenous-first)*
 
@@ -125,17 +114,9 @@ The highest-priority axiom. Before writing any new agent, script, or document, a
 
 ### Algorithms Before Tokens
 
-> Prefer deterministic, encoded solutions over interactive token burn. Invest in automation early.
+Prefer deterministic, encoded solutions over interactive token burn. When a task is done twice interactively, encode it as a script before the third time. Move work upstream through scripts, caching, and pre-computation to prevent re-discovery at session time.
 
-Every token spent in interactive sessions carries a cost (computational, financial, environmental). The strategy is to move work upstream: encode algorithms, scripts, and decision trees that prevent re-discovery at session time.
-
-This axiom drives:
-- Preference for scripts over interactive prompts
-- Caching and pre-computation over re-fetching
-- Deterministic workflows over adaptive ones
-- Context compression and isolation over broad context loads
-
-**Related terms**: [Token Burn](#token-burn), [Programmatic-First](#programmatic-first), [Endogenic Flywheel](#endogenic-flywheel)
+**Related terms**: [Programmatic-First](#programmatic-first), [Local Compute-First](#local-compute-first), [Token Burn](#token-burn)
 
 *Source: [`MANIFESTO.md` §Algorithms Before Tokens](../MANIFESTO.md#2-algorithms-before-tokens)*
 
@@ -196,27 +177,11 @@ Cross-cutting principles that reinforce the core axioms and guide all implementa
 
 ### Programmatic-First
 
-> If you have done a task twice interactively, the third time is a script.
+If you have done a task twice interactively, the third time is a script. Encode knowledge about how to perform a task instead of repeating it. This constraint applies to the entire agent fleet and is enforced through CI (Continuous Integration) gates.
 
-Any repeated or automatable task must be encoded as a committed script or automation before being performed a third time by hand. This is a constraint on the entire agent fleet, not an optional preference.
+**Related terms**: [Algorithms Before Tokens](#algorithms-before-tokens), [Endogenous-First](#endogenous-first), [Token Burn](#token-burn)
 
-**Reinforces**: [Algorithms Before Tokens](#algorithms-before-tokens) + [Endogenous-First](#endogenous-first)
-
-**Decision criteria** (from `AGENTS.md`):
-
-| Situation | Action |
-|-----------|--------|
-| Task performed once interactively | Note it; consider scripting |
-| Task performed twice interactively | Script it before the third time |
-| Task is a validation or format check | Script it immediately; CI should enforce it too |
-| Task involves reading many files to build context | Pre-compute and cache — encode as a script |
-| Task generates boilerplate from a template | Generator script |
-| Task could break something if done wrong | Script it with a `--dry-run` guard |
-| Task is genuinely non-recurring | Interactive is acceptable — document the assumption |
-
-**Related terms**: [Algorithms Before Tokens](#algorithms-before-tokens), [Token Burn](#token-burn)
-
-*Source: [`MANIFESTO.md` §Programmatic-First](../MANIFESTO.md#programmatic-first), [`AGENTS.md` §Programmatic-First Principle](../AGENTS.md#programmatic-first-principle), [`docs/guides/programmatic-first.md`](guides/programmatic-first.md)*
+*Source: [`AGENTS.md` §Programmatic-First Principle](../AGENTS.md#programmatic-first-principle), [`MANIFESTO.md` §Programmatic-First](../MANIFESTO.md#programmatic-first)*
 
 [↑ Back to Contents](#contents)
 
@@ -370,18 +335,11 @@ Applies to:
 
 ### Testing-First
 
-> Every script, agent, and automation must have automated tests before it ships. Tests prevent re-discovery of bugs; tests encode known-good behavior.
+Every script, agent, and automation must have automated tests before it ships. Tests prevent re-discovery of bugs and encode known-good behavior. Every script in `scripts/` must have unit tests, integration tests (for network/file I/O), at least 80% code coverage, and CI (Continuous Integration) must enforce test passing before commit.
 
-Tests are not optional — they are:
-- **Specification**: Tests define what a script does (inputs, outputs, error cases)
-- **Regression prevention**: if a script breaks, tests catch it immediately
-- **Executable documentation**: a test shows exactly how a script is invoked
+**Related terms**: [Algorithms Before Tokens](#algorithms-before-tokens), [Self-Governance and Guardrails](#self-governance-and-guardrails), [Validate and Gate, Always](#validate-and-gate-always)
 
-Every script in `scripts/` must have unit tests, integration tests (for network/file I/O), and at least 80% code coverage.
-
-**Reinforces**: [Algorithms Before Tokens](#algorithms-before-tokens) + [Self-Governance and Guardrails](#self-governance-and-guardrails)
-
-*Source: [`MANIFESTO.md` §Testing-First](../MANIFESTO.md#testing-first), [`docs/guides/testing.md`](guides/testing.md)*
+*Source: [`AGENTS.md` §Testing-First Requirement for Scripts](../AGENTS.md#testing-first-requirement-for-scripts), [`docs/guides/testing.md`](guides/testing.md)*
 
 [↑ Back to Contents](#contents)
 
@@ -433,21 +391,11 @@ A proxy measure for [encoding fidelity](#encoding-fidelity). Cross-reference den
 
 ### D4 Research Document
 
-A synthesis document format used for research outputs in `docs/research/`. The format is enforced by `scripts/validate_synthesis.py` in CI. A valid D4 document must (per the validator):
+A final research synthesis document stored in `docs/research/` with metadata (title, completion status). Follows a standardized template with specific sections (Executive Summary, Findings, Recommendations, Sources). Automatically checked for completeness when code is committed to the repository via CI (Continuous Integration) gates.
 
-- Have YAML frontmatter with at least a `title` and `status` field
-- Contain a section matching `## 1. Executive Summary`
-- Contain a section matching `## 2. Hypothesis Validation` (or with those keywords in the heading)
-- Contain a section matching `## 3. Pattern Catalog` (or with those keywords in the heading)
-- Include at least a minimum number of second-level headings (`##`) overall (see `scripts/validate_synthesis.py` for the current threshold)
+**Related terms**: [Research Sprint](#research-sprint), [Synthesis](#synthesis), [YAML Frontmatter](#yaml-frontmatter), [Signal Preservation](#signal-preservation)
 
-Recommended (but not CI-enforced) conventions include annotating patterns in the Pattern Catalog section with `**Canonical example**:` and `**Anti-pattern**:` labels.
-
-The name derives from the four-phase structure (Document, Discover, Distill, Deliver) that all research synthesis follows.
-
-**Related terms**: [Signal Preservation](#signal-preservation), [SECI Cycle](#seci-cycle)
-
-*Source: [`docs/guides/workflows.md` §Research Workflow](guides/workflows.md#research-workflow), [`scripts/validate_synthesis.py`](../scripts/validate_synthesis.py)*
+*Source: [`guides/deep-research.md`](guides/deep-research.md), [`AGENTS.md` §Documentation Standards](../AGENTS.md#documentation-standards)*
 
 [↑ Back to Contents](#contents)
 
@@ -764,15 +712,9 @@ Both constraints serve the same purpose: a broad outbound prompt and a verbose r
 
 ### Phase Gate
 
-A formal checkpoint that must be passed before a workflow phase can advance. Each gate has a defined deliverable and a verification step. Common gate types:
+A formal checkpoint that must be passed before a workflow phase can advance. Each gate has a defined deliverable and a verification step. Common gate types: research gate (synthesis document committed), review gate (Review agent approves), CI (Continuous Integration) passing gate (all tests passing before PR review). Skipping a phase gate is an anti-pattern equivalent to committing without CI.
 
-- **Research gate**: synthesis document committed with `status: Final`
-- **Review gate**: Review agent returns `APPROVED` verdict in the scratchpad
-- **Commit gate**: all changes committed and CI passing before PR review
-
-Skipping a phase gate is an anti-pattern equivalent to committing without CI.
-
-**Related terms**: [Evaluator-Optimizer Loop](#evaluator-optimizer-loop), [Validate and Gate, Always](#validate-and-gate-always)
+**Related terms**: [Evaluator-Optimizer Loop](#evaluator-optimizer-loop), [Validate and Gate, Always](#validate-and-gate-always), [Review](#review)
 
 *Source: [`AGENTS.md` §Agent Communication](../AGENTS.md#agent-communication), [`docs/guides/workflows.md` §Gates Reference](guides/workflows.md#gates-reference)*
 
@@ -1218,6 +1160,8 @@ Five values that underpin all decisions and encode the project's commitment to r
 
 All decisions are documented and traceable to a principle or axiom. No hidden heuristics or unexplained choices. Tests serve as transparent specification of behavior.
 
+**Related terms**: [Reproducibility](#reproducibility), [Human Oversight](#human-oversight), [Self-Governance and Guardrails](#self-governance-and-guardrails)
+
 *Source: [`MANIFESTO.md` §Ethical Values](../MANIFESTO.md#ethical-values)*
 
 [↑ Back to Contents](#contents)
@@ -1229,6 +1173,8 @@ All decisions are documented and traceable to a principle or axiom. No hidden he
 [← Back to Quick Reference](#quick-reference-index)
 
 Agents operate under governance and gates. Humans make strategic decisions; the system executes and surfaces information for those decisions. No unconstrained autonomy.
+
+**Related terms**: [Transparency](#transparency), [Reproducibility](#reproducibility), [Augmentive Partnership](#augmentive-partnership)
 
 *Source: [`MANIFESTO.md` §Ethical Values](../MANIFESTO.md#ethical-values)*
 
@@ -1242,6 +1188,8 @@ Agents operate under governance and gates. Humans make strategic decisions; the 
 
 Outputs are deterministic, reviewable, and auditable. A decision made on day one can be reproduced on day 100 with the same inputs.
 
+**Related terms**: [Transparency](#transparency), [Determinism](#determinism), [Self-Governance and Guardrails](#self-governance-and-guardrails)
+
 *Source: [`MANIFESTO.md` §Ethical Values](../MANIFESTO.md#ethical-values)*
 
 [↑ Back to Contents](#contents)
@@ -1254,6 +1202,8 @@ Outputs are deterministic, reviewable, and auditable. A decision made on day one
 
 Minimize computational cost, environmental impact, and token burn. The finite cost of local inference is a feature, not a bug — it incentivizes efficient design.
 
+**Related terms**: [Local Compute-First](#local-compute-first), [Algorithms Before Tokens](#algorithms-before-tokens), [Token Burn](#token-burn)
+
 *Source: [`MANIFESTO.md` §Ethical Values](../MANIFESTO.md#ethical-values)*
 
 [↑ Back to Contents](#contents)
@@ -1265,6 +1215,8 @@ Minimize computational cost, environmental impact, and token burn. The finite co
 [← Back to Quick Reference](#quick-reference-index)
 
 Reduce randomness through encoding, scripts, and established practices. Vagueness is expensive; clarity is cheap.
+
+**Related terms**: [Reproducibility](#reproducibility), [Programmatic-First](#programmatic-first), [Algorithms Before Tokens](#algorithms-before-tokens)
 
 *Source: [`MANIFESTO.md` §Ethical Values](../MANIFESTO.md#ethical-values)*
 
@@ -1302,9 +1254,9 @@ The progressive loss of signal fidelity as findings are passed between agents ac
 
 ### Isolationism
 
-The anti-pattern of refusing to adopt existing open-source tools and insisting on building everything from scratch. Violates [Adopt Over Author](#adopt-over-author) and [Endogenous-First](#endogenous-first) (the latter requires *absorbing* external wisdom, not ignoring it).
+The anti-pattern of refusing to adopt existing open-source tools and insisting on building everything from scratch. Violates [Adopt Over Author](#adopt-over-author) and [Endogenous-First](#endogenous-first) (the latter requires *absorbing* external wisdom, not ignoring it). Agents that isolate their work prevent context and knowledge from flowing across substrates and handoff boundaries.
 
-*Source: [`MANIFESTO.md` §Endogenous-First](../MANIFESTO.md#1-endogenous-first)*
+*Source: [`MANIFESTO.md` §Endogenous-First](../MANIFESTO.md#1-endogenous-first), [`AGENTS.md` §Agent Communication](../AGENTS.md#agent-communication)*
 
 ---
 
