@@ -1,6 +1,6 @@
 # DogmaMCP
 
-> **Governance that lives in code, not compliance docs**
+> Governance that lives in code, rooted in compliance docs - encoded, sovereignty sustained.
 
 [![Tests](https://github.com/EndogenAI/dogma/actions/workflows/tests.yml/badge.svg)](https://github.com/EndogenAI/dogma/actions/workflows/tests.yml)
 [![Docs](https://github.com/EndogenAI/dogma/actions/workflows/docs.yml/badge.svg)](https://endogenai.github.io/dogma/)
@@ -63,7 +63,7 @@ Post-hoc review catches mistakes, but at the cost of wasted cycles, broken trust
 
 ### The Solution
 
-DogmaMCP shifts values enforcement from the **policy layer** (rules written in docs that agents may ignore) to the **architecture layer** (constraints embedded as code that agents must obey).
+DogmaMCP shifts values enforcement from the **policy layer** (rules written in docs that agents may ignore) to the **architecture layer** (constraints enforced in legible guardrails, and code enforcing agent behavior).
 
 Your principles become executable:
 - **Agent role files** that define authority boundaries and escalation paths
@@ -158,7 +158,7 @@ See [mcp_server/README.md](mcp_server/README.md) for setup and tool reference.
 
 ## Quick Start
 
-### Adopt DogmaMCP in Your Project
+### Adopt DogmaMCP in Your Project (🚧 WIP)
 
 **Prerequisites**: Python 3.11+, [uv](https://github.com/astral-sh/uv) installed (`curl -LsSf https://astral.sh/uv/install.sh | sh`)
 
