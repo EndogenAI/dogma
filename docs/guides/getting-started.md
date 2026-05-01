@@ -15,7 +15,7 @@ This guide walks you through adopting the EndogenAI Workflows governance framewo
 cookiecutter gh:EndogenAI/dogma
 
 # Option B: Use adopt_wizard script
-uv run --extra cli python scripts/adopt_wizard.py \
+uv run python scripts/adopt_wizard.py \
   --org your-github-org \
   --repo your-project-name \
   --output-dir ./your-project-name
@@ -102,14 +102,14 @@ git clone https://github.com/EndogenAI/dogma.git
 cd dogma
 
 # Run adopt_wizard to scaffold governance files
-uv run --extra cli python scripts/adopt_wizard.py \
+uv run python scripts/adopt_wizard.py \
   --org your-github-org \
   --repo your-existing-repo \
   --output-dir ../your-existing-repo-governance \
   --dry-run
 
 # Review the output, then run without --dry-run
-uv run --extra cli python scripts/adopt_wizard.py \
+uv run python scripts/adopt_wizard.py \
   --org your-github-org \
   --repo your-existing-repo \
   --output-dir ../your-existing-repo-governance
@@ -124,7 +124,7 @@ cd ../your-existing-repo
 **1. Scaffold Governance Artefacts**
 
 ```bash
-uv run --extra cli python scripts/adopt_wizard.py \
+uv run python scripts/adopt_wizard.py \
   --org my-org \
   --repo my-project \
   --output-dir /tmp/my-project-governance \
@@ -149,7 +149,7 @@ If the output looks correct, proceed to Step 3.
 **3. Write Generated Files (Remove --dry-run)**
 
 ```bash
-uv run --extra cli python scripts/adopt_wizard.py \
+uv run python scripts/adopt_wizard.py \
   --org my-org \
   --repo my-project \
   --output-dir /tmp/my-project-governance
@@ -221,7 +221,7 @@ uv sync
 # Clone dogma repo
 git clone https://github.com/EndogenAI/dogma.git
 cd dogma
-uv sync --extra cli
+uv sync
 
 # Run adoption flow
 uv run python scripts/adopt_wizard.py \
