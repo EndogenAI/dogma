@@ -125,6 +125,24 @@ git push -u origin feat/your-feature
 
 ---
 
+## In Practice: AccessiTech
+
+> *"With docs + agent fleet treating docs as dogma → more fundamentally aligned code and content."*
+
+**The journey**: Policy in my head → Tech docs (unanchored) → Agent files (improvised) → Policy docs upstream → Encoded values → Enforcement ✓
+
+**[AccessiTech](https://accessitech.net)** is a digital accessibility consultancy built around a single core value: **dA11y** — my internal shorthand for **d**igital **A**ccessibility (inspired by i18n and a18y conventions). Making accessibility a first-class design constraint — not a compliance afterthought — is exactly the kind of deep value that dogma exists to encode.
+
+**I started here**: policy living entirely in my head. Technical documentation helped anchor decisions, but those docs were disconnected from how I actually worked in code — good writing with no enforcement layer. Introducing agent files (AGENTS.md, custom roles, SKILL.md) moved things forward, but early versions were improvised and inconsistent. The key inflection point came when I turned *inward*: encoding policy documentation upstream, before code, before agent prompts, before PR reviews. That shift made it possible for a value like `dA11y` to propagate throughout the codebase — not as a comment in a single file, but as a governing constraint that every agent reads before acting.
+
+**Getting there required effort**: drawing out implicit conventions, researching best practices, iterating on governance docs that had never existed before. But the effort compounded. A comms strategy became a comms policy; a comms policy prompted language-specific accessibility guidelines; guidelines became enumerated rules that enforcement scripts could check automatically.
+
+**The result**: documentation and an agent fleet that treat those docs as dogma; enforcement scripts, automated tests, and GitHub workflows that catch-and-correct misalignments before they reach production. Overhead became infrastructure. Values became architecture.
+
+*Interested in a similar outcome for your codebase? See [Get Started](#get-started).*
+
+---
+
 ## Further Reading
 
 | Document | Purpose |
