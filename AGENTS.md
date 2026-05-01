@@ -419,6 +419,18 @@ Rules:
   4. Post replies referencing fix commit SHAs using `scripts/pr_review_reply.py` batch mode
   5. Resolve all addressed threads; leave nits open with an acknowledgement reply
   6. Re-request review if the original review state was `CHANGES_REQUESTED`: `gh pr review <num> --request-review`
+  Before treating a PR as merge-ready, write a `## Merge Authorization — PR #NNN` section to the scratchpad and complete all five checkboxes:
+
+  ```
+  ## Merge Authorization — PR #NNN
+  - [x] wait_for_github_run.py exit 0 (CI passing)
+  - [x] wait_for_pr_review.py exit 0 (all reviews received)
+  - [x] check_merge_authorization.py exit 0 (threads resolved, no CHANGES_REQUESTED)
+  - [x] pr_review_reply.py batch-reply run confirmed
+  - [ ] Explicit user "go ahead" received in current session  ← HUMAN GATE
+  ```
+
+  The final checkbox cannot be auto-checked by any script — it is a human gate. A PR is not merge-ready until all five are checked.
   A session that ends with "PR is open — ready to merge" without completing these steps is an encoding failure. This gate applies regardless of CI status and is independent of the Research Doc PR Merge Gate below.
 - **Research Doc PR Merge Gate**: A PR that includes new D4 research documents (`docs/research/*.md`, Status: Final) **must not be merged** unless every item in each new doc's `## Recommendations` section is either (a) tracked as a GitHub issue (with `#NNN` reference in the PR, a comment, or the issue body), or (b) explicitly marked as intentionally deferred with an inline rationale in the doc. Open questions that are actionable (contain "ADOPT", "IMPLEMENT", "UPDATE", or similar imperative verbs) are subject to the same gate. This constraint applies regardless of CI status. The session executive confirms the gate is clear and posts a checklist in the PR thread before requesting merge.
 - **HGT Learning Slot**: At sprint close, classify each accumulated learning as Upstream (propagate back to `dogma` template) or Internal (keep in derived repo). See the full checklist and classification table in [`docs/guides/session-management.md` § HGT Learning Slot](docs/guides/session-management.md#hgt-learning-slot).

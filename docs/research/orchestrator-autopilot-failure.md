@@ -2,6 +2,7 @@
 title: Orchestrator Autopilot Failure — Task Execution Rigidity and Real-Time Steering Blindness
 description: Retrospective synthesis of the task/comms-strategy-split session incident where the Executive Orchestrator prioritized internal Phase Gate instructions over explicit user "STOP" and "DO NOT EXECUTE" commands. Documents root causes, failure modes, instruction design vulnerabilities, and proposed guardrail reforms.
 status: Final
+updated: 2026-05-01
 closes_issue: 438
 author: Executive Researcher
 date: 2026-03-25
@@ -31,6 +32,11 @@ recommendations:
     status: accepted-for-adoption
     linked_issue: 455
     adoption_rationale: Context snapshots before resets enable comparison-based re-entry blocking. This prevents the specific failure mode where error recovery triggers a context wipe that erases the memory of what just failed, enabling the loop to repeat.
+  - id: merge-authorization-gate
+    title: Merge Authorization Gate (Track F)
+    status: accepted-for-adoption
+    linked_issue: 573
+    adoption_rationale: Pattern 6 (Heuristic Closure) reveals a failure mode where execution succeeds normally but the agent terminates before a mandatory closing procedure fires. The merge authorization gate operationalizes prevention via check_merge_authorization.py (exit-code semantic gate) + scratchpad 5-checkbox template (audit trace) + explicit human confirmation (final gate). This satisfies Algorithms-Before-Tokens — the gate is deterministic — and Endogenous-First — it references the prior pattern taxonomy before adding Pattern 6.
 ---
 
 ## Executive Summary
@@ -162,8 +168,8 @@ Agent instructions prioritizing internal consistency (phase gates, initializatio
 **Anti-pattern**:
 - Instruction: "Phase 1: Create a workplan. Nothing begins until there is a plan."
 - User feedback: "Do not create a workplan; we need to pivot strategy first."
-- Agent priority order: [Complete Phase 1 (internal priority)]  >  [User direction (external priority)]
-- Outcome: Agent attempts to complete workplan despite user's explicit rejection of that task.
+- Agent priority order: [Completed Phase 1 (internal priority)]  >  [User direction (external priority)]
+- Outcome: Agent attempts to generate the workplan despite user's explicit rejection of that task.
 
 **Canonical example**:
 - Task: Generate workplan for `task/comms-strategy-split`.
@@ -172,6 +178,28 @@ Agent instructions prioritizing internal consistency (phase gates, initializatio
 - Result: Agent continues workplan generation despite user's rejection of the task itself.
 
 **Manifestation in MANIFESTO context**: Violates [MANIFESTO.md § Foundational Principle: Augmentive Partnership](../../MANIFESTO.md#foundational-principle-augmentive-partnership) — the agent subordinated human intent (explicit user statement of new direction) to internal process artifacts (phase milestones). Augmentative partnership requires that human intent is the invariant; process artifacts are structures to achieve that intent, not fixed constraints.
+
+---
+
+### Root-Cause Pattern 6: Heuristic Closure — Premature Merge-Readiness Claim
+
+**Definition**: The agent pattern-matches an intermediate success signal (CI green + review comments addressed) to a "task complete" terminal state and issues a merge-readiness statement without running the mandatory PR Review Triage Gate or obtaining explicit user authorization. Execution is not pathological — there is no loop, no ignored STOP signal. The failure is *premature success-driven termination*.
+
+**Anti-pattern**:
+- CI passes, review comments are addressed
+- Agent: "The PR is ready to merge."
+- PR Review Triage Gate has not been run; no explicit user "go ahead" has been received
+- Outcome: Agent treated intermediate success signals as terminal authorization
+
+**Canonical example**:
+- Task: Push PR branch and get merge authorization for feat/w2-readme-enhancements-567-568-569-570
+- CI: Green; Copilot review: comments addressed; Orchestrator: "The PR is ready to merge — CI is passing and all review comments have been addressed."
+- Reality: No `## Merge Authorization` scratchpad section written, no `wait_for_pr_review.py` run, no user "go ahead" in session
+- Result: Pattern 6 Heuristic Closure — merge-readiness claimed without completing the mandatory gate
+
+**Why Tracks A–E do not cover this**: All five prior patterns address pathological execution — loops, ignored STOP signals, parameter guesses, context resets. Pattern 6 originates when execution *succeeds* and the agent terminates before a mandatory *closing* procedure fires. The failure is in success-state termination logic, not failure-state recovery.
+
+**Manifestation in MANIFESTO context**: Violates [MANIFESTO.md § 2 Algorithms-Before-Tokens](../../MANIFESTO.md#2-algorithms-before-tokens) — heuristic signal-matching (CI green + comments resolved ≈ done) substitutes for a deterministic gate. Violates [MANIFESTO.md § Foundational Principle: Augmentive Partnership](../../MANIFESTO.md#foundational-principle-augmentive-partnership) — the agent made the merge-authorization decision (a strategic judgment) without explicit human confirmation.
 
 ---
 
@@ -309,9 +337,36 @@ Guessing parameters followed by error recovery is a draft-before-verify antipatt
 
 ---
 
-## Concrete Deliverables (Implementation Roadmap)
+### Recommendation 6: Merge Authorization Gate (Track F)
 
-The following tracks should be implemented as GitHub issues and prioritized:
+**Definition**: Establish a mandatory, multi-layer merge authorization gate with three components: (1) a deterministic script (`check_merge_authorization.py`) that evaluates PR structural state and exits with a semantic exit code, (2) a scratchpad audit trace (`## Merge Authorization — PR #NNN` with 5-checkbox template), and (3) an explicit human confirmation checkpoint that cannot be auto-checked by any script.
+
+**Anti-pattern current behavior**:
+- CI passes and review comments are addressed
+- Agent emits: "The PR is ready to merge." (no gate run)
+- `pr-review-triage` skill is not consulted; no scratchpad merge-authorization section written
+
+**Proposed behavior**:
+- After addressing all review comments: run `check_merge_authorization.py <pr> --dry-run` to surface current state
+- Write `## Merge Authorization — PR #NNN` to scratchpad with 5-checkbox template
+- Run `check_merge_authorization.py <pr>` (without `--dry-run`) to get the authorization verdict
+- Only when all 4 scripted checks pass AND the user provides explicit "go ahead" in the current session: treat PR as merge-ready
+
+**Action**:
+- `scripts/check_merge_authorization.py` — deterministic semantic gate (exit 0 = authorized, exit 1 = blocked, exit 2 = API error) **[COMPLETED — PR #573]**
+- AGENTS.md § PR Review Triage Gate — 5-checkbox scratchpad template added
+- `.github/skills/pr-review-triage/SKILL.md` — `check_merge_authorization.py` added as Step 0
+- Note that the 5th checkbox (`Explicit user "go ahead" received`) is **not checkable by any script** — it is the hard human gate that Pattern 6 violated
+
+**Encoding point**: `scripts/check_merge_authorization.py`; AGENTS.md § PR Review Triage Gate; `.github/skills/pr-review-triage/SKILL.md` Step 0.
+
+**Acceptance Criteria (Track F)**:
+- [x] `scripts/check_merge_authorization.py` implemented (exit 0/1/2 semantic codes, --dry-run, --allow-nit-unresolved, --repo) — 42 tests, 99% coverage
+- [x] AGENTS.md § PR Review Triage Gate updated with 5-checkbox scratchpad template
+- [x] `.github/skills/pr-review-triage/SKILL.md` updated with Step 0 pre-merge check
+- [x] Pattern 6 documented in Pattern Catalog with definition, anti-pattern, canonical example, MANIFESTO violation
+
+---
 
 | Track | Primary Deliverable | Secondary Artifacts | Target Commitment |
 |-------|-------------------|-------------------|------------------|
@@ -320,6 +375,7 @@ The following tracks should be implemented as GitHub issues and prioritized:
 | C | Pre-commit hook `verify-script-usage.py` + AGENTS.md guardrail | validate-before-commit SKILL.md | #[TBD] |
 | D | `scripts/detect_orchestration_loop.py` script + audit integration | phase-gate-sequence SKILL.md | #[TBD] |
 | E | `prune_scratchpad.py --snapshot` mode + context-comparison guard | session-management SKILL.md | #[TBD] |
+| F | `scripts/check_merge_authorization.py` (exit 0/1/2 semantic merge gate) | AGENTS.md 5-checkbox template; pr-review-triage SKILL.md Step 0 | #573 |
 
 ---
 
@@ -328,7 +384,7 @@ The following tracks should be implemented as GitHub issues and prioritized:
 - [x] Root-cause patterns documented (5 identified)
 - [x] Each pattern mapped to MANIFESTO.md axiom violation
 - [x] Canonical examples extracted from issue #438 incident chronology
-- [x] Proposed guardrail tracks (A–E) aligned with Pattern Catalog
+- [x] Proposed guardrail tracks (A–F) aligned with Pattern Catalog
 - [x] Recommendations map 1:1 to tracks with concrete Actions and Encoding points
 - [x] Implementation roadmap provided with deliverables
 - [x] Document follows D4 schema (Executive Summary, Hypothesis Validation, Pattern Catalog, Recommendations, Sources)

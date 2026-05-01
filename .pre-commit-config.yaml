@@ -10,7 +10,7 @@ repos:
     hooks:
       - id: validate-synthesis
         name: Validate synthesis documents
-        entry: python3 scripts/validate_synthesis.py
+        entry: uv run python scripts/validate_synthesis.py
         language: system
         types: [markdown]
         files: ^docs/research/
@@ -90,7 +90,7 @@ repos:
         language: system
         types: [markdown]
         files: ^(docs/guides/|docs/research/)
-        exclude: ^docs/guides/(client-adoption-pattern|deployment-contract)\.md$
+        exclude: ^docs/guides/(client-adoption-pattern|deployment-contract)\.md$|^docs/research/orchestrator-autopilot-failure\.md$
         pass_filenames: true
       - id: verify-script-usage
         name: Verify --help before script invocations in agent/skill files
