@@ -137,7 +137,7 @@ git push -u origin feat/your-feature
 
 **The journey**: Policy in my head → Tech docs (unanchored) → Agent files (improvised) → Policy docs upstream → Encoded values → Enforcement ✓
 
-**[AccessiTech](https://accessitech.net)** is a digital accessibility consultancy built around a single core value: **dA11y** — my shorthand for *digital Accessibility*: accessibility as a first-class value, not an afterthought. (Follows the i18n abbreviation pattern: *d* + 11 letters + *y*). This is exactly the kind of deep value that dogma exists to encode.
+**[AccessiTech](https://accessi.tech)** is a digital accessibility consultancy built around a single core value: **dA11y** — my shorthand for *digital Accessibility*: accessibility as a first-class value, not an afterthought. (Follows the i18n abbreviation pattern: *d* + 11 letters + *y*). This is exactly the kind of deep value that dogma exists to encode.
 
 **I started here**: policy living entirely in my head. Technical documentation helped anchor decisions, but those docs were disconnected from how I actually worked in code — good writing with no enforcement layer. Introducing agent files (AGENTS.md, custom roles, SKILL.md) moved things forward, but early versions were improvised and inconsistent. The key inflection point came when I turned *inward*: encoding policy documentation upstream, before code, before agent prompts, before PR reviews. That shift made it possible for a value like `dA11y` to propagate throughout the codebase — not as a comment in a single file, but as a governing constraint that every agent reads before acting.
 
