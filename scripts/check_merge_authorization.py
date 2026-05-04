@@ -116,11 +116,13 @@ def check_pr_open(data: dict[str, Any]) -> tuple[bool, str, str]:
 
 def check_no_changes_requested(data: dict[str, Any]) -> tuple[bool, str, str]:
     """Check b. No review with state CHANGES_REQUESTED."""
-    blocking = [
-        r.get("author", {}).get("login", "unknown")
-        for r in data.get("reviews", [])
-        if r.get("state") == "CHANGES_REQUESTED"
-    ]
+    # Group reviews by author; last entry per author is the most recent (GitHub
+    # returns reviews in chronological order).
+    latest_by_author: dict[str, str] = {}
+    for r in data.get("reviews", []):
+        login = r.get("author", {}).get("login", "unknown")
+        latest_by_author[login] = r.get("state", "")
+    blocking = [login for login, state in latest_by_author.items() if state == "CHANGES_REQUESTED"]
     if not blocking:
         return True, "No CHANGES_REQUESTED reviews", ""
     reviewers = ", ".join(blocking)
@@ -169,7 +171,8 @@ def check_threads_resolved(data: dict[str, Any], allow_nit_unresolved: bool = Tr
         unresolved.append(f"{path}:{line}")
 
     if not unresolved:
-        return True, "All review threads resolved", ""
+        msg = "All non-nit review threads resolved" if allow_nit_unresolved else "All review threads resolved"
+        return True, msg, ""
     count = len(unresolved)
     locations = ", ".join(unresolved[:3])
     if count > 3:
