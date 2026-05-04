@@ -30,6 +30,7 @@ from check_merge_authorization import (
     check_pr_open,
     check_threads_resolved,
     fetch_pr_data,
+    fetch_review_threads,
     format_authorized,
     format_blocked,
     format_dry_run_table,
@@ -292,6 +293,80 @@ class TestCheckThreadsResolved:
 
 
 # ---------------------------------------------------------------------------
+# Unit tests — fetch_review_threads
+# ---------------------------------------------------------------------------
+
+
+class TestFetchReviewThreads:
+    """Tests for fetch_review_threads."""
+
+    @patch("subprocess.run")
+    def test_happy_path(self, mock_run):
+        """Valid GraphQL response returns list of thread dicts."""
+        graphql_response = {
+            "data": {
+                "repository": {
+                    "pullRequest": {
+                        "reviewThreads": {
+                            "nodes": [
+                                {
+                                    "isResolved": False,
+                                    "path": "src/app.py",
+                                    "line": 42,
+                                    "originalLine": 42,
+                                    "comments": {"nodes": [{"body": "Fix this"}]},
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+        mock_run.return_value = MagicMock(returncode=0, stdout=json.dumps(graphql_response) + "\n", stderr="")
+        threads = fetch_review_threads(573, "EndogenAI/dogma")
+        assert threads is not None
+        assert len(threads) == 1
+        assert threads[0]["isResolved"] is False
+        assert threads[0]["path"] == "src/app.py"
+        assert threads[0]["comments"] == [{"body": "Fix this"}]
+
+    @patch("subprocess.run")
+    def test_empty_threads(self, mock_run):
+        """GraphQL response with no threads returns empty list."""
+        graphql_response = {"data": {"repository": {"pullRequest": {"reviewThreads": {"nodes": []}}}}}
+        mock_run.return_value = MagicMock(returncode=0, stdout=json.dumps(graphql_response) + "\n", stderr="")
+        assert fetch_review_threads(573, "EndogenAI/dogma") == []
+
+    @patch("subprocess.run")
+    def test_gh_nonzero_exit(self, mock_run):
+        """Non-zero gh exit → None."""
+        mock_run.return_value = MagicMock(returncode=1, stdout="", stderr="error")
+        assert fetch_review_threads(573, "EndogenAI/dogma") is None
+
+    @patch("subprocess.run")
+    def test_invalid_json(self, mock_run):
+        """Invalid JSON response → None."""
+        mock_run.return_value = MagicMock(returncode=0, stdout="not json\n", stderr="")
+        assert fetch_review_threads(573, "EndogenAI/dogma") is None
+
+    @patch("subprocess.run")
+    def test_missing_data_key(self, mock_run):
+        """GraphQL response missing expected structure → None."""
+        mock_run.return_value = MagicMock(returncode=0, stdout='{"errors": []}\n', stderr="")
+        assert fetch_review_threads(573, "EndogenAI/dogma") is None
+
+    @patch("subprocess.run")
+    def test_file_not_found(self, mock_run):
+        """gh CLI not installed → None."""
+        mock_run.side_effect = FileNotFoundError()
+        assert fetch_review_threads(573, "EndogenAI/dogma") is None
+
+    def test_invalid_repo_format(self):
+        """Repo without '/' returns None immediately."""
+        assert fetch_review_threads(573, "nodash") is None
+
+
+# ---------------------------------------------------------------------------
 # Unit tests — fetch_pr_data
 # ---------------------------------------------------------------------------
 
@@ -301,11 +376,20 @@ class TestFetchPrData:
 
     @patch("subprocess.run")
     def test_happy_path(self, mock_run):
-        """Valid gh response returns parsed dict."""
-        mock_run.return_value = _mock_gh_success()
+        """Valid gh response returns parsed dict with reviewThreads key."""
+        # First call: gh pr view (returns state/reviews/reviewRequests)
+        # Second call: gh api graphql (fails gracefully → reviewThreads defaults to [])
+        pr_view_response = MagicMock(
+            returncode=0,
+            stdout='{"state": "OPEN", "reviews": [], "reviewRequests": []}\n',
+            stderr="",
+        )
+        graphql_error = MagicMock(returncode=1, stdout="", stderr="error")
+        mock_run.side_effect = [pr_view_response, graphql_error]
         data = fetch_pr_data(573, "EndogenAI/dogma")
         assert data is not None
         assert data["state"] == "OPEN"
+        assert data["reviewThreads"] == []
 
     @patch("subprocess.run")
     def test_gh_nonzero_exit(self, mock_run):

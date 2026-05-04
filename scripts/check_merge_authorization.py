@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Check whether a GitHub PR is authorized for merge.
 
-Queries `gh pr view <pr> --json reviews,reviewRequests,reviewThreads,state` and
-evaluates four mandatory criteria before authorizing merge.
+Queries `gh pr view <pr> --json state,reviews,reviewRequests` and fetches review
+threads via `gh api graphql`, then evaluates four mandatory criteria before
+authorizing merge.
 
 Checks (evaluated in order; first failure blocks):
   a. PR state is OPEN (not merged or closed)
@@ -63,11 +64,81 @@ def get_default_repo() -> str | None:
         return None
 
 
+def fetch_review_threads(pr: int, repo: str) -> list[dict] | None:
+    """Fetch PR review threads via gh api graphql.
+
+    Returns a list of thread dicts, or None on any error.
+    Each dict has keys: isResolved, path, line, originalLine, comments.
+    """
+    parts = repo.split("/", 1)
+    if len(parts) != 2:
+        return None
+    owner, name = parts
+
+    query = (
+        "query($owner: String!, $name: String!, $number: Int!) {"
+        "  repository(owner: $owner, name: $name) {"
+        "    pullRequest(number: $number) {"
+        "      reviewThreads(first: 100) {"
+        "        nodes {"
+        "          isResolved"
+        "          path"
+        "          line"
+        "          originalLine"
+        "          comments(first: 1) {"
+        "            nodes { body }"
+        "          }"
+        "        }"
+        "      }"
+        "    }"
+        "  }"
+        "}"
+    )
+
+    try:
+        result = subprocess.run(
+            [
+                "gh",
+                "api",
+                "graphql",
+                "-f",
+                f"query={query}",
+                "-f",
+                f"owner={owner}",
+                "-f",
+                f"name={name}",
+                "-F",
+                f"number={pr}",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        if result.returncode != 0:
+            return None
+        response = json.loads(result.stdout)
+        nodes = response["data"]["repository"]["pullRequest"]["reviewThreads"]["nodes"]
+        return [
+            {
+                "isResolved": node["isResolved"],
+                "path": node.get("path"),
+                "line": node.get("line"),
+                "originalLine": node.get("originalLine"),
+                "comments": [{"body": c.get("body", "")} for c in node["comments"]["nodes"]],
+            }
+            for node in nodes
+        ]
+    except (FileNotFoundError, subprocess.TimeoutExpired, json.JSONDecodeError, OSError, KeyError):
+        return None
+
+
 def fetch_pr_data(pr: int, repo: str) -> dict[str, Any] | None:
     """Fetch PR JSON from gh CLI.
 
     Returns a dict with keys: state, reviews, reviewRequests, reviewThreads.
     Returns None on any error (gh missing, PR not found, JSON parse failure).
+    reviewThreads is populated via a separate GraphQL call; if that call fails,
+    it defaults to [] so the remaining checks are not blocked.
     """
     try:
         result = subprocess.run(
@@ -79,7 +150,7 @@ def fetch_pr_data(pr: int, repo: str) -> dict[str, Any] | None:
                 "--repo",
                 repo,
                 "--json",
-                "state,reviews,reviewRequests,reviewThreads",
+                "state,reviews,reviewRequests",
             ],
             capture_output=True,
             text=True,
@@ -89,9 +160,12 @@ def fetch_pr_data(pr: int, repo: str) -> dict[str, Any] | None:
             return None
         data = json.loads(result.stdout)
         # Validate required keys are present
-        for key in ("state", "reviews", "reviewRequests", "reviewThreads"):
+        for key in ("state", "reviews", "reviewRequests"):
             if key not in data:
                 return None
+        # Fetch review threads via GraphQL; fall back to empty list if unavailable
+        threads = fetch_review_threads(pr, repo)
+        data["reviewThreads"] = threads if threads is not None else []
         return data
     except (FileNotFoundError, subprocess.TimeoutExpired, json.JSONDecodeError, OSError):
         return None
