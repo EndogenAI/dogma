@@ -62,7 +62,8 @@ uv run python scripts/check_merge_authorization.py <pr_num> --dry-run
 
 This prints a full check table (✅/❌) for all four authorization criteria without blocking. Use it to:
 - Identify which checks are already passing (no need to re-verify manually)
-- Confirm that CI is green, no `CHANGES_REQUESTED` is outstanding, and no non-nit threads are unresolved
+- Confirm no `CHANGES_REQUESTED` is outstanding and no non-nit threads are unresolved
+- Note: CI status is **not** checked by this script — verify CI separately via `wait_for_github_run.py`
 
 After all triage steps complete (Steps 1–7), run without `--dry-run` to get the final authorization verdict:
 

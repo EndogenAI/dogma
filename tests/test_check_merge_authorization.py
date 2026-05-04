@@ -122,6 +122,31 @@ class TestCheckNoChangesRequested:
         assert passed is False
         assert "alice" in reason and "bob" in reason
 
+    def test_later_approval_clears_changes_requested(self):
+        """Reviewer who first requests changes and later approves is not blocking."""
+        data = {
+            "reviews": [
+                {"state": "CHANGES_REQUESTED", "author": {"login": "alice"}},
+                {"state": "APPROVED", "author": {"login": "alice"}},
+            ]
+        }
+        passed, _, _ = check_no_changes_requested(data)
+        assert passed is True
+
+    def test_mixed_latest_states(self):
+        """Only blocks on CHANGES_REQUESTED when it is the latest review from that author."""
+        data = {
+            "reviews": [
+                {"state": "CHANGES_REQUESTED", "author": {"login": "alice"}},
+                {"state": "CHANGES_REQUESTED", "author": {"login": "bob"}},
+                {"state": "APPROVED", "author": {"login": "bob"}},
+            ]
+        }
+        passed, reason, _ = check_no_changes_requested(data)
+        assert passed is False
+        assert "alice" in reason
+        assert "bob" not in reason
+
 
 class TestCheckNoPendingRequests:
     """Tests for check_no_pending_requests."""
