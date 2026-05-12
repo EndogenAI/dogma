@@ -3,35 +3,7 @@ name: Executive Orchestrator
 description: Coordinate multi-workflow sessions spanning research, docs, scripting, and fleet changes — sequence executive agents and maintain session coherence.
 preferred_model_tier: frontier
 tools:
-  - read
-  - search
-  - usages
-  - edit
-  - execute
-  - terminal
-  - agent
-  - changes
-  - vscode.mermaid-chat-features/renderMermaidDiagram
-  # dogma-governance MCP tools (13)
-  - dogma-governance/check_substrate
-  - dogma-governance/prune_scratchpad
-  - dogma-governance/validate_agent_file
-  - dogma-governance/validate_synthesis
-  - dogma-governance/scaffold_agent
-  - dogma-governance/scaffold_workplan
-  - dogma-governance/run_research_scout
-  - dogma-governance/query_docs
-  - dogma-governance/detect_user_interrupt
-  - dogma-governance/normalize_path
-  - dogma-governance/resolve_env_path
-  - dogma-governance/route_inference_request
-  - dogma-governance/get_trace_health
-  # dogma-browser-inspector MCP tools (5) — Optional: for dashboard inspection workflows
-  - dogma-browser-inspector/ping
-  - dogma-browser-inspector/query_dom
-  - dogma-browser-inspector/get_console_logs
-  - dogma-browser-inspector/get_component_state
-  - dogma-browser-inspector/trigger_action
+  [execute/runNotebookCell, execute/getTerminalOutput, execute/killTerminal, execute/sendToTerminal, execute/runTask, execute/createAndRunTask, execute/runInTerminal, execute/runTests, read/getNotebookSummary, read/problems, read/readFile, read/viewImage, read/terminalSelection, read/terminalLastCommand, read/getTaskOutput, agent/runSubagent, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, edit/rename, search/changes, search/codebase, search/fileSearch, search/listDirectory, search/textSearch, search/usages, dogma-governance/check_substrate, dogma-governance/detect_user_interrupt, dogma-governance/get_trace_health, dogma-governance/normalize_path, dogma-governance/prune_scratchpad, dogma-governance/query_docs, dogma-governance/resolve_env_path, dogma-governance/route_inference_request, dogma-governance/run_research_scout, dogma-governance/scaffold_agent, dogma-governance/scaffold_workplan, dogma-governance/validate_agent_file, dogma-governance/validate_synthesis, google-workspace/append_to_doc, google-workspace/batch_delete, google-workspace/batch_move, google-workspace/batch_restore, google-workspace/batch_share, google-workspace/copy_file, google-workspace/create_folder, google-workspace/create_google_doc, google-workspace/create_text_file, google-workspace/delete_item, google-workspace/delete_text_in_doc, google-workspace/download_file, google-workspace/empty_trash, google-workspace/export_file, google-workspace/format_google_doc_range, google-workspace/get_file_metadata, google-workspace/get_folder_tree, google-workspace/get_google_doc_content, google-workspace/get_sharing, google-workspace/get_status, google-workspace/get_storage_quota, google-workspace/insert_text_in_doc, google-workspace/list_folder, google-workspace/list_revisions, google-workspace/list_tools, google-workspace/list_trash, google-workspace/move_item, google-workspace/remove_permission, google-workspace/rename_item, google-workspace/replace_text_in_doc, google-workspace/resolve_file_path, google-workspace/restore_from_trash, google-workspace/restore_revision, google-workspace/search, google-workspace/share_file, google-workspace/star_file, google-workspace/update_google_doc, google-workspace/update_text_file, google-workspace/upload_file, vscode.mermaid-chat-features/renderMermaidDiagram, todo]
 handoffs:
   - label: Executive Planner
     agent: Executive Planner
@@ -94,6 +66,7 @@ You are the **Executive Orchestrator** for the EndogenAI Workflows project. Your
 7. [`mcp_server/README.md`](../../mcp_server/README.md) — MCP toolset reference; `check_substrate` must be called at session open to confirm repo health.
 8. Decision tables: `data/decision-tables.yml` — consult before any strategic routing decision.
 9. Conflict detection: run `uv run python scripts/detect_delegation_conflict.py --scope <scope>` before any irreversible delegation to verify against L2 constraints.
+10. **Multi-repo sessions** — If delegating work that touches consulting, AccessiTech, or other secondary repos, verify their branch state first: `uv run python /Users/conor/Sites/consulting/scripts/check_cross_repo_branches.py`. Reference: [`consulting/docs/guides/cross-repo-branch-enforcement.md`](../../../consulting/docs/guides/cross-repo-branch-enforcement.md)
 
 ---
 </context>

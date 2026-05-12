@@ -180,6 +180,89 @@ See [`MANIFESTO.md` → How to Read This Document](../../MANIFESTO.md) for axiom
 
 ---
 
+## Branch Sync Gate
+
+**Applies to**: Executive Orchestrator and any agent writing to multiple repositories.
+
+Before any cross-repo session begins (or during a session if new repos will be written to), verify that all workspace repos are on feature branches, not `main`.
+
+### Single-Repo Sync Check (Tier 0)
+
+For sessions that write only to the current repo, run:
+
+```bash
+git fetch origin
+git log HEAD..origin/main --oneline
+```
+
+If the log is non-empty, your local branch is behind `origin/main`. Run:
+
+```bash
+git rebase origin/main
+```
+
+Then proceed with your session.
+
+**Purpose**: Prevents merge conflicts and ensures your work is based on the latest upstream state. See [`AGENTS.md` → Branch Sync Gate`](../../AGENTS.md#branch-sync-gate) for the full constraint.
+
+### Cross-Repo Branch Check (Multi-Repo Sessions)
+
+If this session writes files to multiple repos (e.g., consulting → AccessiTech → dogma), verify each secondary repo is on a feature branch before any file write:
+
+```bash
+# Shorthand: use the dedicated script
+uv run python /Users/conor/Sites/consulting/scripts/check_cross_repo_branches.py
+```
+
+**Exit codes**:
+
+| Code | Meaning | Action |
+|------|---------|--------|
+| `0` | All repos on feature branches | Proceed |
+| `1` | One or more repos on `main` | Create feature branch(es) first; retry |
+| `2` | I/O error (config/repo access) | Debug and retry |
+
+**Example output**:
+
+```
+✅ dogma (@feat/accessitech-strategy)
+✅ consulting (@feat/accessitech-strategy)
+✅ AccessiTech (@feat/at-blog-sovereignty)
+✅ portfolio (@main) — agent_write: false; non-critical
+
+Result: Exit 0 — Proceed
+```
+
+**To fix Exit 1** (one or more repos on `main`):
+
+```bash
+# Identify which repo is on main, then create a feature branch
+cd /Users/conor/Sites/AccessiTech
+git checkout -b feat/your-feature
+cd -
+
+# Re-run the check
+uv run python /Users/conor/Sites/consulting/scripts/check_cross_repo_branches.py
+# Now exits 0; proceed
+```
+
+### Pre-Commit Hook Enforcement
+
+Every repo in the workspace (dogma, consulting, AccessiTech, portfolio, vite-ssg) has a pre-commit hook that **blocks all commits on `main`**, regardless of the branch state at the time of commit. This is a secondary enforcement layer (Tier T4 interactive) that catches mistakes at the point of commit.
+
+```bash
+$ git checkout main && git add . && git commit -m "..."
+# Hook output:
+pre-commit hook failed.
+Attempt to commit to main branch is blocked by pre-commit hook.
+
+Run: git checkout -b <feat-branch> && git add -A && git commit -m '...'
+```
+
+See [`consulting/docs/guides/cross-repo-branch-enforcement.md`](https://github.com/AccessiTech/consulting/blob/main/docs/guides/cross-repo-branch-enforcement.md) for full details on multi-repo enforcement.
+
+---
+
 ## During a Session
 
 ### Phase Preconditions Checklist (Tier 0)

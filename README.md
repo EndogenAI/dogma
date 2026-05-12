@@ -1,7 +1,8 @@
 # DogmaMCP
 
-> **Values ingrained, [sovereignty](docs/glossary.md#sovereignty) sustained** — governance framework for [endogenous](docs/glossary.md#endogenous-first) AI workflows
+> **Values ingrained, [sovereignty](docs/glossary.md#sovereignty) sustained** — an experimental governance framework for [endogenous](docs/glossary.md#endogenous-first) AI workflows
 
+[![Status: Experimental](https://img.shields.io/badge/status-experimental-orange)](https://github.com/EndogenAI/dogma#project-status)
 [![Tests](https://github.com/EndogenAI/dogma/actions/workflows/tests.yml/badge.svg)](https://github.com/EndogenAI/dogma/actions/workflows/tests.yml)
 [![Coverage](https://codecov.io/gh/EndogenAI/dogma/branch/main/graph/badge.svg)](https://codecov.io/gh/EndogenAI/dogma)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue)](https://www.python.org/downloads/)
@@ -11,6 +12,20 @@ A governance framework that embeds organizational constraints into AI workflows 
 
 **Governance Layer**: [MANIFESTO.md](MANIFESTO.md) • [AGENTS.md](AGENTS.md) • [Glossary](docs/glossary.md) | **Quick Start**: [Get Started](#get-started)
 
+
+---
+
+## Project Status
+
+**DogmaMCP is experimental.** It is actively developed and used in production by its authors, but the public API, MCP tool interfaces, and substrate schema are not yet stable — breaking changes may occur between releases.
+
+**What it's ready for**: Adoption as a governance template for your own agentic workflows; contributing to the framework; early integration with VS Code Copilot, Claude, and Cursor via the MCP server.
+
+**What it's not ready for**: Mission-critical production deployments where you cannot absorb breaking changes; integration into regulated/compliance environments without your own review layer.
+
+**Where we're headed**: Stable 1.0 release targeting Q3 2026 — locking the MCP tool interface, substrate schema, and cookiecutter template contract. See [CHANGELOG.md](CHANGELOG.md) for recent progress.
+
+Questions, early feedback, or integration use cases: open a [GitHub Discussion](https://github.com/EndogenAI/dogma/discussions) or file an issue.
 
 ---
 
