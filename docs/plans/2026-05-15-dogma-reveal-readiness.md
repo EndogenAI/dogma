@@ -20,18 +20,15 @@ Prepare the dogma repository for public reveal on May 18, 2026. This sprint addr
 
 ## Phase Plan
 
-### Phase 0 — Branch Setup & Research Prerequisites ⬜
-**Agent**: Executive Scripter (branch), Research Scout (best practices)
+### Phase 0 — Branch Setup ⬜
+**Agent**: Executive Scripter
 **Deliverables**:
 - Create `feat/reveal-readiness-may18` branch off dogma/main
-- Research: Good-first-issue best practices for governance frameworks (Closes #72)
-- Research findings → scratchpad under `## Phase 0 Output — Research Scout`
+- Commit: (already complete — branch created during planning)
 
 **Depends on**: nothing
-**CI**: N/A (research only)
-**Status**: Not started
-
-**Notes**: Research findings inform Phase 3 (good-first-issue designation). Scout should focus on: what makes a good first issue in governance/policy repos (not typical CRUD apps), OSS community best practices, CNCF/Linux Foundation patterns.
+**CI**: N/A
+**Status**: ✅ Complete
 
 ### Phase 0 Review — Review Gate ⬜
 **Agent**: Review
@@ -71,12 +68,14 @@ Prepare the dogma repository for public reveal on May 18, 2026. This sprint addr
 
 ---
 
-### Phase 2 — Cleanup & Maintenance ⬜
-**Agent**: Executive Scripter (cleanup, archive), Executive Docs (getting-started audit)
+### Phase 2 — Cleanup, Maintenance & Research Prerequisites ⬜
+**Agent**: Executive Scripter (cleanup, archive), Executive Docs (getting-started audit), Research Scout (best practices)
 **Deliverables**:
 - Remove all "Sprint 23" references from dogma repo (5+ files: mcp_server/README.md, docs/mcp/api-reference.md, docs/mcp/mcp-ecosystem-architecture.md, docs/governance/recommendations-schema.md, docs/research/webmcp-browser-integration.md) (Closes #65)
 - Archive 800 synthetic seed records using `scripts/migrate_tool_calls.py --dry-run` then live execution (Closes #66)
 - Quick audit of `docs/guides/getting-started.md` for first-adopter blockers (Closes #69)
+- Research: Good-first-issue best practices for governance frameworks (Closes #72)
+- Research findings → scratchpad under `## Phase 2 Output — Research Scout`
 - Commit 1: `chore(cleanup): remove Sprint 23 internal references across 5+ files`
 - Commit 2: `chore(telemetry): archive 800 synthetic seed records pre-reveal`
 - Commit 3 (if changes needed): `docs(getting-started): address first-adopter blockers`
@@ -88,6 +87,7 @@ Prepare the dogma repository for public reveal on May 18, 2026. This sprint addr
 **Cleanup scope**: Comprehensive (user confirmed). Human review gate: agent proposes changes, user validates before commit.
 **Archive validation**: Run `--dry-run` first; verify output before live execution.
 **Getting-started audit**: Flag anything a first-time adopter would find blocking/confusing. Quick pass, not full rewrite.
+**Research scope** (N-1 pattern): Findings inform Phase 3 (issue management). Scout should focus on: what makes a good first issue in governance/policy repos (not typical CRUD apps), OSS community best practices, CNCF/Linux Foundation patterns.
 
 ### Phase 2 Review — Review Gate ⬜
 **Agent**: Review
@@ -106,16 +106,16 @@ Prepare the dogma repository for public reveal on May 18, 2026. This sprint addr
 - Audit all 42 open dogma issues; produce YAML-formatted recommendations (close/keep/label) (Closes #70)
 - User reviews YAML list → approves before any closes execute
 - Apply approved closes/labels using `gh issue edit` batch operations
-- Identify 3-5 "good-first-issue" candidates using Phase 0 research findings (Closes #71)
+- Identify 3-5 "good-first-issue" candidates using Phase 2 research findings (Closes #71)
 - Apply "good-first-issue" label to selected issues
 - Commit: `chore(issues): triage 42 open issues and designate good-first-issue candidates`
 
-**Depends on**: Phase 2 Review APPROVED, Phase 0 research findings
+**Depends on**: Phase 2 Review APPROVED, Phase 2 research findings
 **CI**: N/A (GitHub operations)
 **Status**: Not started
 
 **Triage authority**: Option B (user confirmed) — agent proposes, user approves before execution.
-**Good-first-issue criteria**: Informed by Phase 0 Research Scout findings. Likely candidates: docs-only, small script extensions, synthesis tasks < 1 day for newcomers.
+**Good-first-issue criteria**: Informed by Phase 2 Research Scout findings. Likely candidates: docs-only, small script extensions, synthesis tasks < 1 day for newcomers.
 
 ### Phase 3 Review — Review Gate ⬜
 **Agent**: Review
