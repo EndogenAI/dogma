@@ -8,6 +8,26 @@
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue)](https://www.python.org/downloads/)
 [![Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
+---
+
+## Making AI Accountable to Your Values
+
+Every organization has values. The harder question is whether their AI systems actually reflect them. Stated principles and deployed behavior have a way of drifting apart — not through bad intentions, but because translating human values into running software is genuinely hard.
+
+**DogmaMCP** closes that gap. It's the first integrated framework that brings values-aligned governance to your AI coordination layer — where accountability isn't a promise, but an audit trail.
+
+- **[EndogenAI](https://github.com/EndogenAI)** is the open source community advancing values-aligned AI governance
+- **dogma** is the framework that encodes your organizational values as rules your AI reads and follows
+- **DogmaMCP** is the experimental tooling that enforces those rules automatically as your AI works
+
+🔒 Local enforcement, not cloud dependencies. Your governance runs on your machine, using files you control. If your network drops, your enforcement layer keeps working.
+
+---
+
+**🌍 EndogenAI | DogmaMCP**
+
+---
+
 A governance framework that embeds organizational constraints into AI workflows — encoding values, principles, and guardrails as executable substrate so agents operate within your constraints by design, not by policy alone.
 
 **Governance Layer**: [MANIFESTO.md](MANIFESTO.md) • [AGENTS.md](AGENTS.md) • [Glossary](docs/glossary.md) | **Quick Start**: [Get Started](#get-started)
@@ -26,6 +46,16 @@ A governance framework that embeds organizational constraints into AI workflows 
 **Where we're headed**: Stable 1.0 release targeting Q3 2026 — locking the MCP tool interface, substrate schema, and cookiecutter template contract. See [CHANGELOG.md](CHANGELOG.md) for recent progress.
 
 Questions, early feedback, or integration use cases: open a [GitHub Discussion](https://github.com/EndogenAI/dogma/discussions) or file an issue.
+
+---
+
+## Roadmap
+
+**Q3 2026 → 1.0 Stability Milestone**: We're working toward a stable 1.0 release that locks the MCP tool interface, substrate schema, and cookiecutter template contract. This milestone marks the transition from experimental to production-ready, enabling organizations to adopt DogmaMCP with confidence that breaking changes will follow semantic versioning.
+
+Beyond 1.0, we're expanding toolkit coverage to support more AI coordination patterns, improving the contributor onboarding framework to make it easier for new maintainers to join, and refining the governance validation suite based on real-world adoption feedback. Community signal — GitHub stars, forks, discussions, and external adopter reports — directly influences our sequencing.
+
+For the full 6-month roadmap and what we're NOT building, see the [EndogenAI Product Roadmap](https://github.com/EndogenAI/dogma/blob/main/docs/governance/product-roadmap.md) (also available in the consulting repo).
 
 ---
 
