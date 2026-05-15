@@ -1,6 +1,6 @@
 # DogmaMCP
 
-> **Values ingrained, [sovereignty](docs/glossary.md#sovereignty) sustained** — an experimental governance framework for [endogenous](docs/glossary.md#endogenous-first) AI workflows
+> **Values ingrained, [sovereignty](docs/glossary.md#sovereignty) sustained** — governance framework for [endogenous](docs/glossary.md#endogenous-first) AI workflows
 
 [![Status: Experimental](https://img.shields.io/badge/status-experimental-orange)](https://github.com/EndogenAI/dogma#project-status)
 [![Tests](https://github.com/EndogenAI/dogma/actions/workflows/tests.yml/badge.svg)](https://github.com/EndogenAI/dogma/actions/workflows/tests.yml)
