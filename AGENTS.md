@@ -976,6 +976,15 @@ Before acting:
 
 **Branch creation rule**: Never write files on main. Create feat/[phase-slug] BEFORE any file operations.
 
+**Cross-repo branch rule**: In a multi-root workspace, every repo you write files to must be on a feature branch — not just the repo you started in. Before any phase that writes files to a secondary repo (e.g. via `../OtherRepo/` relative paths), run:
+```bash
+cd /path/to/secondary-repo && git branch --show-current  # must NOT be main
+# If on main:
+git checkout -b feat/[phase-slug]  # or the appropriate branch
+cd -
+```
+This check applies even if the secondary repo is only receiving scaffolded or generated files. The branch state of the secondary repo is your responsibility — the agent in the primary repo is accountable for both.
+
 Focus: [one-sentence phase objective from workplan]
 ```
 
@@ -1373,6 +1382,8 @@ uv run pre-commit install --hook-type pre-push
 
 **Never do these without explicit instruction:**
 
+- **When a scaffold or validation script fails**: STOP. Read the error output — it will contain the exact fix or missing parameters. Do NOT attempt manual creation or workaround. If the error is unclear, run the script with `--help` to see its full interface, then ask the user how to proceed. **Guessing and creating manually bypasses programmatic validation and produces incomplete or inconsistent artifacts.** See [orchestrator-autopilot-failure.md](docs/research/orchestrator-autopilot-failure.md) § Pattern 6 (Heuristic Closure).
+- Write files to a secondary repo (via cross-repo paths like `../OtherRepo/`) without first verifying that secondary repo is on a feature branch. Run `cd <secondary-repo> && git branch --show-current` before any cross-repo file write; if it returns `main`, create a feature branch first. See [Template B](#template-b-new-sprint-phase-feature-branch-required) and the Cross-repo branch rule.
 - Edit any lockfile by hand
 - Commit secrets, API keys, or credentials of any kind
 - `git push --force` to `main`

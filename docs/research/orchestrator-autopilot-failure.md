@@ -183,19 +183,19 @@ Agent instructions prioritizing internal consistency (phase gates, initializatio
 
 ### Root-Cause Pattern 6: Heuristic Closure — Premature Merge-Readiness Claim
 
-**Definition**: The agent pattern-matches an intermediate success signal (CI green + review comments addressed) to a "task complete" terminal state and issues a merge-readiness statement without running the mandatory PR Review Triage Gate or obtaining explicit user authorization. Execution is not pathological — there is no loop, no ignored STOP signal. The failure is *premature success-driven termination*.
+**Definition**: The agent pattern-matches an intermediate success signal (CI green + review comments addressed) to a terminal state and issues a merge-authorization statement without running the mandatory PR Review Triage Gate or obtaining explicit user authorization. Execution is not pathological — there is no loop, no ignored STOP signal. The failure is *premature success-driven termination*.
 
 **Anti-pattern**:
 - CI passes, review comments are addressed
-- Agent: "The PR is ready to merge."
+- Agent statement: `"This PR can be merged — CI is passing and all review comments have been addressed."`
 - PR Review Triage Gate has not been run; no explicit user "go ahead" has been received
-- Outcome: Agent treated intermediate success signals as terminal authorization
+- Outcome: Agent treated intermediate success signals as authorization
 
 **Canonical example**:
 - Task: Push PR branch and get merge authorization for feat/w2-readme-enhancements-567-568-569-570
-- CI: Green; Copilot review: comments addressed; Orchestrator: "The PR is ready to merge — CI is passing and all review comments have been addressed."
+- CI: Green; Copilot review: comments addressed; Orchestrator output: `"This PR can be merged — CI is passing and all review comments have been addressed."`
 - Reality: No `## Merge Authorization` scratchpad section written, no `wait_for_pr_review.py` run, no user "go ahead" in session
-- Result: Pattern 6 Heuristic Closure — merge-readiness claimed without completing the mandatory gate
+- Result: Pattern 6 Heuristic Closure — merge authorization claimed without completing the mandatory gate
 
 **Why Tracks A–E do not cover this**: All five prior patterns address pathological execution — loops, ignored STOP signals, parameter guesses, context resets. Pattern 6 originates when execution *succeeds* and the agent terminates before a mandatory *closing* procedure fires. The failure is in success-state termination logic, not failure-state recovery.
 
@@ -343,7 +343,7 @@ Guessing parameters followed by error recovery is a draft-before-verify antipatt
 
 **Anti-pattern current behavior**:
 - CI passes and review comments are addressed
-- Agent emits: "The PR is ready to merge." (no gate run)
+- Agent output: `"This PR can be merged."` (no gate run)
 - `pr-review-triage` skill is not consulted; no scratchpad merge-authorization section written
 
 **Proposed behavior**:
@@ -353,7 +353,7 @@ Guessing parameters followed by error recovery is a draft-before-verify antipatt
 - Only when all 4 scripted checks pass AND the user provides explicit "go ahead" in the current session: treat PR as merge-ready
 
 **Action**:
-- `scripts/check_merge_authorization.py` — deterministic semantic gate (exit 0 = authorized, exit 1 = blocked, exit 2 = API error) **[COMPLETED — PR #573]**
+- `scripts/check_merge_authorization.py` — deterministic semantic gate (exit 0 = authorized, exit 1 = blocked, exit 2 = API error) **[Implemented in PR #573]**
 - AGENTS.md § PR Review Triage Gate — 5-checkbox scratchpad template added
 - `.github/skills/pr-review-triage/SKILL.md` — `check_merge_authorization.py` added as Step 0
 - Note that the 5th checkbox (`Explicit user "go ahead" received`) is **not checkable by any script** — it is the hard human gate that Pattern 6 violated
@@ -361,7 +361,7 @@ Guessing parameters followed by error recovery is a draft-before-verify antipatt
 **Encoding point**: `scripts/check_merge_authorization.py`; AGENTS.md § PR Review Triage Gate; `.github/skills/pr-review-triage/SKILL.md` Step 0.
 
 **Acceptance Criteria (Track F)**:
-- [x] `scripts/check_merge_authorization.py` implemented (exit 0/1/2 semantic codes, --dry-run, --allow-nit-unresolved, --repo) — 42 tests, 99% coverage
+- [x] `scripts/check_merge_authorization.py` implemented (exit 0/1/2 semantic codes, --dry-run, --allow-nit-unresolved, --repo) with pagination safeguard
 - [x] AGENTS.md § PR Review Triage Gate updated with 5-checkbox scratchpad template
 - [x] `.github/skills/pr-review-triage/SKILL.md` updated with Step 0 pre-merge check
 - [x] Pattern 6 documented in Pattern Catalog with definition, anti-pattern, canonical example, MANIFESTO violation

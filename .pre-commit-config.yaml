@@ -1,4 +1,10 @@
 repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: no-commit-to-branch
+        args: [--branch, main]
+
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.9.0
     hooks:
@@ -90,7 +96,7 @@ repos:
         language: system
         types: [markdown]
         files: ^(docs/guides/|docs/research/)
-        exclude: ^docs/guides/(client-adoption-pattern|deployment-contract)\.md$|^docs/research/orchestrator-autopilot-failure\.md$
+        exclude: ^docs/guides/(client-adoption-pattern|deployment-contract)\.md$
         pass_filenames: true
       - id: verify-script-usage
         name: Verify --help before script invocations in agent/skill files
