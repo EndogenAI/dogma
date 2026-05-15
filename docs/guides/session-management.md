@@ -219,7 +219,7 @@ uv run python scripts/check_cross_repo_branches.py
 
 **Exit codes**:
 
-For detailed setup and integration, see [`consulting/docs/guides/cross-repo-branch-enforcement.md`](https://github.com/EndogenAI/consulting/blob/main/docs/guides/cross-repo-branch-enforcement.md).
+For detailed setup and integration, see the cross-repo branch enforcement guide in the consulting repository (`docs/guides/cross-repo-branch-enforcement.md`).
 
 | Code | Meaning | Action |
 |------|---------|--------|
@@ -264,7 +264,7 @@ Attempt to commit to main branch is blocked by pre-commit hook.
 Run: git checkout -b <feat-branch> && git add -A && git commit -m '...'
 ```
 
-See [`consulting/docs/guides/cross-repo-branch-enforcement.md`](https://github.com/AccessiTech/consulting/blob/main/docs/guides/cross-repo-branch-enforcement.md) for full details on multi-repo enforcement.
+See the consulting repository's `docs/guides/cross-repo-branch-enforcement.md` for full details on multi-repo enforcement.
 
 ---
 
