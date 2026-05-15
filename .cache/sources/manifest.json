@@ -2196,6 +2196,33 @@
       "file": ".cache/sources/research-gatech-edu-us-military-leans-ai-attack-iran-tech-do.md",
       "content_type": "text/html",
       "size_bytes": 12682
+    },
+    "doi-org-10-6028-NIST-AI-100-1": {
+      "url": "https://doi.org/10.6028/NIST.AI.100-1",
+      "slug": "doi-org-10-6028-NIST-AI-100-1",
+      "title": "",
+      "fetched_at": "2026-05-13T19:49:10",
+      "file": ".cache/sources/doi-org-10-6028-NIST-AI-100-1.md",
+      "content_type": "application/pdf",
+      "size_bytes": 3466348
+    },
+    "enisa-europa-eu-publications-cloud-computing-risk-assessment": {
+      "url": "https://www.enisa.europa.eu/publications/cloud-computing-risk-assessment",
+      "slug": "enisa-europa-eu-publications-cloud-computing-risk-assessment",
+      "title": "",
+      "fetched_at": "2026-05-13T19:49:11",
+      "file": ".cache/sources/enisa-europa-eu-publications-cloud-computing-risk-assessment.md",
+      "content_type": "text/html",
+      "size_bytes": 2008
+    },
+    "inkandswitch-com-local-first": {
+      "url": "https://www.inkandswitch.com/local-first/",
+      "slug": "inkandswitch-com-local-first",
+      "title": "",
+      "fetched_at": "2026-05-13T19:49:11",
+      "file": ".cache/sources/inkandswitch-com-local-first.md",
+      "content_type": "text/html",
+      "size_bytes": 0
     }
   }
 }

@@ -210,11 +210,16 @@ Then proceed with your session.
 If this session writes files to multiple repos (e.g., consulting → AccessiTech → dogma), verify each secondary repo is on a feature branch before any file write:
 
 ```bash
-# Shorthand: use the dedicated script
-uv run python /Users/conor/Sites/consulting/scripts/check_cross_repo_branches.py
+# Shorthand: use the dedicated script (runs from consulting repo)
+cd <workspace_root>/consulting
+uv run python scripts/check_cross_repo_branches.py
 ```
 
+**Note**: The `check_cross_repo_branches.py` script lives in the `consulting` repository. If working in a multi-repo setup, ensure the consulting repo is cloned at the same workspace level as dogma.
+
 **Exit codes**:
+
+For detailed setup and integration, see [`consulting/docs/guides/cross-repo-branch-enforcement.md`](https://github.com/EndogenAI/consulting/blob/main/docs/guides/cross-repo-branch-enforcement.md).
 
 | Code | Meaning | Action |
 |------|---------|--------|

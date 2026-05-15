@@ -65,10 +65,13 @@ def get_default_repo() -> str | None:
 
 
 def fetch_review_threads(pr: int, repo: str) -> list[dict] | None:
-    """Fetch PR review threads via gh api graphql.
+    """Fetch PR review threads via gh api graphql with pagination.
 
-    Returns a list of thread dicts, or None on any error.
+    Returns a list of thread dicts, or None on any error (including pagination overflow).
     Each dict has keys: isResolved, path, line, originalLine, comments.
+
+    NOTE: Returns None (fails closed) if hasNextPage is true, indicating >100 threads.
+    This prevents silent data loss from incomplete queries.
     """
     parts = repo.split("/", 1)
     if len(parts) != 2:
@@ -76,10 +79,11 @@ def fetch_review_threads(pr: int, repo: str) -> list[dict] | None:
     owner, name = parts
 
     query = (
-        "query($owner: String!, $name: String!, $number: Int!) {"
+        "query($owner: String!, $name: String!, $number: Int!, $cursor: String) {"
         "  repository(owner: $owner, name: $name) {"
         "    pullRequest(number: $number) {"
-        "      reviewThreads(first: 100) {"
+        "      reviewThreads(first: 100, after: $cursor) {"
+        "        pageInfo { hasNextPage endCursor }"
         "        nodes {"
         "          isResolved"
         "          path"

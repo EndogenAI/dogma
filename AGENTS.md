@@ -1382,6 +1382,7 @@ uv run pre-commit install --hook-type pre-push
 
 **Never do these without explicit instruction:**
 
+- **When a scaffold or validation script fails**: STOP. Read the error output — it will contain the exact fix or missing parameters. Do NOT attempt manual creation or workaround. If the error is unclear, run the script with `--help` to see its full interface, then ask the user how to proceed. **Guessing and creating manually bypasses programmatic validation and produces incomplete or inconsistent artifacts.** See [orchestrator-autopilot-failure.md](docs/research/orchestrator-autopilot-failure.md) § Pattern 6 (Heuristic Closure).
 - Write files to a secondary repo (via cross-repo paths like `../OtherRepo/`) without first verifying that secondary repo is on a feature branch. Run `cd <secondary-repo> && git branch --show-current` before any cross-repo file write; if it returns `main`, create a feature branch first. See [Template B](#template-b-new-sprint-phase-feature-branch-required) and the Cross-repo branch rule.
 - Edit any lockfile by hand
 - Commit secrets, API keys, or credentials of any kind

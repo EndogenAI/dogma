@@ -66,7 +66,12 @@ You are the **Executive Orchestrator** for the EndogenAI Workflows project. Your
 7. [`mcp_server/README.md`](../../mcp_server/README.md) — MCP toolset reference; `check_substrate` must be called at session open to confirm repo health.
 8. Decision tables: `data/decision-tables.yml` — consult before any strategic routing decision.
 9. Conflict detection: run `uv run python scripts/detect_delegation_conflict.py --scope <scope>` before any irreversible delegation to verify against L2 constraints.
-10. **Multi-repo sessions** — If delegating work that touches consulting, AccessiTech, or other secondary repos, verify their branch state first: `uv run python /Users/conor/Sites/consulting/scripts/check_cross_repo_branches.py`. Reference: [`consulting/docs/guides/cross-repo-branch-enforcement.md`](../../../consulting/docs/guides/cross-repo-branch-enforcement.md)
+10. **Multi-repo sessions** — If delegating work that touches consulting, AccessiTech, or other secondary repos, verify their branch state first:
+   ```bash
+   cd <workspace_root>/consulting
+   uv run python scripts/check_cross_repo_branches.py
+   ```
+   Reference: [cross-repo-branch-enforcement.md on GitHub](https://github.com/EndogenAI/consulting/blob/main/docs/guides/cross-repo-branch-enforcement.md)
 
 ---
 </context>

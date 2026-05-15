@@ -96,7 +96,7 @@ repos:
         language: system
         types: [markdown]
         files: ^(docs/guides/|docs/research/)
-        exclude: ^docs/guides/(client-adoption-pattern|deployment-contract)\.md$|^docs/research/orchestrator-autopilot-failure\.md$
+        exclude: ^docs/guides/(client-adoption-pattern|deployment-contract)\.md$
         pass_filenames: true
       - id: verify-script-usage
         name: Verify --help before script invocations in agent/skill files
