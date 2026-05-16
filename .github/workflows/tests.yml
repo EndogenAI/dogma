@@ -43,8 +43,10 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           uv run coverage-badge -o docs/coverage_badge.svg -f
+          git config user.email "ci@endogenai.com"
+          git config user.name "EndogenAI CI"
           git add docs/coverage_badge.svg
-          git commit -m "chore: update coverage badge [skip ci]" || true
+          git commit -m "chore(ci): update coverage badge [skip ci]" || true
           git push || true
 
       - name: Upload coverage to Codecov
