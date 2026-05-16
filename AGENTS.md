@@ -412,13 +412,15 @@ Rules:
 - **For sprint-close sessions** (where a PR is opened): post a closure comment on *every* issue the PR closes, explaining what was implemented and how it resolves the issue. Include the PR number and commit SHA. This lets future sessions and contributors understand the resolution without reading the PR diff.
 - **Track follow-up items as issues**: At sprint close, review the sprint for any partial implementations, regressions introduced, or encoding gaps discovered during delivery. Each item must be seeded as a new GitHub issue (not kept in the scratchpad only). Use the `gh issue create` pattern from the Verify-after-act table. Untracked follow-ups are invisible to future sessions.
 - **PR Review Triage Gate** — *Trigger: any time CI passes or you observe a state that looks like "review complete" — this gate runs before any merge-readiness output is issued. CI green + Review APPROVED is a necessary precondition that opens this gate; it is not sufficient authorization to suggest merge. The sufficient condition is: triage complete (all threads resolved, batch replies posted) + explicit user "go ahead" in the current session.*
-  A PR must **not** be merged, suggested for merge, or treated as "ready to merge" until every automated and human review has been fully triaged. Copilot review is triggered automatically when a PR is opened — it must be read and handled before any merge discussion. Immediately after a push or PR open:
-  1. Retrieve all reviews and inline comments: `gh pr view <num> --json reviews,reviewThreads` and `gh api repos/<owner>/<repo>/pulls/<num>/comments`
-  2. Classify every comment as Blocking / Suggestion / Nit / Question — see the [`pr-review-triage` skill](.github/skills/pr-review-triage/SKILL.md)
-  3. Fix all Blocking comments and commit each fix before raising any merge discussion
-  4. Post replies referencing fix commit SHAs using `scripts/pr_review_reply.py` batch mode
-  5. Resolve all addressed threads; leave nits open with an acknowledgement reply
-  6. Re-request review if the original review state was `CHANGES_REQUESTED`: `gh pr review <num> --request-review`
+  A PR must **not** be merged, suggested for merge, or treated as "ready to merge" until every automated and human review has been fully triaged. Copilot review is triggered automatically when a PR is opened — it must be read and handled before any merge discussion.
+  **PR Review Triage Gate checklist (binary):**
+  1. [ ] Retrieve all reviews and inline comments: `gh pr view <num> --json reviews,reviewThreads` and `gh api repos/<owner>/<repo>/pulls/<num>/comments`
+  2. [ ] Classify every comment as Blocking / Suggestion / Nit / Question — see the [`pr-review-triage` skill](.github/skills/pr-review-triage/SKILL.md)
+  3. [ ] Fix all Blocking comments and commit each fix before raising any merge discussion
+  4. [ ] Post replies referencing fix commit SHAs using `scripts/pr_review_reply.py` batch mode
+  5. [ ] Resolve all addressed threads; leave nits open with an acknowledgement reply
+  6. [ ] Re-request review if the original review state was `CHANGES_REQUESTED`: `gh pr review <num> --request-review`
+  If **any** item above is unchecked, status is **PR Review Triage Gate: BLOCKED** and no merge-readiness language may be issued.
   Before treating a PR as merge-ready, write a `## Merge Authorization — PR #NNN` section to the scratchpad and complete all five checkboxes:
 
   ```
@@ -449,13 +451,14 @@ Rules:
 
 #### Layer 1: Pre-Delegation Checklist (Before You Invoke)
 
-Before invoking **any** subagent, verify all three:
+Before invoking **any** subagent, verify all four:
 
 | Check | Definition | Red Flag | Fix |
 |-------|-----------|----------|-----|
 | **Scope Clarity** | Can you state the task in one sentence, imperative voice (≤15 words)? | "Review the workplan" | "Review workplan.md v2.1; flag gaps in issue count/effort/blockers; return bullets with issue #s" |
 | **Output Format + Ceiling** *(dual mandate — neither alone is sufficient; Sprint 12: format alone → 15–25% variance reduction; format + ceiling → 60–70%)* | Does your prompt name BOTH format type AND token ceiling? | "Return your findings" (no format, no ceiling) / "Return bullets" (format without ceiling) | "Return only: bullets (issue# — gap), ≤2000 tokens. No prose, no preamble." |
 | **Success Criteria** | Would the agent immediately recognize success without guessing? | "Fix the workplan" | "Reconcile count 25→23. Add effort (XS/S/M/L) to Phases 2–5. Flag #151 dependency. Commit: 'docs: workplan...'" |
+| **Tool Access** | If the delegation requires terminal execution or file writes, does the target agent have `execute` or `terminal` in its tools array? | Delegating implementation to an agent that can only return a plan | Route to an agent with `execute`/`terminal`, or implement directly and document why delegation was skipped |
 
 If **any** check fails → rewrite the prompt before delegating.
 
@@ -745,7 +748,7 @@ Any command that creates or modifies a remote side effect must be immediately pr
 |---------|-------------------|------------|
 | `Pre-filing duplicate check` | `gh issue list --state all --limit 120 \| grep -i "<keyword>"` | N/A |
 | `gh issue create` | `test -s /tmp/file && file /tmp/file \| grep -q "UTF-8"` | `gh issue list --state open --limit 5` |
-| `git push` | N/A (local commit) | `git log --oneline -1` then `uv run python scripts/wait_for_github_run.py $(gh run list --branch <branch> --limit 1 --json databaseId -q '.[0].databaseId')` to monitor CI |
+| `git push` | N/A (local commit) | `git log --oneline -1` then `uv run python scripts/wait_for_github_run.py $(gh run list --branch <branch> --limit 1 --json databaseId -q '.[0].databaseId')` to monitor CI; after CI passes, run `uv run python scripts/wait_for_pr_review.py <pr>` before any merge suggestion or PR Review Triage begins |
 | CI passes (after `git push`) | N/A | **CI green opens the PR Review Triage Gate — it does not close it.** Observing CI pass is a *necessary* precondition, not *sufficient* authorization. Do not issue any merge-readiness statement until: all review threads resolved, batch replies posted, and explicit user "go ahead" received in the current session. See [PR Review Triage Gate](#pr-review-triage-gate). |
 | `gh pr create` | `test -s /tmp/file && file /tmp/file \| grep -q "UTF-8"` | `gh pr view` |
 | `gh issue close` | N/A (no file) | `gh issue view <number>` |
@@ -1026,6 +1029,7 @@ VS Code Copilot Chat can compact the conversation history at any time — either
 - Every decision goes to the relevant `AGENTS.md`, guide, or research doc
 - Every in-progress plan goes to `docs/plans/`
 - Uncommitted changes are the most vulnerable: commit early, commit often
+- Every `## Pre-Compact Checkpoint` entry must avoid unqualified "ready" or "complete" language — see [Readiness Language Guard](#readiness-language-guard)
 - Before delegating to a subagent, write a `## Handoff to <Agent>` section in the scratchpad
 
 See [`docs/guides/session-management.md#context-compaction`](docs/guides/session-management.md) for the full compaction protocol.
@@ -1401,3 +1405,4 @@ uv run pre-commit install --hook-type pre-push
 - Any change that renames or restructures existing documentation
 - Adding new agents (follow the [Agent authoring conventions](AGENTS.md#agent-authoring-conventions))
     - Any change to the [MANIFESTO.md](MANIFESTO.md) (it represents core project dogma)
+
