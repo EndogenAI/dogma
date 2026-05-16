@@ -218,4 +218,4 @@ This PR addresses all 17 readiness audit findings from the May 13 Scout review, 
 - May 17: Blog graphics (#67)
 - May 18: Product page cross-linking (#73)
 
-Closes #63, Closes #64, Closes #65, Closes #66, Closes #67, Closes #68, Closes #69, Closes #70, Closes #71, Closes #72, Closes #73
+Related consulting issues: EndogenAI/consulting#63, EndogenAI/consulting#64, EndogenAI/consulting#65, EndogenAI/consulting#66, EndogenAI/consulting#67, EndogenAI/consulting#68, EndogenAI/consulting#69, EndogenAI/consulting#70, EndogenAI/consulting#71, EndogenAI/consulting#72, EndogenAI/consulting#73
