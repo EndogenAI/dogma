@@ -7,6 +7,7 @@
 [![Status: Experimental](https://img.shields.io/badge/status-experimental-orange)](https://github.com/EndogenAI/dogma#project-status)
 [![Tests](https://github.com/EndogenAI/dogma/actions/workflows/tests.yml/badge.svg)](https://github.com/EndogenAI/dogma/actions/workflows/tests.yml)
 [![Coverage](https://codecov.io/gh/EndogenAI/dogma/branch/main/graph/badge.svg)](https://codecov.io/gh/EndogenAI/dogma)
+![Local Coverage](https://raw.githubusercontent.com/EndogenAI/dogma/main/docs/coverage_badge.svg)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue)](https://www.python.org/downloads/)
 [![Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 

@@ -39,6 +39,14 @@ jobs:
       - name: Run pytest with coverage
         run: uv run pytest tests/ --cov=scripts --cov=mcp_server --cov-report=term-missing --cov-report=xml -v
 
+      - name: Generate local coverage badge
+        if: github.ref == 'refs/heads/main'
+        run: |
+          uv run coverage-badge -o docs/coverage_badge.svg -f
+          git add docs/coverage_badge.svg
+          git commit -m "chore: update coverage badge [skip ci]" || true
+          git push || true
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
