@@ -18,6 +18,7 @@ scripts/
   scaffold_workplan.py         # Scaffold a docs/plans/YYYY-MM-DD-<slug>.md workplan from template
   scaffold_manifest.py         # Scaffold a new research manifest.json for a topic; idempotent
   generate_agent_manifest.py   # Emit a JSON or Markdown skills manifest of all .agent.md files
+  generate_coverage_badge.py   # Pre-commit coverage badge generator — runs pytest with coverage, generates docs/coverage_badge.svg, stages for commit; always exits 0 (never blocks commits); designed for pre-commit hook integration
   fetch_source.py              # Fetch a URL into .cache/sources/ and maintain a manifest (no re-fetching)
   fetch_all_sources.py         # Batch-fetch all URLs from OPEN_RESEARCH.md + research doc frontmatter
   add_source_to_manifest.py    # Append a single source URL to an existing research manifest; rejects duplicates
