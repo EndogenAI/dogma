@@ -55,7 +55,7 @@ Questions, early feedback, or integration use cases: open a [GitHub Discussion](
 
 Beyond 1.0, we're expanding toolkit coverage to support more AI coordination patterns, improving the contributor onboarding framework to make it easier for new maintainers to join, and refining the governance validation suite based on real-world adoption feedback. Community signal — GitHub stars, forks, discussions, and external adopter reports — directly influences our sequencing.
 
-For the full 6-month roadmap and what we're NOT building, see the [EndogenAI Product Roadmap](https://github.com/EndogenAI/dogma/blob/main/docs/governance/product-roadmap.md) (also available in the consulting repo).
+For the full 12-month strategic roadmap and detailed phase breakdown, see [docs/plans/2026-03-10-endogenai-strategic-roadmap.md](docs/plans/2026-03-10-endogenai-strategic-roadmap.md).
 
 ---
 
