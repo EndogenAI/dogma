@@ -56,8 +56,8 @@ guide, tab descriptions, and offline mode.
 
 ## Browser Inspector Integration
 
-Browser inspector added in 2026-03 with a facade in
-[web/src/lib/mcp-server.ts](../web/src/lib/mcp-server.ts) with five tools (four inspector tools plus one baseline debug tool):
+Browser inspector was added in 2026-03 with a facade at
+[web/src/lib/mcp-server.ts](../web/src/lib/mcp-server.ts) and five tools (four inspector tools plus one baseline debug tool):
 
 - `query_dom`
 - `get_console_logs`
