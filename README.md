@@ -1,5 +1,7 @@
 # DogmaMCP
 
+![EndogenAI logo: green and blue stylized mark for the DogmaMCP governance framework, using letterforms "e" to make a leaf sprouting from an "A" with the letter "i" cut out of the "A"](eAi_logo.svg)
+
 > **Values ingrained, [sovereignty](docs/glossary.md#sovereignty) sustained** — governance framework for [endogenous](docs/glossary.md#endogenous-first) AI workflows
 
 [![Status: Experimental](https://img.shields.io/badge/status-experimental-orange)](https://github.com/EndogenAI/dogma#project-status)
@@ -146,12 +148,17 @@ Fork dogma, add features, and submit PRs back to the EndogenAI project.
 git clone https://github.com/EndogenAI/dogma.git
 cd dogma
 uv sync --extra dev --extra mcp  # Install dev tools (pytest, ruff, pre-commit) + MCP server
+
+# Install pre-commit hooks (required before making commits)
+uv run pre-commit install
+uv run pre-commit install --hook-type pre-push
+
 uv run pytest
 
 # Create feature branch
 git checkout -b feat/your-feature
 # Make changes...
-git commit -m "feat(docs): describe your change"
+git commit -m "feat(docs): describe your change"  # ← pre-commit hooks run automatically here
 git push -u origin feat/your-feature
 # Open PR on GitHub
 ```
