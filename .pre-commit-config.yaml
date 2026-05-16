@@ -53,6 +53,20 @@ repos:
         language: system
         files: ^\.github/agents/.*\.agent\.md$
         pass_filenames: false
+      - id: full-tests-with-coverage
+        name: Run full test suite with coverage
+        entry: uv run pytest tests/ --cov=scripts --cov=mcp_server --cov-report=xml --cov-report=term-missing -q
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+        always_run: true
+      - id: generate-coverage-badge
+        name: Generate coverage badge from pytest results
+        entry: uv run python scripts/generate_coverage_badge.py
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+        always_run: true
       - id: fast-tests
         name: Fast pytest (not slow, not integration)
         entry: uv run pytest tests/ -x -m "not slow and not integration" -q
