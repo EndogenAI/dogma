@@ -1,6 +1,6 @@
 # Workplan: Dogma Reveal Readiness
 
-**Branch**: `main`
+**Branch**: `feat/reveal-readiness-may18` (merges into `main`)
 **Date**: 2026-05-15
 **Orchestrator**: Executive Orchestrator
 
