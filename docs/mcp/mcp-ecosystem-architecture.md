@@ -310,5 +310,5 @@ graph LR
 
 ---
 
-**Last Updated**: 2026-03-30 (Sprint 23, Phase 6 closeout)  
+**Last Updated**: 2026-03-30  
 **Status**: Current implementation as of commit cb9e092

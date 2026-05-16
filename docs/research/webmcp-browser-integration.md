@@ -18,7 +18,7 @@ recommendations:
     status: accepted
     effort: Low
     linked_issue: 515
-    decision_ref: Phase 0 gap analysis (Sprint 23 workplan)
+    decision_ref: Phase 0 gap analysis (2026-03 workplan)
   - id: rec-webmcp-browser-002
     title: "Apply mcp_server/_security.py SSRF patterns to all browser MCP tool implementations"
     status: accepted
@@ -37,7 +37,7 @@ recommendations:
 
 ## 1. Executive Summary
 
-This research documents browser-based MCP server implementation patterns, transport specifications, and security constraints to support Sprint 23's WebMCP Inspector implementation. The primary governing axioms are **Local-Compute-First** ([MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first)) — minimize cloud dependency and token burn — and **Algorithms-Before-Tokens** ([MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens)) — encode repeatable patterns into deterministic infrastructure.
+This research documents browser-based MCP server implementation patterns, transport specifications, and security constraints to support the WebMCP Inspector implementation. The primary governing axioms are **Local-Compute-First** ([MANIFESTO.md §3](../../MANIFESTO.md#3-local-compute-first)) — minimize cloud dependency and token burn — and **Algorithms-Before-Tokens** ([MANIFESTO.md §2](../../MANIFESTO.md#2-algorithms-before-tokens)) — encode repeatable patterns into deterministic infrastructure.
 
 **Key findings**:
 1. **SSE is the canonical browser MCP transport** — Server-Sent Events (SSE) are browser-native, CORS-compatible, unidirectional, and already validated in dogma's web dashboard (`web/server.py` + `web/src/lib/api.ts`)
@@ -50,7 +50,7 @@ This research documents browser-based MCP server implementation patterns, transp
 - R2: Apply `_security.py` SSRF patterns to all browser tool implementations
 - R3: Register tools with explicit read/write capability markers for governance
 
-**Sprint 23 applicability**: This research validates Phase 2's "Build Own" decision — implementing a TypeScript browser MCP server using SSE transport is architecturally aligned with dogma's existing MCP patterns and requires no external dependencies.
+**Implementation note**: This research validates Phase 2's "Build Own" decision — implementing a TypeScript browser MCP server using SSE transport is architecturally aligned with dogma's existing MCP patterns and requires no external dependencies.
 
 ---
 
@@ -183,7 +183,7 @@ export function validateUrl(url: string): void {
 }
 ```
 
-**Sprint 23 recommendation**: Use `.vscode/mcp.json` for Phase 4 integration; defer runtime discovery to V2.
+**Recommendation**: Use `.vscode/mcp.json` for Phase 4 integration; defer runtime discovery to V2.
 
 ---
 
@@ -198,7 +198,7 @@ export function validateUrl(url: string): void {
 **Canonical example**:
 
 ```typescript
-// web/src/lib/mcp-server.ts (proposed for Sprint 23 Phase 2)
+// web/src/lib/mcp-server.ts (implemented 2026-03)
 import type { Tool } from '@modelcontextprotocol/sdk';
 
 export class BrowserMCPServer {
@@ -233,7 +233,7 @@ export class BrowserMCPServer {
 
 **Pattern**: Prefix tool names with capability level (`browser_read_`, `browser_interact_`) and register with explicit schemas.
 
-**Canonical example** (Sprint 23 Phase 3 tools):
+**Canonical example** (implementation tools):
 
 ```typescript
 // web/src/lib/mcp-tools.ts (proposed)
@@ -302,7 +302,7 @@ export const TOOLS = {
 
 **Pattern**: Intercept `console.log`, `console.warn`, `console.error` at app startup; buffer recent entries in memory; expose via MCP tool.
 
-**Canonical example** (Sprint 23 Phase 3 deliverable):
+**Canonical example** (implementation deliverable):
 
 ```typescript
 // web/src/lib/console-buffer.ts (proposed)
@@ -413,7 +413,7 @@ export const TOOLS = {
 
 ### Pattern 3.5: Phase 3 Browser Inspector Tool Calls (Implemented)
 
-**Context**: Sprint 23 Phase 3 implemented browser inspector tool behavior in
+**Context**: Implementation (2026-03) added browser inspector tool behavior in
 `web/src/lib/mcp-server.ts` using the concrete tool names `query_dom`,
 `get_console_logs`, `get_component_state`, and `trigger_action`.
 
@@ -539,12 +539,12 @@ app.add_middleware(
 
 ## 5. Recommendations
 
-### R1: Use SSE transport for Browser MCP (Accepted — Sprint 23 Phase 2)
+### R1: Use SSE transport for Browser MCP (Accepted — 2026-03)
 
 **Status**: Accepted  
 **Effort**: Low  
 **Linked issue**: #515 (Phase 2 PoC)  
-**Decision reference**: Phase 0 gap analysis (Sprint 23 workplan)
+**Decision reference**: Phase 0 gap analysis (2026-03 workplan)
 
 **Rationale**: SSE is browser-native, CORS-compatible, unidirectional, and already validated in dogma's web dashboard. WebSocket adds bidirectional complexity with no MCP benefit; stdio is impossible in browsers.
 
@@ -554,7 +554,7 @@ app.add_middleware(
 
 ---
 
-### R2: Apply mcp_server/_security.py SSRF patterns to all browser MCP tools (Accepted — Sprint 23 Phase 3)
+### R2: Apply mcp_server/_security.py SSRF patterns to all browser MCP tools (Accepted — 2026-03)
 
 **Status**: Accepted  
 **Effort**: Low  
@@ -568,7 +568,7 @@ app.add_middleware(
 
 ---
 
-### R3: Register browser MCP tools with explicit read/write capability markers (Accepted — Sprint 23 Phase 3)
+### R3: Register browser MCP tools with explicit read/write capability markers (Accepted — 2026-03)
 
 **Status**: Accepted  
 **Effort**: Low  
@@ -605,7 +605,7 @@ app.add_middleware(
 3. **[mcp_server/_security.py](../../mcp_server/_security.py)** — SSRF prevention (`validate_url`), path traversal prevention (`validate_repo_path`)
 4. **[web/server.py](../../web/server.py)** — FastAPI sidecar with SSE transport (`StreamingResponse`)
 5. **[web/src/lib/api.ts](../../web/src/lib/api.ts)** — Browser SSE client (`EventSource`)
-6. **[docs/plans/2026-03-29-sprint-23-webmcp-inspector.md](../plans/2026-03-29-sprint-23-webmcp-inspector.md)** — Sprint 23 workplan (Phase 0 gap analysis, Phase 1 research, Phase 2-4 implementation)
+6. **[docs/plans/2026-03-29-sprint-23-webmcp-inspector.md](../plans/2026-03-29-sprint-23-webmcp-inspector.md)** — WebMCP Inspector workplan (Phase 0 gap analysis, Phase 1 research, Phase 2-4 implementation)
 7. **[docs/decisions/ADR-009-webmcp-architecture.md](../decisions/ADR-009-webmcp-architecture.md)** — MCP Web Dashboard architecture decision (SSE transport, LayerCake charts, CORS policy)
 8. **[MANIFESTO.md § Local-Compute-First](../../MANIFESTO.md#3-local-compute-first)** — Minimize cloud dependency and token burn
 9. **[MANIFESTO.md § Algorithms-Before-Tokens](../../MANIFESTO.md#2-algorithms-before-tokens)** — Encode repeatable patterns into deterministic infrastructure
@@ -628,7 +628,7 @@ app.add_middleware(
 This research synthesis is accepted when:
 - ✅ All 5 required headings present (Executive Summary, Hypothesis Validation, Pattern Catalog, Recommendations, Sources)
 - ✅ Pattern Catalog contains ≥3 patterns with canonical examples (SSE transport, tool registration, console buffering, store inspection)
-- ✅ Recommendations section includes 3 explicit, actionable recommendations linked to Sprint 23 phases
+- ✅ Recommendations section includes 3 explicit, actionable recommendations linked to implementation phases
 - ✅ Security Constraints section documents SSRF, CSS selector injection, credential exposure, CORS policies
 - ✅ Sources section cites ≥10 endogenous sources + ≥7 external sources
 - ✅ YAML frontmatter includes `status: Final`, `closes_issue: 514`, `x-governs` axioms

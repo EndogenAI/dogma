@@ -537,7 +537,7 @@ class TestFinalEditWarning:
 
 
 # ---------------------------------------------------------------------------
-# Tests for _validate_recommendations_block (Sprint 23, issue #406)
+# Tests for _validate_recommendations_block
 # ---------------------------------------------------------------------------
 
 

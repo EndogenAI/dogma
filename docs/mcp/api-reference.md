@@ -11,7 +11,7 @@ The dogma governance MCP server exposes 13 tools for substrate validation, scaff
 
 ## Browser Inspector Facade (Phase 3)
 
-Sprint 23 introduced a browser-local inspector facade at
+Browser inspector (added 2026-03) provides a facade at
 [`web/src/lib/mcp-server.ts`](../../web/src/lib/mcp-server.ts) with these tool names:
 
 - `query_dom`

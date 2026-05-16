@@ -54,9 +54,9 @@ browser dashboard.
 See [docs/guides/mcp-dashboard.md](../docs/guides/mcp-dashboard.md) for the full setup
 guide, tab descriptions, and offline mode.
 
-## Browser Inspector Integration (Sprint 23)
+## Browser Inspector Integration
 
-Sprint 23 Phase 3 added a browser-local inspector facade in
+Browser inspector added in 2026-03 with a facade in
 [web/src/lib/mcp-server.ts](../web/src/lib/mcp-server.ts) with five tools (four inspector tools plus one baseline debug tool):
 
 - `query_dom`
