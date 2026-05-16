@@ -13,144 +13,227 @@ Tests cover:
 - Conflict detection (file already exists)
 """
 
+import subprocess
+import sys
+from unittest.mock import patch
+
 import pytest
 
-
-class TestScaffoldAgentValidation:
-    """Tests for argument validation."""
-
-    def test_requires_name_and_description(self):
-        """Script exits 1 if --name or --description missing."""
-        # Real test: call scaffold_agent with missing args, assert exit 1
-        assert True
-
-    def test_description_length_limit(self):
-        """Description must be ≤ 200 characters."""
-        # Too-long description (201 chars) should fail
-        assert True
-
-    def test_rejects_invalid_posture(self):
-        """Invalid posture value (not readonly/creator/full) exits 1."""
-        assert True
+# Import business logic functions directly
+from scripts.scaffold_agent import (
+    build_tools_yaml,
+    infer_executive,
+    slugify,
+    validate_name_unique,
+)
 
 
-class TestScaffoldAgentFileGeneration:
-    """Tests for .agent.md file creation."""
+class TestMain:
+    """Unit tests for main() CLI function."""
 
-    @pytest.mark.io
-    def test_generates_valid_frontmatter(self, tmp_path, monkeypatch, sample_agent_md):
-        """Generated .agent.md has valid YAML frontmatter."""
-        monkeypatch.chdir(tmp_path)
+    def test_main_missing_required_args(self, monkeypatch):
+        """Test main() exits 2 when required args missing."""
+        monkeypatch.setattr("sys.argv", ["scaffold_agent.py"])
 
-        # Create .github/agents directory
+        from scripts.scaffold_agent import main
+
+        with pytest.raises(SystemExit) as excinfo:
+            main()
+        # argparse exits with 2 for missing required args
+        assert excinfo.value.code == 2
+
+    def test_main_description_too_long(self, monkeypatch):
+        """Test main() exits 1 when description > 200 chars."""
+        long_desc = "A" * 201
+        monkeypatch.setattr("sys.argv", ["scaffold_agent.py", "--name", "Test", "--description", long_desc])
+
+        from scripts.scaffold_agent import main
+
+        with pytest.raises(SystemExit) as excinfo:
+            main()
+        assert excinfo.value.code == 1
+
+    def test_main_dry_run_success(self, monkeypatch, capsys):
+        """Test main() with --dry-run prints without writing."""
+        monkeypatch.setattr(
+            "sys.argv", ["scaffold_agent.py", "--name", "Test Agent", "--description", "Test description", "--dry-run"]
+        )
+
+        from scripts.scaffold_agent import main
+
+        main()  # Should not raise
+        captured = capsys.readouterr()
+        assert "DRY RUN" in captured.out
+
+
+class TestSlugify:
+    """Tests for slugify() function."""
+
+    def test_basic_slugification(self):
+        """Display name is converted to lowercase-kebab-case."""
+        assert slugify("Research Foo") == "research-foo"
+        assert slugify("Executive Agent") == "executive-agent"
+
+    def test_special_characters_removed(self):
+        """Special characters are replaced with hyphens."""
+        assert slugify("Test & Agent") == "test-agent"
+        assert slugify("Agent (Beta)") == "agent-beta"
+
+    def test_multiple_spaces_collapsed(self):
+        """Multiple spaces collapse to single hyphen."""
+        assert slugify("Research   Foo") == "research-foo"
+
+    def test_leading_trailing_hyphens_stripped(self):
+        """Leading and trailing hyphens are removed."""
+        assert slugify("  Agent  ") == "agent"
+
+    def test_mixed_case_lowercased(self):
+        """Mixed case is converted to lowercase."""
+        assert slugify("MyAgent") == "myagent"
+        assert slugify("LOUD AGENT") == "loud-agent"
+
+    def test_numbers_preserved(self):
+        """Numbers are preserved in slug."""
+        assert slugify("Agent 2000") == "agent-2000"
+
+
+class TestBuildToolsYaml:
+    """Tests for build_tools_yaml() function."""
+
+    def test_readonly_posture(self):
+        """readonly posture includes only read-only tools."""
+        yaml = build_tools_yaml("readonly")
+        assert "- search" in yaml
+        assert "- read" in yaml
+        assert "- changes" in yaml
+        assert "- usages" in yaml
+        assert "- edit" not in yaml
+        assert "- execute" not in yaml
+
+    def test_creator_posture(self):
+        """creator posture includes search, read, edit, web."""
+        yaml = build_tools_yaml("creator")
+        assert "- search" in yaml
+        assert "- read" in yaml
+        assert "- edit" in yaml
+        assert "- web" in yaml
+        assert "- execute" not in yaml
+
+    def test_full_posture(self):
+        """full posture includes all tools including execute and terminal."""
+        yaml = build_tools_yaml("full")
+        assert "- search" in yaml
+        assert "- read" in yaml
+        assert "- edit" in yaml
+        assert "- execute" in yaml
+        assert "- terminal" in yaml
+        assert "- agent" in yaml
+
+    def test_invalid_posture_exits(self):
+        """Invalid posture raises SystemExit."""
+        with pytest.raises(SystemExit) as excinfo:
+            build_tools_yaml("invalid")
+        assert excinfo.value.code == 1
+
+
+class TestInferExecutive:
+    """Tests for infer_executive() function."""
+
+    def test_with_area(self):
+        """Area parameter generates 'Executive <Area>' hint."""
+        result = infer_executive("Research Foo", "research")
+        assert result == "Executive Research"
+
+    def test_without_area(self):
+        """Without area, returns placeholder comment."""
+        result = infer_executive("Standalone Agent", None)
+        assert "executive" in result.lower()
+
+
+class TestValidateNameUnique:
+    """Tests for validate_name_unique() function."""
+
+    def test_unique_name_passes(self, tmp_path, monkeypatch):
+        """Unique agent name does not raise."""
+        # Mock AGENTS_DIR to point to empty temp dir
         agents_dir = tmp_path / ".github" / "agents"
         agents_dir.mkdir(parents=True)
 
-        # Real test: verify frontmatter structure
-        assert "---" in sample_agent_md
-        assert "name:" in sample_agent_md
-        assert "description:" in sample_agent_md
-        assert "tools:" in sample_agent_md
+        with patch("scripts.scaffold_agent.AGENTS_DIR", agents_dir):
+            validate_name_unique("New Agent")  # Should not raise
 
-    @pytest.mark.io
-    def test_slug_generation_from_name(self, tmp_path, monkeypatch):
-        """Agent display name is converted to filename slug."""
-        # "Research Foo" → "research-foo.agent.md"
-        # "Executive Agent" → "executive-agent.agent.md"
-        assert True
-
-    @pytest.mark.io
-    def test_tool_selection_by_posture(self, sample_agent_md):
-        """Tool list varies by posture (readonly/creator/full)."""
-        # readonly: search, read, changes, usages
-        # creator: search, read, edit, web, changes, usages
-        # full: search, read, edit, write, execute, terminal, usages, changes, agent
-
-        assert "tools:" in sample_agent_md
-
-
-class TestScaffoldAgentDryRun:
-    """Tests for --dry-run flag."""
-
-    @pytest.mark.io
-    def test_dry_run_prints_content(self, capsys):
-        """--dry-run prints generated .agent.md to stdout without creating file."""
-        # Real test: call with --dry-run, verify file not created
-        # and output printed to stdout
-        assert True
-
-    @pytest.mark.io
-    def test_dry_run_does_not_write_file(self, tmp_path, monkeypatch):
-        """--dry-run does not create file on disk."""
-        monkeypatch.chdir(tmp_path)
+    def test_duplicate_name_exits(self, tmp_path, monkeypatch):
+        """Duplicate agent name raises SystemExit."""
         agents_dir = tmp_path / ".github" / "agents"
         agents_dir.mkdir(parents=True)
 
-        # Real test: no .agent.md files should exist after dry-run
-        assert not any(agents_dir.glob("*.agent.md"))
-
-
-class TestScaffoldAgentConflictDetection:
-    """Tests for file conflict handling."""
-
-    @pytest.mark.io
-    def test_rejects_duplicate_agent_name(self, tmp_path, monkeypatch):
-        """Script exits 1 if .agent.md with same slug already exists."""
-        monkeypatch.chdir(tmp_path)
-        agents_dir = tmp_path / ".github" / "agents"
-        agents_dir.mkdir(parents=True)
-
-        # Create an existing agent file
+        # Create existing agent with same name
         existing = agents_dir / "test-agent.agent.md"
-        existing.write_text("existing content")
+        existing.write_text("---\nname: Test Agent\n---\n")
 
-        # Real test: attempt to create same agent, assert exit 1
-        assert existing.exists()
-
-
-class TestScaffoldAgentAreaOption:
-    """Tests for --area flag (fleet sub-agents)."""
-
-    def test_area_parameter_optional(self):
-        """--area is optional; agents without it are standalone."""
-        assert True
-
-    def test_area_slug_generation(self):
-        """Area 'research' generates correct naming/structure."""
-        # agent slug becomes: research-<name>.agent.md
-        assert True
-
-    def test_area_referenced_in_context(self):
-        """Area name appears in agent handoff context or documentation."""
-        assert True
+        with patch("scripts.scaffold_agent.AGENTS_DIR", agents_dir):
+            with pytest.raises(SystemExit) as excinfo:
+                validate_name_unique("Test Agent")
+            assert excinfo.value.code == 1
 
 
-class TestScaffoldAgentTemplateStructure:
-    """Tests for generated .agent.md structure."""
+@pytest.mark.integration
+class TestScaffoldAgentIntegration:
+    """Integration tests using subprocess (smoke tests)."""
 
-    @pytest.mark.io
-    def test_includes_role_section(self, sample_agent_md):
-        """Generated agent includes ## Role section."""
-        assert "## Role" in sample_agent_md
+    def test_cli_dry_run(self):
+        """Integration test: --dry-run prints without writing."""
+        result = subprocess.run(
+            [
+                sys.executable,
+                "scripts/scaffold_agent.py",
+                "--name",
+                "Test Agent",
+                "--description",
+                "Test description",
+                "--dry-run",
+            ],
+            capture_output=True,
+            text=True,
+        )
 
-    @pytest.mark.io
-    def test_includes_capabilities_section(self, sample_agent_md):
-        """Generated agent includes ## Capabilities section."""
-        assert "## Capabilities" in sample_agent_md
+        assert result.returncode == 0
+        assert "DRY RUN" in result.stdout
+        assert "name: Test Agent" in result.stdout
 
-    @pytest.mark.io
-    def test_includes_handoff_to_review(self, sample_agent_md):
-        """Generated agent includes Review handoff in frontmatter."""
-        assert "Review" in sample_agent_md
+    def test_cli_description_too_long(self):
+        """Integration test: Description >200 chars fails."""
+        long_desc = "A" * 201
 
+        result = subprocess.run(
+            [sys.executable, "scripts/scaffold_agent.py", "--name", "Test Agent", "--description", long_desc],
+            capture_output=True,
+            text=True,
+        )
 
-class TestScaffoldAgentExitCodes:
-    """Tests for exit code semantics."""
+        assert result.returncode == 1
+        assert "200" in result.stderr
 
-    def test_exit_0_on_success(self):
-        """Exit 0 when agent file created or --dry-run succeeds."""
-        assert True
+    def test_cli_posture_selection(self):
+        """Integration test: Posture affects tool list."""
+        result = subprocess.run(
+            [
+                sys.executable,
+                "scripts/scaffold_agent.py",
+                "--name",
+                "Readonly Test",
+                "--description",
+                "Test readonly posture",
+                "--posture",
+                "readonly",
+                "--dry-run",
+            ],
+            capture_output=True,
+            text=True,
+        )
 
-    def test_exit_1_on_validation_error(self):
-        """Exit 1 on missing args, invalid posture, or file conflict."""
-        assert True
+        assert result.returncode == 0
+        assert "- search" in result.stdout
+        assert "- read" in result.stdout
+        # Should NOT have execute
+        assert "- execute" not in result.stdout
