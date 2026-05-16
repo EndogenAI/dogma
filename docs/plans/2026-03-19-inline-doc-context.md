@@ -63,7 +63,7 @@ This session introduces the concept of **inline documentation as endogenic conte
 - Follow-up issues for recommended substrate implementations
 - Milestone assignment
 - Created follow-up issues: #403, #404
-- Milestone assigned: Sprint 23+ Backlog on #401, #403, #404
+- Milestone assigned: Backlog on #401, #403, #404
 
 **Depends on**: Phase 3
 **CI**: gh issue list

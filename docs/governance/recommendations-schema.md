@@ -14,7 +14,7 @@ the current implementation status. This enables provenance tracing: for any
 recommendation, you can answer "was this adopted?", "which issue tracks it?", and
 "why was it rejected or deferred?" without reading through issue threads manually.
 
-This schema is part of the Recommendations Provenance system introduced in Sprint 23
+This schema is part of the Recommendations Provenance system introduced in 2026-03
 (issue #406), implementing the [Programmatic-First Principle](../../AGENTS.md#programmatic-first-principle)
 from `AGENTS.md`: provenance data that was previously inferred interactively from
 issue comments is now encoded as structured frontmatter and enforced by CI.
