@@ -65,52 +65,52 @@ def main() -> int:
     Returns:
         Always 0 (graceful exit, never blocks commit)
     """
-    repo_root = Path(__file__).parent.parent
-    coverage_xml = repo_root / "coverage.xml"
-    badge_path = repo_root / "docs" / "coverage_badge.svg"
+    try:
+        repo_root = Path(__file__).parent.parent
+        coverage_xml = repo_root / "coverage.xml"
+        badge_path = repo_root / "docs" / "coverage_badge.svg"
 
-    # Step 1: Run pytest with coverage
-    print("Running tests with coverage...", flush=True)
-    pytest_cmd = ["uv", "run", "pytest", "tests/", "--cov=scripts", "--cov=mcp_server", "--cov-report=xml", "-q"]
+        # Step 1: Run pytest with coverage
+        print("Running tests with coverage...", flush=True)
+        pytest_cmd = ["uv", "run", "pytest", "tests/", "--cov=scripts", "--cov=mcp_server", "--cov-report=xml", "-q"]
 
-    result = run_command(pytest_cmd)
-    if result.returncode != 0:
-        # Tests failed, but don't block commit
-        print("Tests failed, skipping badge generation", file=sys.stderr)
-        return 0
-
-    # Step 2: Check if coverage.xml exists
-    if not coverage_xml.exists():
-        print("coverage.xml not found, skipping badge generation", file=sys.stderr)
-        return 0
-
-    # Step 3: Generate badge
-    print("Generating coverage badge...", flush=True)
-    badge_cmd = ["uv", "run", "coverage-badge", "-o", str(badge_path), "-f"]
-
-    result = run_command(badge_cmd)
-    if result.returncode != 0:
-        print(f"Badge generation failed: {result.stderr}", file=sys.stderr)
-        return 0
-
-    # Step 4: Stage badge for commit
-    if badge_path.exists():
-        print("Staging coverage badge...", flush=True)
-        git_cmd = ["git", "add", str(badge_path)]
-        result = run_command(git_cmd)
+        result = run_command(pytest_cmd)
         if result.returncode != 0:
-            print(f"Failed to stage badge: {result.stderr}", file=sys.stderr)
+            # Tests failed, but don't block commit
+            print("Tests failed, skipping badge generation", file=sys.stderr)
             return 0
 
-        print(f"✓ Coverage badge generated and staged: {badge_path}")
+        # Step 2: Check if coverage.xml exists
+        if not coverage_xml.exists():
+            print("coverage.xml not found, skipping badge generation", file=sys.stderr)
+            return 0
 
-    return 0
+        # Step 3: Generate badge
+        print("Generating coverage badge...", flush=True)
+        badge_cmd = ["uv", "run", "coverage-badge", "-o", str(badge_path), "-f"]
 
+        result = run_command(badge_cmd)
+        if result.returncode != 0:
+            print(f"Badge generation failed: {result.stderr}", file=sys.stderr)
+            return 0
 
-if __name__ == "__main__":
-    try:
-        sys.exit(main())
+        # Step 4: Stage badge for commit
+        if badge_path.exists():
+            print("Staging coverage badge...", flush=True)
+            git_cmd = ["git", "add", str(badge_path)]
+            result = run_command(git_cmd)
+            if result.returncode != 0:
+                print(f"Failed to stage badge: {result.stderr}", file=sys.stderr)
+                return 0
+
+            print(f"✓ Coverage badge generated and staged: {badge_path}")
+
+        return 0
     except Exception as e:
         # Graceful failure: log error but don't block commit
         print(f"Coverage badge generation failed: {e}", file=sys.stderr)
-        sys.exit(0)
+        return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
