@@ -96,8 +96,17 @@ def _find_readiness_claim_line(lines: list[str]) -> int | None:
 
 def check_file(path: Path, strict: bool) -> list[str]:
     """Return a list of violation strings for the given file."""
+    # Normalize to repo-relative path for exemption matching
+    # (absolute paths won't match ^-anchored patterns in EXEMPT_PATTERNS)
+    try:
+        # Try to make relative to current working directory (assumed to be repo root)
+        relative_path = path.relative_to(Path.cwd())
+        path_str = str(relative_path).replace("\\", "/")
+    except ValueError:
+        # Path is outside cwd — use as-is (won't match exemptions, but that's correct)
+        path_str = str(path).replace("\\", "/")
+
     # Skip exempt file paths (educational/governance docs where readiness vocabulary is metaphorical)
-    path_str = str(path).replace("\\", "/")  # Normalize for cross-platform matching
     if any(p.search(path_str) for p in EXEMPT_PATTERNS):
         return []
 
