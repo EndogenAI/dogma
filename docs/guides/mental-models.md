@@ -77,19 +77,35 @@ When you **synthesize external knowledge** into scripts and guides, you are abso
 
 A seedling contains *everything it needs to grow* — the germinal tissue, stored nutrients, growth instructions. But it cannot grow without the right *environment*: soil, moisture, light, temperature within certain bounds.
 
-Similarly, an endogenic project starts from a seed — the initial axioms, scripts, and documented conventions. It grows through phases, each of which requires the right conditions.
+Similarly, an endogenic project grows from a seed — the **values encoded in MANIFESTO.md**: the core axioms, the ethical commitments, the foundational principles. Scripts, agent files, and documented conventions are not the seed; they are the *roots and structure* that grow from it. The seed is the immutable endogenous core; the substrate is what grows outward and downward from that core into the world. This is **Endogenous-First** in organic form: the organism grows from what it already contains, not from external direction imposed after the fact.
 
 Seedlings exhibit:
-- **Inherent structure**: A seedling knows who it is. It will grow into an oak, not a maple. Agents know what they are because of AGENTS.md and the documented fleet structure.
-- **Environmental sensitivity**: Soil quality, water availability, and light angle all affect how the seedling grows. Likewise, the human's oversight, the quality of research inputs, and project-specific constraints all affect how the system evolves.
+- **Inherent structure**: A seedling knows who it is. It will grow into an oak, not a maple. Agents know what they are because of AGENTS.md and the documented fleet structure — and those documents express the values that were already in the seed.
+- **Environmental sensitivity**: Soil quality, water availability, and light angle all affect how the seedling grows. The LLM is part of this environment — it provides the processing capacity that enables growth, like sunlight enabling photosynthesis. But sunlight does not create the plant; it enables what the seed's inherent structure wants to become. The LLM is an input, not the origin.
 - **Phased unfolding**: Seedlings do not become full trees overnight. They go through germination, shoot emergence, leaf unfurling, branching. Endogenic projects go through phases: Orient → Frame → Scout → Synthesize → Review → Archive. Each phase has conditions that must be met before advancing.
-- **Vulnerability in early stages**: Young seedlings are fragile; harsh conditions can stunt or kill them. Early sessions are similarly fragile — the agent fleet is new, conventions are being established, the substrate is thin. This is why gates exist: to protect early growth.
+- **Vulnerability in new soil**: Young seedlings are fragile in unfamiliar environments; harsh or unsuitable conditions can stunt or kill them. A mature endogenic system transplanted into a new deployment context faces the same early fragility — conventions must be re-established, the substrate grown anew, agent behavior calibrated to the new environment. The vulnerability is *situational*, not permanent.
 
-### What This Means in Practice
+### Two Applications of the Metaphor
 
-When you **define a research workflow with gates**, you are creating the conditions for healthy growth. The Orient phase establishes the right soil; the Frame phase ensures the seed knows which direction to grow; the Scout phase provides nutrient-rich water; the Synthesize phase lets the shoot emerge.
+The seedling metaphor applies at two scales. Both are valid; they illuminate different aspects of the system.
+
+#### Application 1: Workflow Phase Growth
+
+At the *session level*, each sprint is a growth cycle. The seed is the MANIFESTO.md axioms the session operates under. The roots are the scripts and documented conventions already in the substrate. Phases (Orient → Scout → Synthesize → Archive) are the stages of growth, each requiring the prior phase's conditions to be met before the next can unfold.
+
+When you **define a research workflow with gates**, you are creating conditions for healthy growth. The Orient phase establishes the right soil; the Frame phase ensures the project knows which direction to grow; the Scout phase provides nutrient-rich input; the Synthesize phase lets the shoot emerge.
 
 When you **run an agent through a documented workflow**, you are not over-controlling the system. You are providing the environmental conditions it needs to grow correctly.
+
+#### Application 2: Product/Organizational Growth
+
+At the *product level*, the metaphor maps to how an organization's AI-assisted work matures over time:
+
+- **Seed** → The values in MANIFESTO.md: immutable, endogenous, the genetic core. These cannot be overwritten by external influence without changing what the project fundamentally is.
+- **Roots** → The grounding in the organization's values corpus: the encoded conventions, the documented constraints, the institutional knowledge that anchors the product and feeds it from below.
+- **Environment (light, water, soil)** → The LLM, the human contributors, the available tooling. These provide the processing capacity and collaborative inputs that enable growth — but they do not originate the plant's identity. An organization cannot outsource its values to a model — but it can equip models to express those values consistently.
+- **Growing plant** → The product itself: what becomes operational, the workflow system, the SaaS tool. This is what becomes visible to the world. It takes its shape from the seed and roots while growing toward available light.
+- **DNA within the seed** → The endogenous sources, the prior art, the "shoulders of giants" that shaped the original axioms. The project's identity is not invented from nothing; it inherits and synthesizes from the field it grows within.
 
 ---
 
@@ -102,7 +118,7 @@ A tree ring is a complete annual record of growth: wood laid down in spring (rap
 Tree rings are:
 - **Cumulative, not replacing**: A tree doesn't discard last year's ring to make room for next year's. New growth builds on the old ring. The tree gets stronger, wider, and taller with each year.
 - **Visible history**: Cut a tree and you can see its biography in cross-section. Running `git log` on your project should tell a similar story: which sessions were productive, which focused on docs, which shipped features.
-- **Progressive surface area**: With each ring, the tree's circumference (surface area) expands. With each session, the agent fleet expands its capability surface.
+- **Progressive surface area**: With each ring, the tree's circumference (surface area) expands. With each session, the agent fleet expands its operational surface.
 - **Load-bearing**: The tree is strong not because of this year's ring alone, but because of all its rings. The organism is stronger because all that prior growth is still there, supporting new growth on top.
 - **Datable and archivable**: Dendrochronology (tree-ring dating) is an entire field. Git commit history serves the same function: you can date decisions, trace their consequences, and understand the evolution of the system.
 
@@ -141,6 +157,46 @@ Layer 3 — main commit log (traversable history)
 **The tree rings connection**: each Conventional Commit that lands on `main` is a dated ring. Squash-merging is the equivalent of reporting a decade of growth as a single ring with no internal structure — the total mass is there, but the annual story is gone.
 
 This is why the rebase-and-merge policy exists: see [ADR-005](../decisions/ADR-005-rebase-merge-as-substrate-preservation.md).
+
+---
+
+## Blueprint: Deliberate Architecture
+
+### The Metaphor
+
+Before a building is constructed, an architect produces a blueprint: a precise, validated representation of what will exist. The blueprint must be internally consistent — load-bearing walls cannot be removed, structural requirements cannot be violated. Workers read the blueprint and execute against it; they do not improvise the structure as they go.
+
+Endogenic development follows the same discipline. The blueprint is the documented architecture: AGENTS.md (structural rules), agent files (role specifications), workflow guides (construction sequences). Agents are the workers — they read these documents and execute against them. The Review agent is the building inspector: validating that work conforms to the blueprint before it becomes permanent.
+
+Blueprint-based construction exhibits:
+- **Pre-specification over improvisation**: You decide the structure before you build it. Research phases happen before implementation phases. Workplans are committed before execution begins. This is not rigidity — it is the difference between a building that stands and one that must be torn down. This is the **Algorithms Before Tokens** principle made structural: encode governance logic into deterministic artifacts (workplans, agent files, validated scripts) before committing execution tokens to it.
+- **Load-bearing elements cannot be changed mid-construction**: MANIFESTO.md axioms, core AGENTS.md constraints, and foundational ADRs (see [ADR-005](../decisions/ADR-005-rebase-merge-as-substrate-preservation.md)) are load-bearing. Changing them mid-sprint is equivalent to removing a structural wall — adjacent systems fail. Changes to foundational documents require a dedicated phase, not an opportunistic edit.
+- **Scaffolding is temporary**: The `.tmp/` scratchpad, in-progress branches, and session notes are construction scaffolding. They support the work while it is being built. They are not the building. At sprint close, the scaffolding comes down (session archived, branch deleted) and the building remains (commits, documentation, merged code).
+- **Inspection gates are non-negotiable**: You would not move tenants in before a building inspection. Similarly, you do not merge code or archive research before the Review agent has returned APPROVED. Gates are structural requirements, not optional quality checks. (This embodies the **Local-Compute-First** axiom: pre-commit hooks and local enforcement gates are the primary inspection layer; cloud CI is supplementary validation, not the main gate.)
+- **Reading the blueprint is the first step**: Before any session, read AGENTS.md. Before any delegation, read the relevant skill or agent file. Agents who build without reading the blueprint produce work that doesn't fit the structure — creating rework debt that compounds across phases.
+
+### What This Means in Practice
+
+When you **create a workplan before execution begins**, you are drawing the blueprint before construction starts. Phases are rooms; dependencies are load-bearing walls; Review gates are inspection checkpoints.
+
+When you **read AGENTS.md and the session scratchpad at session start**, you are reading the floor plan for what you are building into. You cannot add a room without knowing what's already there.
+
+When you **commit incrementally with descriptive messages**, you are documenting construction decisions in real time — the contractor's daily log. Future agents can read those logs to understand what was built, why, and in what order.
+
+When you **run the pre-commit validation suite before every commit**, you are submitting work for inspection before it becomes load-bearing. Bypassing `--no-verify` is equivalent to skipping the inspection — the structural problem exists whether or not it was checked.
+
+### Blueprint vs. Organism
+
+The blueprint metaphor complements the DNA and seedling metaphors rather than replacing them:
+
+| Question | DNA | Seedlings | Blueprint |
+|----------|-----|-----------|----------|
+| *Where does identity come from?* | Encoded in every cell | The seed's immutable values (MANIFESTO.md) | The architect's prior specification (workplan) |
+| *How does change happen?* | Expression or suppression of existing code | Phased growth through environmental response | Deliberate revision through the change-order process |
+| *What makes it durable?* | Replication fidelity | Deep roots in stable soil | Load-bearing structure and material quality |
+| *What is the primary threat?* | Lossy encoding / mis-transcription | Wrong soil, wrong environmental conditions | Skipped inspection gate; load-bearing element removed |
+
+A complete picture of endogenic development requires all three: the hereditary continuity of DNA, the organic growth of seedlings, and the deliberate architecture of blueprints.
 
 ---
 
@@ -299,6 +355,7 @@ As you work with endogenic projects, use these metaphors as diagnostic tools:
 - **"Is this encoding (DNA)?"** — Am I documenting this decision so future sessions can read and execute it? Or will the next agent have to re-discover it?
 - **"Are the growth conditions (seedling environment) right?"** — Does this session have the gates, research frame, and documented workflow it needs?
 - **"Is this a visible ring (tree growth)?"** — Will this work be datable and readable in git history? Or will it disappear into ephemeral chat?
+- **"Is this pre-specified (blueprint)?"** — Do I have a workplan, a phase checklist, and an inspection gate in place before executing? Or am I improvising structure that should have been drawn first?
 
 When you see violations, ask: *Which metaphor is being ignored?*
 
