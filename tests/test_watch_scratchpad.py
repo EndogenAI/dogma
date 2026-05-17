@@ -272,11 +272,6 @@ def test_annotate_file_with_successful_annotation(tmp_path):
 # ---------------------------------------------------------------------------
 
 
-# ---------------------------------------------------------------------------
-# Integration Tests — CLI (keep 1-2 subprocess tests as smoke tests)
-# ---------------------------------------------------------------------------
-
-
 @pytest.mark.integration
 @pytest.mark.io
 @pytest.mark.slow

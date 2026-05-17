@@ -70,7 +70,7 @@ def should_process_file(file_path: Path) -> bool:
     Determine if a file should be processed.
 
     Returns True if the file is a processable session markdown file.
-    Excludes: non-.md files, _index.md, hidden files (starting with .), non-existent files.
+    Excludes: non-.md files, files starting with underscore (_), hidden files (starting with .), non-existent files.
     """
     # Only process Markdown session files
     if file_path.suffix != ".md":
