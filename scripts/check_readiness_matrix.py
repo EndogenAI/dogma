@@ -5,6 +5,11 @@ Purpose:
     a capability matrix. Implements AGENTS.md § Readiness Language Guard and
     readiness-false-positive-analysis.md Recommendation 2.
 
+Scope:
+    Applies to workplans (docs/plans/), PRs (.github/pull_request_template.md),
+    and decision records (docs/decisions/). Exempt: educational guides (docs/guides/)
+    where similar vocabulary is used metaphorically, not as readiness claims.
+
 Inputs:
     files   : list of file paths to check (positional args)
     --fix   : no-op flag for pre-commit compatibility (reserved)
@@ -26,6 +31,14 @@ import argparse
 import re
 import sys
 from pathlib import Path
+
+# File patterns that are exempt from readiness matrix checks (educational only)
+EXEMPT_PATTERNS = [
+    re.compile(r"^docs/guides/"),  # Educational guides use vocabulary metaphorically
+    re.compile(r"^AGENTS\.md$"),  # Governance docs describe patterns, not make readiness claims
+    re.compile(r"^MANIFESTO\.md$"),  # Core axiom docs, not readiness claims
+    re.compile(r"docs/research/.*\.md$"),  # Research synthesis docs explain concepts
+]
 
 # Patterns that indicate a readiness claim.
 # Negations ("not ready", "not complete") are excluded via the negative-lookbehind.
@@ -83,6 +96,11 @@ def _find_readiness_claim_line(lines: list[str]) -> int | None:
 
 def check_file(path: Path, strict: bool) -> list[str]:
     """Return a list of violation strings for the given file."""
+    # Skip exempt file paths (educational/governance docs where readiness vocabulary is metaphorical)
+    path_str = str(path).replace("\\", "/")  # Normalize for cross-platform matching
+    if any(p.search(path_str) for p in EXEMPT_PATTERNS):
+        return []
+
     try:
         text = path.read_text(encoding="utf-8", errors="replace")
     except OSError as exc:
