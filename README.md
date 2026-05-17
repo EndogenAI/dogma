@@ -1,6 +1,6 @@
-# DogmaMCP
-
 ![EndogenAI logo: green and blue stylized mark for the DogmaMCP governance framework, using letterforms "e" to make a leaf sprouting from an "A" with the letter "i" cut out of the "A"](eAi_logo.svg)
+
+# EndogenAI/DogmaMCP
 
 > **Values ingrained, [sovereignty](docs/glossary.md#sovereignty) sustained** — governance framework for [endogenous](docs/glossary.md#endogenous-first) AI workflows
 
