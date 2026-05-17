@@ -12,8 +12,6 @@ Tests cover all code paths:
 import subprocess
 from unittest.mock import patch
 
-import pytest
-
 # Import the module to test
 import scripts.generate_coverage_badge as generate_coverage_badge
 
@@ -256,7 +254,7 @@ class TestEdgeCases:
     """Test edge cases and error conditions."""
 
     @patch("scripts.generate_coverage_badge.run_command")
-    def test_main_returns_zero_on_exception(self, mock_run_cmd, tmp_path):
+    def test_main_returns_zero_on_exception(self, mock_run_cmd, tmp_path, capsys):
         """Test main() handles unexpected exceptions gracefully."""
         # Mock __file__ to point to our tmp_path
         with patch(
@@ -265,10 +263,13 @@ class TestEdgeCases:
             # Mock command that raises exception
             mock_run_cmd.side_effect = RuntimeError("Unexpected error")
 
-            # Current implementation will raise, but design should be graceful
-            # This test documents current behavior
-            with pytest.raises(RuntimeError):
-                generate_coverage_badge.main()
+            # Design is graceful: exceptions are caught and exit 0
+            result = generate_coverage_badge.main()
+            assert result == 0
+
+            # Verify error was logged to stderr
+            captured = capsys.readouterr()
+            assert "Unexpected error" in captured.err or "failed" in captured.err.lower()
 
     @patch("scripts.generate_coverage_badge.run_command")
     def test_empty_coverage_xml(self, mock_run_cmd, tmp_path, capsys):
