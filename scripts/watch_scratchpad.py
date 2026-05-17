@@ -43,12 +43,10 @@ from pathlib import Path
 try:
     from watchdog.events import FileSystemEventHandler
     from watchdog.observers import Observer
+
+    WATCHDOG_AVAILABLE = True
 except ImportError:
-    print(
-        "ERROR: watchdog is not installed.\nInstall it with: uv sync  (or: uv add --group dev watchdog)",
-        file=sys.stderr,
-    )
-    sys.exit(1)
+    WATCHDOG_AVAILABLE = False
 
 # ---------------------------------------------------------------------------
 # Configuration
@@ -63,78 +61,116 @@ ANNOTATE_SCRIPT = SCRIPT_DIR / "prune_scratchpad.py"
 
 
 # ---------------------------------------------------------------------------
-# Event handler
+# Business Logic — File Exclusion
 # ---------------------------------------------------------------------------
 
 
-class ScratchpadHandler(FileSystemEventHandler):
-    """Watchdog event handler that runs the annotator on session file changes."""
+def should_process_file(file_path: Path) -> bool:
+    """
+    Determine if a file should be processed.
 
-    def __init__(self) -> None:
-        super().__init__()
-        self._recently_written: dict[str, float] = {}
-        self._lock = threading.Lock()
+    Returns True if the file is a processable session markdown file.
+    Excludes: non-.md files, _index.md, hidden files (starting with .), non-existent files.
+    """
+    # Only process Markdown session files
+    if file_path.suffix != ".md":
+        return False
+    # Skip index files and hidden files
+    if file_path.name.startswith("_") or file_path.name.startswith("."):
+        return False
+    # Skip if the file has vanished
+    if not file_path.exists():
+        return False
+    return True
 
-    def _cooldown_ok(self, path: str) -> bool:
-        """Return True if enough time has passed since we last wrote to this path."""
-        with self._lock:
-            last = self._recently_written.get(path, 0.0)
-            return (time.monotonic() - last) > COOLDOWN_SECONDS
 
-    def _record(self, path: str) -> None:
-        """Record that we are about to write to this path."""
-        with self._lock:
-            self._recently_written[path] = time.monotonic()
+def annotate_file(
+    file_path: Path, annotate_script: Path = ANNOTATE_SCRIPT, repo_root: Path = REPO_ROOT
+) -> tuple[int, str, str]:
+    """
+    Run the annotation script on the given file.
 
-    def _handle(self, src_path: str) -> None:
-        p = Path(src_path)
+    Returns (exit_code, stdout, stderr) tuple.
+    """
+    try:
+        rel = file_path.relative_to(repo_root)
+    except ValueError:
+        rel = file_path
 
-        # Only process Markdown session files
-        if p.suffix != ".md":
-            return
-        # Skip index files and hidden files
-        if p.name.startswith("_") or p.name.startswith("."):
-            return
-        # Skip if the file has vanished
-        if not p.exists():
-            return
-        # Suppress re-triggers from our own writes
-        if not self._cooldown_ok(src_path):
-            return
+    print(f"[watch_scratchpad] Changed: {rel} — annotating…", flush=True)
 
-        self._record(src_path)
+    result = subprocess.run(
+        [sys.executable, str(annotate_script), "--annotate", "--file", str(file_path)],
+        capture_output=True,
+        text=True,
+    )
 
-        try:
-            rel = p.relative_to(REPO_ROOT)
-        except ValueError:
-            rel = p
+    return (result.returncode, result.stdout, result.stderr)
 
-        print(f"[watch_scratchpad] Changed: {rel} — annotating…", flush=True)
 
-        result = subprocess.run(
-            [sys.executable, str(ANNOTATE_SCRIPT), "--annotate", "--file", src_path],
-            capture_output=True,
-            text=True,
-        )
+# ---------------------------------------------------------------------------
+# Event handler
+# ---------------------------------------------------------------------------
 
-        if result.returncode != 0:
-            print(
-                f"[watch_scratchpad] ERROR annotating {rel}:\n{result.stderr.strip()}",
-                file=sys.stderr,
-                flush=True,
-            )
-        else:
-            msg = result.stdout.strip()
-            if msg:
-                print(f"[watch_scratchpad] {msg}", flush=True)
+if WATCHDOG_AVAILABLE:
 
-    def on_modified(self, event) -> None:  # type: ignore[override]
-        if not event.is_directory:
-            self._handle(event.src_path)
+    class ScratchpadHandler(FileSystemEventHandler):
+        """Watchdog event handler that runs the annotator on session file changes."""
 
-    def on_created(self, event) -> None:  # type: ignore[override]
-        if not event.is_directory:
-            self._handle(event.src_path)
+        def __init__(self, annotate_script: Path = ANNOTATE_SCRIPT, repo_root: Path = REPO_ROOT) -> None:
+            super().__init__()
+            self._recently_written: dict[str, float] = {}
+            self._lock = threading.Lock()
+            self.annotate_script = annotate_script
+            self.repo_root = repo_root
+
+        def _cooldown_ok(self, path: str) -> bool:
+            """Return True if enough time has passed since we last wrote to this path."""
+            with self._lock:
+                last = self._recently_written.get(path, 0.0)
+                return (time.monotonic() - last) > COOLDOWN_SECONDS
+
+        def _record(self, path: str) -> None:
+            """Record that we are about to write to this path."""
+            with self._lock:
+                self._recently_written[path] = time.monotonic()
+
+        def _handle(self, src_path: str) -> None:
+            p = Path(src_path)
+
+            if not should_process_file(p):
+                return
+
+            # Suppress re-triggers from our own writes
+            if not self._cooldown_ok(src_path):
+                return
+
+            self._record(src_path)
+
+            exit_code, stdout, stderr = annotate_file(p, self.annotate_script, self.repo_root)
+
+            if exit_code != 0:
+                try:
+                    rel = p.relative_to(self.repo_root)
+                except ValueError:
+                    rel = p
+                print(
+                    f"[watch_scratchpad] ERROR annotating {rel}:\n{stderr.strip()}",
+                    file=sys.stderr,
+                    flush=True,
+                )
+            else:
+                msg = stdout.strip()
+                if msg:
+                    print(f"[watch_scratchpad] {msg}", flush=True)
+
+        def on_modified(self, event) -> None:  # type: ignore[override]
+            if not event.is_directory:
+                self._handle(event.src_path)
+
+        def on_created(self, event) -> None:  # type: ignore[override]
+            if not event.is_directory:
+                self._handle(event.src_path)
 
 
 # ---------------------------------------------------------------------------
@@ -143,6 +179,14 @@ class ScratchpadHandler(FileSystemEventHandler):
 
 
 def main() -> int:
+    """CLI entry point for watch_scratchpad."""
+    if not WATCHDOG_AVAILABLE:
+        print(
+            "ERROR: watchdog is not installed.\nInstall it with: uv sync  (or: uv add --group dev watchdog)",
+            file=sys.stderr,
+        )
+        return 1
+
     parser = argparse.ArgumentParser(description="Watch .tmp/ and auto-annotate scratchpad session files on change.")
     parser.add_argument(
         "--tmp-dir",
