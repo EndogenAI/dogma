@@ -120,15 +120,12 @@ class TestMainCLI:
         # Marked as integration test
         pass
 
-    @patch("scripts.pull_yt_transcript.YouTubeTranscriptApi")
-    def test_cli_api_error_exits_one(self, mock_api):
-        """Test that API errors in CLI mode exit with code 1."""
-        mock_api_instance = MagicMock()
-        mock_api.return_value = mock_api_instance
-        mock_api_instance.list.side_effect = Exception("API Error")
-
+    def test_cli_api_error_exits_one(self):
+        """Test that CLI mode exits 1 on error (no mock - tests deterministic behavior only)."""
+        # No patch applied - testing subprocess CLI behavior with invalid video ID
+        # Subprocess doesn't inherit patches, so this test is deterministic (bad ID always fails)
         result = subprocess.run(
-            [sys.executable, "scripts/pull_yt_transcript.py", "bad_id", "/tmp/out.txt"],
+            [sys.executable, "scripts/pull_yt_transcript.py", "invalid_video_id_12345", "/tmp/out.txt"],
             capture_output=True,
             text=True,
         )
