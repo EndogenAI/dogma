@@ -44,9 +44,9 @@ Prepare the dogma repository for public reveal on May 18, 2026. This sprint addr
 ### Phase 1 — README Enhancements ⬜
 **Agent**: Executive Docs
 **Deliverables**:
-- Add 30-second plain-English hook from May 18 blog to dogma/README.md (Closes #63)
-- Add eAI logo placeholder (text-based badge, not PNG) to dogma/README.md (Closes #64)
-- Add high-level roadmap callout (Q3 2026 1.0 stability goal, one paragraph) to dogma/README.md (Closes #68)
+- Add 30-second plain-English hook from May 18 blog to dogma/README.md (Refs EndogenAI/consulting#63)
+- Add eAI logo placeholder (text-based badge, not PNG) to dogma/README.md (Refs EndogenAI/consulting#64)
+- Add high-level roadmap callout (Q3 2026 1.0 stability goal, one paragraph) to dogma/README.md (Refs EndogenAI/consulting#68)
 - Commit: `docs(readme): add plain-English hook, logo placeholder, and roadmap callout for May 18 reveal`
 
 **Depends on**: Phase 0 Review APPROVED
@@ -71,10 +71,10 @@ Prepare the dogma repository for public reveal on May 18, 2026. This sprint addr
 ### Phase 2 — Cleanup, Maintenance & Research Prerequisites ⬜
 **Agent**: Executive Scripter (cleanup, archive), Executive Docs (getting-started audit), Research Scout (best practices)
 **Deliverables**:
-- Remove all "Sprint 23" references from dogma repo (5+ files: mcp_server/README.md, docs/mcp/api-reference.md, docs/mcp/mcp-ecosystem-architecture.md, docs/governance/recommendations-schema.md, docs/research/webmcp-browser-integration.md) (Closes #65)
-- Archive 800 synthetic seed records using `scripts/migrate_tool_calls.py --dry-run` then live execution (Closes #66)
-- Quick audit of `docs/guides/getting-started.md` for first-adopter blockers (Closes #69)
-- Research: Good-first-issue best practices for governance frameworks (Closes #72)
+- Remove all "Sprint 23" references from dogma repo (5+ files: mcp_server/README.md, docs/mcp/api-reference.md, docs/mcp/mcp-ecosystem-architecture.md, docs/governance/recommendations-schema.md, docs/research/webmcp-browser-integration.md) (Refs EndogenAI/consulting#65)
+- Archive 800 synthetic seed records using `scripts/migrate_tool_calls.py --dry-run` then live execution (Refs EndogenAI/consulting#66)
+- Quick audit of `docs/guides/getting-started.md` for first-adopter blockers (Refs EndogenAI/consulting#69)
+- Research: Good-first-issue best practices for governance frameworks (Refs EndogenAI/consulting#72)
 - Research findings → scratchpad under `## Phase 2 Output — Research Scout`
 - Commit 1: `chore(cleanup): remove Sprint 23 internal references across 5+ files`
 - Commit 2: `chore(telemetry): archive 800 synthetic seed records pre-reveal`
@@ -103,10 +103,10 @@ Prepare the dogma repository for public reveal on May 18, 2026. This sprint addr
 ### Phase 3 — Community & Issue Management ⬜
 **Agent**: Executive PM
 **Deliverables**:
-- Audit all 42 open dogma issues; produce YAML-formatted recommendations (close/keep/label) (Closes #70)
+- Audit all 42 open dogma issues; produce YAML-formatted recommendations (close/keep/label) (Refs EndogenAI/consulting#70)
 - User reviews YAML list → approves before any closes execute
 - Apply approved closes/labels using `gh issue edit` batch operations
-- Identify 3-5 "good-first-issue" candidates using Phase 2 research findings (Closes #71)
+- Identify 3-5 "good-first-issue" candidates using Phase 2 research findings (Refs EndogenAI/consulting#71)
 - Apply "good-first-issue" label to selected issues
 - Commit: `chore(issues): triage 42 open issues and designate good-first-issue candidates`
 
@@ -131,8 +131,8 @@ Prepare the dogma repository for public reveal on May 18, 2026. This sprint addr
 ### Phase 4 — Cross-Repo Integration (CRITICAL PATH) ⬜
 **Agent**: AT - Frontend Developer (#67, #73), Comms Strategist (coordination)
 **Deliverables**:
-- AccessiTech: Replace/supplement blog code blocks with graphics + simplify for lay audience (Closes #67) ⚠️ May 17 HARD DEADLINE
-- AccessiTech: Add blog links to eAI product page (EndogenAI.tsx edits) (Closes #73) ⚠️ May 18 HARD DEADLINE
+- AccessiTech: Replace/supplement blog code blocks with graphics + simplify for lay audience (Refs EndogenAI/consulting#67) ⚠️ May 17 HARD DEADLINE
+- AccessiTech: Add blog links to eAI product page (EndogenAI.tsx edits) (Refs EndogenAI/consulting#73) ⚠️ May 18 HARD DEADLINE
 - Commit (AccessiTech): `feat(blog): add graphics and simplify code blocks for lay audience comprehension`
 - Commit (AccessiTech): `feat(product): add cross-links to EndogenAI blog posts`
 
@@ -167,7 +167,7 @@ Prepare the dogma repository for public reveal on May 18, 2026. This sprint addr
 - Archive session: `uv run python scripts/prune_scratchpad.py --force`
 - Write `## Session Summary` to scratchpad
 - Push feat/reveal-readiness-may18 branch
-- Open PR with all 11 `Closes #NN` lines in description
+- Open PR with cross-repo references in description
 
 **Depends on**: Phase 4 Review APPROVED
 **CI**: Full CI suite (tests, lychee, validate-synthesis, validate-agent-files)
@@ -181,7 +181,7 @@ Prepare the dogma repository for public reveal on May 18, 2026. This sprint addr
 - [ ] All 11 issues (#63-#73) have completion checkboxes updated
 - [ ] Progress comments posted on all 11 issues
 - [ ] CI passing on feat/reveal-readiness-may18 branch
-- [ ] PR opened with all `Closes #NN` lines
+- [ ] PR opened with cross-repo references
 - [ ] May 17 deadline met: #67 (blog graphics) committed
 - [ ] May 18 deadline met: #73 (product page links) committed
 - [ ] User manually merges feat/reveal-readiness-may18 to dogma/main before May 18 reveal
